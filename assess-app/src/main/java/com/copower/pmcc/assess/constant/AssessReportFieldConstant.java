@@ -40,6 +40,7 @@ public class AssessReportFieldConstant {
 
 
     public static final String HYPOTHESIS_DEPART_FROM_FACT = "hypothesis.depart.from.fact";//背离事实假设
+    public static final String HYPOTHESIS_DEPART_FROM_FACT_PLEDGE = "hypothesis.depart.from.fact.pledge";//抵押、其他
     public static final String DATE_ARE_CONSISTENT = "date.are.consistent";//日期是否一致
     public static final String SURROUNDINGS_CONDITION= "surroundings.condition";//周边环境
     public static final String ENTITY_CONDITION = "entity.condition";//实物状况

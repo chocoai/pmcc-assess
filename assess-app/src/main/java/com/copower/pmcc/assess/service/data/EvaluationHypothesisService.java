@@ -264,32 +264,8 @@ public class EvaluationHypothesisService {
 
             //不相一致假设
             if (AssessReportFieldConstant.HYPOTHESIS_INCONFORMITY.equals(basis.getFieldName())) {
-                //证载地址委估对象号
-                StringBuilder loadAddressNum = new StringBuilder();
-                //证载地址登记内容
-                StringBuilder loadRegistrationContent = new StringBuilder();
-                //证载地址实际内容
-                StringBuilder loadActualContent = new StringBuilder();
-                //证载地址说明
-                StringBuilder loadRemark = new StringBuilder();
-
-                //登记地址委估对象号
-                StringBuilder registeredAddressNum = new StringBuilder();
-                //登记地址登记内容
-                StringBuilder registeredRegistrationContent = new StringBuilder();
-                //登记地址实际内容
-                StringBuilder registeredActualContent = new StringBuilder();
-                //登记地址说明
-                StringBuilder registeredRemark = new StringBuilder();
-
-                //登记用途委估对象号
-                StringBuilder registrationPurposesNum = new StringBuilder();
-                //登记用途登记内容
-                StringBuilder purposesRegistrationContent = new StringBuilder();
-                //登记用途实际内容
-                StringBuilder purposesActualContent = new StringBuilder();
-                //登记用途址说明
-                StringBuilder purposesRemark = new StringBuilder();
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
 
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     //对应资产清查内容
@@ -301,52 +277,42 @@ public class EvaluationHypothesisService {
                             //证载地址
                             case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS:
                                 if ("不一致".equals(item.getAreConsistent())) {
-                                    splicingContent(loadAddressNum, loadRegistrationContent, loadActualContent, loadRemark, judgeObject, item);
+                                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOAD_ADDRESS);
+                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", judgeObject.getNumber())
+                                            .replace("#{房产证登记地址}", item.getRegistration())
+                                            .replace("#{土地证登记地址}", item.getActual())
+                                            .replace("#{证明文件名称}", item.getCredential())
+                                            .replace("#{证明文件说明内容}", item.getDifferenceReason())).append("</p>");
+
                                 }
                                 break;
                             //登记地址
                             case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS:
                                 if ("不一致".equals(item.getAreConsistent())) {
-                                    splicingContent(registeredAddressNum, registeredRegistrationContent, registeredActualContent, registeredRemark, judgeObject, item);
+                                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTERED_ADDRESS);
+                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", judgeObject.getNumber())
+                                            .replace("#{登记地址}", item.getRegistration())
+                                            .replace("#{实际地址}", item.getActual())
+                                            .replace("#{证明文件名称}", item.getCredential())
+                                            .replace("#{证明文件说明内容}", item.getDifferenceReason())).append("</p>");
+
                                 }
                                 break;
                             //登记用途
                             case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE:
                                 if ("不一致".equals(item.getAreConsistent())) {
-                                    splicingContent(registrationPurposesNum, purposesRegistrationContent, purposesActualContent, purposesRemark, judgeObject, item);
+                                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTRATION_PURPOSES);
+                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", judgeObject.getNumber())
+                                            .replace("#{登记用途}", item.getRegistration())
+                                            .replace("#{实际用途}", item.getActual())
+                                            .replace("#{证明文件名称}", item.getCredential())
+                                            .replace("#{证明文件说明内容}", item.getDifferenceReason())).append("</p>");
                                 }
                                 break;
                         }
                     }
                 }
-                if (StringUtils.isNotBlank(loadAddressNum) || StringUtils.isNotBlank(registeredAddressNum) || StringUtils.isNotBlank(registrationPurposesNum)) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
-                }
-                if (StringUtils.isNotBlank(loadAddressNum)) {
-                    String number = getSubstitutionPrincipleName(loadAddressNum.toString());
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOAD_ADDRESS);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)
-                            .replace("#{房产证登记地址}", loadRegistrationContent.deleteCharAt(loadRegistrationContent.length() - 1))
-                            .replace("#{土地证登记地址}", loadActualContent.deleteCharAt(loadActualContent.length() - 1))
-                            .replace("#{证明文件名称}#{证明文件说明内容}", loadRemark.deleteCharAt(loadRemark.length() - 1))).append("</p>");
-                }
-                if (StringUtils.isNotBlank(registeredAddressNum)) {
-                    String number = getSubstitutionPrincipleName(registeredAddressNum.toString());
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTERED_ADDRESS);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)
-                            .replace("#{登记地址}", registeredRegistrationContent.deleteCharAt(registeredRegistrationContent.length() - 1))
-                            .replace("#{实际地址}", registeredActualContent.deleteCharAt(registeredActualContent.length() - 1))
-                            .replace("#{证明文件名称}#{证明文件说明内容}", registeredRemark.deleteCharAt(registeredRemark.length() - 1))).append("</p>");
-                }
-                if (StringUtils.isNotBlank(registrationPurposesNum)) {
-                    String number = getSubstitutionPrincipleName(registrationPurposesNum.toString());
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTRATION_PURPOSES);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)
-                            .replace("#{登记用途}", purposesRegistrationContent.deleteCharAt(purposesRegistrationContent.length() - 1))
-                            .replace("#{实际用途}", purposesActualContent.deleteCharAt(purposesActualContent.length() - 1))
-                            .replace("#{证明文件名称}#{证明文件说明内容}", purposesRemark.deleteCharAt(purposesRemark.length() - 1))).append("</p>");
-                }
+
             }
 
             //依据不足假设
@@ -361,11 +327,11 @@ public class EvaluationHypothesisService {
                     BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
                     Integer type = basicHouse.getResearchType();
                     //参考同类
-                    if (type !=null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
+                    if (type != null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
                         referenceNum.append(judgeObject.getNumber()).append(",");
                     }
                     //入户调查
-                    if (type !=null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_INVESTIGATE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
+                    if (type != null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_INVESTIGATE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
                         assetCheckNum.append(judgeObject.getNumber()).append(",");
                     }
 
@@ -379,11 +345,7 @@ public class EvaluationHypothesisService {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REFERENCE_SAME);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)).append("</p>");
                 }
-              /*  if (StringUtils.isNotBlank(assetCheckNum)) {
-                    String number = getSubstitutionPrincipleName(assetCheckNum.toString());
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ASSET_CHECK);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)).append("</p>");
-                }*/
+
             }
 
             //背离事实假设
@@ -402,6 +364,20 @@ public class EvaluationHypothesisService {
                 //实物损坏委估对象
                 StringBuilder entityDamage = new StringBuilder();
 
+                //有抵押权委估对象
+                StringBuilder havePledge = new StringBuilder();
+                StringBuilder pledgeContent = new StringBuilder();
+                //有其他
+                StringBuilder haveOther = new StringBuilder();
+                String otherRemark = new String();
+                StringBuilder otherContent = new StringBuilder();
+
+                StringBuilder content = new StringBuilder();
+
+                Integer rightId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE).getId();
+                Integer otherId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER).getId();
+
+
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     //对应资产清查内容
                     SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
@@ -411,8 +387,25 @@ public class EvaluationHypothesisService {
                     if ("损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
                         entityDamage.append(judgeObject.getNumber()).append(",");
                     }
+
+                    //对应的他权信息
+                    List<SurveyAssetInventoryRight> rightList = Lists.newArrayList();
+                    List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
+                    if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
+                        rightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(surveyAssetInventoryRightRecordList.get(0).getPlanDetailsId());
+                    }
+                    for (SurveyAssetInventoryRight inventoryRight : rightList) {
+                        if (rightId.equals(inventoryRight.getCategory())) {
+                            havePledge.append(judgeObject.getNumber()).append(",");
+                        }
+                        if (otherId.equals(inventoryRight.getCategory())) {
+                            haveOther.append(judgeObject.getNumber()).append(",");
+                            otherRemark = inventoryRight.getRemark();
+                        }
+                    }
                 }
-                if (valuationDate.compareTo(investigationsEndDate) != 0 || StringUtils.isNotBlank(surroundingsDamage)|| StringUtils.isNotBlank(entityDamage)) {
+
+                if (valuationDate.compareTo(investigationsEndDate) != 0 || StringUtils.isNotBlank(surroundingsDamage) || StringUtils.isNotBlank(entityDamage)) {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
                 }
@@ -429,6 +422,23 @@ public class EvaluationHypothesisService {
                     String number = getSubstitutionPrincipleName(entityDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTITY_CONDITION);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", sdf2.format(valuationDate))).append("</p>");
+                }
+                if (StringUtils.isNotBlank(havePledge)) {
+                    String number = getSubstitutionPrincipleName(havePledge.toString());
+                    pledgeContent.append(number).append("委估对象有抵押");
+                    if (StringUtils.isNotBlank(haveOther)) {
+                        pledgeContent.append("、");
+                    }
+                }
+                if (StringUtils.isNotBlank(haveOther)) {
+                    String number = getSubstitutionPrincipleName(haveOther.toString());
+                    otherContent.append(number).append("委估对象").append(otherRemark);
+                }
+                content.append(pledgeContent).append(otherContent);
+                if (StringUtils.isNotBlank(content)) {
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_DEPART_FROM_FACT_PLEDGE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(tagfilter(dataReportTemplateByField.getTemplate().replace("#{内容}", content))).append("</p>");
+
                 }
 
             }
@@ -469,13 +479,13 @@ public class EvaluationHypothesisService {
                         switch (baseDataDicService.getCacheDataDicById(item.getInventoryContent()).getFieldName()) {
                             //建筑面积
                             case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA:
-                                if (StringUtils.isEmpty(item.getRegistration()) || "无".equals(item.getRegistration().trim())) {
+                                if ("不一致".equals(item.getAreConsistent())) {
                                     noBuildingArea.append(judgeObject.getNumber()).append(",");
                                 }
                                 break;
                             //建筑结构
                             case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE:
-                                if (StringUtils.isEmpty(item.getRegistration()) || "无".equals(item.getRegistration().trim())) {
+                                if ("不一致".equals(item.getAreConsistent())) {
                                     noBuildingConstruction.append(judgeObject.getNumber()).append(",");
                                 }
                                 break;
@@ -521,7 +531,7 @@ public class EvaluationHypothesisService {
                 }
                 if (StringUtils.isNotBlank(noPledge)) {
                     String number = getSubstitutionPrincipleName(noPledge.toString());
-                    content.append(number).append("委估对象无").append(pledgeRemark).append(";");
+                    content.append(number).append("委估对象无抵押").append(";");
                 }
                 if (StringUtils.isNotBlank(haveOther)) {
                     String number = getSubstitutionPrincipleName(haveOther.toString());
@@ -529,7 +539,7 @@ public class EvaluationHypothesisService {
                 }
                 if (StringUtils.isNotBlank(noOther)) {
                     String number = getSubstitutionPrincipleName(noOther.toString());
-                    content.append(number).append("委估对象无").append(otherRemark).append(";");
+                    content.append(number).append("委估对象无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷;");
                 }
                 content.append(limitContent);
                 //他权
@@ -582,17 +592,17 @@ public class EvaluationHypothesisService {
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(purpose.getTemplate()))).append("</p>");
 
                 //相差天数
-                long daysBetween=(investigationsEndDate.getTime()-valuationDate.getTime())/(60*60*24*1000);
+                long daysBetween = (investigationsEndDate.getTime() - valuationDate.getTime()) / (60 * 60 * 24 * 1000);
                 //评估基准日与报告有效期
-                if(!pledgeId.equals(projectInfo.getEntrustPurpose())){
+                if (!pledgeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
-                }else if(pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween)> 180){
+                } else if (pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) > 180) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
-                }else if(pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) <= 180){
+                } else if (pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) <= 180) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_NOT_PLEDGE);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
@@ -608,9 +618,7 @@ public class EvaluationHypothesisService {
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(other.getTemplate()))).append("</p>");
 
 
-
             }
-
 
 
         }
