@@ -231,24 +231,12 @@ public class DeclareRealtyRealEstateCertService {
             }
             vo.setFileViewName(builder.toString());
         }
-        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getPlanningUse())) {
-            vo.setPlanningUseName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getPlanningUse())));
-        }
-        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getPurpose())) {
-            vo.setPurposeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getPurpose())));
-        }
-        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getType())) {
-            vo.setTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getType())));
-        }
-        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getPublicSituation())) {
-            vo.setPublicSituationName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getPublicSituation())));
-        }
-        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getUseRightType())) {
-            vo.setUseRightTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getUseRightType())));
-        }
-        if (declareRealtyRealEstateCert.getNature() != null) {
-            vo.setNatureName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
-        }
+        vo.setPlanningUseName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUse()));
+        vo.setPurposeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUse()));
+        vo.setTypeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightType()));
+        vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getPublicSituation()));
+        vo.setUseRightTypeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightNature()));
+        vo.setNatureName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
         return vo;
     }
 
@@ -278,11 +266,12 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setUnit(oo.getUnit());
             declareRecord.setFloor(oo.getFloor());
             declareRecord.setRoomNumber(oo.getRoomNumber());
-            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPlanningUse()));
+            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getHouseCertUse()));
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setHousingStructure(oo.getHousingStructure());
-            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getPurpose()));
-            declareRecord.setUseRightType(baseDataDicService.getNameById(oo.getUseRightType()));
+            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getLandCertUse()));
+            declareRecord.setUseRightType(baseDataDicService.getNameById(oo.getLandRightNature()));
+            declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());

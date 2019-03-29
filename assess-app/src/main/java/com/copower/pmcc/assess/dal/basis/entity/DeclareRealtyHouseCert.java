@@ -24,7 +24,7 @@ public class DeclareRealtyHouseCert {
 
     private String ownership;
 
-    private String publicSituation;
+    private Integer publicSituation;
 
     private String beLocated;
 
@@ -46,7 +46,7 @@ public class DeclareRealtyHouseCert {
 
     private String floorCount;
 
-    private String planningUse;
+    private Integer certUse;
 
     private String housingStructure;
 
@@ -170,12 +170,12 @@ public class DeclareRealtyHouseCert {
         this.ownership = ownership == null ? null : ownership.trim();
     }
 
-    public String getPublicSituation() {
+    public Integer getPublicSituation() {
         return publicSituation;
     }
 
-    public void setPublicSituation(String publicSituation) {
-        this.publicSituation = publicSituation == null ? null : publicSituation.trim();
+    public void setPublicSituation(Integer publicSituation) {
+        this.publicSituation = publicSituation;
     }
 
     public String getBeLocated() {
@@ -258,12 +258,12 @@ public class DeclareRealtyHouseCert {
         this.floorCount = floorCount == null ? null : floorCount.trim();
     }
 
-    public String getPlanningUse() {
-        return planningUse;
+    public Integer getCertUse() {
+        return certUse;
     }
 
-    public void setPlanningUse(String planningUse) {
-        this.planningUse = planningUse == null ? null : planningUse.trim();
+    public void setCertUse(Integer certUse) {
+        this.certUse = certUse;
     }
 
     public String getHousingStructure() {

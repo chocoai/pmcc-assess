@@ -786,62 +786,52 @@ public class DeclareRealtyHouseCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationEqualTo(String value) {
+        public Criteria andPublicSituationEqualTo(Integer value) {
             addCriterion("public_situation =", value, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationNotEqualTo(String value) {
+        public Criteria andPublicSituationNotEqualTo(Integer value) {
             addCriterion("public_situation <>", value, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationGreaterThan(String value) {
+        public Criteria andPublicSituationGreaterThan(Integer value) {
             addCriterion("public_situation >", value, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationGreaterThanOrEqualTo(String value) {
+        public Criteria andPublicSituationGreaterThanOrEqualTo(Integer value) {
             addCriterion("public_situation >=", value, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationLessThan(String value) {
+        public Criteria andPublicSituationLessThan(Integer value) {
             addCriterion("public_situation <", value, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationLessThanOrEqualTo(String value) {
+        public Criteria andPublicSituationLessThanOrEqualTo(Integer value) {
             addCriterion("public_situation <=", value, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationLike(String value) {
-            addCriterion("public_situation like", value, "publicSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationNotLike(String value) {
-            addCriterion("public_situation not like", value, "publicSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationIn(List<String> values) {
+        public Criteria andPublicSituationIn(List<Integer> values) {
             addCriterion("public_situation in", values, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationNotIn(List<String> values) {
+        public Criteria andPublicSituationNotIn(List<Integer> values) {
             addCriterion("public_situation not in", values, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationBetween(String value1, String value2) {
+        public Criteria andPublicSituationBetween(Integer value1, Integer value2) {
             addCriterion("public_situation between", value1, value2, "publicSituation");
             return (Criteria) this;
         }
 
-        public Criteria andPublicSituationNotBetween(String value1, String value2) {
+        public Criteria andPublicSituationNotBetween(Integer value1, Integer value2) {
             addCriterion("public_situation not between", value1, value2, "publicSituation");
             return (Criteria) this;
         }
@@ -1526,73 +1516,63 @@ public class DeclareRealtyHouseCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseIsNull() {
-            addCriterion("planning_use is null");
+        public Criteria andCertUseIsNull() {
+            addCriterion("cert_use is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseIsNotNull() {
-            addCriterion("planning_use is not null");
+        public Criteria andCertUseIsNotNull() {
+            addCriterion("cert_use is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseEqualTo(String value) {
-            addCriterion("planning_use =", value, "planningUse");
+        public Criteria andCertUseEqualTo(Integer value) {
+            addCriterion("cert_use =", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseNotEqualTo(String value) {
-            addCriterion("planning_use <>", value, "planningUse");
+        public Criteria andCertUseNotEqualTo(Integer value) {
+            addCriterion("cert_use <>", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseGreaterThan(String value) {
-            addCriterion("planning_use >", value, "planningUse");
+        public Criteria andCertUseGreaterThan(Integer value) {
+            addCriterion("cert_use >", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseGreaterThanOrEqualTo(String value) {
-            addCriterion("planning_use >=", value, "planningUse");
+        public Criteria andCertUseGreaterThanOrEqualTo(Integer value) {
+            addCriterion("cert_use >=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseLessThan(String value) {
-            addCriterion("planning_use <", value, "planningUse");
+        public Criteria andCertUseLessThan(Integer value) {
+            addCriterion("cert_use <", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseLessThanOrEqualTo(String value) {
-            addCriterion("planning_use <=", value, "planningUse");
+        public Criteria andCertUseLessThanOrEqualTo(Integer value) {
+            addCriterion("cert_use <=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseLike(String value) {
-            addCriterion("planning_use like", value, "planningUse");
+        public Criteria andCertUseIn(List<Integer> values) {
+            addCriterion("cert_use in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseNotLike(String value) {
-            addCriterion("planning_use not like", value, "planningUse");
+        public Criteria andCertUseNotIn(List<Integer> values) {
+            addCriterion("cert_use not in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseIn(List<String> values) {
-            addCriterion("planning_use in", values, "planningUse");
+        public Criteria andCertUseBetween(Integer value1, Integer value2) {
+            addCriterion("cert_use between", value1, value2, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andPlanningUseNotIn(List<String> values) {
-            addCriterion("planning_use not in", values, "planningUse");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanningUseBetween(String value1, String value2) {
-            addCriterion("planning_use between", value1, value2, "planningUse");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanningUseNotBetween(String value1, String value2) {
-            addCriterion("planning_use not between", value1, value2, "planningUse");
+        public Criteria andCertUseNotBetween(Integer value1, Integer value2) {
+            addCriterion("cert_use not between", value1, value2, "certUse");
             return (Criteria) this;
         }
 

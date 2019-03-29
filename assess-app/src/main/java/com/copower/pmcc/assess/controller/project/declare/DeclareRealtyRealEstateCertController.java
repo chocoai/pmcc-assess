@@ -1,15 +1,13 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
-import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyRealEstateCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -104,12 +102,9 @@ public class DeclareRealtyRealEstateCertController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareRealtyRealEstateCert", method = {RequestMethod.POST}, name = "更新不动产维护")
-    public HttpResult saveAndUpdate(DeclareRealtyRealEstateCertDto declareRealtyRealEstateCertDto) {
-        DeclareRealtyRealEstateCert declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
-        if (declareRealtyRealEstateCertDto != null){
-            BeanUtils.copyProperties(declareRealtyRealEstateCertDto,declareRealtyRealEstateCert);
-        }
+    public HttpResult saveAndUpdate(String formData) {
         try {
+            DeclareRealtyRealEstateCert declareRealtyRealEstateCert= JSON.parseObject(formData,DeclareRealtyRealEstateCert.class);
             Integer id = declareRealtyRealEstateCertService.saveAndUpdateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {

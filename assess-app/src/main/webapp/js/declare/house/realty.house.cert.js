@@ -85,8 +85,8 @@ assessCommonHouse.init = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         $("#" + assessCommonHouse.config.frm).find('select.publicSituation').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
-        $("#" + assessCommonHouse.config.frm).find('select.planningUse').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.certUse, function (html, data) {
+        $("#" + assessCommonHouse.config.frm).find('select.certUse').empty().html(html).trigger('change');
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         $("#" + assessCommonHouse.config.frm).find('select.nature').empty().html(html).trigger('change');
@@ -201,7 +201,7 @@ assessCommonHouse.saveHouse = function (data,callback) {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 callback();
@@ -371,7 +371,7 @@ assessCommonHouse.saveAndUpdateLand = function () {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 if (data.id){

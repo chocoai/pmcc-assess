@@ -18,8 +18,6 @@ public class DeclareRealtyRealEstateCert {
 
     private String certName;
 
-    private String type;
-
     private String location;
 
     private String beLocated;
@@ -30,7 +28,7 @@ public class DeclareRealtyRealEstateCert {
 
     private String ownership;
 
-    private String publicSituation;
+    private Integer publicSituation;
 
     private String streetNumber;
 
@@ -48,7 +46,7 @@ public class DeclareRealtyRealEstateCert {
 
     private Integer nature;
 
-    private String planningUse;
+    private Integer houseCertUse;
 
     private String housingStructure;
 
@@ -80,11 +78,13 @@ public class DeclareRealtyRealEstateCert {
 
     private Date registrationDate;
 
-    private String useRightType;
+    private Integer landRightNature;
+
+    private Integer landRightType;
 
     private BigDecimal acquisitionPrice;
 
-    private String purpose;
+    private Integer landCertUse;
 
     private Date terminationDate;
 
@@ -166,14 +166,6 @@ public class DeclareRealtyRealEstateCert {
         this.certName = certName == null ? null : certName.trim();
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
-    }
-
     public String getLocation() {
         return location;
     }
@@ -214,12 +206,12 @@ public class DeclareRealtyRealEstateCert {
         this.ownership = ownership == null ? null : ownership.trim();
     }
 
-    public String getPublicSituation() {
+    public Integer getPublicSituation() {
         return publicSituation;
     }
 
-    public void setPublicSituation(String publicSituation) {
-        this.publicSituation = publicSituation == null ? null : publicSituation.trim();
+    public void setPublicSituation(Integer publicSituation) {
+        this.publicSituation = publicSituation;
     }
 
     public String getStreetNumber() {
@@ -286,12 +278,12 @@ public class DeclareRealtyRealEstateCert {
         this.nature = nature;
     }
 
-    public String getPlanningUse() {
-        return planningUse;
+    public Integer getHouseCertUse() {
+        return houseCertUse;
     }
 
-    public void setPlanningUse(String planningUse) {
-        this.planningUse = planningUse == null ? null : planningUse.trim();
+    public void setHouseCertUse(Integer houseCertUse) {
+        this.houseCertUse = houseCertUse;
     }
 
     public String getHousingStructure() {
@@ -414,12 +406,20 @@ public class DeclareRealtyRealEstateCert {
         this.registrationDate = registrationDate;
     }
 
-    public String getUseRightType() {
-        return useRightType;
+    public Integer getLandRightNature() {
+        return landRightNature;
     }
 
-    public void setUseRightType(String useRightType) {
-        this.useRightType = useRightType == null ? null : useRightType.trim();
+    public void setLandRightNature(Integer landRightNature) {
+        this.landRightNature = landRightNature;
+    }
+
+    public Integer getLandRightType() {
+        return landRightType;
+    }
+
+    public void setLandRightType(Integer landRightType) {
+        this.landRightType = landRightType;
     }
 
     public BigDecimal getAcquisitionPrice() {
@@ -430,12 +430,12 @@ public class DeclareRealtyRealEstateCert {
         this.acquisitionPrice = acquisitionPrice;
     }
 
-    public String getPurpose() {
-        return purpose;
+    public Integer getLandCertUse() {
+        return landCertUse;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose == null ? null : purpose.trim();
+    public void setLandCertUse(Integer landCertUse) {
+        this.landCertUse = landCertUse;
     }
 
     public Date getTerminationDate() {

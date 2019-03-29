@@ -810,7 +810,7 @@ equipmentInstallation.declareRealtyLandCertSaveAndUpdate = function () {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
-        data: data,
+        data: {formData: JSON.stringify(data)} ,
         success: function (result) {
             if (result.ret) {
                 $('#' + equipmentInstallation.config.declareRealtyLandCert.box).modal("hide");
@@ -948,7 +948,7 @@ equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate = function () {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 $('#' + equipmentInstallation.config.declareRealtyRealEstateCert.box).modal("hide");

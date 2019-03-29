@@ -18,7 +18,7 @@ public class DeclareRealtyLandCert {
 
     private String district;
 
-    private String type;
+    private Integer landRightType;
 
     private String location;
 
@@ -27,6 +27,8 @@ public class DeclareRealtyLandCert {
     private String number;
 
     private String ownership;
+
+    private Integer publicSituation;
 
     private String beLocated;
 
@@ -44,13 +46,13 @@ public class DeclareRealtyLandCert {
 
     private String landNumber;
 
-    private String purpose;
+    private Integer certUse;
 
     private String housingStructure;
 
     private String graphNumber;
 
-    private String useRightType;
+    private Integer landRightNature;
 
     private BigDecimal acquisitionPrice;
 
@@ -79,8 +81,6 @@ public class DeclareRealtyLandCert {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String publicSituation;
 
     public Integer getId() {
         return id;
@@ -138,12 +138,12 @@ public class DeclareRealtyLandCert {
         this.district = district == null ? null : district.trim();
     }
 
-    public String getType() {
-        return type;
+    public Integer getLandRightType() {
+        return landRightType;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setLandRightType(Integer landRightType) {
+        this.landRightType = landRightType;
     }
 
     public String getLocation() {
@@ -176,6 +176,14 @@ public class DeclareRealtyLandCert {
 
     public void setOwnership(String ownership) {
         this.ownership = ownership == null ? null : ownership.trim();
+    }
+
+    public Integer getPublicSituation() {
+        return publicSituation;
+    }
+
+    public void setPublicSituation(Integer publicSituation) {
+        this.publicSituation = publicSituation;
     }
 
     public String getBeLocated() {
@@ -242,12 +250,12 @@ public class DeclareRealtyLandCert {
         this.landNumber = landNumber == null ? null : landNumber.trim();
     }
 
-    public String getPurpose() {
-        return purpose;
+    public Integer getCertUse() {
+        return certUse;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose == null ? null : purpose.trim();
+    public void setCertUse(Integer certUse) {
+        this.certUse = certUse;
     }
 
     public String getHousingStructure() {
@@ -266,12 +274,12 @@ public class DeclareRealtyLandCert {
         this.graphNumber = graphNumber == null ? null : graphNumber.trim();
     }
 
-    public String getUseRightType() {
-        return useRightType;
+    public Integer getLandRightNature() {
+        return landRightNature;
     }
 
-    public void setUseRightType(String useRightType) {
-        this.useRightType = useRightType == null ? null : useRightType.trim();
+    public void setLandRightNature(Integer landRightNature) {
+        this.landRightNature = landRightNature;
     }
 
     public BigDecimal getAcquisitionPrice() {
@@ -384,13 +392,5 @@ public class DeclareRealtyLandCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getPublicSituation() {
-        return publicSituation;
-    }
-
-    public void setPublicSituation(String publicSituation) {
-        this.publicSituation = publicSituation == null ? null : publicSituation.trim();
     }
 }

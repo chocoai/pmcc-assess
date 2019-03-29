@@ -60,20 +60,20 @@ declareRealtyRealEstateCert.showFile = function (target, tableName, id) {
 
 declareRealtyRealEstateCert.init = function (item) {
     $("#" + declareRealtyRealEstateCert.config.frm).initForm(item);
-    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
-        $("#" + declareRealtyRealEstateCert.config.frm).find('select.purpose').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.landCertUse, function (html, data) {
+        $("#" + declareRealtyRealEstateCert.config.frm).find('select.landCertUse').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.type, function (html, data) {
-        $("#" + declareRealtyRealEstateCert.config.frm).find('select.type').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.landRightType, function (html, data) {
+        $("#" + declareRealtyRealEstateCert.config.frm).find('select.landRightType').empty().html(html).trigger('change');
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         $("#" + declareRealtyRealEstateCert.config.frm).find('select.publicSituation').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.useRightType, function (html, data) {
-        $("#" + declareRealtyRealEstateCert.config.frm).find('select.useRightType').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landRightNature, function (html, data) {
+        $("#" + declareRealtyRealEstateCert.config.frm).find('select.landRightNature').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
-        $("#" + declareRealtyRealEstateCert.config.frm).find('select.planningUse').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.houseCertUse, function (html, data) {
+        $("#" + declareRealtyRealEstateCert.config.frm).find('select.houseCertUse').empty().html(html).trigger('change');
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         $("#" + declareRealtyRealEstateCert.config.frm).find('select.nature').empty().html(html).trigger('change');
@@ -308,7 +308,7 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 toastr.success('成功!');

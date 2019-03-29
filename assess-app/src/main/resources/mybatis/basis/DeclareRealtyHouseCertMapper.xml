@@ -12,7 +12,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
-    <result column="public_situation" property="publicSituation" jdbcType="VARCHAR" />
+    <result column="public_situation" property="publicSituation" jdbcType="INTEGER" />
     <result column="be_located" property="beLocated" jdbcType="VARCHAR" />
     <result column="street_number" property="streetNumber" jdbcType="VARCHAR" />
     <result column="attached_number" property="attachedNumber" jdbcType="VARCHAR" />
@@ -23,7 +23,7 @@
     <result column="registration_time" property="registrationTime" jdbcType="TIMESTAMP" />
     <result column="nature" property="nature" jdbcType="INTEGER" />
     <result column="floor_count" property="floorCount" jdbcType="VARCHAR" />
-    <result column="planning_use" property="planningUse" jdbcType="VARCHAR" />
+    <result column="cert_use" property="certUse" jdbcType="INTEGER" />
     <result column="housing_structure" property="housingStructure" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
@@ -107,7 +107,7 @@
   <sql id="Base_Column_List" >
     id, pid, plan_details_id, cert_name, province, city, district, type, number, ownership, 
     public_situation, be_located, street_number, attached_number, building_number, unit, 
-    floor, room_number, registration_time, nature, floor_count, planning_use, housing_structure, 
+    floor, room_number, registration_time, nature, floor_count, cert_use, housing_structure, 
     floor_area, location, evidence_area, inner_area, other, land_number, land_acquisition, 
     use_start_date, use_end_date, public_area, other_note, registration_authority, land_registration_date, 
     registration_date, declare_type, enable, bis_record, creator, gmt_created, gmt_modified
@@ -152,7 +152,7 @@
       public_situation, be_located, street_number, 
       attached_number, building_number, unit, 
       floor, room_number, registration_time, 
-      nature, floor_count, planning_use, 
+      nature, floor_count, cert_use, 
       housing_structure, floor_area, location, 
       evidence_area, inner_area, other, 
       land_number, land_acquisition, use_start_date, 
@@ -164,10 +164,10 @@
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
-      #{publicSituation,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, 
+      #{publicSituation,jdbcType=INTEGER}, #{beLocated,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, 
       #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, 
-      #{nature,jdbcType=INTEGER}, #{floorCount,jdbcType=VARCHAR}, #{planningUse,jdbcType=VARCHAR}, 
+      #{nature,jdbcType=INTEGER}, #{floorCount,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, 
       #{housingStructure,jdbcType=VARCHAR}, #{floorArea,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
       #{evidenceArea,jdbcType=DECIMAL}, #{innerArea,jdbcType=VARCHAR}, #{other,jdbcType=VARCHAR}, 
       #{landNumber,jdbcType=VARCHAR}, #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, 
@@ -243,8 +243,8 @@
       <if test="floorCount != null" >
         floor_count,
       </if>
-      <if test="planningUse != null" >
-        planning_use,
+      <if test="certUse != null" >
+        cert_use,
       </if>
       <if test="housingStructure != null" >
         housing_structure,
@@ -339,7 +339,7 @@
         #{ownership,jdbcType=VARCHAR},
       </if>
       <if test="publicSituation != null" >
-        #{publicSituation,jdbcType=VARCHAR},
+        #{publicSituation,jdbcType=INTEGER},
       </if>
       <if test="beLocated != null" >
         #{beLocated,jdbcType=VARCHAR},
@@ -371,8 +371,8 @@
       <if test="floorCount != null" >
         #{floorCount,jdbcType=VARCHAR},
       </if>
-      <if test="planningUse != null" >
-        #{planningUse,jdbcType=VARCHAR},
+      <if test="certUse != null" >
+        #{certUse,jdbcType=INTEGER},
       </if>
       <if test="housingStructure != null" >
         #{housingStructure,jdbcType=VARCHAR},
@@ -479,7 +479,7 @@
         ownership = #{record.ownership,jdbcType=VARCHAR},
       </if>
       <if test="record.publicSituation != null" >
-        public_situation = #{record.publicSituation,jdbcType=VARCHAR},
+        public_situation = #{record.publicSituation,jdbcType=INTEGER},
       </if>
       <if test="record.beLocated != null" >
         be_located = #{record.beLocated,jdbcType=VARCHAR},
@@ -511,8 +511,8 @@
       <if test="record.floorCount != null" >
         floor_count = #{record.floorCount,jdbcType=VARCHAR},
       </if>
-      <if test="record.planningUse != null" >
-        planning_use = #{record.planningUse,jdbcType=VARCHAR},
+      <if test="record.certUse != null" >
+        cert_use = #{record.certUse,jdbcType=INTEGER},
       </if>
       <if test="record.housingStructure != null" >
         housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
@@ -594,7 +594,7 @@
       type = #{record.type,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
-      public_situation = #{record.publicSituation,jdbcType=VARCHAR},
+      public_situation = #{record.publicSituation,jdbcType=INTEGER},
       be_located = #{record.beLocated,jdbcType=VARCHAR},
       street_number = #{record.streetNumber,jdbcType=VARCHAR},
       attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
@@ -605,7 +605,7 @@
       registration_time = #{record.registrationTime,jdbcType=TIMESTAMP},
       nature = #{record.nature,jdbcType=INTEGER},
       floor_count = #{record.floorCount,jdbcType=VARCHAR},
-      planning_use = #{record.planningUse,jdbcType=VARCHAR},
+      cert_use = #{record.certUse,jdbcType=INTEGER},
       housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
@@ -662,7 +662,7 @@
         ownership = #{ownership,jdbcType=VARCHAR},
       </if>
       <if test="publicSituation != null" >
-        public_situation = #{publicSituation,jdbcType=VARCHAR},
+        public_situation = #{publicSituation,jdbcType=INTEGER},
       </if>
       <if test="beLocated != null" >
         be_located = #{beLocated,jdbcType=VARCHAR},
@@ -694,8 +694,8 @@
       <if test="floorCount != null" >
         floor_count = #{floorCount,jdbcType=VARCHAR},
       </if>
-      <if test="planningUse != null" >
-        planning_use = #{planningUse,jdbcType=VARCHAR},
+      <if test="certUse != null" >
+        cert_use = #{certUse,jdbcType=INTEGER},
       </if>
       <if test="housingStructure != null" >
         housing_structure = #{housingStructure,jdbcType=VARCHAR},
@@ -774,7 +774,7 @@
       type = #{type,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
-      public_situation = #{publicSituation,jdbcType=VARCHAR},
+      public_situation = #{publicSituation,jdbcType=INTEGER},
       be_located = #{beLocated,jdbcType=VARCHAR},
       street_number = #{streetNumber,jdbcType=VARCHAR},
       attached_number = #{attachedNumber,jdbcType=VARCHAR},
@@ -785,7 +785,7 @@
       registration_time = #{registrationTime,jdbcType=TIMESTAMP},
       nature = #{nature,jdbcType=INTEGER},
       floor_count = #{floorCount,jdbcType=VARCHAR},
-      planning_use = #{planningUse,jdbcType=VARCHAR},
+      cert_use = #{certUse,jdbcType=INTEGER},
       housing_structure = #{housingStructure,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},

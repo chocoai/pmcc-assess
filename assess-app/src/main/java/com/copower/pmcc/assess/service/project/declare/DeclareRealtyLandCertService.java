@@ -354,18 +354,10 @@ public class DeclareRealtyLandCertService {
         BeanUtils.copyProperties(declareRealtyLandCert, vo);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         vo.setTerminationDateFmt(sdf.format(declareRealtyLandCert.getTerminationDate()));
-        if (NumberUtils.isNumber(declareRealtyLandCert.getType())) {
-            vo.setTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyLandCert.getType())));
-        }
-        if (NumberUtils.isNumber(declareRealtyLandCert.getPurpose())) {
-            vo.setPurposeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyLandCert.getPurpose())));
-        }
-        if (NumberUtils.isNumber(declareRealtyLandCert.getUseRightType())) {
-            vo.setUseRightTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyLandCert.getUseRightType())));
-        }
-        if (NumberUtils.isNumber(declareRealtyLandCert.getPublicSituation())) {
-            vo.setPublicSituationName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyLandCert.getPublicSituation())));
-        }
+        vo.setLandRightTypeName(baseDataDicService.getNameById(declareRealtyLandCert.getLandRightType()));
+        vo.setLandRightNatureName(baseDataDicService.getNameById(declareRealtyLandCert.getLandRightNature()));
+        vo.setPurposeName(baseDataDicService.getNameById(declareRealtyLandCert.getCertUse()));
+        vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyLandCert.getPublicSituation()));
         if (StringUtils.isNotBlank(declareRealtyLandCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyLandCert.getProvince())) {
                 //省
@@ -433,8 +425,9 @@ public class DeclareRealtyLandCertService {
             declareRecord.setUnit(oo.getUnit());
             declareRecord.setFloor(oo.getFloor());
             declareRecord.setRoomNumber(oo.getRoomNumber());
-            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getPurpose()));
-            declareRecord.setUseRightType(baseDataDicService.getNameById(oo.getUseRightType()));
+            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getCertUse()));
+            declareRecord.setUseRightType(baseDataDicService.getNameById(oo.getLandRightNature()));
+            declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
             declareRecord.setFloorArea(oo.getUseRightArea());
             declareRecord.setLandUseEndDate(oo.getTerminationDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);

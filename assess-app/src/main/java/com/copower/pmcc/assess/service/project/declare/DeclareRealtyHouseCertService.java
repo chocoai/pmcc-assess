@@ -345,18 +345,10 @@ public class DeclareRealtyHouseCertService {
         }
         DeclareRealtyHouseCertVo vo = new DeclareRealtyHouseCertVo();
         BeanUtils.copyProperties(declareRealtyHouseCert, vo);
-        if (NumberUtils.isNumber(declareRealtyHouseCert.getPlanningUse())) {
-            vo.setPlanningUseName(baseDataDicService.getNameById(declareRealtyHouseCert.getPlanningUse()));
-        }
-        if (NumberUtils.isNumber(declareRealtyHouseCert.getType())) {
-            vo.setTypeName(baseDataDicService.getNameById(declareRealtyHouseCert.getType()));
-        }
-        if (declareRealtyHouseCert.getNature()!=null) {
-            vo.setNatureName(baseDataDicService.getNameById(declareRealtyHouseCert.getNature()));
-        }
-        if (NumberUtils.isNumber(declareRealtyHouseCert.getPublicSituation())) {
-            vo.setPublicSituationName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getPublicSituation())));
-        }
+        vo.setPlanningUseName(baseDataDicService.getNameById(declareRealtyHouseCert.getCertUse()));
+        vo.setTypeName(baseDataDicService.getNameById(declareRealtyHouseCert.getType()));
+        vo.setNatureName(baseDataDicService.getNameById(declareRealtyHouseCert.getNature()));
+        vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyHouseCert.getPublicSituation()));
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyHouseCert.getProvince())) {
                 //省
@@ -385,13 +377,8 @@ public class DeclareRealtyHouseCertService {
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(declareRealtyHouseCert.getId(), null, FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-            if (sysAttachmentDtos.size() >= 1) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
-                    if (sysAttachmentDto != null) {
-                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
-                        builder.append(" ");
-                    }
-                }
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
             }
             vo.setFileViewName(builder.toString());
         }
@@ -424,7 +411,7 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setUnit(oo.getUnit());
             declareRecord.setFloor(oo.getFloor());
             declareRecord.setRoomNumber(oo.getRoomNumber());
-            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPlanningUse()));
+            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getCertUse()));
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
             declareRecord.setHousingStructure(oo.getHousingStructure());
@@ -435,8 +422,8 @@ public class DeclareRealtyHouseCertService {
             //写入土地证的证载用途
             DeclareRealtyLandCert realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(oo.getPid());
             if (realtyLandCert != null) {
-                declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getPurpose()));
-                declareRecord.setUseRightType(baseDataDicService.getNameById(realtyLandCert.getUseRightType()));
+                declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
+                declareRecord.setUseRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
             }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);

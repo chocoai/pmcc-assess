@@ -409,7 +409,7 @@ civilEngineering.declareRealtyRealEstateCertSaveAndUpdate = function () {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).modal("hide");
@@ -546,7 +546,7 @@ civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 $('#' + civilEngineering.config.declareRealtyLandCert.box).modal("hide");

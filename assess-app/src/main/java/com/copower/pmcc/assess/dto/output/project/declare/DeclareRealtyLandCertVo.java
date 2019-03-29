@@ -12,10 +12,10 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
     private String cityName;
     private String districtName;
     private String fileViewName;
-    private String typeName;
+    private String landRightTypeName;
     private String terminationDateFmt;
     private String purposeName;
-    private String useRightTypeName;
+    private String landRightNatureName;
     private String publicSituationName;
 
     public String getPublicSituationName() {
@@ -24,13 +24,6 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
 
     public void setPublicSituationName(String publicSituationName) {
         this.publicSituationName = publicSituationName;
-    }
-    public String getUseRightTypeName() {
-        return useRightTypeName;
-    }
-
-    public void setUseRightTypeName(String useRightTypeName) {
-        this.useRightTypeName = useRightTypeName;
     }
 
     public String getPurposeName() {
@@ -47,14 +40,6 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
 
     public void setTerminationDateFmt(String terminationDateFmt) {
         this.terminationDateFmt = terminationDateFmt;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 
     public String getProvinceName() {
@@ -87,5 +72,21 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public String getLandRightTypeName() {
+        return landRightTypeName;
+    }
+
+    public void setLandRightTypeName(String landRightTypeName) {
+        this.landRightTypeName = landRightTypeName;
+    }
+
+    public String getLandRightNatureName() {
+        return landRightNatureName;
+    }
+
+    public void setLandRightNatureName(String landRightNatureName) {
+        this.landRightNatureName = landRightNatureName;
     }
 }

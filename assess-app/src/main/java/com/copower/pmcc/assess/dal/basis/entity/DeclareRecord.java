@@ -52,6 +52,10 @@ public class DeclareRecord {
 
     private Integer nature;
 
+    private String landRightType;
+
+    private String landRightNature;
+
     private String useRightType;
 
     private String housingStructure;
@@ -266,6 +270,22 @@ public class DeclareRecord {
 
     public void setNature(Integer nature) {
         this.nature = nature;
+    }
+
+    public String getLandRightType() {
+        return landRightType;
+    }
+
+    public void setLandRightType(String landRightType) {
+        this.landRightType = landRightType == null ? null : landRightType.trim();
+    }
+
+    public String getLandRightNature() {
+        return landRightNature;
+    }
+
+    public void setLandRightNature(String landRightNature) {
+        this.landRightNature = landRightNature == null ? null : landRightNature.trim();
     }
 
     public String getUseRightType() {

@@ -1709,8 +1709,8 @@
                 <label class="col-sm-1 control-label">房屋用途<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select name="planningUse" required
-                            class="form-control search-select select2 planningUse">
+                    <select name="houseCertUse" required
+                            class="form-control search-select select2 houseCertUse">
                     </select>
                 </div>
             </div>
@@ -1806,8 +1806,8 @@
                         class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="purpose"
-                            class="form-control search-select select2 purpose">
+                    <select required="required" name="landCertUse"
+                            class="form-control search-select select2 landCertUse">
                     </select>
                 </div>
             </div>
@@ -1817,8 +1817,8 @@
                         class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="useRightType"
-                            class="form-control search-select select2 useRightType">
+                    <select required="required" name="landRightNature"
+                            class="form-control search-select select2 landRightNature">
                     </select>
                 </div>
             </div>
@@ -1826,7 +1826,7 @@
                 <label class="col-sm-1 control-label">权利类型<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select name="type" class="form-control search-select select2 type" required="required">
+                    <select name="landRightType" class="form-control search-select select2 landRightType" required="required">
                     </select>
                 </div>
             </div>
@@ -2088,8 +2088,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">规划用途<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select required="required" name="planningUse"
-                            class="form-control search-select select2 planningUse">
+                    <select required="required" name="certUse"
+                            class="form-control search-select select2 certUse">
                     </select>
                 </div>
             </div>
@@ -2262,9 +2262,9 @@
                     类型<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="type"
+                    <select required="required" name="landRightType"
                             onchange="commonDeclareApplyModel.land.landCertNameSplicing(this)"
-                            class="form-control search-select select2 type">
+                            class="form-control search-select select2 landRightType">
                     </select>
                 </div>
             </div>
@@ -2415,8 +2415,8 @@
                     土地用途<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="purpose"
-                            class="form-control search-select select2 purpose">
+                    <select required="required" name="certUse"
+                            class="form-control search-select select2 certUse">
                     </select>
                 </div>
             </div>
@@ -2425,11 +2425,11 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    使用权类型<span class="symbol required"></span>
+                    权利性质<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="useRightType"
-                            class="form-control search-select select2 useRightType">
+                    <select required="required" name="landRightNature"
+                            class="form-control search-select select2 landRightNature">
                     </select>
                 </div>
             </div>

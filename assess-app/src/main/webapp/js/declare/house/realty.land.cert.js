@@ -170,14 +170,14 @@ assessCommonLand.init = function (item) {
         cityValue: item.city,
         districtValue: item.district
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.type, function (html, data) {
-        $("#" + assessCommonLand.config.frm).find('select.type').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.landRightType, function (html, data) {
+        $("#" + assessCommonLand.config.frm).find('select.landRightType').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.useRightType, function (html, data) {
-        $("#" + assessCommonLand.config.frm).find('select.useRightType').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landRightNature, function (html, data) {
+        $("#" + assessCommonLand.config.frm).find('select.landRightNature').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
-        $("#" + assessCommonLand.config.frm).find('select.purpose').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.certUse, function (html, data) {
+        $("#" + assessCommonLand.config.frm).find('select.certUse').empty().html(html).trigger('change');
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         $("#" + assessCommonLand.config.frm).find('select.publicSituation').empty().html(html).trigger('change');
@@ -321,7 +321,7 @@ assessCommonLand.saveLand = function (data,callback) {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 callback();
@@ -467,7 +467,7 @@ assessCommonLand.saveAndUpdateHouse = function () {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 if (data.id){

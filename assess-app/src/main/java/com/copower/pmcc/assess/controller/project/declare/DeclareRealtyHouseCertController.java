@@ -1,15 +1,13 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
-import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
-import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyHouseCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -52,7 +50,7 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/getDeclareRealtyHouseCertList", method = {RequestMethod.GET}, name = "获取房产证维护列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer planDetailsId, String province, String city, String district, Integer pid,String enable) {
+    public BootstrapTableVo getExamineEstateNetworkList(Integer planDetailsId, String province, String city, String district, Integer pid, String enable) {
         DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
         BootstrapTableVo vo = null;
         try {
@@ -71,7 +69,7 @@ public class DeclareRealtyHouseCertController {
             if (pid != null) {
                 declareRealtyHouseCert.setPid(pid);
             }
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(enable)){
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(enable)) {
                 declareRealtyHouseCert.setEnable(enable);
             }
             vo = declareRealtyHouseCertService.getDeclareRealtyHouseCertListVos(declareRealtyHouseCert);
@@ -104,12 +102,9 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareRealtyHouseCert", method = {RequestMethod.POST}, name = "更新房产证维护")
-    public HttpResult saveAndUpdate(DeclareRealtyHouseCertDto declareRealtyHouseCertDto) {
-        DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
-        if (declareRealtyHouseCertDto != null) {
-            BeanUtils.copyProperties(declareRealtyHouseCertDto, declareRealtyHouseCert);
-        }
+    public HttpResult saveAndUpdate(String formData) {
         try {
+            DeclareRealtyHouseCert declareRealtyHouseCert = JSON.parseObject(formData, DeclareRealtyHouseCert.class);
             Integer id = declareRealtyHouseCertService.saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
@@ -171,7 +166,7 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/importDataLand", name = "导入土地证并且关联房产证", method = RequestMethod.POST)
-    public HttpResult importDataLand(HttpServletRequest request,Integer planDetailsId) {
+    public HttpResult importDataLand(HttpServletRequest request, Integer planDetailsId) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -179,7 +174,7 @@ public class DeclareRealtyHouseCertController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareRealtyHouseCertService.importLandAndHouse(multipartFile,planDetailsId);
+            String str = declareRealtyHouseCertService.importLandAndHouse(multipartFile, planDetailsId);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

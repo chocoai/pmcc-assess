@@ -2555,11 +2555,11 @@ public class GenerateBaseDataService {
                             break;
                         case 6:
                             builder.insertCell();
-                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getUseRightType()) ? declareRealtyLandCertVo.getUseRightType() : "");
+                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getLandRightNatureName()) ? declareRealtyLandCertVo.getLandRightNatureName() : "");
                             break;
                         case 7:
                             builder.insertCell();
-                            String s = baseDataDicService.getNameById(declareRealtyLandCertVo.getPurpose());
+                            String s = baseDataDicService.getNameById(declareRealtyLandCertVo.getCertUse());
                             s = StringUtils.isNotBlank(s) ? s : "";
                             builder.writeln(s);
                             break;

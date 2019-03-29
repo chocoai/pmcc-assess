@@ -9,13 +9,12 @@
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="cert_name" property="certName" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="be_located" property="beLocated" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
-    <result column="public_situation" property="publicSituation" jdbcType="VARCHAR" />
+    <result column="public_situation" property="publicSituation" jdbcType="INTEGER" />
     <result column="street_number" property="streetNumber" jdbcType="VARCHAR" />
     <result column="attached_number" property="attachedNumber" jdbcType="VARCHAR" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
@@ -24,7 +23,7 @@
     <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
     <result column="registration_time" property="registrationTime" jdbcType="TIMESTAMP" />
     <result column="nature" property="nature" jdbcType="INTEGER" />
-    <result column="planning_use" property="planningUse" jdbcType="VARCHAR" />
+    <result column="house_cert_use" property="houseCertUse" jdbcType="INTEGER" />
     <result column="housing_structure" property="housingStructure" jdbcType="VARCHAR" />
     <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
@@ -40,9 +39,10 @@
     <result column="other_note" property="otherNote" jdbcType="VARCHAR" />
     <result column="registration_authority" property="registrationAuthority" jdbcType="VARCHAR" />
     <result column="registration_date" property="registrationDate" jdbcType="TIMESTAMP" />
-    <result column="use_right_type" property="useRightType" jdbcType="VARCHAR" />
+    <result column="land_right_nature" property="landRightNature" jdbcType="INTEGER" />
+    <result column="land_right_type" property="landRightType" jdbcType="INTEGER" />
     <result column="acquisition_price" property="acquisitionPrice" jdbcType="DECIMAL" />
-    <result column="purpose" property="purpose" jdbcType="VARCHAR" />
+    <result column="land_cert_use" property="landCertUse" jdbcType="INTEGER" />
     <result column="termination_date" property="terminationDate" jdbcType="TIMESTAMP" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="apportionment_area" property="apportionmentArea" jdbcType="DECIMAL" />
@@ -115,14 +115,14 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, plan_details_id, province, city, district, cert_name, type, location, be_located, 
+    id, pid, plan_details_id, province, city, district, cert_name, location, be_located, 
     number, name, ownership, public_situation, street_number, attached_number, building_number, 
-    unit, floor, room_number, registration_time, nature, planning_use, housing_structure, 
+    unit, floor, room_number, registration_time, nature, house_cert_use, housing_structure, 
     floor_count, floor_area, evidence_area, inner_area, other, land_number, graph_number, 
     land_acquisition, use_start_date, use_end_date, public_area, other_note, registration_authority, 
-    registration_date, use_right_type, acquisition_price, purpose, termination_date, 
-    memo, apportionment_area, acreage, use_right_area, enable, declare_type, real_estate_unit_number, 
-    bis_record, creator, gmt_created, gmt_modified
+    registration_date, land_right_nature, land_right_type, acquisition_price, land_cert_use, 
+    termination_date, memo, apportionment_area, acreage, use_right_area, enable, declare_type, 
+    real_estate_unit_number, bis_record, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample" >
     select
@@ -160,36 +160,36 @@
     </selectKey>
     insert into tb_declare_realty_real_estate_cert (pid, plan_details_id, province, 
       city, district, cert_name, 
-      type, location, be_located, 
-      number, name, ownership, 
-      public_situation, street_number, attached_number, 
-      building_number, unit, floor, 
-      room_number, registration_time, nature, 
-      planning_use, housing_structure, floor_count, 
-      floor_area, evidence_area, inner_area, 
-      other, land_number, graph_number, 
-      land_acquisition, use_start_date, use_end_date, 
-      public_area, other_note, registration_authority, 
-      registration_date, use_right_type, acquisition_price, 
-      purpose, termination_date, memo, 
+      location, be_located, number, 
+      name, ownership, public_situation, 
+      street_number, attached_number, building_number, 
+      unit, floor, room_number, 
+      registration_time, nature, house_cert_use, 
+      housing_structure, floor_count, floor_area, 
+      evidence_area, inner_area, other, 
+      land_number, graph_number, land_acquisition, 
+      use_start_date, use_end_date, public_area, 
+      other_note, registration_authority, registration_date, 
+      land_right_nature, land_right_type, acquisition_price, 
+      land_cert_use, termination_date, memo, 
       apportionment_area, acreage, use_right_area, 
       enable, declare_type, real_estate_unit_number, 
       bis_record, creator, gmt_created, 
       gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{certName,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, 
-      #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
-      #{publicSituation,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
-      #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, #{nature,jdbcType=INTEGER}, 
-      #{planningUse,jdbcType=VARCHAR}, #{housingStructure,jdbcType=VARCHAR}, #{floorCount,jdbcType=INTEGER}, 
-      #{floorArea,jdbcType=DECIMAL}, #{evidenceArea,jdbcType=DECIMAL}, #{innerArea,jdbcType=DECIMAL}, 
-      #{other,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, #{graphNumber,jdbcType=VARCHAR}, 
-      #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, 
-      #{publicArea,jdbcType=DECIMAL}, #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
-      #{registrationDate,jdbcType=TIMESTAMP}, #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=DECIMAL}, 
-      #{purpose,jdbcType=VARCHAR}, #{terminationDate,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{publicSituation,jdbcType=INTEGER}, 
+      #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, 
+      #{registrationTime,jdbcType=TIMESTAMP}, #{nature,jdbcType=INTEGER}, #{houseCertUse,jdbcType=INTEGER}, 
+      #{housingStructure,jdbcType=VARCHAR}, #{floorCount,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
+      #{evidenceArea,jdbcType=DECIMAL}, #{innerArea,jdbcType=DECIMAL}, #{other,jdbcType=VARCHAR}, 
+      #{landNumber,jdbcType=VARCHAR}, #{graphNumber,jdbcType=VARCHAR}, #{landAcquisition,jdbcType=VARCHAR}, 
+      #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, #{publicArea,jdbcType=DECIMAL}, 
+      #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, #{registrationDate,jdbcType=TIMESTAMP}, 
+      #{landRightNature,jdbcType=INTEGER}, #{landRightType,jdbcType=INTEGER}, #{acquisitionPrice,jdbcType=DECIMAL}, 
+      #{landCertUse,jdbcType=INTEGER}, #{terminationDate,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR}, 
       #{apportionmentArea,jdbcType=DECIMAL}, #{acreage,jdbcType=DECIMAL}, #{useRightArea,jdbcType=DECIMAL}, 
       #{enable,jdbcType=VARCHAR}, #{declareType,jdbcType=VARCHAR}, #{realEstateUnitNumber,jdbcType=VARCHAR}, 
       #{bisRecord,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
@@ -218,9 +218,6 @@
       </if>
       <if test="certName != null" >
         cert_name,
-      </if>
-      <if test="type != null" >
-        type,
       </if>
       <if test="location != null" >
         location,
@@ -264,8 +261,8 @@
       <if test="nature != null" >
         nature,
       </if>
-      <if test="planningUse != null" >
-        planning_use,
+      <if test="houseCertUse != null" >
+        house_cert_use,
       </if>
       <if test="housingStructure != null" >
         housing_structure,
@@ -312,14 +309,17 @@
       <if test="registrationDate != null" >
         registration_date,
       </if>
-      <if test="useRightType != null" >
-        use_right_type,
+      <if test="landRightNature != null" >
+        land_right_nature,
+      </if>
+      <if test="landRightType != null" >
+        land_right_type,
       </if>
       <if test="acquisitionPrice != null" >
         acquisition_price,
       </if>
-      <if test="purpose != null" >
-        purpose,
+      <if test="landCertUse != null" >
+        land_cert_use,
       </if>
       <if test="terminationDate != null" >
         termination_date,
@@ -377,9 +377,6 @@
       <if test="certName != null" >
         #{certName,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
-      </if>
       <if test="location != null" >
         #{location,jdbcType=VARCHAR},
       </if>
@@ -396,7 +393,7 @@
         #{ownership,jdbcType=VARCHAR},
       </if>
       <if test="publicSituation != null" >
-        #{publicSituation,jdbcType=VARCHAR},
+        #{publicSituation,jdbcType=INTEGER},
       </if>
       <if test="streetNumber != null" >
         #{streetNumber,jdbcType=VARCHAR},
@@ -422,8 +419,8 @@
       <if test="nature != null" >
         #{nature,jdbcType=INTEGER},
       </if>
-      <if test="planningUse != null" >
-        #{planningUse,jdbcType=VARCHAR},
+      <if test="houseCertUse != null" >
+        #{houseCertUse,jdbcType=INTEGER},
       </if>
       <if test="housingStructure != null" >
         #{housingStructure,jdbcType=VARCHAR},
@@ -470,14 +467,17 @@
       <if test="registrationDate != null" >
         #{registrationDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="useRightType != null" >
-        #{useRightType,jdbcType=VARCHAR},
+      <if test="landRightNature != null" >
+        #{landRightNature,jdbcType=INTEGER},
+      </if>
+      <if test="landRightType != null" >
+        #{landRightType,jdbcType=INTEGER},
       </if>
       <if test="acquisitionPrice != null" >
         #{acquisitionPrice,jdbcType=DECIMAL},
       </if>
-      <if test="purpose != null" >
-        #{purpose,jdbcType=VARCHAR},
+      <if test="landCertUse != null" >
+        #{landCertUse,jdbcType=INTEGER},
       </if>
       <if test="terminationDate != null" >
         #{terminationDate,jdbcType=TIMESTAMP},
@@ -547,9 +547,6 @@
       <if test="record.certName != null" >
         cert_name = #{record.certName,jdbcType=VARCHAR},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
-      </if>
       <if test="record.location != null" >
         location = #{record.location,jdbcType=VARCHAR},
       </if>
@@ -566,7 +563,7 @@
         ownership = #{record.ownership,jdbcType=VARCHAR},
       </if>
       <if test="record.publicSituation != null" >
-        public_situation = #{record.publicSituation,jdbcType=VARCHAR},
+        public_situation = #{record.publicSituation,jdbcType=INTEGER},
       </if>
       <if test="record.streetNumber != null" >
         street_number = #{record.streetNumber,jdbcType=VARCHAR},
@@ -592,8 +589,8 @@
       <if test="record.nature != null" >
         nature = #{record.nature,jdbcType=INTEGER},
       </if>
-      <if test="record.planningUse != null" >
-        planning_use = #{record.planningUse,jdbcType=VARCHAR},
+      <if test="record.houseCertUse != null" >
+        house_cert_use = #{record.houseCertUse,jdbcType=INTEGER},
       </if>
       <if test="record.housingStructure != null" >
         housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
@@ -640,14 +637,17 @@
       <if test="record.registrationDate != null" >
         registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.useRightType != null" >
-        use_right_type = #{record.useRightType,jdbcType=VARCHAR},
+      <if test="record.landRightNature != null" >
+        land_right_nature = #{record.landRightNature,jdbcType=INTEGER},
+      </if>
+      <if test="record.landRightType != null" >
+        land_right_type = #{record.landRightType,jdbcType=INTEGER},
       </if>
       <if test="record.acquisitionPrice != null" >
         acquisition_price = #{record.acquisitionPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.purpose != null" >
-        purpose = #{record.purpose,jdbcType=VARCHAR},
+      <if test="record.landCertUse != null" >
+        land_cert_use = #{record.landCertUse,jdbcType=INTEGER},
       </if>
       <if test="record.terminationDate != null" >
         termination_date = #{record.terminationDate,jdbcType=TIMESTAMP},
@@ -699,13 +699,12 @@
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
       cert_name = #{record.certName,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
       be_located = #{record.beLocated,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
-      public_situation = #{record.publicSituation,jdbcType=VARCHAR},
+      public_situation = #{record.publicSituation,jdbcType=INTEGER},
       street_number = #{record.streetNumber,jdbcType=VARCHAR},
       attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
@@ -714,7 +713,7 @@
       room_number = #{record.roomNumber,jdbcType=VARCHAR},
       registration_time = #{record.registrationTime,jdbcType=TIMESTAMP},
       nature = #{record.nature,jdbcType=INTEGER},
-      planning_use = #{record.planningUse,jdbcType=VARCHAR},
+      house_cert_use = #{record.houseCertUse,jdbcType=INTEGER},
       housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
       floor_count = #{record.floorCount,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
@@ -730,9 +729,10 @@
       other_note = #{record.otherNote,jdbcType=VARCHAR},
       registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
       registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
-      use_right_type = #{record.useRightType,jdbcType=VARCHAR},
+      land_right_nature = #{record.landRightNature,jdbcType=INTEGER},
+      land_right_type = #{record.landRightType,jdbcType=INTEGER},
       acquisition_price = #{record.acquisitionPrice,jdbcType=DECIMAL},
-      purpose = #{record.purpose,jdbcType=VARCHAR},
+      land_cert_use = #{record.landCertUse,jdbcType=INTEGER},
       termination_date = #{record.terminationDate,jdbcType=TIMESTAMP},
       memo = #{record.memo,jdbcType=VARCHAR},
       apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
@@ -770,9 +770,6 @@
       <if test="certName != null" >
         cert_name = #{certName,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
-      </if>
       <if test="location != null" >
         location = #{location,jdbcType=VARCHAR},
       </if>
@@ -789,7 +786,7 @@
         ownership = #{ownership,jdbcType=VARCHAR},
       </if>
       <if test="publicSituation != null" >
-        public_situation = #{publicSituation,jdbcType=VARCHAR},
+        public_situation = #{publicSituation,jdbcType=INTEGER},
       </if>
       <if test="streetNumber != null" >
         street_number = #{streetNumber,jdbcType=VARCHAR},
@@ -815,8 +812,8 @@
       <if test="nature != null" >
         nature = #{nature,jdbcType=INTEGER},
       </if>
-      <if test="planningUse != null" >
-        planning_use = #{planningUse,jdbcType=VARCHAR},
+      <if test="houseCertUse != null" >
+        house_cert_use = #{houseCertUse,jdbcType=INTEGER},
       </if>
       <if test="housingStructure != null" >
         housing_structure = #{housingStructure,jdbcType=VARCHAR},
@@ -863,14 +860,17 @@
       <if test="registrationDate != null" >
         registration_date = #{registrationDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="useRightType != null" >
-        use_right_type = #{useRightType,jdbcType=VARCHAR},
+      <if test="landRightNature != null" >
+        land_right_nature = #{landRightNature,jdbcType=INTEGER},
+      </if>
+      <if test="landRightType != null" >
+        land_right_type = #{landRightType,jdbcType=INTEGER},
       </if>
       <if test="acquisitionPrice != null" >
         acquisition_price = #{acquisitionPrice,jdbcType=DECIMAL},
       </if>
-      <if test="purpose != null" >
-        purpose = #{purpose,jdbcType=VARCHAR},
+      <if test="landCertUse != null" >
+        land_cert_use = #{landCertUse,jdbcType=INTEGER},
       </if>
       <if test="terminationDate != null" >
         termination_date = #{terminationDate,jdbcType=TIMESTAMP},
@@ -919,13 +919,12 @@
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
       cert_name = #{certName,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       be_located = #{beLocated,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
-      public_situation = #{publicSituation,jdbcType=VARCHAR},
+      public_situation = #{publicSituation,jdbcType=INTEGER},
       street_number = #{streetNumber,jdbcType=VARCHAR},
       attached_number = #{attachedNumber,jdbcType=VARCHAR},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
@@ -934,7 +933,7 @@
       room_number = #{roomNumber,jdbcType=VARCHAR},
       registration_time = #{registrationTime,jdbcType=TIMESTAMP},
       nature = #{nature,jdbcType=INTEGER},
-      planning_use = #{planningUse,jdbcType=VARCHAR},
+      house_cert_use = #{houseCertUse,jdbcType=INTEGER},
       housing_structure = #{housingStructure,jdbcType=VARCHAR},
       floor_count = #{floorCount,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},
@@ -950,9 +949,10 @@
       other_note = #{otherNote,jdbcType=VARCHAR},
       registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
       registration_date = #{registrationDate,jdbcType=TIMESTAMP},
-      use_right_type = #{useRightType,jdbcType=VARCHAR},
+      land_right_nature = #{landRightNature,jdbcType=INTEGER},
+      land_right_type = #{landRightType,jdbcType=INTEGER},
       acquisition_price = #{acquisitionPrice,jdbcType=DECIMAL},
-      purpose = #{purpose,jdbcType=VARCHAR},
+      land_cert_use = #{landCertUse,jdbcType=INTEGER},
       termination_date = #{terminationDate,jdbcType=TIMESTAMP},
       memo = #{memo,jdbcType=VARCHAR},
       apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},
