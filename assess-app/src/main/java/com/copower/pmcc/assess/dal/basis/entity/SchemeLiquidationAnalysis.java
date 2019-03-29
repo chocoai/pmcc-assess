@@ -18,6 +18,10 @@ public class SchemeLiquidationAnalysis {
 
     private BigDecimal total;
 
+    private String liquidRatios;
+
+    private String liquidTime;
+
     private String status;
 
     private String creator;
@@ -80,6 +84,22 @@ public class SchemeLiquidationAnalysis {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public String getLiquidRatios() {
+        return liquidRatios;
+    }
+
+    public void setLiquidRatios(String liquidRatios) {
+        this.liquidRatios = liquidRatios == null ? null : liquidRatios.trim();
+    }
+
+    public String getLiquidTime() {
+        return liquidTime;
+    }
+
+    public void setLiquidTime(String liquidTime) {
+        this.liquidTime = liquidTime == null ? null : liquidTime.trim();
     }
 
     public String getStatus() {

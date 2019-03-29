@@ -11,6 +11,8 @@ import java.util.List;
 public class SchemeLiquidationAnalysisApplyDto {
     private Integer id;
     private BigDecimal total;
+    private String liquidRatios;
+    private String liquidTime;
     private List<SchemeLiquidationAnalysisItem> analysisItemList;
 
     public Integer getId() {
@@ -35,5 +37,21 @@ public class SchemeLiquidationAnalysisApplyDto {
 
     public void setAnalysisItemList(List<SchemeLiquidationAnalysisItem> analysisItemList) {
         this.analysisItemList = analysisItemList;
+    }
+
+    public String getLiquidRatios() {
+        return liquidRatios;
+    }
+
+    public void setLiquidRatios(String liquidRatios) {
+        this.liquidRatios = liquidRatios;
+    }
+
+    public String getLiquidTime() {
+        return liquidTime;
+    }
+
+    public void setLiquidTime(String liquidTime) {
+        this.liquidTime = liquidTime;
     }
 }

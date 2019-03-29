@@ -22,6 +22,22 @@
                 </div>
                 <form class="form-horizontal" id="master">
                     <input type="hidden" name="id" value="${master.id}">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">变现比率</label>
+                            <div class="col-sm-3">
+                                <input name="liquidRatios" class="form-control x-percent"
+                                       placeholder="变现比率" value="${master.liquidRatios}"/>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">变现时间</label>
+                            <div class="col-sm-3">
+                                <input name="liquidTime" class="form-control"
+                                       placeholder="例60-90天" value="${master.liquidTime}"/>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table">
                         <thead>
                         <tr>
@@ -143,6 +159,9 @@
         var data = {};
         data.id = $('#master').find('[name=id]').val();
         data.total = $('#master').find('[name=total]').text();
+        data.liquidRatios = $('#master').find('[name=liquidRatios]').val();
+        data.liquidTime = $('#master').find('[name=liquidTime]').val();
+        console.log(data);
         data.analysisItemList = [];
         $("#tbody_data_section").find('tr').each(function () {
             var analysisItem = {};
@@ -221,7 +240,7 @@
         });
     }
 
-    function cleanHTMLData(_this,id) {
+    function cleanHTMLData(_this, id) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({

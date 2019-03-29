@@ -24,6 +24,20 @@
                 </div>
                 <form class="form-horizontal" id="master">
                     <input type="hidden" name="id" value="${master.id}">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">变现比率</label>
+                            <div class="col-sm-3">
+                                <label class="form-control">${master.liquidRatios}</label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">变现时间</label>
+                            <div class="col-sm-3">
+                                <label class="form-control">${master.liquidTime}</label>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table">
                         <thead>
                         <tr>

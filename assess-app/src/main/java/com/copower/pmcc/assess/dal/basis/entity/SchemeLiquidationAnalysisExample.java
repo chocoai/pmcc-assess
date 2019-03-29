@@ -536,6 +536,146 @@ public class SchemeLiquidationAnalysisExample {
             return (Criteria) this;
         }
 
+        public Criteria andLiquidRatiosIsNull() {
+            addCriterion("liquid_ratios is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosIsNotNull() {
+            addCriterion("liquid_ratios is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosEqualTo(String value) {
+            addCriterion("liquid_ratios =", value, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosNotEqualTo(String value) {
+            addCriterion("liquid_ratios <>", value, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosGreaterThan(String value) {
+            addCriterion("liquid_ratios >", value, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosGreaterThanOrEqualTo(String value) {
+            addCriterion("liquid_ratios >=", value, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosLessThan(String value) {
+            addCriterion("liquid_ratios <", value, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosLessThanOrEqualTo(String value) {
+            addCriterion("liquid_ratios <=", value, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosLike(String value) {
+            addCriterion("liquid_ratios like", value, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosNotLike(String value) {
+            addCriterion("liquid_ratios not like", value, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosIn(List<String> values) {
+            addCriterion("liquid_ratios in", values, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosNotIn(List<String> values) {
+            addCriterion("liquid_ratios not in", values, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosBetween(String value1, String value2) {
+            addCriterion("liquid_ratios between", value1, value2, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidRatiosNotBetween(String value1, String value2) {
+            addCriterion("liquid_ratios not between", value1, value2, "liquidRatios");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeIsNull() {
+            addCriterion("liquid_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeIsNotNull() {
+            addCriterion("liquid_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeEqualTo(String value) {
+            addCriterion("liquid_time =", value, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeNotEqualTo(String value) {
+            addCriterion("liquid_time <>", value, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeGreaterThan(String value) {
+            addCriterion("liquid_time >", value, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeGreaterThanOrEqualTo(String value) {
+            addCriterion("liquid_time >=", value, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeLessThan(String value) {
+            addCriterion("liquid_time <", value, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeLessThanOrEqualTo(String value) {
+            addCriterion("liquid_time <=", value, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeLike(String value) {
+            addCriterion("liquid_time like", value, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeNotLike(String value) {
+            addCriterion("liquid_time not like", value, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeIn(List<String> values) {
+            addCriterion("liquid_time in", values, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeNotIn(List<String> values) {
+            addCriterion("liquid_time not in", values, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeBetween(String value1, String value2) {
+            addCriterion("liquid_time between", value1, value2, "liquidTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLiquidTimeNotBetween(String value1, String value2) {
+            addCriterion("liquid_time not between", value1, value2, "liquidTime");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
