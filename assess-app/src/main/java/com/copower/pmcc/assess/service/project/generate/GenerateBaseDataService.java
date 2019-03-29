@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
-import com.aspose.words.*;
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
+import com.aspose.words.SaveFormat;
+import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
@@ -10,18 +13,17 @@ import com.copower.pmcc.assess.common.CnNumberUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -54,12 +56,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.task.TaskExecutor;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -113,7 +113,7 @@ public class GenerateBaseDataService {
     private GenerateLandEntityService generateLandEntityService;
     private SurveyCommonService surveyCommonService;
     private GenerateHouseEntityService generateHouseEntityService;
-    private TaskExecutor taskExecutor;
+    private ErpAreaService erpAreaService;
 
     /**
      * 构造器必须传入的参数
@@ -400,20 +400,19 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 功能描述: 出具报告城市
+     * 功能描述: 出具报告区域名称
      *
      * @param:
      * @return:
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
-    public String getReportCity() throws Exception {
-        String reportCity = getSchemeAreaGroup().getAreaName();
-        if (StringUtils.isNotBlank(reportCity)) {
-            return reportCity;
-        } else {
-            return errorStr;
+    public String getReportAreaName() throws Exception {
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        if (StringUtils.isNotBlank(schemeAreaGroup.getDistrict())) {
+           return erpAreaService.getSysAreaName(schemeAreaGroup.getDistrict());
         }
+        return erpAreaService.getSysAreaName(schemeAreaGroup.getCity());
     }
 
     /**
@@ -2765,9 +2764,8 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-
     private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId).stream().filter(oo -> oo.getBisEnable()).collect(Collectors.toList());
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && projectPhase != null) {
@@ -2802,16 +2800,15 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
+        documentBuilder.writeln("估价对象区位状况表");
         for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
             BasicApply basicApply = schemeJudgeObjectEntry.getKey();
             documentBuilder.writeln("1:位置状况");
             documentBuilder.writeln(String.format("坐落:%s", generateLoactionService.getSeat(schemeJudgeObject.getDeclareRecordId(), basicApply.getId())));
             documentBuilder.writeln(String.format("方位:%s", generateLoactionService.getPosition(basicApply.getId())));
-            documentBuilder.writeln(String.format("与重要场所的距离:"));
-            documentBuilder.writeln(generateLoactionService.getWithImportantLocationDistance(basicApply.getId()));
-            documentBuilder.writeln(String.format("临街（路）状况:"));
-            documentBuilder.writeln(generateLoactionService.getFaceStreet(basicApply));
+            documentBuilder.writeln(String.format("与重要场所的距离:%s", generateLoactionService.getWithImportantLocationDistance(basicApply.getId())));
+            documentBuilder.writeln(String.format("临街（路）状况:%s", generateLoactionService.getFaceStreet(basicApply)));
             //楼层
             List<Integer> judgeObjectIds = Lists.newArrayList();
             if (schemeJudgeObject.getBisMerge()) {
@@ -2858,6 +2855,7 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
+        documentBuilder.writeln("估价土地实体状况表");
         for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
             BasicApply basicApply = schemeJudgeObjectEntry.getKey();
             documentBuilder.writeln(String.format("1、名称:%s", generateLandEntityService.getLandName(basicApply)));
@@ -2884,24 +2882,38 @@ public class GenerateBaseDataService {
      */
     public String getJudgeBuildLandStateSheet() throws Exception {
         Document doc = new Document();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getLinkedHashMapEstateNameSchemeJudgeObjectList(areaId);
-        if (!linkedHashMap.isEmpty()){
-            for (Map.Entry<String,List<SchemeJudgeObject>> listEntry:linkedHashMap.entrySet()){
-                List<Integer> integerList = listEntry.getValue().stream().map( oo -> oo.getId()).collect(Collectors.toList());
-                documentBuilder.writeln(String.format("1、楼盘名称:%s", listEntry.getKey()));
+        documentBuilder.writeln("估价对象建筑实体状况表");
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
+                judgeObjectList.add(schemeJudgeObject);
+                judgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(judgeObjectList, false);
+                List<Integer> integerList = Lists.newArrayList();
+                Set<String> stringSet = Sets.newHashSet();
+                judgeObjectList.stream().forEach(oo -> {
+                    integerList.add(oo.getId());
+                    if (oo.getDeclareRecordId() != null) {
+                        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(oo.getDeclareRecordId());
+                        if (basicApply != null) {
+                            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                            try {
+                                String name = generateHouseEntityService.getEstateName(generateBaseExamineService.getEstate());
+                                if (StringUtils.isNotBlank(name)) {
+                                    stringSet.add(name);
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+                    }
+                });
+                documentBuilder.writeln(String.format("1、楼盘名称:%s", generateCommonMethod.toSetStringMerge(stringSet, ",")));
+                stringSet.clear();
                 documentBuilder.writeln(String.format("2、建筑年份:%s", generateHouseEntityService.getBuildingYear(integerList)));
-                documentBuilder.writeln(String.format("3、工程质量:%s", generateHouseEntityService.getConstructionQuality(integerList)));
-                documentBuilder.writeln(String.format("4、建筑结构:%s", generateHouseEntityService.getBuildingStructure(integerList)));
-                documentBuilder.writeln(String.format("5、建筑规模:%s", generateHouseEntityService.getBuildingScale(integerList)));
-                documentBuilder.writeln(String.format("6、层高:%s", generateHouseEntityService.getFloorHeight(integerList)));
-                documentBuilder.writeln(String.format("7、空间布局:%s", generateHouseEntityService.getSpatialDistribution(integerList)));
-                documentBuilder.writeln(String.format("8、装饰装修:%s", generateHouseEntityService.getDecoration(integerList)));
-                documentBuilder.writeln(String.format("9、外观:%s", generateHouseEntityService.getAppearance(integerList)));
-                documentBuilder.writeln("10、设施设备");
-                documentBuilder.writeln(String.format("11、建筑功能:%s", generateHouseEntityService.getBuildingFunction(integerList)));
                 documentBuilder.writeln();
+                documentBuilder.writeln("\r");
             }
         }
         doc.save(localPath);
@@ -4297,8 +4309,7 @@ public class GenerateBaseDataService {
         this.generateLandEntityService = SpringContextUtils.getBean(GenerateLandEntityService.class);
         this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
         this.generateHouseEntityService = SpringContextUtils.getBean(GenerateHouseEntityService.class);
-        this.taskExecutor = SpringContextUtils.getBean(TaskExecutor.class);
-
+        this.erpAreaService = SpringContextUtils.getBean(ErpAreaService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

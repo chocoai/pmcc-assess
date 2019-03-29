@@ -23,7 +23,7 @@
     <result column="floor" property="floor" jdbcType="VARCHAR" />
     <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
     <result column="registration_time" property="registrationTime" jdbcType="TIMESTAMP" />
-    <result column="nature" property="nature" jdbcType="VARCHAR" />
+    <result column="nature" property="nature" jdbcType="INTEGER" />
     <result column="planning_use" property="planningUse" jdbcType="VARCHAR" />
     <result column="housing_structure" property="housingStructure" jdbcType="VARCHAR" />
     <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
@@ -182,7 +182,7 @@
       #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
       #{publicSituation,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
       #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
-      #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, #{nature,jdbcType=VARCHAR}, 
+      #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, #{nature,jdbcType=INTEGER}, 
       #{planningUse,jdbcType=VARCHAR}, #{housingStructure,jdbcType=VARCHAR}, #{floorCount,jdbcType=INTEGER}, 
       #{floorArea,jdbcType=DECIMAL}, #{evidenceArea,jdbcType=DECIMAL}, #{innerArea,jdbcType=DECIMAL}, 
       #{other,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, #{graphNumber,jdbcType=VARCHAR}, 
@@ -420,7 +420,7 @@
         #{registrationTime,jdbcType=TIMESTAMP},
       </if>
       <if test="nature != null" >
-        #{nature,jdbcType=VARCHAR},
+        #{nature,jdbcType=INTEGER},
       </if>
       <if test="planningUse != null" >
         #{planningUse,jdbcType=VARCHAR},
@@ -590,7 +590,7 @@
         registration_time = #{record.registrationTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.nature != null" >
-        nature = #{record.nature,jdbcType=VARCHAR},
+        nature = #{record.nature,jdbcType=INTEGER},
       </if>
       <if test="record.planningUse != null" >
         planning_use = #{record.planningUse,jdbcType=VARCHAR},
@@ -713,7 +713,7 @@
       floor = #{record.floor,jdbcType=VARCHAR},
       room_number = #{record.roomNumber,jdbcType=VARCHAR},
       registration_time = #{record.registrationTime,jdbcType=TIMESTAMP},
-      nature = #{record.nature,jdbcType=VARCHAR},
+      nature = #{record.nature,jdbcType=INTEGER},
       planning_use = #{record.planningUse,jdbcType=VARCHAR},
       housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
       floor_count = #{record.floorCount,jdbcType=INTEGER},
@@ -813,7 +813,7 @@
         registration_time = #{registrationTime,jdbcType=TIMESTAMP},
       </if>
       <if test="nature != null" >
-        nature = #{nature,jdbcType=VARCHAR},
+        nature = #{nature,jdbcType=INTEGER},
       </if>
       <if test="planningUse != null" >
         planning_use = #{planningUse,jdbcType=VARCHAR},
@@ -933,7 +933,7 @@
       floor = #{floor,jdbcType=VARCHAR},
       room_number = #{roomNumber,jdbcType=VARCHAR},
       registration_time = #{registrationTime,jdbcType=TIMESTAMP},
-      nature = #{nature,jdbcType=VARCHAR},
+      nature = #{nature,jdbcType=INTEGER},
       planning_use = #{planningUse,jdbcType=VARCHAR},
       housing_structure = #{housingStructure,jdbcType=VARCHAR},
       floor_count = #{floorCount,jdbcType=INTEGER},

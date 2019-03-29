@@ -215,6 +215,7 @@ public class EvaluationHypothesisService {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
         Integer order = 0;
         Integer order2 = 0;
+        Integer order3 = 0;
         for (int i = 0; i < hypothesisList.size(); i++) {
             DataEvaluationHypothesis basis = hypothesisList.get(i);
             //未定事项假设
@@ -358,12 +359,13 @@ public class EvaluationHypothesisService {
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
                     BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                    Integer type = basicHouse.getResearchType();
                     //参考同类
-                    if (AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(basicHouse.getResearchType()).getFieldName())) {
+                    if (type !=null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
                         referenceNum.append(judgeObject.getNumber()).append(",");
                     }
                     //入户调查
-                    if (AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_INVESTIGATE.equals(baseDataDicService.getCacheDataDicById(basicHouse.getResearchType()).getFieldName())) {
+                    if (type !=null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_INVESTIGATE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
                         assetCheckNum.append(judgeObject.getNumber()).append(",");
                     }
 
@@ -559,6 +561,57 @@ public class EvaluationHypothesisService {
                 DataReportTemplateItem communalFacilities = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.COMMUNAL_FACILITIES);
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(communalFacilities.getTemplate()))).append("</p>");
             }
+
+            //评估报告的使用限制
+            if (AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION.equals(basis.getFieldName())) {
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+                //评估基准日
+                Date valuationDate = projectInfo.getValuationDate();
+                //现场查勘结束日期
+                GenerateReportGeneration generateReportGeneration = new GenerateReportGeneration();
+                generateReportGeneration.setProjectId(projectInfo.getId());
+                generateReportGeneration.setAreaGroupId(areaGroupId);
+                GenerateReportGeneration generation = generateReportGenerationService.getGenerateReportGeneration(generateReportGeneration);
+                Date investigationsEndDate = generation.getInvestigationsEndDate();
+                //抵押评估
+                Integer pledgeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId();
+
+                //估价报告用途
+                DataReportTemplateItem purpose = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PURPOSE);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(purpose.getTemplate()))).append("</p>");
+
+                //相差天数
+                long daysBetween=(investigationsEndDate.getTime()-valuationDate.getTime())/(60*60*24*1000);
+                //评估基准日与报告有效期
+                if(!pledgeId.equals(projectInfo.getEntrustPurpose())){
+                    DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
+                }else if(pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween)> 180){
+                    DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
+                }else if(pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) <= 180){
+                    DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_NOT_PLEDGE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
+                }
+                //成交价格与报告内容
+                DataReportTemplateItem content = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_CONTENT);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(content.getTemplate()))).append("</p>");
+                //解释
+                DataReportTemplateItem explain = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_EXPLAIN);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(explain.getTemplate()))).append("</p>");
+                //其他
+                DataReportTemplateItem other = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_OTHER);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(other.getTemplate()))).append("</p>");
+
+
+
+            }
+
+
 
         }
         return stringBuilder.toString();

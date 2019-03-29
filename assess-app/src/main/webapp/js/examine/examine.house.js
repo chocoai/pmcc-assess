@@ -96,6 +96,9 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseResearchType, data.basicHouse.researchType, function (html, data) {
                 houseCommon.houseForm.find("select.researchType").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, data.basicHouse.spatialDistribution, function (html, data) {
+                houseCommon.houseForm.find("select.spatialDistribution").empty().html(html).trigger('change');
+            });
 
             //初始化上传控件
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {

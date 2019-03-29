@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataDeveloper" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="company_nature" property="companyNature" jdbcType="VARCHAR" />
-    <result column="social_prestige" property="socialPrestige" jdbcType="VARCHAR" />
+    <result column="company_nature" property="companyNature" jdbcType="INTEGER" />
+    <result column="social_prestige" property="socialPrestige" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -108,7 +108,7 @@
     insert into tb_data_developer (name, company_nature, social_prestige, 
       creator, gmt_created, gmt_modified
       )
-    values (#{name,jdbcType=VARCHAR}, #{companyNature,jdbcType=VARCHAR}, #{socialPrestige,jdbcType=VARCHAR}, 
+    values (#{name,jdbcType=VARCHAR}, #{companyNature,jdbcType=INTEGER}, #{socialPrestige,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -142,10 +142,10 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="companyNature != null" >
-        #{companyNature,jdbcType=VARCHAR},
+        #{companyNature,jdbcType=INTEGER},
       </if>
       <if test="socialPrestige != null" >
-        #{socialPrestige,jdbcType=VARCHAR},
+        #{socialPrestige,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -174,10 +174,10 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.companyNature != null" >
-        company_nature = #{record.companyNature,jdbcType=VARCHAR},
+        company_nature = #{record.companyNature,jdbcType=INTEGER},
       </if>
       <if test="record.socialPrestige != null" >
-        social_prestige = #{record.socialPrestige,jdbcType=VARCHAR},
+        social_prestige = #{record.socialPrestige,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -197,8 +197,8 @@
     update tb_data_developer
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      company_nature = #{record.companyNature,jdbcType=VARCHAR},
-      social_prestige = #{record.socialPrestige,jdbcType=VARCHAR},
+      company_nature = #{record.companyNature,jdbcType=INTEGER},
+      social_prestige = #{record.socialPrestige,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -213,10 +213,10 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="companyNature != null" >
-        company_nature = #{companyNature,jdbcType=VARCHAR},
+        company_nature = #{companyNature,jdbcType=INTEGER},
       </if>
       <if test="socialPrestige != null" >
-        social_prestige = #{socialPrestige,jdbcType=VARCHAR},
+        social_prestige = #{socialPrestige,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -233,8 +233,8 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDeveloper" >
     update tb_data_developer
     set name = #{name,jdbcType=VARCHAR},
-      company_nature = #{companyNature,jdbcType=VARCHAR},
-      social_prestige = #{socialPrestige,jdbcType=VARCHAR},
+      company_nature = #{companyNature,jdbcType=INTEGER},
+      social_prestige = #{socialPrestige,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -351,8 +351,8 @@ public class DeclareRealtyHouseCertService {
         if (NumberUtils.isNumber(declareRealtyHouseCert.getType())) {
             vo.setTypeName(baseDataDicService.getNameById(declareRealtyHouseCert.getType()));
         }
-        if (NumberUtils.isNumber(declareRealtyHouseCert.getNature())) {
-            vo.setNatureName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getNature())));
+        if (declareRealtyHouseCert.getNature()!=null) {
+            vo.setNatureName(baseDataDicService.getNameById(declareRealtyHouseCert.getNature()));
         }
         if (NumberUtils.isNumber(declareRealtyHouseCert.getPublicSituation())) {
             vo.setPublicSituationName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getPublicSituation())));

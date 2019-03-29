@@ -165,7 +165,7 @@
                             <thead>
                             <tr>
                                 <th style="width: 10%">一致性内容</th>
-                                <th style="width: 10%">登记</th>
+                                <th style="width: 10%">登记<span style="color:red;font-size:10px;">(没有登记信息则填无)</span></th>
                                 <th style="width: 10%">实际</th>
                                 <th style="width: 6%">是否一致</th>
                                 <th style="width: 10%">差异原因</th>

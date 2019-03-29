@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataBuilderDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
 import com.copower.pmcc.assess.dto.output.data.DataBuilderVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -35,6 +36,8 @@ public class DataBuilderService {
     private CommonService commonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
 
     /**
      * 功能描述:
@@ -85,7 +88,7 @@ public class DataBuilderService {
         return dataBuilderDao.getDataBuilderList(name);
     }
 
-    public List<DataBuilder> dataBuilderList(DataBuilder oo){
+    public List<DataBuilder> dataBuilderList(DataBuilder oo) {
         return dataBuilderDao.dataBuilderList(oo);
     }
 
@@ -134,7 +137,15 @@ public class DataBuilderService {
     public DataBuilderVo getDataBuilderVo(DataBuilder dataBuilder) {
         DataBuilderVo dataBuilderVo = new DataBuilderVo();
         BeanUtils.copyProperties(dataBuilder, dataBuilderVo);
-        dataBuilderVo.setQualificationGradeName(baseDataDicService.getNameById(dataBuilder.getQualificationGrade()));
+        if (dataBuilder.getQualificationGrade() != null) {
+            dataBuilderVo.setQualificationGradeName(baseDataDicService.getNameById(dataBuilder.getQualificationGrade()));
+        }
+        if (dataBuilder.getSocialPrestige() != null) {
+            dataBuilderVo.setSocialPrestigeName(baseDataDicService.getNameById(dataBuilder.getSocialPrestige()));
+        }
+        if (dataBuilder.getCompanyNature() != null) {
+            dataBuilderVo.setCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(dataBuilder.getCompanyNature()).getName());
+        }
         return dataBuilderVo;
     }
 }
