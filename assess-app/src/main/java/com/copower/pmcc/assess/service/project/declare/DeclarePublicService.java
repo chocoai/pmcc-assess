@@ -117,16 +117,17 @@ public class DeclarePublicService {
 
         //验证基础字典中数据
         String publicSituation = PoiUtils.getCellValue(row.getCell(5));
-        BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
-            return false;
-        } else {
-            publicSituation = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(publicSituation)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
+                return false;
+            } else {
+                publicSituation = String.valueOf(typeDic.getId());
+                //共有情况
+                oo.setPublicSituation(publicSituation);
+            }
         }
-        //共有情况
-        oo.setPublicSituation(publicSituation);
-
         //登记日期
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))) {
             oo.setRegistrationTime(DateUtils.parse(PoiUtils.getCellValue(row.getCell(6))));
@@ -182,31 +183,34 @@ public class DeclarePublicService {
 
         //验证基础字典中数据
         String planningUse = PoiUtils.getCellValue(row.getCell(8));
-        typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋用途)", i));
-            return false;
-        } else {
-            planningUse = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(planningUse)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋用途)", i));
+                return false;
+            } else {
+                planningUse = String.valueOf(typeDic.getId());
+                //房屋用途
+                oo.setPlanningUse(planningUse);
+            }
         }
-        //房屋用途
-        oo.setPlanningUse(planningUse);
-
         //房屋结构
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(9)))) {
             oo.setHousingStructure(PoiUtils.getCellValue(row.getCell(9)));
         }
         //验证基础字典中数据
         String nature = PoiUtils.getCellValue(row.getCell(10));
-        typeDic = baseDataDicService.getDataDicByName(natures, nature);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋性质)", i));
-            return false;
-        } else {
-            nature = String.valueOf(typeDic.getId());
+        if(StringUtils .isNotBlank(nature) ) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(natures, nature);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋性质)", i));
+                return false;
+            } else {
+                nature = String.valueOf(typeDic.getId());
+                //房屋性质
+                oo.setNature(Integer.valueOf(nature));
+            }
         }
-        //房屋性质
-        oo.setNature(Integer.valueOf(nature));
         //建筑面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
             oo.setFloorArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(11))));
@@ -238,41 +242,44 @@ public class DeclarePublicService {
 
         //验证基础字典中数据
         String purpose = PoiUtils.getCellValue(row.getCell(18));
-        typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(土地用途)", i));
-            return false;
-        } else {
-            purpose = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(purpose)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(土地用途)", i));
+                return false;
+            } else {
+                purpose = String.valueOf(typeDic.getId());
+                //土地用途
+                oo.setPurpose(purpose);
+            }
         }
-        //土地用途
-        oo.setPurpose(purpose);
-
 
         //验证基础字典中数据
         String useRightType = PoiUtils.getCellValue(row.getCell(19));
-        typeDic = baseDataDicService.getDataDicByName(useRightTypes, useRightType);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(权利性质)", i));
-            return false;
-        } else {
-            useRightType = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(useRightType)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(useRightTypes, useRightType);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(权利性质)", i));
+                return false;
+            } else {
+                useRightType = String.valueOf(typeDic.getId());
+                //权利性质
+                oo.setUseRightType(useRightType);
+            }
         }
-        //权利性质
-        oo.setUseRightType(useRightType);
-
         //验证基础字典中数据
         String type = PoiUtils.getCellValue(row.getCell(20));
-        typeDic = baseDataDicService.getDataDicByName(types, type);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(权利类型)", i));
-            return false;
-        } else {
-            type = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(type)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(types, type);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(权利类型)", i));
+                return false;
+            } else {
+                type = String.valueOf(typeDic.getId());
+                //权利类型
+                oo.setType(type);
+            }
         }
-        //权利类型
-        oo.setType(type);
-
         //土地使用年限起
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(21)))) {
             oo.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(21))));
@@ -394,16 +401,17 @@ public class DeclarePublicService {
         }
 
         String publicSituation = PoiUtils.getCellValue(row.getCell(5));
-        BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
-            return false;
-        } else {
-            publicSituation = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(publicSituation)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
+                return false;
+            } else {
+                publicSituation = String.valueOf(typeDic.getId());
+                //共有情况
+                declareRealtyLandCert.setPublicSituation(publicSituation);
+            }
         }
-        //共有情况
-        declareRealtyLandCert.setPublicSituation(publicSituation);
-
         //登记日期
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))) {
             declareRealtyLandCert.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(6))));
@@ -474,26 +482,28 @@ public class DeclarePublicService {
         }
         //土地用途
         String purpose = PoiUtils.getCellValue(row.getCell(10));
-        typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：土地用途与系统配置的名称不一致", i));
-            return false;
-        } else {
-            purpose = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(purpose)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：土地用途与系统配置的名称不一致", i));
+                return false;
+            } else {
+                purpose = String.valueOf(typeDic.getId());
+                declareRealtyLandCert.setPurpose(purpose);
+            }
         }
-        declareRealtyLandCert.setPurpose(purpose);
-
         //使用权类型
         String useRightType = PoiUtils.getCellValue(row.getCell(11));
-        typeDic = baseDataDicService.getDataDicByName(useRightTypes, useRightType);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：使用权类型与系统配置的名称不一致", i));
-            return false;
-        } else {
-            useRightType = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(useRightType)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(useRightTypes, useRightType);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：使用权类型与系统配置的名称不一致", i));
+                return false;
+            } else {
+                useRightType = String.valueOf(typeDic.getId());
+                declareRealtyLandCert.setUseRightType(useRightType);
+            }
         }
-        declareRealtyLandCert.setUseRightType(useRightType);
-
         //终止日期
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
             declareRealtyLandCert.setTerminationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(12))));
@@ -605,15 +615,17 @@ public class DeclarePublicService {
         }
         //验证基础字典中数据
         String publicSituation = PoiUtils.getCellValue(row.getCell(6));
-        BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
-            return false;
-        } else {
-            publicSituation = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(publicSituation)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
+                return false;
+            } else {
+                publicSituation = String.valueOf(typeDic.getId());
+                //共有情况
+                declareRealtyHouseCert.setPublicSituation(publicSituation);
+            }
         }
-        //共有情况
-        declareRealtyHouseCert.setPublicSituation(publicSituation);
         //登记日期
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
             declareRealtyHouseCert.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(7))));
@@ -671,31 +683,34 @@ public class DeclarePublicService {
         }
         //验证基础字典中数据
         String planningUse = PoiUtils.getCellValue(row.getCell(9));
-        typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(规划用途)", i));
-            return false;
-        } else {
-            planningUse = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(planningUse)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(规划用途)", i));
+                return false;
+            } else {
+                planningUse = String.valueOf(typeDic.getId());
+                //规划用途
+                declareRealtyHouseCert.setPlanningUse(planningUse);
+            }
         }
-        //规划用途
-        declareRealtyHouseCert.setPlanningUse(planningUse);
         //房屋结构
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
             declareRealtyHouseCert.setHousingStructure(PoiUtils.getCellValue(row.getCell(10)));
         }
         //验证基础字典中数据
         String nature = PoiUtils.getCellValue(row.getCell(11));
-        typeDic = baseDataDicService.getDataDicByName(natures, nature);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋性质)", i));
-            return false;
-        } else {
-            nature = String.valueOf(typeDic.getId());
+        if(StringUtils.isNotBlank(nature)) {
+            BaseDataDic typeDic = baseDataDicService.getDataDicByName(natures, nature);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋性质)", i));
+                return false;
+            } else {
+                nature = String.valueOf(typeDic.getId());
+                //房屋性质
+                declareRealtyHouseCert.setNature(Integer.valueOf(nature));
+            }
         }
-        //房屋性质
-        declareRealtyHouseCert.setNature(Integer.valueOf(nature));
-
         //证载面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
             declareRealtyHouseCert.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(12))));
