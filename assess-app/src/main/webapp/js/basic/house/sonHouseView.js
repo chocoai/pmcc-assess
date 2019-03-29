@@ -1272,6 +1272,9 @@ houseWaterDrain.init = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drain_type, item.type, function (html, data) {
         $("#" + frm).find("select.type").empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_organization, item.organization, function (html, data) {
+        $("#" + frm).find("select.organization").empty().html(html).trigger('change');
+    });
     AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drain_system, item.drainSystem, function (html, data) {
         $("#" + frm).find("select.drainSystem").empty().html(html).trigger('change');
     });

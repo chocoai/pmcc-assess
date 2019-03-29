@@ -341,6 +341,7 @@ commonColumn.houseWaterDrainColumn = function () {
     var cols = [];
     cols.push({field: 'drainSystemName', title: '排水系统'});
     cols.push({field: 'typeName', title: '类别'});
+    cols.push({field: 'organizationName', title: '体系'});
     cols.push({field: 'processingModeName', title: '排水处理方式'});
     cols.push({field: 'evaluate', title: '排水系统评价'});
     return cols;

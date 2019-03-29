@@ -126,6 +126,7 @@ public class BasicHouseWaterDrainService {
         BasicHouseWaterDrainVo vo = new BasicHouseWaterDrainVo();
         BeanUtils.copyProperties(basicHouseWaterDrain,vo);
         vo.setTypeName(baseDataDicService.getNameById(basicHouseWaterDrain.getType()));
+        vo.setOrganizationName(baseDataDicService.getNameById(basicHouseWaterDrain.getOrganization()));
         vo.setDrainSystemName(baseDataDicService.getNameById(basicHouseWaterDrain.getDrainSystem()));
         vo.setProcessingModeName(baseDataDicService.getNameById(basicHouseWaterDrain.getProcessingMode()));
         return vo;

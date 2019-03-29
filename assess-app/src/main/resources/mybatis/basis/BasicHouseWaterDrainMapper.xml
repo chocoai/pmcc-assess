@@ -6,6 +6,7 @@
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="drain_system" property="drainSystem" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="organization" property="organization" jdbcType="INTEGER" />
     <result column="processing_mode" property="processingMode" jdbcType="INTEGER" />
     <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, drain_system, type, processing_mode, evaluate, creator, gmt_created, 
-    gmt_modified
+    id, house_id, drain_system, type, organization, processing_mode, evaluate, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrainExample" >
     select
@@ -109,11 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_water_drain (house_id, drain_system, type, 
-      processing_mode, evaluate, creator, 
-      gmt_created, gmt_modified)
+      organization, processing_mode, evaluate, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{houseId,jdbcType=INTEGER}, #{drainSystem,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{processingMode,jdbcType=INTEGER}, #{evaluate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{organization,jdbcType=INTEGER}, #{processingMode,jdbcType=INTEGER}, #{evaluate,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -129,6 +132,9 @@
       </if>
       <if test="type != null" >
         type,
+      </if>
+      <if test="organization != null" >
+        organization,
       </if>
       <if test="processingMode != null" >
         processing_mode,
@@ -155,6 +161,9 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
+      </if>
+      <if test="organization != null" >
+        #{organization,jdbcType=INTEGER},
       </if>
       <if test="processingMode != null" >
         #{processingMode,jdbcType=INTEGER},
@@ -194,6 +203,9 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
+      <if test="record.organization != null" >
+        organization = #{record.organization,jdbcType=INTEGER},
+      </if>
       <if test="record.processingMode != null" >
         processing_mode = #{record.processingMode,jdbcType=INTEGER},
       </if>
@@ -220,6 +232,7 @@
       house_id = #{record.houseId,jdbcType=INTEGER},
       drain_system = #{record.drainSystem,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
+      organization = #{record.organization,jdbcType=INTEGER},
       processing_mode = #{record.processingMode,jdbcType=INTEGER},
       evaluate = #{record.evaluate,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -240,6 +253,9 @@
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="organization != null" >
+        organization = #{organization,jdbcType=INTEGER},
       </if>
       <if test="processingMode != null" >
         processing_mode = #{processingMode,jdbcType=INTEGER},
@@ -264,6 +280,7 @@
     set house_id = #{houseId,jdbcType=INTEGER},
       drain_system = #{drainSystem,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
+      organization = #{organization,jdbcType=INTEGER},
       processing_mode = #{processingMode,jdbcType=INTEGER},
       evaluate = #{evaluate,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
