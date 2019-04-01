@@ -524,7 +524,78 @@ public class GenerateHouseEntityService {
                         stringBuilder.append(text).append(",");
                     }
                 }
-                stringBuilder.append("维护使用情况无").append("设备设施无").append("建筑实体综合分析:无");
+                String contentA = null;
+                List<BasicHouseEquipment> houseEquipmentList = generateBaseExamineService.getBasicHouseEquipmentList();
+                //供水
+                List<BasicHouseWater> basicHouseWaterList = generateBaseExamineService.getBasicHouseWaterList();
+                //排水
+                List<BasicHouseWaterDrain> houseWaterDrainList = generateBaseExamineService.getBasicHouseWaterDrainList();
+                //电梯
+                List<BasicUnitElevator> unitElevatorList = generateBaseExamineService.getBasicUnitElevatorList();
+                //电力通讯网络
+                List<BasicHouseIntelligentVo> intelligentVoList = generateBaseExamineService.getBasicHouseIntelligentList();
+                List<BasicHouseEquipment> houseAirConditioner = Lists.newArrayList();
+                List<BasicHouseEquipment> houseNewWind = Lists.newArrayList();
+                List<BasicHouseEquipment> houseHeating = Lists.newArrayList();
+                if (CollectionUtils.isNotEmpty(houseEquipmentList)) {
+                    houseAirConditioner = houseEquipmentList.stream().filter(oo -> com.google.common.base.Objects.equal(ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey(), oo.getType())).collect(Collectors.toList());
+                    houseNewWind = houseEquipmentList.stream().filter(oo -> com.google.common.base.Objects.equal(ExamineHouseEquipmentTypeEnum.houseNewWind.getKey(), oo.getType())).collect(Collectors.toList());
+                    houseHeating = houseEquipmentList.stream().filter(oo -> com.google.common.base.Objects.equal(ExamineHouseEquipmentTypeEnum.houseHeating.getKey(), oo.getType())).collect(Collectors.toList());
+                }
+                //设备设施判断依据
+                boolean elevator = unitElevatorList.size() == 0 ? false : true;
+                boolean waterDrain = houseWaterDrainList.size() == 0 ? false : true;
+                boolean water = basicHouseWaterList.size() == 0 ? false : true;
+                boolean airConditioner = houseAirConditioner.size() == 0 ? false : true;
+                boolean intelligent = intelligentVoList.size() == 0 ? false : true;
+                boolean newWind = houseNewWind.size() == 0 ? false : true;
+                boolean heating = houseHeating.size() == 0 ? false : true;
+                if (!waterDrain || !water) {
+                    contentA = "设备设施基础配置不完备";
+                }
+                if (water && waterDrain && elevator) {
+                    contentA = "设备设施基础配置相对完备";
+                }
+                if (water && waterDrain && elevator && airConditioner) {
+                    contentA = "设备设施基础配置比较完备";
+                }
+                if (water && waterDrain && elevator && airConditioner) {
+                    if (intelligent || newWind || heating) {
+                        contentA = "设备设施配置完备";
+                    }
+                }
+                List<Boolean> booleans = Lists.newArrayList(intelligent, newWind, heating);
+                if (booleans.stream().filter(b -> b.booleanValue()).count() >= 2) {
+                    contentA = "设备设施配置非常完备";
+                }
+                //维护使用情况
+                stringBuilder.append("维护使用情况无,");
+                if (StringUtils.isNotBlank(contentA)) {
+                    stringBuilder.append(contentA).append("。");
+                }
+                if (!Objects.equal(basicBuilding.getBuildingStructureCategoryName(), "简易结构")){
+                    if (StringUtils.isNotBlank(contentA)) {
+                        switch (contentA) {
+                            case "设备设施基础配置不完备":
+                                stringBuilder.append("相对不利于提升房产价值").append("。");
+                                break;
+                            case "设备设施基础配置相对完备":
+                                stringBuilder.append("相对有利于提升房产价值").append("。");
+                                break;
+                            case "设备设施基础配置比较完备":
+                                stringBuilder.append("相对比较利于提升房产价值").append("。");
+                                break;
+                            case "设备设施配置完备":
+                                stringBuilder.append("对于提升房产价值有比较大的影响").append("。");
+                                break;
+                            case "设备设施配置非常完备":
+                                stringBuilder.append("对于提升房产价值有比较大的影响").append("。");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
                 if (i == size - 1 && size != 1) {
                     stringBuilder.append(";");
                 } else {
@@ -532,6 +603,7 @@ public class GenerateHouseEntityService {
                 }
             }
         }
+
         if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
             stringBuilder.append("无数据");
         }
