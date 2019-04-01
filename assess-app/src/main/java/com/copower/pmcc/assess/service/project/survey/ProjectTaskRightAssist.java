@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.survey;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
+import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryRightRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -135,7 +138,11 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
         if (CollectionUtils.isEmpty(surveyAssetInventoryRightRecordList)){
             surveyAssetInventoryRightRecordList = Lists.newArrayList();
         }
-        modelAndView.addObject("surveyAssetInventoryRightRecordList",surveyAssetInventoryRightRecordList);
+        List<SurveyAssetInventoryRightRecordVo> rightRecordVos = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)){
+            rightRecordVos = surveyAssetInventoryRightRecordList.stream().map(oo -> surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordVo(oo)).collect(Collectors.toList());
+        }
+        modelAndView.addObject("surveyAssetInventoryRightRecordList",rightRecordVos);
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         modelAndView.addObject("declareRecordList",declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId()));
     }

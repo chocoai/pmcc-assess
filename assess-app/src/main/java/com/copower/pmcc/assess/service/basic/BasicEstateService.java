@@ -227,6 +227,7 @@ public class BasicEstateService {
             if (dataDeveloper != null){
                 vo.setDeveloper(dataDeveloper.getName());
                 vo.setDeveloperName(dataDeveloper.getName());
+                vo.setDataDeveloper(dataDeveloper);
             }
         }
         return vo;

@@ -174,7 +174,7 @@
 <script type="text/javascript">
 
     //报告附件 数组
-    var schemeReportGenerationFileControlIdArray = ["reporttypepreaudit", "reporttypetechnology", "reporttyperesult"];
+    var schemeReportGenerationFileControlIdArray = ["${REPORT_TYPE_PREAUDIT}", "${REPORT_TYPE_TECHNOLOGY}", "${REPORT_TYPE_RESULT}"];
 
     function fileShow(fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({
@@ -249,7 +249,7 @@
             $(frm).find("select[name='qualificationType']").val(info.qualificationType).attr("selected", true);
             $(frm).find("input[name='id']").val(info.id);
             $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
-                fileShow(n + "" + areaGroupId, false, info.id);
+                fileShow(n + "" + areaGroupId, true, info.id);
             });
             dataQualificationShow(info.qualificationType, info.realEstateAppraiser, frm);
         }
