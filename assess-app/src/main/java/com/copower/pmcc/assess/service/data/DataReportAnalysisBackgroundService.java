@@ -8,10 +8,13 @@ import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.common.CommonService;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DataReportAnalysisBackgroundService {
@@ -43,5 +46,23 @@ public class DataReportAnalysisBackgroundService {
             //修改子模板
             dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_MARKET.getKey());
         }
+    }
+
+    public DataReportAnalysis getReportAnalysisByAreaId(String cityId, String district, String name) {
+        BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
+        DataReportAnalysis dataReportAnalysis = new DataReportAnalysis();
+        dataReportAnalysis.setName(name);
+        dataReportAnalysis.setDistrict(district);
+        dataReportAnalysis.setReportAnalysisType(cacheDataDicByFieldName.getId());
+        List<DataReportAnalysis> dataReportAnalysisList = dataReportAnalysisDao.getDataReportAnalysisList(dataReportAnalysis);
+        if(CollectionUtils.isNotEmpty(dataReportAnalysisList)){
+            return dataReportAnalysisList.get(0);
+        }
+        dataReportAnalysis.setCity(cityId);
+        List<DataReportAnalysis> list = dataReportAnalysisDao.getDataReportAnalysisList(dataReportAnalysis);
+        if(CollectionUtils.isNotEmpty(list)){
+            return dataReportAnalysisList.get(0);
+        }
+        return null;
     }
 }

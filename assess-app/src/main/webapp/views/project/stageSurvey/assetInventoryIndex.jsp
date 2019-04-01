@@ -94,27 +94,27 @@
                                 </div>
                             </div>
                             <div id="showUse" style="display: none">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">能否使用</label>
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="canUse" name="canUse">
-                                        <option value="" selected>请选择</option>
-                                        <option value="正常使用">正常使用</option>
-                                        <option value="不能正常使用">不能正常使用</option>
-                                    </select>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">能否使用</label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" id="canUse" name="canUse">
+                                            <option value="" selected>请选择</option>
+                                            <option value="正常使用">正常使用</option>
+                                            <option value="不能正常使用">不能正常使用</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">用途</label>
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="application" name="application">
-                                        <option value="">-请选择-</option>
-                                        <c:forEach var="items" items="${types}">
-                                            <option value="${items.id}">${items.name}</option>
-                                        </c:forEach>
-                                    </select>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">用途</label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" id="application" name="application">
+                                            <option value="">-请选择-</option>
+                                            <c:forEach var="items" items="${types}">
+                                                <option value="${items.id}">${items.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                         <div class="form-group" style="display: none" id="showCertificate">
@@ -290,8 +290,8 @@
                                 <div class="col-sm-3">
                                     <select class="form-control" id="rimIsNormal" name="rimIsNormal" required
                                             onchange="showButton()">
-                                        <option value="" selected>请选择</option>
-                                        <option value="正常">正常</option>
+                                        <option value="">请选择</option>
+                                        <option value="正常" selected="selected">正常</option>
                                         <option value="不正常">不正常</option>
                                     </select>
                                 </div>
@@ -320,9 +320,9 @@
                                 <div class="col-sm-3">
                                     <select class="form-control" id="entityIsDamage" name="entityIsDamage" required
                                             onchange="showButton()">
-                                        <option value="" selected>请选择</option>
+                                        <option value="">请选择</option>
                                         <option value="损坏">损坏</option>
-                                        <option value="未损坏">未损坏</option>
+                                        <option value="未损坏" selected="selected">未损坏</option>
                                     </select>
                                 </div>
                             </div>
@@ -362,7 +362,8 @@
                                 </label>
                                 <div class="col-sm-11">
                                     <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
-                                              class="form-control" value="${surveyAssetInventory.transferLimit}"></textarea>
+                                              class="form-control"
+                                              value="${surveyAssetInventory.transferLimit}"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -683,14 +684,19 @@
             }
         });
         if ("${surveyAssetInventory}") {
-            $("#segmentationLimit").val("${surveyAssetInventory.segmentationLimit}");
+            if ("${surveyAssetInventory.segmentationLimit}") {
+                $("#segmentationLimit").val("${surveyAssetInventory.segmentationLimit}");
+            }
             $("#canUse").val("${surveyAssetInventory.canUse}");
             $("#application").val("${surveyAssetInventory.application}");
             $("#certificate").val("${surveyAssetInventory.certificate}");
-
-            $("#entityIsDamage").val("${surveyAssetInventory.entityIsDamage}");
-            $("#rimIsNormal").val("${surveyAssetInventory.rimIsNormal}");
             $("#transferLimit").val("${surveyAssetInventory.transferLimit}");
+            if ("${surveyAssetInventory.entityIsDamage}") {
+                $("#entityIsDamage").val("${surveyAssetInventory.entityIsDamage}");
+            }
+            if ("${surveyAssetInventory.rimIsNormal}") {
+                $("#rimIsNormal").val("${surveyAssetInventory.rimIsNormal}");
+            }
             writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
             writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
         }

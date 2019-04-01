@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataReportAnalysisBackgroundService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-29.
@@ -48,6 +51,8 @@ public class CompileReportService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private DataReportAnalysisBackgroundService dataReportAnalysisBackgroundService;
 
     /**
      * 初始化计划信息
@@ -143,7 +148,10 @@ public class CompileReportService {
         List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
         if(CollectionUtils.isEmpty(dataDicList)) return;
         CompileReportDetail compileReportDetail = null;
-        for (BaseDataDic baseDataDic : dataDicList) {//根据各种条件获取对应的模板数据
+        for (BaseDataDic baseDataDic : dataDicList) {
+            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupDao.get(projectPlanDetails.getAreaId());
+            DataReportAnalysis analysis = dataReportAnalysisBackgroundService.getReportAnalysisByAreaId(schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict(), baseDataDic.getName());
+            //根据各种条件获取对应的模板数据
             compileReportDetail = new CompileReportDetail();
             compileReportDetail.setCreator(commonService.thisUserAccount());
             compileReportDetail.setName(baseDataDic.getName());
@@ -152,6 +160,9 @@ public class CompileReportService {
             compileReportDetail.setReportAnalysisName(analysisType.getName());
             compileReportDetail.setPlanDetailsId(projectPlanDetails.getId());
             compileReportDetail.setBisModifiable(true);
+            if(schemeAreaGroup != null){
+                compileReportDetail.setContent(tagfilter(analysis.getTemplate()));
+            }
             compileReportDetailDao.addReportDetail(compileReportDetail);
         }
     }
@@ -194,5 +205,20 @@ public class CompileReportService {
         List<CompileReportDetail> detailList = compileReportDetailDao.getReportDetailList(where);
         if (CollectionUtils.isEmpty(detailList)) return "";
         return detailList.get(0).getContent();
+    }
+
+
+    public static String tagfilter(String str) {
+        final String regxpForHtml = "<([^>]*)>"; // 过滤所有以<开头以>结尾的标签
+        Pattern pattern = Pattern.compile(regxpForHtml);
+        Matcher matcher = pattern.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        boolean result1 = matcher.find();
+        while (result1) {
+            matcher.appendReplacement(sb, "");
+            result1 = matcher.find();
+        }
+        matcher.appendTail(sb);
+        return sb.toString().trim();
     }
 }
