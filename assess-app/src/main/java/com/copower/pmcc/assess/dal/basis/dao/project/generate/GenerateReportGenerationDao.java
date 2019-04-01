@@ -54,7 +54,7 @@ public class GenerateReportGenerationDao {
         return generateReportGenerationMapper.selectByPrimaryKey(id);
     }
 
-    public GenerateReportGeneration getGenerateReportGeneration(GenerateReportGeneration generateReportGeneration) throws SQLException {
+    public GenerateReportGeneration getGenerateReportGeneration(GenerateReportGeneration generateReportGeneration)  {
         List<GenerateReportGeneration> generateReportGenerations = generateReportGenerationList(generateReportGeneration);
         if (CollectionUtils.isNotEmpty(generateReportGenerations)) {
             return generateReportGenerations.get(0);
@@ -62,9 +62,10 @@ public class GenerateReportGenerationDao {
         return null;
     }
 
-    public List<GenerateReportGeneration> generateReportGenerationList(GenerateReportGeneration generateReportGeneration) throws SQLException {
+    public List<GenerateReportGeneration> generateReportGenerationList(GenerateReportGeneration generateReportGeneration)  {
         GenerateReportGenerationExample example = new GenerateReportGenerationExample();
         MybatisUtils.convertObj2Example(generateReportGeneration, example);
+        example.setOrderByClause("id desc");
         List<GenerateReportGeneration> generateReportGenerations = generateReportGenerationMapper.selectByExample(example);
         return generateReportGenerations;
     }

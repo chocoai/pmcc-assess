@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportGenerationVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
@@ -37,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2018-5-23.
@@ -71,6 +73,23 @@ public class GenerateReportService {
 
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         return schemeAreaGroupService.getAreaGroupList(projectId);
+    }
+
+    /**
+     * 获取生成的数据列表
+     *
+     * @param projectId
+     * @return
+     */
+    public List<GenerateReportGenerationVo> getGenerateReportGenerationVos(Integer projectId) {
+        GenerateReportGeneration where = new GenerateReportGeneration();
+        where.setProjectId(projectId);
+        List<GenerateReportGeneration> generationList = generateReportGenerationService.generateReportGenerationList(where);
+        if (CollectionUtils.isEmpty(generationList)) return null;
+        HashSet<Integer> areaGroupIds = Sets.newHashSet();
+        generationList.forEach(o -> areaGroupIds.add(o.getAreaGroupId()));
+        List<GenerateReportGeneration> resultList= generationList.stream().filter(o->!areaGroupIds.contains(o.getAreaGroupId())).collect(Collectors.toList());
+        return LangUtils.transform(resultList, o -> generateReportGenerationService.getGenerateReportGenerationVo(o));
     }
 
 
