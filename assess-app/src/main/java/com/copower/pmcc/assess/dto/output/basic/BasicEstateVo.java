@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.dto.output.basic;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
 
 /**
  * @Auther: zch
@@ -21,6 +22,7 @@ public class BasicEstateVo extends BasicEstate {
     private String supplyHeatingName;
 
     private String developerName;
+    private DataDeveloper dataDeveloper;
 
     public String getProvinceName() {
         return provinceName;
@@ -108,5 +110,13 @@ public class BasicEstateVo extends BasicEstate {
 
     public void setDeveloperName(String developerName) {
         this.developerName = developerName;
+    }
+
+    public DataDeveloper getDataDeveloper() {
+        return dataDeveloper;
+    }
+
+    public void setDataDeveloper(DataDeveloper dataDeveloper) {
+        this.dataDeveloper = dataDeveloper;
     }
 }

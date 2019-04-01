@@ -11,9 +11,12 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,7 +56,33 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
 
     private void setModelParam(ProjectPlan projectPlan, ModelAndView modelAndView) {
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
-        modelAndView.addObject("reportTypeList", reportTypeList);
+        if (CollectionUtils.isNotEmpty(reportTypeList)) {
+            Map<String, String> stringMap = Maps.newHashMap();
+            reportTypeList.stream().forEach(oo -> {
+                if (Objects.equal(oo.getFieldName(), AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT)) {
+                    stringMap.put(oo.getFieldName(), "REPORT_TYPE_PREAUDIT");
+                }
+                if (Objects.equal(oo.getFieldName(), AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
+                    stringMap.put(oo.getFieldName(), "REPORT_TYPE_TECHNOLOGY");
+                }
+                if (Objects.equal(oo.getFieldName(), AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
+                    stringMap.put(oo.getFieldName(), "REPORT_TYPE_RESULT");
+                }
+            });
+            if (!stringMap.isEmpty()) {
+                StringBuilder builder = new StringBuilder(8);
+                for (Map.Entry<String, String> stringEntry : stringMap.entrySet()) {
+                    builder.delete(0, builder.toString().length());
+                    String[] strs = stringEntry.getKey().split("\\.");
+                    for (String s : strs) {
+                        builder.append(s);
+                    }
+                    //必要的(用做页面上附件的字段,与com.copower.pmcc.assess.service.project.generate.GenerateReportService.createSysAttachment相一致)
+                    modelAndView.addObject(stringEntry.getValue(), FormatUtils.underlineToCamel(builder.toString(), false));
+                }
+            }
+            modelAndView.addObject("reportTypeList", reportTypeList);
+        }
         List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
         modelAndView.addObject("schemeAreaGroupList", schemeAreaGroupList);
         modelAndView.addObject("projectPlan", projectPlan);

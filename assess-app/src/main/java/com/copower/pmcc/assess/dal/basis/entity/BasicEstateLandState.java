@@ -37,6 +37,8 @@ public class BasicEstateLandState {
 
     private Integer developmentDegree;
 
+    private String developmentDegreeRemark;
+
     private String developmentDegreeContent;
 
     private String plotRatio;
@@ -201,6 +203,14 @@ public class BasicEstateLandState {
 
     public void setDevelopmentDegree(Integer developmentDegree) {
         this.developmentDegree = developmentDegree;
+    }
+
+    public String getDevelopmentDegreeRemark() {
+        return developmentDegreeRemark;
+    }
+
+    public void setDevelopmentDegreeRemark(String developmentDegreeRemark) {
+        this.developmentDegreeRemark = developmentDegreeRemark == null ? null : developmentDegreeRemark.trim();
     }
 
     public String getDevelopmentDegreeContent() {

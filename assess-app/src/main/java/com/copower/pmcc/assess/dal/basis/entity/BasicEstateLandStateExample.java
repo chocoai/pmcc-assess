@@ -1195,6 +1195,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andDevelopmentDegreeRemarkIsNull() {
+            addCriterion("development_degree_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkIsNotNull() {
+            addCriterion("development_degree_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkEqualTo(String value) {
+            addCriterion("development_degree_remark =", value, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkNotEqualTo(String value) {
+            addCriterion("development_degree_remark <>", value, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkGreaterThan(String value) {
+            addCriterion("development_degree_remark >", value, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("development_degree_remark >=", value, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkLessThan(String value) {
+            addCriterion("development_degree_remark <", value, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkLessThanOrEqualTo(String value) {
+            addCriterion("development_degree_remark <=", value, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkLike(String value) {
+            addCriterion("development_degree_remark like", value, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkNotLike(String value) {
+            addCriterion("development_degree_remark not like", value, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkIn(List<String> values) {
+            addCriterion("development_degree_remark in", values, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkNotIn(List<String> values) {
+            addCriterion("development_degree_remark not in", values, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkBetween(String value1, String value2) {
+            addCriterion("development_degree_remark between", value1, value2, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentDegreeRemarkNotBetween(String value1, String value2) {
+            addCriterion("development_degree_remark not between", value1, value2, "developmentDegreeRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andDevelopmentDegreeContentIsNull() {
             addCriterion("development_degree_content is null");
             return (Criteria) this;

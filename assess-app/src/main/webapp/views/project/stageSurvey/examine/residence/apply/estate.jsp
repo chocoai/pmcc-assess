@@ -157,7 +157,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发商</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="开发商" class="form-control" name="developer"
+                    <input type="text" placeholder="开发商" class="form-control" name="developerName"
+                           value="${basicEstate.developerName}">
+                    <input type="hidden" placeholder="开发商" class="form-control" name="developer"
                            value="${basicEstate.developer}">
                 </div>
             </div>

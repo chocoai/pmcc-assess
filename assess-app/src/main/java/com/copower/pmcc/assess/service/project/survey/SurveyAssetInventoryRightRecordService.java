@@ -1,11 +1,15 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightRecordDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
+import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryRightRecordVo;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,8 @@ public class SurveyAssetInventoryRightRecordService {
     private SurveyAssetInventoryRightRecordDao surveyAssetInventoryRightRecordDao;
     @Autowired
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     @Autowired
     private CommonService commonService;
@@ -99,6 +105,37 @@ public class SurveyAssetInventoryRightRecordService {
 
     public List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) {
         return surveyAssetInventoryRightRecordDao.surveyAssetInventoryRightRecordList(surveyAssetInventoryRightRecord);
+    }
+
+    public SurveyAssetInventoryRightRecordVo getSurveyAssetInventoryRightRecordVo(SurveyAssetInventoryRightRecord oo){
+        SurveyAssetInventoryRightRecordVo vo = new SurveyAssetInventoryRightRecordVo();
+        if (oo == null){
+            return null;
+        }
+        org.springframework.beans.BeanUtils.copyProperties(oo,vo);
+        List<DeclareRecord> declareRecordList = Lists.newArrayList();
+        if (StringUtils.isNotBlank(oo.getRecordIds())){
+            String[] strings = oo.getRecordIds().split(",");
+            for (String s:strings) {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(Integer.parseInt(s));
+                if (declareRecord != null){
+                    declareRecordList.add(declareRecord);
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(declareRecordList)){
+            StringBuilder stringBuilder = new StringBuilder(8);
+            for (int i = 0; i < declareRecordList.size(); i++) {
+                stringBuilder.append(declareRecordList.get(i).getName());
+                if (i != declareRecordList.size()-1){
+                    if (declareRecordList.size() != 1){
+                        stringBuilder.append(",");
+                    }
+                }
+            }
+            vo.setRecordNames(stringBuilder.toString());
+        }
+        return vo;
     }
 
 }

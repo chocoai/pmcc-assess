@@ -26,7 +26,6 @@
                         name: $(that).val()
                     },
                     success: function (data) {
-                        console.log(data);
                         if (data) {
                             var responseArray = [];
                             $.each(data.rows, function (i, item) {

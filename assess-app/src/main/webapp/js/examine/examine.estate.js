@@ -162,6 +162,7 @@
         //土地开发程度为熟地时选择几通几平
         estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change', function () {
             $("#developmentDegreeContentContainer").empty();
+            estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().hide();
             var key = $(this).find("option:selected").attr('key');
             if (key == AssessDicKey.estateDevelopment_degreePrepared_land) {
                 AssessCommon.loadDataDicByPid($(this).val(), '', function (html, resultData) {
@@ -181,7 +182,8 @@
                         })
                         $("#developmentDegreeContentContainer").html(resultHtml);
                     }
-                })
+                });
+                estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().show();
             }
         });
     };
@@ -225,7 +227,12 @@
                 estateCommon.onSelect(id);
             }
         });
-        estateCommon.estateForm.find('[name=developer]').apDeveloper();
+        estateCommon.estateForm.find('[name=developerName]').apDeveloper({
+            onSelect: function (id, name){
+                estateCommon.estateForm.find('input[name=developer]').val(id);
+                estateCommon.estateForm.find('input[name=developerName]').val(name);
+            }
+        });
     };
 
     //楼盘标注

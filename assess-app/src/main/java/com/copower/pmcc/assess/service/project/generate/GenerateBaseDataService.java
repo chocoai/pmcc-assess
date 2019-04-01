@@ -2938,7 +2938,7 @@ public class GenerateBaseDataService {
                 documentBuilder.writeln(String.format("10.3、房屋配套设备设施工:%s", generateHouseEntityService.getTenPointThree(integerList)));
                 documentBuilder.writeln(String.format("11、建筑功能:%s", generateHouseEntityService.getBuildingFunction(integerList)));
                 documentBuilder.writeln(String.format("12、物业管理:%s", "无"));
-                documentBuilder.writeln(String.format("13、较好新旧程度及维护使用情况:%s", generateHouseEntityService.getThirteen(integerList)));
+                documentBuilder.writeln(String.format("13、楼栋新旧程度及维护使用情况:%s", generateHouseEntityService.getThirteen(integerList)));
                 documentBuilder.writeln(String.format("14、其它:%s", generateHouseEntityService.getOther(integerList)));
                 documentBuilder.writeln(String.format("15、建筑实体分析:%s", generateHouseEntityService.getContent(integerList,schemeAreaGroup)));
                 documentBuilder.writeln();

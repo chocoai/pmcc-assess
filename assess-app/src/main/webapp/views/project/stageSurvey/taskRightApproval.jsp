@@ -46,19 +46,20 @@
                                         申报
                                     </label>
                                     <div class="col-sm-10">
-                                        <select class="form-control search-select select2" multiple="multiple" required="required"
-                                                name="recordIds">
-                                            <c:forEach var="n" items="${declareRecordList}">
-                                                <c:forTokens items="${item.recordIds}" delims="," var="nameS">
-                                                    <c:if test="${nameS == n.id}">
-                                                        <option value="${n.id}" selected="selected">${n.name}</option>
-                                                    </c:if>
-                                                    <c:if test="${nameS != n.id}">
-                                                        <option value="${n.id}">${n.name}</option>
-                                                    </c:if>
-                                                </c:forTokens>
-                                            </c:forEach>
-                                        </select>
+                                        <label class="form-control">${item.recordNames}</label>
+                                        <%--<select class="form-control search-select select2" multiple="multiple" required="required"--%>
+                                                <%--name="recordIds">--%>
+                                            <%--<c:forEach var="n" items="${declareRecordList}">--%>
+                                                <%--<c:forTokens items="${item.recordIds}" delims="," var="nameS">--%>
+                                                    <%--<c:if test="${nameS == n.id}">--%>
+                                                        <%--<option value="${n.id}" selected="selected">${n.name}</option>--%>
+                                                    <%--</c:if>--%>
+                                                    <%--<c:if test="${nameS != n.id}">--%>
+                                                        <%--<option value="${n.id}">${n.name}</option>--%>
+                                                    <%--</c:if>--%>
+                                                <%--</c:forTokens>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
                                     </div>
                                 </div>
                             </div>

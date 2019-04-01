@@ -103,9 +103,24 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
+                <label class="col-sm-1 control-label">基础设施完备度</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.infrastructureCompletenessName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">土地开发程度</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.developmentDegreeName}</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid" style="display: none">
+                <label class="col-sm-1 control-label">土地开发程度备注</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="土地开发程度备注"
+                           name="developmentDegreeRemark" value="${basicEstateLandState.developmentDegreeRemark}">
                 </div>
             </div>
             <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer">
@@ -184,12 +199,6 @@
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">基础设施完备度</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.infrastructureCompletenessName}</label>
-                </div>
-            </div>
         </div>
         <div class="form-group">
 

@@ -264,7 +264,8 @@
                     物业公司
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" name="property" placeholder="物业公司" class="form-control">
+                    <input type="hidden" name="property" placeholder="物业公司" class="form-control">
+                    <input type="text" name="propertyName" placeholder="物业公司" class="form-control">
                 </div>
             </div>
         </div>
@@ -293,7 +294,8 @@
                     建筑公司
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="建筑公司" class="form-control" name="builder">
+                    <input type="text" placeholder="建筑公司" class="form-control" name="builderName">
+                    <input type="hidden" placeholder="建筑公司" class="form-control" name="builder">
                 </div>
             </div>
         </div>
