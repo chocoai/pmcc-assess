@@ -11,7 +11,7 @@ public class DataPropertyServiceItem {
 
     private Integer serviceContent;
 
-    private Date serviceTime;
+    private String serviceTime;
 
     private Integer gradeEvaluation;
 
@@ -55,12 +55,12 @@ public class DataPropertyServiceItem {
         this.serviceContent = serviceContent;
     }
 
-    public Date getServiceTime() {
+    public String getServiceTime() {
         return serviceTime;
     }
 
-    public void setServiceTime(Date serviceTime) {
-        this.serviceTime = serviceTime;
+    public void setServiceTime(String serviceTime) {
+        this.serviceTime = serviceTime == null ? null : serviceTime.trim();
     }
 
     public Integer getGradeEvaluation() {

@@ -52,9 +52,8 @@
                                             服务时间
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="服务时间" data-date-format='yyyy-mm-dd'
-                                                   id="serviceTime" name="serviceTime"
-                                                   class="form-control dbdate">
+                                            <input type="text" class="form-control" name="serviceTime"
+                                                   placeholder="服务时间" required="required">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -116,11 +115,7 @@
             var cols = [];
             cols.push({field: 'serviceTypeName', title: '服务类型'});
             cols.push({field: 'serviceContentName', title: '服务内容'});
-            cols.push({
-                field: 'serviceTime', title: '服务时间', formatter: function (value, row, index) {
-                    return formatDate(row.serviceTime, false);
-                }
-            });
+            cols.push({field: 'serviceTime', title: '服务时间'});
             cols.push({field: 'gradeEvaluationName', title: '等级评价'});
             cols.push({
                 field: 'opt', title: '操作', formatter: function (value, row, index) {
@@ -178,7 +173,7 @@
                 url: "${pageContext.request.contextPath}/dataPropertyServiceItem/saveAndUpdateDataPropertyServiceItem",
                 type: "post",
                 dataType: "json",
-                data: {formData:JSON.stringify(data)},
+                data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
@@ -221,12 +216,6 @@
         }
 
     }
-
-    // function typeChange(this_) {
-    //     var str = $(this_).attr("id");
-    //     var number = str.substr(str.length - 1, 1);
-    //     getCategory(number);
-    // }
 
     //服务内容
     function getCategory(categoryValue) {

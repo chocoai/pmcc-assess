@@ -70,8 +70,7 @@ public class DataPropertyServiceItemController {
     }
 
     @RequestMapping(value = "/saveAndUpdateDataPropertyServiceItem", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult saveAndUpdate(String formData) {
-        DataPropertyServiceItem dataPropertyServiceItem = JSON.parseObject(formData, DataPropertyServiceItem.class);
+    public HttpResult saveAndUpdate(DataPropertyServiceItem dataPropertyServiceItem) {
         try {
             if (dataPropertyServiceItem.getId() == null || dataPropertyServiceItem.getId().equals(0)) {
                 dataPropertyServiceItemService.addDataPropertyServiceItemReturnId(dataPropertyServiceItem);

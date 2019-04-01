@@ -6,7 +6,7 @@
     <result column="master_id" property="masterId" jdbcType="INTEGER" />
     <result column="service_type" property="serviceType" jdbcType="INTEGER" />
     <result column="service_content" property="serviceContent" jdbcType="INTEGER" />
-    <result column="service_time" property="serviceTime" jdbcType="TIMESTAMP" />
+    <result column="service_time" property="serviceTime" jdbcType="VARCHAR" />
     <result column="grade_evaluation" property="gradeEvaluation" jdbcType="INTEGER" />
     <result column="charges_notes" property="chargesNotes" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -114,7 +114,7 @@
       creator, gmt_created, gmt_modified
       )
     values (#{masterId,jdbcType=INTEGER}, #{serviceType,jdbcType=INTEGER}, #{serviceContent,jdbcType=INTEGER}, 
-      #{serviceTime,jdbcType=TIMESTAMP}, #{gradeEvaluation,jdbcType=INTEGER}, #{chargesNotes,jdbcType=VARCHAR}, 
+      #{serviceTime,jdbcType=VARCHAR}, #{gradeEvaluation,jdbcType=INTEGER}, #{chargesNotes,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -163,7 +163,7 @@
         #{serviceContent,jdbcType=INTEGER},
       </if>
       <if test="serviceTime != null" >
-        #{serviceTime,jdbcType=TIMESTAMP},
+        #{serviceTime,jdbcType=VARCHAR},
       </if>
       <if test="gradeEvaluation != null" >
         #{gradeEvaluation,jdbcType=INTEGER},
@@ -204,7 +204,7 @@
         service_content = #{record.serviceContent,jdbcType=INTEGER},
       </if>
       <if test="record.serviceTime != null" >
-        service_time = #{record.serviceTime,jdbcType=TIMESTAMP},
+        service_time = #{record.serviceTime,jdbcType=VARCHAR},
       </if>
       <if test="record.gradeEvaluation != null" >
         grade_evaluation = #{record.gradeEvaluation,jdbcType=INTEGER},
@@ -232,7 +232,7 @@
       master_id = #{record.masterId,jdbcType=INTEGER},
       service_type = #{record.serviceType,jdbcType=INTEGER},
       service_content = #{record.serviceContent,jdbcType=INTEGER},
-      service_time = #{record.serviceTime,jdbcType=TIMESTAMP},
+      service_time = #{record.serviceTime,jdbcType=VARCHAR},
       grade_evaluation = #{record.gradeEvaluation,jdbcType=INTEGER},
       charges_notes = #{record.chargesNotes,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -255,7 +255,7 @@
         service_content = #{serviceContent,jdbcType=INTEGER},
       </if>
       <if test="serviceTime != null" >
-        service_time = #{serviceTime,jdbcType=TIMESTAMP},
+        service_time = #{serviceTime,jdbcType=VARCHAR},
       </if>
       <if test="gradeEvaluation != null" >
         grade_evaluation = #{gradeEvaluation,jdbcType=INTEGER},
@@ -280,7 +280,7 @@
     set master_id = #{masterId,jdbcType=INTEGER},
       service_type = #{serviceType,jdbcType=INTEGER},
       service_content = #{serviceContent,jdbcType=INTEGER},
-      service_time = #{serviceTime,jdbcType=TIMESTAMP},
+      service_time = #{serviceTime,jdbcType=VARCHAR},
       grade_evaluation = #{gradeEvaluation,jdbcType=INTEGER},
       charges_notes = #{chargesNotes,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

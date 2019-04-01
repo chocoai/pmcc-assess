@@ -355,52 +355,62 @@ public class DataPropertyServiceItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeEqualTo(Date value) {
+        public Criteria andServiceTimeEqualTo(String value) {
             addCriterion("service_time =", value, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeNotEqualTo(Date value) {
+        public Criteria andServiceTimeNotEqualTo(String value) {
             addCriterion("service_time <>", value, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeGreaterThan(Date value) {
+        public Criteria andServiceTimeGreaterThan(String value) {
             addCriterion("service_time >", value, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andServiceTimeGreaterThanOrEqualTo(String value) {
             addCriterion("service_time >=", value, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeLessThan(Date value) {
+        public Criteria andServiceTimeLessThan(String value) {
             addCriterion("service_time <", value, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeLessThanOrEqualTo(Date value) {
+        public Criteria andServiceTimeLessThanOrEqualTo(String value) {
             addCriterion("service_time <=", value, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeIn(List<Date> values) {
+        public Criteria andServiceTimeLike(String value) {
+            addCriterion("service_time like", value, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeNotLike(String value) {
+            addCriterion("service_time not like", value, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeIn(List<String> values) {
             addCriterion("service_time in", values, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeNotIn(List<Date> values) {
+        public Criteria andServiceTimeNotIn(List<String> values) {
             addCriterion("service_time not in", values, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeBetween(Date value1, Date value2) {
+        public Criteria andServiceTimeBetween(String value1, String value2) {
             addCriterion("service_time between", value1, value2, "serviceTime");
             return (Criteria) this;
         }
 
-        public Criteria andServiceTimeNotBetween(Date value1, Date value2) {
+        public Criteria andServiceTimeNotBetween(String value1, String value2) {
             addCriterion("service_time not between", value1, value2, "serviceTime");
             return (Criteria) this;
         }
