@@ -18,9 +18,10 @@ public enum MethodCompareFieldEnum {
     TRADING_TIME("trading.time", "交易时间"),//ps:房屋-交易情况-交易时间
 
     //区位状况-----------------------------------------------------------------------------------------------区位状况
-    LOCATION("location", "房地产坐落及方位"),//ps:权证的坐落、板块的方位、楼盘的方位字段组合
-    OFFICE_CONCENTRATION("office.concentration", "集聚度"),//ps:多条交通枢信息 （名称+距离）相组合显示
-    BUILDING("building", "楼栋"),//ps:楼栋-楼栋的名称
+    LOCATION("location", "坐落"),//ps:权证的坐落
+    POSITION("position", "方位"),//ps:板块的方位、楼盘的方位字段组合
+    WITH_IMPORTANT_LOCATION_DISTANCE("with.important.location.distance", "与重要场所的距离"),//ps:多条交通枢信息 （名称+距离）相组合显示
+    TEMPORARY_ROAD_CONDITION("temporary.road.condition", "临街（路）状况"),//ps:临街（路）状况
     FLOOR("floor", "楼层"),//ps:房屋-所在层数
     ORIENTATION("orientation", "朝向"),//ps:房屋-朝向
     TRAFFIC_CONDITIONS("traffic.conditions", "交通条件"),//ps:地铁、公交、主干道、主要转换互通桥信息的所有数据叠加
@@ -31,23 +32,23 @@ public enum MethodCompareFieldEnum {
     SCENERY("scenery", "景观"),//ps:取类别与影响信息组合显示
 
     //权益状况------------------------------------------------------------------------------------------------
-    FEEINTEREST_TYPE("feeInterest.type", "土地权益类型"),//ps:土地证中获取信息
-    LAND_CONTROL_SITUATION("land.control.situation", "土地管制情况"),//ps:土地权证中的“用途”、楼盘信息中“建筑面积”、“占地面积”、“ 容积率”、“绿化率”；楼栋信息“建筑高度”的最高值
-    LAND_RIGHTS("land.rights", "土地他项权利"),//ps:他权信息中的类别
-    HOUSING_OWNERSHIP("housing.ownership", "房屋所有权"),//ps:权证申报的类别、公有情况组合
-    LEASEHOLD("leasehold", "租赁情况"),//ps:资产清查中获取类别为租赁权的信息，如果没有数据则显示为无。
-    PROPERTY_MANAGEMENT("property.management", "物业管理情况"),//ps:楼栋中的物业公司名称+公司信誉+物业费
-    OTHER_SPECIAL_SITUATIONS("other.special.situations", "其它特殊情况"),//ps:土地资产清查中特殊情况字段获取
+    LAND_RIGHT_TYPE("land.right.type", "土地权利类型"),//ps:土地权利类型
+    LAND_RIGHT_NATURE("land.right.nature", "土地权利性质"),//ps:土地权利性质
+
+    HOUSE_NATURE("house.nature", "房屋性质"),//ps:房屋性质
+    HOUSE_CERT_USE("house.cert.use", "房屋用途"),//ps:房屋用途
+    PROPERTY_MANAGEMENT("property.management", "物业管理"),//ps:物业管理
+    OTHER_SPECIAL_SITUATIONS("other.special.situations", "其它特殊情况"),//ps:他项权利特殊情况
 
     //实体状况------------------------------------------------------------------------------------------------
-    LAND_ENTITY_STATUS("land.entity.status", "土地实体状况"),//ps:楼盘中土地实体状况所有字段信息
     BUILDING_AREA("building.area", "建筑面积"),//ps:楼盘-建筑面积
     FLOOR_COUNT("floor.count", "层数"),//ps:楼栋-总层数
     FLOOR_HEIGHT("floor.height", "层高"),//ps:楼栋-层高
     NET_HEIGHT("net.height", "净高"),//ps:楼栋-净高
-    BUILDING_HEIGHT("building.height", "建筑高度"),//ps:楼栋-建筑高度
+    BUILDING_SCALE("building.scale", "建筑规模"),//ps:楼栋-建筑规模
     BUILDING_STRUCTURE("building.structure", "建筑结构"),//ps:楼栋-建筑结构类别
     ARCHITECTURAL_OUTFIT("architectural.outfit", "建筑外装"),//ps:建筑外装所有字段信息组合
+    APPEARANCE("appearance", "外观"),//ps:外观
 
     AERATION("aeration", "通风"),//ps:房间中通风类型下的信息字段组合
     LIGHTING("lighting", "采光"),//ps:房间中采光类型下的信息字段组合
@@ -65,7 +66,7 @@ public enum MethodCompareFieldEnum {
     INTERNAL_ASSEMBLY("internal.assembly", "内装"),//ps:楼栋内装信息+房屋内的装修信息
     PLANE_LAYOUT("plane.layout", "平面布局"),//ps:平面布局 实际用途为住宅取户型，其它用途时取户型与房间中的开间进深
     NEW_DEGREE("new.degree", "成新度"),//ps:成新度
-    MAINTENANCE_LOSS_STATUS("maintenance.loss.status", "维护保养和完损状况");//ps:维护保养和完损状况
+    Other("other", "其它");//ps:其它
 
     private String key;
 
