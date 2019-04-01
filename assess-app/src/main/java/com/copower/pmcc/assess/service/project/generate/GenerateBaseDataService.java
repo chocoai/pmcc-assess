@@ -780,18 +780,32 @@ public class GenerateBaseDataService {
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
             row++;
         }
-        if (true) {
-            String oneContent = "估价对象现场查勘地址为高新区铁像寺路88号19栋1-3层。" +
-                    "本次评估根据委托方提供的由“成都商投世纪物业服务有限公司铁像寺水街物业服务中心”出具的《证明》，本次以上地址为同一地址。";
+        String temp = getActualAddressAssetInventory();
+        String temp2 = getCertificateAssetInventory();
+        if (StringUtils.isNotBlank(temp)){
+            String oneContent = "估价对象现场查勘地址为"+temp +
+                    "本次评估根据委托方提供的由“"+temp2+"”出具的《证明》，本次以上地址为同一地址。";
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
             row++;
         }
-        if (true) {
+        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = getSchemeReimbursementItemVoList();
+        if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+            BigDecimal bigDecimal = new BigDecimal(0);
+            if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+                for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                    if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
+                        bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
+                    }
+                }
+            }
+            String s = generateCommonMethod.getBigDecimalRound(bigDecimal,false) ;
             String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，" +
                     "本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，" +
                     "抵押权人已经知晓法定优先受偿款对估价对象价值的影响，" +
                     "且并不需要我们在抵押价值中予以扣除法定优先受偿款，" +
-                    "故本报告假设估价对象在价值时点法定优先受偿款为0元（大写：人民币零元整），在此提请报告使用人加以关注。";
+                    "故本报告假设估价对象在价值时点法定优先受偿款为"+s + "元"+"（大写：" +
+                    CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(bigDecimal, false))+"）"+
+                    "，在此提请报告使用人加以关注。";
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
         }
         documentBuilder.insertHtml(stringBuilder.toString(), true);
@@ -1889,55 +1903,17 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getStatutoryPriorityAmountTotal() throws Exception {
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.REIMBURSEMENT, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        Map<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                        ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(projectId);
-                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                        query.setProjectPhaseId(projectPhase.getId());
-                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                                judgeObjectIntegerMap.put(schemeJudgeObject, projectPlanDetails.getId());
-                            }
-                        }
-                    }
+        BigDecimal bigDecimal = new BigDecimal(0);
+        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = getSchemeReimbursementItemVoList();
+        if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+            for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
+                    bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
                 }
             }
         }
-        BigDecimal bigDecimal = new BigDecimal(0);
-        if (!judgeObjectIntegerMap.isEmpty()) {
-            for (Map.Entry<SchemeJudgeObject, Integer> integerEntry : judgeObjectIntegerMap.entrySet()) {
-                SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(integerEntry.getValue());
-                if (schemeReimbursement != null) {
-                    SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
-                    query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                    List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
-                    if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-                        BigDecimal bigDecimal2 = new BigDecimal(0);
-                        for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
-                            bigDecimal2 = bigDecimal2.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
-                        }
-                        bigDecimal = bigDecimal.add(bigDecimal2);
-                    }
-                }
-            }
-            if (bigDecimal.doubleValue() > 0) {
-                bigDecimal = new BigDecimal(generateCommonMethod.getBigDecimalRound(bigDecimal, true));
-            }
+        if (bigDecimal.doubleValue() > 0) {
+            bigDecimal = new BigDecimal(generateCommonMethod.getBigDecimalRound(bigDecimal, true));
         }
         return bigDecimal.toString();
     }
@@ -1950,50 +1926,20 @@ public class GenerateBaseDataService {
      */
     public String getStatutoryPriorityAmount() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.REIMBURSEMENT, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        Map<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                        ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(projectId);
-                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                        query.setProjectPhaseId(projectPhase.getId());
-                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                                judgeObjectIntegerMap.put(schemeJudgeObject, projectPlanDetails.getId());
-                            }
-                        }
-                    }
+        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = getSchemeReimbursementItemVoList();
+        if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+            for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                if (schemeReimbursementItemVo.getNotSetUpTotalPrice() == null) {
+                    continue;
                 }
-            }
-        }
-        if (!judgeObjectIntegerMap.isEmpty()) {
-            for (Map.Entry<SchemeJudgeObject, Integer> integerEntry : judgeObjectIntegerMap.entrySet()) {
-                SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(integerEntry.getValue());
-                if (schemeReimbursement != null) {
-                    SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
-                    query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                    List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
-                    if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-                        BigDecimal bigDecimal = new BigDecimal(0);
-                        for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
-                            bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
-                        }
-                        stringSet.add(String.format("%s:%s、", integerEntry.getKey().getName(), bigDecimal.toString()));
-                    }
+                if (schemeReimbursementItemVo.getJudgeObjectId() == null) {
+                    continue;
                 }
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeReimbursementItemVo.getJudgeObjectId());
+                if (schemeJudgeObject == null) {
+                    continue;
+                }
+                stringSet.add(String.format("%s:%s、", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), schemeReimbursementItemVo.getNotSetUpTotalPrice().toString()));
             }
         }
         String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
@@ -2599,6 +2545,7 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+
     /**
      * 估价结果一览表
      *
@@ -2606,40 +2553,35 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet() throws Exception {
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.REIMBURSEMENT, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        schemeJudgeObjectList = generateCommonMethod.getSortSchemeJudgeObject(schemeJudgeObjectList);
-        LinkedHashMap<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newLinkedHashMap();
-        if (CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                        ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(projectId);
-                        query.setProjectPhaseId(projectPhase.getId());
-                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                                judgeObjectIntegerMap.put(schemeJudgeObject, projectPlanDetails.getId());
-                            }
-                        }
-                    }
+        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = getSchemeReimbursementItemVoList();
+        BigDecimal notSetUpTotalPrice = new BigDecimal(0);
+        if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+            for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
+                    notSetUpTotalPrice = notSetUpTotalPrice.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
                 }
             }
+            if (notSetUpTotalPrice.doubleValue() > 0) {
+                notSetUpTotalPrice = notSetUpTotalPrice.divide(new BigDecimal(10000));
+                notSetUpTotalPrice = notSetUpTotalPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
+            }
+        }
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        schemeJudgeObjectList = generateCommonMethod.getSortSchemeJudgeObject(schemeJudgeObjectList);
+        LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            if (schemeJudgeObject.getDeclareRecordId() == null) {
+                continue;
+            }
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null) {
+                continue;
+            }
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            if (basicApply == null) {
+                continue;
+            }
+            schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
         }
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
@@ -2663,45 +2605,24 @@ public class GenerateBaseDataService {
             if (j == 10) builder.writeln("抵押价值(万元)");
         }
         builder.endRow();
-        if (!judgeObjectIntegerMap.isEmpty()) {
-            for (Map.Entry<SchemeJudgeObject, Integer> integerEntry : judgeObjectIntegerMap.entrySet()) {
+        if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
+            for (Map.Entry<BasicApply, SchemeJudgeObject> integerEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
                 for (int j = 0; j < colMax; j++) {
-                    DeclareRecord declareRecord = null;
-                    if (integerEntry.getKey().getDeclareRecordId() != null) {
-                        declareRecord = declareRecordService.getDeclareRecordById(integerEntry.getKey().getDeclareRecordId());
-                    }
                     builder.insertCell();
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(integerEntry.getValue().getDeclareRecordId());
                     if (j == 0) {
-                        builder.writeln(getSchemeJudgeObjectShowName(integerEntry.getKey()));
+                        builder.writeln(getSchemeJudgeObjectShowName(integerEntry.getValue()));
                     }
-                    SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(integerEntry.getValue());
-                    BigDecimal notSetUpTotalPrice = new BigDecimal(0);
-                    if (schemeReimbursement != null) {
-                        //抵押=总价-法定
-                        if (Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
-                            SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
-                            query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                            List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
-                            if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-                                for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
-                                    if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
-                                        notSetUpTotalPrice = notSetUpTotalPrice.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
-                                    }
-                                }
-                            }
+                    //抵押=总价-法定
+                    if (Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
+                        if (j == 9) {
+                            builder.writeln(notSetUpTotalPrice.toString());
                         }
-                    }
-                    if (notSetUpTotalPrice.doubleValue() > 0) {
-                        notSetUpTotalPrice = notSetUpTotalPrice.divide(new BigDecimal(10000));
-                        notSetUpTotalPrice = notSetUpTotalPrice.setScale(4, BigDecimal.ROUND_HALF_UP);
-                    }
-                    if (j == 9) builder.writeln(notSetUpTotalPrice.toString());
-                    if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
-                        BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
-                        if (totol != null) {
+                        if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
+                            BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
                             BigDecimal mortgage = totol.subtract(notSetUpTotalPrice);
                             mortgage = mortgage.divide(new BigDecimal(10000));
-                            mortgage = mortgage.setScale(4, BigDecimal.ROUND_HALF_UP);
+                            mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
                             if (j == 10) {
                                 if (notSetUpTotalPrice.doubleValue() > 0) {
                                     builder.writeln(mortgage.toString());
@@ -2711,7 +2632,7 @@ public class GenerateBaseDataService {
                             }
                         }
                     }
-                    GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(integerEntry.getValue());
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(integerEntry.getKey());
                     if (j == 1) {
                         if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {
                             builder.writeln(declareRecord.getSeat());
@@ -2920,7 +2841,7 @@ public class GenerateBaseDataService {
         if (!linkedHashMap.isEmpty()) {
             for (Map.Entry<String, List<SchemeJudgeObject>> listEntry : linkedHashMap.entrySet()) {
                 List<Integer> integerList = listEntry.getValue().stream().map(oo -> oo.getId()).collect(Collectors.toList());
-                if (CollectionUtils.isEmpty(integerList)){
+                if (CollectionUtils.isEmpty(integerList)) {
                     continue;
                 }
                 documentBuilder.writeln(String.format("1、楼盘名称:%s", listEntry.getKey()));
@@ -2940,7 +2861,7 @@ public class GenerateBaseDataService {
                 documentBuilder.writeln(String.format("12、物业管理:%s", "无"));
                 documentBuilder.writeln(String.format("13、楼栋新旧程度及维护使用情况:%s", generateHouseEntityService.getThirteen(integerList)));
                 documentBuilder.writeln(String.format("14、其它:%s", generateHouseEntityService.getOther(integerList)));
-                documentBuilder.writeln(String.format("15、建筑实体分析:%s", generateHouseEntityService.getContent(integerList,schemeAreaGroup)));
+                documentBuilder.writeln(String.format("15、建筑实体分析:%s", generateHouseEntityService.getContent(integerList, schemeAreaGroup)));
                 documentBuilder.writeln();
             }
         }
@@ -4387,6 +4308,15 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = new DocumentBuilder(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         return builder;
+    }
+
+    public List<SchemeReimbursementItemVo> getSchemeReimbursementItemVoList() {
+        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getSchemeReimbursementByAreaId(areaId, projectId);
+        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = Lists.newArrayList();
+        if (schemeReimbursement != null) {
+            schemeReimbursementItemVoList = schemeReimbursementService.getItemByMasterId(schemeReimbursement.getId());
+        }
+        return schemeReimbursementItemVoList;
     }
 
 
