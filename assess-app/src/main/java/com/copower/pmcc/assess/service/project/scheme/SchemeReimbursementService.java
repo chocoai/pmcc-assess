@@ -31,8 +31,24 @@ public class SchemeReimbursementService {
     @Autowired
     private SchemeReimbursementItemDao schemeReimbursementItemDao;
 
-    public List<SchemeReimbursement> getObjectList(SchemeReimbursement schemeReimbursement){
+    public List<SchemeReimbursement> getObjectList(SchemeReimbursement schemeReimbursement) {
         return schemeReimbursementDao.getObjectList(schemeReimbursement);
+    }
+
+    public SchemeReimbursement getSchemeReimbursementByAreaId(Integer areaId, Integer projectId) {
+        if (areaId == null){
+            return null;
+        }
+        SchemeReimbursement query = new SchemeReimbursement();
+        if (projectId != null) {
+            query.setProjectId(projectId);
+        }
+        query.setAreaId(areaId);
+        List<SchemeReimbursement> schemeReimbursementList = this.getObjectList(query);
+        if (CollectionUtils.isNotEmpty(schemeReimbursementList)) {
+            return schemeReimbursementList.get(0);
+        }
+        return null;
     }
 
     public SchemeReimbursement getDataByPlanDetailsId(Integer planDetailsId) {
@@ -122,14 +138,14 @@ public class SchemeReimbursementService {
         return findQueryBySchemeReimbursementItem(schemeReimbursementItem);
     }
 
-    public void saveAndUpdateSchemeReimbursementItem(SchemeReimbursementItem schemeReimbursementItem){
-        if (schemeReimbursementItem == null){
+    public void saveAndUpdateSchemeReimbursementItem(SchemeReimbursementItem schemeReimbursementItem) {
+        if (schemeReimbursementItem == null) {
             return;
         }
-        if (schemeReimbursementItem.getId() == null || schemeReimbursementItem.getId().intValue() == 0){
+        if (schemeReimbursementItem.getId() == null || schemeReimbursementItem.getId().intValue() == 0) {
             schemeReimbursementItem.setCreator(processControllerComponent.getThisUser());
             schemeReimbursementItemDao.addObject(schemeReimbursementItem);
-        }else {
+        } else {
             schemeReimbursementItemDao.updateObject(schemeReimbursementItem);
         }
     }
