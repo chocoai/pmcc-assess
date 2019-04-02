@@ -101,6 +101,7 @@
         estateCommon.estateForm.clearAll();
         estateCommon.estateLandStateForm.clearAll();
         estateCommon.estateForm.initForm(data.estate);
+        estateCommon.getLocationDescribe(data.estate.blockId);
         estateCommon.estateLandStateForm.initForm(data.land);
         AssessCommon.initAreaInfo({
             provinceTarget: estateCommon.estateForm.find("select[name='province']"),
@@ -293,5 +294,29 @@
         })
     };
 
+    //获取区位描述
+    estateCommon.getLocationDescribe  = function (blockId){
+        $.ajax({
+            url: getContextPath() + '/dataBlock/getDataBlockById',
+            type: "get",
+            dataType: "json",
+            data: {
+                id:blockId,
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if(result.data){
+                        estateCommon.estateForm.find("textarea[name='locationDescribe']").val(result.data.remark);
+                    }
+                }
+                else {
+                    toastr.warning(result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
     window.estateCommon = estateCommon;
 })(jQuery);
