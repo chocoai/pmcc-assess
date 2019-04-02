@@ -186,6 +186,7 @@
         marketCompare.fields = [];
         marketCompare.mcId = 0;
         marketCompare.price = 0;
+        marketCompare.judgeObjectId = 0;
         marketCompare.init = function (options) {
             var defaluts = {
                 marketCompare: undefined,//主表信息
@@ -194,6 +195,7 @@
                 cases: undefined,//案例
                 casesAll: undefined,//所有案例
                 mcId: undefined,
+                judgeObjectId: undefined,
                 readonly: false//
             };
             defaluts = $.extend({}, defaluts, options);
@@ -214,6 +216,7 @@
             }
 
             marketCompare.mcId = defaluts.mcId;
+            marketCompare.judgeObjectId = defaluts.judgeObjectId;
             $("#tb_md_mc_item_list").empty();
             marketCompare.initHead(defaluts);
             marketCompare.initBody(defaluts);
@@ -685,6 +688,7 @@
                 url: '${pageContext.request.contextPath}/marketCompare/selectCase',
                 data: {
                     mcId: marketCompare.mcId,
+                    judgeObjectId: marketCompare.judgeObjectId,
                     planDetailsIdString: caseArray.join()
                 },
                 type: 'post',
@@ -737,7 +741,8 @@
                                         id: itemId,
                                         residueRatioId: id
                                     },
-                                    success: function (result) {}
+                                    success: function (result) {
+                                    }
                                 })
                                 $(_this).closest('td').find('a').editable('setValue', resultValue);
                             }

@@ -126,7 +126,7 @@ public class MdMarketCompareService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
-        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList, false));
+        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, judgeObject, planDetails.getId(), setUseFieldList, false));
         //获取成新率相关参数
         setResidueRatioParam(mdMarketCompareItem, planDetails.getId(), mdMarketCompare.getValueTimePoint());
         mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
@@ -158,7 +158,7 @@ public class MdMarketCompareService {
      *
      * @param planDetailsIdString
      */
-    public void selectCase(Integer mcId, String planDetailsIdString) {
+    public void selectCase(Integer mcId, String planDetailsIdString,Integer judgeObjectId) {
         //清除原案例信息
         MdMarketCompareItem where = new MdMarketCompareItem();
         where.setMcId(mcId);
@@ -177,6 +177,7 @@ public class MdMarketCompareService {
             List<DataSetUseField> setUseFieldList = getSetUseFieldList();
             ProjectInfo projectInfo = null;
             int i=1;
+            SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
             for (Integer planDetailsId : planDetailsIdList) {
                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
                 MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
@@ -188,7 +189,7 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setMustAdjustPrice(false);
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList, true));
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, judgeObject, projectPlanDetails.getId(), setUseFieldList, true));
                 //获取成新率相关参数
                 setResidueRatioParam(mdMarketCompareItem, planDetailsId, marketCompare.getValueTimePoint());
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);

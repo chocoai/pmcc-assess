@@ -93,9 +93,9 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
-    public HttpResult selectCase(Integer mcId, String planDetailsIdString) {
+    public HttpResult selectCase(Integer mcId, String planDetailsIdString,Integer judgeObjectId) {
         try {
-            mdMarketCompareService.selectCase(mcId, planDetailsIdString);
+            mdMarketCompareService.selectCase(mcId, planDetailsIdString,judgeObjectId);
             MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
             mdCompareInitParamVo.setMcId(mcId);
             mdCompareInitParamVo.setMarketCompare(mdMarketCompareService.getMdMarketCompare(mcId));

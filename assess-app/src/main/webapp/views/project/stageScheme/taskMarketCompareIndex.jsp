@@ -122,6 +122,7 @@
             evaluation: JSON.parse($("#evaluationJSON").val()),
             casesAll: JSON.parse($("#casesAllJSON").val()),
             mcId: '${mcId}',
+            judgeObjectId:'${judgeObject.id}',
             cases: JSON.parse($("#casesJSON").val())
         });
 

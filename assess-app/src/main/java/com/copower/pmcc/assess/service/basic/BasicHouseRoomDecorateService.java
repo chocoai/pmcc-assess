@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -95,10 +97,12 @@ public class BasicHouseRoomDecorateService {
         return basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
     }
 
-    public List<BasicHouseRoomDecorate> getHouseRoomDecorateList(Integer roomId) throws Exception {
+    public List<BasicHouseRoomDecorateVo> getHouseRoomDecorateList(Integer roomId) throws Exception {
         BasicHouseRoomDecorate basicHouseRoomDecorate =new BasicHouseRoomDecorate();
         basicHouseRoomDecorate.setRoomId(roomId);
-        return basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
+        List<BasicHouseRoomDecorate> roomDecorates = basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
+        if(CollectionUtils.isEmpty(roomDecorates)) return null;
+        return LangUtils.transform(roomDecorates, o -> getBasicHouseRoomDecorateVo(o));
     }
 
 

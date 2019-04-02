@@ -336,7 +336,7 @@ public class GenerateHouseEntityService {
                                     .append("性质:").append(baseDataDicService.getNameById(oo.getDataProperty().getCompanyNature())).append("、")
                                     .append("社会信誉:").append(baseDataDicService.getNameById(oo.getDataProperty().getSocialPrestige()));
                         }
-                        if (oo.getDataBuilder() == null && oo.getDataProperty() == null){
+                        if (oo.getDataBuilder() == null && oo.getDataProperty() == null) {
                             stringBuilder.append("建筑商信息").append("无、").append("物业信息").append("无");
                         }
                     }
@@ -395,8 +395,8 @@ public class GenerateHouseEntityService {
                     if (CollectionUtils.isNotEmpty(surfaceVoList)) {
                         for (int j = 0; j < surfaceVoList.size(); j++) {
                             BasicBuildingSurfaceVo oo = surfaceVoList.get(j);
-                            stringBuilder.append(StringUtils.isNotBlank(oo.getStructureName())?oo.getStructureName():"层面结构无").append("、")
-                                    .append(StringUtils.isNotBlank(oo.getDescription())?oo.getDescription():"层面结构描述无");
+                            stringBuilder.append(StringUtils.isNotBlank(oo.getStructureName()) ? oo.getStructureName() : "层面结构无").append("、")
+                                    .append(StringUtils.isNotBlank(oo.getDescription()) ? oo.getDescription() : "层面结构描述无");
                             if (j == surfaceVoList.size() - 1 && surfaceVoList.size() != 1) {
                                 stringBuilder.append(";");
                             } else {
@@ -407,9 +407,9 @@ public class GenerateHouseEntityService {
                     if (CollectionUtils.isNotEmpty(maintenanceVoList)) {
                         for (int j = 0; j < maintenanceVoList.size(); j++) {
                             BasicBuildingMaintenanceVo oo = maintenanceVoList.get(j);
-                            stringBuilder.append(StringUtils.isNotBlank(oo.getTypeName())?oo.getTypeName():"类型无").append("、")
-                                    .append(StringUtils.isNotBlank(oo.getCategoryName())?oo.getCategoryName():"类别无").append("、")
-                                    .append(StringUtils.isNotBlank(oo.getMaterialQualityName())?oo.getMaterialQualityName():"材质无");
+                            stringBuilder.append(StringUtils.isNotBlank(oo.getTypeName()) ? oo.getTypeName() : "类型无").append("、")
+                                    .append(StringUtils.isNotBlank(oo.getCategoryName()) ? oo.getCategoryName() : "类别无").append("、")
+                                    .append(StringUtils.isNotBlank(oo.getMaterialQualityName()) ? oo.getMaterialQualityName() : "材质无");
                             if (j == maintenanceVoList.size() - 1 && maintenanceVoList.size() != 1) {
                                 stringBuilder.append(";");
                             } else {
@@ -420,10 +420,10 @@ public class GenerateHouseEntityService {
                     if (CollectionUtils.isNotEmpty(outfitVoList)) {
                         for (int j = 0; j < outfitVoList.size(); j++) {
                             BasicBuildingOutfitVo oo = outfitVoList.get(j);
-                            stringBuilder.append(StringUtils.isNotBlank(oo.getDecorationPartName())?oo.getDecorationPartName():"装修部位无").append("、")
-                                    .append(StringUtils.isNotBlank(oo.getDecoratingMaterialName())?oo.getDecoratingMaterialName():"装修材料").append("、")
-                                    .append(StringUtils.isNotBlank(oo.getMaterialPriceName())?oo.getMaterialPriceName():"材料价格区间无").append("、")
-                                    .append(StringUtils.isNotBlank(oo.getConstructionTechnologyName())?oo.getConstructionTechnologyName():"施工工艺无");
+                            stringBuilder.append(StringUtils.isNotBlank(oo.getDecorationPartName()) ? oo.getDecorationPartName() : "装修部位无").append("、")
+                                    .append(StringUtils.isNotBlank(oo.getDecoratingMaterialName()) ? oo.getDecoratingMaterialName() : "装修材料").append("、")
+                                    .append(StringUtils.isNotBlank(oo.getMaterialPriceName()) ? oo.getMaterialPriceName() : "材料价格区间无").append("、")
+                                    .append(StringUtils.isNotBlank(oo.getConstructionTechnologyName()) ? oo.getConstructionTechnologyName() : "施工工艺无");
                             if (j == outfitVoList.size() - 1 && outfitVoList.size() != 1) {
                                 stringBuilder.append(";");
                             } else {
@@ -431,13 +431,13 @@ public class GenerateHouseEntityService {
                             }
                         }
                     }
-                    if (CollectionUtils.isNotEmpty(functionVoList)){
-                        for (int j = 0; j < functionVoList.size(); j++){
+                    if (CollectionUtils.isNotEmpty(functionVoList)) {
+                        for (int j = 0; j < functionVoList.size(); j++) {
                             BasicBuildingFunctionVo functionVo = functionVoList.get(j);
-                            stringBuilder.append(StringUtils.isNotBlank(functionVo.getDecorationPartName())?functionVo.getDecorationPartName():"装修部位无").append("、")
-                                    .append(StringUtils.isNotBlank(functionVo.getDecoratingMaterialName())?functionVo.getDecoratingMaterialName():"装修材料无").append("、")
-                                    .append(StringUtils.isNotBlank(functionVo.getMaterialPriceName())?functionVo.getMaterialPriceName():"材料价格区间无").append("、")
-                                    .append(StringUtils.isNotBlank(functionVo.getConstructionTechnologyName())?functionVo.getConstructionTechnologyName():"施工工艺无");
+                            stringBuilder.append(StringUtils.isNotBlank(functionVo.getDecorationPartName()) ? functionVo.getDecorationPartName() : "装修部位无").append("、")
+                                    .append(StringUtils.isNotBlank(functionVo.getDecoratingMaterialName()) ? functionVo.getDecoratingMaterialName() : "装修材料无").append("、")
+                                    .append(StringUtils.isNotBlank(functionVo.getMaterialPriceName()) ? functionVo.getMaterialPriceName() : "材料价格区间无").append("、")
+                                    .append(StringUtils.isNotBlank(functionVo.getConstructionTechnologyName()) ? functionVo.getConstructionTechnologyName() : "施工工艺无");
                             if (j == functionVoList.size() - 1 && functionVoList.size() != 1) {
                                 stringBuilder.append(";");
                             } else {
@@ -579,7 +579,7 @@ public class GenerateHouseEntityService {
                 if (StringUtils.isNotBlank(contentA)) {
                     stringBuilder.append(contentA).append("。");
                 }
-                if (!Objects.equal(basicBuilding.getBuildingStructureCategoryName(), "简易结构")){
+                if (!Objects.equal(basicBuilding.getBuildingStructureCategoryName(), "简易结构")) {
                     if (StringUtils.isNotBlank(contentA)) {
                         switch (contentA) {
                             case "设备设施基础配置不完备":
@@ -788,28 +788,7 @@ public class GenerateHouseEntityService {
                             }
                         }
                         //电力通讯网络
-                        if (CollectionUtils.isNotEmpty(intelligentVoList)) {
-                            int size = intelligentVoList.size();
-                            for (int j = 0; j < intelligentVoList.size(); j++) {
-                                stringBuilder.append("电路采用");
-                                stringBuilder.append(StringUtils.isNotBlank(intelligentVoList.get(j).getGradeName()) ? intelligentVoList.get(j).getGradeName() : "档次无").append("材料");
-                                stringBuilder.append(StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName()) ? intelligentVoList.get(j).getSwitchCircuitName() : "开关回路无");
-                                stringBuilder.append("铺设方式").append(StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName()) ? intelligentVoList.get(j).getLayingMethodName() : "无");
-                                if (StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
-                                    stringBuilder.append(",");
-                                    stringBuilder.append(intelligentVoList.get(j).getLampsLanternsName());
-                                }
-                                if (StringUtils.isNotBlank(intelligentVoList.get(j).getIntelligentSystemName())) {
-                                    stringBuilder.append(",");
-                                    stringBuilder.append(intelligentVoList.get(j).getIntelligentSystemName());
-                                }
-                                if (j == size - 1 && size != 1) {
-                                    stringBuilder.append(";");
-                                } else {
-                                    stringBuilder.append("，");
-                                }
-                            }
-                        }
+                        stringBuilder.append(getIntelligentNet(intelligentVoList));
                         if (CollectionUtils.isNotEmpty(basicHouseWaterList)) {
                             int size = basicHouseWaterList.size();
                             for (int j = 0; j < size; j++) {
@@ -892,6 +871,38 @@ public class GenerateHouseEntityService {
             stringBuilder.append("无数据");
         }
         return generateCommonMethod.trim(stringBuilder.toString());
+    }
+
+    /**
+     * 获取电力通信网络
+     * @param intelligentVoList
+     * @return
+     */
+    public String getIntelligentNet(List<BasicHouseIntelligentVo> intelligentVoList) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(intelligentVoList)) {
+            int size = intelligentVoList.size();
+            for (int j = 0; j < intelligentVoList.size(); j++) {
+                stringBuilder.append("电路采用");
+                stringBuilder.append(StringUtils.isNotBlank(intelligentVoList.get(j).getGradeName()) ? intelligentVoList.get(j).getGradeName() : "档次无").append("材料");
+                stringBuilder.append(StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName()) ? intelligentVoList.get(j).getSwitchCircuitName() : "开关回路无");
+                stringBuilder.append("铺设方式").append(StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName()) ? intelligentVoList.get(j).getLayingMethodName() : "无");
+                if (StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
+                    stringBuilder.append(",");
+                    stringBuilder.append(intelligentVoList.get(j).getLampsLanternsName());
+                }
+                if (StringUtils.isNotBlank(intelligentVoList.get(j).getIntelligentSystemName())) {
+                    stringBuilder.append(",");
+                    stringBuilder.append(intelligentVoList.get(j).getIntelligentSystemName());
+                }
+                if (j == size - 1 && size != 1) {
+                    stringBuilder.append(";");
+                } else {
+                    stringBuilder.append("，");
+                }
+            }
+        }
+        return stringBuilder.toString();
     }
 
     /**

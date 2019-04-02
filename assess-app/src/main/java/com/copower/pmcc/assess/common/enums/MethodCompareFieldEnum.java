@@ -42,7 +42,6 @@ public enum MethodCompareFieldEnum {
 
     //实体状况------------------------------------------------------------------------------------------------
     BUILDING_AREA("building.area", "建筑面积"),//ps:楼盘-建筑面积
-    FLOOR_COUNT("floor.count", "层数"),//ps:楼栋-总层数
     FLOOR_HEIGHT("floor.height", "层高"),//ps:楼栋-层高
     NET_HEIGHT("net.height", "净高"),//ps:楼栋-净高
     BUILDING_SCALE("building.scale", "建筑规模"),//ps:楼栋-建筑规模
