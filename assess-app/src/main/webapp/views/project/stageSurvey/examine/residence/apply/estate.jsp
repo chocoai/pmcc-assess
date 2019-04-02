@@ -194,7 +194,7 @@
         <div class="form-group">
             <label class="col-sm-1 control-label">楼盘区位描述</label>
             <div class="col-sm-11">
-                        <textarea class="form-control" name="locationDescribe"
+                        <textarea class="form-control" name="locationDescribe" required
                                   placeholder="楼盘区位描述">${basicEstate.locationDescribe}</textarea>
             </div>
         </div>

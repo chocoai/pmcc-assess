@@ -109,8 +109,9 @@
                                             类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select required class="form-control search-select select2"
-                                                    name="marketBackgroundType">
+                                            <input type="hidden" name="name" id="marketBackgroundName">
+                                            <select required class="form-control search-select select2" id="marketBackgroundType"
+                                                    name="marketBackgroundType" onchange="getTypeName()">
                                                 <option value="">请选择</option>
                                                 <c:forEach items="${types}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
@@ -417,6 +418,12 @@
             id = 0;
         }
         dataReportTemplateItem.prototype.showStartModel(id, type);
+    }
+
+    function getTypeName() {
+        var name = $("#marketBackgroundType").find("option:selected").text();
+
+        $("#marketBackgroundName").val(name);
     }
 </script>
 
