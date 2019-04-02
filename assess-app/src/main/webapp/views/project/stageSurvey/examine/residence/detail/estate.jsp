@@ -147,9 +147,9 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼盘概况</label>
+                <label class="col-sm-1 control-label">楼盘区位描述</label>
                 <div class="col-sm-11">
-                    <label class="form-control">${basicEstate.description}</label>
+                    <label class="form-control">${basicEstate.locationDescribe}</label>
                 </div>
             </div>
         </div>

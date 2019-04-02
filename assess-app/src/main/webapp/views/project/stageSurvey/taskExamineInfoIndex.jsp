@@ -290,7 +290,6 @@
                         houseCommon.houseTradingForm.find("input[name='scopeInclude']").val(result.data.scopeInclude);
                         houseCommon.houseTradingForm.find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
                         houseCommon.houseTradingForm.find("select.scopeProperty").val(propertyScope).trigger('change');
-                        console.log("1====")
                     }
                 }
                 else {

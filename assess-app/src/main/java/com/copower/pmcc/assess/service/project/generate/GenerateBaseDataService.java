@@ -782,9 +782,9 @@ public class GenerateBaseDataService {
         }
         String temp = getActualAddressAssetInventory();
         String temp2 = getCertificateAssetInventory();
-        if (StringUtils.isNotBlank(temp)){
-            String oneContent = "估价对象现场查勘地址为"+temp +
-                    "本次评估根据委托方提供的由“"+temp2+"”出具的《证明》，本次以上地址为同一地址。";
+        if (StringUtils.isNotBlank(temp)) {
+            String oneContent = "估价对象现场查勘地址为" + temp +
+                    "本次评估根据委托方提供的由“" + temp2 + "”出具的《证明》，本次以上地址为同一地址。";
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
             row++;
         }
@@ -798,13 +798,13 @@ public class GenerateBaseDataService {
                     }
                 }
             }
-            String s = generateCommonMethod.getBigDecimalRound(bigDecimal,false) ;
+            String s = generateCommonMethod.getBigDecimalRound(bigDecimal, false);
             String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，" +
                     "本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，" +
                     "抵押权人已经知晓法定优先受偿款对估价对象价值的影响，" +
                     "且并不需要我们在抵押价值中予以扣除法定优先受偿款，" +
-                    "故本报告假设估价对象在价值时点法定优先受偿款为"+s + "元"+"（大写：" +
-                    CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(bigDecimal, false))+"）"+
+                    "故本报告假设估价对象在价值时点法定优先受偿款为" + s + "元" + "（大写：" +
+                    CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(bigDecimal, false)) + "）" +
                     "，在此提请报告使用人加以关注。";
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
         }
@@ -816,84 +816,138 @@ public class GenerateBaseDataService {
     /**
      * 变现分析表
      *
-     * @param title 标题
      * @return
      */
-    public String getLiquidationAnalysis(String title) throws Exception {
+    public String getLiquidationAnalysis() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
-        String localPath = getLocalPath(title);
+        String localPath = getLocalPath();
         createLiquidationAnalysisTable(builder);
         doc.save(localPath);
         return localPath;
     }
 
     public void createLiquidationAnalysisTable(DocumentBuilder builder) throws Exception {
-        //表头
-        builder.insertCell();
-        builder.writeln("物业类型");
-        builder.insertCell();
-        builder.writeln("税率");
-        builder.insertCell();
-        builder.writeln("备注");
-        builder.insertCell();
-        builder.writeln("商业");
-        builder.endRow();
-
-        builder.insertCell();
-        builder.writeln("面积");
-        builder.insertCell();
-        builder.insertCell();
-        builder.insertCell();
-        builder.writeln(schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString());
-        builder.endRow();
-
-        builder.insertCell();
-        builder.writeln("评估价");
-        builder.insertCell();
-        builder.insertCell();
-        builder.insertCell();
-        builder.writeln(schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString());
-        builder.endRow();
         List<SchemeLiquidationAnalysisItem> itemList = schemeLiquidationAnalysisService.getAnalysisItemListByAreaId(areaId);
-        for (SchemeLiquidationAnalysisItem item : itemList) {
-            builder.insertCell();
-            if (!StringUtils.isEmpty(item.getTaxRateName())) {
-                builder.writeln(item.getTaxRateName());
-            } else {
-                builder.writeln("空");
-            }
-            builder.insertCell();
-            if (item.getCalculationMethod() == 1 && !StringUtils.isEmpty(item.getTaxRateValue())) {
-                builder.writeln(new BigDecimal(item.getTaxRateValue()).multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
-            } else if (item.getCalculationMethod() == 0 && !StringUtils.isEmpty(item.getTaxRateValue())) {
-                builder.writeln(item.getTaxRateValue() + "元/㎡");
-            } else {
-                builder.writeln("空");
-            }
-            builder.insertCell();
-            if (!StringUtils.isEmpty(item.getRemark())) {
-                builder.writeln(item.getRemark());
-            } else {
-                builder.writeln("空");
-            }
-            builder.insertCell();
-            if (!StringUtils.isEmpty(item.getPrice().toString())) {
-                builder.writeln(item.getPrice().toString());
-            } else {
-                builder.writeln("空");
-            }
-            builder.endRow();
-        }
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByAreaId(areaId);
-        builder.insertCell();
-        builder.writeln("合计费用");
-        builder.insertCell();
-        builder.insertCell();
-        builder.insertCell();
-        builder.writeln(schemeLiquidationAnalysis.getTotal().toString());
-        builder.endRow();
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        Table table = builder.startTable();
+        //物业类型、税率、计算基数、计算公式、税费负担方、商业
+        int rowLength = 3+itemList.size()+1;
+        int cellLength = 6;
+        for (int i = 0; i < rowLength; i++) {
+            for (int j = 0; j < cellLength+1; j++) {
+                //目的是自动插入单元格并且确保只插入每行6个(列6个),6+1原因是最后一个索引用做结束行
+                if (j < cellLength){
+                    builder.insertCell();
+                }
+                if ( i == 0){
+                    switch (j){
+                        case 0:builder.writeln("物业类型");break;
+                        case 1:builder.writeln("税率");break;
+                        case 2:builder.writeln("计算基数");break;
+                        case 3:builder.writeln("计算公式");break;
+                        case 4:builder.writeln("税费负担方");break;
+                        case 5:builder.writeln("商业");break;
+                        case 6:builder.endRow();break;
+                        default:break;
+                    }
+                }
+                if ( i == 1){
+                    switch (j){
+                        case 0:builder.writeln("面积");break;
+                        case 1:builder.writeln("/");break;
+                        case 2:builder.writeln("/");break;
+                        case 3:builder.writeln("/");break;
+                        case 4:builder.writeln("/");break;
+                        case 5:builder.writeln(schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString());break;
+                        case 6:builder.endRow();break;
+                        default:break;
+                    }
+                }
+                if ( i == 2){
+                    switch (j){
+                        case 0:builder.writeln("评估价");break;
+                        case 1:builder.writeln("/");break;
+                        case 2:builder.writeln("/");break;
+                        case 3:builder.writeln("/");break;
+                        case 4:builder.writeln("/");break;
+                        case 5:builder.writeln(schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString());break;
+                        case 6:builder.endRow();break;
+                        default:break;
+                    }
+                }
+                if (i >= 3 && i < 3+itemList.size() ){
+                    SchemeLiquidationAnalysisItem item = itemList.get(i -3);
+                    switch (j){
+                        case 0:builder.writeln(StringUtils.isNotBlank(item.getTaxRateName())?item.getTaxRateName():"空");break;
+                        case 1:
+                            if (item.getCalculationMethod() == 1 && !StringUtils.isEmpty(item.getTaxRateValue())) {
+                                builder.writeln(new BigDecimal(item.getTaxRateValue()).multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
+                            } else if (item.getCalculationMethod() == 0 && !StringUtils.isEmpty(item.getTaxRateValue())) {
+                                builder.writeln(item.getTaxRateValue() + "元/㎡");
+                            } else {
+                                builder.writeln("空");
+                            }
+                            break;
+                        case 2:
+                            if (StringUtils.isNotBlank(item.getCalculateBase())){
+                                builder.writeln(item.getCalculateBase());
+                            }else {
+                                builder.writeln("空");
+                            }
+                            break;
+                        case 3:
+                            if (StringUtils.isNotBlank(item.getCalculationFormula())){
+                                builder.writeln(item.getCalculationFormula());
+                            }else {
+                                builder.writeln("空");
+                            }
+                            break;
+                        case 4:
+                            if (StringUtils.isNotBlank(item.getTaxesBurden())){
+                                builder.writeln(item.getTaxesBurden());
+                            }else {
+                                builder.writeln("空");
+                            }
+                            break;
+                        case 5:
+                            if (!StringUtils.isEmpty(item.getPrice().toString())) {
+                                builder.writeln(item.getPrice().toString());
+                            } else {
+                                builder.writeln("空");
+                            }
+                            break;
+                        case 6:builder.endRow();break;
+                        default:break;
+                    }
+                }
+                if (i >= 3+itemList.size() && i < 3+itemList.size()+1){
+                    switch (j){
+                        case 0:builder.writeln("合计费用");break;
+                        case 1:
+                            mergeCellModelList.add(new MergeCellModel(i, j, i, 5));
+                            if (schemeLiquidationAnalysis.getTotal() != null){
+                                builder.writeln(schemeLiquidationAnalysis.getTotal().toString());
+                            }else {
+                                builder.writeln("无");
+                            }
+                            break;
+                        case 2:builder.writeln("");break;
+                        case 3:builder.writeln("");break;
+                        case 4:builder.writeln("");break;
+                        case 5:builder.writeln("");break;
+                        case 6:builder.endRow();break;
+                        default:break;
+                    }
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(mergeCellModelList)){
+            generateCommonMethod.mergeCellTable(mergeCellModelList,table);
+        }
+        builder.endTable();
     }
 
 

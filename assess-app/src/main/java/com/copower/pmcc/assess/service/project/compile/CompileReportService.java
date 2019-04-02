@@ -150,7 +150,7 @@ public class CompileReportService {
         CompileReportDetail compileReportDetail = null;
         for (BaseDataDic baseDataDic : dataDicList) {
             SchemeAreaGroup schemeAreaGroup = schemeAreaGroupDao.get(projectPlanDetails.getAreaId());
-            DataReportAnalysis analysis = dataReportAnalysisBackgroundService.getReportAnalysisByAreaId(schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict(), baseDataDic.getName());
+            DataReportAnalysis analysis = dataReportAnalysisBackgroundService.getReportAnalysisByAreaId(schemeAreaGroup.getDistrict(), baseDataDic.getId());
             //根据各种条件获取对应的模板数据
             compileReportDetail = new CompileReportDetail();
             compileReportDetail.setCreator(commonService.thisUserAccount());
@@ -160,7 +160,7 @@ public class CompileReportService {
             compileReportDetail.setReportAnalysisName(analysisType.getName());
             compileReportDetail.setPlanDetailsId(projectPlanDetails.getId());
             compileReportDetail.setBisModifiable(true);
-            if(schemeAreaGroup != null){
+            if(analysis != null){
                 compileReportDetail.setContent(tagfilter(analysis.getTemplate()));
             }
             compileReportDetailDao.addReportDetail(compileReportDetail);
