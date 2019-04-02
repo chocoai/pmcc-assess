@@ -39,7 +39,6 @@ public class SurveyAssetInventoryRightRecordDao {
 
     public List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord){
         SurveyAssetInventoryRightRecordExample example = new SurveyAssetInventoryRightRecordExample();
-        example.setOrderByClause("id desc");
         MybatisUtils.convertObj2Example(surveyAssetInventoryRightRecord, example);
         return surveyAssetInventoryRightRecordMapper.selectByExample(example);
     }

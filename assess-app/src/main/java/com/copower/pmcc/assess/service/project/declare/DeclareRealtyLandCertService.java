@@ -418,6 +418,7 @@ public class DeclareRealtyLandCertService {
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setName(oo.getLandCertName());
             declareRecord.setOwnership(oo.getOwnership());
+            declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
             declareRecord.setSeat(oo.getBeLocated());
             declareRecord.setStreetNumber(oo.getStreetNumber());
             declareRecord.setAttachedNumber(oo.getAttachedNumber());
@@ -428,6 +429,7 @@ public class DeclareRealtyLandCertService {
             declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getCertUse()));
             declareRecord.setUseRightType(baseDataDicService.getNameById(oo.getLandRightNature()));
             declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
+            declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
             declareRecord.setFloorArea(oo.getUseRightArea());
             declareRecord.setLandUseEndDate(oo.getTerminationDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
@@ -438,6 +440,7 @@ public class DeclareRealtyLandCertService {
             if (realtyHouseCert != null) {
                 declareRecord.setCertUse(baseDataDicService.getNameById(realtyHouseCert.getPublicSituation()));
                 declareRecord.setHousingStructure(realtyHouseCert.getHousingStructure());
+                declareRecord.setNature(baseDataDicService.getNameById(realtyHouseCert.getNature()));
             }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);

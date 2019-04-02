@@ -25,7 +25,7 @@
     <result column="public_situation" property="publicSituation" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
     <result column="practical_area" property="practicalArea" jdbcType="DECIMAL" />
-    <result column="nature" property="nature" jdbcType="INTEGER" />
+    <result column="nature" property="nature" jdbcType="VARCHAR" />
     <result column="land_right_type" property="landRightType" jdbcType="VARCHAR" />
     <result column="land_right_nature" property="landRightNature" jdbcType="VARCHAR" />
     <result column="use_right_type" property="useRightType" jdbcType="VARCHAR" />
@@ -161,7 +161,7 @@
       #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, 
       #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, 
       #{landPracticalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{practicalArea,jdbcType=DECIMAL}, #{nature,jdbcType=INTEGER}, #{landRightType,jdbcType=VARCHAR}, 
+      #{practicalArea,jdbcType=DECIMAL}, #{nature,jdbcType=VARCHAR}, #{landRightType,jdbcType=VARCHAR}, 
       #{landRightNature,jdbcType=VARCHAR}, #{useRightType,jdbcType=VARCHAR}, #{housingStructure,jdbcType=VARCHAR}, 
       #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, 
       #{inventoryContentKey,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{bisPartIn,jdbcType=BIT}, 
@@ -354,7 +354,7 @@
         #{practicalArea,jdbcType=DECIMAL},
       </if>
       <if test="nature != null" >
-        #{nature,jdbcType=INTEGER},
+        #{nature,jdbcType=VARCHAR},
       </if>
       <if test="landRightType != null" >
         #{landRightType,jdbcType=VARCHAR},
@@ -479,7 +479,7 @@
         practical_area = #{record.practicalArea,jdbcType=DECIMAL},
       </if>
       <if test="record.nature != null" >
-        nature = #{record.nature,jdbcType=INTEGER},
+        nature = #{record.nature,jdbcType=VARCHAR},
       </if>
       <if test="record.landRightType != null" >
         land_right_type = #{record.landRightType,jdbcType=VARCHAR},
@@ -553,7 +553,7 @@
       public_situation = #{record.publicSituation,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
       practical_area = #{record.practicalArea,jdbcType=DECIMAL},
-      nature = #{record.nature,jdbcType=INTEGER},
+      nature = #{record.nature,jdbcType=VARCHAR},
       land_right_type = #{record.landRightType,jdbcType=VARCHAR},
       land_right_nature = #{record.landRightNature,jdbcType=VARCHAR},
       use_right_type = #{record.useRightType,jdbcType=VARCHAR},
@@ -642,7 +642,7 @@
         practical_area = #{practicalArea,jdbcType=DECIMAL},
       </if>
       <if test="nature != null" >
-        nature = #{nature,jdbcType=INTEGER},
+        nature = #{nature,jdbcType=VARCHAR},
       </if>
       <if test="landRightType != null" >
         land_right_type = #{landRightType,jdbcType=VARCHAR},
@@ -713,7 +713,7 @@
       public_situation = #{publicSituation,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=DECIMAL},
       practical_area = #{practicalArea,jdbcType=DECIMAL},
-      nature = #{nature,jdbcType=INTEGER},
+      nature = #{nature,jdbcType=VARCHAR},
       land_right_type = #{landRightType,jdbcType=VARCHAR},
       land_right_nature = #{landRightNature,jdbcType=VARCHAR},
       use_right_type = #{useRightType,jdbcType=VARCHAR},

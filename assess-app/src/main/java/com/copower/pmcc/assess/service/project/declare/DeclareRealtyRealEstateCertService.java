@@ -259,6 +259,7 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setName(oo.getCertName());
             declareRecord.setOwnership(oo.getOwnership());
+            declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
             declareRecord.setSeat(oo.getBeLocated());
             declareRecord.setStreetNumber(oo.getStreetNumber());
             declareRecord.setAttachedNumber(oo.getAttachedNumber());
@@ -269,9 +270,11 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setCertUse(baseDataDicService.getNameById(oo.getHouseCertUse()));
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setHousingStructure(oo.getHousingStructure());
+            declareRecord.setNature(baseDataDicService.getNameById(oo.getNature()));
             declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getLandCertUse()));
             declareRecord.setUseRightType(baseDataDicService.getNameById(oo.getLandRightNature()));
             declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
+            declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());

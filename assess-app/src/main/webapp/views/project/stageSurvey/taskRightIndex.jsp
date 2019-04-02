@@ -5,243 +5,256 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <script type="text/html" id="taskRightAssistDiv">
-    <div class="x_content">
-        <div class="btn-group">
-            <button type="button" class="btn btn-success" onclick="addData(this,'_number')"
-                    data-toggle="modal" data-target="#divBox_number"> 新增
-            </button>
+    <div class="x_panel">
+        <div class="x_title">
+            <h3>他权分组（0{index}）
+                <small>
+                    <a href="javascript://;" class="btn btn-xs btn-warning" onclick="saveSurveyAssetInventoryRightRecord(true,'_number',null);">保存</a>
+                    <a href="javascript://;" class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>
+                </small>
+            </h3>
         </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                    aria-expanded="false">导入数据
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript://"
-                       onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>
-                </li>
-                <li><a href="javascript://;"
-                       onclick="$('#ajaxFileUpload_number').val('').trigger('click')">导入数据</a>
-                </li>
-            </ul>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-warning"
-                    onclick="cleanHTMLData(this)" aria-expanded="false">
-                X
-            </button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-success"
-                    onclick="delData(this,'_number')" aria-expanded="false">
-                删除他项权力
-            </button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-success"
-                    onclick="editData(this,'_number')" aria-expanded="false">
-                编辑他项权力
-            </button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-success"
-                    onclick="saveSurveyAssetInventoryRightRecord(true,'_number',null)" aria-expanded="false">
-                保存
-            </button>
-        </div>
-        <table class="table table-bordered" id="tb_List_number">
-            <!-- cerare document add ajax data-->
-        </table>
-        <form class="form-horizontal" id="surveyAssetInventoryRightFrm_number">
-            <input type="hidden" name="id">
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">特殊情况</label>
-                    <div class="col-sm-11">
+        <div class="x_content">
+            <form class="form-horizontal" id="surveyAssetInventoryRightFrm_number">
+                <input type="hidden" name="id">
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">权证信息<span
+                                class="symbol required"></span></label>
+                        <div class="col-sm-5">
+                            <select class="form-control search-select select2" multiple="multiple" required="required"
+                                    name="recordIds">
+                                <c:forEach var="items" items="${declareRecordList}">
+                                    <option value="${items.id}">${items.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-11">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success" onclick="addData(this,'_number')"
+                                    data-toggle="modal" data-target="#divBox_number"> 新增
+                            </button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary"
+                                    onclick="editData(this,'_number')" aria-expanded="false">
+                                编辑
+                            </button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-warning"
+                                    onclick="delData(this,'_number')" aria-expanded="false">
+                                删除
+                            </button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">导入数据
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="javascript://"
+                                       onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>
+                                </li>
+                                <li><a href="javascript://;"
+                                       onclick="$('#ajaxFileUpload_number').val('').trigger('click')">导入数据</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">他权明细<span
+                                class="symbol required"></span></label>
+                        <div class="col-sm-11">
+                            <table class="table table-bordered" id="tb_List_number">
+                                <!-- cerare document add ajax data-->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">特殊情况</label>
+                        <div class="col-sm-11">
                         <textarea placeholder="特殊情况" class="form-control"
                                   name="specialcase"></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">申报<span
-                            class="symbol required"></span></label>
-                    <div class="col-sm-5">
-                        <select class="form-control search-select select2" multiple="multiple" required="required"
-                                name="recordIds">
-                            <c:forEach var="items" items="${declareRecordList}">
-                                <option value="${items.id}">${items.name}</option>
-                            </c:forEach>
-                        </select>
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">特殊情况附件</label>
+                        <div class="col-sm-4">
+                            <input id="specialCaseFile_number" type="file" multiple="false">
+                            <div id="_specialCaseFile_number"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">特殊情况附件</label>
-                    <div class="col-sm-4">
-                        <input id="specialCaseFile_number" type="file" multiple="false">
-                        <div id="_specialCaseFile_number"></div>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <input type="file" id="ajaxFileUpload_number" name="file" style="display: none;"
-               onchange="importRightData(this,'_number');">
-    </div>
+            </form>
+            <input type="file" id="ajaxFileUpload_number" name="file" style="display: none;"
+                   onchange="importRightData(this,'_number');">
+        </div>
 
-    <div id="divBox_number" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h3 class="modal-title">他项权利</h3>
-                </div>
-                <div class="modal-body">
-                    <form id="frm_inventory_right_number" class="form-horizontal">
-                        <input type="hidden" name="inventoryRightRecordId">
-                        <input type="hidden" name="id" value="0">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    类别<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" required id="category" name="category">
-                                    </select>
+        <div id="divBox_number" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+             role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title">他项权利</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frm_inventory_right_number" class="form-horizontal">
+                            <input type="hidden" name="inventoryRightRecordId">
+                            <input type="hidden" name="id" value="0">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        类别<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" required id="category" name="category">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">他项权力描述<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" required="required" name="remark"></textarea>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">他项权力描述<span
+                                            class="symbol required"></span></label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" required="required" name="remark"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    他权证编号
-                                </label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="他权证编号" name="number" class="form-control">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        他权证编号
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" placeholder="他权证编号" name="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">登记日期</label>
+                                    <div class="col-sm-4">
+                                        <input placeholder="登记日期" name="registerDate"
+                                               data-date-format="yyyy-mm-dd"
+                                               class="form-control date-picker dbdate" readonly="readonly">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">登记日期</label>
-                                <div class="col-sm-4">
-                                    <input placeholder="登记日期" name="registerDate"
-                                           data-date-format="yyyy-mm-dd"
-                                           class="form-control date-picker dbdate" readonly="readonly">
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    义务人
-                                </label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="义务人" name="obligor" class="form-control">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        义务人
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" placeholder="义务人" name="obligor" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        权利人
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" placeholder="权利人" name="obligee" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    权利人
-                                </label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="权利人" name="obligee" class="form-control">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        登记金额
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" placeholder="登记金额"
+                                               name="registerAmount" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        行权金额
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" placeholder="行权金额"
+                                               name="actualAmount" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    登记金额
-                                </label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="登记金额"
-                                           name="registerAmount" class="form-control">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        登记面积
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" placeholder="登记面积"
+                                               name="registerArea" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        他权级次
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" placeholder="他权级次"
+                                               name="rightRank" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    行权金额
-                                </label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="行权金额"
-                                           name="actualAmount" class="form-control">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">开始日期</label>
+                                    <div class="col-sm-4">
+                                        <input placeholder="开始日期"
+                                               name="beginDate" data-date-format="yyyy-mm-dd"
+                                               class="form-control date-picker dbdate" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">结束日期</label>
+                                    <div class="col-sm-4">
+                                        <input placeholder="结束日期"
+                                               name="endDate" data-date-format="yyyy-mm-dd"
+                                               class="form-control date-picker dbdate" readonly="readonly">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    登记面积
-                                </label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="登记面积"
-                                           name="registerArea" class="form-control">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        附件
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input id="inventoryRightFile_number" type="file" multiple="false">
+                                        <div id="_inventoryRightFile_number"></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    他权级次
-                                </label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="他权级次"
-                                           name="rightRank" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">开始日期</label>
-                                <div class="col-sm-4">
-                                    <input placeholder="开始日期"
-                                           name="beginDate" data-date-format="yyyy-mm-dd"
-                                           class="form-control date-picker dbdate" readonly="readonly">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">结束日期</label>
-                                <div class="col-sm-4">
-                                    <input placeholder="结束日期"
-                                           name="endDate" data-date-format="yyyy-mm-dd"
-                                           class="form-control date-picker dbdate" readonly="readonly">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    附件
-                                </label>
-                                <div class="col-sm-10">
-                                    <input id="inventoryRightFile_number" type="file" multiple="false">
-                                    <div id="_inventoryRightFile_number"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveData(this,'_number')">
-                        保存
-                    </button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">
+                            取消
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="saveData(this,'_number')">
+                            保存
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 </script>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -252,16 +265,18 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div>
                     <h3>他项权利
-                        <button class="btn btn-xs btn-success" onclick="appendHtml(false)">添加<i
-                                class="fa fa-plus"></i>
-                        </button>
+                        <small>
+                            <a href="javascript://;" class="btn btn-xs btn-success" onclick="appendHtml(false)">添加分组<i
+                                    class="fa fa-plus"></i>
+                            </a>
+                        </small>
                     </h3>
-                    <div class="clearfix"></div>
                 </div>
             </div>
-            <div class="x_panel" id="taskRightAssistAppend">
+            <div id="taskRightAssistAppend">
+
             </div>
             <div class="x_panel">
                 <div class="x_content">
@@ -348,6 +363,7 @@
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'categoryName', title: '类别'});
+        cols.push({field: 'remark', title: '他项权利描述', width: '40%'});
         cols.push({field: 'number', title: '他权证编号'});
         cols.push({field: 'obligor', title: '义务人'});
         cols.push({field: 'obligee', title: '权利人'});
@@ -358,8 +374,8 @@
             planDetailsId: '${projectPlanDetails.id}', inventoryRightRecordId: inventoryRightRecordId
         }, {
             method: "get",
-            showColumns: true,
-            showRefresh: true,
+            showColumns: false,
+            showRefresh: false,
             search: false,
             striped: true,
             onLoadSuccess: function () {
@@ -389,7 +405,7 @@
                             $.each(result.data, function (i, item) {
                                 var html = $("#" + commonField.taskRightAssistDiv).html();
                                 var number = commonField.getNumber();
-                                html = html.replace(/_number/g, number);
+                                html = html.replace(/_number/g, number).replace(/{index}/g, i+1);
                                 $("#" + commonField.taskRightAssistAppend).append(html);
                                 uploadFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, item.id);
                                 showFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, item.id);
@@ -415,7 +431,8 @@
         if (!flag) {
             var html = $("#" + commonField.taskRightAssistDiv).html();
             var number = commonField.getNumber();
-            html = html.replace(/_number/g, number);
+            var index = $("#" + commonField.taskRightAssistAppend).find('.x_panel').length;
+            html = html.replace(/_number/g, number).replace(/{index}/g, index+1);
             $("#" + commonField.taskRightAssistAppend).append(html);
             $.ajax({
                 url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/save",
@@ -547,9 +564,8 @@
      * @param _this
      */
     function cleanHTMLData(_this) {
-        var x_content = $(_this).closest(".x_content");
-        var div = x_content.prev();
-        var form = x_content.find("form").eq(0);
+        var x_panel = $(_this).closest(".x_panel");
+        var form = x_panel.find("form").eq(0);
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/remove",
             type: "post",
@@ -557,8 +573,8 @@
             data: {id: form.find("input[name='id']").val()},
             success: function (result) {
                 if (result.ret) {
-                    x_content.remove();
-                    div.remove();
+                    x_panel.remove();
+                    toastr.success('移除成功');
                 }
             },
             error: function (result) {

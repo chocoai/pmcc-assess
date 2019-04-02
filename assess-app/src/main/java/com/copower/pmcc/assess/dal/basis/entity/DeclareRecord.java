@@ -50,7 +50,7 @@ public class DeclareRecord {
 
     private BigDecimal practicalArea;
 
-    private Integer nature;
+    private String nature;
 
     private String landRightType;
 
@@ -264,12 +264,12 @@ public class DeclareRecord {
         this.practicalArea = practicalArea;
     }
 
-    public Integer getNature() {
+    public String getNature() {
         return nature;
     }
 
-    public void setNature(Integer nature) {
-        this.nature = nature;
+    public void setNature(String nature) {
+        this.nature = nature == null ? null : nature.trim();
     }
 
     public String getLandRightType() {

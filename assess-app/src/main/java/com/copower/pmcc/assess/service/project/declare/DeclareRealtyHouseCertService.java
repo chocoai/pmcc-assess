@@ -404,6 +404,7 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setName(oo.getCertName());
             declareRecord.setOwnership(oo.getOwnership());
+            declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
             declareRecord.setSeat(oo.getBeLocated());
             declareRecord.setStreetNumber(oo.getStreetNumber());
             declareRecord.setAttachedNumber(oo.getAttachedNumber());
@@ -415,6 +416,7 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
             declareRecord.setHousingStructure(oo.getHousingStructure());
+            declareRecord.setNature(baseDataDicService.getNameById(oo.getNature()));
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
             declareRecord.setCreator(declareApply.getCreator());
@@ -424,6 +426,8 @@ public class DeclareRealtyHouseCertService {
             if (realtyLandCert != null) {
                 declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
                 declareRecord.setUseRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
+                declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
+                declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
             }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
