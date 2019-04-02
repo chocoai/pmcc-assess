@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,7 @@ public class SchemeLiquidationAnalysisService {
     @Transactional(rollbackFor = Exception.class)
     public void initTaxAllocation(Integer areaId, Integer planDetailsId) {
         SchemeLiquidationAnalysisItem analysisItem = new SchemeLiquidationAnalysisItem();
-        analysisItem.setJudgeObjectId(areaId);
+        analysisItem.setAreaId(areaId);
         analysisItem.setPlanDetailsId(planDetailsId);
         analysisItem.setCreator(commonService.thisUserAccount());
         //增值税
@@ -194,6 +195,9 @@ public class SchemeLiquidationAnalysisService {
         if (CollectionUtils.isNotEmpty(analysisItemList)) {
             for (SchemeLiquidationAnalysisItem analysisItem : analysisItemList) {
                 if (analysisItem.getId() != null) {
+                    if (Objects.equal(analysisItem.getAreaId(), schemeLiquidationAnalysis.getAreaId())) {
+                        analysisItem.setAreaId(schemeLiquidationAnalysis.getAreaId());
+                    }
                     schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(analysisItem);
                 }
             }
@@ -215,8 +219,6 @@ public class SchemeLiquidationAnalysisService {
     public SchemeLiquidationAnalysis getSchemeLiquidationAnalysis(Integer id) {
         return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(id);
     }
-
-
 
 
 }
