@@ -3,12 +3,22 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHisRightInfoPublicityDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataHisRightInfoPublicity;
 import com.copower.pmcc.assess.dto.output.ZtreeVo;
+import com.copower.pmcc.assess.dto.output.data.DataHisRightInfoPublicityVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +34,8 @@ public class DataHisRightInfoPublicityService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ErpRpcToolsService erpRpcToolsService;
+    @Autowired
+    private ErpAreaService erpAreaService;
 
 
     public DataHisRightInfoPublicity getByDataHisRightInfoPublicityId(Integer id) {
@@ -39,29 +51,11 @@ public class DataHisRightInfoPublicityService {
      * @throws BusinessException
      */
     public boolean saveObject(DataHisRightInfoPublicity dataHisRightInfoPublicity) {
-        DataHisRightInfoPublicity infoPublicity = new DataHisRightInfoPublicity();
-        infoPublicity.setCity(dataHisRightInfoPublicity.getCity());
-        infoPublicity.setProvince(dataHisRightInfoPublicity.getProvince());
-        List<DataHisRightInfoPublicity> listObject = new ArrayList<>();
-        if (StringUtils.isNotBlank(dataHisRightInfoPublicity.getDistrict())) {
-            infoPublicity.setDistrict(dataHisRightInfoPublicity.getDistrict());
-            listObject = dataHisRightInfoPublicityDao.getListObject(infoPublicity);
-        }
-        List<DataHisRightInfoPublicity> districtObject = dataHisRightInfoPublicityDao.getCityContent(dataHisRightInfoPublicity.getCity());
-        if (CollectionUtils.isNotEmpty(listObject)) {
-            infoPublicity = listObject.get(0);
-            infoPublicity.setContent(dataHisRightInfoPublicity.getContent());
-            return dataHisRightInfoPublicityDao.updateObject(infoPublicity);
-        } else if (StringUtils.isEmpty(dataHisRightInfoPublicity.getDistrict()) && CollectionUtils.isNotEmpty(districtObject)) {
-            infoPublicity = districtObject.get(0);
-            infoPublicity.setContent(dataHisRightInfoPublicity.getContent());
-            return dataHisRightInfoPublicityDao.updateObject(infoPublicity);
+        if (dataHisRightInfoPublicity.getId() != null && dataHisRightInfoPublicity.getId() > 0) {
+            return dataHisRightInfoPublicityDao.updateObject(dataHisRightInfoPublicity);
         } else {
-            dataHisRightInfoPublicity.setCreator(processControllerComponent.getThisUser());
             return dataHisRightInfoPublicityDao.addObject(dataHisRightInfoPublicity);
         }
-
-
     }
 
 
@@ -73,6 +67,37 @@ public class DataHisRightInfoPublicityService {
      */
     public boolean deleteDataHisRightInfoPublicity(Integer id) throws BusinessException {
         return dataHisRightInfoPublicityDao.deleteObject(id);
+    }
+
+    /**
+     * 获取数据列表
+     */
+    public BootstrapTableVo getDataHisRightInfoPublicityList() {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<DataHisRightInfoPublicity> list = dataHisRightInfoPublicityDao.getListObject(new DataHisRightInfoPublicity());
+        List<DataHisRightInfoPublicityVo> vos = LangUtils.transform(list, p -> getHisRightInfoPublicityVo(p));
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DataHisRightInfoPublicity>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public DataHisRightInfoPublicityVo getHisRightInfoPublicityVo(DataHisRightInfoPublicity reportAnalysis) {
+        if (reportAnalysis == null) return null;
+        DataHisRightInfoPublicityVo vo = new DataHisRightInfoPublicityVo();
+        BeanUtils.copyProperties(reportAnalysis, vo);
+        if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getProvince())) {
+            vo.setProvinceName(erpAreaService.getSysAreaName(reportAnalysis.getProvince()));//省
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getCity())) {
+            vo.setCityName(erpAreaService.getSysAreaName(reportAnalysis.getCity()));//市或者县
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getDistrict())) {
+            vo.setDistrictName(erpAreaService.getSysAreaName(reportAnalysis.getDistrict()));//县
+        }
+
+        return vo;
     }
 
 
@@ -115,24 +140,22 @@ public class DataHisRightInfoPublicityService {
     }
 
 
-
     /**
-     *通过省市区id获取他权信息
+     * 通过省市区id获取他权信息
      *
      * @param province 省id
-     * @param city  市id
+     * @param city     市id
      * @param district 区id
-     *
      */
     public DataHisRightInfoPublicity getDataHisRightInfoPublicity(String province, String city, String district) {
         //district不必判断(example:北京市)
-        if (StringUtils.isEmpty(province) || StringUtils.isEmpty(city)){
+        if (StringUtils.isEmpty(province) || StringUtils.isEmpty(city)) {
             return null;
         }
         DataHisRightInfoPublicity infoPublicity = new DataHisRightInfoPublicity();
         infoPublicity.setProvince(province);
         infoPublicity.setCity(city);
-        if (StringUtils.isNotBlank(district)){
+        if (StringUtils.isNotBlank(district)) {
             infoPublicity.setDistrict(district);
         }
         List<DataHisRightInfoPublicity> districtObject = dataHisRightInfoPublicityDao.getListObject(infoPublicity);

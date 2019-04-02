@@ -5,205 +5,273 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
-
-<body class="nav-md">
+<body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
-            <div class="row">
-                <div class="x_panel">
-                    <div class="x_title ">
-                        <h2>
-                            <i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                            ${baseViewDto.currentMenu.name}
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div class="col-md-2">
-                            <ul id="ztree" class="ztree"></ul>
-                        </div>
-                        <div class="col-md-2">
-                            <ul id="ztree2" class="ztree"></ul>
-                        </div>
-                        <div class="col-md-2">
-                            <ul id="ztree3" class="ztree"></ul>
-                        </div>
-                        <div class="col-xs-6">
-                            <form id="frm_dataHisRightInfoPublicity" class="form-horizontal" style="display: none">
-                                <div class="form-group ">
-                                    <input type="hidden" id="zTreeNodeId">
-                                    <button type="button" class="btn btn-primary" onclick="saveObject()">
-                                        保存
-                                    </button>
-                                </div>
-                                <div class="form-group ">
-                                  <textarea required placeholder="他权公式信息" name="content" id="content" rows="20"
-                                            class="form-control"></textarea>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
+                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form id="frmQuery" class="form-horizontal">
+                        <div class="form-group ">
 
+                            <div class="col-sm-3">
+                                <%--   <button type="button" class="btn btn-primary" onclick="dataHisRightInfoPublicity.prototype.loadDataDicList()">
+                                       查询
+                                   </button>--%>
+
+                                <button type="button" class="btn btn-success"
+                                        onclick="dataHisRightInfoPublicity.prototype.showModel()"
+                                        data-toggle="modal" href="#divBox"> 新增
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                    <table class="table table-bordered" id="tb_FatherList">
+                        <!-- cerare document add ajax data-->
+                    </table>
                 </div>
             </div>
         </div>
+
     </div>
+    <!-- end: MAIN CONTAINER -->
 </div>
-</div>
-
-
 </body>
-
-
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="application/javascript">
-    var zTreeObj;
-    var zTreeObj2;
-    var zTreeObj3;
-    var setting = {
-        data: {
-            simpleData: {
-                enable: true,
-                idKey: "id",
-                pIdKey: "pid",
-                rootPId: 0
-            },
-        },
-        async: {
-            enable: true,
-            url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/getDataHisRightInfoPublicityTree",
-            autoParam: ["id=pid"]
-        },
-        // 回调函数
-        callback: {
-            onClick: function (event, treeId, treeNode, clickFlag) {
-                $("#content").val("");
-                $("#frm_dataHisRightInfoPublicity").hide();
-                // 判断是否父节点
-                if (treeNode.parent) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/getDataHisRightInfoPublicityTree",
-                        data: {"pid": treeNode.id},
-                        error: function () {//请求失败处理函数
-                            alert('请求失败');
-                        },
-                        success: function (data) { //添加子节点到指定的父节点
-
-                            var jsondata = eval(data);
-                            if (jsondata == null || jsondata == "") {
-
-                            }
-                            else {
-                                var treeObj;
-                                if (treeNode.pid == 0) {
-                                    zTreeObj2 = $.fn.zTree.init($("#ztree2"), setting, [{
-                                        "id": treeNode.id,
-                                        "pid": treeNode.pid,
-                                        "name": "市",
-                                        "isParent": true
-                                    }]);
-                                    treeObj = $.fn.zTree.getZTreeObj("ztree2");
-                                    //清空区
-                                    $.fn.zTree.init($("#ztree3"), setting, [{
-                                        "id": 0,
-                                        "pid": 0,
-                                        "name": "区",
-                                        "isParent": true
-                                    }]);
-
-                                } else {
-                                    zTreeObj3 = $.fn.zTree.init($("#ztree3"), setting, [{
-                                        "id": treeNode.id,
-                                        "pid": treeNode.pid,
-                                        "name": "区",
-                                        "isParent": true
-                                    }]);
-                                    treeObj = $.fn.zTree.getZTreeObj("ztree3");
-                                    getContent(treeNode.id);
-                                }
-                                var parentZNode = treeObj.getNodeByParam("id", treeNode.id, null);//获取指定父节点
-                                newNode = treeObj.addNodes(parentZNode, jsondata, false);
-
-                            }
-                        }
-                    });
-                } else {
-
-                    getContent(treeNode.id);
-                }
-
-            }
-        }
-    };
+<script type="text/javascript">
     $(function () {
-
-        ztreeInit();
+        dataHisRightInfoPublicity.prototype.loadDataDicList();
     });
 
+    var ue = UE.getEditor('template', {
+        toolbars: [
+            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 220,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
 
-    function ztreeInit() {
-        zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{"id": 0, "pid": 0, "name": "省", "isParent": true}]);
-        //展开第一级，选中根节点
-        var rootNode = zTreeObj.getNodes()[0];
-        zTreeObj.selectNode(rootNode);
-        //$("#zTreeNodeId").val(-1);
-        //loadContractList();
-        zTreeObj.expandNode(rootNode, true, false, true);
-    }
+    var dataHisRightInfoPublicity = function () {
 
-    //保存
-    function saveObject() {
-        if ($("#frm_dataHisRightInfoPublicity").valid()) {
-            Loading.progressShow();
-            var data = formParams("frm_dataHisRightInfoPublicity");
-            data.province = zTreeObj.getSelectedNodes()[0].id;
-            data.city = zTreeObj2.getSelectedNodes()[0].id;
-            if (zTreeObj3.getSelectedNodes()[0]) {
-                data.district = zTreeObj3.getSelectedNodes()[0].id;
+    };
+    dataHisRightInfoPublicity.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "tb_FatherList";
+            data.box = "divBoxFather";
+            data.frm = "frmFather";
+            return data;
+        },
+        loadDataDicList: function () {
+            var cols = [];
+            cols.push({
+                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName)
+                }
+            });
+            cols.push({field: 'content', title: '模板', width: '70%'});
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataHisRightInfoPublicity.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataHisRightInfoPublicity.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + dataHisRightInfoPublicity.prototype.config().table).bootstrapTable('destroy');
+            TableInit(dataHisRightInfoPublicity.prototype.config().table, "${pageContext.request.contextPath}/dataHisRightInfoPublicity/list", cols, {}, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id) {
+            Alert("确认删除!", 2, null, function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/deleteDataHisRightInfoPublicityById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            dataHisRightInfoPublicity.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            });
+        },
+        showModel: function () {
+            $("#" + dataHisRightInfoPublicity.prototype.config().frm).clearAll();
+            $('#' + dataHisRightInfoPublicity.prototype.config().box).modal("show");
+            AssessCommon.initAreaInfo({
+                provinceTarget: $("#province"),
+                cityTarget: $("#city"),
+                districtTarget: $("#district"),
+                provinceValue: '',
+                cityValue: '',
+                districtValue: ''
+            });
+        },
+        saveData: function () {
+            if (!$("#" + dataHisRightInfoPublicity.prototype.config().frm).valid()) {
+                return false;
             }
+            var data = formParams(dataHisRightInfoPublicity.prototype.config().frm);
+            data.content = ue.getContent();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/saveAndUpdateDataHisRightInfoPublicity",
-                data: data,
                 type: "post",
                 dataType: "json",
+                data: data,
                 success: function (result) {
-                    Loading.progressHide();
                     if (result.ret) {
                         toastr.success('保存成功');
-                    } else {
-                        Alert("保存失败：" + result.errmsg);
+                        $('#' + dataHisRightInfoPublicity.prototype.config().box).modal('hide');
+                        dataHisRightInfoPublicity.prototype.loadDataDicList();
                     }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/getDataHisRightInfoPublicityById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + dataHisRightInfoPublicity.prototype.config().frm).clearAll();
+                        $("#" + dataHisRightInfoPublicity.prototype.config().frm).initForm(result.data);
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#province"),
+                            cityTarget: $("#city"),
+                            districtTarget: $("#district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        })
+
+                        var content = result.data.content;
+                        setTimeout(function () {
+                            ue.setContent(content, false);
+                        }, 500);
+                        $('#' + dataHisRightInfoPublicity.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
-    }
-
-    //获取信息
-    function getContent(areaId) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/getContent",
-            data: {
-                areaId: areaId
-            },
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        $("#content").val(result.data.content);
-                    } else {
-                        $("#content").val("");
-                    }
-                    $("#frm_dataHisRightInfoPublicity").show();
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
 
     }
-
 </script>
+<div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">他权信息公示</h3>
+            </div>
+            <form id="frmFather" class="form-horizontal">
+                <input type="hidden" id="id" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">省<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select id="province" name="province"
+                                                    class="form-control search-select select2"
+                                                    required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">市<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-2">
+                                            <select id="city" name="city" class="form-control search-select select2"
+                                                    required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">县</label>
+                                        <div class="col-sm-2">
+                                            <select id="district" name="district"
+                                                    class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            模版<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div style="width:99%;height:200px;" id="template"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="dataHisRightInfoPublicity.prototype.saveData()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 </html>
+

@@ -203,13 +203,6 @@
         <div class="x_title">土壤</div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">承载力</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="承载力"
-                           name="bearingCapacity" value="${basicEstateLandState.bearingCapacity}">
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">污染</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="污染"
@@ -223,8 +216,6 @@
                            name="ph" value="${basicEstateLandState.ph}">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">肥力</label>
                 <div class="col-sm-3">
@@ -232,11 +223,20 @@
                            name="fertility" value="${basicEstateLandState.fertility}">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">稳定性</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="稳定性"
                            name="holdOn" value="${basicEstateLandState.holdOn}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">承载力</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="承载力"
+                           name="bearingCapacity" value="${basicEstateLandState.bearingCapacity}">
                 </div>
             </div>
         </div>

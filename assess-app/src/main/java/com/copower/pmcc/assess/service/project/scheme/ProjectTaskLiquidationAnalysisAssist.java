@@ -1,9 +1,12 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysis;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -33,6 +36,8 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private DataTaxRateAllocationService dataTaxRateAllocationService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -134,5 +139,9 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         }
         modelAndView.addObject("groupArea",groupArea);
         modelAndView.addObject("groupPrice",groupPrice);
+        //增值税率
+        DataTaxRateAllocation allocationSales = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
+        String salesTax = String.valueOf(allocationSales.getTaxRate());
+        modelAndView.addObject("salesTax",salesTax);
     }
 }

@@ -166,12 +166,6 @@
         <div class="x_title">土壤</div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">承载力</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.bearingCapacity}</label>
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">污染</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.contaminated}</label>
@@ -183,15 +177,20 @@
                     <label class="form-control">${basicEstateLandState.ph}</label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">肥力</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.fertility}</label>
                 </div>
             </div>
-
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">承载力</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.bearingCapacity}</label>
+                </div>
+            </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">稳定性</label>
                 <div class="col-sm-3">

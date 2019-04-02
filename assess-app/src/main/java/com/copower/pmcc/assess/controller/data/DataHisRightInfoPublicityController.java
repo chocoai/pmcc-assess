@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataHisRightInfoPublicity;
 import com.copower.pmcc.assess.dto.output.ZtreeVo;
 import com.copower.pmcc.assess.service.data.DataHisRightInfoPublicityService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,12 @@ public class DataHisRightInfoPublicityController {
         String view = "/data/dataHisRightInfoPublicity";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
+    public BootstrapTableVo list() {
+        return dataHisRightInfoPublicityService.getDataHisRightInfoPublicityList();
     }
 
     @RequestMapping(value = "/getDataHisRightInfoPublicityById", method = {RequestMethod.GET}, name = "通过id获取信息")
