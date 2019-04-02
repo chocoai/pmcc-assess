@@ -36,6 +36,8 @@ public class SchemeLiquidationAnalysisItem {
 
     private Date gmtModified;
 
+    private String typeKey;
+
     public Integer getId() {
         return id;
     }
@@ -162,5 +164,13 @@ public class SchemeLiquidationAnalysisItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getTypeKey() {
+        return typeKey;
+    }
+
+    public void setTypeKey(String typeKey) {
+        this.typeKey = typeKey == null ? null : typeKey.trim();
     }
 }

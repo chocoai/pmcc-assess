@@ -131,6 +131,7 @@
 
     //初始化计算结果
     function initResult() {
+        var salesTax = "${salesTax}";
         var total = 0;
         var evaluationArea = $("#evaluationArea").text();
         var evaluationPrice = $("#evaluationPrice").text();
@@ -140,8 +141,52 @@
             var price = 0;
             if ($taxRateValue.hasClass('x-percent')) {
                 rate = $taxRateValue.attr('data-value');
-                if (rate && evaluationPrice) {
-                    price = Number(evaluationPrice * rate).toFixed(2);
+                var key = $taxRateValue.attr('data-key');
+                switch (key) {
+                    //增值税
+                    case "data.tax.rate.allocation.sales.tax": {
+                        if (rate && evaluationPrice) {
+                            var temp = evaluationPrice / 1.05;
+                            price = Number(temp * rate).toFixed(2);
+                        }
+                        break;
+                    }
+                    //城建税
+                    case "data.tax.rate.allocation.construction.tax": {
+                        if (rate && evaluationPrice) {
+                            var temp = evaluationPrice / 1.05;
+                            price = Number(temp * salesTax * rate).toFixed(2);
+                        }
+                        break;
+                    }
+                    //地方教育税附加
+                    case "data.tax.rate.allocation.local.education.tax.additional": {
+                        if (rate && evaluationPrice) {
+                            var temp = evaluationPrice / 1.05;
+                            price = Number(temp * salesTax * rate).toFixed(2);
+                        }
+                        break;
+                    }
+                    //印花税
+                    case "data.tax.rate.allocation.stamp.duty": {
+                        price = Number(evaluationPrice * rate).toFixed(2);
+                        break;
+                    }
+                    //土地增值税
+                    case "data.tax.rate.allocation.land.increment.tax": {
+                        price = Number(evaluationPrice * rate).toFixed(2);
+                        break;
+                    }
+                    //其它税费
+                    case "data.tax.rate.allocation.other.taxes.fee": {
+                        price = Number(evaluationPrice * rate).toFixed(2);
+                        break;
+                    }
+                    //企业所得税
+                    case "data.tax.rate.allocation.corporate.income.tax": {
+                        price = Number(evaluationPrice * rate).toFixed(2);
+                        break;
+                    }
                 }
             } else {
                 if (rate && evaluationArea) {
@@ -189,6 +234,7 @@
                 Loading.progressHide();
                 $("#tbody_data_section").empty();
                 if (result.ret) {
+                    console.log(result.data)
                     var html = "";
                     $.each(result.data, function (i, item) {
                         html += "<tr>";
@@ -198,9 +244,9 @@
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         if (item.calculationMethod == 0) {
-                            html += "<input type='text' required onblur='getThisPrice(this);' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue).toFixed(2) + "' class='form-control'>";
+                            html += "<input type='text' required onblur='getThisPrice(this);' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue).toFixed(2) + "' class='form-control' data-key='" + item.typeKey + "'>";
                         } else {
-                            html += "<input type='text' required onblur='getThisPrice(this);' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue * 100).toFixed(2) + "%' class='form-control x-percent'>";
+                            html += "<input type='text' required onblur='getThisPrice(this);' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue * 100).toFixed(2) + "%' class='form-control x-percent' data-key='" + item.typeKey + "'>";
                         }
 
                         html += "<td class='hidden-xs'>";
@@ -220,7 +266,7 @@
 
                         html += "<td class='hidden-xs'>";
                         html += "<div class='x-valid'>";
-                        html += "<input type='text' required  name='price_" + item.id + "' value='" + AssessCommon.toString(item.price) + "' onblur='getTotal()'  class='form-control' data-rule-number='true'>";
+                        html += "<input type='text' required  data-key='price_" + item.typeKey + "' name='price_" + item.id + "' value='" + AssessCommon.toString(item.price) + "' onblur='getTotal()'  class='form-control' data-rule-number='true'>";
                         html += "</div>";
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
@@ -270,6 +316,14 @@
     }
 
     function getThisPrice(_this) {
+        //增值税率
+        var salesTax = $("input[data-key='data.tax.rate.allocation.sales.tax']").attr('data-value');
+        //城建税率
+        var constructionTax = $("input[data-key='data.tax.rate.allocation.construction.tax']").attr('data-value');
+        var constructionPrice = "price_data.tax.rate.allocation.construction.tax";
+        //地方教育税附加率
+        var educationTax = $("input[data-key='data.tax.rate.allocation.local.education.tax.additional']").attr('data-value');
+        var educationPrice ="price_data.tax.rate.allocation.local.education.tax.additional";
         var evaluationArea = $("#evaluationArea").text();
         var evaluationPrice = $("#evaluationPrice").text();
         var $taxRateValue = $(_this).parent().parent().find('[name^=taxRateValue]');
@@ -277,8 +331,54 @@
         var price = 0;
         if ($taxRateValue.hasClass('x-percent')) {
             rate = $taxRateValue.attr('data-value');
-            if (rate && evaluationPrice) {
-                price = Number(evaluationPrice * rate).toFixed(2);
+            var key = $taxRateValue.attr('data-key');
+            switch (key) {
+                //增值税
+                case "data.tax.rate.allocation.sales.tax": {
+                    if (rate && evaluationPrice) {
+                        var temp = evaluationPrice / 1.05;
+                        price = Number(temp * rate).toFixed(2);
+                    }
+                    $('input[data-key="'+ constructionPrice +'"]').val((price*constructionTax).toFixed(2));
+                    $('input[data-key="'+ educationPrice +'"]').val((price*educationTax).toFixed(2));
+                    break;
+                }
+                //城建税
+                case "data.tax.rate.allocation.construction.tax": {
+                    if (rate && evaluationPrice) {
+                        var temp = evaluationPrice / 1.05;
+                        price = Number(temp * salesTax * rate).toFixed(2);
+                    }
+                    break;
+                }
+                //地方教育税附加
+                case "data.tax.rate.allocation.local.education.tax.additional": {
+                    if (rate && evaluationPrice) {
+                        var temp = evaluationPrice / 1.05;
+                        price = Number(temp * salesTax * rate).toFixed(2);
+                    }
+                    break;
+                }
+                //印花税
+                case "data.tax.rate.allocation.stamp.duty": {
+                    price = Number(evaluationPrice * rate).toFixed(2);
+                    break;
+                }
+                //土地增值税
+                case "data.tax.rate.allocation.land.increment.tax": {
+                    price = Number(evaluationPrice * rate).toFixed(2);
+                    break;
+                }
+                //其它税费
+                case "data.tax.rate.allocation.other.taxes.fee": {
+                    price = Number(evaluationPrice * rate).toFixed(2);
+                    break;
+                }
+                //企业所得税
+                case "data.tax.rate.allocation.corporate.income.tax": {
+                    price = Number(evaluationPrice * rate).toFixed(2);
+                    break;
+                }
             }
         } else {
             if (rate && evaluationArea) {

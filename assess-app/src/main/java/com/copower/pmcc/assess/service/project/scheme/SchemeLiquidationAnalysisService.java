@@ -86,6 +86,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setCalculateBase(allocationSales.getCalculateBase());
         analysisItem.setCalculationFormula(allocationSales.getCalculationFormula());
         analysisItem.setTaxesBurden(allocationSales.getTaxesBurden());
+        analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         //城建税
         DataTaxRateAllocation allocationConstruction = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CONSTRUCTION_TAX);
@@ -96,6 +97,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setCalculateBase(allocationConstruction.getCalculateBase());
         analysisItem.setCalculationFormula(allocationConstruction.getCalculationFormula());
         analysisItem.setTaxesBurden(allocationConstruction.getTaxesBurden());
+        analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CONSTRUCTION_TAX);
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         //地方教育税附加
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
@@ -107,6 +109,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setCalculateBase(localEducation.getCalculateBase());
         analysisItem.setCalculationFormula(localEducation.getCalculationFormula());
         analysisItem.setTaxesBurden(localEducation.getTaxesBurden());
+        analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL);
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         //印花税
         DataTaxRateAllocation allocationStamp = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_STAMP_DUTY);
@@ -117,6 +120,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setCalculateBase(allocationStamp.getCalculateBase());
         analysisItem.setCalculationFormula(allocationStamp.getCalculationFormula());
         analysisItem.setTaxesBurden(allocationStamp.getTaxesBurden());
+        analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_STAMP_DUTY);
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         //土地增值税
         DataTaxRateAllocation landIncrement = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LAND_INCREMENT_TAX);
@@ -127,6 +131,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setCalculateBase(landIncrement.getCalculateBase());
         analysisItem.setCalculationFormula(landIncrement.getCalculationFormula());
         analysisItem.setTaxesBurden(landIncrement.getTaxesBurden());
+        analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LAND_INCREMENT_TAX);
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         //交易手续费
         DataTaxRateAllocation transactionCharges = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_TRANSACTION_CHARGES);
@@ -137,6 +142,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setCalculateBase(transactionCharges.getCalculateBase());
         analysisItem.setCalculationFormula(transactionCharges.getCalculationFormula());
         analysisItem.setTaxesBurden(transactionCharges.getTaxesBurden());
+        analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_TRANSACTION_CHARGES);
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         //其他税费
         DataTaxRateAllocation otherTaxesFee = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_OTHER_TAXES_FEE);
@@ -147,6 +153,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setCalculateBase(otherTaxesFee.getCalculateBase());
         analysisItem.setCalculationFormula(otherTaxesFee.getCalculationFormula());
         analysisItem.setTaxesBurden(otherTaxesFee.getTaxesBurden());
+        analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_OTHER_TAXES_FEE);
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         //企业所得税
         DataTaxRateAllocation corporateIncome = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CORPORATE_INCOME_TAX);
@@ -157,6 +164,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setCalculateBase(corporateIncome.getCalculateBase());
         analysisItem.setCalculationFormula(corporateIncome.getCalculationFormula());
         analysisItem.setTaxesBurden(corporateIncome.getTaxesBurden());
+        analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CORPORATE_INCOME_TAX);
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
     }
 
