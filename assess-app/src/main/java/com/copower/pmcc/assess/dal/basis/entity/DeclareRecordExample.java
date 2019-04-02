@@ -1676,52 +1676,62 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andNatureEqualTo(Integer value) {
+        public Criteria andNatureEqualTo(String value) {
             addCriterion("nature =", value, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureNotEqualTo(Integer value) {
+        public Criteria andNatureNotEqualTo(String value) {
             addCriterion("nature <>", value, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureGreaterThan(Integer value) {
+        public Criteria andNatureGreaterThan(String value) {
             addCriterion("nature >", value, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureGreaterThanOrEqualTo(Integer value) {
+        public Criteria andNatureGreaterThanOrEqualTo(String value) {
             addCriterion("nature >=", value, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureLessThan(Integer value) {
+        public Criteria andNatureLessThan(String value) {
             addCriterion("nature <", value, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureLessThanOrEqualTo(Integer value) {
+        public Criteria andNatureLessThanOrEqualTo(String value) {
             addCriterion("nature <=", value, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureIn(List<Integer> values) {
+        public Criteria andNatureLike(String value) {
+            addCriterion("nature like", value, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureNotLike(String value) {
+            addCriterion("nature not like", value, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureIn(List<String> values) {
             addCriterion("nature in", values, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureNotIn(List<Integer> values) {
+        public Criteria andNatureNotIn(List<String> values) {
             addCriterion("nature not in", values, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureBetween(Integer value1, Integer value2) {
+        public Criteria andNatureBetween(String value1, String value2) {
             addCriterion("nature between", value1, value2, "nature");
             return (Criteria) this;
         }
 
-        public Criteria andNatureNotBetween(Integer value1, Integer value2) {
+        public Criteria andNatureNotBetween(String value1, String value2) {
             addCriterion("nature not between", value1, value2, "nature");
             return (Criteria) this;
         }

@@ -14,61 +14,42 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>他项权利</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-
-                </div>
-            </div>
-            <c:forEach items="${surveyAssetInventoryRightRecordList}" var="item">
-                <div class="x_panel area_panel">
+            <c:forEach items="${surveyAssetInventoryRightRecordList}" var="item" varStatus="status">
+                <div class="x_panel ">
                     <div class="x_title collapse-link" onclick="loadSurveyAssetInventoryRightList(this,'${item.id}')">
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                         </ul>
                         <h3>
-                            <label>${item.specialcase}</label>
+                            他权分组（0${status.count}）
                         </h3>
                         <div class="clearfix"></div>
                     </div>
-
                     <div class="x_content collapse">
                         <form class="form-horizontal" id="surveyAssetInventoryRightRecordForm${item.id}">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        申报
+                                    <label class="col-sm-1 control-label">
+                                        权证信息
                                     </label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-5">
                                         <label class="form-control">${item.recordNames}</label>
-                                        <%--<select class="form-control search-select select2" multiple="multiple" required="required"--%>
-                                                <%--name="recordIds">--%>
-                                            <%--<c:forEach var="n" items="${declareRecordList}">--%>
-                                                <%--<c:forTokens items="${item.recordIds}" delims="," var="nameS">--%>
-                                                    <%--<c:if test="${nameS == n.id}">--%>
-                                                        <%--<option value="${n.id}" selected="selected">${n.name}</option>--%>
-                                                    <%--</c:if>--%>
-                                                    <%--<c:if test="${nameS != n.id}">--%>
-                                                        <%--<option value="${n.id}">${n.name}</option>--%>
-                                                    <%--</c:if>--%>
-                                                <%--</c:forTokens>--%>
-                                            <%--</c:forEach>--%>
-                                        <%--</select>--%>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
+                                <div class="col-sm-offset-1 col-sm-11">
+                                    <table class="table table-bordered" id="tbList${item.id}">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-1 control-label">
                                         特殊情况
                                     </label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-11">
                                         <label class="form-control">
                                                 ${item.specialcase}
                                         </label>
@@ -76,15 +57,28 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered" id="tbList${item.id}">
-                                        <!-- cerare document add ajax data-->
-                                    </table>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">特殊情况附件</label>
+                                    <div class="col-sm-4">
+                                        <div id="_specialCaseFile${status.count}"></div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        FileUtils.getFileShows({
+                            target: "specialCaseFile${status.count}",
+                            formData: {
+                                tableName: AssessDBKey.SurveyAssetInventoryRightRecord,
+                                tableId: ${item.id}
+                            },
+                            deleteFlag: false
+                        })
+                    })
+                </script>
             </c:forEach>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -100,6 +94,7 @@
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'categoryName', title: '类别'});
+        cols.push({field: 'remark', title: '他项权利描述', width: '40%'});
         cols.push({field: 'number', title: '他权证编号'});
         cols.push({field: 'obligor', title: '义务人'});
         cols.push({field: 'obligee', title: '权利人'});
@@ -110,8 +105,8 @@
             planDetailsId: '${projectPlanDetails.id}', inventoryRightRecordId: inventoryRightRecordId
         }, {
             method: "get",
-            showColumns: true,
-            showRefresh: true,
+            showColumns: false,
+            showRefresh: false,
             search: false,
             striped: true,
             onLoadSuccess: function () {
