@@ -62,6 +62,8 @@ public class BasicEstate {
 
     private Integer supplyGas;
 
+    private String locationDescribe;
+
     private String creator;
 
     private Date gmtCreated;
@@ -298,6 +300,14 @@ public class BasicEstate {
 
     public void setSupplyGas(Integer supplyGas) {
         this.supplyGas = supplyGas;
+    }
+
+    public String getLocationDescribe() {
+        return locationDescribe;
+    }
+
+    public void setLocationDescribe(String locationDescribe) {
+        this.locationDescribe = locationDescribe == null ? null : locationDescribe.trim();
     }
 
     public String getCreator() {

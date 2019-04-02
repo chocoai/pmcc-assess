@@ -31,6 +31,7 @@
     <result column="supply_water" property="supplyWater" jdbcType="INTEGER" />
     <result column="drain_water" property="drainWater" jdbcType="INTEGER" />
     <result column="supply_gas" property="supplyGas" jdbcType="INTEGER" />
+    <result column="location_describe" property="locationDescribe" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -98,7 +99,7 @@
     street_number, street, number, land_level, attach_number, floor_area, cover_an_area, 
     volumetric_rate, greening_rate, building_number, position, description, average_price, 
     price_range, supply_heating, supply_power, supply_water, drain_water, supply_gas, 
-    creator, gmt_created, gmt_modified
+    location_describe, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample" >
     select
@@ -143,8 +144,8 @@
       building_number, position, description, 
       average_price, price_range, supply_heating, 
       supply_power, supply_water, drain_water, 
-      supply_gas, creator, gmt_created, 
-      gmt_modified)
+      supply_gas, location_describe, creator, 
+      gmt_created, gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
       #{blockName,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
@@ -154,8 +155,8 @@
       #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
       #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, #{supplyHeating,jdbcType=INTEGER}, 
       #{supplyPower,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, 
-      #{supplyGas,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{supplyGas,jdbcType=INTEGER}, #{locationDescribe,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -246,6 +247,9 @@
       </if>
       <if test="supplyGas != null" >
         supply_gas,
+      </if>
+      <if test="locationDescribe != null" >
+        location_describe,
       </if>
       <if test="creator != null" >
         creator,
@@ -341,6 +345,9 @@
       </if>
       <if test="supplyGas != null" >
         #{supplyGas,jdbcType=INTEGER},
+      </if>
+      <if test="locationDescribe != null" >
+        #{locationDescribe,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -449,6 +456,9 @@
       <if test="record.supplyGas != null" >
         supply_gas = #{record.supplyGas,jdbcType=INTEGER},
       </if>
+      <if test="record.locationDescribe != null" >
+        location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -494,6 +504,7 @@
       supply_water = #{record.supplyWater,jdbcType=INTEGER},
       drain_water = #{record.drainWater,jdbcType=INTEGER},
       supply_gas = #{record.supplyGas,jdbcType=INTEGER},
+      location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -588,6 +599,9 @@
       <if test="supplyGas != null" >
         supply_gas = #{supplyGas,jdbcType=INTEGER},
       </if>
+      <if test="locationDescribe != null" >
+        location_describe = #{locationDescribe,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -630,6 +644,7 @@
       supply_water = #{supplyWater,jdbcType=INTEGER},
       drain_water = #{drainWater,jdbcType=INTEGER},
       supply_gas = #{supplyGas,jdbcType=INTEGER},
+      location_describe = #{locationDescribe,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -192,10 +192,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-1 control-label">楼盘概况</label>
+            <label class="col-sm-1 control-label">楼盘区位描述</label>
             <div class="col-sm-11">
-                        <textarea class="form-control" name="description"
-                                  placeholder="楼盘概况">${basicEstate.description}</textarea>
+                        <textarea class="form-control" name="locationDescribe"
+                                  placeholder="楼盘区位描述">${basicEstate.locationDescribe}</textarea>
             </div>
         </div>
         <div class="form-group">
