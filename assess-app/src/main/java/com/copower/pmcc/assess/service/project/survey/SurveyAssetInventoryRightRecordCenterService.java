@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightRecordCenterDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.base.Objects;
@@ -31,6 +34,31 @@ public class SurveyAssetInventoryRightRecordCenterService {
     private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+
+
+    public SurveyAssetInventoryRightRecordCenter getSurveyAssetInventoryRightRecordCenterByProjectId(Integer projectId){
+        if (projectId == null){
+            return null;
+        }
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT);
+        ProjectPlanDetails query = new ProjectPlanDetails();
+        query.setProjectId(projectId);
+        query.setProjectPhaseId(projectPhase.getId());
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+        SurveyAssetInventoryRightRecordCenter center = new SurveyAssetInventoryRightRecordCenter();
+        center.setProjectId(projectId);
+        center.setPlanDetailsId(projectPlanDetailsList.get(0).getId());
+        center.setProcessInsId(projectPlanDetailsList.get(0).getProcessInsId());
+        List<SurveyAssetInventoryRightRecordCenter> centerList = this.getSurveyAssetInventoryRightRecordCenterList(center);
+        if (CollectionUtils.isNotEmpty(centerList)){
+            return centerList.get(0);
+        }
+        return null;
+    }
 
     public Map<SchemeJudgeObject,DeclareRecord> getDeclareRecordJudgeObjectMap(List<DeclareRecord> declareRecordList,List<SchemeJudgeObject> schemeJudgeObjectList){
         Map<SchemeJudgeObject,DeclareRecord> schemeJudgeObjectDeclareRecordMap = Maps.newHashMap();

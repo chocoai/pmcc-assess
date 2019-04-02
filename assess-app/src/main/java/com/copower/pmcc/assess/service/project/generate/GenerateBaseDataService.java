@@ -2303,9 +2303,8 @@ public class GenerateBaseDataService {
     public String getEquityStatusValuatedObjects() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        generateCommonMethod.settingBuildingTable(builder);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = getLocalPath();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         generateEquityService.writeText(areaId,projectInfo,builder);
         doc.save(localPath);
         return localPath;

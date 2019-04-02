@@ -63,6 +63,12 @@ public class SurveyAssetInventoryRightService {
         return surveyAssetInventoryRightDao.getSurveyAssetInventoryRightById(id);
     }
 
+    public List<SurveyAssetInventoryRight> getSurveyAssetInventoryRightBy(Integer inventoryRightRecordId){
+        SurveyAssetInventoryRight query = new SurveyAssetInventoryRight();
+        query.setInventoryRightRecordId(inventoryRightRecordId);
+        return surveyAssetInventoryRightDao.getSurveyAssetInventoryRightList(query);
+    }
+
     public List<SurveyAssetInventoryRight> surveyAssetInventoryRights(Integer planDetailsId) {
         SurveyAssetInventoryRight surveyAssetInventoryRight = new SurveyAssetInventoryRight();
         surveyAssetInventoryRight.setPlanDetailsId(planDetailsId);
