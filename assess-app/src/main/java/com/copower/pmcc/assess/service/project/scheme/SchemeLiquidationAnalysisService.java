@@ -195,7 +195,7 @@ public class SchemeLiquidationAnalysisService {
         if (CollectionUtils.isNotEmpty(analysisItemList)) {
             for (SchemeLiquidationAnalysisItem analysisItem : analysisItemList) {
                 if (analysisItem.getId() != null) {
-                    if (Objects.equal(analysisItem.getAreaId(), schemeLiquidationAnalysis.getAreaId())) {
+                    if (!Objects.equal(analysisItem.getAreaId(), schemeLiquidationAnalysis.getAreaId())) {
                         analysisItem.setAreaId(schemeLiquidationAnalysis.getAreaId());
                     }
                     schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(analysisItem);
