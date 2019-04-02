@@ -155,6 +155,23 @@
         });
         //绑定变更事件
         estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
+            var strArr = ["林地","园地","水域","耕地","草地"] ;//来自于实体描述1(1).docx中的规则
+            var landUseTypeId = estateCommon.estateLandStateForm.find("select.landUseType").val() ;
+            if (landUseTypeId){
+                AssessCommon.getDataDicInfo(landUseTypeId,function (landUseTypeData) {
+                    var str  = strArr.join(",") ;
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(landUseTypeData.name) != -1){
+                        estateCommon.estateLandStateForm.find("input[name='fertility']").parent().parent().show();
+                        estateCommon.estateLandStateForm.find("input[name='holdOn']").parent().parent().hide();
+                        estateCommon.estateLandStateForm.find("input[name='bearingCapacity']").parent().parent().hide();
+                    }else {
+                        estateCommon.estateLandStateForm.find("input[name='fertility']").parent().parent().hide();
+                        estateCommon.estateLandStateForm.find("input[name='holdOn']").parent().parent().show();
+                        estateCommon.estateLandStateForm.find("input[name='bearingCapacity']").parent().parent().show();
+                    }
+                });
+            }
             AssessCommon.loadDataDicByPid($(this).val(), data.land.landUseCategory, function (html, data) {
                 estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
             });
@@ -163,7 +180,7 @@
         //土地开发程度为熟地时选择几通几平
         estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change', function () {
             $("#developmentDegreeContentContainer").empty();
-            estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().hide();
+            estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().show();
             var key = $(this).find("option:selected").attr('key');
             if (key == AssessDicKey.estateDevelopment_degreePrepared_land) {
                 AssessCommon.loadDataDicByPid($(this).val(), '', function (html, resultData) {
@@ -184,7 +201,7 @@
                         $("#developmentDegreeContentContainer").html(resultHtml);
                     }
                 });
-                estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().show();
+                estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().hide();
             }
         });
     };
