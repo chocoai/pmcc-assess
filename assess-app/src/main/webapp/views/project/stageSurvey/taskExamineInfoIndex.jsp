@@ -242,10 +242,6 @@
     });
 
     function saveData() {
-        //数据校验
-        if (!basicCommon.valid()) {
-            return false;
-        }
         var formData = basicCommon.getFormData();
 
         Loading.progressShow();
