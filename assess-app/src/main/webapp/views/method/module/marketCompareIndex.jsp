@@ -530,7 +530,7 @@
                 var isWeightDescEmpty = false;
                 $.each(data.caseItemList, function (k, caseItem) {
                     var weight = parseFloat(caseItem.weight);
-                    weightTotal += weight;
+                    weightTotal = accAdd(weightTotal, weight);
                     if (caseItem.weightDescription == undefined || caseItem.weightDescription == '' || caseItem.weightDescription == '空') {
                         isWeightDescEmpty = true;
                     }
