@@ -124,6 +124,7 @@
                 <th width="10%">名称</th>
                 <th width="10%">实例状况</th>
                 <th width="60%">状况内容</th>
+                <th width="10%">分数</th>
             </tr>
             </thead>
             <tbody>
@@ -154,6 +155,9 @@
         <td>
             <span data-name="entityConditionContent" style="color: red;"></span>
             <textarea class="form-control" name="entityConditionContent"></textarea>
+        </td>
+        <td>
+            <input type="text"  class="form-control" name="score" value="{score}">
         </td>
     </tr>
 </script>

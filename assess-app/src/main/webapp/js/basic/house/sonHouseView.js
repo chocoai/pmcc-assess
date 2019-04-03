@@ -1595,6 +1595,7 @@ damagedDegree.loadDamagedDegreeList = function () {
                                 trHtml = trHtml.replace(/{intact}/g, AssessCommon.toString(item.intact));
                                 trHtml = trHtml.replace(/{basicallyIntact}/g, AssessCommon.toString(item.basicallyIntact)).replace(/{generalDamage}/g, AssessCommon.toString(item.generalDamage));
                                 trHtml = trHtml.replace(/{seriousDamage}/g, AssessCommon.toString(item.seriousDamage)).replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
+                                trHtml = trHtml.replace(/{score}/g, AssessCommon.toString(item.score));
                                 $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').append(trHtml);
                                 var trElement = $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').find('tr:last');
                                 if (!item.entityCondition && item.hasChildren) {
@@ -1762,6 +1763,7 @@ damagedDegree.getFormData = function () {
         data.id = $(this).find('[name=id]').val();
         data.entityCondition = $(this).find('[name=entityCondition]').val();
         data.entityConditionContent = $(this).find('[name=entityConditionContent]').val();
+        data.score = $(this).find('[name=score]').val();
         dataArray.push(data);
     })
     return dataArray;

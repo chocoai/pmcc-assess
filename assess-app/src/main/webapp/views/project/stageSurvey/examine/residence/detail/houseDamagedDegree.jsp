@@ -47,6 +47,7 @@
                 <th width="10%">名称</th>
                 <th width="10%">实例状况</th>
                 <th width="60%">状况内容</th>
+                <th width="10%">分数</th>
             </tr>
             </thead>
             <tbody>
@@ -68,6 +69,9 @@
         </td>
         <td>
             {entityConditionContent}
+        </td>
+        <td>
+            {score}
         </td>
     </tr>
 </script>
@@ -108,6 +112,7 @@
                                 trHtml = trHtml.replace(/{entityConditionName}/g, AssessCommon.toString(item.entityConditionName));
                                 trHtml = trHtml.replace(/{entityConditionContent}/g, AssessCommon.toString(item.entityConditionContent));
                                 trHtml = trHtml.replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
+                                trHtml = trHtml.replace(/{score}/g, AssessCommon.toString(item.score));
                                 $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').append(trHtml);
                             }
                         })
