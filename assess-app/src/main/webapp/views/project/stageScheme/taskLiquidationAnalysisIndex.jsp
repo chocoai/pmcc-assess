@@ -26,14 +26,14 @@
                         <div class="x-valid">
                             <label class="col-sm-1 control-label">变现比率</label>
                             <div class="col-sm-3">
-                                <input name="liquidRatios" class="form-control x-percent"
+                                <input name="liquidRatios" class="form-control x-percent" required
                                        placeholder="变现比率" value="${master.liquidRatios}"/>
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-1 control-label">变现时间</label>
                             <div class="col-sm-3">
-                                <input name="liquidTime" class="form-control"
+                                <input name="liquidTime" class="form-control" required
                                        placeholder="例60-90天" value="${master.liquidTime}"/>
                             </div>
                         </div>
