@@ -915,6 +915,23 @@ public class GenerateCommonMethod {
     }
 
     /**
+     * join 连接Set
+     *
+     * @param stringHashSet
+     * @return
+     */
+    public String stringHashSetJoin(Set<String> stringHashSet,String separator) {
+        if (CollectionUtils.isNotEmpty(stringHashSet)) {
+            String s = StringUtils.join(stringHashSet, separator);
+            stringHashSet.clear();
+            if (StringUtils.isNotBlank(s)) {
+                return s;
+            }
+        }
+        return "";
+    }
+
+    /**
      * 提取数字
      * @param text
      * @return

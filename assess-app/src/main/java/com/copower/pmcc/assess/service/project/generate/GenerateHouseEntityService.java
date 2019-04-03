@@ -14,15 +14,14 @@ import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -313,6 +312,7 @@ public class GenerateHouseEntityService {
                     continue;
                 }
                 stringBuilder.append(stringEntry.getKey()).append("栋").append("，");
+                LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
                 for (int i = 0; i < integerList.size(); i++) {
                     SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
                     if (schemeJudgeObject == null || schemeJudgeObject.getDeclareRecordId() == null) {
@@ -325,34 +325,39 @@ public class GenerateHouseEntityService {
                     GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                     BasicBuilding basicBuilding = generateBaseExamineService.getBasicBuilding();
                     BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
+                    StringBuffer stringBuffer = new StringBuffer();
                     if (basicBuilding != null && basicBuilding.getId() != null) {
                         BasicBuildingVo oo = basicBuildingService.getBasicBuildingVo(basicBuilding);
                         if (oo.getDataBuilder() != null) {
                             String name = oo.getDataBuilder().getName();
-                            String companyNature = baseDataDicService.getNameById(oo.getDataBuilder().getCompanyNature()) ;
-                            String socialPrestige = baseDataDicService.getNameById(oo.getDataBuilder().getSocialPrestige()) ;
-                            stringBuilder.append(StringUtils.isNotBlank(name)?name:"名称无");
-                            stringBuilder.append(StringUtils.isNotBlank(companyNature)?companyNature:"性质无");
-                            stringBuilder.append(StringUtils.isNotBlank(socialPrestige)?socialPrestige:"社会信誉无");
+                            String companyNature = baseDataDicService.getNameById(oo.getDataBuilder().getCompanyNature());
+                            String socialPrestige = baseDataDicService.getNameById(oo.getDataBuilder().getSocialPrestige());
+                            stringBuffer.append(StringUtils.isNotBlank(name) ? name : "名称无");
+                            stringBuffer.append(StringUtils.isNotBlank(companyNature) ? companyNature : "性质无");
+                            stringBuffer.append(StringUtils.isNotBlank(socialPrestige) ? socialPrestige : "社会信誉无");
                         }
-                        if (oo.getDataBuilder() == null ) {
-                            stringBuilder.append("建筑商信息").append("无");
+                        if (oo.getDataBuilder() == null) {
+                            stringBuffer.append("建筑商信息").append("无");
                         }
                     }
-                    if (basicEstate != null && basicEstate.getId() != null){
-                        if (basicEstate.getDataDeveloper() != null){
+                    if (basicEstate != null && basicEstate.getId() != null) {
+                        if (basicEstate.getDataDeveloper() != null) {
                             String name = basicEstate.getDataDeveloper().getName();
-                            String companyNature = baseDataDicService.getNameById(basicEstate.getDataDeveloper().getCompanyNature()) ;
-                            String socialPrestige = baseDataDicService.getNameById(basicEstate.getDataDeveloper().getSocialPrestige()) ;
-                            stringBuilder.append(StringUtils.isNotBlank(name)?name:"名称无");
-                            stringBuilder.append(StringUtils.isNotBlank(companyNature)?companyNature:"性质无");
-                            stringBuilder.append(StringUtils.isNotBlank(socialPrestige)?socialPrestige:"社会信誉无");
+                            String companyNature = baseDataDicService.getNameById(basicEstate.getDataDeveloper().getCompanyNature());
+                            String socialPrestige = baseDataDicService.getNameById(basicEstate.getDataDeveloper().getSocialPrestige());
+                            stringBuffer.append(StringUtils.isNotBlank(name) ? name : "名称无");
+                            stringBuffer.append(StringUtils.isNotBlank(companyNature) ? companyNature : "性质无");
+                            stringBuffer.append(StringUtils.isNotBlank(socialPrestige) ? socialPrestige : "社会信誉无");
+                        } else {
+                            stringBuffer.append("开发商信息").append("无");
                         }
                     }
-                    if (i == integerList.size() - 1 && integerList.size() != 1) {
+                    stringSet.add(stringBuffer.toString());
+                }
+                if (CollectionUtils.isNotEmpty(stringSet)) {
+                    stringBuilder.append(generateCommonMethod.stringHashSetJoin(stringSet, ","));
+                    if (stringSet.size() > 1){
                         stringBuilder.append(";");
-                    } else {
-                        stringBuilder.append(",");
                     }
                 }
             }
@@ -884,6 +889,7 @@ public class GenerateHouseEntityService {
 
     /**
      * 获取电力通信网络
+     *
      * @param intelligentVoList
      * @return
      */
@@ -946,7 +952,7 @@ public class GenerateHouseEntityService {
                     if (CollectionUtils.isEmpty(basicUnitElevatorList)) {
                         continue;
                     }
-                    if (CollectionUtils.isNotEmpty(basicUnitElevatorList)){
+                    if (CollectionUtils.isNotEmpty(basicUnitElevatorList)) {
                         for (int j = 0; j < basicUnitElevatorList.size(); j++) {
                             stringBuilder.append(basicUnitElevatorList.get(j).getNumber()).append("部");
                             String type = baseDataDicService.getNameById(basicUnitElevatorList.get(j).getType());
