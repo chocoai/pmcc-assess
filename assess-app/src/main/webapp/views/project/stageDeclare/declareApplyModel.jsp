@@ -268,6 +268,7 @@
                     var char = streetNumber.charAt(streetNumber.length - 1)
                     if (char != "号") {
                         streetNumber = streetNumber + "号";
+                        engine.find("input[name='streetNumber']").val(streetNumber);
                     }
                 }
                 if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
@@ -325,21 +326,39 @@
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId);
-                var id = engine.find("select.type").val();
+                var id = engine.find("select.landRightType").val();
                 var location = engine.find("input[name='location']").val();
                 var year = engine.find("input[name='year']").val();
                 var number = engine.find("input[name='number']").val();
+                if (!commonDeclareApplyModel.isNotBlank(number)) {
+                    number = "";
+                } else {
+                    number = "第" + number + "号";
+                }
                 if (commonDeclareApplyModel.isNotBlank(id)) {
                     AssessCommon.getDataDicInfo(id, function (data) {
                         if (commonDeclareApplyModel.isNotBlank(data)) {
-                            text = location + data.name + year + "第" + number + "号";
+                            text = location + data.name + year + number;
                             engine.find("input[name='landCertName']").val(text);
                         }
                     });
                 } else {
-                    text = location + year + "第" + number + "号";
+                    text = location + year +  number;
                     engine.find("input[name='landCertName']").val(text);
                 }
+
+
+                /* if (commonDeclareApplyModel.isNotBlank(id)) {
+                     AssessCommon.getDataDicInfo(id, function (data) {
+                         if (commonDeclareApplyModel.isNotBlank(data)) {
+                             text = location + data.name + year + "第" + number + "号";
+                             engine.find("input[name='landCertName']").val(text);
+                         }
+                     });
+                 } else {
+                     text = location + year + "第" + number + "号";
+                     engine.find("input[name='landCertName']").val(text);
+                 }*/
             }
         },
         //房屋坐落 拼接
@@ -1922,8 +1941,7 @@
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">县<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">县</label>
                 <div class="col-sm-3">
                     <select name="district"
                             class="form-control search-select select2 district"

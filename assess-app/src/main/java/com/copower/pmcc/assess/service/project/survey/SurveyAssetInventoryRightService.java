@@ -95,24 +95,30 @@ public class SurveyAssetInventoryRightService {
     }
 
     public List<SurveyAssetInventoryRightVo> getVoList(List<SurveyAssetInventoryRight> list) {
-        if (CollectionUtils.isEmpty(list)) return null;
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
         return LangUtils.transform(list, p -> {
-            SurveyAssetInventoryRightVo surveyAssetInventoryRightVo = new SurveyAssetInventoryRightVo();
-            BeanUtils.copyProperties(p, surveyAssetInventoryRightVo);
-            if (p.getCategory() != null) {
-                BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(p.getCategory());
-                if (projectClassify != null) {
-                    surveyAssetInventoryRightVo.setCategoryName(projectClassify.getName());
-                }
-            }
-            if (p.getType() != null) {
-                BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(p.getType());
-                if (projectClassify != null) {
-                    surveyAssetInventoryRightVo.setTypeName(projectClassify.getName());
-                }
-            }
-            return surveyAssetInventoryRightVo;
+            return getSurveyAssetInventoryRightVo(p);
         });
+    }
+
+    public SurveyAssetInventoryRightVo getSurveyAssetInventoryRightVo(SurveyAssetInventoryRight right){
+        SurveyAssetInventoryRightVo surveyAssetInventoryRightVo = new SurveyAssetInventoryRightVo();
+        BeanUtils.copyProperties(right, surveyAssetInventoryRightVo);
+        if (right.getCategory() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(right.getCategory());
+            if (projectClassify != null) {
+                surveyAssetInventoryRightVo.setCategoryName(projectClassify.getName());
+            }
+        }
+        if (right.getType() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(right.getType());
+            if (projectClassify != null) {
+                surveyAssetInventoryRightVo.setTypeName(projectClassify.getName());
+            }
+        }
+        return surveyAssetInventoryRightVo;
     }
 
     /**

@@ -66,8 +66,12 @@ public class SurveyAssetInventoryRightRecordService {
         List<SurveyAssetInventoryRightRecord> rightRecordList = this.surveyAssetInventoryRightRecordList(query);
         if (CollectionUtils.isNotEmpty(rightRecordList)){
             rightRecordList.stream().forEach(surveyAssetInventoryRightRecord -> {
-                if (surveyAssetInventoryRightRecord.getRecordIds().indexOf(value) != -1){
-                    surveyAssetInventoryRightRecordList.add(surveyAssetInventoryRightRecord);
+                if (StringUtils.isNotBlank(value)){
+                    if (StringUtils.isNotBlank(surveyAssetInventoryRightRecord.getRecordIds())){
+                        if (surveyAssetInventoryRightRecord.getRecordIds().indexOf(value) != -1){
+                            surveyAssetInventoryRightRecordList.add(surveyAssetInventoryRightRecord);
+                        }
+                    }
                 }
             });
         }

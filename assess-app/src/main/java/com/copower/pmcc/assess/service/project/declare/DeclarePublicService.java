@@ -380,7 +380,7 @@ public class DeclarePublicService {
                 declareRealtyLandCert.setNumber(m.group(m.groupCount()));
             }
             //年份
-            reg = "(\\d+)(?=第)";//匹配第前面的数字
+            reg = "\\d{4}(?=\\）)|\\d{4}(?=第)|\\d{4}(?=\\))";//匹配第前面的数字
             p = Pattern.compile(reg);
             m = p.matcher(landCertName);
             while (m.find()) {
@@ -401,6 +401,9 @@ public class DeclarePublicService {
         //土地使用权人
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(4)))) {
             declareRealtyLandCert.setOwnership(PoiUtils.getCellValue(row.getCell(4)));
+        } else {
+            builder.append(String.format("\n第%s行异常：土地使用权人必须填写", i));
+            return false;
         }
 
         String publicSituation = PoiUtils.getCellValue(row.getCell(5));
@@ -479,9 +482,6 @@ public class DeclarePublicService {
         //图号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(9)))) {
             declareRealtyLandCert.setGraphNumber(PoiUtils.getCellValue(row.getCell(9)));
-        } else {
-            builder.append(String.format("\n第%s行异常：图号必须填写", i));
-            return false;
         }
         BaseDataDic typeDic = null;
         //土地用途
@@ -512,6 +512,9 @@ public class DeclarePublicService {
         //终止日期
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
             declareRealtyLandCert.setTerminationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(12))));
+        } else {
+            builder.append(String.format("\n第%s行异常：终止日期必须填写", i));
+            return false;
         }
         //取得价格
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
@@ -520,6 +523,9 @@ public class DeclarePublicService {
         //使用权面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
             declareRealtyLandCert.setUseRightArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(14))));
+        } else {
+            builder.append(String.format("\n第%s行异常：使用权面积必须填写", i));
+            return false;
         }
         //分摊面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
@@ -613,10 +619,16 @@ public class DeclarePublicService {
         //房屋所有权人
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(4)))) {
             declareRealtyHouseCert.setOwnership(PoiUtils.getCellValue(row.getCell(4)));
+        } else {
+            builder.append(String.format("\n第%s行异常：房屋所有权人必须填写", i));
+            return false;
         }
         //建筑面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(5)))) {
             declareRealtyHouseCert.setFloorArea(PoiUtils.getCellValue(row.getCell(5)));
+        } else {
+            builder.append(String.format("\n第%s行异常：建筑面积必须填写", i));
+            return false;
         }
         //验证基础字典中数据
         String publicSituation = PoiUtils.getCellValue(row.getCell(6));
@@ -736,6 +748,9 @@ public class DeclarePublicService {
         //土地使用年限止
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
             declareRealtyHouseCert.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(16))));
+        } else {
+            builder.append(String.format("\n第%s行异常：土地使用年限止必须填写", i));
+            return false;
         }
         //公摊面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {

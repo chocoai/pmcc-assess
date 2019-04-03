@@ -47,7 +47,8 @@
                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" id="txt_estate_search" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
+                        <input type="text" id="txt_estate_search" data-rule-maxlength="100" placeholder="楼盘名称"
+                               required="required"
                                name="name" class="form-control" value="${basicEstate.name}">
                         <span class="input-group-btn">
                             <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
@@ -192,10 +193,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-1 control-label">楼盘区位描述</label>
-            <div class="col-sm-11">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">楼盘区位描述<span class="symbol required"></span></label>
+                <div class="col-sm-11">
                         <textarea class="form-control" name="locationDescribe" required
                                   placeholder="楼盘区位描述">${basicEstate.locationDescribe}</textarea>
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -218,87 +221,87 @@
             </div>
         </div>
 
-       <%-- <div id="industry_water_supply_plan">
-            <div class="form-group">
-                <div class="x-valid" id="">
-                    <label class="col-sm-1 control-label">供水平面图</label>
-                    <div class="col-sm-5">
-                        <input id="water_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                        <div id="_water_supply_plan"></div>
-                    </div>
-                </div>
+        <%-- <div id="industry_water_supply_plan">
+             <div class="form-group">
+                 <div class="x-valid" id="">
+                     <label class="col-sm-1 control-label">供水平面图</label>
+                     <div class="col-sm-5">
+                         <input id="water_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                         <div id="_water_supply_plan"></div>
+                     </div>
+                 </div>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">供电平面图</label>
-                    <div class="col-sm-5">
-                        <input id="power_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                        <div id="_power_supply_plan"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">供气平面图</label>
-                    <div class="col-sm-5">
-                        <input id="air_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                        <div id="_air_supply_plan"></div>
-                    </div>
-                </div>
+                 <div class="x-valid">
+                     <label class="col-sm-1 control-label">供电平面图</label>
+                     <div class="col-sm-5">
+                         <input id="power_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                         <div id="_power_supply_plan"></div>
+                     </div>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <div class="x-valid">
+                     <label class="col-sm-1 control-label">供气平面图</label>
+                     <div class="col-sm-5">
+                         <input id="air_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                         <div id="_air_supply_plan"></div>
+                     </div>
+                 </div>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">采暖平面图</label>
-                    <div class="col-sm-5">
-                        <input id="heating_plan" placeholder="上传附件" class="form-control" type="file">
-                        <div id="_heating_plan"></div>
-                    </div>
-                </div>
-            </div>
-        </div>--%>
+                 <div class="x-valid">
+                     <label class="col-sm-1 control-label">采暖平面图</label>
+                     <div class="col-sm-5">
+                         <input id="heating_plan" placeholder="上传附件" class="form-control" type="file">
+                         <div id="_heating_plan"></div>
+                     </div>
+                 </div>
+             </div>
+         </div>--%>
         <div class="x_content" id="industrySupplyInfo">
-        <div class="x_title">楼盘供应信息</div>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <div class="x-valid supplyGas">
-                    <label class="col-sm-1 control-label">供气信息</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 supplyGas" name="supplyGas">
-                        </select>
+            <div class="x_title">楼盘供应信息</div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="x-valid supplyGas">
+                        <label class="col-sm-1 control-label">供气信息</label>
+                        <div class="col-sm-3">
+                            <select class="form-control search-select select2 supplyGas" name="supplyGas">
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="x-valid supplyPower">
-                    <label class="col-sm-1 control-label">供电信息</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 supplyPower" name="supplyPower">
-                        </select>
+                    <div class="x-valid supplyPower">
+                        <label class="col-sm-1 control-label">供电信息</label>
+                        <div class="col-sm-3">
+                            <select class="form-control search-select select2 supplyPower" name="supplyPower">
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="x-valid supplyWater">
-                    <label class="col-sm-1 control-label">供水情况</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 supplyWater" name="supplyWater">
-                        </select>
+                    <div class="x-valid supplyWater">
+                        <label class="col-sm-1 control-label">供水情况</label>
+                        <div class="col-sm-3">
+                            <select class="form-control search-select select2 supplyWater" name="supplyWater">
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid drainWater">
-                    <label class="col-sm-1 control-label">排水情况</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 drainWater" name="drainWater">
-                        </select>
+                <div class="form-group">
+                    <div class="x-valid drainWater">
+                        <label class="col-sm-1 control-label">排水情况</label>
+                        <div class="col-sm-3">
+                            <select class="form-control search-select select2 drainWater" name="drainWater">
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="x-valid supplyHeating">
-                    <label class="col-sm-1 control-label">供热信息</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 supplyHeating" name="supplyHeating">
-                        </select>
+                    <div class="x-valid supplyHeating">
+                        <label class="col-sm-1 control-label">供热信息</label>
+                        <div class="col-sm-3">
+                            <select class="form-control search-select select2 supplyHeating" name="supplyHeating">
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
     </div>
