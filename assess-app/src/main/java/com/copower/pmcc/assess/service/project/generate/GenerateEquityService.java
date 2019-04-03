@@ -157,7 +157,7 @@ public class GenerateEquityService {
             }
         });
         if (CollectionUtils.isNotEmpty(stringSet)){
-            appendRightsAndInterest(stringHashSetJoin(stringHashSet), stringBuilder, ";");
+            appendRightsAndInterest(stringHashSetJoin(stringSet), stringBuilder, ";");
         }
         if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
             stringBuilder.append(" ");

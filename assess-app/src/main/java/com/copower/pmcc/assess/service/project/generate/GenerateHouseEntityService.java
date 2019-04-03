@@ -60,6 +60,8 @@ public class GenerateHouseEntityService {
     private BasicBuildingSurfaceService basicBuildingSurfaceService;
     @Autowired
     private BasicBuildingMaintenanceService basicBuildingMaintenanceService;
+    @Autowired
+    private BasicEstateService basicEstateService;
 
     //物业这块无需处理
 
@@ -322,22 +324,29 @@ public class GenerateHouseEntityService {
                     }
                     GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                     BasicBuilding basicBuilding = generateBaseExamineService.getBasicBuilding();
+                    BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
                     if (basicBuilding != null && basicBuilding.getId() != null) {
                         BasicBuildingVo oo = basicBuildingService.getBasicBuildingVo(basicBuilding);
                         if (oo.getDataBuilder() != null) {
-                            stringBuilder.append("建筑商信息").append("名称:").append(oo.getDataBuilder().getName()).append("、")
-                                    .append("性质:").append(baseDataDicService.getNameById(oo.getDataBuilder().getCompanyNature())).append("、")
-                                    .append("社会信誉:").append(baseDataDicService.getNameById(oo.getDataBuilder().getSocialPrestige())).append("、")
-                                    .append("资质等级:").append(baseDataDicService.getNameById(oo.getDataBuilder().getQualificationGrade())).append("；")
-                            ;
+                            String name = oo.getDataBuilder().getName();
+                            String companyNature = baseDataDicService.getNameById(oo.getDataBuilder().getCompanyNature()) ;
+                            String socialPrestige = baseDataDicService.getNameById(oo.getDataBuilder().getSocialPrestige()) ;
+                            stringBuilder.append(StringUtils.isNotBlank(name)?name:"名称无");
+                            stringBuilder.append(StringUtils.isNotBlank(companyNature)?companyNature:"性质无");
+                            stringBuilder.append(StringUtils.isNotBlank(socialPrestige)?socialPrestige:"社会信誉无");
                         }
-                        if (oo.getDataProperty() != null) {
-                            stringBuilder.append("物业信息").append("名称:").append(oo.getDataProperty().getName()).append("、")
-                                    .append("性质:").append(baseDataDicService.getNameById(oo.getDataProperty().getCompanyNature())).append("、")
-                                    .append("社会信誉:").append(baseDataDicService.getNameById(oo.getDataProperty().getSocialPrestige()));
+                        if (oo.getDataBuilder() == null ) {
+                            stringBuilder.append("建筑商信息").append("无");
                         }
-                        if (oo.getDataBuilder() == null && oo.getDataProperty() == null) {
-                            stringBuilder.append("建筑商信息").append("无、").append("物业信息").append("无");
+                    }
+                    if (basicEstate != null && basicEstate.getId() != null){
+                        if (basicEstate.getDataDeveloper() != null){
+                            String name = basicEstate.getDataDeveloper().getName();
+                            String companyNature = baseDataDicService.getNameById(basicEstate.getDataDeveloper().getCompanyNature()) ;
+                            String socialPrestige = baseDataDicService.getNameById(basicEstate.getDataDeveloper().getSocialPrestige()) ;
+                            stringBuilder.append(StringUtils.isNotBlank(name)?name:"名称无");
+                            stringBuilder.append(StringUtils.isNotBlank(companyNature)?companyNature:"性质无");
+                            stringBuilder.append(StringUtils.isNotBlank(socialPrestige)?socialPrestige:"社会信誉无");
                         }
                     }
                     if (i == integerList.size() - 1 && integerList.size() != 1) {
@@ -937,28 +946,30 @@ public class GenerateHouseEntityService {
                     if (CollectionUtils.isEmpty(basicUnitElevatorList)) {
                         continue;
                     }
-                    for (int j = 0; j < basicUnitElevatorList.size(); j++) {
-                        stringBuilder.append(basicUnitElevatorList.get(i).getNumber()).append("部");
-                        String type = baseDataDicService.getNameById(basicUnitElevatorList.get(i).getType());
-                        if (StringUtils.isEmpty(type)) {
-                            type = "未知类型";
-                        }
-                        stringBuilder.append(type).append("电梯");
-                        if (basicUnitElevatorList.get(i).getQuasiLoadNumber() != null) {
-                            stringBuilder.append("准载人数").append(basicUnitElevatorList.get(i).getQuasiLoadNumber()).append("人");
-                        }
-                        if (StringUtils.isNotBlank(basicUnitElevatorList.get(i).getQuasiLoadWeight())) {
-                            if (basicUnitElevatorList.get(i).getQuasiLoadNumber() != null) {
-                                stringBuilder.append("、");
+                    if (CollectionUtils.isNotEmpty(basicUnitElevatorList)){
+                        for (int j = 0; j < basicUnitElevatorList.size(); j++) {
+                            stringBuilder.append(basicUnitElevatorList.get(j).getNumber()).append("部");
+                            String type = baseDataDicService.getNameById(basicUnitElevatorList.get(j).getType());
+                            if (StringUtils.isEmpty(type)) {
+                                type = "未知类型";
                             }
-                            stringBuilder.append("准载重量").append(basicUnitElevatorList.get(i).getQuasiLoadWeight()).append("kg");
-                        }
-                        if (j == basicUnitElevatorList.size() - 1) {
-                            if (j != 1) {
-                                stringBuilder.append(";");
+                            stringBuilder.append(type).append("电梯");
+                            if (basicUnitElevatorList.get(j).getQuasiLoadNumber() != null) {
+                                stringBuilder.append("准载人数").append(basicUnitElevatorList.get(j).getQuasiLoadNumber()).append("人");
                             }
-                        } else {
-                            stringBuilder.append(",");
+                            if (StringUtils.isNotBlank(basicUnitElevatorList.get(j).getQuasiLoadWeight())) {
+                                if (basicUnitElevatorList.get(j).getQuasiLoadNumber() != null) {
+                                    stringBuilder.append("、");
+                                }
+                                stringBuilder.append("准载重量").append(basicUnitElevatorList.get(j).getQuasiLoadWeight()).append("kg");
+                            }
+                            if (j == basicUnitElevatorList.size() - 1) {
+                                if (j != 1) {
+                                    stringBuilder.append(";");
+                                }
+                            } else {
+                                stringBuilder.append(",");
+                            }
                         }
                     }
                 }
