@@ -835,54 +835,101 @@ public class GenerateBaseDataService {
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         Table table = builder.startTable();
         //物业类型、税率、计算基数、计算公式、税费负担方、商业
-        int rowLength = 3+itemList.size()+1;
+        int rowLength = 3 + itemList.size() + 1;
         int cellLength = 6;
         for (int i = 0; i < rowLength; i++) {
-            for (int j = 0; j < cellLength+1; j++) {
+            for (int j = 0; j < cellLength + 1; j++) {
                 //目的是自动插入单元格并且确保只插入每行6个(列6个),6+1原因是最后一个索引用做结束行
-                if (j < cellLength){
+                if (j < cellLength) {
                     builder.insertCell();
                 }
-                if ( i == 0){
-                    switch (j){
-                        case 0:builder.writeln("物业类型");break;
-                        case 1:builder.writeln("税率");break;
-                        case 2:builder.writeln("计算基数");break;
-                        case 3:builder.writeln("计算公式");break;
-                        case 4:builder.writeln("税费负担方");break;
-                        case 5:builder.writeln("商业");break;
-                        case 6:builder.endRow();break;
-                        default:break;
+                if (i == 0) {
+                    switch (j) {
+                        case 0:
+                            builder.writeln("物业类型");
+                            break;
+                        case 1:
+                            builder.writeln("税率");
+                            break;
+                        case 2:
+                            builder.writeln("计算基数");
+                            break;
+                        case 3:
+                            builder.writeln("计算公式");
+                            break;
+                        case 4:
+                            builder.writeln("税费负担方");
+                            break;
+                        case 5:
+                            builder.writeln("商业");
+                            break;
+                        case 6:
+                            builder.endRow();
+                            break;
+                        default:
+                            break;
                     }
                 }
-                if ( i == 1){
-                    switch (j){
-                        case 0:builder.writeln("面积");break;
-                        case 1:builder.writeln("/");break;
-                        case 2:builder.writeln("/");break;
-                        case 3:builder.writeln("/");break;
-                        case 4:builder.writeln("/");break;
-                        case 5:builder.writeln(schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString());break;
-                        case 6:builder.endRow();break;
-                        default:break;
+                if (i == 1) {
+                    switch (j) {
+                        case 0:
+                            builder.writeln("面积");
+                            break;
+                        case 1:
+                            builder.writeln("/");
+                            break;
+                        case 2:
+                            builder.writeln("/");
+                            break;
+                        case 3:
+                            builder.writeln("/");
+                            break;
+                        case 4:
+                            builder.writeln("/");
+                            break;
+                        case 5:
+                            builder.writeln(schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString());
+                            break;
+                        case 6:
+                            builder.endRow();
+                            break;
+                        default:
+                            break;
                     }
                 }
-                if ( i == 2){
-                    switch (j){
-                        case 0:builder.writeln("评估价");break;
-                        case 1:builder.writeln("/");break;
-                        case 2:builder.writeln("/");break;
-                        case 3:builder.writeln("/");break;
-                        case 4:builder.writeln("/");break;
-                        case 5:builder.writeln(schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString());break;
-                        case 6:builder.endRow();break;
-                        default:break;
+                if (i == 2) {
+                    switch (j) {
+                        case 0:
+                            builder.writeln("评估价");
+                            break;
+                        case 1:
+                            builder.writeln("/");
+                            break;
+                        case 2:
+                            builder.writeln("/");
+                            break;
+                        case 3:
+                            builder.writeln("/");
+                            break;
+                        case 4:
+                            builder.writeln("/");
+                            break;
+                        case 5:
+                            builder.writeln(schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString());
+                            break;
+                        case 6:
+                            builder.endRow();
+                            break;
+                        default:
+                            break;
                     }
                 }
-                if (i >= 3 && i < 3+itemList.size() ){
-                    SchemeLiquidationAnalysisItem item = itemList.get(i -3);
-                    switch (j){
-                        case 0:builder.writeln(StringUtils.isNotBlank(item.getTaxRateName())?item.getTaxRateName():"空");break;
+                if (i >= 3 && i < 3 + itemList.size()) {
+                    SchemeLiquidationAnalysisItem item = itemList.get(i - 3);
+                    switch (j) {
+                        case 0:
+                            builder.writeln(StringUtils.isNotBlank(item.getTaxRateName()) ? item.getTaxRateName() : "空");
+                            break;
                         case 1:
                             if (item.getCalculationMethod() == 1 && !StringUtils.isEmpty(item.getTaxRateValue())) {
                                 builder.writeln(new BigDecimal(item.getTaxRateValue()).multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
@@ -893,23 +940,23 @@ public class GenerateBaseDataService {
                             }
                             break;
                         case 2:
-                            if (StringUtils.isNotBlank(item.getCalculateBase())){
+                            if (StringUtils.isNotBlank(item.getCalculateBase())) {
                                 builder.writeln(item.getCalculateBase());
-                            }else {
+                            } else {
                                 builder.writeln("空");
                             }
                             break;
                         case 3:
-                            if (StringUtils.isNotBlank(item.getCalculationFormula())){
+                            if (StringUtils.isNotBlank(item.getCalculationFormula())) {
                                 builder.writeln(item.getCalculationFormula());
-                            }else {
+                            } else {
                                 builder.writeln("空");
                             }
                             break;
                         case 4:
-                            if (StringUtils.isNotBlank(item.getTaxesBurden())){
+                            if (StringUtils.isNotBlank(item.getTaxesBurden())) {
                                 builder.writeln(item.getTaxesBurden());
-                            }else {
+                            } else {
                                 builder.writeln("空");
                             }
                             break;
@@ -920,33 +967,49 @@ public class GenerateBaseDataService {
                                 builder.writeln("空");
                             }
                             break;
-                        case 6:builder.endRow();break;
-                        default:break;
+                        case 6:
+                            builder.endRow();
+                            break;
+                        default:
+                            break;
                     }
                 }
-                if (i >= 3+itemList.size() && i < 3+itemList.size()+1){
-                    switch (j){
-                        case 0:builder.writeln("合计费用");break;
+                if (i >= 3 + itemList.size() && i < 3 + itemList.size() + 1) {
+                    switch (j) {
+                        case 0:
+                            builder.writeln("合计费用");
+                            break;
                         case 1:
                             mergeCellModelList.add(new MergeCellModel(i, j, i, 5));
-                            if (schemeLiquidationAnalysis.getTotal() != null){
+                            if (schemeLiquidationAnalysis.getTotal() != null) {
                                 builder.writeln(schemeLiquidationAnalysis.getTotal().toString());
-                            }else {
+                            } else {
                                 builder.writeln("无");
                             }
                             break;
-                        case 2:builder.writeln("");break;
-                        case 3:builder.writeln("");break;
-                        case 4:builder.writeln("");break;
-                        case 5:builder.writeln("");break;
-                        case 6:builder.endRow();break;
-                        default:break;
+                        case 2:
+                            builder.writeln("");
+                            break;
+                        case 3:
+                            builder.writeln("");
+                            break;
+                        case 4:
+                            builder.writeln("");
+                            break;
+                        case 5:
+                            builder.writeln("");
+                            break;
+                        case 6:
+                            builder.endRow();
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(mergeCellModelList)){
-            generateCommonMethod.mergeCellTable(mergeCellModelList,table);
+        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+            generateCommonMethod.mergeCellTable(mergeCellModelList, table);
         }
         builder.endTable();
     }
@@ -2305,7 +2368,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = getLocalPath();
-        generateEquityService.writeText(areaId,projectInfo,builder);
+        generateEquityService.writeText(areaId, projectInfo, builder);
         doc.save(localPath);
         return localPath;
     }
@@ -3539,6 +3602,9 @@ public class GenerateBaseDataService {
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             if (schemeJudgeObject.getStandardJudgeId() != null)
                 baseJudgeId.add(schemeJudgeObject.getStandardJudgeId());
+            else if (schemeJudgeObject.getBisMerge() == Boolean.FALSE && schemeJudgeObject.getBisSplit() == Boolean.FALSE && schemeJudgeObject.getBisEnable() == Boolean.TRUE) {
+                baseJudgeId.add(schemeJudgeObject.getId());
+            }
             List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
             if (CollectionUtils.isEmpty(schemeJudgeFunctionList)) continue;
             for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
@@ -3564,7 +3630,7 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         String reportThinking = evaluationThinkingService.getReportThinking(map, this.projectInfo, baseJudgeNumber, otherJudgeNumber);
-        builder.insertHtml(reportThinking, true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(reportThinking)) , true);
         document.save(localPath);
         return localPath;
     }

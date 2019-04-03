@@ -16,12 +16,14 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 描述:
@@ -142,7 +144,9 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
-        setModelParam(projectPlan, modelAndView);
+        modelAndView.addObject("generationVos", generateReportService.getGenerateReportGenerationVos(projectPlan.getProjectId()));
+        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
+        modelAndView.addObject("reportTypeList",reportTypeList);
         return modelAndView;
     }
 
@@ -156,7 +160,9 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
-        setModelParam(projectPlan, modelAndView);
+        modelAndView.addObject("generationVos", generateReportService.getGenerateReportGenerationVos(projectPlan.getProjectId()));
+        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
+        modelAndView.addObject("reportTypeList",reportTypeList);
         return modelAndView;
     }
 
