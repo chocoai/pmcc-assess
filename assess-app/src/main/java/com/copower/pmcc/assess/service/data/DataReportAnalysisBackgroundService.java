@@ -39,7 +39,7 @@ public class DataReportAnalysisBackgroundService {
         if (dataReportAnalysis.getId() != null && dataReportAnalysis.getId() > 0) {
             dataReportAnalysisDao.updateReportAnalysis(dataReportAnalysis);
         } else {
-            BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
+            BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND);
             dataReportAnalysis.setReportAnalysisType(cacheDataDicByFieldName.getId());
             dataReportAnalysis.setCreator(commonService.thisUserAccount());
             dataReportAnalysisDao.addReportAnalysis(dataReportAnalysis);
@@ -49,7 +49,7 @@ public class DataReportAnalysisBackgroundService {
     }
 
     public DataReportAnalysis getReportAnalysisByAreaId(String district, Integer type) {
-        BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
+        BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND);
         DataReportAnalysis dataReportAnalysis = new DataReportAnalysis();
         dataReportAnalysis.setMarketBackgroundType(type);
         dataReportAnalysis.setDistrict(district);

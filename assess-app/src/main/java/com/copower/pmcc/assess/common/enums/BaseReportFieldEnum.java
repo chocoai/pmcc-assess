@@ -132,6 +132,12 @@ public enum BaseReportFieldEnum implements Serializable {
     CopyQualificationCertificateRealEstateValuationInstitution("房地产估价机构资质证书复印件"),
     RegisteredRealEstateValuerValuationInstitution("注册房地产估价师注册证书复印件"),
 
+    BACKGROUND_ANALYSIS_DEVELOPMENT("社会经济发展概况"),
+    BACKGROUND_ANALYSIS_GENERAL("房地产市场总体概况"),
+    BACKGROUND_ANALYSIS_MARKET("同类房地产市场状况"),
+    BACKGROUND_ANALYSIS_BLOCK("同类房地产市场版块状况"),
+    BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),
+
     //------------------------||待废除--------------------------
     theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods("本次估价的总体思路和评估方法的选取"),
     HousingOwnershipRegistrationStatementSheet("房屋所有权登记状况"),
@@ -141,7 +147,6 @@ public enum BaseReportFieldEnum implements Serializable {
     UnitPriceValuator("估价对象的单价"),
     EvaluationPriceCateGory("分类评估单价"),
     ValueExpressionResult("价值表达结果"),
-    SummaryCertificateUses("证载用途总括"),
     LandUseControl("土地使用管制"),
     PrincipalLegalRepresentative("委托人法定代表人"),
     inventoryRight("土地他项权利情况"),

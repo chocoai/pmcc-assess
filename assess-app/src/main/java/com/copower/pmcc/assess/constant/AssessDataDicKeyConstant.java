@@ -32,7 +32,12 @@ public class AssessDataDicKeyConstant {
     public static final String REPORT_ANALYSIS_CATEGORY = "report.analysis.category";  //报告分析类别
     public static final String REPORT_ANALYSIS_CATEGORY_LIQUIDITY = "report.analysis.category.liquidity";  //变现能力分析
     public static final String REPORT_ANALYSIS_CATEGORY_RISK = "report.analysis.category.risk";  //风险提示
-    public static final String REPORT_ANALYSIS_CATEGORY_MARKET = "report.analysis.category.market";  //市场背景描述与分析
+    public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND = "report.analysis.category.background";  //市场背景描述与分析
+    public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_DEVELOPMENT = "report.analysis.category.background.development"; //社会经济发展概况
+    public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_GENERAL= "report.analysis.category.background.general"; //房地产市场总体状况
+    public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_MARKET = "report.analysis.category.background.market"; //同类房地产市场状况
+    public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_BLOCK = "report.analysis.category.background.block"; //同类房地产市场板块状况
+    public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_PROPERTY = "report.analysis.category.background.property"; //背景估价对象区域物业总体状况
 
     /*
      * 项目立项
@@ -107,4 +112,6 @@ public class AssessDataDicKeyConstant {
      */
     public static final String PROGRAMME_VALUE_CONNOTATION = "programme.value.connotation"; //价值内涵
     public static final String WORK_PROGRAMME_SET_USE = "work.programme.set.use"; //设定用途
+
+
 }

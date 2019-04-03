@@ -144,9 +144,9 @@ public class CompileReportService {
     public void initReportDetail(ProjectPlanDetails projectPlanDetails) {
         int count = compileReportDetailDao.getCountByPlanDetailsId(projectPlanDetails.getId());
         if (count > 0) return;
-        BaseDataDic analysisType=baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
-        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
-        if(CollectionUtils.isEmpty(dataDicList)) return;
+        BaseDataDic analysisType = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND);
+        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND);
+        if (CollectionUtils.isEmpty(dataDicList)) return;
         CompileReportDetail compileReportDetail = null;
         for (BaseDataDic baseDataDic : dataDicList) {
             SchemeAreaGroup schemeAreaGroup = schemeAreaGroupDao.get(projectPlanDetails.getAreaId());
@@ -157,10 +157,11 @@ public class CompileReportService {
             compileReportDetail.setName(baseDataDic.getName());
             compileReportDetail.setAreaId(projectPlanDetails.getAreaId());
             compileReportDetail.setReportAnalysisType(analysisType.getId());
+            compileReportDetail.setMarketBackgroundType(analysis.getMarketBackgroundType());
             compileReportDetail.setReportAnalysisName(analysisType.getName());
             compileReportDetail.setPlanDetailsId(projectPlanDetails.getId());
             compileReportDetail.setBisModifiable(true);
-            if(analysis != null){
+            if (analysis != null) {
                 compileReportDetail.setContent(tagfilter(analysis.getTemplate()));
             }
             compileReportDetailDao.addReportDetail(compileReportDetail);
@@ -171,22 +172,21 @@ public class CompileReportService {
      * 获取上报告的分析内容
      *
      * @param areaId
-     * @param reportAnalysisType
+     * @param marketBackgroundType
      * @return
      */
-    public String getReportCompile(Integer areaId, String reportAnalysisType) {
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(reportAnalysisType);
+    public String getReportCompile(Integer areaId, String marketBackgroundType) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(marketBackgroundType);
         if (baseDataDic == null) return "";
         CompileReportDetail where = new CompileReportDetail();
         where.setAreaId(areaId);
-        where.setReportAnalysisType(baseDataDic.getId());
+        where.setMarketBackgroundType(baseDataDic.getId());
         List<CompileReportDetail> reportDetailList = compileReportDetailDao.getReportDetailList(where);
         if (CollectionUtils.isEmpty(reportDetailList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < reportDetailList.size(); i++) {
             CompileReportDetail reportDetail = reportDetailList.get(i);
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, reportDetail.getName())).append("</p>");
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(reportDetail.getTemplate()).append("</p>");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(reportDetail.getContent()).append("</p>");
         }
         return stringBuilder.toString();
     }

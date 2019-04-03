@@ -46,7 +46,7 @@ public class DataReportAnalysisBackgroundController {
         modelAndView.addObject("setUseList", setUseList);//所有省份
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         modelAndView.addObject("purposeDicList", purposeDicList);
-        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
+        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND);
         modelAndView.addObject("types", types);
         dataReportTemplateItemService.initClean();
         return modelAndView;
@@ -55,7 +55,7 @@ public class DataReportAnalysisBackgroundController {
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo list(String name,Integer type) {
-        BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
+        BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND);
         return dataReportAnalysisService.getReportAnalysisList(name,type,cacheDataDicByFieldName.getId());
     }
 

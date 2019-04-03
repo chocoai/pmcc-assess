@@ -16,15 +16,21 @@ public interface CompileReportDetailMapper {
 
     int insertSelective(CompileReportDetail record);
 
+    List<CompileReportDetail> selectByExampleWithBLOBs(CompileReportDetailExample example);
+
     List<CompileReportDetail> selectByExample(CompileReportDetailExample example);
 
     CompileReportDetail selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") CompileReportDetail record, @Param("example") CompileReportDetailExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") CompileReportDetail record, @Param("example") CompileReportDetailExample example);
+
     int updateByExample(@Param("record") CompileReportDetail record, @Param("example") CompileReportDetailExample example);
 
     int updateByPrimaryKeySelective(CompileReportDetail record);
+
+    int updateByPrimaryKeyWithBLOBs(CompileReportDetail record);
 
     int updateByPrimaryKey(CompileReportDetail record);
 }

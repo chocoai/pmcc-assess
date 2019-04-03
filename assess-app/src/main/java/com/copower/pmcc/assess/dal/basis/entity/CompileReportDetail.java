@@ -11,6 +11,8 @@ public class CompileReportDetail {
 
     private Integer reportAnalysisType;
 
+    private Integer marketBackgroundType;
+
     private String reportAnalysisName;
 
     private String name;
@@ -19,8 +21,6 @@ public class CompileReportDetail {
 
     private String content;
 
-    private String jsonContent;
-
     private Boolean bisModifiable;
 
     private String creator;
@@ -28,6 +28,8 @@ public class CompileReportDetail {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String jsonContent;
 
     public Integer getId() {
         return id;
@@ -59,6 +61,14 @@ public class CompileReportDetail {
 
     public void setReportAnalysisType(Integer reportAnalysisType) {
         this.reportAnalysisType = reportAnalysisType;
+    }
+
+    public Integer getMarketBackgroundType() {
+        return marketBackgroundType;
+    }
+
+    public void setMarketBackgroundType(Integer marketBackgroundType) {
+        this.marketBackgroundType = marketBackgroundType;
     }
 
     public String getReportAnalysisName() {
@@ -93,14 +103,6 @@ public class CompileReportDetail {
         this.content = content == null ? null : content.trim();
     }
 
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
     public Boolean getBisModifiable() {
         return bisModifiable;
     }
@@ -131,5 +133,13 @@ public class CompileReportDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 }

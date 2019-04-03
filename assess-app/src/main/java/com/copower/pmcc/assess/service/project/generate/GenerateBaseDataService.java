@@ -3897,30 +3897,6 @@ public class GenerateBaseDataService {
         return s;
     }
 
-    /**
-     * 证载用途总括
-     *
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getSummaryCertificateUses() throws Exception {
-        StringBuilder builder = new StringBuilder(24);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            if (StringUtils.isNotBlank(schemeJudgeObjectList.get(0).getCertUse())) {
-                builder.append(schemeJudgeObjectList.get(0).getCertUse());
-            }
-            if (schemeJudgeObjectList.size() > 1) {
-                builder.append("等");
-            }
-        }
-        if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString();
-        }
-        return "";
-    }
-
 
     //评估面积
     @Deprecated
