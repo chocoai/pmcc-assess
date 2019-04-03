@@ -12,6 +12,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,17 @@ public class DataPropertyServiceItemService {
     public DataPropertyServiceItemVo getByDataPropertyServiceItemId(Integer id) {
         DataPropertyServiceItem object = dataPropertyServiceItemDao.getSingleObject(id);
         return getDataPropertyServiceItemVo(object);
+    }
+
+    public List<DataPropertyServiceItemVo> getListByMasterId(Integer masterId){
+        List<DataPropertyServiceItemVo> vos = Lists.newArrayList();
+        List<DataPropertyServiceItem> dataPropertyServiceItems = dataPropertyServiceItemDao.getListByMasterId(masterId);
+        if (CollectionUtils.isNotEmpty(dataPropertyServiceItems)){
+            dataPropertyServiceItems.stream().forEach( oo ->{
+                vos.add(getDataPropertyServiceItemVo(oo));
+            });
+        }
+        return vos;
     }
 
     /**
