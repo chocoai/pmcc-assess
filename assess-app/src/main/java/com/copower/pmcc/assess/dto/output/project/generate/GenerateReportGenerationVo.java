@@ -7,6 +7,8 @@ import com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration;
  */
 public class GenerateReportGenerationVo extends GenerateReportGeneration {
     private String areaGroupName;
+    private String qualificationTypeName;
+    private String realEstateAppraiserName;
 
     public String getAreaGroupName() {
         return areaGroupName;
@@ -14,5 +16,21 @@ public class GenerateReportGenerationVo extends GenerateReportGeneration {
 
     public void setAreaGroupName(String areaGroupName) {
         this.areaGroupName = areaGroupName;
+    }
+
+    public String getQualificationTypeName() {
+        return qualificationTypeName;
+    }
+
+    public void setQualificationTypeName(String qualificationTypeName) {
+        this.qualificationTypeName = qualificationTypeName;
+    }
+
+    public String getRealEstateAppraiserName() {
+        return realEstateAppraiserName;
+    }
+
+    public void setRealEstateAppraiserName(String realEstateAppraiserName) {
+        this.realEstateAppraiserName = realEstateAppraiserName;
     }
 }

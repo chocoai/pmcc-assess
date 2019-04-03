@@ -39,6 +39,12 @@ public class DataQualificationDao {
         return dataQualificationMapper.selectByExample(example);
     }
 
+    public List<DataQualification> getDataQualifications(List<Integer> ids){
+        DataQualificationExample example = new DataQualificationExample();
+        example.createCriteria().andIdIn(ids);
+        return dataQualificationMapper.selectByExample(example);
+    }
+
     public DataQualification getSingleObject(DataQualification dataQualification) {
         DataQualificationExample example = new DataQualificationExample();
         MybatisUtils.convertObj2Example(dataQualification, example);

@@ -109,6 +109,7 @@ public class replaceTest {
 //            }
 //        }
     }
+
     @Test
     public void getFilterString() {
         Map<String, Object> map = jdbcTemplate.queryForMap("SELECT  * from tb_funi_houses where id=77");
@@ -133,8 +134,6 @@ public class replaceTest {
         }
         return JSON.toJSONString(maps);
     }
-
-
 
 }
 

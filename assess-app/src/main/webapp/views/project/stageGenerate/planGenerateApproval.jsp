@@ -51,7 +51,7 @@
                                             资质类型
                                         </label>
                                         <div class="col-sm-3">
-                                            <label class="form-control">${generationVo.id}</label>
+                                            <label class="form-control">${generationVo.qualificationTypeName}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -76,33 +76,40 @@
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">估价师</label>
                                     <div class="col-sm-3">
-                                        <label class="form-control">${generationVo.id}</label>
+                                        <label class="form-control">${generationVo.realEstateAppraiserName}</label>
                                     </div>
                                 </div>
                             </div>
                             <!-- 报告下载 -->
                             <div class="form-group">
                                 <c:forEach items="${reportTypeList}" var="reportType">
+                                    <label class="col-sm-1 control-label">
+                                        <a class="btn-dark btn btn-xs">${reportType.name}</a>
+                                    </label>
                                     <div class="x-valid">
                                         <div class="col-sm-3">
-                                            <div id="_reporttype${reportType.remark}${areaGroup.id}"></div>
+                                            <div id="_reporttype${reportType.remark}${generationVo.areaGroupId}"></div>
                                         </div>
                                     </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            FileUtils.getFileShows({
+                                                target: "reporttype${reportType.remark}${generationVo.areaGroupId}",
+                                                formData: {
+                                                    fieldsName: "reporttype${reportType.remark}${generationVo.areaGroupId}",
+                                                    tableName: AssessDBKey.GenerateReportGeneration,
+                                                    tableId: '${generationVo.id}'
+                                                },
+                                                deleteFlag: false
+                                            })
+                                        })
+                                    </script>
                                 </c:forEach>
                             </div>
                         </form>
                     </div>
                 </div>
-                <script type="text/javascript">
-                    $(function () {
-                        getSchemeReportGeneration({
-                            projectPlanId: '${projectPlan.id}',
-                            areaGroupId: '${areaGroup.id}'
-                        }, function (info) {
-                            initFormSchemeReportGeneration(info, $('#groupForm${areaGroup.id}'), '${areaGroup.id}');
-                        });
-                    })
-                </script>
+
             </c:forEach>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>

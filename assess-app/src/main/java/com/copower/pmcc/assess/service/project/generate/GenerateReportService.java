@@ -38,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2018-5-23.
@@ -86,10 +85,7 @@ public class GenerateReportService {
         where.setProjectId(projectId);
         List<GenerateReportGeneration> generationList = generateReportGenerationService.generateReportGenerationList(where);
         if (CollectionUtils.isEmpty(generationList)) return null;
-        HashSet<Integer> areaGroupIds = Sets.newHashSet();
-        generationList.forEach(o -> areaGroupIds.add(o.getAreaGroupId()));
-        List<GenerateReportGeneration> resultList= generationList.stream().filter(o->!areaGroupIds.contains(o.getAreaGroupId())).collect(Collectors.toList());
-        return LangUtils.transform(resultList, o -> generateReportGenerationService.getGenerateReportGenerationVo(o));
+        return LangUtils.transform(generationList, o -> generateReportGenerationService.getGenerateReportGenerationVo(o));
     }
 
 
@@ -757,22 +753,16 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.TaxBurden.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTaxBurden());
-                    if (baseReportField != null) {
-                    }
                 }
                 //付款方式
                 if (Objects.equal(BaseReportFieldEnum.PaymentMethod.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPaymentMethod());
-                    if (baseReportField != null) {
-                    }
                 }
                 //估价技术思路
                 if (Objects.equal(BaseReportFieldEnum.EvaluationThink.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationThink());
-                    if (baseReportField != null) {
-                    }
+                    generateCommonMethod.putValue(true, false, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationThink());
                 }
                 //分类评估单价
                 if (Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGory.getName(), name)) {
@@ -785,22 +775,16 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.TotalValueValuationObject.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTotalValueValuationObject());
-                    if (baseReportField != null) {
-                    }
                 }
                 //估价对象的单价
                 if (Objects.equal(BaseReportFieldEnum.UnitPriceValuator.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUnitPriceValuator());
-                    if (baseReportField != null) {
-                    }
                 }
                 //估价对象选择估价方法
                 if (Objects.equal(BaseReportFieldEnum.SelectionValuationMethod.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionValuationMethod());
-                    if (baseReportField != null) {
-                    }
                 }
                 //分类评估单价计算试
                 if (Objects.equal(BaseReportFieldEnum.EvaluationExpression.getName(), name)) {

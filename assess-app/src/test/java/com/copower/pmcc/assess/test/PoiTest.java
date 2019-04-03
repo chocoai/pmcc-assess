@@ -390,6 +390,18 @@ public class PoiTest {
         }
         return result.toString();
     }
+
+    @Test
+    public void testReplaceWord1() throws Exception {
+        String templateFile = "D:\\test\\template.doc";
+        Map<String, String> map = Maps.newHashMap();
+        map.put("${评估思路}","D:\\test\\风险提示.doc");
+        AsposeUtils.replaceTextToFile(templateFile,map);
+
+        Map<String, String> mapMark = Maps.newHashMap();
+        mapMark.put("评估思路Mark","D:\\test\\风险提示.doc");
+        AsposeUtils.replaceBookmarkToFile(templateFile,mapMark);
+    }
 }
 
 
