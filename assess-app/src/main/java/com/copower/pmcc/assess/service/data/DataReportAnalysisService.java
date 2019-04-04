@@ -395,7 +395,7 @@ public class DataReportAnalysisService {
                     List<SurveyAssetInventoryRight> rightList = Lists.newArrayList();
                     List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
                     if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
-                        rightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(surveyAssetInventoryRightRecordList.get(0).getPlanDetailsId());
+                        rightList = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(surveyAssetInventoryRightRecordList.get(0).getId());
                     }
 
                     for (SurveyAssetInventoryRight inventoryRight : rightList) {
