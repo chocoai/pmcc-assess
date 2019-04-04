@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,13 +50,21 @@ public class DataReportAnalysisBackgroundService {
         }
     }
 
-    public DataReportAnalysis getReportAnalysisByAreaId(String district, Integer type) {
+    public DataReportAnalysis getReportAnalysisByAreaId(String district, Integer type, Date time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND);
         DataReportAnalysis dataReportAnalysis = new DataReportAnalysis();
         dataReportAnalysis.setMarketBackgroundType(type);
         dataReportAnalysis.setDistrict(district);
+        String formatTime = sdf.format(time);
+        dataReportAnalysis.setRelYear(Integer.valueOf(formatTime));
         dataReportAnalysis.setReportAnalysisType(cacheDataDicByFieldName.getId());
         List<DataReportAnalysis> dataReportAnalysisList = dataReportAnalysisDao.getDataReportAnalysisList(dataReportAnalysis);
+        if(CollectionUtils.isNotEmpty(dataReportAnalysisList)){
+            return dataReportAnalysisList.get(0);
+        }
+        dataReportAnalysis.setRelYear(null);
+        dataReportAnalysisList = dataReportAnalysisDao.getDataReportAnalysisList(dataReportAnalysis);
         if(CollectionUtils.isNotEmpty(dataReportAnalysisList)){
             return dataReportAnalysisList.get(0);
         }
