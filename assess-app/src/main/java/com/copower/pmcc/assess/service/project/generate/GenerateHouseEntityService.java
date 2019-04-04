@@ -79,9 +79,9 @@ public class GenerateHouseEntityService {
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
             Date beCompletedTime = basicBuilding.getBeCompletedTime();
             int year = DateUtils.getYear(beCompletedTime);
-            map.put(schemeJudgeObject.getId(), String.format("%s年", year));
+            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s年", year));
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "分别为");
+        return generateCommonMethod.judgeSummaryDesc(map, "分别为", false);
     }
 
     /**
@@ -98,10 +98,10 @@ public class GenerateHouseEntityService {
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
             Integer constructionQuality = basicBuilding.getConstructionQuality();
             if (constructionQuality != null && constructionQuality > 0) {
-                map.put(schemeJudgeObject.getId(), baseDataDicService.getNameById(constructionQuality));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), baseDataDicService.getNameById(constructionQuality));
             }
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "分别为");
+        return generateCommonMethod.judgeSummaryDesc(map, "分别为", false);
     }
 
     /**
@@ -124,11 +124,11 @@ public class GenerateHouseEntityService {
                 if (basicBuilding.getBuildingStructureCategory() != null) {
                     builder.append(String.format("%s", baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory())));
                 }
-                map.put(schemeJudgeObject.getId(), builder.toString());
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), builder.toString());
                 builder.delete(0, builder.toString().length());
             }
         }
-        return generateCommonMethod.judgeEachDesc(map, "", ";");
+        return generateCommonMethod.judgeEachDesc(map, "", ";", false);
     }
 
     /**
@@ -160,9 +160,9 @@ public class GenerateHouseEntityService {
                 builder.append(String.format("%s，", baseDataDicService.getNameById(basicBuilding.getPropertyType())));
             if (basicBuilding.getFloorHeight() != null)
                 builder.append(String.format("层高%s米", basicBuilding.getFloorHeight()));
-            map.put(schemeJudgeObject.getId(), builder.toString());
+            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), builder.toString());
         }
-        return generateCommonMethod.judgeEachDesc(map, "", ";");
+        return generateCommonMethod.judgeEachDesc(map, "", ";", false);
     }
 
     /**
@@ -179,10 +179,10 @@ public class GenerateHouseEntityService {
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
             BigDecimal floorHeight = basicBuilding.getFloorHeight();
             if (floorHeight != null) {
-                map.put(schemeJudgeObject.getId(), String.format("%s米", floorHeight));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", floorHeight));
             }
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "分别为");
+        return generateCommonMethod.judgeSummaryDesc(map, "分别为", false);
     }
 
     /**
@@ -218,9 +218,10 @@ public class GenerateHouseEntityService {
                 if (StringUtils.isNotBlank(basicUnitHuxing.getDescription())) {
                     stringBuilder.append(basicUnitHuxing.getDescription());
                 }
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
             }
         }
-        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(map, "", ";"));
+        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(map, "", ";", false));
     }
 
     /**
@@ -246,7 +247,7 @@ public class GenerateHouseEntityService {
         }
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
-            stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+            stringBuilder.append(generateCommonMethod.convertNumber(generateCommonMethod.getJudgeNumberByIds(entry.getValue()))).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
             SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
@@ -255,8 +256,7 @@ public class GenerateHouseEntityService {
             StringBuilder outfitBuilder = new StringBuilder();
             if (CollectionUtils.isNotEmpty(outfitVos)) {
                 outfitVos.forEach(o -> {
-                    outfitBuilder.append(o.getDecorationPart())
-                            .append(o.getMaterialGradeName()).append(o.getDecoratingMaterialName()).append(",");
+                    outfitBuilder.append(o.getDecorationPart()).append(o.getMaterialGradeName()).append(o.getDecoratingMaterialName()).append(",");
                 });
             }
             stringBuilder.append(String.format("楼栋外装%s;", outfitBuilder));
@@ -264,8 +264,7 @@ public class GenerateHouseEntityService {
             StringBuilder unitDecorateBuilder = new StringBuilder();
             if (CollectionUtils.isNotEmpty(unitDecorates)) {
                 unitDecorates.forEach(o -> {
-                    unitDecorateBuilder.append(o.getDecorationPartName())
-                            .append(o.getMaterialGradeName()).append(o.getDecoratingMaterialName()).append(",");
+                    unitDecorateBuilder.append(o.getDecorationPartName()).append(o.getMaterialGradeName()).append(o.getDecoratingMaterialName()).append(",");
                 });
             }
             stringBuilder.append(String.format("楼栋内装%s;", outfitBuilder));
@@ -284,7 +283,7 @@ public class GenerateHouseEntityService {
         Map<String, List<Integer>> map = groupByBuilding(judgeObjectList);
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
-            stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+            stringBuilder.append(generateCommonMethod.convertNumber(generateCommonMethod.getJudgeNumberByIds(entry.getValue()))).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
             SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
@@ -356,7 +355,7 @@ public class GenerateHouseEntityService {
                 }
                 if (CollectionUtils.isNotEmpty(stringSet)) {
                     stringBuilder.append(generateCommonMethod.stringHashSetJoin(stringSet, ","));
-                    if (stringSet.size() > 1){
+                    if (stringSet.size() > 1) {
                         stringBuilder.append(";");
                     }
                 }

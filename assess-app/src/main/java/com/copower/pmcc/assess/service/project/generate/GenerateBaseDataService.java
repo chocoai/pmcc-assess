@@ -27,6 +27,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
@@ -75,6 +76,7 @@ public class GenerateBaseDataService {
     private SchemeAreaGroupService schemeAreaGroupService;
     private ProjectNumberRecordService projectNumberRecordService;
     private BaseDataDicService baseDataDicService;
+    private BaseProjectClassifyService baseProjectClassifyService;
     private BaseAttachmentService baseAttachmentService;
     private ProjectPlanDetailsService projectPlanDetailsService;
     private DataSetUseFieldService dataSetUseFieldService;
@@ -1223,7 +1225,7 @@ public class GenerateBaseDataService {
         documentBuilder.writeln(String.format("%s:%s", "资质等级", qualificationDto.getOrganizationRank()));
         documentBuilder.writeln(String.format("%s:%s", "资质证书编号", qualificationDto.getCertificateNo()));
         documentBuilder.writeln(String.format("%s:%s", "资质证书有效期", qualificationDto.getCertificateEffectiveDate()));
-        documentBuilder.writeln(String.format("%s:%s", "经营范围", "评估房产"));
+        documentBuilder.writeln(String.format("%s:%s", "经营范围", qualificationDto.getBusinessScopeName()));
         doc.save(localPath);
         return localPath;
     }
@@ -1254,7 +1256,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getBusinessScope(AdCompanyQualificationDto qualificationDto) throws Exception {
-        return "评估房地产";
+        return qualificationDto.getBusinessScopeName();
     }
 
     /**
@@ -1765,6 +1767,20 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getHisRightType() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<SurveyAssetInventoryRight> rightList = surveyAssetInventoryRightService.getRightListByProjectId(projectId);
+        if(CollectionUtils.isEmpty(rightList)) return errorStr;
+        stringBuilder.append("、");
+        HashSet<Integer> hashSet=Sets.newHashSet();
+        rightList.forEach(o->hashSet.add(o.getCategory()));
+        for (Integer integer : hashSet) {
+            stringBuilder.append(String.format("《%s》、",baseProjectClassifyService.getNameById(integer)));
+        }
+        return StringUtils.stripEnd(stringBuilder.toString(),"、") ;
+    }
+
+    //原处理方法
+    private String getRightTypeString() {
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
@@ -1775,6 +1791,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
+
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
@@ -4219,6 +4236,7 @@ public class GenerateBaseDataService {
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.projectNumberRecordService = SpringContextUtils.getBean(ProjectNumberRecordService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.baseProjectClassifyService=SpringContextUtils.getBean(BaseProjectClassifyService.class);
         this.schemeJudgeFunctionService = SpringContextUtils.getBean(SchemeJudgeFunctionService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
         this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);

@@ -79,6 +79,12 @@ public class SurveyAssetInventoryRightService {
         return surveyAssetInventoryRightDao.getSurveyAssetInventoryRightList(surveyAssetInventoryRight);
     }
 
+    public List<SurveyAssetInventoryRight> getRightListByProjectId(Integer projectId){
+        SurveyAssetInventoryRight surveyAssetInventoryRight = new SurveyAssetInventoryRight();
+        surveyAssetInventoryRight.setProjectId(projectId);
+        return surveyAssetInventoryRightDao.getSurveyAssetInventoryRightList(surveyAssetInventoryRight);
+    }
+
     public BootstrapTableVo getBootstrapTableVo(SurveyAssetInventoryRight surveyAssetInventoryRight) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
