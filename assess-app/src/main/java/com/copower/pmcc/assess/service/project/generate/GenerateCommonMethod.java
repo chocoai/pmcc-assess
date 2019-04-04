@@ -269,7 +269,7 @@ public class GenerateCommonMethod {
         DocumentBuilder builder = new DocumentBuilder(doc);
         this.settingBuildingTable(builder);
         if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
+            builder.writeln(getWarpCssHtml(content));
         }
         doc.save(localPath);
         return localPath;

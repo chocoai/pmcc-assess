@@ -44,7 +44,7 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">
+        <table tableName="tb_scheme_reimbursement_item" domainObjectName="SchemeReimbursementItem">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

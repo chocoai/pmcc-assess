@@ -356,6 +356,66 @@ public class SchemeReimbursementItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andInventoryRightRecordIdIsNull() {
+            addCriterion("inventory_right_record_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdIsNotNull() {
+            addCriterion("inventory_right_record_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdEqualTo(Integer value) {
+            addCriterion("inventory_right_record_id =", value, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdNotEqualTo(Integer value) {
+            addCriterion("inventory_right_record_id <>", value, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdGreaterThan(Integer value) {
+            addCriterion("inventory_right_record_id >", value, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("inventory_right_record_id >=", value, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdLessThan(Integer value) {
+            addCriterion("inventory_right_record_id <", value, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdLessThanOrEqualTo(Integer value) {
+            addCriterion("inventory_right_record_id <=", value, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdIn(List<Integer> values) {
+            addCriterion("inventory_right_record_id in", values, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdNotIn(List<Integer> values) {
+            addCriterion("inventory_right_record_id not in", values, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdBetween(Integer value1, Integer value2) {
+            addCriterion("inventory_right_record_id between", value1, value2, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryRightRecordIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("inventory_right_record_id not between", value1, value2, "inventoryRightRecordId");
+            return (Criteria) this;
+        }
+
         public Criteria andJudgeObjectIdIsNull() {
             addCriterion("judge_object_id is null");
             return (Criteria) this;

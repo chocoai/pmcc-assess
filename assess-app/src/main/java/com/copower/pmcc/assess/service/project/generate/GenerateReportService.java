@@ -768,7 +768,7 @@ public class GenerateReportService {
                 //估价技术思路
                 if (Objects.equal(BaseReportFieldEnum.EvaluationThink.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, false, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationThink());
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationThink());
                 }
                 //分类评估单价
                 if (Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGory.getName(), name)) {
@@ -976,6 +976,13 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.PrincipalDescribe.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalDescribe());
+                    if (baseReportField != null) {
+                    }
+                }
+                //估价对象权属
+                if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectSheet.getName(), name)) {
+                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                    generateCommonMethod.putValue(false, false, true, null, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectSheet());
                     if (baseReportField != null) {
                     }
                 }

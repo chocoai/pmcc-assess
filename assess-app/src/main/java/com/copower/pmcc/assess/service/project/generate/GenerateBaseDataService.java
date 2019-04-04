@@ -181,45 +181,49 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
+        StringBuilder stringBuilder = new StringBuilder(8);
+        stringBuilder.append("<p>");
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.legalPerson.getId())) {
             String name = projectInfo.getConsignorVo().getCsEntrustmentUnit();
             if (StringUtils.isEmpty(name)) {
                 name = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s", "名称", name));
+            stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "名称", name)));
             String code = projectInfo.getConsignorVo().getCsSociologyCode();
             if (StringUtils.isEmpty(code)) {
                 code = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s", "统一社会信用代码", code));
+            stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "统一社会信用代码", code)));
             String address = projectInfo.getConsignorVo().getCsAddress();
             if (StringUtils.isEmpty(address)) {
                 address = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s", "住所", address));
+            stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "住所", address)));
             String people = projectInfo.getConsignorVo().getCsLegalRepresentative();
             if (StringUtils.isEmpty(people)) {
                 people = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s", "法定代表人", people));
+            stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "法定代表人", people)));
         }
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
             String name = projectInfo.getConsignorVo().getCsName();
             if (StringUtils.isEmpty(name)) {
                 name = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s", "姓名", name));
+            stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "姓名", name)));
             String idCard = projectInfo.getConsignorVo().getCsIdcard();
             if (StringUtils.isEmpty(idCard)) {
                 idCard = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s", "身份证号", idCard));
+            stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "身份证号", idCard)));
             String address = projectInfo.getConsignorVo().getCsAddress();
             if (StringUtils.isEmpty(address)) {
                 address = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s", "地址", address));
+            stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "地址", address)));
         }
+        stringBuilder.append("</p>");
+        documentBuilder.insertHtml(stringBuilder.toString(), true);
         doc.save(localPath);
         return localPath;
     }
@@ -726,27 +730,21 @@ public class GenerateBaseDataService {
      */
     public String getStatutoryOptimumReimbursement() {
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (!NumberUtils.isNumber(schemeJudgeObject.getNumber())) {
-                    continue;
-                }
-                String temp = null;
-                try {
-                    temp = schemeReimbursementService.getFullDescription(schemeJudgeObject.getId());
-                } catch (Exception e) {
-                }
-                if (StringUtils.isNotBlank(temp)) {
-                    List<Integer> integerList = stringListMap.get(temp);
-                    if (CollectionUtils.isNotEmpty(integerList)) {
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                    } else {
-                        integerList = Lists.newArrayList();
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+            Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> map = schemeReimbursementService.getSchemeReimbursementItemVoMapAndSchemeJudgeObject(schemeJudgeObjectList, projectId);
+            if (!map.isEmpty()) {
+                map.entrySet().stream().filter(entry -> entry.getKey().getDeclareRecordId() != null).forEach(entry -> {
+                    List<SchemeReimbursementItemVo> itemVos = entry.getValue();
+                    if (CollectionUtils.isNotEmpty(itemVos)) {
+                        itemVos.stream().forEach(oo -> {
+                            String s = schemeReimbursementService.getFullDescription(oo);
+                            if (StringUtils.isNotBlank(s.trim())) {
+                                generateCommonMethod.putStringListMap(stringListMap, entry.getKey(), s);
+                            }
+                        });
                     }
-                    stringListMap.put(temp, integerList);
-                }
+                });
             }
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, "");
@@ -810,6 +808,122 @@ public class GenerateBaseDataService {
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
         }
         documentBuilder.insertHtml(stringBuilder.toString(), true);
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 估价对象权属
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getEquityStatusObjectSheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId).stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
+        int rowLength = schemeJudgeObjectList.size() + 1;
+        int cellLength = 7;
+        for (int i = 0; i < rowLength; i++) {
+            SchemeJudgeObject schemeJudgeObject = null;
+            DeclareRecord declareRecord = null;
+            if (i != 0) {
+                schemeJudgeObject = schemeJudgeObjectList.get(i - 1);
+                declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            }
+            for (int j = 0; j < cellLength + 1; j++) {
+                if (j < cellLength) {
+                    builder.insertCell();
+                }
+                if (i == 0) {
+                    switch (j) {
+                        case 0:
+                            builder.writeln("估价序号");
+                            break;
+                        case 1:
+                            builder.writeln("权证号");
+                            break;
+                        case 2:
+                            builder.writeln("所有权人");
+                            break;
+                        case 3:
+                            builder.writeln("共有情况");
+                            break;
+                        case 4:
+                            builder.writeln("证载用途");
+                            break;
+                        case 5:
+                            builder.writeln("房屋性质");
+                            break;
+                        case 6:
+                            builder.writeln("面积");
+                            break;
+                        case 7:
+                            builder.endRow();
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    switch (j) {
+                        case 0:
+                            builder.writeln(String.format("%s%s", schemeJudgeObject.getNumber(), "号"));
+                            break;
+                        case 1:
+                            builder.writeln(String.format("%s%s", declareRecord.getName(), ""));
+                            break;
+                        case 2:
+                            builder.writeln(String.format("%s%s", declareRecord.getOwnership(), ""));
+                            break;
+                        case 3:
+                            if (true) {
+                                String v = "";
+                                if (StringUtils.isNotBlank(declareRecord.getPublicSituation())) {
+                                    if (NumberUtils.isNumber(declareRecord.getPublicSituation())) {
+                                        v = baseDataDicService.getNameById(declareRecord.getPublicSituation());
+                                        if (StringUtils.isEmpty(v)) {
+                                            v = declareRecord.getPublicSituation();
+                                        }
+                                    } else {
+                                        v = declareRecord.getPublicSituation();
+                                    }
+                                }
+                                builder.writeln(String.format("%s%s", v, ""));
+                            }
+                            break;
+                        case 4:
+                            builder.writeln(String.format("%s%s", declareRecord.getCertUse(), ""));
+                            break;
+                        case 5:
+                            String v = "";
+                            if (StringUtils.isNotBlank(declareRecord.getNature())) {
+                                if (NumberUtils.isNumber(declareRecord.getNature())) {
+                                    v = baseDataDicService.getNameById(declareRecord.getNature());
+                                    if (StringUtils.isEmpty(v)) {
+                                        v = declareRecord.getNature();
+                                    }
+                                } else {
+                                    v = declareRecord.getNature();
+                                }
+                            }
+                            builder.writeln(String.format("%s%s", v, ""));
+                            break;
+                        case 6:
+                            if (declareRecord.getFloorArea() != null) {
+                                builder.writeln(String.format("%s%s", declareRecord.getFloorArea().toString(), "㎡"));
+                            }
+                            break;
+                        case 7:
+                            builder.endRow();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        String localPath = getLocalPath();
         doc.save(localPath);
         return localPath;
     }
@@ -1170,7 +1284,7 @@ public class GenerateBaseDataService {
             }
         }
         stringBuilder.append("</p>");
-        documentBuilder.insertHtml(stringBuilder.toString(), true);
+        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
         document.save(localPath);
         return localPath;
     }
@@ -1216,14 +1330,18 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
-        documentBuilder.writeln(String.format("%s:%s", "机构名称", qualificationDto.getOrganizationName()));
-        documentBuilder.writeln(String.format("%s:%s", "住所", qualificationDto.getOrganizationAddress()));
-        documentBuilder.writeln(String.format("%s:%s", "法定代表人", qualificationDto.getLegalRepresentative()));
-        documentBuilder.writeln(String.format("%s:%s", "工商注册号", qualificationDto.getRegisteredNo()));
-        documentBuilder.writeln(String.format("%s:%s", "资质等级", qualificationDto.getOrganizationRank()));
-        documentBuilder.writeln(String.format("%s:%s", "资质证书编号", qualificationDto.getCertificateNo()));
-        documentBuilder.writeln(String.format("%s:%s", "资质证书有效期", qualificationDto.getCertificateEffectiveDate()));
-        documentBuilder.writeln(String.format("%s:%s", "经营范围", "评估房产"));
+        StringBuilder stringBuilder = new StringBuilder(8);
+        stringBuilder.append("<p>");
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "机构名称", qualificationDto.getOrganizationName())));
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "住所", qualificationDto.getOrganizationAddress())));
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "法定代表人", qualificationDto.getLegalRepresentative())));
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "工商注册号", qualificationDto.getRegisteredNo())));
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "资质等级", qualificationDto.getOrganizationRank())));
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "资质证书编号", qualificationDto.getCertificateNo())));
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "资质证书有效期", qualificationDto.getCertificateEffectiveDate())));
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "经营范围", "评估房产")));
+        stringBuilder.append("</p>");
+        documentBuilder.insertHtml(stringBuilder.toString(), true);
         doc.save(localPath);
         return localPath;
     }
@@ -2566,15 +2684,13 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-
     /**
-     * 估价结果一览表
+     * 法定优先受偿款
      *
+     * @param schemeReimbursementItemVoList
      * @return
-     * @throws Exception
      */
-    public String getjudgeBuildResultSurveySheet() throws Exception {
-        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = getSchemeReimbursementItemVoList();
+    private BigDecimal getSchemeReimbursementSetUpTotalPrice(List<SchemeReimbursementItemVo> schemeReimbursementItemVoList) {
         BigDecimal notSetUpTotalPrice = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
             for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
@@ -2587,7 +2703,18 @@ public class GenerateBaseDataService {
                 notSetUpTotalPrice = notSetUpTotalPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
             }
         }
+        return notSetUpTotalPrice;
+    }
+
+    /**
+     * 估价结果一览表
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getjudgeBuildResultSurveySheet() throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> schemeJudgeObjectListMap = schemeReimbursementService.getSchemeReimbursementItemVoMapAndSchemeJudgeObject(schemeJudgeObjectList, projectId);
         schemeJudgeObjectList = generateCommonMethod.getSortSchemeJudgeObject(schemeJudgeObjectList);
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -2607,8 +2734,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
-        String localPath = getLocalPath("报告模板1");
-        builder.writeln("估价结果一览表");
+        String localPath = getLocalPath();
         Table table = builder.startTable();
         final int colMax = 11;
         for (int j = 0; j < colMax; j++) {
@@ -2636,6 +2762,11 @@ public class GenerateBaseDataService {
                     }
                     //抵押=总价-法定
                     if (Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
+                        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = Lists.newArrayList();
+                        if (!schemeJudgeObjectListMap.isEmpty()) {
+                            schemeReimbursementItemVoList = schemeJudgeObjectListMap.get(integerEntry.getValue());
+                        }
+                        BigDecimal notSetUpTotalPrice = getSchemeReimbursementSetUpTotalPrice(schemeReimbursementItemVoList);
                         if (j == 9) {
                             builder.writeln(notSetUpTotalPrice.toString());
                         }
@@ -2645,11 +2776,7 @@ public class GenerateBaseDataService {
                             mortgage = mortgage.divide(new BigDecimal(10000));
                             mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
                             if (j == 10) {
-                                if (notSetUpTotalPrice.doubleValue() > 0) {
-                                    builder.writeln(mortgage.toString());
-                                } else {
-                                    builder.writeln("0");
-                                }
+                                builder.writeln(mortgage.toString());
                             }
                         }
                     }
@@ -3630,7 +3757,7 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         String reportThinking = evaluationThinkingService.getReportThinking(map, this.projectInfo, baseJudgeNumber, otherJudgeNumber);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(reportThinking)) , true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(reportThinking)), true);
         document.save(localPath);
         return localPath;
     }
@@ -3722,7 +3849,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        documentBuilder.insertHtml(stringBuilder.toString(), true);
+        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
         document.save(localPath);
         return localPath;
     }

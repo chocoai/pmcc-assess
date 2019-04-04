@@ -12,6 +12,8 @@ public class SchemeReimbursementItem {
 
     private Integer masterId;
 
+    private Integer inventoryRightRecordId;
+
     private Integer judgeObjectId;
 
     private Integer planDetailsId;
@@ -68,6 +70,14 @@ public class SchemeReimbursementItem {
 
     public void setMasterId(Integer masterId) {
         this.masterId = masterId;
+    }
+
+    public Integer getInventoryRightRecordId() {
+        return inventoryRightRecordId;
+    }
+
+    public void setInventoryRightRecordId(Integer inventoryRightRecordId) {
+        this.inventoryRightRecordId = inventoryRightRecordId;
     }
 
     public Integer getJudgeObjectId() {
