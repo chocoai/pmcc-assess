@@ -214,33 +214,66 @@ public class DataReportAnalysisService {
                 Map<BasicEstate, String> map = getSameEstate(judgeObjectList, estateNames);
                 DataReportTemplateItem buildingProfile = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_PROFILE);
                 for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(buildingProfile.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{楼盘概况}", entry.getKey().getDescription())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(buildingProfile.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{楼盘概况}", entry.getKey().getLocationDescribe())).append("</p>");
                 }
             }
             //估价对象区位分析
             if (AssessReportFieldConstant.LOCATION_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
-                ArrayList<Integer> blockIds = new ArrayList<>();
-                List<SchemeJudgeObject> noBlockIds = new ArrayList<>();
+//                ArrayList<Integer> blockIds = new ArrayList<>();
+//                List<SchemeJudgeObject> noBlockIds = new ArrayList<>();
+//                for (SchemeJudgeObject judgeObject : judgeObjectList) {
+//                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+//                    BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+//                    if (!blockIds.contains(basicEstate.getBlockId()) && basicEstate.getBlockId() != null) {
+//                        blockIds.add(basicEstate.getBlockId());
+//                    }
+//                    if (basicEstate.getBlockId() == null) {
+//                        noBlockIds.add(judgeObject);
+//                    }
+//                }
+//                Map<BasicEstate, String> map = getSameBlock(judgeObjectList, blockIds);
+//                DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOCATION_ANALYSIS_PLATE);
+//                for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
+//                    DataBlock block = dataBlockService.getDataBlockById(entry.getKey().getBlockId());
+//                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", block.getDistrict())).append("</p>");
+//                }
+//                for (SchemeJudgeObject judgeObject : noBlockIds) {
+//                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+//                    BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+//                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", judgeObject.getNumber() + "号").replace("#{区县}", erpAreaService.getSysAreaName(basicEstate.getDistrict())).replace("#{版块名称}", basicEstate.getBlockName()).replace("#{版块描述}", "")).append("</p>");
+//                }
+
+
+                ArrayList<String> estateNames = new ArrayList<>();
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
                     BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                    if (!blockIds.contains(basicEstate.getBlockId()) && basicEstate.getBlockId() != null) {
-                        blockIds.add(basicEstate.getBlockId());
-                    }
-                    if (basicEstate.getBlockId() == null) {
-                        noBlockIds.add(judgeObject);
+                    if (!estateNames.contains(basicEstate.getName())) {
+                        estateNames.add(basicEstate.getName());
                     }
                 }
-                Map<BasicEstate, String> map = getSameBlock(judgeObjectList, blockIds);
+                Map<BasicEstate, String> map = getSameEstate(judgeObjectList, estateNames);
                 DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOCATION_ANALYSIS_PLATE);
                 for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
                     DataBlock block = dataBlockService.getDataBlockById(entry.getKey().getBlockId());
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", block.getDistrict())).append("</p>");
-                }
-                for (SchemeJudgeObject judgeObject : noBlockIds) {
+                    }
+            }
+            //估价区位分析
+            if (AssessReportFieldConstant.ZONE_BIT_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                ArrayList<String> estateNames = new ArrayList<>();
+                for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
                     BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", judgeObject.getNumber() + "号").replace("#{区县}", erpAreaService.getSysAreaName(basicEstate.getDistrict())).replace("#{版块名称}", basicEstate.getBlockName()).replace("#{版块描述}", "")).append("</p>");
+                    if (!estateNames.contains(basicEstate.getName())) {
+                        estateNames.add(basicEstate.getName());
+                    }
+                }
+                Map<BasicEstate, String> map = getSameEstate(judgeObjectList, estateNames);
+                DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ZONE_BIT_ANALYSIS_PLATE);
+                for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
+                    DataBlock block = dataBlockService.getDataBlockById(entry.getKey().getBlockId());
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", block.getDistrict())).append("</p>");
                 }
             }
             //估价对象土地实体分析
@@ -260,7 +293,7 @@ public class DataReportAnalysisService {
                     if (landStateByEstateId.getConclusion() == null) {
                         landStateByEstateId.setConclusion("");
                     }
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{楼盘名称}", entry.getKey().getName()).replace("#{土地实体结论}", landStateByEstateId.getConclusion())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{楼盘名称}", entry.getKey().getName()).replace("#{土地实体结论}", entry.getKey().getLocationDescribe())).append("</p>");
                 }
             }
 
@@ -395,7 +428,7 @@ public class DataReportAnalysisService {
                     List<SurveyAssetInventoryRight> rightList = Lists.newArrayList();
                     List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
                     if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
-                        rightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(surveyAssetInventoryRightRecordList.get(0).getPlanDetailsId());
+                        rightList = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(surveyAssetInventoryRightRecordList.get(0).getId());
                     }
 
                     for (SurveyAssetInventoryRight inventoryRight : rightList) {

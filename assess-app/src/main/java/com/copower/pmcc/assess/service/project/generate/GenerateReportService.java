@@ -978,6 +978,13 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
+                //估价对象权属
+                if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectSheet.getName(), name)) {
+                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                    generateCommonMethod.putValue(false, false, true, null, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectSheet());
+                    if (baseReportField != null) {
+                    }
+                }
                 //分类评估方法结果
                 if (Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);

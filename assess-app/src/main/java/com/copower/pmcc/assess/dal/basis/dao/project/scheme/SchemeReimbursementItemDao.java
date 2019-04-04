@@ -28,6 +28,8 @@ public class SchemeReimbursementItemDao {
         MybatisUtils.convertObj2Example(schemeReimbursementItem, example);
         return schemeReimbursementItemMapper.selectByExample(example);
     }
+
+
     public List<SchemeReimbursementItem> getListObject2(SchemeReimbursementItem schemeReimbursementItem) {
         SchemeReimbursementItemExample example = new SchemeReimbursementItemExample();
         SchemeReimbursementItemExample.Criteria criteria = example.createCriteria();
@@ -76,6 +78,9 @@ public class SchemeReimbursementItemDao {
         }
         if (StringUtils.isNotBlank(schemeReimbursementItem.getCreator())){
             criteria.andCreatorEqualTo(schemeReimbursementItem.getCreator());
+        }
+        if (schemeReimbursementItem.getInventoryRightRecordId() != null){
+            criteria.andInventoryRightRecordIdEqualTo(schemeReimbursementItem.getInventoryRightRecordId());
         }
         return schemeReimbursementItemMapper.selectByExample(example);
     }

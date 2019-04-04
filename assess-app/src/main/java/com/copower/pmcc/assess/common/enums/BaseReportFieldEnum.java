@@ -70,6 +70,7 @@ public enum BaseReportFieldEnum implements Serializable {
     JudgeBuildLandStateSheet("估价建筑物实体状况"),
     judgeSummarySheet("估价汇总表"),
     EquityStatusValuatedObject("估价对象权属状况表"),
+    EquityStatusObjectSheet("估价对象权属"),
     //土地证
     judgeObjectLandUseCertificateSheet("土地使用权登记状况"),
     //收益法,市场比较法

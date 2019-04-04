@@ -6,6 +6,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="master_id" property="masterId" jdbcType="INTEGER" />
+    <result column="inventory_right_record_id" property="inventoryRightRecordId" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="not_set_up_unit_price" property="notSetUpUnitPrice" jdbcType="DECIMAL" />
@@ -79,10 +80,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, project_id, master_id, judge_object_id, plan_details_id, not_set_up_unit_price, 
-    not_set_up_total_price, know_total_price, mortgaged_total_price, owed_total_price, 
-    other_total_price, mortgage_unit_price, mortgage_total_price, creator, gmt_created, 
-    gmt_modified
+    id, name, project_id, master_id, inventory_right_record_id, judge_object_id, plan_details_id, 
+    not_set_up_unit_price, not_set_up_total_price, know_total_price, mortgaged_total_price, 
+    owed_total_price, other_total_price, mortgage_unit_price, mortgage_total_price, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItemExample" >
     select
@@ -119,17 +120,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_reimbursement_item (name, project_id, master_id, 
-      judge_object_id, plan_details_id, not_set_up_unit_price, 
-      not_set_up_total_price, know_total_price, mortgaged_total_price, 
-      owed_total_price, other_total_price, mortgage_unit_price, 
-      mortgage_total_price, creator, gmt_created, 
-      gmt_modified)
+      inventory_right_record_id, judge_object_id, 
+      plan_details_id, not_set_up_unit_price, not_set_up_total_price, 
+      know_total_price, mortgaged_total_price, owed_total_price, 
+      other_total_price, mortgage_unit_price, mortgage_total_price, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{name,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{masterId,jdbcType=INTEGER}, 
-      #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{notSetUpUnitPrice,jdbcType=DECIMAL}, 
-      #{notSetUpTotalPrice,jdbcType=DECIMAL}, #{knowTotalPrice,jdbcType=DECIMAL}, #{mortgagedTotalPrice,jdbcType=DECIMAL}, 
-      #{owedTotalPrice,jdbcType=DECIMAL}, #{otherTotalPrice,jdbcType=DECIMAL}, #{mortgageUnitPrice,jdbcType=DECIMAL}, 
-      #{mortgageTotalPrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{inventoryRightRecordId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, 
+      #{planDetailsId,jdbcType=INTEGER}, #{notSetUpUnitPrice,jdbcType=DECIMAL}, #{notSetUpTotalPrice,jdbcType=DECIMAL}, 
+      #{knowTotalPrice,jdbcType=DECIMAL}, #{mortgagedTotalPrice,jdbcType=DECIMAL}, #{owedTotalPrice,jdbcType=DECIMAL}, 
+      #{otherTotalPrice,jdbcType=DECIMAL}, #{mortgageUnitPrice,jdbcType=DECIMAL}, #{mortgageTotalPrice,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +148,9 @@
       </if>
       <if test="masterId != null" >
         master_id,
+      </if>
+      <if test="inventoryRightRecordId != null" >
+        inventory_right_record_id,
       </if>
       <if test="judgeObjectId != null" >
         judge_object_id,
@@ -195,6 +201,9 @@
       </if>
       <if test="masterId != null" >
         #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="inventoryRightRecordId != null" >
+        #{inventoryRightRecordId,jdbcType=INTEGER},
       </if>
       <if test="judgeObjectId != null" >
         #{judgeObjectId,jdbcType=INTEGER},
@@ -258,6 +267,9 @@
       <if test="record.masterId != null" >
         master_id = #{record.masterId,jdbcType=INTEGER},
       </if>
+      <if test="record.inventoryRightRecordId != null" >
+        inventory_right_record_id = #{record.inventoryRightRecordId,jdbcType=INTEGER},
+      </if>
       <if test="record.judgeObjectId != null" >
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       </if>
@@ -308,6 +320,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=INTEGER},
       master_id = #{record.masterId,jdbcType=INTEGER},
+      inventory_right_record_id = #{record.inventoryRightRecordId,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       not_set_up_unit_price = #{record.notSetUpUnitPrice,jdbcType=DECIMAL},
@@ -336,6 +349,9 @@
       </if>
       <if test="masterId != null" >
         master_id = #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="inventoryRightRecordId != null" >
+        inventory_right_record_id = #{inventoryRightRecordId,jdbcType=INTEGER},
       </if>
       <if test="judgeObjectId != null" >
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
@@ -384,6 +400,7 @@
     set name = #{name,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=INTEGER},
       master_id = #{masterId,jdbcType=INTEGER},
+      inventory_right_record_id = #{inventoryRightRecordId,jdbcType=INTEGER},
       judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       not_set_up_unit_price = #{notSetUpUnitPrice,jdbcType=DECIMAL},
