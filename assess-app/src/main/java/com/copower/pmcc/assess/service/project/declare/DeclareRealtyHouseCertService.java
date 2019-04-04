@@ -425,7 +425,6 @@ public class DeclareRealtyHouseCertService {
             DeclareRealtyLandCert realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(oo.getPid());
             if (realtyLandCert != null) {
                 declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
-                declareRecord.setUseRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
                 declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
                 declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
             }

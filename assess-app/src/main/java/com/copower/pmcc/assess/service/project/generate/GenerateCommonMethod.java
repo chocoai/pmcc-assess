@@ -178,7 +178,7 @@ public class GenerateCommonMethod {
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             if (declareRecord != null) {
-                String key = declareRecord.getUseRightType();
+                String key = declareRecord.getLandRightNature();
                 if (StringUtils.isNotBlank(key)) {
                     this.putStringListMap(stringListMap, schemeJudgeObject, key);
                 }

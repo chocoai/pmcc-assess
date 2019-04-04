@@ -272,7 +272,6 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setHousingStructure(oo.getHousingStructure());
             declareRecord.setNature(baseDataDicService.getNameById(oo.getNature()));
             declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getLandCertUse()));
-            declareRecord.setUseRightType(baseDataDicService.getNameById(oo.getLandRightNature()));
             declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
             declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
             declareRecord.setLandUseEndDate(oo.getUseEndDate());

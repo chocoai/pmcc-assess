@@ -56,8 +56,6 @@ public class DeclareRecord {
 
     private String landRightNature;
 
-    private String useRightType;
-
     private String housingStructure;
 
     private Integer areaGroupId;
@@ -286,14 +284,6 @@ public class DeclareRecord {
 
     public void setLandRightNature(String landRightNature) {
         this.landRightNature = landRightNature == null ? null : landRightNature.trim();
-    }
-
-    public String getUseRightType() {
-        return useRightType;
-    }
-
-    public void setUseRightType(String useRightType) {
-        this.useRightType = useRightType == null ? null : useRightType.trim();
     }
 
     public String getHousingStructure() {
