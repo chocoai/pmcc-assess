@@ -150,7 +150,7 @@ public class CompileReportService {
         CompileReportDetail compileReportDetail = null;
         for (BaseDataDic baseDataDic : dataDicList) {
             SchemeAreaGroup schemeAreaGroup = schemeAreaGroupDao.get(projectPlanDetails.getAreaId());
-            DataReportAnalysis analysis = dataReportAnalysisBackgroundService.getReportAnalysisByAreaId(schemeAreaGroup.getDistrict(), baseDataDic.getId());
+            DataReportAnalysis analysis = dataReportAnalysisBackgroundService.getReportAnalysisByAreaId(schemeAreaGroup.getDistrict(), baseDataDic.getId(), schemeAreaGroup.getValueTimePoint());
             //根据各种条件获取对应的模板数据
             compileReportDetail = new CompileReportDetail();
             compileReportDetail.setCreator(commonService.thisUserAccount());
