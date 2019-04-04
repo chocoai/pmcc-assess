@@ -169,7 +169,7 @@
 
 <script type="text/html" id="planItemHtml">
     <div class="btn-group">
-        <div class="btn btn-sm btn-dark">计划编制</div>
+        <div class="btn btn-sm btn-dark">{planName}</div>
         <div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip"
              data-original-title="责任人">{planExecutor}
         </div>
@@ -181,7 +181,7 @@
 </script>
 <script type="text/html" id="planItemViewHtml">
     <div class="btn-group">
-        <div class="btn btn-sm btn-dark">计划编制</div>
+        <div class="btn btn-sm btn-dark">{planName}</div>
         <div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启"
              onclick="projectDetails.replyPlan('{planId}');"><i class="fa fa-reply"></i></div>
         <div class="btn btn-sm btn-warning" data-placement="top"
@@ -227,10 +227,11 @@
                             var html = '';
                             if (result.data.planExecutUrl) {
                                 html = $('#planItemHtml').html().replace(/{planExecutor}/g, result.data.planExecutor)
-                                    .replace(/{planExecutUrl}/g, result.data.planExecutUrl)
+                                    .replace(/{planExecutUrl}/g, result.data.planExecutUrl).replace(/{planName}/g, result.data.planName)
                                     .replace(/{btnClass}/g, result.data.processInsId == "-1" ? "success" : "primary");
                             } else {
                                 html = $('#planItemViewHtml').html().replace(/{planId}/g, planId)
+                                    .replace(/{planName}/g, result.data.planName)
                                     .replace(/{planDisplayUrl}/g, result.data.planDisplayUrl);
                             }
                             $('#plan_item_' + planId).append(html);

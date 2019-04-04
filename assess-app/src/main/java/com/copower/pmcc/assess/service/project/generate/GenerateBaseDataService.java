@@ -1399,7 +1399,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(compileReportService.getReportCompile(this.areaId, type), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(compileReportService.getReportCompile(this.areaId, type))), true);
         document.save(localPath);
         return localPath;
     }
@@ -3630,7 +3630,7 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         String reportThinking = evaluationThinkingService.getReportThinking(map, this.projectInfo, baseJudgeNumber, otherJudgeNumber);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(reportThinking)) , true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(reportThinking)), true);
         document.save(localPath);
         return localPath;
     }
