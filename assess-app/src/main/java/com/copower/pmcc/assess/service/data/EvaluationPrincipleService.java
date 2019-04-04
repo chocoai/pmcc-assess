@@ -234,31 +234,26 @@ public class EvaluationPrincipleService {
                 if (StringUtils.isNotBlank(compare)) {
                     String substitutionPrincipleName = getSubstitutionPrincipleName(compare.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.MARKET_COMPARE);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdCompare.getName()).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
                 }
                 if (StringUtils.isNotBlank(cost)) {
                     String substitutionPrincipleName = getSubstitutionPrincipleName(cost.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.COST);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdCost.getName()).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
                 }
                 if (StringUtils.isNotBlank(development)) {
                     String substitutionPrincipleName = getSubstitutionPrincipleName(development.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DEVELOPMENT);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdDevelopment.getName()).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
                 }
                 if (StringUtils.isNotBlank(autotrophy)) {
                     String substitutionPrincipleName = getSubstitutionPrincipleName(autotrophy.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INCOME_AUTOTROPHY);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdIncomeAutotrophy.getName()).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
                 }
                 if (StringUtils.isNotBlank(rent)) {
                     String substitutionPrincipleName = getSubstitutionPrincipleName(rent.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INCOME_RENT);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdIncomeRent.getName()).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
                 }
 

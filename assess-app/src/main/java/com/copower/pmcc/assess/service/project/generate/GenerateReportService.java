@@ -373,7 +373,6 @@ public class GenerateReportService {
                 }
                 //背景估价对象区域物业总体状况
                 if (Objects.equal(BaseReportFieldEnum.BACKGROUND_ANALYSIS_PROPERTY.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND_PROPERTY));
                 }
                 //特别提示

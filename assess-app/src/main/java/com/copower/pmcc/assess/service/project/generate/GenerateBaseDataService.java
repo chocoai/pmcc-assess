@@ -1494,7 +1494,7 @@ public class GenerateBaseDataService {
         String result = "";
         switch (schemeSupportTypeEnum) {
             case REPORT_ANALYSIS_CATEGORY_LIQUIDITY:
-                result = dataReportAnalysisService.getReportLiquidity(projectInfo, areaId);
+                result = dataReportAnalysisService.getReportLiquidity(this.projectInfo, areaId);
                 break;
             case REPORT_ANALYSIS_CATEGORY_RISK:
                 result = dataReportAnalysisRiskService.getReportRisk();
@@ -1517,7 +1517,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(compileReportService.getReportCompile(this.areaId, type), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(compileReportService.getReportCompile(this.areaId, type))), true);
         document.save(localPath);
         return localPath;
     }
