@@ -414,10 +414,10 @@ public class GenerateCommonMethod {
             if (NumberUtils.isNumber(schemeJudgeObject.getNumber())) {
                 List<Integer> integerList = stringListMap.get(key);
                 if (CollectionUtils.isNotEmpty(integerList)) {
-                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getId().toString()));
                 } else {
                     integerList = Lists.newArrayList();
-                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getId().toString()));
                 }
                 stringListMap.put(key, integerList);
             }
@@ -473,10 +473,10 @@ public class GenerateCommonMethod {
                     }
                 }
             } else {
-                stringBuilder.append(schemeJudgeObject.getNumber());
+                stringBuilder.append(parseIntJudgeNumber(schemeJudgeObject.getNumber()).toString());
                 //拆分情况
                 if (schemeJudgeObject.getSplitNumber() != null) {
-                    stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
+//                    stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
                 }
             }
             stringBuilder.append("号");

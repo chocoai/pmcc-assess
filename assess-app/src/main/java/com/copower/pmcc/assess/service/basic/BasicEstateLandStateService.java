@@ -155,6 +155,11 @@ public class BasicEstateLandStateService {
             vo.setTopographicTerrainName(baseDataDicService.getNameById(basicEstateLandState.getTopographicTerrain()));
         }
         vo.setInfrastructureCompletenessName(baseDataDicService.getNameById(basicEstateLandState.getInfrastructureCompleteness()));
+        vo.setPhName(baseDataDicService.getNameById(basicEstateLandState.getPh()));
+        vo.setHoldOnName(baseDataDicService.getNameById(basicEstateLandState.getHoldOn()));
+        vo.setFertilityName(baseDataDicService.getNameById(basicEstateLandState.getFertility()));
+        vo.setContaminatedName(baseDataDicService.getNameById(basicEstateLandState.getContaminated()));
+        vo.setBearingCapacityName(baseDataDicService.getNameById(basicEstateLandState.getBearingCapacity()));
         return vo;
     }
 

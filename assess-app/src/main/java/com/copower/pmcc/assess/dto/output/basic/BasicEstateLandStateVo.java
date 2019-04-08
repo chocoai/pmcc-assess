@@ -17,6 +17,12 @@ public class BasicEstateLandStateVo extends BasicEstateLandState {
     private String topographicTerrainName;
     private String infrastructureCompletenessName;
 
+    private String bearingCapacityName;
+    private String contaminatedName;
+    private String phName;
+    private String fertilityName;
+    private String holdOnName;
+
     public String getLandUseTypeName() {
         return landUseTypeName;
     }
@@ -79,5 +85,45 @@ public class BasicEstateLandStateVo extends BasicEstateLandState {
 
     public void setInfrastructureCompletenessName(String infrastructureCompletenessName) {
         this.infrastructureCompletenessName = infrastructureCompletenessName;
+    }
+
+    public String getBearingCapacityName() {
+        return bearingCapacityName;
+    }
+
+    public void setBearingCapacityName(String bearingCapacityName) {
+        this.bearingCapacityName = bearingCapacityName;
+    }
+
+    public String getContaminatedName() {
+        return contaminatedName;
+    }
+
+    public void setContaminatedName(String contaminatedName) {
+        this.contaminatedName = contaminatedName;
+    }
+
+    public String getPhName() {
+        return phName;
+    }
+
+    public void setPhName(String phName) {
+        this.phName = phName;
+    }
+
+    public String getFertilityName() {
+        return fertilityName;
+    }
+
+    public void setFertilityName(String fertilityName) {
+        this.fertilityName = fertilityName;
+    }
+
+    public String getHoldOnName() {
+        return holdOnName;
+    }
+
+    public void setHoldOnName(String holdOnName) {
+        this.holdOnName = holdOnName;
     }
 }

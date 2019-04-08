@@ -720,33 +720,64 @@ public class GenerateBaseDataService {
     public String getHotTip() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(16);
         Document doc = new Document();
+        LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         String localPath = getLocalPath();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId).stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
-        List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
-                surveyAssetInventoryRightRecordList.addAll(surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(schemeJudgeObject.getDeclareRecordId(), projectId));
-            });
-        }
         int row = 0;
         if (true) {
-            String oneContent = "本函内容摘自估价报告，欲了解本次估价项目全面情况，请详见估价结果报告，报告使用时请特别关注估价假设和限制条件内容。";
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
+            stringSet.add("本函内容摘自估价报告");
+            stringSet.add("欲了解本次估价项目全面情况");
+            stringSet.add("请详见估价结果报告");
+            stringSet.add("报告使用时请特别关注估价假设和限制条件内容。");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet,"，"))).append("</p>");
+            stringSet.clear();
             row++;
         }
         if (true) {
-            String oneContent = String.format("根据委托人介绍及估价人员在成都市房地产评估管理服务信息系统（http://fcpg.cdfgj.gov.cn/）" +
-                    "上查询了解得知，截止价值时点，估价对象已设定 %s。", "");
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
-            row++;
+            Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> hashMap = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
+            final String mortgage = "抵押权" ;
+            List<Integer> integerList = Lists.newArrayList();
+            if (!hashMap.isEmpty()){
+                hashMap.entrySet().stream().forEach(entry -> {
+                    if (CollectionUtils.isNotEmpty(entry.getValue())){
+                        entry.getValue().stream().forEach(oo -> {
+                            if (oo.getCategory() != null){
+                                if (Objects.equal(mortgage,baseDataDicService.getNameById(oo.getCategory()))){
+                                    integerList.add(generateCommonMethod.parseIntJudgeNumber(entry.getKey().getNumber()));
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            if (CollectionUtils.isNotEmpty(integerList)){
+                stringSet.add(String.format("%s号有%s",StringUtils.join(integerList.stream().distinct().collect(Collectors.toList()),"、"),mortgage));
+                stringSet.add("根据委托人介绍及估价人员在");
+                stringSet.add(erpAreaService.getAreaFullName(schemeAreaGroup.getProvince(),schemeAreaGroup.getCity(),schemeAreaGroup.getDistrict()));
+                DataHisRightInfoPublicity infoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(),schemeAreaGroup.getCity(),schemeAreaGroup.getDistrict());
+                String value = null;
+                if (infoPublicity != null){
+                    value = infoPublicity.getContent();
+                }
+                if (StringUtils.isNotBlank(value)){
+                    stringSet.add(String.format("房地产评估管理服务信息系统 %s",value));
+                }else {
+                    stringSet.add(String.format("房地产评估管理服务信息系统 %s","（http://fcpg.cdfgj.gov.cn/）"));
+                }
+                stringSet.add("上查询了解得知，截止价值时点，估价对象已设定");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet,"，"))).append("</p>");
+                stringSet.clear();
+                row++;
+            }
         }
-        String temp = getActualAddressAssetInventory();
-        String temp2 = getCertificateAssetInventory();
-        if (StringUtils.isNotBlank(temp)) {
-            String oneContent = "估价对象现场查勘地址为" + temp +
-                    "本次评估根据委托方提供的由“" + temp2 + "”出具的《证明》，本次以上地址为同一地址。";
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
+        String addressAssetInventory = getActualAddressAssetInventory();
+        String certificateAssetInventory = getCertificateAssetInventory();
+        if (StringUtils.isNotBlank(addressAssetInventory) && StringUtils.isNotBlank(certificateAssetInventory)) {
+            stringSet.add(String.format("估价对象现场查勘地址为%s",addressAssetInventory)) ;
+            stringSet.add(String.format("本次评估根据委托方提供的由%s",certificateAssetInventory)) ;
+            stringSet.add("本次以上地址为同一地址。") ;
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet,"，"))).append("</p>");
+            stringSet.clear();
             row++;
         }
         List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = getSchemeReimbursementItemVoList();
@@ -760,14 +791,16 @@ public class GenerateBaseDataService {
                 }
             }
             String s = generateCommonMethod.getBigDecimalRound(bigDecimal, false);
-            String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，" +
-                    "本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，" +
-                    "抵押权人已经知晓法定优先受偿款对估价对象价值的影响，" +
-                    "且并不需要我们在抵押价值中予以扣除法定优先受偿款，" +
-                    "故本报告假设估价对象在价值时点法定优先受偿款为" + s + "元" + "（大写：" +
-                    CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(bigDecimal, false)) + "）" +
-                    "，在此提请报告使用人加以关注。";
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
+            stringSet.add("根据估价委托人提供的《法定优先受偿款情况说明》");
+            stringSet.add("估价对象于价值时点已设定抵押权");
+            stringSet.add("本次评估是抵押权存续期间的房地产估价（同行续贷）");
+            stringSet.add("经过沟通");
+            stringSet.add("抵押权人已经知晓法定优先受偿款对估价对象价值的影响");
+            stringSet.add("且并不需要我们在抵押价值中予以扣除法定优先受偿款");
+            stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款为%s元（大写：%s ）",s,CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(bigDecimal, false))));
+            stringSet.add("在此提请报告使用人加以关注。");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet,"，"))).append("</p>");
+            stringSet.clear();
         }
         documentBuilder.insertHtml(stringBuilder.toString(), true);
         doc.save(localPath);
@@ -1889,15 +1922,22 @@ public class GenerateBaseDataService {
                 List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = entry.getValue();
                 if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
                     for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                        if (inventoryRight.getCategory() != null) {
-                            stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
-                            stringBuilder.append("-").append(inventoryRight.getNumber());
-                            stringBuilder.append("-").append(inventoryRight.getCertName());
-                            stringBuilder.append("-").append(inventoryRight.getObligee());
-                            stringBuilder.append("-").append(inventoryRight.getObligor());
-                            stringSet.add(stringBuilder.toString());
-                            stringBuilder.delete(0, stringBuilder.toString().length());
+                        if (inventoryRight.getCategory() == null){
+                            continue;
                         }
+                        if (StringUtils.isEmpty(inventoryRight.getNumber()) || StringUtils.isEmpty(inventoryRight.getRegisterArea())){
+                            continue;
+                        }
+                        if (StringUtils.isEmpty(inventoryRight.getObligee()) || StringUtils.isEmpty(inventoryRight.getObligor())){
+                            continue;
+                        }
+                        stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
+                        stringBuilder.append("-").append(inventoryRight.getNumber());
+                        stringBuilder.append("-").append(inventoryRight.getRegisterArea()).append("㎡");
+                        stringBuilder.append("-").append(inventoryRight.getObligee());
+                        stringBuilder.append("-").append(inventoryRight.getObligor());
+                        stringSet.add(stringBuilder.toString());
+                        stringBuilder.delete(0, stringBuilder.toString().length());
                     }
                     if (CollectionUtils.isNotEmpty(stringSet)) {
                         generateCommonMethod.putStringListMap(stringListMap, entry.getKey(), StringUtils.join(stringSet, "、"));
@@ -2010,7 +2050,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
+        String s = StringUtils.join(stringSet,"、");
         return s;
     }
 

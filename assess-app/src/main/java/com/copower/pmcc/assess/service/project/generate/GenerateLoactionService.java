@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -24,7 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -65,12 +68,12 @@ public class GenerateLoactionService {
         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(applyId);
         stringBuffer.delete(0, stringBuffer.toString().length());
         if (declareRecord == null || StringUtils.isEmpty(declareRecord.getSeat())) {
-            stringBuffer.append(error);
+
         } else {
             stringBuffer.append(declareRecord.getSeat());
         }
         if (basicEstate == null || StringUtils.isEmpty(basicEstate.getName())) {
-            stringBuffer.append(error);
+
         } else {
             stringBuffer.append(basicEstate.getName());
         }
@@ -258,7 +261,7 @@ public class GenerateLoactionService {
         stringBuffer.delete(0, stringBuffer.toString().length());
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = generateBaseExamineService.getBasicMatchingEnvironmentList();
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(scienceEnum.getKey());
+        LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
         if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
             String a = "无影响";
             String b = "影响一般";
@@ -266,48 +269,36 @@ public class GenerateLoactionService {
             String d = "有重大影响";
             //自然环境要素
             if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.NATURAL.getKey())) {
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "空气", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "水体质量", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "美观度", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "静密程度", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "空间辐射", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "废弃物", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("。");
+                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "空气", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "水体质量", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "美观度", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "静密程度", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "空间辐射", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "废弃物", hashSet, basicMatchingEnvironmentVoList);
+                stringBuffer.append(StringUtils.join(hashSet,"，"));
+                hashSet.clear();
             }
             //人文环境要素
             if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.HUMANITY.getKey())) {
-                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "相邻利用物业状况", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "居民特征", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "治安状况", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "相邻利用物业状况", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("。");
+                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "相邻利用物业状况", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "居民特征", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "治安状况", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "相邻利用物业状况", hashSet, basicMatchingEnvironmentVoList);
+                stringBuffer.append(StringUtils.join(hashSet,"，"));
+                hashSet.clear();
             }
             //景观要素
             if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.SCENERY.getKey())) {
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "海景", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "江景", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "河景", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "湖景", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "山景", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "公园", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "园林", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("，");
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "中庭景观", stringBuffer, basicMatchingEnvironmentVoList);
-                stringBuffer.append("。");
+                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "海景", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "江景", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "河景", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "湖景", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "山景", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "公园", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "园林", hashSet, basicMatchingEnvironmentVoList);
+                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "中庭景观", hashSet, basicMatchingEnvironmentVoList);
+                stringBuffer.append(StringUtils.join(hashSet,"，"));
+                hashSet.clear();
             }
         }
         if (StringUtils.isEmpty(stringBuffer.toString().trim())) {
@@ -316,7 +307,7 @@ public class GenerateLoactionService {
         return stringBuffer.toString();
     }
 
-    private void environmentalScience(EnvironmentalScienceEnum scienceEnum, String a, String b, String c, String d, String key, StringBuffer stringBuffer, List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList) {
+    private void environmentalScience(EnvironmentalScienceEnum scienceEnum, String a, String b, String c, String d, String key, LinkedHashSet<String> hashSet, List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList) {
         BasicMatchingEnvironmentVo matchingEnvironmentVo = null;
         try {
             matchingEnvironmentVo = basicMatchingEnvironmentVoList.stream().filter(basicMatchingEnvironmentVo -> {
@@ -348,12 +339,8 @@ public class GenerateLoactionService {
             }
         }
         if (matchingEnvironmentVo == null) {
-            matchingEnvironmentVo = new BasicMatchingEnvironmentVo();
-            matchingEnvironmentVo.setRemark(String.format("无%s信息", key));
-        }
-        stringBuffer.append(key).append(matchingEnvironmentVo.getRemark());
-        if (StringUtils.isNotBlank(stringBuffer.toString().trim())) {
-
+        } else {
+            hashSet.add(String.format("%s%s",key,matchingEnvironmentVo.getRemark()));
         }
     }
 
@@ -715,7 +702,9 @@ public class GenerateLoactionService {
                 //交通枢纽
                 List<BasicMatchingTrafficVo> trafficHubList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
                     if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName()) && basicMatchingTrafficVo.getDistance() != null) {
-                        return true;
+                        if (!"0".equals(generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName()))) {
+                            return true;
+                        }
                     }
                     return false;
                 }).collect(Collectors.toList());
@@ -735,7 +724,9 @@ public class GenerateLoactionService {
                 //主要转换
                 List<BasicMatchingTrafficVo> mainConversionList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
                     if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName()) && basicMatchingTrafficVo.getDistance() != null) {
-                        return true;
+                        if (!"0".equals(generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName()))) {
+                            return true;
+                        }
                     }
                     return false;
                 }).collect(Collectors.toList());
@@ -755,19 +746,27 @@ public class GenerateLoactionService {
             }
             //购物商场
             if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-                for (int i = 0; i < basicMatchingLeisurePlaceList.size(); i++) {
-                    BasicMatchingLeisurePlace leisurePlace = basicMatchingLeisurePlaceList.get(i);
-                    if (leisurePlace.getDistance() != null) {
-                        stringBuffer.append("距").append(leisurePlace.getName())
-                                .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(leisurePlace.getDistance()))));
-                        if (i == basicMatchingLeisurePlaceList.size() - 1) {
-                            stringBuffer.append("。");
-                        } else {
-                            stringBuffer.append(",");
+                basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceList.stream().filter(leisurePlace -> {
+                    if (!"0".equals(generateCommonMethod.getNumber(baseDataDicService.getNameById(leisurePlace.getDistance())))) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
+                    for (int i = 0; i < basicMatchingLeisurePlaceList.size(); i++) {
+                        BasicMatchingLeisurePlace leisurePlace = basicMatchingLeisurePlaceList.get(i);
+                        if (leisurePlace.getDistance() != null) {
+                            stringBuffer.append("距").append(leisurePlace.getName())
+                                    .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(leisurePlace.getDistance()))));
+                            if (i == basicMatchingLeisurePlaceList.size() - 1) {
+                                stringBuffer.append("。");
+                            } else {
+                                stringBuffer.append(",");
+                            }
                         }
                     }
+                    stringBuffer.append("\r");
                 }
-                stringBuffer.append("\r");
             }
             //金融服务
             if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
@@ -849,13 +848,14 @@ public class GenerateLoactionService {
         stringBuffer.delete(0, stringBuffer.toString().length());
         if (basicEstate != null) {
             stringBuffer.append(basicEstate.getProvinceName()).append(basicEstate.getCityName()).append(basicEstate.getDistrictName());
-        } else {
-            stringBuffer.append(error);
         }
         if (basicEstate.getBlockId() != null) {
             DataBlock dataBlock = dataBlockService.getDataBlockById(basicEstate.getBlockId());
             if (dataBlock != null) {
-                stringBuffer.append(baseDataDicService.getNameById(dataBlock.getPosition()));
+                String v = baseDataDicService.getNameById(dataBlock.getPosition());
+                if (StringUtils.isNotBlank(v)) {
+                    stringBuffer.append(v);
+                }
                 stringBuffer.append(dataBlock.getName());
             }
         }

@@ -47,7 +47,7 @@
     };
 
     estateCommon.getEstateName = function () {
-        return estateCommon.estateForm.find('[name=name]').val() ;
+        return estateCommon.estateForm.find('[name=name]').val();
     };
 
 
@@ -78,7 +78,7 @@
         })
     };
 
-    estateCommon.detail = function (id,callback) {
+    estateCommon.detail = function (id, callback) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateByApplyId',
             type: 'get',
@@ -153,22 +153,42 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_infrastructureCompleteness, data.land.infrastructureCompleteness, function (html, data) {
             estateCommon.estateLandStateForm.find('select.infrastructureCompleteness').empty().html(html).trigger('change');
         });
+
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateLandContaminated, data.land.contaminated, function (html, data) {
+            estateCommon.estateLandStateForm.find("select[name='contaminated']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateLandPh, data.land.ph, function (html, data) {
+            estateCommon.estateLandStateForm.find("select[name='ph']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateLandFertility, data.land.fertility, function (html, data) {
+            estateCommon.estateLandStateForm.find("select[name='fertility']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingCapacity, data.land.bearingCapacity, function (html, data) {
+            estateCommon.estateLandStateForm.find("select[name='bearingCapacity']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingHoldOn, data.land.holdOn, function (html, data) {
+            estateCommon.estateLandStateForm.find("select[name='holdOn']").empty().html(html).trigger('change');
+        });
         //绑定变更事件
         estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
-            var strArr = ["林地","园地","水域","耕地","草地"] ;//来自于实体描述1(1).docx中的规则
-            var landUseTypeId = estateCommon.estateLandStateForm.find("select.landUseType").val() ;
-            if (landUseTypeId){
-                AssessCommon.getDataDicInfo(landUseTypeId,function (landUseTypeData) {
-                    var str  = strArr.join(",") ;
+            var strArr = ["林地", "园地", "水域", "耕地", "草地"];//来自于实体描述1(1).docx中的规则
+            var landUseTypeId = estateCommon.estateLandStateForm.find("select.landUseType").val();
+            if (landUseTypeId) {
+                AssessCommon.getDataDicInfo(landUseTypeId, function (landUseTypeData) {
+                    var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
-                    if (str.indexOf(landUseTypeData.name) != -1){
-                        estateCommon.estateLandStateForm.find("input[name='fertility']").parent().parent().show();
-                        estateCommon.estateLandStateForm.find("input[name='holdOn']").parent().parent().hide();
-                        estateCommon.estateLandStateForm.find("input[name='bearingCapacity']").parent().parent().hide();
-                    }else {
-                        estateCommon.estateLandStateForm.find("input[name='fertility']").parent().parent().hide();
-                        estateCommon.estateLandStateForm.find("input[name='holdOn']").parent().parent().show();
-                        estateCommon.estateLandStateForm.find("input[name='bearingCapacity']").parent().parent().show();
+                    if (str.indexOf(landUseTypeData.name) != -1) {
+                        // estateCommon.estateLandStateForm.find("input[name='fertility']").parent().parent().show();
+                        // estateCommon.estateLandStateForm.find("input[name='holdOn']").parent().parent().hide();
+                        // estateCommon.estateLandStateForm.find("input[name='bearingCapacity']").parent().parent().hide();
+
+                        estateCommon.estateLandStateForm.find("select[name='fertility']").parent().parent().show();
+                        estateCommon.estateLandStateForm.find("select[name='holdOn']").parent().parent().hide();
+                        estateCommon.estateLandStateForm.find("select[name='bearingCapacity']").parent().parent().hide();
+                    } else {
+                        estateCommon.estateLandStateForm.find("select[name='fertility']").parent().parent().hide();
+                        estateCommon.estateLandStateForm.find("select[name='holdOn']").parent().parent().show();
+                        estateCommon.estateLandStateForm.find("select[name='bearingCapacity']").parent().parent().show();
                     }
                 });
             }
@@ -216,21 +236,21 @@
             url: getContextPath() + '/basicEstate/appWriteEstate',
             data: {
                 applyId: basicCommon.getApplyId(),
-                caseEstateId:id
+                caseEstateId: id
             },
             type: 'post',
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    estateCommon.detail(basicCommon.getApplyId(),function (data) {
-                        basicCommon.update({caseEstateId:id,id:basicCommon.getApplyId()},function () {
-                            estateCommon.initForm({estate:data.basicEstate,land:data.basicEstateLandState}) ;
-                            basicCommon.basicApplyForm.find("input[name='caseEstateId']").val(id) ;
+                    estateCommon.detail(basicCommon.getApplyId(), function (data) {
+                        basicCommon.update({caseEstateId: id, id: basicCommon.getApplyId()}, function () {
+                            estateCommon.initForm({estate: data.basicEstate, land: data.basicEstateLandState});
+                            basicCommon.basicApplyForm.find("input[name='caseEstateId']").val(id);
                         });
                     });
-                }else {
+                } else {
                     console.log(result.errmsg);
-                    Alert("转移失败!") ;
+                    Alert("转移失败!");
                 }
             }
         })
@@ -246,7 +266,7 @@
             }
         });
         estateCommon.estateForm.find('[name=developerName]').apDeveloper({
-            onSelect: function (id, name){
+            onSelect: function (id, name) {
                 estateCommon.estateForm.find('input[name=developer]').val(id);
                 estateCommon.estateForm.find('input[name=developerName]').val(name);
             }
@@ -312,17 +332,17 @@
     };
 
     //获取区位描述
-    estateCommon.getLocationDescribe  = function (blockId){
+    estateCommon.getLocationDescribe = function (blockId) {
         $.ajax({
             url: getContextPath() + '/dataBlock/getDataBlockById',
             type: "get",
             dataType: "json",
             data: {
-                id:blockId,
+                id: blockId,
             },
             success: function (result) {
                 if (result.ret) {
-                    if(result.data){
+                    if (result.data) {
                         estateCommon.estateForm.find("textarea[name='locationDescribe']").val(result.data.remark);
                     }
                 }

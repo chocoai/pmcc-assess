@@ -168,19 +168,19 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">污染</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.contaminated}</label>
+                    <label class="form-control">${basicEstateLandState.contaminatedName}</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">酸碱度</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.ph}</label>
+                    <label class="form-control">${basicEstateLandState.phName}</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">肥力</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.fertility}</label>
+                    <label class="form-control">${basicEstateLandState.fertilityName}</label>
                 </div>
             </div>
         </div>
@@ -188,13 +188,13 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">承载力</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.bearingCapacity}</label>
+                    <label class="form-control">${basicEstateLandState.bearingCapacityName}</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">稳定性</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.holdOn}</label>
+                    <label class="form-control">${basicEstateLandState.holdOnName}</label>
                 </div>
             </div>
 
