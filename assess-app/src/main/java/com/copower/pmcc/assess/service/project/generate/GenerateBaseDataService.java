@@ -1840,35 +1840,27 @@ public class GenerateBaseDataService {
      */
     public String getThereAnyOtherRight() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (projectPhase != null) {
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    boolean flag = false;
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (int j = 0; j < projectPlanDetailsList.size(); j++) {
-                            ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(j);
-                            List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
-                            if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                                for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                                    if (StringUtils.isNotBlank(inventoryRight.getNumber())) {
-                                        flag = true;
-                                    }
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                boolean flag = false;
+                List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(schemeJudgeObject.getDeclareRecordId(),projectId);
+                if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)){
+                    for (SurveyAssetInventoryRightRecord rightRecord:surveyAssetInventoryRightRecordList){
+                        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(rightRecord.getId());
+                        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+                            for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
+                                if (StringUtils.isNotBlank(inventoryRight.getNumber())) {
+                                    flag = true;
                                 }
                             }
                         }
                     }
-                    if (flag) {
-                        stringSet.add(String.format("%s%s", schemeJudgeObject.getName(), ":有他项权"));
-                    } else {
-                        stringSet.add(String.format("%s%s", schemeJudgeObject.getName(), ":无他项权"));
-                    }
+                }
+                if (flag) {
+                    stringSet.add(String.format("%s%s", schemeJudgeObject.getName(), ":有他项权"));
+                } else {
+                    stringSet.add(String.format("%s%s", schemeJudgeObject.getName(), ":无他项权"));
                 }
             }
         }
