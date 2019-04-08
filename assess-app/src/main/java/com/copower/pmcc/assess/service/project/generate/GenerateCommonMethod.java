@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -360,9 +361,7 @@ public class GenerateCommonMethod {
      */
     public LinkedHashMap<String, List<SchemeJudgeObject>> getLinkedHashMapEstateNameSchemeJudgeObjectList(Integer areaId) throws Exception {
         LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
-        schemeJudgeObjectList = this.getByRootAndChildSchemeJudgeObjectList(schemeJudgeObjectList, true);
-        schemeJudgeObjectList = this.removeDuplicate(schemeJudgeObjectList);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
             if (basicApply == null || basicApply.getId() == null) {
@@ -824,7 +823,7 @@ public class GenerateCommonMethod {
      * @param map
      * @return
      */
-    public String judgeSummaryDesc(Map<Integer, String> map, String explain) {
+    public String judgeSummaryDesc(Map<Integer, String> map, String explain, Boolean isShowNumber) {
         if (map == null || map.size() <= 0) return "";
         Map<String, List<Integer>> listMap = getStringListMap(map);
         StringBuilder judgeBuilder = new StringBuilder();
@@ -835,6 +834,9 @@ public class GenerateCommonMethod {
         }
         String judgeString = StringUtils.strip(judgeBuilder.toString(), "、");
         String contentStrig = StringUtils.strip(contentBuilder.toString(), "、");
+        if (listMap.size() <= 1 && isShowNumber == Boolean.FALSE) {
+            return contentStrig;
+        }
         return String.format("%s%s%s%s", judgeString, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME, StringUtils.defaultString(explain), contentStrig);
     }
 
@@ -859,13 +861,15 @@ public class GenerateCommonMethod {
      * @param map
      * @return
      */
-    public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol) {
+    public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumner) {
         if (map == null || map.size() <= 0) return "";
         Map<String, List<Integer>> listMap = getStringListMap(map);
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
-            builder.append(convertNumber(stringListEntry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME)
-                    .append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
+            if (listMap.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
+                return stringListEntry.getKey();
+            }
+            builder.append(convertNumber(stringListEntry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME).append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
         }
         return builder.toString();
     }
@@ -920,7 +924,7 @@ public class GenerateCommonMethod {
      * @param stringHashSet
      * @return
      */
-    public String stringHashSetJoin(Set<String> stringHashSet,String separator) {
+    public String stringHashSetJoin(Set<String> stringHashSet, String separator) {
         if (CollectionUtils.isNotEmpty(stringHashSet)) {
             String s = StringUtils.join(stringHashSet, separator);
             stringHashSet.clear();
@@ -933,20 +937,43 @@ public class GenerateCommonMethod {
 
     /**
      * 提取数字
+     *
      * @param text
      * @return
      */
-    public  String getNumber(String text){
-        if (StringUtils.isEmpty(text)){
-            return "0" ;
+    public String getNumber(String text) {
+        if (StringUtils.isEmpty(text)) {
+            return "0";
         }
-        if (NumberUtils.isNumber(text)){
+        if (NumberUtils.isNumber(text)) {
             return text;
         }
-        String regEx="[^0-9]";
+        String regEx = "[^0-9]";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(text);
-        String s =  m.replaceAll("").trim();
-        return StringUtils.isNotBlank(s)?s:"0";
+        String s = m.replaceAll("").trim();
+        return StringUtils.isNotBlank(s) ? s : "0";
+    }
+
+    /**
+     * 估价对象编号zhuanintege
+     *
+     * @param number
+     * @return
+     */
+    public Integer parseIntJudgeNumber(String number) {
+        if (StringUtils.isBlank(number)) return null;
+        if (number.contains(","))
+            number = number.split(",")[0];
+        if (number.contains("-"))
+            number = number.split("-")[0];
+        Integer i = Integer.valueOf(number);
+        return i;
+    }
+
+    public List<Integer> getJudgeNumberByIds(List<Integer> judgeObjectIds) {
+        if (CollectionUtils.isEmpty(judgeObjectIds)) return null;
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getListByIds(judgeObjectIds);
+        return LangUtils.transform(judgeObjectList, o -> parseIntJudgeNumber(o.getNumber()));
     }
 }

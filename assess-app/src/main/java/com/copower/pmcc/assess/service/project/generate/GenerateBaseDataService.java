@@ -27,6 +27,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
@@ -75,6 +76,7 @@ public class GenerateBaseDataService {
     private SchemeAreaGroupService schemeAreaGroupService;
     private ProjectNumberRecordService projectNumberRecordService;
     private BaseDataDicService baseDataDicService;
+    private BaseProjectClassifyService baseProjectClassifyService;
     private BaseAttachmentService baseAttachmentService;
     private ProjectPlanDetailsService projectPlanDetailsService;
     private DataSetUseFieldService dataSetUseFieldService;
@@ -1372,7 +1374,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getBusinessScope(AdCompanyQualificationDto qualificationDto) throws Exception {
-        return "评估房地产";
+        return qualificationDto.getBusinessScopeName();
     }
 
     /**
@@ -2676,11 +2678,13 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+
     /**
      * 法定优先受偿款
      *
      * @param schemeReimbursementItemVoList
      * @return
+     * @throws Exception
      */
     private BigDecimal getSchemeReimbursementSetUpTotalPrice(List<SchemeReimbursementItemVo> schemeReimbursementItemVoList) {
         BigDecimal notSetUpTotalPrice = new BigDecimal(0);
@@ -4338,6 +4342,7 @@ public class GenerateBaseDataService {
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.projectNumberRecordService = SpringContextUtils.getBean(ProjectNumberRecordService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.baseProjectClassifyService=SpringContextUtils.getBean(BaseProjectClassifyService.class);
         this.schemeJudgeFunctionService = SpringContextUtils.getBean(SchemeJudgeFunctionService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
         this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);

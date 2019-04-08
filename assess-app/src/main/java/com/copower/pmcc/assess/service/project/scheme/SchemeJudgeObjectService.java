@@ -720,4 +720,8 @@ public class SchemeJudgeObjectService {
         judgeObject.setRentalPossessionDesc(rentalPossessionDesc);
         this.updateSchemeJudgeObject(judgeObject);
     }
+
+    public List<SchemeJudgeObject> getListByIds(List<Integer> judgeIds){
+       return schemeJudgeObjectDao.getListByIds(judgeIds);
+    }
 }
