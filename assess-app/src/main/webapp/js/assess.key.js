@@ -92,6 +92,7 @@ AssessDicKey.value_type = "value.type";//价值类型
 AssessDicKey.dataEntrustmentPurposeMortgage = "data.entrustment.purpose.mortgage";//委托目的-抵押评估
 AssessDicKey.property_scope = "examine.house.scope.property";//评估范围
 AssessDicKey.project_initiate_urgency = "project.initiate.urgency";//紧急程度
+AssessDicKey.data_company_reputation = "data.company.reputation";//公司信誉
 
 //楼盘
 AssessDicKey.estate_position = "estate.position";//楼盘方位
@@ -114,7 +115,7 @@ AssessDicKey.estate_car_type = "estate.car.type";//车位类型
 AssessDicKey.estate_car_parkingEstate = "estate.car.parkingEstate";//楼盘车位
 AssessDicKey.estate_traffic_nature = "estate.traffic.nature";//交通枢纽性质
 AssessDicKey.estate_line_water_supply_pipe_grade = "estate.line.water.supply.pipe.grade";//供应保障等级
-AssessDicKey.estate_supplier_reputation = "estate.supplier.reputation";//供应商信誉
+
 AssessDicKey.estate_supplier_grade = "estate.supplier.grade";//供应商等级
 AssessDicKey.estate_school_nature = "estate.school.nature";//学校性质
 AssessDicKey.estate_school_gradation = "estate.school.gradation";//学校级次

@@ -206,7 +206,6 @@ public class BasicBuildingService {
         if (org.apache.commons.lang3.math.NumberUtils.isNumber(basicBuilding.getProperty())){
             DataProperty dataProperty = dataPropertyService.getByDataPropertyId(Integer.parseInt(basicBuilding.getProperty()));
             if (dataProperty != null){
-                vo.setProperty(dataProperty.getName());
                 vo.setPropertyName(dataProperty.getName());
                 vo.setDataProperty(dataPropertyService.getDataPropertyVo(dataProperty));
             }
@@ -215,7 +214,6 @@ public class BasicBuildingService {
             DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(Integer.parseInt(basicBuilding.getBuilder()));
             if (dataBuilder != null){
                 vo.setBuildingName(dataBuilder.getName());
-                vo.setBuilder(dataBuilder.getName());
                 vo.setDataBuilder(dataBuilderService.getDataBuilderVo(dataBuilder));
             }
         }

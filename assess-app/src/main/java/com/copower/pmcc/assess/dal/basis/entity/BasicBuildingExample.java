@@ -746,6 +746,76 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andBuilderNameIsNull() {
+            addCriterion("builder_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameIsNotNull() {
+            addCriterion("builder_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameEqualTo(String value) {
+            addCriterion("builder_name =", value, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameNotEqualTo(String value) {
+            addCriterion("builder_name <>", value, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameGreaterThan(String value) {
+            addCriterion("builder_name >", value, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameGreaterThanOrEqualTo(String value) {
+            addCriterion("builder_name >=", value, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameLessThan(String value) {
+            addCriterion("builder_name <", value, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameLessThanOrEqualTo(String value) {
+            addCriterion("builder_name <=", value, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameLike(String value) {
+            addCriterion("builder_name like", value, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameNotLike(String value) {
+            addCriterion("builder_name not like", value, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameIn(List<String> values) {
+            addCriterion("builder_name in", values, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameNotIn(List<String> values) {
+            addCriterion("builder_name not in", values, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameBetween(String value1, String value2) {
+            addCriterion("builder_name between", value1, value2, "builderName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuilderNameNotBetween(String value1, String value2) {
+            addCriterion("builder_name not between", value1, value2, "builderName");
+            return (Criteria) this;
+        }
+
         public Criteria andPropertyIsNull() {
             addCriterion("property is null");
             return (Criteria) this;
@@ -813,6 +883,76 @@ public class BasicBuildingExample {
 
         public Criteria andPropertyNotBetween(String value1, String value2) {
             addCriterion("property not between", value1, value2, "property");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameIsNull() {
+            addCriterion("property_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameIsNotNull() {
+            addCriterion("property_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameEqualTo(String value) {
+            addCriterion("property_name =", value, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameNotEqualTo(String value) {
+            addCriterion("property_name <>", value, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameGreaterThan(String value) {
+            addCriterion("property_name >", value, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameGreaterThanOrEqualTo(String value) {
+            addCriterion("property_name >=", value, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameLessThan(String value) {
+            addCriterion("property_name <", value, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameLessThanOrEqualTo(String value) {
+            addCriterion("property_name <=", value, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameLike(String value) {
+            addCriterion("property_name like", value, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameNotLike(String value) {
+            addCriterion("property_name not like", value, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameIn(List<String> values) {
+            addCriterion("property_name in", values, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameNotIn(List<String> values) {
+            addCriterion("property_name not in", values, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameBetween(String value1, String value2) {
+            addCriterion("property_name between", value1, value2, "propertyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyNameNotBetween(String value1, String value2) {
+            addCriterion("property_name not between", value1, value2, "propertyName");
             return (Criteria) this;
         }
 

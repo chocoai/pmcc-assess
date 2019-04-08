@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryRightRecordVo;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -54,21 +55,23 @@ public class SurveyAssetInventoryRightRecordService {
 
     /**
      * 利用申报id获取他项权力组信息
+     *
      * @param declareRecordId
      * @param projectId
      * @return
      */
-    public List<SurveyAssetInventoryRightRecord> getSurveyAssetInventoryRightRecordByDeclareRecord(Integer declareRecordId,Integer projectId){
+    public List<SurveyAssetInventoryRightRecord> getSurveyAssetInventoryRightRecordByDeclareRecord(Integer declareRecordId, Integer projectId) {
         List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = Lists.newArrayList();
         String value = declareRecordId.toString();
         SurveyAssetInventoryRightRecord query = new SurveyAssetInventoryRightRecord();
         query.setProjectId(projectId);
         List<SurveyAssetInventoryRightRecord> rightRecordList = this.surveyAssetInventoryRightRecordList(query);
-        if (CollectionUtils.isNotEmpty(rightRecordList)){
+        if (CollectionUtils.isNotEmpty(rightRecordList)) {
             rightRecordList.stream().forEach(surveyAssetInventoryRightRecord -> {
-                if (StringUtils.isNotBlank(value)){
-                    if (StringUtils.isNotBlank(surveyAssetInventoryRightRecord.getRecordIds())){
-                        if (surveyAssetInventoryRightRecord.getRecordIds().indexOf(value) != -1){
+                if (StringUtils.isNotBlank(value)) {
+                    if (StringUtils.isNotBlank(surveyAssetInventoryRightRecord.getRecordIds())) {
+                        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(surveyAssetInventoryRightRecord.getRecordIds()));
+                        if (integers.contains(declareRecordId)) {
                             surveyAssetInventoryRightRecordList.add(surveyAssetInventoryRightRecord);
                         }
                     }
@@ -88,8 +91,8 @@ public class SurveyAssetInventoryRightRecordService {
         SurveyAssetInventoryRight select = new SurveyAssetInventoryRight();
         select.setInventoryRightRecordId(surveyAssetInventoryRightRecord.getId());
         List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.getSurveyAssetInventoryRightList(select);
-        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)){
-            for (SurveyAssetInventoryRight oo:surveyAssetInventoryRightList){
+        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+            for (SurveyAssetInventoryRight oo : surveyAssetInventoryRightList) {
                 oo.setInventoryRightRecordId(surveyAssetInventoryRightRecord.getId());
                 oo.setPlanDetailsId(surveyAssetInventoryRightRecord.getPlanDetailsId());
                 oo.setProjectId(surveyAssetInventoryRightRecord.getProjectId());
@@ -111,28 +114,28 @@ public class SurveyAssetInventoryRightRecordService {
         return surveyAssetInventoryRightRecordDao.surveyAssetInventoryRightRecordList(surveyAssetInventoryRightRecord);
     }
 
-    public SurveyAssetInventoryRightRecordVo getSurveyAssetInventoryRightRecordVo(SurveyAssetInventoryRightRecord oo){
+    public SurveyAssetInventoryRightRecordVo getSurveyAssetInventoryRightRecordVo(SurveyAssetInventoryRightRecord oo) {
         SurveyAssetInventoryRightRecordVo vo = new SurveyAssetInventoryRightRecordVo();
-        if (oo == null){
+        if (oo == null) {
             return null;
         }
-        org.springframework.beans.BeanUtils.copyProperties(oo,vo);
+        org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         List<DeclareRecord> declareRecordList = Lists.newArrayList();
-        if (StringUtils.isNotBlank(oo.getRecordIds())){
+        if (StringUtils.isNotBlank(oo.getRecordIds())) {
             String[] strings = oo.getRecordIds().split(",");
-            for (String s:strings) {
+            for (String s : strings) {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(Integer.parseInt(s));
-                if (declareRecord != null){
+                if (declareRecord != null) {
                     declareRecordList.add(declareRecord);
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(declareRecordList)){
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
             StringBuilder stringBuilder = new StringBuilder(8);
             for (int i = 0; i < declareRecordList.size(); i++) {
                 stringBuilder.append(declareRecordList.get(i).getName());
-                if (i != declareRecordList.size()-1){
-                    if (declareRecordList.size() != 1){
+                if (i != declareRecordList.size() - 1) {
+                    if (declareRecordList.size() != 1) {
                         stringBuilder.append(",");
                     }
                 }

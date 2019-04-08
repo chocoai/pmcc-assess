@@ -815,6 +815,15 @@ public class GenerateCommonMethod {
     }
 
     /**
+     * 获取缩进后html
+     * @param html
+     * @return
+     */
+    public String getIndentHtml(String html){
+        return String.format("<p style=\"text-indent:2em\">%s</p>",html);
+    }
+
+    /**
      * 估价对象合并描述
      * map 1:商业  2:商业  3:商业  4:住宅  explain:证载用途为
      * 1-3、4证载用途为商业、住宅
