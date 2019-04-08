@@ -20,14 +20,12 @@ import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
-import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
@@ -36,9 +34,7 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.*;
@@ -76,10 +72,8 @@ public class GenerateBaseDataService {
     private SchemeAreaGroupService schemeAreaGroupService;
     private ProjectNumberRecordService projectNumberRecordService;
     private BaseDataDicService baseDataDicService;
-    private BaseProjectClassifyService baseProjectClassifyService;
     private BaseAttachmentService baseAttachmentService;
     private ProjectPlanDetailsService projectPlanDetailsService;
-    private DataSetUseFieldService dataSetUseFieldService;
     private ProjectPhaseService projectPhaseService;
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     private DeclareRecordService declareRecordService;
@@ -88,7 +82,6 @@ public class GenerateBaseDataService {
     private SchemeReimbursementService schemeReimbursementService;
     private com.copower.pmcc.assess.service.AdRpcQualificationsAppService adRpcQualificationsService;
     private PublicService publicService;
-    private SchemeSupportInfoService schemeSupportInfoService;
     private CompileReportService compileReportService;
     private SchemeReportFileService schemeReportFileService;
     private DataQualificationService dataQualificationService;
@@ -98,8 +91,6 @@ public class GenerateBaseDataService {
     private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
     private MdIncomeService mdIncomeService;
     private MdMarketCompareService mdMarketCompareService;
-    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
-    private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
     private DataHisRightInfoPublicityService dataHisRightInfoPublicityService;
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     private DataMethodFormulaService dataMethodFormulaService;
@@ -111,7 +102,6 @@ public class GenerateBaseDataService {
     private DataReportAnalysisService dataReportAnalysisService;
     private DataReportAnalysisRiskService dataReportAnalysisRiskService;
     private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
-    private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
     private GenerateLoactionService generateLoactionService;
     private GenerateLandEntityService generateLandEntityService;
     private SurveyCommonService surveyCommonService;
@@ -161,7 +151,6 @@ public class GenerateBaseDataService {
 
     /**
      * 委托人
-     *
      * @return
      */
     public String getPrincipal() {
@@ -175,7 +164,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价委托人信息
-     *
      * @return
      */
     public String getPrincipalInfo() throws Exception {
@@ -232,7 +220,6 @@ public class GenerateBaseDataService {
 
     /**
      * 财产范围说明
-     *
      * @return
      * @throws Exception
      */
@@ -255,8 +242,6 @@ public class GenerateBaseDataService {
 
     /**
      * 建筑面积及评估面积
-     *
-     * @return
      */
     public String getBuildingAndAssessArea() {
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
@@ -270,8 +255,6 @@ public class GenerateBaseDataService {
 
     /**
      * 座落
-     *
-     * @return
      * @throws Exception
      */
     public String getSeat() throws Exception {
@@ -345,7 +328,6 @@ public class GenerateBaseDataService {
 
     /**
      * 外聘专家工作概况
-     *
      * @return
      */
     public String getExpertWorkOverview() {
@@ -355,8 +337,6 @@ public class GenerateBaseDataService {
 
     /**
      * 共有权情况
-     *
-     * @return
      * @throws Exception
      */
     public String getCo_ownership() throws Exception {
@@ -387,9 +367,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 变现比率
-     *
-     * @param:
-     * @return:
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
@@ -410,9 +387,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 出具报告区域名称
-     *
-     * @param:
-     * @return:
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
@@ -426,8 +400,6 @@ public class GenerateBaseDataService {
 
     /**
      * 抵押价值总金额
-     *
-     * @return
      */
     public String getTotalAmountMortgageValue() throws Exception {
         BigDecimal decimal = new BigDecimal(getTotalRealEstatePrice()).subtract(new BigDecimal(getStatutoryPriorityAmountTotal()));
@@ -436,8 +408,6 @@ public class GenerateBaseDataService {
 
     /**
      * 抵押价值总金额大写
-     *
-     * @return
      */
     public String getTotalAmountMortgageValueCapitalization() throws Exception {
         BigDecimal decimal = new BigDecimal(getTotalRealEstatePrice()).subtract(new BigDecimal(getStatutoryPriorityAmountTotal()));
@@ -446,8 +416,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价项目名称
-     *
-     * @return
      */
     public String getValuationProjectName() throws Exception {
         String s = getSeat();
@@ -460,8 +428,6 @@ public class GenerateBaseDataService {
 
     /**
      * 证载用途
-     *
-     * @return
      * @throws Exception
      */
     public String getSeparationCertificateUses() throws Exception {
@@ -483,7 +449,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象的总价
-     *
      * @return
      */
     public String getTotalValueValuationObject() {
@@ -506,8 +471,6 @@ public class GenerateBaseDataService {
 
     /**
      * 分类评估单价计算试
-     *
-     * @return
      */
     public String getEvaluationExpression() {
         return "市场比较法价格*权重+收益法价格*权重";
@@ -515,8 +478,6 @@ public class GenerateBaseDataService {
 
     /**
      * 单价调整表
-     *
-     * @return
      * @throws Exception
      */
     public String getUnitPriceAdjustmentTable() throws Exception {
@@ -582,8 +543,6 @@ public class GenerateBaseDataService {
 
     /**
      * 分类评估方法结果
-     *
-     * @return
      */
     public String getEvaluationMethodResult() throws Exception {
         String localPath = getLocalPath();
@@ -727,8 +686,6 @@ public class GenerateBaseDataService {
 
     /**
      * 法定优先受偿款
-     *
-     * @return
      */
     public String getStatutoryOptimumReimbursement() {
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
@@ -756,7 +713,10 @@ public class GenerateBaseDataService {
         return s;
     }
 
-    //特别提示
+    /**
+     * 特别提示
+     * @throws Exception
+     */
     public String getHotTip() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(16);
         Document doc = new Document();
@@ -816,8 +776,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象权属
-     *
-     * @return
      * @throws Exception
      */
     public String getEquityStatusObjectSheet() throws Exception {
@@ -932,8 +890,6 @@ public class GenerateBaseDataService {
 
     /**
      * 变现分析表
-     *
-     * @return
      */
     public String getLiquidationAnalysis() throws Exception {
         Document doc = new Document();
@@ -1133,8 +1089,6 @@ public class GenerateBaseDataService {
 
     /**
      * 评估方法 , 估价对象评估方法
-     *
-     * @return
      * @throws Exception
      */
     public String getEvaluationMethodValuationObject() throws Exception {
@@ -1156,8 +1110,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象选择估价方法
-     *
-     * @return
      */
     public String getSelectionValuationMethod() throws Exception {
         Document doc = new Document();
@@ -1189,8 +1141,6 @@ public class GenerateBaseDataService {
 
     /**
      * 委托目的表述
-     *
-     * @return
      */
     public String getStatementPurposeEntrustment() {
         String statementPurposeEntrustment = getSchemeAreaGroup().getRemarkEntrustPurpose();
@@ -1201,7 +1151,12 @@ public class GenerateBaseDataService {
         }
     }
 
-    //委托目的
+    /**
+     *
+     * 功能描述: 委托目的
+     * @author: zch
+     * @date: 2019/4/8 11:47
+     */
     public String getDelegatePurpose() {
         String str = baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose());
         if (StringUtils.isNotBlank(str)) {
@@ -1212,8 +1167,6 @@ public class GenerateBaseDataService {
 
     /**
      * 价值类型
-     *
-     * @return
      */
     public String getValueType() {
         if (getSchemeAreaGroup() != null) {
@@ -1225,7 +1178,12 @@ public class GenerateBaseDataService {
         return errorStr;
     }
 
-    //价值类型描述
+    /**
+     *
+     * 功能描述: 价值类型描述
+     * @author: zch
+     * @date: 2019/4/8 11:47
+     */
     public String getValueTypeDesc() {
         String value = getSchemeAreaGroup().getValueDefinitionDesc();
         if (StringUtils.isNotBlank(value.trim())) {
@@ -1238,7 +1196,6 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师
-     *
      * @param str
      * @return
      */
@@ -1260,7 +1217,11 @@ public class GenerateBaseDataService {
         return s;
     }
 
-    //注册房产估价师及注册号
+    /**
+     * 注册房产估价师及注册号
+     * @param generateReportGeneration
+     * @throws Exception
+     */
     public String getRegisteredRealEstateValuerAndNumber(GenerateReportGeneration generateReportGeneration) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
@@ -1293,9 +1254,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师 编号
-     *
      * @param str
-     * @return
      * @throws Exception
      */
     public String getRegistrationNumber(String str) throws Exception {
@@ -1341,7 +1300,7 @@ public class GenerateBaseDataService {
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "资质等级", qualificationDto.getOrganizationRank())));
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "资质证书编号", qualificationDto.getCertificateNo())));
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "资质证书有效期", qualificationDto.getCertificateEffectiveDate())));
-        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "经营范围", "评估房产")));
+        stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "经营范围", StringUtils.isEmpty(qualificationDto.getBusinessScopeName()) ? "评估房产" : qualificationDto.getBusinessScopeName())));
         stringBuilder.append("</p>");
         documentBuilder.insertHtml(stringBuilder.toString(), true);
         doc.save(localPath);
@@ -1374,7 +1333,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getBusinessScope(AdCompanyQualificationDto qualificationDto) throws Exception {
-        return qualificationDto.getBusinessScopeName();
+        return StringUtils.isEmpty(qualificationDto.getBusinessScopeName()) ? "评估房产" : qualificationDto.getBusinessScopeName();
     }
 
     /**
@@ -1788,40 +1747,59 @@ public class GenerateBaseDataService {
     }
 
     /**
+     * 他项权力
+     *
+     * @return
+     */
+    private Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> getSurveyAssetInventoryRightMapAndSchemeJudgeObject() {
+        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().filter(oo -> oo.getDeclareRecordId() != null).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                List<SurveyAssetInventoryRightRecord> rightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(schemeJudgeObject.getDeclareRecordId(), projectId);
+                if (CollectionUtils.isNotEmpty(rightRecordList)) {
+                    rightRecordList.stream().forEach(oo -> {
+                        List<SurveyAssetInventoryRight> list = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(oo.getId());
+                        if (CollectionUtils.isNotEmpty(list)) {
+                            list = list.stream().distinct().collect(Collectors.toList());
+                            if (CollectionUtils.isNotEmpty(list)) {
+                                map.put(schemeJudgeObject, list);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        return map;
+    }
+
+    /**
      * 他权有无租赁权
      *
      * @return
      * @throws Exception
      */
     public String getHisRightHasLease() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(24);
+        StringBuilder stringBuilder = new StringBuilder(8);
         final String temp = "他权有无租赁权:";
         stringBuilder.append(temp);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_LEASEHOLD);
-        if (projectPhase != null) {
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                inner:
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (int j = 0; j < projectPlanDetailsList.size(); j++) {
-                            ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(j);
-                            List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
-                            if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                                for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                                    if (Objects.equal(inventoryRight.getCategory(), baseDataDic.getId())) {
-                                        stringBuilder.append("有");
-                                        break inner;
-                                    }
-                                }
-                            }
-                        }
+        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = Lists.newArrayList();
+        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
+        if (!map.isEmpty()) {
+            map.entrySet().stream().forEach(entry -> {
+                List<SurveyAssetInventoryRight> list = entry.getValue();
+                if (CollectionUtils.isNotEmpty(list)) {
+                    surveyAssetInventoryRightList.addAll(list);
+                }
+            });
+        }
+        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+            if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+                for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
+                    if (Objects.equal(inventoryRight.getCategory(), baseDataDic.getId())) {
+                        stringBuilder.append("有");
+                        break;
                     }
                 }
             }
@@ -1835,44 +1813,29 @@ public class GenerateBaseDataService {
     /**
      * 功能描述: 有无他项权
      *
-     * @param:
-     * @return:
      * @auther: zch
      * @date: 2019/2/26 15:10
      */
     public String getThereAnyOtherRight() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (projectPhase != null) {
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    boolean flag = false;
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (int j = 0; j < projectPlanDetailsList.size(); j++) {
-                            ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(j);
-                            List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
-                            if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                                for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                                    if (StringUtils.isNotBlank(inventoryRight.getNumber())) {
-                                        flag = true;
-                                    }
-                                }
-                            }
+        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
+        if (!map.isEmpty()) {
+            map.entrySet().stream().forEach(entry -> {
+                boolean flag = false;
+                List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = entry.getValue();
+                if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+                    for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
+                        if (StringUtils.isNotBlank(inventoryRight.getNumber())) {
+                            flag = true;
                         }
                     }
-                    if (flag) {
-                        stringSet.add(String.format("%s%s", schemeJudgeObject.getName(), ":有他项权"));
-                    } else {
-                        stringSet.add(String.format("%s%s", schemeJudgeObject.getName(), ":无他项权"));
-                    }
                 }
-            }
+                if (flag) {
+                    stringSet.add(String.format("%s%s", entry.getKey().getName(), ":有他项权"));
+                } else {
+                    stringSet.add(String.format("%s%s", entry.getKey().getName(), ":无他项权"));
+                }
+            });
         }
         String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
@@ -1886,43 +1849,22 @@ public class GenerateBaseDataService {
      */
     public String getHisRightType() throws Exception {
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.OTHER_RIGHT, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            String key = null;
-                            List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
-                            if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                                for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                                    if (inventoryRight.getCategory() != null) {
-                                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
-                                        if (Objects.equal(inventoryRight.getCategory(), baseDataDic.getId())) {
-                                            key = baseDataDic.getName();
-                                        }
-                                    }
-                                }
+        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
+        if (!map.isEmpty()) {
+            map.entrySet().stream().forEach(entry -> {
+                List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = entry.getValue();
+                if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+                    for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
+                        if (projectInfo.getEntrustPurposeName().equals(baseDataDic.getName())) {
+                            String key = baseDataDicService.getNameById(inventoryRight.getType());
+                            if (StringUtils.isNotBlank(key)) {
+                                generateCommonMethod.putStringListMap(stringListMap, entry.getKey(), key);
                             }
-                            generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
                         }
                     }
                 }
-            }
+            });
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
         if (StringUtils.isEmpty(s.trim())) {
@@ -1939,47 +1881,30 @@ public class GenerateBaseDataService {
      */
     public String getRightOther() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(16);
+        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.OTHER_RIGHT, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            String key = null;
-                            List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
-                            if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                                for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                                    if (inventoryRight.getCategory() != null) {
-                                        stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
-                                        stringBuilder.append("-").append(inventoryRight.getNumber());
-                                        stringBuilder.append("-").append(inventoryRight.getCertName());
-                                        stringBuilder.append("-").append(inventoryRight.getObligee());
-                                        stringBuilder.append("-").append(inventoryRight.getObligor());
-                                        key = stringBuilder.toString();
-                                        stringBuilder.delete(0, stringBuilder.toString().length());
-                                    }
-                                }
-                            }
-                            generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
+        Set<String> stringSet = Sets.newHashSet();
+        if (!map.isEmpty()) {
+            map.entrySet().stream().forEach(entry -> {
+                List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = entry.getValue();
+                if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+                    for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
+                        if (inventoryRight.getCategory() != null) {
+                            stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
+                            stringBuilder.append("-").append(inventoryRight.getNumber());
+                            stringBuilder.append("-").append(inventoryRight.getCertName());
+                            stringBuilder.append("-").append(inventoryRight.getObligee());
+                            stringBuilder.append("-").append(inventoryRight.getObligor());
+                            stringSet.add(stringBuilder.toString());
+                            stringBuilder.delete(0, stringBuilder.toString().length());
                         }
                     }
+                    if (CollectionUtils.isNotEmpty(stringSet)) {
+                        generateCommonMethod.putStringListMap(stringListMap, entry.getKey(), StringUtils.join(stringSet, "、"));
+                        stringSet.clear();
+                    }
                 }
-            }
+            });
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
         if (StringUtils.isEmpty(s.trim())) {
@@ -2164,21 +2089,24 @@ public class GenerateBaseDataService {
      */
     public String getStatutoryPriorityAmount() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
-        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = getSchemeReimbursementItemVoList();
-        if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-            for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
-                if (schemeReimbursementItemVo.getNotSetUpTotalPrice() == null) {
-                    continue;
+        Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> map = schemeReimbursementService.getSchemeReimbursementItemVoMapAndSchemeJudgeObject(getSchemeJudgeObjectList(),projectId);
+        if (!map.isEmpty()){
+            map.entrySet().stream().forEach(entry -> {
+                List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = entry.getValue();
+                if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)){
+                    schemeReimbursementItemVoList = schemeReimbursementItemVoList.stream().distinct().collect(Collectors.toList());
+                    if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)){
+                        BigDecimal bigDecimal = new BigDecimal(0);
+                        for (SchemeReimbursementItemVo schemeReimbursementItemVo:schemeReimbursementItemVoList){
+                            if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null){
+                                bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
+                            }
+                        }
+                        stringSet.add(String.format("%s:%s、", generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey()), bigDecimal.toString()));
+
+                    }
                 }
-                if (schemeReimbursementItemVo.getJudgeObjectId() == null) {
-                    continue;
-                }
-                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeReimbursementItemVo.getJudgeObjectId());
-                if (schemeJudgeObject == null) {
-                    continue;
-                }
-                stringSet.add(String.format("%s:%s、", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), schemeReimbursementItemVo.getNotSetUpTotalPrice().toString()));
-            }
+            });
         }
         String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
@@ -2495,201 +2423,7 @@ public class GenerateBaseDataService {
 
 
     /**
-     * 土地使用权登记状况表
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getjudgeObjectLandUseCertificateSheet() throws Exception {
-        List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = Lists.newArrayList();
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
-        if (CollectionUtils.isNotEmpty(declareRecordList)) {
-            List<DeclareRecord> declareRecords = declareRecordList.stream().filter(declareRecord -> {
-                if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
-                    return true;
-                }
-                return false;
-            }).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(declareRecords)) {
-                declareRecords.stream().forEach(declareRecord -> {
-                    if (declareRecord.getDataTableId() != null) {
-                        DeclareRealtyLandCert declareRealtyLandCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(declareRecord.getDataTableId());
-                        if (declareRealtyLandCert != null) {
-                            DeclareRealtyLandCertVo declareRealtyLandCertVo = declareRealtyLandCertService.getDeclareRealtyLandCertVo(declareRealtyLandCert);
-                            declareRealtyLandCertVoList.add(declareRealtyLandCertVo);
-                        }
-                    }
-                });
-            }
-        }
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        generateCommonMethod.settingBuildingTable(builder);
-        String localPath = getLocalPath();
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        Table table = builder.startTable();
-        int num = 2;
-        int length = 12;
-        for (int j = 0; j < num; j++) {
-            switch (j) {
-                case 0:
-                    for (int k = 0; k < length; k++) {
-                        if (k == 0) {
-                            builder.insertCell();
-                            mergeCellModelList.add(new MergeCellModel(0, 0, 0, 11));
-                            builder.writeln("估价对象《土地使用证》登记状况一览表");
-                        } else {
-                            builder.insertCell();
-                            builder.writeln("");
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 1:
-                    for (int k = 0; k < length; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("土地证号");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("座落");
-                                break;
-                            case 2:
-                                builder.insertCell();
-                                builder.writeln("土地使用权人");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln("地号");
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln("图号");
-                                break;
-                            case 5:
-                                builder.insertCell();
-                                builder.writeln("终止日期");
-                                break;
-                            case 6:
-                                builder.insertCell();
-                                builder.writeln("使用权类型");
-                                break;
-                            case 7:
-                                builder.insertCell();
-                                builder.writeln("用途");
-                                break;
-                            case 8:
-                                builder.insertCell();
-                                builder.writeln("使用权面积（㎡）");
-                                break;
-                            case 9:
-                                builder.insertCell();
-                                builder.writeln("其中：分摊面积（㎡）");
-                                break;
-                            case 10:
-                                builder.insertCell();
-                                builder.writeln("取得价格（万元）");
-                                break;
-                            case 11:
-                                builder.insertCell();
-                                builder.writeln("记   事");
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                default:
-                    break;
-            }
-        }
-        if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
-            for (int i = num; i < declareRealtyLandCertVoList.size() + num; i++) {
-                DeclareRealtyLandCertVo declareRealtyLandCertVo = declareRealtyLandCertVoList.get(i - num);
-                for (int k = 0; k < length; k++) {
-                    switch (k) {
-                        case 0:
-                            builder.insertCell();
-                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getNumber()) ? declareRealtyLandCertVo.getNumber() : "");
-                            break;
-                        case 1:
-                            builder.insertCell();
-                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getLandCertName()) ? declareRealtyLandCertVo.getLandCertName() : "");
-                            break;
-                        case 2:
-                            builder.insertCell();
-                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getOwnership()) ? declareRealtyLandCertVo.getOwnership() : "");
-                            break;
-                        case 3:
-                            builder.insertCell();
-                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getLandNumber()) ? declareRealtyLandCertVo.getLandNumber() : "");
-                            break;
-                        case 4:
-                            builder.insertCell();
-                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getGraphNumber()) ? declareRealtyLandCertVo.getGraphNumber() : "");
-                            break;
-                        case 5:
-                            builder.insertCell();
-                            if (declareRealtyLandCertVo.getTerminationDate() != null) {
-                                builder.writeln(DateUtils.format(declareRealtyLandCertVo.getTerminationDate(), DateUtils.DATE_CHINESE_PATTERN));
-                            } else {
-                                builder.writeln("");
-                            }
-                            break;
-                        case 6:
-                            builder.insertCell();
-                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getLandRightNatureName()) ? declareRealtyLandCertVo.getLandRightNatureName() : "");
-                            break;
-                        case 7:
-                            builder.insertCell();
-                            String s = baseDataDicService.getNameById(declareRealtyLandCertVo.getCertUse());
-                            s = StringUtils.isNotBlank(s) ? s : "";
-                            builder.writeln(s);
-                            break;
-                        case 8:
-                            builder.insertCell();
-                            if (declareRealtyLandCertVo.getUseRightArea() != null) {
-                                builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getUseRightArea().toString()) ? declareRealtyLandCertVo.getUseRightArea().toString() : "");
-                            }
-                            break;
-                        case 9:
-                            builder.insertCell();
-                            if (declareRealtyLandCertVo.getApportionmentArea() != null) {
-                                builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getApportionmentArea().toString()) ? declareRealtyLandCertVo.getApportionmentArea().toString() : "");
-                            }
-                            break;
-                        case 10:
-                            builder.insertCell();
-                            if (declareRealtyLandCertVo.getAcquisitionPrice() != null) {
-                                builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getAcquisitionPrice().toString()) ? declareRealtyLandCertVo.getAcquisitionPrice().toString() : "");
-                            }
-                            break;
-                        case 11:
-                            builder.insertCell();
-                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getMemo()) ? declareRealtyLandCertVo.getMemo() : "");
-                            break;
-                        default:
-                            builder.insertCell();
-                            break;
-                    }
-                }
-                builder.endRow();
-            }
-        }
-        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-        builder.endTable();
-        doc.save(localPath);
-        return localPath;
-    }
-
-
-    /**
      * 法定优先受偿款
-     *
      * @param schemeReimbursementItemVoList
      * @return
      * @throws Exception
@@ -2712,8 +2446,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价结果一览表
-     *
-     * @return
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet() throws Exception {
@@ -2841,8 +2573,6 @@ public class GenerateBaseDataService {
 
     /**
      * 获取不重复楼盘和估价对象的一一对应集合
-     *
-     * @return
      * @throws Exception
      */
     private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() throws Exception {
@@ -2888,8 +2618,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象区位状况表
-     *
-     * @return
      */
     public String getJudgeObjectAreaStatusSheet() throws Exception {
         Document doc = new Document();
@@ -2952,8 +2680,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价土地实体状况表
-     *
-     * @return
      */
     public String getJudgeObjectLandStateSheet() throws Exception {
         Document doc = new Document();
@@ -2982,8 +2708,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象建筑实体状况表
-     *
-     * @return
      */
     public String getJudgeBuildLandStateSheet() throws Exception {
         Document doc = new Document();
@@ -3023,8 +2747,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价结果汇总表
-     *
-     * @return
      * @throws Exception
      */
     public String getJudgeSummarySheet() throws Exception {
@@ -3265,8 +2987,6 @@ public class GenerateBaseDataService {
 
     /**
      * 收益法租赁限制说明
-     *
-     * @return
      * @throws Exception
      */
     public String getTenancyrestrictionRemark() throws Exception {
@@ -3295,9 +3015,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 估价对象详细测算过程
-     *
-     * @param:
-     * @return:
      * @author: zch
      * @date: 2019/3/4 10:30
      */
@@ -3351,8 +3068,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价委托书复印件
-     *
-     * @return
      * @throws Exception
      */
     public String getJUDGEOBJECTPRINCIPALCOPYSHEET() throws Exception {
@@ -3374,8 +3089,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估计对象位置示意图
-     *
-     * @return
      */
     public String getEstimatedObjectLocationDiagram() throws Exception {
         String localPath = getLocalPath();
@@ -3402,8 +3115,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象实况照片
-     *
-     * @return
      */
     public String getValuation_Target_Live_Photos() throws Exception {
         String localPath = getLocalPath();
@@ -3430,8 +3141,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象权属证明复印件
-     *
-     * @return
      */
     public String getCopies_the_Ownership_Certificate_the_Valuation_Object() throws Exception {
         String localPath = getLocalPath();
@@ -3458,8 +3167,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价中引用的专用文件资料
-     *
-     * @return
      * @throws Exception
      */
     public String getSpecial_documentation_referenced_in_valuation() throws Exception {
@@ -3519,8 +3226,6 @@ public class GenerateBaseDataService {
 
     /**
      * 房地产估价机构营业执照复印件
-     *
-     * @return
      * @throws Exception
      */
     public String getCopyBusinessLicenseRealEstateValuationAgency() throws Exception {
@@ -3551,8 +3256,6 @@ public class GenerateBaseDataService {
 
     /**
      * '房地产估价机构资质证书复印件
-     *
-     * @return
      * @throws Exception
      */
     public String getCopyQualificationCertificateRealEstateValuationInstitution() throws Exception {
@@ -3583,7 +3286,6 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房地产估价师注册证书复印件
-     *
      * @param str
      * @return
      * @throws Exception
@@ -3633,7 +3335,6 @@ public class GenerateBaseDataService {
 
     /**
      * 获取如收益法,市场比较法，假设开发法，成本法等的id
-     *
      * @param methodNameEnum
      * @param schemeJudgeObject
      * @return SchemeInfo
@@ -3656,8 +3357,6 @@ public class GenerateBaseDataService {
 
     /**
      * 他权信息公示
-     *
-     * @return
      * @throws Exception
      */
     public String getHisRightInfoPublicity() throws Exception {
@@ -3674,9 +3373,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 申报所启用表单类型
-     *
-     * @param:
-     * @return:
      * @auther: zch
      * @date: 2019/2/25 10:09
      */
@@ -4105,234 +3801,6 @@ public class GenerateBaseDataService {
         return s;
     }
 
-    /**
-     * 房屋所有权登记状况表
-     *
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getHousingOwnershipRegistrationStatementSheet() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Set<String> a_0_3 = Sets.newHashSet();
-        Set<String> a_1_3 = Sets.newHashSet();
-        Set<String> a_2_3 = Sets.newHashSet();
-        Set<String> a_3_3 = Sets.newHashSet();
-        Set<String> a_4_3 = Sets.newHashSet();
-        Set<String> a_5_3 = Sets.newHashSet();
-        Set<String> a_6_3 = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(projectId);
-                query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
-                        try {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                            declareRecord = declareRecord == null ? new DeclareRecord() : declareRecord;
-                            a_0_3.add(errorStr);
-                            if (true) {
-                                StringBuilder stringBuilder = new StringBuilder();
-                                //证载用途
-                                if (generateBaseExamineService.getBasicHouse().getCertUse() != null) {
-                                    stringBuilder.append(String.format("证载用途:%s；", baseDataDicService.getNameById(generateBaseExamineService.getBasicHouse().getCertUse())));
-                                }
-                                if (generateBaseExamineService.getEstate().getFloorArea() != null) {
-                                    stringBuilder.append(String.format("建筑面积:%s；", generateBaseExamineService.getEstate().getFloorArea()));
-                                }
-                                if (generateBaseExamineService.getEstate().getCoverAnArea() != null) {
-                                    stringBuilder.append(String.format("占地面积:%s；", generateBaseExamineService.getEstate().getCoverAnArea()));
-                                }
-                                if (generateBaseExamineService.getEstate().getVolumetricRate() != null) {
-                                    stringBuilder.append(String.format("容积率:%s；", generateBaseExamineService.getEstate().getVolumetricRate()));
-                                }
-                                if (generateBaseExamineService.getEstate().getGreeningRate() != null) {
-                                    stringBuilder.append(String.format("绿化率:%s；", generateBaseExamineService.getEstate().getGreeningRate()));
-                                }
-                                if (generateBaseExamineService.getBasicBuilding().getBuildingHeight() != null) {
-                                    stringBuilder.append(String.format("建筑高度:%s；", generateBaseExamineService.getBasicBuilding().getBuildingHeight()));
-                                }
-                                a_1_3.add(stringBuilder.toString());
-                            }
-                            a_2_3.add(getInventoryRight());
-                            if (true) {
-                                SurveyAssetInventory assetInventory = surveyAssetInventoryDao.getDataByPlanDetailsId(projectPlanDetails.getId());
-                                if (assetInventory == null) {
-                                    assetInventory = new SurveyAssetInventory();
-                                }
-                                a_3_3.add(assetInventory.getSpecialCase());
-                            }
-                            a_4_3.add(declareRecord.getPublicSituation());
-                            a_5_3.add(String.format("%s估价对象:%s", schemeJudgeObject.getNumber(), schemeJudgeObject.getRentalPossessionDesc()));
-                            if (true) {
-                                StringBuilder stringBuilder = new StringBuilder();
-                                if (generateBaseExamineService.getBasicBuilding().getPropertyType() != null) {
-                                    stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(generateBaseExamineService.getBasicBuilding().getProperty()) ? errorStr : generateBaseExamineService.getBasicBuilding().getProperty()).append("；");
-                                    stringBuilder.append(String.format("物业费:%s；", generateBaseExamineService.getBasicBuilding().getPropertyFee()));
-                                }
-                                a_6_3.add(stringBuilder.toString());
-                            }
-                        } catch (Exception e) {
-                        }
-                    });
-                }
-            }
-        }
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        generateCommonMethod.settingBuildingTable(builder);
-        String localPath = getLocalPath();
-        builder.writeln("房屋所有权登记状况表");
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        Table table = builder.startTable();
-        for (int j = 0; j < 7; j++) {
-            switch (j) {
-                case 0:
-                    for (int k = 0; k < 4; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("权益状况");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("土地权益类型");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_0_3));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 1:
-                    for (int k = 0; k < 4; k++) {
-                        switch (k) {
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("土地管制情况");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_1_3));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 2:
-                    for (int k = 0; k < 4; k++) {
-                        switch (k) {
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("土地他项权力");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_2_3));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 3:
-                    for (int k = 0; k < 4; k++) {
-                        switch (k) {
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("其他特殊情况");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_3_3));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 4:
-                    for (int k = 0; k < 4; k++) {
-                        switch (k) {
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("房屋所有权");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_4_3));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 5:
-                    for (int k = 0; k < 4; k++) {
-                        switch (k) {
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("出租或占用情况");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_5_3));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 6:
-                    for (int k = 0; k < 4; k++) {
-                        switch (k) {
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("物业管理情况");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_6_3));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                default:
-                    break;
-            }
-            mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
-            mergeCellModelList.add(new MergeCellModel(0, 0, 6, 0));
-        }
-        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-        builder.endTable();
-        doc.save(localPath);
-        return localPath;
-    }
-
-
     //------------------------------------------------------------||待删除方法 end -------------------------------------------------------//
 
 
@@ -4350,11 +3818,9 @@ public class GenerateBaseDataService {
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.projectNumberRecordService = SpringContextUtils.getBean(ProjectNumberRecordService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
-        this.baseProjectClassifyService=SpringContextUtils.getBean(BaseProjectClassifyService.class);
         this.schemeJudgeFunctionService = SpringContextUtils.getBean(SchemeJudgeFunctionService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
         this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
-        this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.projectPhaseService = SpringContextUtils.getBean(ProjectPhaseService.class);
         this.surveyAssetInventoryRightService = SpringContextUtils.getBean(SurveyAssetInventoryRightService.class);
         this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
@@ -4362,7 +3828,6 @@ public class GenerateBaseDataService {
         this.schemeSurePriceService = SpringContextUtils.getBean(SchemeSurePriceService.class);
         this.schemeReimbursementService = SpringContextUtils.getBean(SchemeReimbursementService.class);
         this.publicService = SpringContextUtils.getBean(PublicService.class);
-        this.schemeSupportInfoService = SpringContextUtils.getBean(SchemeSupportInfoService.class);
         this.adRpcQualificationsService = SpringContextUtils.getBean(com.copower.pmcc.assess.service.AdRpcQualificationsAppService.class);
         this.compileReportService = SpringContextUtils.getBean(CompileReportService.class);
         this.schemeReportFileService = SpringContextUtils.getBean(SchemeReportFileService.class);
@@ -4373,8 +3838,6 @@ public class GenerateBaseDataService {
         this.schemeLiquidationAnalysisService = SpringContextUtils.getBean(SchemeLiquidationAnalysisService.class);
         this.mdIncomeService = SpringContextUtils.getBean(MdIncomeService.class);
         this.mdMarketCompareService = SpringContextUtils.getBean(MdMarketCompareService.class);
-        this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
-        this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
         this.dataHisRightInfoPublicityService = SpringContextUtils.getBean(DataHisRightInfoPublicityService.class);
         this.surveyAssetInventoryContentService = SpringContextUtils.getBean(SurveyAssetInventoryContentService.class);
         this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
@@ -4385,7 +3848,6 @@ public class GenerateBaseDataService {
         this.dataReportAnalysisService = SpringContextUtils.getBean(DataReportAnalysisService.class);
         this.dataReportAnalysisRiskService = SpringContextUtils.getBean(DataReportAnalysisRiskService.class);
         this.surveyAssetInventoryRightRecordService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordService.class);
-        this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
         this.generateLoactionService = SpringContextUtils.getBean(GenerateLoactionService.class);
         this.generateLandEntityService = SpringContextUtils.getBean(GenerateLandEntityService.class);
         this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.data.SurveyDamageDto;
@@ -16,7 +17,10 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.generate.GenerateLandEntityService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
@@ -77,6 +81,14 @@ public class DataReportAnalysisService {
     private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
     @Autowired
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
+    @Autowired
+    private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private BasicApplyDao basicApplyDao;
+    @Autowired
+    private GenerateLandEntityService generateLandEntityService;
 
 
     /**
@@ -191,6 +203,15 @@ public class DataReportAnalysisService {
     public String getReportLiquidity(ProjectInfo projectInfo, Integer areaGroupId) throws Exception {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
         if (baseDataDic == null) return "";
+
+        //变现比率
+        SchemeLiquidationAnalysis data = schemeLiquidationAnalysisService.getDataByAreaId(areaGroupId);
+        String liquidRatios = data.getLiquidRatios();
+        //变现时间
+        String liquidTime = data.getLiquidTime();
+        //区域
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
+        String areaName = schemeAreaGroup.getAreaName();
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
         if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
@@ -257,7 +278,7 @@ public class DataReportAnalysisService {
                 for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
                     DataBlock block = dataBlockService.getDataBlockById(entry.getKey().getBlockId());
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", block.getDistrict())).append("</p>");
-                    }
+                }
             }
             //估价区位分析
             if (AssessReportFieldConstant.ZONE_BIT_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
@@ -286,14 +307,16 @@ public class DataReportAnalysisService {
                         estateNames.add(basicEstate.getName());
                     }
                 }
-                Map<BasicEstate, String> map = getSameEstate(judgeObjectList, estateNames);
+                Map<BasicEstate, List<SchemeJudgeObject>> map = getSameEstate2(judgeObjectList, estateNames);
                 DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LAND_ENTITY_ANALYSIS_HOUSES);
-                for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
-                    BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(entry.getKey().getId());
-                    if (landStateByEstateId.getConclusion() == null) {
-                        landStateByEstateId.setConclusion("");
+                for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
+                    StringBuilder numbers = new StringBuilder();
+                    for (SchemeJudgeObject item: entry.getValue()) {
+                        numbers.append(item.getNumber()).append(",");
                     }
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{楼盘名称}", entry.getKey().getName()).replace("#{土地实体结论}", entry.getKey().getLocationDescribe())).append("</p>");
+                    BasicApply apply = basicApplyDao.getBasicApplyById(entry.getKey().getApplyId());
+                    String content = generateLandEntityService.getContent(apply, entry.getValue().get(0));
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", getSubstitutionPrincipleName(numbers.toString())).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{楼盘名称}", entry.getKey().getName()).replace("#{土地实体结论}", content)).append("</p>");
                 }
             }
 
@@ -340,6 +363,31 @@ public class DataReportAnalysisService {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INDEPENDENCE_ANALYSIS_INTACT);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
                 }
+            }
+
+            //变现价格与市场价格的差异度
+            if (AssessReportFieldConstant.MARKET_VALUE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                //其他
+                DataReportTemplateItem other = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.MARKET_VALUE_ANALYSIS_OTHER);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(other.getTemplate()).append("</p>");
+                //实现价格
+                DataReportTemplateItem realized = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.MARKET_VALUE_ANALYSIS_REALIZED_PRICE);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(realized.getTemplate().replace("#{出具报告区域}", areaName).replace("#{变现比率}", liquidRatios)).append("</p>");
+
+            }
+
+            //变现时间费税及清偿
+            if (AssessReportFieldConstant.PAY_OFF_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                //其他
+                DataReportTemplateItem other = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.PAY_OFF_ANALYSIS_OTHER);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(other.getTemplate()).append("</p>");
+                //政策
+                DataReportTemplateItem policy = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.PAY_OFF_ANALYSIS_POLICY);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(policy.getTemplate().replace("#{出具报告区域}", areaName).replace("#{变现时间}", liquidTime)).append("</p>");
+                //费用一览表
+                DataReportTemplateItem schedule = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.PAY_OFF_ANALYSIS_SCHEDULE);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(schedule.getTemplate()).append("</p>");
+
             }
 
             //可分割分析
@@ -450,17 +498,17 @@ public class DataReportAnalysisService {
                 if (StringUtils.isNotBlank(pledge)) {
                     String number = getSubstitutionPrincipleName(pledge.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.OTHER_ANALYSIS_PLEDGE);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{他权描述}",pledgeRemark)).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{他权描述}", pledgeRemark)).append("</p>");
                 }
                 if (StringUtils.isNotBlank(other)) {
                     String number = getSubstitutionPrincipleName(other.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.OTHER_ANALYSIS_OTHER);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{他权描述}",otherRemark)).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{他权描述}", otherRemark)).append("</p>");
                 }
                 if (StringUtils.isNotBlank(rent)) {
                     String number = getSubstitutionPrincipleName(rent.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.OTHER_ANALYSIS_RENT);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{他权描述}",rentRemark)).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{他权描述}", rentRemark)).append("</p>");
                 }
 
             }
@@ -469,22 +517,22 @@ public class DataReportAnalysisService {
                 Integer num = judgeObjectList.size();
                 BigDecimal totalRealEstate = generateCommonMethod.getTotalRealEstate(areaGroupId);
                 BigDecimal rank = new BigDecimal("5000000");
-                if(rank.compareTo(totalRealEstate) == 1 && num < 5){
+                if (rank.compareTo(totalRealEstate) == 1 && num < 5) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION1);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
 
                 }
-                if(rank.compareTo(totalRealEstate) == 1 && num >= 5){
+                if (rank.compareTo(totalRealEstate) == 1 && num >= 5) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION2);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
 
                 }
-                if(rank.compareTo(totalRealEstate) < 1 && num < 5){
+                if (rank.compareTo(totalRealEstate) < 1 && num < 5) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION3);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
 
                 }
-                if(rank.compareTo(totalRealEstate) < 1 && num >= 5){
+                if (rank.compareTo(totalRealEstate) < 1 && num >= 5) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION4);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
 
@@ -528,6 +576,25 @@ public class DataReportAnalysisService {
             }
             String number = generateCommonMethod.convertNumber(numbers) + "号";
             map.put(basicEstate, number);
+        }
+        return map;
+    }
+
+    public Map<BasicEstate, List<SchemeJudgeObject>> getSameEstate2(List<SchemeJudgeObject> judgeObjectList, ArrayList<String> estateNames) throws Exception {
+        Map<BasicEstate, List<SchemeJudgeObject>> map = new HashMap<>();
+        for (String estateName : estateNames) {
+            BasicEstate basicEstate = new BasicEstate();
+            ArrayList<SchemeJudgeObject> judgeObjects = new ArrayList<>();
+            for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+                BasicEstate estate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                if (estateName.equals(estate.getName())) {
+                    basicEstate = estate;
+                    judgeObjects.add(judgeObject);
+                }
+            }
+
+            map.put(basicEstate, judgeObjects);
         }
         return map;
     }

@@ -472,7 +472,7 @@ public class EvaluationHypothesisService {
                 }
                 if (StringUtils.isNotBlank(haveOther)) {
                     String number = getSubstitutionPrincipleName(haveOther.toString());
-                    otherContent.append(number).append("委估对象").append(otherRemark);
+                    otherContent.append(number).append("委估对象有").append(otherRemark);
                 }
                 content.append(pledgeContent).append(otherContent);
                 if (valuationDate.compareTo(investigationsEndDate) != 0 || StringUtils.isNotBlank(surroundingsDamage) || StringUtils.isNotBlank(entityDamage)||StringUtils.isNotBlank(content)) {

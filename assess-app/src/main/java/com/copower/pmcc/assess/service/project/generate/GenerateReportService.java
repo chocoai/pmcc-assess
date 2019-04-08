@@ -924,10 +924,6 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
-                //房屋所有权登记状况表
-                if (Objects.equal(BaseReportFieldEnum.HousingOwnershipRegistrationStatementSheet.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHousingOwnershipRegistrationStatementSheet());
-                }
                 //估价对象区位状况表
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectAreaStatusSheet.getName(), name)) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectAreaStatusSheet());
@@ -947,10 +943,6 @@ public class GenerateReportService {
                 //汇总表
                 if (Objects.equal(BaseReportFieldEnum.judgeSummarySheet.getName(), name)) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeSummarySheet());
-                }
-                //土地使用权登记状况表
-                if (Objects.equal(BaseReportFieldEnum.judgeObjectLandUseCertificateSheet.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeObjectLandUseCertificateSheet());
                 }
                 //估价结果一览表
                 if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet.getName(), name)) {
