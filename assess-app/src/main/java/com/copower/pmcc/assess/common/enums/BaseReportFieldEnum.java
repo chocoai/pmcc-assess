@@ -71,8 +71,6 @@ public enum BaseReportFieldEnum implements Serializable {
     judgeSummarySheet("估价汇总表"),
     EquityStatusValuatedObject("估价对象权属状况表"),
     EquityStatusObjectSheet("估价对象权属"),
-    //土地证
-    judgeObjectLandUseCertificateSheet("土地使用权登记状况"),
     //收益法,市场比较法
     DetailedCalculationProcessValuationObject("估价对象详细测算过程"),
 
@@ -141,7 +139,6 @@ public enum BaseReportFieldEnum implements Serializable {
 
     //------------------------||待废除--------------------------
     theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods("本次估价的总体思路和评估方法的选取"),
-    HousingOwnershipRegistrationStatementSheet("房屋所有权登记状况"),
     Location("区位"),
     PrincipalAddress("委托人地址"),
     SummaryEvaluationMethod("评估方法总括"),
