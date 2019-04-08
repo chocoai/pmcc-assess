@@ -24,7 +24,11 @@ public class BasicBuilding {
 
     private String builder;
 
+    private String builderName;
+
     private String property;
+
+    private String propertyName;
 
     private String unitInterval;
 
@@ -162,12 +166,28 @@ public class BasicBuilding {
         this.builder = builder == null ? null : builder.trim();
     }
 
+    public String getBuilderName() {
+        return builderName;
+    }
+
+    public void setBuilderName(String builderName) {
+        this.builderName = builderName == null ? null : builderName.trim();
+    }
+
     public String getProperty() {
         return property;
     }
 
     public void setProperty(String property) {
         this.property = property == null ? null : property.trim();
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName == null ? null : propertyName.trim();
     }
 
     public String getUnitInterval() {

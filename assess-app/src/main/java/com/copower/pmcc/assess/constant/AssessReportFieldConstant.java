@@ -97,6 +97,15 @@ public class AssessReportFieldConstant {
     public static final String ZONE_BIT_ANALYSIS = "zone.bit.analysis";//区位分析
     public static final String ZONE_BIT_ANALYSIS_PLATE = "zone.bit.analysis.plate";//板块
 
+    public static final String MARKET_VALUE_ANALYSIS = "market.value.analysis";//变现价格与市场价格的差异度
+    public static final String MARKET_VALUE_ANALYSIS_OTHER = "market.value.analysis.other";//其他
+    public static final String MARKET_VALUE_ANALYSIS_REALIZED_PRICE = "market.value.analysis.realized.price";//实现价格
+
+    public static final String PAY_OFF_ANALYSIS = "pay.off.analysis";//变现时间费税及清偿
+    public static final String PAY_OFF_ANALYSIS_OTHER = "pay.off.analysis.other";//其他
+    public static final String PAY_OFF_ANALYSIS_POLICY = "pay.off.analysis.policy";//政策
+    public static final String PAY_OFF_ANALYSIS_SCHEDULE = "pay.off.analysis.schedule";//费用一览表
+
     public static final String HOUSE_MARKET_CONDITION = "house.market.condition";//房地产市场状况
     public static final String HOUSE_MARKET_CONDITION_PURPOSE = "house.market.condition.purpose";//用途
 

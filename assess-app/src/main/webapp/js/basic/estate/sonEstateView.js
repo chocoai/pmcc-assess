@@ -2726,7 +2726,7 @@ var estateSupplyWater;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateSupplyWater.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, item.reputation, function (html, data) {
                 $("#" + estateSupplyWater.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
@@ -2864,7 +2864,7 @@ var estateDrainWater;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateDrainWater.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, item.reputation, function (html, data) {
                 $("#" + estateDrainWater.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
@@ -3002,7 +3002,7 @@ var estateSupplyPower;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateSupplyPower.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, item.reputation, function (html, data) {
                 $("#" + estateSupplyPower.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
@@ -3139,7 +3139,7 @@ var estateSupplyHeating;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateSupplyHeating.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, item.reputation, function (html, data) {
                 $("#" + estateSupplyHeating.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
@@ -3276,7 +3276,7 @@ var estateSupplyGas;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateSupplyGas.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, item.reputation, function (html, data) {
                 $("#" + estateSupplyGas.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {

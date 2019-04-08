@@ -4,7 +4,6 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -816,6 +815,15 @@ public class GenerateCommonMethod {
     }
 
     /**
+     * 获取缩进后html
+     * @param html
+     * @return
+     */
+    public String getIndentHtml(String html){
+        return String.format("<p style=\"text-indent:2em\">%s</p>",html);
+    }
+
+    /**
      * 估价对象合并描述
      * map 1:商业  2:商业  3:商业  4:住宅  explain:证载用途为
      * 1-3、4证载用途为商业、住宅
@@ -837,7 +845,7 @@ public class GenerateCommonMethod {
         if (listMap.size() <= 1 && isShowNumber == Boolean.FALSE) {
             return contentStrig;
         }
-        return String.format("%s%s%s%s", judgeString, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME, StringUtils.defaultString(explain), contentStrig);
+        return String.format("%s%s%s", judgeString, StringUtils.defaultString(explain), contentStrig);
     }
 
     private Map<String, List<Integer>> getStringListMap(Map<Integer, String> map) {
@@ -869,7 +877,7 @@ public class GenerateCommonMethod {
             if (listMap.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
                 return stringListEntry.getKey();
             }
-            builder.append(convertNumber(stringListEntry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME).append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
+            builder.append(convertNumber(stringListEntry.getValue())).append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
         }
         return builder.toString();
     }
@@ -897,7 +905,11 @@ public class GenerateCommonMethod {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, List<String>> stringListEntry : listMap.entrySet()) {
             List<String> strings = stringListEntry.getValue();
-            strings.forEach(o -> stringBuilder.append(o).append("、"));
+            for (int i = 0; i < strings.size(); i++) {
+                stringBuilder.append(strings.get(i));
+                if (strings.size() - 1 > i)
+                    stringBuilder.append("、");
+            }
             stringBuilder.append(explain).append(stringListEntry.getKey()).append(symbol);
         }
         return stringBuilder.toString();
