@@ -65,7 +65,9 @@ public enum MethodCompareFieldEnum {
     INTERNAL_ASSEMBLY("internal.assembly", "内装"),//ps:楼栋内装信息+房屋内的装修信息
     PLANE_LAYOUT("plane.layout", "平面布局"),//ps:平面布局 实际用途为住宅取户型，其它用途时取户型与房间中的开间进深
     NEW_DEGREE("new.degree", "成新度"),//ps:成新度
-    Other("other", "其它");//ps:其它
+    Other("other", "其它"),//ps:其它
+    BUILDING_YEAR("building.year", "建造年份"),//ps:建造年份
+    CONSTRUCTION_QUALITY("construction.quality", "工程质量");//ps:工程质量
 
     private String key;
 

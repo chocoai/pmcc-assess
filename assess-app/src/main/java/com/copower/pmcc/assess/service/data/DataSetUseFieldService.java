@@ -131,6 +131,11 @@ public class DataSetUseFieldService {
 
     }
 
+    public List<DataSetUseField> getShowSetUseFieldList(String fieldName) {
+        return dataSetUseFieldDao.getShowList(fieldName);
+    }
+
+
     public DataSetUseField getCacheSetUseFieldByFieldName(String fieldName) {
         String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_SET_USE_FIELD_ITEM, fieldName);
 
@@ -161,6 +166,9 @@ public class DataSetUseFieldService {
         }
     }
 
+    public List<DataSetUseField> getShowSetUseFieldListByPid(Integer pid) {
+        return dataSetUseFieldDao.getShowListByPid(pid);
+    }
     /**
      * 获取设定用途字段数据
      *

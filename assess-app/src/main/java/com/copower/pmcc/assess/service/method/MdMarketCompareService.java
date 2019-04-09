@@ -101,6 +101,27 @@ public class MdMarketCompareService {
             getSubFieldList(fieldList, useField.getId());
         }
     }
+    public List<DataSetUseField> getShowSetUseFieldList() {
+        List<DataSetUseField> fieldList = Lists.newArrayList();
+        List<DataSetUseField> setUseFields = dataSetUseFieldService.getShowSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE);
+        if (CollectionUtils.isNotEmpty(setUseFields)) {
+            for (DataSetUseField setUseField : setUseFields) {
+                fieldList.add(setUseField);
+                getShowSubFieldList(fieldList, setUseField.getId());
+            }
+        }
+        return fieldList;
+    }
+
+
+    private void getShowSubFieldList(List<DataSetUseField> fieldList, Integer pid) {
+        List<DataSetUseField> useFields = dataSetUseFieldService.getShowSetUseFieldListByPid(pid);
+        if (CollectionUtils.isEmpty(useFields)) return;
+        for (DataSetUseField useField : useFields) {
+            fieldList.add(useField);
+            getShowSubFieldList(fieldList, useField.getId());
+        }
+    }
 
     /**
      * 初始化查勘字段数据信息
