@@ -48,6 +48,13 @@ public class DeclareRecordService {
         return declareRecords;
     }
 
+    public List<DeclareRecord> getDeclareRecordByAreaId(Integer areaId) {
+        DeclareRecord where=new DeclareRecord();
+        where.setAreaGroupId(areaId);
+        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordList(where);
+        return declareRecords;
+    }
+
     public List<DeclareRecord> getDeclareRecordList(Integer projectId,Boolean bisGenerate) {
         List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordList(projectId,bisGenerate);
         return declareRecords;

@@ -855,6 +855,66 @@ public class DataSetUseFieldExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisShowIsNull() {
+            addCriterion("bis_show is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowIsNotNull() {
+            addCriterion("bis_show is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowEqualTo(Boolean value) {
+            addCriterion("bis_show =", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowNotEqualTo(Boolean value) {
+            addCriterion("bis_show <>", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowGreaterThan(Boolean value) {
+            addCriterion("bis_show >", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_show >=", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowLessThan(Boolean value) {
+            addCriterion("bis_show <", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_show <=", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowIn(List<Boolean> values) {
+            addCriterion("bis_show in", values, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowNotIn(List<Boolean> values) {
+            addCriterion("bis_show not in", values, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_show between", value1, value2, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_show not between", value1, value2, "bisShow");
+            return (Criteria) this;
+        }
+
         public Criteria andSortingIsNull() {
             addCriterion("sorting is null");
             return (Criteria) this;

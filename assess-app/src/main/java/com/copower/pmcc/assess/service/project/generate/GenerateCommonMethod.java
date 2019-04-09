@@ -382,6 +382,37 @@ public class GenerateCommonMethod {
     }
 
     /**
+     * 获取区域下楼盘的分组
+     *
+     * @param areaId
+     * @return
+     */
+    public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByAreaId(Integer areaId) throws Exception {
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getDeclareRecordId()));
+        if (CollectionUtils.isNotEmpty(declareRecords)) {
+            Map<String, List<Integer>> map = Maps.newHashMap();
+            for (DeclareRecord declareRecord : declareRecords) {
+                if (map.containsKey(declareRecord.getStreetNumber())) {
+                    List<Integer> list = map.get(declareRecord.getStreetNumber());
+                    list.add(declareRecord.getId());
+                    map.put(declareRecord.getStreetNumber(), list);
+                } else {
+                    map.put(declareRecord.getStreetNumber(), Lists.newArrayList(declareRecord.getId()));
+                }
+            }
+            for (Map.Entry<String, List<Integer>> stringListEntry : map.entrySet()) {
+                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(stringListEntry.getValue().get(0));
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                BasicEstate basicEstate = generateBaseExamineService.getEstate();
+                listLinkedHashMap.put(basicEstate, schemeJudgeObjectService.getListByDeclareIds(stringListEntry.getValue()));
+            }
+        }
+        return listLinkedHashMap;
+    }
+
+    /**
      * 基本排序
      *
      * @param schemeJudgeObjectList
@@ -816,11 +847,12 @@ public class GenerateCommonMethod {
 
     /**
      * 获取缩进后html
+     *
      * @param html
      * @return
      */
-    public String getIndentHtml(String html){
-        return String.format("<p style=\"text-indent:2em\">%s</p>",html);
+    public String getIndentHtml(String html) {
+        return String.format("<div style='text-indent:2em'>%s</div>", html);
     }
 
     /**

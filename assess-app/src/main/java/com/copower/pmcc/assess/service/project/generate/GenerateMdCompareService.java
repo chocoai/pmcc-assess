@@ -164,7 +164,7 @@ public class GenerateMdCompareService {
             }
         } catch (Exception e) {
             String error = e.getMessage();
-            logger.error(error,e);
+            logger.error(error, e);
         }
         return localPath;
     }
@@ -198,7 +198,7 @@ public class GenerateMdCompareService {
                     localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", false);
                     break;
                 case ENTITY_CONDITION:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
+                    localPath = getEntityConditionTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
                     break;
                 case PROPERTY_RANGE:
                     localPath = getComparePropertyRange(title, marketCompareItemDtos, caseItemList, "scope.property");
@@ -260,7 +260,7 @@ public class GenerateMdCompareService {
     public String getTable(List<MarketCompareItemDto> list, List<MdMarketCompareItem> caseItemList, String title, String fieldName, String fieldMore, Boolean isIndex) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        if(!isIndex) {
+        if (!isIndex) {
             generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
             builder.write(title);
         }
@@ -288,6 +288,43 @@ public class GenerateMdCompareService {
             //生成表格
             GenerateTable(list, tradingFieldList, builder, caseItemList, isIndex);
         }
+        builder.endTable();
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 生成实体状况表
+     * @param list         估价对象
+     * @param caseItemList 案列
+     * @param title        标题
+     * @param isIndex      是否是对应的指数表
+     * @return
+     */
+    public String getEntityConditionTable(List<MarketCompareItemDto> list, List<MdMarketCompareItem> caseItemList, String title, String fieldName, String fieldMore, Boolean isIndex) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        if (!isIndex) {
+            generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
+            builder.write(title);
+        }
+        //表格属性
+        setTableProperty(builder);
+        String localPath = generateCommonMethod.getLocalPath();
+        List<DataSetUseField> cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldList(fieldName);
+        //表头
+        builder.insertCell();
+        builder.writeln("项目");
+        builder.insertCell();
+        builder.writeln("估价对象");
+        for (MdMarketCompareItem caseItem : caseItemList) {
+            builder.insertCell();
+            builder.writeln(caseItem.getName());
+        }
+        builder.endRow();
+        //生成表格
+        GenerateEntityConditionTable(list, cacheSetUseFieldList, builder, caseItemList, isIndex);
+
         builder.endTable();
         doc.save(localPath);
         return localPath;
@@ -358,6 +395,202 @@ public class GenerateMdCompareService {
         }
     }
 
+    public void GenerateEntityConditionTable(List<MarketCompareItemDto> list, List<DataSetUseField> tradingFieldList, DocumentBuilder builder, List<MdMarketCompareItem> caseItemList, Boolean isIndex) throws Exception {
+        //建造年份等
+        for (MarketCompareItemDto item : list) {
+            if (item.getName().equals(MethodCompareFieldEnum.BUILDING_YEAR.getKey()) || item.getName().equals(MethodCompareFieldEnum.CONSTRUCTION_QUALITY.getKey())
+                    || item.getName().equals(MethodCompareFieldEnum.BUILDING_STRUCTURE.getKey()) || item.getName().equals(MethodCompareFieldEnum.APPEARANCE.getKey())
+                    || item.getName().equals(MethodCompareFieldEnum.NEW_DEGREE.getKey()) || item.getName().equals(MethodCompareFieldEnum.Other.getKey())) {
+                builder.insertCell();
+                builder.writeln(MethodCompareFieldEnum.getNameByKey(item.getName()));
+                builder.insertCell();
+                builder.writeln(item.getValue());
+                if (CollectionUtils.isNotEmpty(caseItemList)) {
+                    for (MdMarketCompareItem caseItem : caseItemList) {
+                        List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                        for (MarketCompareItemDto item2 : dtos) {
+                            if (item2.getName().equals(item.getName())) {
+                                builder.insertCell();
+                                builder.writeln(item.getValue());
+                            }
+                        }
+                    }
+                }
+                builder.endRow();
+            }
+
+        }
+        //建筑规模
+        StringBuilder jzgm = new StringBuilder();
+        builder.insertCell();
+        builder.writeln("建筑规模");
+        for (MarketCompareItemDto item : list) {
+            if (item.getName().equals(MethodCompareFieldEnum.BUILDING_AREA.getKey()) || item.getName().equals(MethodCompareFieldEnum.BUILDING_SCALE.getKey())) {
+                jzgm.append(MethodCompareFieldEnum.getNameByKey(item.getName())).append(":");
+                jzgm.append(item.getValue()).append(";");
+            }
+        }
+        builder.insertCell();
+        builder.writeln(jzgm.deleteCharAt(jzgm.length()-1).toString());
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                StringBuilder content = new StringBuilder();
+                List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto item2 : dtos) {
+                    if (item2.getName().equals(MethodCompareFieldEnum.BUILDING_AREA.getKey()) || item2.getName().equals(MethodCompareFieldEnum.BUILDING_SCALE.getKey())) {
+                        content.append(MethodCompareFieldEnum.getNameByKey(item2.getName())).append(":");
+                        content.append(item2.getValue()).append(";");
+                    }
+                }
+                builder.writeln(content.deleteCharAt(content.length()-1).toString());
+            }
+        }
+        builder.endRow();
+        //层高
+        StringBuilder cg = new StringBuilder();
+        builder.insertCell();
+        builder.writeln("层高");
+        for (MarketCompareItemDto item : list) {
+            if (item.getName().equals(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey()) || item.getName().equals(MethodCompareFieldEnum.NET_HEIGHT.getKey())) {
+                cg.append(MethodCompareFieldEnum.getNameByKey(item.getName())).append(":");
+                cg.append(item.getValue()).append(";");
+            }
+        }
+        builder.insertCell();
+        builder.writeln(cg.deleteCharAt(cg.length()-1).toString());
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                StringBuilder content = new StringBuilder();
+                List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto item2 : dtos) {
+                    if (item2.getName().equals(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey()) || item2.getName().equals(MethodCompareFieldEnum.NET_HEIGHT.getKey())) {
+                        content.append(MethodCompareFieldEnum.getNameByKey(item2.getName())).append(":");
+                        content.append(item2.getValue()).append(";");
+                    }
+                }
+                builder.writeln(content.deleteCharAt(content.length()-1).toString());
+            }
+        }
+        builder.endRow();
+        //空间布局
+        StringBuilder kjbj = new StringBuilder();
+        builder.insertCell();
+        builder.writeln("空间布局");
+        for (MarketCompareItemDto item : list) {
+            if (item.getName().equals(MethodCompareFieldEnum.ELEVATOR_HOUSEHOLD_RATIO.getKey()) || item.getName().equals(MethodCompareFieldEnum.PLANE_LAYOUT.getKey())) {
+                kjbj.append(MethodCompareFieldEnum.getNameByKey(item.getName())).append(":");
+                kjbj.append(item.getValue()).append(";");
+            }
+        }
+        builder.insertCell();
+        builder.writeln(kjbj.deleteCharAt(kjbj.length()-1).toString());
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                StringBuilder content = new StringBuilder();
+                List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto item2 : dtos) {
+                    if (item2.getName().equals(MethodCompareFieldEnum.ELEVATOR_HOUSEHOLD_RATIO.getKey()) || item2.getName().equals(MethodCompareFieldEnum.PLANE_LAYOUT.getKey())) {
+                        content.append(MethodCompareFieldEnum.getNameByKey(item2.getName())).append(":");
+                        content.append(item2.getValue()).append(";");
+                    }
+                }
+                builder.writeln(content.deleteCharAt(content.length()-1).toString());
+            }
+        }
+        builder.endRow();
+        //装饰装修
+        StringBuilder zszx = new StringBuilder();
+        builder.insertCell();
+        builder.writeln("装饰装修");
+        for (MarketCompareItemDto item : list) {
+            if (item.getName().equals(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey()) || item.getName().equals(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey())) {
+                zszx.append(MethodCompareFieldEnum.getNameByKey(item.getName())).append(":");
+                zszx.append(item.getValue()).append(";");
+            }
+        }
+        builder.insertCell();
+        builder.writeln(zszx.deleteCharAt(zszx.length()-1).toString());
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                StringBuilder content = new StringBuilder();
+                List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto item2 : dtos) {
+                    if (item2.getName().equals(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey()) || item2.getName().equals(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey())) {
+                        content.append(MethodCompareFieldEnum.getNameByKey(item2.getName())).append(":");
+                        content.append(item2.getValue()).append(";");
+                    }
+                }
+                builder.writeln(content.deleteCharAt(content.length()-1).toString());
+            }
+        }
+        builder.endRow();
+        //设备设施
+        StringBuilder sbss = new StringBuilder();
+        builder.insertCell();
+        builder.writeln("设备设施");
+        for (MarketCompareItemDto item : list) {
+            if (item.getName().equals(MethodCompareFieldEnum.INTELLIGENT_LEVEL.getKey()) || item.getName().equals(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey())
+                    || item.getName().equals(MethodCompareFieldEnum.HEATING_MODE.getKey()) || item.getName().equals(MethodCompareFieldEnum.NETWORK.getKey())) {
+                sbss.append(MethodCompareFieldEnum.getNameByKey(item.getName())).append(":");
+                sbss.append(item.getValue()).append(";");
+            }
+        }
+        builder.insertCell();
+        builder.writeln(sbss.deleteCharAt(sbss.length()-1).toString());
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                StringBuilder content = new StringBuilder();
+                List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto item2 : dtos) {
+                    if (item2.getName().equals(MethodCompareFieldEnum.INTELLIGENT_LEVEL.getKey()) || item2.getName().equals(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey())
+                            || item2.getName().equals(MethodCompareFieldEnum.HEATING_MODE.getKey()) || item2.getName().equals(MethodCompareFieldEnum.NETWORK.getKey())) {
+                        content.append(MethodCompareFieldEnum.getNameByKey(item2.getName())).append(":");
+                        content.append(item2.getValue()).append(";");
+                    }
+                }
+                builder.writeln(content.deleteCharAt(content.length()-1).toString());
+            }
+        }
+        builder.endRow();
+        //建筑功能
+        StringBuilder jzgn = new StringBuilder();
+        builder.insertCell();
+        builder.writeln("建筑功能");
+        for (MarketCompareItemDto item : list) {
+            if (item.getName().equals(MethodCompareFieldEnum.AERATION.getKey()) || item.getName().equals(MethodCompareFieldEnum.LIGHTING.getKey())
+                    || item.getName().equals(MethodCompareFieldEnum.SUNSHINE.getKey()) || item.getName().equals(MethodCompareFieldEnum.SOUND_INSULATION.getKey())
+                    || item.getName().equals(MethodCompareFieldEnum.HEAT_PRESERVATION.getKey()) || item.getName().equals(MethodCompareFieldEnum.HEAT_INSULATION.getKey())
+                    || item.getName().equals(MethodCompareFieldEnum.WATERPROOF.getKey())) {
+                jzgn.append(MethodCompareFieldEnum.getNameByKey(item.getName())).append(":");
+                jzgn.append(item.getValue()).append(";");
+            }
+        }
+        builder.insertCell();
+        builder.writeln(jzgn.deleteCharAt(jzgn.length()-1).toString());
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                StringBuilder content = new StringBuilder();
+                List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto item2 : dtos) {
+                    if (item2.getName().equals(MethodCompareFieldEnum.AERATION.getKey()) || item2.getName().equals(MethodCompareFieldEnum.LIGHTING.getKey())
+                            || item2.getName().equals(MethodCompareFieldEnum.SUNSHINE.getKey()) || item2.getName().equals(MethodCompareFieldEnum.SOUND_INSULATION.getKey())
+                            || item2.getName().equals(MethodCompareFieldEnum.HEAT_PRESERVATION.getKey()) || item2.getName().equals(MethodCompareFieldEnum.HEAT_INSULATION.getKey())
+                            || item2.getName().equals(MethodCompareFieldEnum.WATERPROOF.getKey())) {
+                        content.append(MethodCompareFieldEnum.getNameByKey(item2.getName())).append(":");
+                        content.append(item2.getValue()).append(";");
+                    }
+                }
+                builder.writeln(content.deleteCharAt(content.length()-1).toString());
+            }
+        }
+        builder.endRow();
+    }
 
     /**
      * 测算结果表格
@@ -637,7 +870,7 @@ public class GenerateMdCompareService {
      * @return
      */
     public String getComparePropertyRange(String title, List<MarketCompareItemDto> marketCompareItemDtos, List<MdMarketCompareItem> caseItemList, String
-                                                  fieldName) throws Exception {
+            fieldName) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
@@ -678,9 +911,9 @@ public class GenerateMdCompareService {
         } else if (StringUtils.isEmpty(difference) && !StringUtils.isEmpty(accordance)) {
             builder.write("统一" + cacheSetUseFieldList.getName() + "： 估价对象与" + accordanceContent + "为" + propertyRange + "，已统一。");
         } else {
-            if(!StringUtils.isEmpty(propertyRange)){
+            if (!StringUtils.isEmpty(propertyRange)) {
                 builder.write("统一" + cacheSetUseFieldList.getName() + "： 估价对象为" + propertyRange + "，" + differenceContent + "。");
-            }else{
+            } else {
                 builder.write("统一" + cacheSetUseFieldList.getName() + "：" + differenceContent + "。");
             }
         }

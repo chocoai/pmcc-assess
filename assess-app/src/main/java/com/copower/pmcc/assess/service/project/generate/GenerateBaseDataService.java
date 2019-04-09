@@ -151,7 +151,6 @@ public class GenerateBaseDataService {
 
     /**
      * 委托人
-     *
      * @return
      */
     public String getPrincipal() {
@@ -165,7 +164,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价委托人信息
-     *
      * @return
      */
     public String getPrincipalInfo() throws Exception {
@@ -222,7 +220,6 @@ public class GenerateBaseDataService {
 
     /**
      * 财产范围说明
-     *
      * @return
      * @throws Exception
      */
@@ -258,7 +255,6 @@ public class GenerateBaseDataService {
 
     /**
      * 座落
-     *
      * @throws Exception
      */
     public String getSeat() throws Exception {
@@ -332,7 +328,6 @@ public class GenerateBaseDataService {
 
     /**
      * 外聘专家工作概况
-     *
      * @return
      */
     public String getExpertWorkOverview() {
@@ -342,7 +337,6 @@ public class GenerateBaseDataService {
 
     /**
      * 共有权情况
-     *
      * @throws Exception
      */
     public String getCo_ownership() throws Exception {
@@ -373,7 +367,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 变现比率
-     *
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
@@ -394,7 +387,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 出具报告区域名称
-     *
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
@@ -436,7 +428,6 @@ public class GenerateBaseDataService {
 
     /**
      * 证载用途
-     *
      * @throws Exception
      */
     public String getSeparationCertificateUses() throws Exception {
@@ -458,7 +449,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象的总价
-     *
      * @return
      */
     public String getTotalValueValuationObject() {
@@ -488,7 +478,6 @@ public class GenerateBaseDataService {
 
     /**
      * 单价调整表
-     *
      * @throws Exception
      */
     public String getUnitPriceAdjustmentTable() throws Exception {
@@ -652,7 +641,6 @@ public class GenerateBaseDataService {
 
     /**
      * 特别提示
-     *
      * @throws Exception
      */
     public String getHotTip() throws Exception {
@@ -747,7 +735,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象权属
-     *
      * @throws Exception
      */
     public String getEquityStatusObjectSheet() throws Exception {
@@ -1061,7 +1048,6 @@ public class GenerateBaseDataService {
 
     /**
      * 评估方法 , 估价对象评估方法
-     *
      * @throws Exception
      */
     public String getEvaluationMethodValuationObject() throws Exception {
@@ -1125,8 +1111,8 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 功能描述: 委托目的
      *
+     * 功能描述: 委托目的
      * @author: zch
      * @date: 2019/4/8 11:47
      */
@@ -1152,8 +1138,8 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 功能描述: 价值类型描述
      *
+     * 功能描述: 价值类型描述
      * @author: zch
      * @date: 2019/4/8 11:47
      */
@@ -1169,7 +1155,6 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师
-     *
      * @param str
      * @return
      */
@@ -1193,7 +1178,6 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师及注册号
-     *
      * @param generateReportGeneration
      * @throws Exception
      */
@@ -1229,7 +1213,6 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师 编号
-     *
      * @param str
      * @throws Exception
      */
@@ -2399,10 +2382,22 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         //1.先根据楼盘分组，再分别获取到楼盘下的权益信息
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
-        LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = generateCommonMethod.getLinkedHashMapEstateNameSchemeJudgeObjectList(areaId);
-        if (listLinkedHashMap.isEmpty()) return "";
-        for (Map.Entry<String, List<SchemeJudgeObject>> entry : listLinkedHashMap.entrySet()) {
-            builder.insertHtml(generateEquityService.getEquityContent(projectInfo, entry.getValue()), false);
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        if (linkedHashMap.isEmpty()) return "";
+        for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+            //根据不同项目类别确定获取数据的方法
+            if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>"+entry.getKey().getName()+"</div>"));
+            }
+            if (projectInfo.getProjectCategoryName().contains("房产")) {
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateEquityService.getLandEquity(entry.getKey(), entry.getValue()))), false);
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateEquityService.getHouseEquity(entry.getValue(), projectId))), false);
+            } else if (projectInfo.getProjectCategoryName().contains("土地")) {
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId)), false);
+            }
         }
         String localPath = getLocalPath();
         doc.save(localPath);
@@ -2412,7 +2407,6 @@ public class GenerateBaseDataService {
 
     /**
      * 法定优先受偿款
-     *
      * @param schemeReimbursementItemVoList
      * @return
      * @throws Exception
@@ -2435,7 +2429,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价结果一览表
-     *
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet() throws Exception {
@@ -2563,7 +2556,6 @@ public class GenerateBaseDataService {
 
     /**
      * 获取不重复楼盘和估价对象的一一对应集合
-     *
      * @throws Exception
      */
     private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() throws Exception {
@@ -2744,7 +2736,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价结果汇总表
-     *
      * @throws Exception
      */
     public String getJudgeSummarySheet() throws Exception {
@@ -2985,7 +2976,6 @@ public class GenerateBaseDataService {
 
     /**
      * 收益法租赁限制说明
-     *
      * @throws Exception
      */
     public String getTenancyrestrictionRemark() throws Exception {
@@ -3014,7 +3004,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 估价对象详细测算过程
-     *
      * @author: zch
      * @date: 2019/3/4 10:30
      */
@@ -3068,7 +3057,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价委托书复印件
-     *
      * @throws Exception
      */
     public String getJUDGEOBJECTPRINCIPALCOPYSHEET() throws Exception {
@@ -3168,7 +3156,6 @@ public class GenerateBaseDataService {
 
     /**
      * 估价中引用的专用文件资料
-     *
      * @throws Exception
      */
     public String getSpecial_documentation_referenced_in_valuation() throws Exception {
@@ -3228,7 +3215,6 @@ public class GenerateBaseDataService {
 
     /**
      * 房地产估价机构营业执照复印件
-     *
      * @throws Exception
      */
     public String getCopyBusinessLicenseRealEstateValuationAgency() throws Exception {
@@ -3259,7 +3245,6 @@ public class GenerateBaseDataService {
 
     /**
      * '房地产估价机构资质证书复印件
-     *
      * @throws Exception
      */
     public String getCopyQualificationCertificateRealEstateValuationInstitution() throws Exception {
@@ -3290,7 +3275,6 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房地产估价师注册证书复印件
-     *
      * @param str
      * @return
      * @throws Exception
@@ -3340,7 +3324,6 @@ public class GenerateBaseDataService {
 
     /**
      * 获取如收益法,市场比较法，假设开发法，成本法等的id
-     *
      * @param methodNameEnum
      * @param schemeJudgeObject
      * @return SchemeInfo
@@ -3363,7 +3346,6 @@ public class GenerateBaseDataService {
 
     /**
      * 他权信息公示
-     *
      * @throws Exception
      */
     public String getHisRightInfoPublicity() throws Exception {
@@ -3380,7 +3362,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 申报所启用表单类型
-     *
      * @auther: zch
      * @date: 2019/2/25 10:09
      */

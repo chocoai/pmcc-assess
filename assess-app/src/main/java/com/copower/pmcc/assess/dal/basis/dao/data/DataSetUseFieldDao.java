@@ -82,6 +82,23 @@ public class DataSetUseFieldDao {
         List<DataSetUseField> list = dataSetUseFieldMapper.selectByExample(example);
         return list;
     }
+
+    /**
+     * 获取需显示数据根据pid
+     *
+     * @return
+     */
+    public List<DataSetUseField> getShowListByPid(Integer pid) {
+        DataSetUseFieldExample example = new DataSetUseFieldExample();
+        example.createCriteria()
+                .andPidEqualTo(pid)
+                .andBisEnableEqualTo(true)
+                .andBisShowEqualTo(true)
+                .andBisDeleteEqualTo(false);
+        example.setOrderByClause("sorting");
+        List<DataSetUseField> list = dataSetUseFieldMapper.selectByExample(example);
+        return list;
+    }
     //endregion
 
     public DataSetUseField getSetUseFieldByType(Integer type) {
@@ -108,6 +125,12 @@ public class DataSetUseFieldDao {
         DataSetUseField sysProjectClassify = getSingleObject(fieldName);
         if (sysProjectClassify == null) return null;
         return getEnableListByPid(sysProjectClassify.getId());
+    }
+
+    public List<DataSetUseField> getShowList(String fieldName) {
+        DataSetUseField sysProjectClassify = getSingleObject(fieldName);
+        if (sysProjectClassify == null) return null;
+        return getShowListByPid(sysProjectClassify.getId());
     }
     //endregion
 

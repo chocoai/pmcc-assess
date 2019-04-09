@@ -689,6 +689,33 @@ public class SchemeJudgeObjectService {
     }
 
     /**
+     * 根据权证id获取估价对象编号
+     *
+     * @param declareRecordIds
+     * @return
+     */
+    public List<Integer> getJudgeNumberByDeclareIds(List<Integer> declareRecordIds) {
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getListByDeclareIds(declareRecordIds);
+        if (CollectionUtils.isEmpty(judgeObjects)) return null;
+        List<Integer> list=Lists.newArrayList();
+        for (SchemeJudgeObject judgeObject : judgeObjects) {
+            if(NumberUtils.isNumber(judgeObject.getNumber())){
+                list.add(NumberUtils.createInteger(judgeObject.getNumber()));
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 根据申报信息获取对应估价对象
+     * @param declareRecordIds
+     * @return
+     */
+    public List<SchemeJudgeObject> getListByDeclareIds(List<Integer> declareRecordIds){
+        return schemeJudgeObjectDao.getListByDeclareIds(declareRecordIds);
+    }
+
+    /**
      * 根据申报id获取查勘中房屋信息
      *
      * @param declareId
@@ -721,7 +748,7 @@ public class SchemeJudgeObjectService {
         this.updateSchemeJudgeObject(judgeObject);
     }
 
-    public List<SchemeJudgeObject> getListByIds(List<Integer> judgeIds){
-       return schemeJudgeObjectDao.getListByIds(judgeIds);
+    public List<SchemeJudgeObject> getListByIds(List<Integer> judgeIds) {
+        return schemeJudgeObjectDao.getListByIds(judgeIds);
     }
 }

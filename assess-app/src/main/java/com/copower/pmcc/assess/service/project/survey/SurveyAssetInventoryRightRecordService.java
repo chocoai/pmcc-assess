@@ -2,13 +2,19 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryRightRecordVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,7 +22,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: zch
@@ -32,6 +40,8 @@ public class SurveyAssetInventoryRightRecordService {
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @Autowired
     private CommonService commonService;
@@ -81,6 +91,124 @@ public class SurveyAssetInventoryRightRecordService {
         return surveyAssetInventoryRightRecordList;
     }
 
+    /**
+     * 根据项目id获取分组
+     *
+     * @param projectId
+     * @return
+     */
+    public List<SurveyAssetInventoryRightRecord> getListByProjectId(Integer projectId) {
+        SurveyAssetInventoryRightRecord where = new SurveyAssetInventoryRightRecord();
+        where.setProjectId(projectId);
+        List<SurveyAssetInventoryRightRecord> rightRecords = surveyAssetInventoryRightRecordDao.surveyAssetInventoryRightRecordList(where);
+        return rightRecords;
+    }
+
+    /**
+     * 获取区域下拥有他权的权证数据
+     *
+     * @param areaId
+     * @return
+     */
+    public List<Integer> getDeclareRecordsByAreaId(Integer projectId, Integer areaId) {
+        List<SurveyAssetInventoryRightRecord> rightRecords = getListByProjectId(projectId);
+        if (CollectionUtils.isEmpty(rightRecords)) return null;
+        List<DeclareRecord> areaDeclareRecords = declareRecordService.getDeclareRecordByAreaId(areaId);
+        List<Integer> areaDeclareRecordIds = LangUtils.transform(areaDeclareRecords, o -> o.getId());
+        List<Integer> resultList = Lists.newArrayList();
+        for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
+            if (StringUtils.isNotBlank(rightRecord.getRecordIds())) {
+                List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
+                for (Integer integer : list) {
+                    if (areaDeclareRecordIds.contains(integer))
+                        resultList.add(integer);
+                }
+            }
+        }
+        return resultList;
+    }
+
+
+    /**
+     * 根据类别将他权分组
+     *
+     * @param projectId    项目id
+     * @param judgeObjects 区域下的估价对象
+     * @return
+     */
+    public List<SurveyRightGroupDto> groupRightByCategory(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
+        List<SurveyAssetInventoryRightRecord> rightRecords = getListByProjectId(projectId);
+        if (CollectionUtils.isEmpty(rightRecords)) return null;
+        List<SurveyRightGroupDto> groupDtoList = Lists.newArrayList();
+        List<Integer> declareIds = LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId());
+        //1.先判断该他权分组中权证是否在该区域下
+        //2.如果属于当前区域则循环他权内容
+        for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
+            if (StringUtils.isNotBlank(rightRecord.getRecordIds())) {
+                List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
+                Collection intersection = CollectionUtils.intersection(list, declareIds);//集合交集
+                if (CollectionUtils.isNotEmpty(intersection)) {
+                    List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(rightRecord.getId());
+                    if (CollectionUtils.isNotEmpty(inventoryRights)) {
+                        for (SurveyAssetInventoryRight inventoryRight : inventoryRights) {
+                            SurveyRightGroupDto surveyRightGroupDto = new SurveyRightGroupDto();
+                            surveyRightGroupDto.setKey(String.format("%s%s", baseDataDicService.getNameById(inventoryRight.getCategory()), inventoryRight.getRemark()));
+                            surveyRightGroupDto.setGroupId(rightRecord.getId());
+                            surveyRightGroupDto.setCategoryName(baseDataDicService.getNameById(inventoryRight.getCategory()));
+                            surveyRightGroupDto.setRemark(inventoryRight.getRemark());
+                            surveyRightGroupDto.setDeclareRecordIds(Sets.newHashSet(list));
+                            this.pushSurveyRightGroupDto(groupDtoList, surveyRightGroupDto);
+                        }
+                    }
+                }
+            }
+        }
+        return groupDtoList;
+    }
+
+    private void pushSurveyRightGroupDto(List<SurveyRightGroupDto> list, SurveyRightGroupDto surveyRightGroupDto) {
+        if (CollectionUtils.isEmpty(list) || surveyRightGroupDto == null) return;
+        List<String> keys = LangUtils.transform(list, o -> o.getKey());
+        if (keys.contains(surveyRightGroupDto.getKey())) {
+            for (SurveyRightGroupDto rightGroupDto : list) {
+                if (StringUtils.equals(rightGroupDto.getKey(), surveyRightGroupDto.getKey())) {
+                    rightGroupDto.getDeclareRecordIds().addAll(surveyRightGroupDto.getDeclareRecordIds());
+                }
+            }
+        } else {
+            list.add(surveyRightGroupDto);
+        }
+    }
+
+    /**
+     * 特殊情况分组
+     *
+     * @param projectId
+     * @param judgeObjects
+     * @return
+     */
+    public Map<String, List<Integer>> groupSpecialcase(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        List<SurveyAssetInventoryRightRecord> rightRecords = getListByProjectId(projectId);
+        if(CollectionUtils.isEmpty(rightRecords)) return map;
+        List<Integer> declareIds = LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId());
+        for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
+            if (StringUtils.isNotBlank(rightRecord.getRecordIds()) && StringUtils.isNotBlank(rightRecord.getSpecialcase())) {
+                List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
+                Collection intersection = CollectionUtils.intersection(list, declareIds);//集合交集
+                if (CollectionUtils.isNotEmpty(intersection)) {
+                    if(map.containsKey(rightRecord.getSpecialcase())){
+                        List<Integer> integers = map.get(rightRecord.getSpecialcase());
+                        map.put(rightRecord.getSpecialcase(),Lists.newArrayList(CollectionUtils.union(integers,intersection)));
+                    }else{
+                        map.put(rightRecord.getSpecialcase(),Lists.newArrayList(intersection));
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
 
     public boolean addSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) throws Exception {
         surveyAssetInventoryRightRecord.setCreator(commonService.thisUserAccount());
@@ -122,25 +250,12 @@ public class SurveyAssetInventoryRightRecordService {
         org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         List<DeclareRecord> declareRecordList = Lists.newArrayList();
         if (StringUtils.isNotBlank(oo.getRecordIds())) {
-            String[] strings = oo.getRecordIds().split(",");
-            for (String s : strings) {
-                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(Integer.parseInt(s));
-                if (declareRecord != null) {
-                    declareRecordList.add(declareRecord);
-                }
-            }
+            declareRecordList = declareRecordService.getDeclareRecordListByIds(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(oo.getRecordIds())));
         }
         if (CollectionUtils.isNotEmpty(declareRecordList)) {
             StringBuilder stringBuilder = new StringBuilder(8);
-            for (int i = 0; i < declareRecordList.size(); i++) {
-                stringBuilder.append(declareRecordList.get(i).getName());
-                if (i != declareRecordList.size() - 1) {
-                    if (declareRecordList.size() != 1) {
-                        stringBuilder.append(",");
-                    }
-                }
-            }
-            vo.setRecordNames(stringBuilder.toString());
+            declareRecordList.forEach(o -> stringBuilder.append(o.getName()).append(","));
+            vo.setRecordNames(StringUtils.strip(stringBuilder.toString(), ","));
         }
         return vo;
     }

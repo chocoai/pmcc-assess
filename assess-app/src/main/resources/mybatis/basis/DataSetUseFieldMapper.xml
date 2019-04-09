@@ -14,6 +14,7 @@
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="can_shrink" property="canShrink" jdbcType="BIT" />
+    <result column="bis_show" property="bisShow" jdbcType="BIT" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -80,7 +81,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, pid, name, field_name, set_use, level, bis_primary_key, bis_price, bis_only_view, 
-    bis_enable, bis_delete, can_shrink, sorting, remark, creator, gmt_created, gmt_modified
+    bis_enable, bis_delete, can_shrink, bis_show, sorting, remark, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseFieldExample" >
     select
@@ -119,15 +121,15 @@
     insert into tb_data_set_use_field (pid, name, field_name, 
       set_use, level, bis_primary_key, 
       bis_price, bis_only_view, bis_enable, 
-      bis_delete, can_shrink, sorting, 
-      remark, creator, gmt_created, 
-      gmt_modified)
+      bis_delete, can_shrink, bis_show, 
+      sorting, remark, creator, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, 
       #{setUse,jdbcType=INTEGER}, #{level,jdbcType=VARCHAR}, #{bisPrimaryKey,jdbcType=BIT}, 
       #{bisPrice,jdbcType=BIT}, #{bisOnlyView,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
-      #{bisDelete,jdbcType=BIT}, #{canShrink,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{bisDelete,jdbcType=BIT}, #{canShrink,jdbcType=BIT}, #{bisShow,jdbcType=BIT}, 
+      #{sorting,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseField" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -167,6 +169,9 @@
       </if>
       <if test="canShrink != null" >
         can_shrink,
+      </if>
+      <if test="bisShow != null" >
+        bis_show,
       </if>
       <if test="sorting != null" >
         sorting,
@@ -217,6 +222,9 @@
       </if>
       <if test="canShrink != null" >
         #{canShrink,jdbcType=BIT},
+      </if>
+      <if test="bisShow != null" >
+        #{bisShow,jdbcType=BIT},
       </if>
       <if test="sorting != null" >
         #{sorting,jdbcType=INTEGER},
@@ -280,6 +288,9 @@
       <if test="record.canShrink != null" >
         can_shrink = #{record.canShrink,jdbcType=BIT},
       </if>
+      <if test="record.bisShow != null" >
+        bis_show = #{record.bisShow,jdbcType=BIT},
+      </if>
       <if test="record.sorting != null" >
         sorting = #{record.sorting,jdbcType=INTEGER},
       </if>
@@ -314,6 +325,7 @@
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       can_shrink = #{record.canShrink,jdbcType=BIT},
+      bis_show = #{record.bisShow,jdbcType=BIT},
       sorting = #{record.sorting,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -359,6 +371,9 @@
       <if test="canShrink != null" >
         can_shrink = #{canShrink,jdbcType=BIT},
       </if>
+      <if test="bisShow != null" >
+        bis_show = #{bisShow,jdbcType=BIT},
+      </if>
       <if test="sorting != null" >
         sorting = #{sorting,jdbcType=INTEGER},
       </if>
@@ -390,6 +405,7 @@
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       can_shrink = #{canShrink,jdbcType=BIT},
+      bis_show = #{bisShow,jdbcType=BIT},
       sorting = #{sorting,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

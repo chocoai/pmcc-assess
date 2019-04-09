@@ -108,4 +108,10 @@ public class SchemeJudgeObjectDao {
         return mapper.countByExample(example);
     }
 
+    public List<SchemeJudgeObject> getListByDeclareIds(List<Integer> declareIds){
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        example.createCriteria().andBisMergeEqualTo(false).andBisSplitEqualTo(false).andDeclareRecordIdIn(declareIds);
+        example.setOrderByClause("sorting,split_number");
+        return mapper.selectByExample(example);
+    }
 }
