@@ -2382,10 +2382,6 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         //1.先根据楼盘分组，再分别获取到楼盘下的权益信息
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
-        LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = generateCommonMethod.getLinkedHashMapEstateNameSchemeJudgeObjectList(areaId);
-        if (listLinkedHashMap.isEmpty()) return "";
-        for (Map.Entry<String, List<SchemeJudgeObject>> entry : listLinkedHashMap.entrySet()) {
-            builder.insertHtml(generateEquityService.getEquityContent(projectInfo, entry.getValue()), false);
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
         if (linkedHashMap.isEmpty()) return "";
         for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
