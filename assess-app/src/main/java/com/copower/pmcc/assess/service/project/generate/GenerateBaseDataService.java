@@ -151,6 +151,7 @@ public class GenerateBaseDataService {
 
     /**
      * 委托人
+     *
      * @return
      */
     public String getPrincipal() {
@@ -164,6 +165,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价委托人信息
+     *
      * @return
      */
     public String getPrincipalInfo() throws Exception {
@@ -220,6 +222,7 @@ public class GenerateBaseDataService {
 
     /**
      * 财产范围说明
+     *
      * @return
      * @throws Exception
      */
@@ -255,6 +258,7 @@ public class GenerateBaseDataService {
 
     /**
      * 座落
+     *
      * @throws Exception
      */
     public String getSeat() throws Exception {
@@ -328,6 +332,7 @@ public class GenerateBaseDataService {
 
     /**
      * 外聘专家工作概况
+     *
      * @return
      */
     public String getExpertWorkOverview() {
@@ -337,6 +342,7 @@ public class GenerateBaseDataService {
 
     /**
      * 共有权情况
+     *
      * @throws Exception
      */
     public String getCo_ownership() throws Exception {
@@ -367,6 +373,7 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 变现比率
+     *
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
@@ -387,6 +394,7 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 出具报告区域名称
+     *
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
@@ -428,6 +436,7 @@ public class GenerateBaseDataService {
 
     /**
      * 证载用途
+     *
      * @throws Exception
      */
     public String getSeparationCertificateUses() throws Exception {
@@ -449,6 +458,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象的总价
+     *
      * @return
      */
     public String getTotalValueValuationObject() {
@@ -478,6 +488,7 @@ public class GenerateBaseDataService {
 
     /**
      * 单价调整表
+     *
      * @throws Exception
      */
     public String getUnitPriceAdjustmentTable() throws Exception {
@@ -715,6 +726,7 @@ public class GenerateBaseDataService {
 
     /**
      * 特别提示
+     *
      * @throws Exception
      */
     public String getHotTip() throws Exception {
@@ -729,20 +741,20 @@ public class GenerateBaseDataService {
             stringSet.add("欲了解本次估价项目全面情况");
             stringSet.add("请详见估价结果报告");
             stringSet.add("报告使用时请特别关注估价假设和限制条件内容。");
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet,"，"))).append("</p>");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
             stringSet.clear();
             row++;
         }
         if (true) {
             Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> hashMap = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
-            final String mortgage = "抵押权" ;
+            final String mortgage = "抵押权";
             List<Integer> integerList = Lists.newArrayList();
-            if (!hashMap.isEmpty()){
+            if (!hashMap.isEmpty()) {
                 hashMap.entrySet().stream().forEach(entry -> {
-                    if (CollectionUtils.isNotEmpty(entry.getValue())){
+                    if (CollectionUtils.isNotEmpty(entry.getValue())) {
                         entry.getValue().stream().forEach(oo -> {
-                            if (oo.getCategory() != null){
-                                if (Objects.equal(mortgage,baseDataDicService.getNameById(oo.getCategory()))){
+                            if (oo.getCategory() != null) {
+                                if (Objects.equal(mortgage, baseDataDicService.getNameById(oo.getCategory()))) {
                                     integerList.add(generateCommonMethod.parseIntJudgeNumber(entry.getKey().getNumber()));
                                 }
                             }
@@ -750,22 +762,22 @@ public class GenerateBaseDataService {
                     }
                 });
             }
-            if (CollectionUtils.isNotEmpty(integerList)){
-                stringSet.add(String.format("%s号有%s",StringUtils.join(integerList.stream().distinct().collect(Collectors.toList()),"、"),mortgage));
+            if (CollectionUtils.isNotEmpty(integerList)) {
+                stringSet.add(String.format("%s号有%s", StringUtils.join(integerList.stream().distinct().collect(Collectors.toList()), "、"), mortgage));
                 stringSet.add("根据委托人介绍及估价人员在");
-                stringSet.add(erpAreaService.getAreaFullName(schemeAreaGroup.getProvince(),schemeAreaGroup.getCity(),schemeAreaGroup.getDistrict()));
-                DataHisRightInfoPublicity infoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(),schemeAreaGroup.getCity(),schemeAreaGroup.getDistrict());
+                stringSet.add(erpAreaService.getAreaFullName(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict()));
+                DataHisRightInfoPublicity infoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
                 String value = null;
-                if (infoPublicity != null){
+                if (infoPublicity != null) {
                     value = infoPublicity.getContent();
                 }
-                if (StringUtils.isNotBlank(value)){
-                    stringSet.add(String.format("房地产评估管理服务信息系统 %s",value));
-                }else {
-                    stringSet.add(String.format("房地产评估管理服务信息系统 %s","（http://fcpg.cdfgj.gov.cn/）"));
+                if (StringUtils.isNotBlank(value)) {
+                    stringSet.add(String.format("房地产评估管理服务信息系统 %s", value));
+                } else {
+                    stringSet.add(String.format("房地产评估管理服务信息系统 %s", "（http://fcpg.cdfgj.gov.cn/）"));
                 }
                 stringSet.add("上查询了解得知，截止价值时点，估价对象已设定");
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet,"，"))).append("</p>");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
                 stringSet.clear();
                 row++;
             }
@@ -773,10 +785,10 @@ public class GenerateBaseDataService {
         String addressAssetInventory = getActualAddressAssetInventory();
         String certificateAssetInventory = getCertificateAssetInventory();
         if (StringUtils.isNotBlank(addressAssetInventory) && StringUtils.isNotBlank(certificateAssetInventory)) {
-            stringSet.add(String.format("估价对象现场查勘地址为%s",addressAssetInventory)) ;
-            stringSet.add(String.format("本次评估根据委托方提供的由%s",certificateAssetInventory)) ;
-            stringSet.add("本次以上地址为同一地址。") ;
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet,"，"))).append("</p>");
+            stringSet.add(String.format("估价对象现场查勘地址为%s", addressAssetInventory));
+            stringSet.add(String.format("本次评估根据委托方提供的由%s", certificateAssetInventory));
+            stringSet.add("本次以上地址为同一地址。");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
             stringSet.clear();
             row++;
         }
@@ -797,9 +809,9 @@ public class GenerateBaseDataService {
             stringSet.add("经过沟通");
             stringSet.add("抵押权人已经知晓法定优先受偿款对估价对象价值的影响");
             stringSet.add("且并不需要我们在抵押价值中予以扣除法定优先受偿款");
-            stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款为%s元（大写：%s ）",s,CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(bigDecimal, false))));
+            stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款为%s元（大写：%s ）", s, CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(bigDecimal, false))));
             stringSet.add("在此提请报告使用人加以关注。");
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet,"，"))).append("</p>");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
             stringSet.clear();
         }
         documentBuilder.insertHtml(stringBuilder.toString(), true);
@@ -809,6 +821,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象权属
+     *
      * @throws Exception
      */
     public String getEquityStatusObjectSheet() throws Exception {
@@ -1122,6 +1135,7 @@ public class GenerateBaseDataService {
 
     /**
      * 评估方法 , 估价对象评估方法
+     *
      * @throws Exception
      */
     public String getEvaluationMethodValuationObject() throws Exception {
@@ -1185,8 +1199,8 @@ public class GenerateBaseDataService {
     }
 
     /**
-     *
      * 功能描述: 委托目的
+     *
      * @author: zch
      * @date: 2019/4/8 11:47
      */
@@ -1212,8 +1226,8 @@ public class GenerateBaseDataService {
     }
 
     /**
-     *
      * 功能描述: 价值类型描述
+     *
      * @author: zch
      * @date: 2019/4/8 11:47
      */
@@ -1229,6 +1243,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师
+     *
      * @param str
      * @return
      */
@@ -1252,6 +1267,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师及注册号
+     *
      * @param generateReportGeneration
      * @throws Exception
      */
@@ -1287,6 +1303,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师 编号
+     *
      * @param str
      * @throws Exception
      */
@@ -1922,13 +1939,13 @@ public class GenerateBaseDataService {
                 List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = entry.getValue();
                 if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
                     for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                        if (inventoryRight.getCategory() == null){
+                        if (inventoryRight.getCategory() == null) {
                             continue;
                         }
-                        if (StringUtils.isEmpty(inventoryRight.getNumber()) || StringUtils.isEmpty(inventoryRight.getRegisterArea())){
+                        if (StringUtils.isEmpty(inventoryRight.getNumber()) || StringUtils.isEmpty(inventoryRight.getRegisterArea())) {
                             continue;
                         }
-                        if (StringUtils.isEmpty(inventoryRight.getObligee()) || StringUtils.isEmpty(inventoryRight.getObligor())){
+                        if (StringUtils.isEmpty(inventoryRight.getObligee()) || StringUtils.isEmpty(inventoryRight.getObligor())) {
                             continue;
                         }
                         stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
@@ -2050,7 +2067,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = StringUtils.join(stringSet,"、");
+        String s = StringUtils.join(stringSet, "、");
         return s;
     }
 
@@ -2129,16 +2146,16 @@ public class GenerateBaseDataService {
      */
     public String getStatutoryPriorityAmount() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
-        Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> map = schemeReimbursementService.getSchemeReimbursementItemVoMapAndSchemeJudgeObject(getSchemeJudgeObjectList(),projectId);
-        if (!map.isEmpty()){
+        Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> map = schemeReimbursementService.getSchemeReimbursementItemVoMapAndSchemeJudgeObject(getSchemeJudgeObjectList(), projectId);
+        if (!map.isEmpty()) {
             map.entrySet().stream().forEach(entry -> {
                 List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = entry.getValue();
-                if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)){
+                if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                     schemeReimbursementItemVoList = schemeReimbursementItemVoList.stream().distinct().collect(Collectors.toList());
-                    if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)){
+                    if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                         BigDecimal bigDecimal = new BigDecimal(0);
-                        for (SchemeReimbursementItemVo schemeReimbursementItemVo:schemeReimbursementItemVoList){
-                            if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null){
+                        for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                            if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
                                 bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
                             }
                         }
@@ -2456,10 +2473,22 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         //1.先根据楼盘分组，再分别获取到楼盘下的权益信息
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
-        LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = generateCommonMethod.getLinkedHashMapEstateNameSchemeJudgeObjectList(areaId);
-        if(listLinkedHashMap.isEmpty()) return "";
-        for (Map.Entry<String, List<SchemeJudgeObject>> entry : listLinkedHashMap.entrySet()) {
-            builder.insertHtml(generateEquityService.getEquityContent(projectInfo,entry.getValue()),false);
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        if (linkedHashMap.isEmpty()) return "";
+        for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+            //根据不同项目类别确定获取数据的方法
+            if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>"+entry.getKey().getName()+"</div>"));
+            }
+            if (projectInfo.getProjectCategoryName().contains("房产")) {
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateEquityService.getLandEquity(entry.getKey(), entry.getValue()))), false);
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateEquityService.getHouseEquity(entry.getValue(), projectId))), false);
+            } else if (projectInfo.getProjectCategoryName().contains("土地")) {
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId)), false);
+            }
         }
         String localPath = getLocalPath();
         doc.save(localPath);
@@ -2469,6 +2498,7 @@ public class GenerateBaseDataService {
 
     /**
      * 法定优先受偿款
+     *
      * @param schemeReimbursementItemVoList
      * @return
      * @throws Exception
@@ -2491,6 +2521,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价结果一览表
+     *
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet() throws Exception {
@@ -2618,6 +2649,7 @@ public class GenerateBaseDataService {
 
     /**
      * 获取不重复楼盘和估价对象的一一对应集合
+     *
      * @throws Exception
      */
     private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() throws Exception {
@@ -2792,6 +2824,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价结果汇总表
+     *
      * @throws Exception
      */
     public String getJudgeSummarySheet() throws Exception {
@@ -3032,6 +3065,7 @@ public class GenerateBaseDataService {
 
     /**
      * 收益法租赁限制说明
+     *
      * @throws Exception
      */
     public String getTenancyrestrictionRemark() throws Exception {
@@ -3060,6 +3094,7 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 估价对象详细测算过程
+     *
      * @author: zch
      * @date: 2019/3/4 10:30
      */
@@ -3113,6 +3148,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价委托书复印件
+     *
      * @throws Exception
      */
     public String getJUDGEOBJECTPRINCIPALCOPYSHEET() throws Exception {
@@ -3212,6 +3248,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价中引用的专用文件资料
+     *
      * @throws Exception
      */
     public String getSpecial_documentation_referenced_in_valuation() throws Exception {
@@ -3271,6 +3308,7 @@ public class GenerateBaseDataService {
 
     /**
      * 房地产估价机构营业执照复印件
+     *
      * @throws Exception
      */
     public String getCopyBusinessLicenseRealEstateValuationAgency() throws Exception {
@@ -3301,6 +3339,7 @@ public class GenerateBaseDataService {
 
     /**
      * '房地产估价机构资质证书复印件
+     *
      * @throws Exception
      */
     public String getCopyQualificationCertificateRealEstateValuationInstitution() throws Exception {
@@ -3331,6 +3370,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房地产估价师注册证书复印件
+     *
      * @param str
      * @return
      * @throws Exception
@@ -3380,6 +3420,7 @@ public class GenerateBaseDataService {
 
     /**
      * 获取如收益法,市场比较法，假设开发法，成本法等的id
+     *
      * @param methodNameEnum
      * @param schemeJudgeObject
      * @return SchemeInfo
@@ -3402,6 +3443,7 @@ public class GenerateBaseDataService {
 
     /**
      * 他权信息公示
+     *
      * @throws Exception
      */
     public String getHisRightInfoPublicity() throws Exception {
@@ -3418,6 +3460,7 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 申报所启用表单类型
+     *
      * @auther: zch
      * @date: 2019/2/25 10:09
      */

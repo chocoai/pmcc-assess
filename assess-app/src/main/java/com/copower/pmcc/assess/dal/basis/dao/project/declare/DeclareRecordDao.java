@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.project.declare;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareRecordMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,6 +33,13 @@ public class DeclareRecordDao {
     public List<DeclareRecord> getDeclareRecordList(Integer projectId, Boolean bisGenerate) {
         DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andBisGenerateEqualTo(bisGenerate);
+        example.setOrderByClause("id");
+        return mapper.selectByExample(example);
+    }
+
+    public List<DeclareRecord> getDeclareRecordList(DeclareRecord declareRecord) {
+        DeclareRecordExample example = new DeclareRecordExample();
+        MybatisUtils.convertObj2Example(declareRecord, example);
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }
