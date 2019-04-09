@@ -1947,6 +1947,9 @@ var matchingFinance;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_finance_category, item.category, function (html, data) {
                 $("#" + matchingFinance.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, item.distance, function (html, data) {
+                $("#" + matchingFinance.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
+            });
         }
     };
 

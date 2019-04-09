@@ -12,6 +12,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 资产占有人信息
@@ -47,11 +50,15 @@ public class InitiatePossessorService {
         if (initiatePossessor == null) {
             return null;
         }
-        final Integer PTYPEa = 0;
-        final Integer PTYPEb = 1;
-        if (initiatePossessor.getId() == null || initiatePossessor.getId().intValue() == 0) {
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(initiatePossessor.getpAddress())) {
+            String[] strings = initiatePossessor.getpAddress().split(",");
+            Set<String> stringSet = Sets.newHashSet(strings);
+            stringSet = stringSet.stream().filter(s -> org.apache.commons.lang3.StringUtils.isNotBlank(s)).collect(Collectors.toSet());
+            initiatePossessor.setpAddress(org.apache.commons.lang3.StringUtils.join(stringSet,""));
+        }
+        if (initiatePossessor.getId() == null || initiatePossessor.getId() == 0) {
             //对资产占有人信息 进行单独处理
-            if (initiatePossessor.getpType().equals(PTYPEa)) {
+            if (initiatePossessor.getpType().equals(InitiateContactsEnum.naturalPerson.getId())) {
                 initiatePossessor.setpUnitProperties(null);
                 initiatePossessor.setpScopeOperation(null);
                 initiatePossessor.setpSociologyCode(null);

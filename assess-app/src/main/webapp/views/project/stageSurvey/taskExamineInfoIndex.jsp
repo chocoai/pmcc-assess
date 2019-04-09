@@ -184,6 +184,7 @@
 <script src="${pageContext.request.contextPath}/js/select/selectMap/market.checkbox.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/selectMap/medical.checkbox.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/selectMap/trafficHub.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/distance.get.fun.js"></script>
 <script src="${pageContext.request.contextPath}/js/map.placeSearch.js"></script>
 
 

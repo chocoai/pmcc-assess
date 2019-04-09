@@ -103,47 +103,8 @@
             estateId: estateCommon.getEstateId(),
             type: "transit"//根据ExamineMatchingTrafficTypeEnum 配置
         };
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, null, function (html, n) {
-            var a500 = {};
-            var a1000 = {};
-            var a1500 = {};
-            var a2000 = {};
-            var a2000Max = {};
-            $.each(n, function (i, v) {
-                var number = AssessTransit.prototype.getNumber(v.name);
-                number = Number(number);
-                if (v.name == '小于等于500m') {
-                    a500.number = number;
-                    a500.id = v.id;
-                }
-                if (v.name == '小于等于1000m') {
-                    a1000.number = number;
-                    a1000.id = v.id;
-                }
-                if (v.name == '小于等于1500m') {
-                    a1500.number = number;
-                    a1500.id = v.id;
-                }
-                if (v.name == '小于等于2000m') {
-                    a2000.number = number;
-                    a2000.id = v.id;
-                }
-                if (v.name == '大于2000m') {
-                    a2000Max.number = number;
-                    a2000Max.id = v.id;
-                }
-            });
-            if (data.distance < a500.number) {
-                data.distance = a500.id;
-            }else if (a500.number > data.distance < a1000.number){
-                data.distance = a1000.id;
-            }else if (a1000.number > data.distance < a1500.number){
-                data.distance = a1500.id;
-            }else if (a1500.number > data.distance < a2000.number){
-                data.distance = a2000.id;
-            }else if(data.distance > a2000Max.number){
-                data.distance = a2000Max.id;
-            }
+        distanceGetFun.get(data.distance,function (distance) {
+            data.distance = distance ;
             $.ajax({
                 url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",

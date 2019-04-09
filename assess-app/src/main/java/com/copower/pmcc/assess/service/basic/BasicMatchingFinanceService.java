@@ -132,6 +132,7 @@ public class BasicMatchingFinanceService {
         vo.setNatureName(baseDataDicService.getNameById(basicMatchingFinance.getCategory()));
         vo.setServiceContentName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingFinance.getServiceContent()) ? Integer.parseInt(basicMatchingFinance.getServiceContent()) : null));
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingFinance.getNature()));
+        vo.setDistanceName(baseDataDicService.getNameById(basicMatchingFinance.getDistance()));
         return vo;
     }
 

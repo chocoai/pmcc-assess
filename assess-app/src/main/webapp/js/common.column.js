@@ -48,7 +48,7 @@ commonColumn.matchingEnvironmentColumn = function () {
 commonColumn.matchingFinanceColumn = function () {
     var cols = [];
     cols.push({field: 'name', title: '金融名称'});
-    cols.push({field: 'distance', title: '与金融机构的距离'});
+    cols.push({field: 'distanceName', title: '与金融机构的距离'});
     cols.push({field: 'categoryName', title: '金融类别'});
     cols.push({field: 'natureName', title: '金融机构性质'});
     cols.push({field: 'serviceContentName', title: '服务类别'});

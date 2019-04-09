@@ -121,7 +121,7 @@
                                         类别<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-10">
-                                        <select class="form-control" required id="category" name="category">
+                                        <select class="form-control" required  name="category" onchange="changeRemark(this,'_number')">
                                         </select>
                                     </div>
                                 </div>
@@ -514,6 +514,24 @@
             })
         } else {
             toastr.info("只能选择一行数据进行编辑");
+        }
+    }
+
+    function changeRemark(that,value) {
+        var form = $("#" + commonField.inventoryFrm + value);
+        var id = form.find("select[name='category']").val() ;
+        if(id){
+            AssessCommon.getDataDicInfo(id,function (data) {
+                var text = data.remark ;
+                if (text){
+                    if (text.toString().length == 0){
+                        text = "无" ;
+                    }
+                }else {
+                    text = "无" ;
+                }
+                form.find("textarea[name='remark']").val(text) ;
+            });
         }
     }
 
