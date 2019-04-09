@@ -2721,14 +2721,20 @@ public class GenerateBaseDataService {
                 documentBuilder.writeln(String.format("8、装饰装修:%s", generateHouseEntityService.getDecoration(integerList)));
                 documentBuilder.writeln(String.format("9、外观:%s", generateHouseEntityService.getAppearance(integerList)));
                 documentBuilder.writeln("10、设施设备");
-                documentBuilder.writeln(String.format("10.1、电梯:%s", generateHouseEntityService.getUnitElevator(integerList)));
-                documentBuilder.writeln(String.format("10.2、非工业与仓储的其他设施:%s", generateHouseEntityService.getTenPointTwo(integerList)));
-                documentBuilder.writeln(String.format("10.3、房屋配套设备设施工:%s", generateHouseEntityService.getTenPointThree(integerList)));
+                documentBuilder.writeln(String.format("电梯:%s", generateHouseEntityService.getUnitElevator(integerList)));
+                String s2 = generateHouseEntityService.getTenPointTwo(integerList);
+                if (StringUtils.isNotBlank(s2.trim())){
+                    documentBuilder.writeln(String.format("非工业与仓储的其他设施:%s", s2));
+                }
+                String s1 = generateHouseEntityService.getTenPointThree(integerList);
+                if (StringUtils.isNotBlank(s1.trim())) {
+                    documentBuilder.writeln(String.format("房屋配套设备设施工:%s", s1));
+                }
                 documentBuilder.writeln(String.format("11、建筑功能:%s", generateHouseEntityService.getBuildingFunction(integerList)));
-                documentBuilder.writeln(String.format("12、物业管理:%s", "无"));
-                documentBuilder.writeln(String.format("13、楼栋新旧程度及维护使用情况:%s", generateHouseEntityService.getThirteen(integerList)));
-                documentBuilder.writeln(String.format("14、其它:%s", generateHouseEntityService.getOther(integerList)));
-                documentBuilder.writeln(String.format("15、建筑实体分析:%s", generateHouseEntityService.getContent(integerList, schemeAreaGroup)));
+                documentBuilder.writeln(String.format("12、新旧程度及维护使用情况", ""));
+                documentBuilder.writeln(String.format("%s", generateHouseEntityService.getThirteen(integerList)));
+                documentBuilder.writeln(String.format("13、其它:%s", generateHouseEntityService.getOther(integerList)));
+                documentBuilder.writeln(String.format("14、建筑实体分析:%s", generateHouseEntityService.getContent(integerList, schemeAreaGroup)));
                 documentBuilder.writeln();
             }
         }

@@ -43,6 +43,7 @@ public class GenerateBaseExamineService {
     private BasicHouseWaterService basicHouseWaterService;
     private BasicHouseWaterDrainService basicHouseWaterDrainService;
     private BasicHouseFaceStreetService basicHouseFaceStreetService;
+    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
 
     private BasicEstateService basicEstateService;
     private BasicEstateNetworkService basicEstateNetworkService;
@@ -232,6 +233,11 @@ public class GenerateBaseExamineService {
         return basicHouseRoomService.getBasicHouseRoomList(getBasicHouse().getId());
     }
 
+    public List<BasicHouseDamagedDegreeVo> getDamagedDegreeVoList(){
+        List<BasicHouseDamagedDegreeVo> degreeList = basicHouseDamagedDegreeService.getDamagedDegreeVoList(getBasicHouse().getId()) ;
+        return degreeList;
+    }
+
     public List<BasicHouseTrading> getBasicHouseTradingList() throws Exception {
         BasicHouseTrading query = new BasicHouseTrading();
         query.setHouseId(getBasicHouse().getId());
@@ -309,6 +315,7 @@ public class GenerateBaseExamineService {
         this.basicHouseCorollaryEquipmentService = SpringContextUtils.getBean(BasicHouseCorollaryEquipmentService.class);
         this.basicHouseWaterService = SpringContextUtils.getBean(BasicHouseWaterService.class);
         this.basicHouseFaceStreetService = SpringContextUtils.getBean(BasicHouseFaceStreetService.class);
+        this.basicHouseDamagedDegreeService = SpringContextUtils.getBean(BasicHouseDamagedDegreeService.class);
 
         this.basicEstateService = SpringContextUtils.getBean(BasicEstateService.class);
         this.basicMatchingTrafficService = SpringContextUtils.getBean(BasicMatchingTrafficService.class);
