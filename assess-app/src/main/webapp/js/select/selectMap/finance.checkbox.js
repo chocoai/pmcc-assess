@@ -110,26 +110,30 @@
         var data = {
             name: item.find("input[name='name']").val(),
             estateId: estateCommon.getEstateId(),
+            distance: item.find("input[name='distance']").val(),
             category: $("#" + matchingFinance.prototype.config().table).closest("form").find('select.category').val()
         };
-        $.ajax({
-            url: getContextPath() + "/basicMatchingFinance/saveAndUpdateBasicMatchingFinance",
-            type: "post",
-            dataType: "json",
-            data: data,
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('保存成功');
-                    matchingFinance.prototype.loadDataDicList();
-                    $('#select_matchingfinance_modal').modal('hide');
+        distanceGetFun.get(data.distance,function (distance) {
+            data.distance = distance ;
+            $.ajax({
+                url: getContextPath() + "/basicMatchingFinance/saveAndUpdateBasicMatchingFinance",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        matchingFinance.prototype.loadDataDicList();
+                        $('#select_matchingfinance_modal').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
+            });
         });
     };
 

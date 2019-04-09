@@ -11,6 +11,7 @@ public class BasicMatchingFinanceVo extends BasicMatchingFinance {
     private String categoryName;
     private String natureName;
     private String serviceContentName;
+    private String distanceName;
 
     public String getCategoryName() {
         return categoryName;
@@ -34,5 +35,13 @@ public class BasicMatchingFinanceVo extends BasicMatchingFinance {
 
     public void setServiceContentName(String serviceContentName) {
         this.serviceContentName = serviceContentName;
+    }
+
+    public String getDistanceName() {
+        return distanceName;
+    }
+
+    public void setDistanceName(String distanceName) {
+        this.distanceName = distanceName;
     }
 }

@@ -76,7 +76,9 @@
                                             与金融机构的距离<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="distance" class="form-control" required="required">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

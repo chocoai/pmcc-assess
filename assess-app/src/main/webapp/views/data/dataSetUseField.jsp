@@ -247,6 +247,15 @@
                                                    checked="checked">
                                         </label>
                                     </div>
+                                    <label class="col-sm-2 control-label">
+                                        是否显示
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" id="subShow" name="bisShow" value="true"
+                                                   checked="checked">
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -487,6 +496,7 @@
         $("#subBisPrice").prop("checked", false);
         $("#subBisOnlyView").prop("checked", false);
         $("#subCanShrink").prop("checked", false);
+        $("#subShow").prop("checked", true);
     }
 
     //编辑子项
@@ -500,6 +510,7 @@
             $("#subBisPrice").prop("checked", row.bisPrice);
             $("#subBisOnlyView").prop("checked", row.bisOnlyView);
             $("#subCanShrink").prop("checked", row.canShrink);
+            $("#subShow").prop("checked", row.bisShow);
         }
         $('#divSubSetUseFieldManage').modal();
     }
@@ -519,6 +530,7 @@
             data.bisPrice = $("#subBisPrice").prop("checked");
             data.bisOnlyView = $("#subBisOnlyView").prop("checked");
             data.canShrink = $("#subCanShrink").prop("checked");
+            data.bisShow = $("#subShow").prop("checked");
             data.remark = $("#subRemark").val();
             if ($("#subFieldName").val()) {
                 data.fieldName = $("#subFieldName").val();

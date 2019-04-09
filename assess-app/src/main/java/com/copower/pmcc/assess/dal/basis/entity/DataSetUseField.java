@@ -27,6 +27,8 @@ public class DataSetUseField {
 
     private Boolean canShrink;
 
+    private Boolean bisShow;
+
     private Integer sorting;
 
     private String remark;
@@ -131,6 +133,14 @@ public class DataSetUseField {
 
     public void setCanShrink(Boolean canShrink) {
         this.canShrink = canShrink;
+    }
+
+    public Boolean getBisShow() {
+        return bisShow;
+    }
+
+    public void setBisShow(Boolean bisShow) {
+        this.bisShow = bisShow;
     }
 
     public Integer getSorting() {

@@ -11,6 +11,7 @@ import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 委托人信息
@@ -49,12 +52,16 @@ public class InitiateConsignorService {
         if (initiateConsignor == null){
             return null;
         }
-        final Integer CSTYPEa = 0;
-        final Integer CSTYPEb = 1;
-        if (initiateConsignor.getId() == null || initiateConsignor.getId().intValue() == 0) {
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(initiateConsignor.getCsAddress())) {
+            String[] strings = initiateConsignor.getCsAddress().split(",");
+            Set<String> stringSet = Sets.newHashSet(strings);
+            stringSet = stringSet.stream().filter(s -> org.apache.commons.lang3.StringUtils.isNotBlank(s)).collect(Collectors.toSet());
+            initiateConsignor.setCsAddress(org.apache.commons.lang3.StringUtils.join(stringSet,""));
+        }
+        if (initiateConsignor.getId() == null || initiateConsignor.getId() == 0) {
             initiateConsignor.setCreator(commonService.thisUserAccount());
             //对 委托人进行单独处理
-            if (initiateConsignor.getCsType().equals(CSTYPEa)) {
+            if (initiateConsignor.getCsType().equals(InitiateContactsEnum.naturalPerson.getId())) {
                 initiateConsignor.setCsUnitProperties(null);
                 initiateConsignor.setCsScopeOperation(null);
                 initiateConsignor.setCsSociologyCode(null);
