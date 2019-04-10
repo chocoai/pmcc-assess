@@ -116,8 +116,6 @@ public enum BaseReportFieldEnum implements Serializable {
     EVALUATION_PRINCIPLE("评估原则"),
     ANALYSIS_CATEGORY_LIQUIDITY("变现能力分析"),
     LIQUIDATION_ANALYSIS("变现分析税费"),
-    LiquidRatios("变现比率"),
-    LiquidTime("变现时间"),
     ANALYSIS_CATEGORY_RISK("风险提示"),
     ReportArea("出具报告区域"),
 

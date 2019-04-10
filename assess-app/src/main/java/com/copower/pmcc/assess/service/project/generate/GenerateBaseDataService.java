@@ -365,25 +365,6 @@ public class GenerateBaseDataService {
         return s;
     }
 
-    /**
-     * 功能描述: 变现比率
-     * @auther: zch
-     * @date: 2019/2/27 15:17
-     */
-    public String getLiquidRatios() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, schemeJudgeObject.getLiquidRatio());
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, "");
-        if (StringUtils.isEmpty(s)) {
-            s = errorStr;
-        }
-        return s;
-    }
 
     /**
      * 功能描述: 出具报告区域名称

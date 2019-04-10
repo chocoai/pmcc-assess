@@ -565,13 +565,6 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
-                //变现比率
-                if (Objects.equal(BaseReportFieldEnum.LiquidRatios.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidRatios());
-                    if (baseReportField != null) {
-                    }
-                }
                 //出具报告城市
                 if (Objects.equal(BaseReportFieldEnum.ReportArea.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
