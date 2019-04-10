@@ -2716,7 +2716,8 @@ public class GenerateBaseDataService {
                 documentBuilder.writeln(String.format("电梯:%s", generateHouseEntityService.getUnitElevator(integerList)));
                 String s2 = generateHouseEntityService.getTenPointTwo(integerList);
                 if (StringUtils.isNotBlank(s2.trim())){
-                    documentBuilder.writeln(String.format("非工业与仓储的其他设施:%s", s2));
+                    documentBuilder.writeln(String.format("非工业与仓储的其他设施:"));
+                    documentBuilder.writeln(String.format("%s", s2));
                 }
                 String s1 = generateHouseEntityService.getTenPointThree(integerList);
                 if (StringUtils.isNotBlank(s1.trim())) {

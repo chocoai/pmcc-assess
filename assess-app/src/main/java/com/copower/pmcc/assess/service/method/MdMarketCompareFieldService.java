@@ -435,7 +435,7 @@ public class MdMarketCompareFieldService extends BaseService {
                         case NETWORK://电力通信网络
                             stringBuilder = new StringBuilder();
                             List<BasicHouseIntelligentVo> intelligentList = basicHouseIntelligentService.getBasicHouseIntelligentVos(examineHouse.getId());
-                            stringBuilder.append(generateHouseEntityService.getIntelligentNet(intelligentList));
+                            stringBuilder.append(this.getIntelligentNet(intelligentList));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NETWORK.getKey(), stringBuilder.toString()));
                             break;
                         case ELEVATOR_HOUSEHOLD_RATIO://电梯梯户比
@@ -541,6 +541,39 @@ public class MdMarketCompareFieldService extends BaseService {
             marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "" : StringUtils.strip(value, "；"));
         }
         return marketCompareItemDto;
+    }
+
+    /**
+     * 获取电力通信网络
+     *
+     * @param intelligentVoList
+     * @return
+     */
+    public String getIntelligentNet(List<BasicHouseIntelligentVo> intelligentVoList) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(intelligentVoList)) {
+            int size = intelligentVoList.size();
+            for (int j = 0; j < intelligentVoList.size(); j++) {
+                stringBuilder.append("电路采用");
+                stringBuilder.append(org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getGradeName()) ? intelligentVoList.get(j).getGradeName() : "档次无").append("材料");
+                stringBuilder.append(org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName()) ? intelligentVoList.get(j).getSwitchCircuitName() : "开关回路无");
+                stringBuilder.append("铺设方式").append(org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName()) ? intelligentVoList.get(j).getLayingMethodName() : "无");
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
+                    stringBuilder.append(",");
+                    stringBuilder.append(intelligentVoList.get(j).getLampsLanternsName());
+                }
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getIntelligentSystemName())) {
+                    stringBuilder.append(",");
+                    stringBuilder.append(intelligentVoList.get(j).getIntelligentSystemName());
+                }
+                if (j == size - 1 && size != 1) {
+                    stringBuilder.append(";");
+                } else {
+                    stringBuilder.append("，");
+                }
+            }
+        }
+        return stringBuilder.toString();
     }
 
 

@@ -74,7 +74,7 @@ var houseHeating;
             if (!$("#" + houseHeating.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseHeating.prototype.config().frm,true);
+            var data = formParams(houseHeating.prototype.config().frm, true);
             data.type = houseHeating.prototype.config().type;
             data.houseId = houseCommon.getHouseId();
             $.ajax({
@@ -214,7 +214,7 @@ var houseAirConditioner;
             if (!$("#" + houseAirConditioner.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseAirConditioner.prototype.config().frm,true);
+            var data = formParams(houseAirConditioner.prototype.config().frm, true);
             data.type = houseAirConditioner.prototype.config().type;
             data.houseId = houseCommon.getHouseId();
             $.ajax({
@@ -354,7 +354,7 @@ var houseNewWind;
             if (!$("#" + houseNewWind.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseNewWind.prototype.config().frm,true);
+            var data = formParams(houseNewWind.prototype.config().frm, true);
             data.type = houseNewWind.prototype.config().type;
             data.houseId = houseCommon.getHouseId();
             $.ajax({
@@ -493,7 +493,7 @@ var houseCorollaryEquipment;
             if (!$("#" + houseCorollaryEquipment.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseCorollaryEquipment.prototype.config().frm,true);
+            var data = formParams(houseCorollaryEquipment.prototype.config().frm, true);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseCorollaryEquipment/saveAndUpdateBasicHouseCorollaryEquipment",
@@ -662,7 +662,7 @@ var houseFaceStreet;
             if (!$("#" + houseFaceStreet.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseFaceStreet.prototype.config().frm,true);
+            var data = formParams(houseFaceStreet.prototype.config().frm, true);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseFaceStreet/saveAndUpdateBasicHouseFaceStreet",
@@ -837,7 +837,7 @@ var houseIntelligent;
             if (!$("#" + houseIntelligent.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseIntelligent.prototype.config().frm,true);
+            var data = formParams(houseIntelligent.prototype.config().frm, true);
             data.houseId = houseCommon.getHouseId();
             var tempArr = [];
             $.each(arr, function (i, n) {
@@ -962,7 +962,7 @@ var houseIntelligent;
             var intelligentSystem = "intelligentSystem" + num;
             var layingMethod = "layingMethod" + num;
             var intelligenceGrade = "intelligenceGrade" + num;
-            var html = houseIntelligent.prototype.createHTML(intelligentSystem, layingMethod,intelligenceGrade);
+            var html = houseIntelligent.prototype.createHTML(intelligentSystem, layingMethod, intelligenceGrade);
             $("#" + houseIntelligent.prototype.config().frm).find(".system").append(html);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, null, function (html, data) {
                 $("#" + houseIntelligent.prototype.config().frm).find("." + intelligentSystem).select2().empty().html(html).trigger('change');
@@ -979,7 +979,7 @@ var houseIntelligent;
                 intelligenceGrade: {key: intelligenceGrade, value: ""}
             });
         },
-        createHTML: function (intelligentSystem, layingMethod,intelligenceGrade) {
+        createHTML: function (intelligentSystem, layingMethod, intelligenceGrade) {
             var html = "<div class='form-group' style='margin-top:8px;'>";
             html += "<label class='col-md-2 col-sm-2  control-label'>" + '智能系统' + "</label>";
             html += "<div class='col-sm-2'>";
@@ -1003,28 +1003,79 @@ var houseIntelligent;
         cleanHTMLData: function (this_) {
             $(this_).closest('.form-group').remove();
         },
-        writeHTMLData: function (str) {
+        writeHTMLData: function (str) {//修复保存了不完整数据异常情况
+            var form = $("#" + houseIntelligent.prototype.config().frm);
             if (houseIntelligent.prototype.isNotBlank(str)) {
                 var data = JSON.parse(str);
                 arr = [];
-                $("#" + houseIntelligent.prototype.config().frm).find(".system").empty();
+                form.find(".system").empty();
                 $.each(data, function (i, n) {
-                    var intelligentSystem = n.intelligentSystem.key + "";
-                    var layingMethod = n.layingMethod.key + "";
-                    var intelligenceGrade = n.intelligenceGrade.key + "";
-                    var html = houseIntelligent.prototype.createHTML(intelligentSystem, layingMethod,intelligenceGrade);
-                    $("#" + houseIntelligent.prototype.config().frm).find(".system").append(html);
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, n.intelligentSystem.value, function (html, data) {
-                        $("#" + houseIntelligent.prototype.config().frm).find("." + intelligentSystem).select2().empty().html(html).trigger('change');
-                    });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, n.layingMethod.value, function (html, data) {
-                        $("#" + houseIntelligent.prototype.config().frm).find("." + layingMethod).select2().empty().html(html).trigger('change');
-                    });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, n.intelligenceGrade.value, function (html, data) {
-                        $("#" + houseIntelligent.prototype.config().frm).find("." + intelligenceGrade).select2().empty().html(html).trigger('change');
-                    });
+                    var intelligentSystem = "";
+                    var layingMethod = "";
+                    var intelligenceGrade = "";
+                    var number = "" ;
+                    if (n.intelligentSystem) {
+                        intelligentSystem = n.intelligentSystem.key + "";
+                        number = houseIntelligent.prototype.getNumber(n.intelligentSystem.key);
+                    }
+                    if (n.layingMethod) {
+                        layingMethod = n.layingMethod.key + "";
+                        number = houseIntelligent.prototype.getNumber(n.layingMethod.key);
+                    }
+                    if (n.intelligenceGrade) {
+                        intelligenceGrade = n.intelligenceGrade.key + "";
+                        number = houseIntelligent.prototype.getNumber(n.intelligenceGrade.key);
+                    }
+                    if (!houseIntelligent.prototype.isNotBlank(intelligentSystem)){
+                        intelligentSystem = "intelligentSystem" +number ;
+                    }
+                    if (!houseIntelligent.prototype.isNotBlank(layingMethod)){
+                        layingMethod = "layingMethod" +number ;
+                    }
+                    if (!houseIntelligent.prototype.isNotBlank(intelligenceGrade)){
+                        intelligenceGrade = "intelligenceGrade" +number ;
+                    }
+                    var html = houseIntelligent.prototype.createHTML(intelligentSystem, layingMethod, intelligenceGrade);
+                    form.find(".system").append(html);
+
+                    if (n.intelligentSystem){
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, n.intelligentSystem.value, function (html, data) {
+                            form.find("." + intelligentSystem).select2().empty().html(html).trigger('change');
+                        });
+                    }else {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, null, function (html, data) {
+                            form.find("." + intelligentSystem).select2().empty().html(html).trigger('change');
+                        });
+                    }
+
+                    if (n.layingMethod){
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, n.layingMethod.value, function (html, data) {
+                            form.find("." + layingMethod).select2().empty().html(html).trigger('change');
+                        });
+                    }else {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, null, function (html, data) {
+                            form.find("." + layingMethod).select2().empty().html(html).trigger('change');
+                        });
+                    }
+
+                    if (n.intelligenceGrade){
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, n.intelligenceGrade.value, function (html, data) {
+                            form.find("." + intelligenceGrade).select2().empty().html(html).trigger('change');
+                        });
+                    }else {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, null, function (html, data) {
+                            form.find("." + intelligenceGrade).select2().empty().html(html).trigger('change');
+                        });
+                    }
+
                     arr.push(n);
                 });
+            }
+        },
+        getNumber:function (str) {
+            if (str){
+                var reg = /[1-9][0-9]*/g;
+                return str.match(reg)[0];
             }
         }
     }
@@ -1107,7 +1158,7 @@ var houseWater;
             if (!$("#" + houseWater.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseWater.prototype.config().frm,true);
+            var data = formParams(houseWater.prototype.config().frm, true);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseWater/saveAndUpdateBasicHouseWater",
@@ -1272,9 +1323,9 @@ houseWaterDrain.init = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drain_type, item.type, function (html, data) {
         $("#" + frm).find("select.type").empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_organization, item.organization, function (html, data) {
-        $("#" + frm).find("select.organization").empty().html(html).trigger('change');
-    });
+    // AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_organization, item.organization, function (html, data) {
+    //     $("#" + frm).find("select.organization").empty().html(html).trigger('change');
+    // });
     AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drain_system, item.drainSystem, function (html, data) {
         $("#" + frm).find("select.drainSystem").empty().html(html).trigger('change');
     });
@@ -1499,7 +1550,7 @@ var houseRoom;
             if (!$("#" + houseRoom.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseRoom.prototype.config().frm,true);
+            var data = formParams(houseRoom.prototype.config().frm, true);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseRoom/saveAndUpdateBasicHouseRoom",
@@ -1583,8 +1634,8 @@ damagedDegree.loadDamagedDegreeList = function () {
                 })
 
                 $.each(groupArray, function (i, group) {//循环分组
-                    var contentHtmlT = $('#damagedDegreeTabContentHtml').html() ;
-                    if (contentHtmlT){
+                    var contentHtmlT = $('#damagedDegreeTabContentHtml').html();
+                    if (contentHtmlT) {
                         var contentHtml = $('#damagedDegreeTabContentHtml').html().replace(/{type}/g, group);
                         $("#damagedDegreeTabContent").append(contentHtml);
                         var tbodyContentHtml = '';
