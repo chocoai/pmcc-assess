@@ -213,19 +213,19 @@ public class Test {
         return keyword;
     }
 
-    public static String trim(String str){
+    public static String trim(String str) {
         if (StringUtils.isBlank(str)) return str;
-        str = str.replaceAll(",+",",").replaceAll(";+",";")
-                .replaceAll("，+","，").replaceAll("、+","、")
-                .replaceAll("。+","。").replaceAll("；+","；")
-                .replaceAll("[,|，|、|;|；|.|。]+$","。");
+        str = str.replaceAll(",+", ",").replaceAll(";+", ";")
+                .replaceAll("，+", "，").replaceAll("、+", "、")
+                .replaceAll("。+", "。").replaceAll("；+", "；")
+                .replaceAll("[,|，|、|;|；|.|。]+$", "。");
         return str;
     }
 
 
     @org.junit.Test
     public void testMerge() {
-        String str="张三,,李四；；王五,;。";
+        String str = "张三,,李四；；王五,;。";
         System.out.print(trim(str));
 //        Map<Integer, String> map = Maps.newHashMap();
 //        map.put(1, "1层");
@@ -323,5 +323,29 @@ public class Test {
                 return ints[index] + "-" + ints[end] + "," + convert(ints, end + 1);
 
         }
+    }
+
+
+    //根据标题生成目录
+    @org.junit.Test
+    public void createCatalogue() throws Exception {
+        Document doc = new Document("D:\\test\\1.doc");
+        DocumentBuilder builder = new DocumentBuilder(doc);
+
+        //“目录”两个字居中显示、加粗、搜宋体
+        builder.getCurrentParagraph().getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        builder.setBold(true);
+        builder.writeln("目录");
+        //清清除所有样式设置
+        builder.getParagraphFormat().clearFormatting();
+        //插入目录，这是固定的
+        builder.insertTableOfContents("\\o \"1-3\" \\h \\z \\u");
+
+        //将光标移到目录书签
+        builder.moveToBookmark("TOC");
+        builder.insertBreak(BreakType.PAGE_BREAK);
+        doc.updateFields();// 更新域
+        doc.save("D:\\test\\1.doc");
+
     }
 }
