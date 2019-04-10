@@ -875,9 +875,9 @@ public class GenerateCommonMethod {
         String judgeString = StringUtils.strip(judgeBuilder.toString(), "、");
         String contentStrig = StringUtils.strip(contentBuilder.toString(), "、");
         if (listMap.size() <= 1 && isShowNumber == Boolean.FALSE) {
-            return contentStrig;
+            return explain + contentStrig;
         }
-        return String.format("%s%s%s", judgeString, StringUtils.defaultString(explain), contentStrig);
+        return String.format("%s号%s%s", judgeString, StringUtils.defaultString(explain), contentStrig);
     }
 
     private Map<String, List<Integer>> getStringListMap(Map<Integer, String> map) {
@@ -907,7 +907,7 @@ public class GenerateCommonMethod {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
             if (listMap.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
-                return stringListEntry.getKey();
+                return explain + stringListEntry.getKey();
             }
             builder.append(convertNumber(stringListEntry.getValue())).append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
         }
@@ -955,6 +955,7 @@ public class GenerateCommonMethod {
      */
     public String trim(String str) {
         if (StringUtils.isBlank(str)) return str;
+        str += "。";
         str = str.replaceAll(",+", ",").replaceAll(";+", ";")
                 .replaceAll("，+", "，").replaceAll("、+", "、")
                 .replaceAll("。+", "。").replaceAll("；+", "；")
