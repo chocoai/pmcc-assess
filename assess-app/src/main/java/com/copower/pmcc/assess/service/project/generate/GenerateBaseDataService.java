@@ -2473,6 +2473,27 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         StringBuilder stringBuilder = new StringBuilder(8);
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
+        LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getLinkedHashMapEstateNameSchemeJudgeObjectList(areaId);
+        if (!linkedHashMap.isEmpty()){
+            for (Map.Entry<String,List<SchemeJudgeObject>> entry:linkedHashMap.entrySet()){
+                if (CollectionUtils.isEmpty(entry.getValue())){
+                    continue;
+                }
+                List<Integer> judgeObjectIds = Lists.newArrayList(entry.getValue().stream().map(oo -> oo.getId()).collect(Collectors.toList()));
+                stringBuilder.append("1:位置状况").append("\r");
+                stringBuilder.append(String.format("坐落:%s", generateLoactionService.getSeat(judgeObjectIds))).append("\r");
+                stringBuilder.append(String.format("方位:%s", generateLoactionService.getPosition(judgeObjectIds))).append("\r");
+                stringBuilder.append(String.format("与重要场所的距离:")).append("\r");
+                stringBuilder.append(generateLoactionService.getWithImportantLocationDistance(judgeObjectIds)).append("\r");
+                stringBuilder.append(String.format("临街（路）状况:")).append("\r");
+                stringBuilder.append(generateLoactionService.getFaceStreet(judgeObjectIds)).append("\r");
+                stringBuilder.append(String.format("楼层:%s", generateLoactionService.getFloor(judgeObjectIds))).append("\r");
+                if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
+                    documentBuilder.writeln(stringBuilder.toString());
+                    documentBuilder.writeln("\r");
+                }
+            }
+        }
         for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
             List<Integer> judgeObjectIds = Lists.newArrayList();
@@ -2518,8 +2539,8 @@ public class GenerateBaseDataService {
             stringBuilder.append("6:综述").append("\r");
             stringBuilder.append(String.format("%s", generateLoactionService.content(schemeJudgeObject, basicApply)));
             if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
-                documentBuilder.writeln(stringBuilder.toString());
-                documentBuilder.writeln("\r");
+//                documentBuilder.writeln(stringBuilder.toString());
+//                documentBuilder.writeln("\r");
             }
         }
         doc.save(localPath);

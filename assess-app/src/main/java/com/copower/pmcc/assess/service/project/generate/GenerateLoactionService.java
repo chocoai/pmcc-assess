@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,6 +65,7 @@ public class GenerateLoactionService {
      * @param applyId
      * @return
      */
+    @Deprecated
     public String getSeat(Integer declareId, Integer applyId) throws Exception {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(applyId);
@@ -81,12 +84,35 @@ public class GenerateLoactionService {
     }
 
     /**
+     * 获取坐落信息
+     *
+     * @param judgeObjectIds
+     * @return
+     */
+    public String getSeat(List<Integer> judgeObjectIds) throws Exception {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        Set<String> stringSet = Sets.newHashSet();
+        List<Integer> integerArrayList = Lists.newArrayList(judgeObjectList.stream().map(oo -> generateCommonMethod.parseIntJudgeNumber(oo.getNumber())).collect(Collectors.toList()));
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord != null) {
+                stringSet.add(declareRecord.getSeat());
+            }
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)){
+            return String.format("%s号%s",generateCommonMethod.convertNumber(integerArrayList),StringUtils.join(stringSet, ","));
+        }
+        return error;
+    }
+
+    /**
      * 临街（路）状况
      *
      * @param basicApply
      * @return
      * @throws Exception
      */
+    @Deprecated
     public String getFaceStreet(BasicApply basicApply) throws Exception {
         stringBuffer.delete(0, stringBuffer.toString().length());
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -104,6 +130,52 @@ public class GenerateLoactionService {
             stringBuffer.append(error);
         }
         return stringBuffer.toString();
+    }
+
+    /**
+     * 临街（路）状况
+     *
+     * @param judgeObjectIds
+     * @return
+     * @throws Exception
+     */
+    public String getFaceStreet(List<Integer> judgeObjectIds) throws Exception {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
+        Map<String, List<Integer>> houseMap = groupByHouse(judgeObjectList);
+        if (!houseMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> stringEntry : houseMap.entrySet()) {
+                List<Integer> integerList = stringEntry.getValue();
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                for (int i = 0; i < integerList.size(); i++) {
+                    final int intValue = integerList.get(i).intValue();
+                    SchemeJudgeObject schemeJudgeObject = judgeObjectList.stream().filter(oo -> oo.getId().intValue() == intValue).findFirst().get();
+                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                    if (basicApply == null || basicApply.getId() == 0) {
+                        continue;
+                    }
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
+                    if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)){
+                        basicHouseFaceStreetVoList.stream().forEach(basicHouseFaceStreetVo -> {
+                            stringLinkedHashSet.add(basicHouseFaceStreetVo.getPositionName()) ;
+                            stringLinkedHashSet.add(basicHouseFaceStreetVo.getStreetName()) ;
+                        });
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(stringLinkedHashSet)){
+                    linkedHashSet.add(String.format("%s号:%s",stringEntry.getKey(),StringUtils.join(stringLinkedHashSet,"、")));
+                }
+                stringLinkedHashSet.clear();
+            }
+        }
+        if (CollectionUtils.isNotEmpty(linkedHashSet)){
+            return StringUtils.join(linkedHashSet,"；\r");
+        }
+        return error;
     }
 
     /**
@@ -138,7 +210,7 @@ public class GenerateLoactionService {
             stringBuffer.append(basicEstate.getName());
             for (int i = 0; i < matchingMarketList.size(); i++) {
                 BasicMatchingLeisurePlace leisurePlace = matchingMarketList.get(i);
-                stringBuffer.append("购物商场距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s",baseDataDicService.getNameById(leisurePlace.getCategory()),leisurePlace.getName()),baseDataDicService.getNameById(leisurePlace.getDistance())));
+                stringBuffer.append("购物商场距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
                 if (i == matchingMarketList.size() - 1) {
                     stringBuffer.append(";");
                 } else {
@@ -151,7 +223,7 @@ public class GenerateLoactionService {
             stringBuffer.append(basicEstate.getName());
             for (int i = 0; i < matchingRestaurantList.size(); i++) {
                 BasicMatchingLeisurePlace leisurePlace = matchingRestaurantList.get(i);
-                stringBuffer.append("餐饮距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s",baseDataDicService.getNameById(leisurePlace.getCategory()),leisurePlace.getName()),baseDataDicService.getNameById(leisurePlace.getDistance())));
+                stringBuffer.append("餐饮距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
                 if (i == matchingRestaurantList.size() - 1) {
                     stringBuffer.append(";");
                 } else {
@@ -164,7 +236,7 @@ public class GenerateLoactionService {
             stringBuffer.append(basicEstate.getName());
             for (int i = 0; i < matchingRecreationList.size(); i++) {
                 BasicMatchingLeisurePlace leisurePlace = matchingRecreationList.get(i);
-                stringBuffer.append("休闲娱乐距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s",baseDataDicService.getNameById(leisurePlace.getCategory()),leisurePlace.getName()),baseDataDicService.getNameById(leisurePlace.getDistance())));
+                stringBuffer.append("休闲娱乐距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
                 if (i == matchingRecreationList.size() - 1) {
                     stringBuffer.append(";");
                 } else {
@@ -186,7 +258,7 @@ public class GenerateLoactionService {
                 } else {
                     v = basicMatchingFinanceVo.getDistance();
                 }
-                stringBuffer.append("金融距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s",baseDataDicService.getNameById(basicMatchingFinanceVo.getCategory()),basicMatchingFinanceVo.getName()),v));
+                stringBuffer.append("金融距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(basicMatchingFinanceVo.getCategory()), basicMatchingFinanceVo.getName()), v));
                 if (i == basicMatchingFinanceVoList.size() - 1) {
                     stringBuffer.append(";");
                 } else {
@@ -199,7 +271,7 @@ public class GenerateLoactionService {
             stringBuffer.append(basicEstate.getName());
             for (int i = 0; i < basicMatchingMedicalList.size(); i++) {
                 BasicMatchingMedical basicMatchingMedical = basicMatchingMedicalList.get(i);
-                stringBuffer.append("医疗距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s",baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel()),basicMatchingMedical.getOrganizationName()),baseDataDicService.getNameById(basicMatchingMedical.getDistance())));
+                stringBuffer.append("医疗距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel()), basicMatchingMedical.getOrganizationName()), baseDataDicService.getNameById(basicMatchingMedical.getDistance())));
                 if (i == basicMatchingMedicalList.size() - 1 || basicMatchingMedicalList.size() == 1) {
                     stringBuffer.append(";");
                 } else {
@@ -212,7 +284,7 @@ public class GenerateLoactionService {
             stringBuffer.append(basicEstate.getName());
             for (int i = 0; i < basicMatchingEducationList.size(); i++) {
                 BasicMatchingEducation basicMatchingEducation = basicMatchingEducationList.get(i);
-                stringBuffer.append("教育距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s",baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()),basicMatchingEducation.getSchoolName()),baseDataDicService.getNameById(basicMatchingEducation.getDistance())));
+                stringBuffer.append("教育距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName()), baseDataDicService.getNameById(basicMatchingEducation.getDistance())));
                 if (i == basicMatchingEducationList.size() - 1 || basicMatchingEducationList.size() == 1) {
                     stringBuffer.append("。");
                 } else {
@@ -226,12 +298,12 @@ public class GenerateLoactionService {
         return stringBuffer.toString();
     }
 
-    private String getExternalPublicServiceFacilitiesDistance(String name,String number){
+    private String getExternalPublicServiceFacilitiesDistance(String name, String number) {
         number = generateCommonMethod.getNumber(number);
-        if ("0".equals(number)){
-            return String.format("附件有%s",name);
-        }else {
-            return String.format("大约%s米有%s",number,name);
+        if ("0".equals(number)) {
+            return String.format("附件有%s", name);
+        } else {
+            return String.format("大约%s米有%s", number, name);
         }
     }
 
@@ -611,7 +683,7 @@ public class GenerateLoactionService {
                         String v = baseDataDicService.getNameById(basicEstateParking.getParkingType());
                         stringBuffer.append(StringUtils.isNotBlank(v) ? v : "停车场类型无").append("有");
                         stringBuffer.append(basicEstateParking.getNumber()).append("辆车位");
-                    stringBuffer.append(";");
+                        stringBuffer.append(";");
                     }
                 });
             }
@@ -695,6 +767,7 @@ public class GenerateLoactionService {
      *
      * @return
      */
+    @Deprecated
     public String getWithImportantLocationDistance(Integer applyId) throws Exception {
         stringBuffer.delete(0, stringBuffer.toString().length());
         BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
@@ -820,6 +893,112 @@ public class GenerateLoactionService {
     }
 
     /**
+     * 与重要场所的距离
+     *
+     * @return
+     */
+    public String getWithImportantLocationDistance(List<Integer> judgeObjectIds) throws Exception {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        Set<String> stringSet = Sets.newHashSet();
+        List<String> centerSet = Lists.newArrayList();
+        LinkedHashSet<String> setMedical = Sets.newLinkedHashSet();
+        LinkedHashSet<String> setTrafficHub = Sets.newLinkedHashSet();
+        LinkedHashSet<String> setMatchingTrafficVo = Sets.newLinkedHashSet();
+        LinkedHashSet<String> setLeisurePlace = Sets.newLinkedHashSet();
+        LinkedHashSet<String> setFinanceVo = Sets.newLinkedHashSet();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            if (basicApply == null || basicApply.getId() == 0) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
+            List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList().stream()
+                    .filter(basicMatchingLeisurePlace -> Objects.equal(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey(), basicMatchingLeisurePlace.getType()))
+                    .collect(Collectors.toList());
+            List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
+            List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
+            if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
+                //交通枢纽
+                List<BasicMatchingTrafficVo> trafficHubList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
+                    if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName()) && basicMatchingTrafficVo.getDistance() != null) {
+                        return true;
+                    }
+                    return true;
+                }).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(trafficHubList)) {
+                    for (int i = 0; i < trafficHubList.size(); i++) {
+                        BasicMatchingTrafficVo basicMatchingTrafficVo = trafficHubList.get(i);
+                        setTrafficHub.add(String.format("%s", getDistance(basicMatchingTrafficVo.getName(), basicMatchingTrafficVo.getDistanceName()), ""));
+                    }
+                }
+                //主要转换
+                List<BasicMatchingTrafficVo> mainConversionList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
+                    if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName()) && basicMatchingTrafficVo.getDistance() != null) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(mainConversionList)) {
+                    for (int i = 0; i < mainConversionList.size(); i++) {
+                        BasicMatchingTrafficVo basicMatchingTrafficVo = mainConversionList.get(i);
+                        setMatchingTrafficVo.add(String.format("%s", getDistance(basicMatchingTrafficVo.getName(), basicMatchingTrafficVo.getDistanceName()), ""));
+                    }
+                }
+            }
+            //购物商场
+            if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
+                basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceList.stream().filter(leisurePlace -> {
+                    return true;
+                }).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
+                    for (int i = 0; i < basicMatchingLeisurePlaceList.size(); i++) {
+                        BasicMatchingLeisurePlace leisurePlace = basicMatchingLeisurePlaceList.get(i);
+                        if (leisurePlace.getDistance() != null) {
+                            setLeisurePlace.add(String.format("%s", getDistance(leisurePlace.getName(), baseDataDicService.getNameById(leisurePlace.getDistance())), ""));
+                        }
+                    }
+                }
+            }
+            //金融服务
+            if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
+                for (int i = 0; i < basicMatchingFinanceVoList.size(); i++) {
+                    BasicMatchingFinanceVo basicMatchingFinanceVo = basicMatchingFinanceVoList.get(i);
+                    setFinanceVo.add(String.format("%s", getDistance(basicMatchingFinanceVo.getName(), basicMatchingFinanceVo.getDistanceName()), ""));
+                }
+            }
+            //医疗
+            if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
+                for (int i = 0; i < basicMatchingMedicalList.size(); i++) {
+                    BasicMatchingMedical basicMatchingMedical = basicMatchingMedicalList.get(i);
+                    if (basicMatchingMedical.getDistance() != null) {
+                        setMedical.add(String.format("%s", getDistance(basicMatchingMedical.getOrganizationName(), baseDataDicService.getNameById(basicMatchingMedical.getDistance())), ""));
+                    }
+                }
+            }
+            centerSet.add(StringUtils.join(setTrafficHub, ","));
+            centerSet.add(StringUtils.join(setFinanceVo, ","));
+            centerSet.add(StringUtils.join(setMatchingTrafficVo, ","));
+            centerSet.add(StringUtils.join(setLeisurePlace, ","));
+            centerSet.add(StringUtils.join(setMedical, ","));
+            setTrafficHub.clear();
+            setFinanceVo.clear();
+            setMatchingTrafficVo.clear();
+            setLeisurePlace.clear();
+            setMedical.clear();
+            centerSet = centerSet.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(centerSet)) {
+                stringSet.add(String.format("%s%s%s", generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), "号:", StringUtils.join(centerSet, ";\r")));
+            }
+            centerSet.clear();
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            return StringUtils.join(stringSet, "\r");
+        }
+        return error;
+    }
+
+    /**
      * 朝向
      *
      * @param basicApply
@@ -847,6 +1026,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
+    @Deprecated
     public String getPosition(Integer applyId) throws Exception {
         BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(basicEstateService.getBasicEstateByApplyId(applyId));
         stringBuffer.delete(0, stringBuffer.toString().length());
@@ -870,6 +1050,47 @@ public class GenerateLoactionService {
     }
 
     /**
+     * 方位
+     *
+     * @param judgeObjectIds
+     * @return
+     * @throws Exception
+     */
+    public String getPosition(List<Integer> judgeObjectIds) throws Exception {
+        stringBuffer.delete(0, stringBuffer.toString().length());
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        Set<String> stringSet = Sets.newHashSet();
+        List<Integer> integerArrayList = Lists.newArrayList(judgeObjectList.stream().map(oo -> generateCommonMethod.parseIntJudgeNumber(oo.getNumber())).collect(Collectors.toList()));
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            if (basicApply == null || basicApply.getId() == 0) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
+            if (basicEstate != null) {
+                stringBuffer.append(basicEstate.getProvinceName()).append(basicEstate.getCityName()).append(basicEstate.getDistrictName());
+            }
+            if (basicEstate.getBlockId() != null) {
+                DataBlock dataBlock = dataBlockService.getDataBlockById(basicEstate.getBlockId());
+                if (dataBlock != null) {
+                    String v = baseDataDicService.getNameById(dataBlock.getPosition());
+                    if (StringUtils.isNotBlank(v)) {
+                        stringBuffer.append(v);
+                    }
+                    stringBuffer.append(dataBlock.getName());
+                }
+            }
+            stringSet.add(stringBuffer.toString());
+            stringBuffer.delete(0, stringBuffer.toString().length());
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)){
+            return String.format("%s号%s",generateCommonMethod.convertNumber(integerArrayList),StringUtils.join(stringSet, ","));
+        }
+        return error;
+    }
+
+    /**
      * 获取楼层信息
      *
      * @param judgeObjectIds
@@ -884,7 +1105,7 @@ public class GenerateLoactionService {
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
                 if (basicApply != null) {
                     if (judgeObjectList.size() != 1) {
-                        stringBuffer.append(schemeJudgeObject.getNumber());
+                        stringBuffer.append(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
                         stringBuffer.append("号位于");
                     }
                     GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -913,5 +1134,86 @@ public class GenerateLoactionService {
         } else {
             return String.format("距%s大约%s米", name, number);
         }
+    }
+
+    /**
+     * 估价对象按楼栋分组
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    private Map<String, List<Integer>> groupByBuilding(List<SchemeJudgeObject> judgeObjectList) {
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicBuilding basicBuilding = generateBaseExamineService.getBasicBuilding();
+            String key = basicBuilding.getBuildingNumber();
+            if (map.containsKey(key)) {
+                List<Integer> list = map.get(key);
+                list.add(schemeJudgeObject.getId());
+            } else {
+                map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 估价对象按房屋分组
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    private Map<String, List<Integer>> groupByHouse(List<SchemeJudgeObject> judgeObjectList) {
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicHouse oo = generateBaseExamineService.getBasicHouse();
+            if (oo == null) {
+                continue;
+            }
+            try {
+                String key = String.format("%s栋%s单元%s", generateBaseExamineService.getBasicBuilding().getBuildingNumber(), generateBaseExamineService.getBasicUnit().getUnitNumber(), oo.getHouseNumber());
+                if (map.containsKey(key)) {
+                    List<Integer> list = map.get(key);
+                    list.add(schemeJudgeObject.getId());
+                } else {
+                    map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
+                }
+            } catch (Exception e) {
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 估价对象按单元分组
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    private Map<String, List<Integer>> groupByUnit(List<SchemeJudgeObject> judgeObjectList) {
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            try {
+                BasicUnit oo = generateBaseExamineService.getBasicUnit();
+                if (oo == null) {
+                    continue;
+                }
+                String key = String.format("%s栋%s", generateBaseExamineService.getBasicBuilding().getBuildingNumber(), generateBaseExamineService.getBasicUnit().getUnitNumber());
+                if (map.containsKey(key)) {
+                    List<Integer> list = map.get(key);
+                    list.add(schemeJudgeObject.getId());
+                } else {
+                    map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
+                }
+            } catch (Exception e) {
+            }
+        }
+        return map;
     }
 }
