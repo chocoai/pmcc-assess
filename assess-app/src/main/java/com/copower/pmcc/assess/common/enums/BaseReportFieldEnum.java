@@ -29,10 +29,7 @@ public enum BaseReportFieldEnum implements Serializable {
     BuildingStructureCategory("建筑结构类别"),
     TypesFormEnabledDeclarationOffice("申报所启用表单类型"),
     ValueTimePoint("价值时点"),
-    ValueTimePoint2("评估基准日"),
-    dateValue("估价时点"),
     ValueTimePointRemark("价值时点说明"),
-    ValueTimePointRemark2("评估基准日说明"),
     EvaluationMethod("评估方法"),
     TotalRealEstatePrice("房地产总价"),
     CapitalizationAmount("房地产总价大写金额"),
@@ -40,8 +37,6 @@ public enum BaseReportFieldEnum implements Serializable {
     totalAmountMortgageValueCapitalization("抵押价值总金额大写"),
     HisRightInfoPublicity("他权信息公示"),
     HisRightType("他权类别"),
-    RightOther("他权其它"),
-    ThereAnyOtherRight("有无他项权"),
     AssetInventoryAgreement("资产清查一致说明"),
     ActualAddressAssetInventory("资产清查实际地址"),
     CertificateAssetInventory("资产清查证明人"),
@@ -52,7 +47,6 @@ public enum BaseReportFieldEnum implements Serializable {
     HisRightDeclare("他项权申报"),
     BestUseDesc("最佳利用方式"),
     DecalreFormTypeAll("申报启用表单类型"),
-    HisRightHasLease("他权有无租赁权"),
     Co_ownership("共有权情况"),
     AssessArea("评估面积"),
     surveyExamineDate("现场查勘期"),
@@ -71,7 +65,6 @@ public enum BaseReportFieldEnum implements Serializable {
     JudgeBuildLandStateSheet("估价建筑物实体状况"),
     JudgeObjectEquitySheet("估价对象权益状况"),
     judgeSummarySheet("估价汇总表"),
-    //收益法,市场比较法
     DetailedCalculationProcessValuationObject("估价对象详细测算过程"),
 
     PRINCIPAL("估价委托人"),
@@ -135,15 +128,10 @@ public enum BaseReportFieldEnum implements Serializable {
     BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),
 
     //------------------------||待废除--------------------------
-    theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods("本次估价的总体思路和评估方法的选取"),
-    Location("区位"),
     PrincipalAddress("委托人地址"),
     UnitPriceValuator("估价对象的单价"),
     EvaluationPriceCateGory("分类评估单价"),
-    ValueExpressionResult("价值表达结果"),
-    LandUseControl("土地使用管制"),
     PrincipalLegalRepresentative("委托人法定代表人"),
-    inventoryRight("土地他项权利情况"),
     WeightSpecification("权重说明");
 
     private String key;

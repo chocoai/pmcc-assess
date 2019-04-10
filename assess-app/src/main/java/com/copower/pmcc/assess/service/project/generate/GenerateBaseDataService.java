@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -27,6 +28,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.*;
+import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
@@ -37,13 +39,13 @@ import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.*;
-import com.copower.pmcc.assess.service.project.survey.*;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.Reflections;
-import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.copower.pmcc.erp.common.utils.*;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -53,7 +55,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.task.TaskExecutor;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -107,7 +108,7 @@ public class GenerateBaseDataService {
     private SurveyCommonService surveyCommonService;
     private GenerateHouseEntityService generateHouseEntityService;
     private ErpAreaService erpAreaService;
-    private TaskExecutor taskExecutor;
+    private MdCommonService mdCommonService;
     private GenerateEquityService generateEquityService;
 
     /**
@@ -151,6 +152,7 @@ public class GenerateBaseDataService {
 
     /**
      * 委托人
+     *
      * @return
      */
     public String getPrincipal() {
@@ -164,6 +166,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价委托人信息
+     *
      * @return
      */
     public String getPrincipalInfo() throws Exception {
@@ -220,6 +223,7 @@ public class GenerateBaseDataService {
 
     /**
      * 财产范围说明
+     *
      * @return
      * @throws Exception
      */
@@ -255,6 +259,7 @@ public class GenerateBaseDataService {
 
     /**
      * 座落
+     *
      * @throws Exception
      */
     public String getSeat() throws Exception {
@@ -328,6 +333,7 @@ public class GenerateBaseDataService {
 
     /**
      * 外聘专家工作概况
+     *
      * @return
      */
     public String getExpertWorkOverview() {
@@ -337,6 +343,7 @@ public class GenerateBaseDataService {
 
     /**
      * 共有权情况
+     *
      * @throws Exception
      */
     public String getCo_ownership() throws Exception {
@@ -365,28 +372,10 @@ public class GenerateBaseDataService {
         return s;
     }
 
-    /**
-     * 功能描述: 变现比率
-     * @auther: zch
-     * @date: 2019/2/27 15:17
-     */
-    public String getLiquidRatios() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, schemeJudgeObject.getLiquidRatio());
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, "");
-        if (StringUtils.isEmpty(s)) {
-            s = errorStr;
-        }
-        return s;
-    }
 
     /**
      * 功能描述: 出具报告区域名称
+     *
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
@@ -428,6 +417,7 @@ public class GenerateBaseDataService {
 
     /**
      * 证载用途
+     *
      * @throws Exception
      */
     public String getSeparationCertificateUses() throws Exception {
@@ -449,6 +439,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象的总价
+     *
      * @return
      */
     public String getTotalValueValuationObject() {
@@ -478,6 +469,7 @@ public class GenerateBaseDataService {
 
     /**
      * 单价调整表
+     *
      * @throws Exception
      */
     public String getUnitPriceAdjustmentTable() throws Exception {
@@ -641,6 +633,7 @@ public class GenerateBaseDataService {
 
     /**
      * 特别提示
+     *
      * @throws Exception
      */
     public String getHotTip() throws Exception {
@@ -735,6 +728,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价对象权属
+     *
      * @throws Exception
      */
     public String getEquityStatusObjectSheet() throws Exception {
@@ -1048,23 +1042,19 @@ public class GenerateBaseDataService {
 
     /**
      * 评估方法 , 估价对象评估方法
+     *
      * @throws Exception
      */
-    public String getEvaluationMethodValuationObject() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        Set<String> stringSet = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    for (int i = 0; i < schemeJudgeFunctionList.size(); i++) {
-                        stringSet.add(schemeJudgeFunctionList.get(i).getName());
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringMerge(stringSet, ",");
-        return s;
+    public String getEvaluationMethod() throws Exception {
+        List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctionsByAreaId(areaId);
+        if (CollectionUtils.isEmpty(judgeFunctions)) return "";
+        List<Integer> methodTypeList = LangUtils.transform(judgeFunctions, o -> o.getMethodType());
+        List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList();
+        List<BaseDataDic> resultList = LangUtils.filter(baseMethodList, o -> methodTypeList.contains(o.getId()));
+        if(CollectionUtils.isEmpty(resultList)) return "";
+        StringBuilder stringBuilder=new StringBuilder();
+        resultList.forEach(o->stringBuilder.append(o.getName()).append("，"));
+        return StringUtils.strip(stringBuilder.toString(),"，");
     }
 
     /**
@@ -1111,8 +1101,8 @@ public class GenerateBaseDataService {
     }
 
     /**
-     *
      * 功能描述: 委托目的
+     *
      * @author: zch
      * @date: 2019/4/8 11:47
      */
@@ -1138,8 +1128,8 @@ public class GenerateBaseDataService {
     }
 
     /**
-     *
      * 功能描述: 价值类型描述
+     *
      * @author: zch
      * @date: 2019/4/8 11:47
      */
@@ -1155,6 +1145,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师
+     *
      * @param str
      * @return
      */
@@ -1178,6 +1169,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师及注册号
+     *
      * @param generateReportGeneration
      * @throws Exception
      */
@@ -1213,6 +1205,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房产估价师 编号
+     *
      * @param str
      * @throws Exception
      */
@@ -1380,7 +1373,7 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum, Integer areaId) throws Exception {
+    public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
         if (projectInfo == null || schemeSupportTypeEnum == null) return "";
         String result = "";
         switch (schemeSupportTypeEnum) {
@@ -1733,150 +1726,19 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 他权有无租赁权
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getHisRightHasLease() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(8);
-        final String temp = "他权有无租赁权:";
-        stringBuilder.append(temp);
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_LEASEHOLD);
-        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = Lists.newArrayList();
-        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
-        if (!map.isEmpty()) {
-            map.entrySet().stream().forEach(entry -> {
-                List<SurveyAssetInventoryRight> list = entry.getValue();
-                if (CollectionUtils.isNotEmpty(list)) {
-                    surveyAssetInventoryRightList.addAll(list);
-                }
-            });
-        }
-        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-            if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                    if (Objects.equal(inventoryRight.getCategory(), baseDataDic.getId())) {
-                        stringBuilder.append("有");
-                        break;
-                    }
-                }
-            }
-        }
-        if (Objects.equal(stringBuilder.toString(), temp)) {
-            stringBuilder.append("无");
-        }
-        return stringBuilder.toString().trim();
-    }
-
-    /**
-     * 功能描述: 有无他项权
-     *
-     * @auther: zch
-     * @date: 2019/2/26 15:10
-     */
-    public String getThereAnyOtherRight() throws Exception {
-        Set<String> stringSet = Sets.newHashSet();
-        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
-        if (!map.isEmpty()) {
-            map.entrySet().stream().forEach(entry -> {
-                boolean flag = false;
-                List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = entry.getValue();
-                if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                    for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                        if (StringUtils.isNotBlank(inventoryRight.getNumber())) {
-                            flag = true;
-                        }
-                    }
-                }
-                if (flag) {
-                    stringSet.add(String.format("%s%s", entry.getKey().getName(), ":有他项权"));
-                } else {
-                    stringSet.add(String.format("%s%s", entry.getKey().getName(), ":无他项权"));
-                }
-            });
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
-    }
-
-    /**
      * 他权类别
      *
      * @return
      * @throws Exception
      */
     public String getHisRightType() throws Exception {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
-        if (!map.isEmpty()) {
-            map.entrySet().stream().forEach(entry -> {
-                List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = entry.getValue();
-                if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                    for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                        if (projectInfo.getEntrustPurposeName().equals(baseDataDic.getName())) {
-                            String key = baseDataDicService.getNameById(inventoryRight.getType());
-                            if (StringUtils.isNotBlank(key)) {
-                                generateCommonMethod.putStringListMap(stringListMap, entry.getKey(), key);
-                            }
-                        }
-                    }
-                }
-            });
+        List<SurveyRightGroupDto> groupDtoList = surveyAssetInventoryRightRecordService.groupRightByCategory(projectId, schemeJudgeObjectDeclareList);
+        if(CollectionUtils.isEmpty(groupDtoList)) return "";
+        StringBuilder stringBuilder=new StringBuilder("、");
+        for (SurveyRightGroupDto surveyRightGroupDto : groupDtoList) {
+            stringBuilder.append(String.format("《%s》、",surveyRightGroupDto.getCategoryName()));
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
-    }
-
-    /**
-     * 他权其它
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getRightOther() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(16);
-        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        Set<String> stringSet = Sets.newHashSet();
-        if (!map.isEmpty()) {
-            map.entrySet().stream().forEach(entry -> {
-                List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = entry.getValue();
-                if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
-                    for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
-                        if (inventoryRight.getCategory() == null) {
-                            continue;
-                        }
-                        if (StringUtils.isEmpty(inventoryRight.getNumber()) || StringUtils.isEmpty(inventoryRight.getRegisterArea())) {
-                            continue;
-                        }
-                        if (StringUtils.isEmpty(inventoryRight.getObligee()) || StringUtils.isEmpty(inventoryRight.getObligor())) {
-                            continue;
-                        }
-                        stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
-                        stringBuilder.append("-").append(inventoryRight.getNumber());
-                        stringBuilder.append("-").append(inventoryRight.getRegisterArea()).append("㎡");
-                        stringBuilder.append("-").append(inventoryRight.getObligee());
-                        stringBuilder.append("-").append(inventoryRight.getObligor());
-                        stringSet.add(stringBuilder.toString());
-                        stringBuilder.delete(0, stringBuilder.toString().length());
-                    }
-                    if (CollectionUtils.isNotEmpty(stringSet)) {
-                        generateCommonMethod.putStringListMap(stringListMap, entry.getKey(), StringUtils.join(stringSet, "、"));
-                        stringSet.clear();
-                    }
-                }
-            });
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
+        return StringUtils.stripEnd(stringBuilder.toString(),"、");
     }
 
     /**
@@ -2387,7 +2249,7 @@ public class GenerateBaseDataService {
         for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
             //根据不同项目类别确定获取数据的方法
             if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>"+entry.getKey().getName()+"</div>"));
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey().getName() + "</div>"));
             }
             if (projectInfo.getProjectCategoryName().contains("房产")) {
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
@@ -2407,6 +2269,7 @@ public class GenerateBaseDataService {
 
     /**
      * 法定优先受偿款
+     *
      * @param schemeReimbursementItemVoList
      * @return
      * @throws Exception
@@ -2429,6 +2292,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价结果一览表
+     *
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet() throws Exception {
@@ -2556,6 +2420,7 @@ public class GenerateBaseDataService {
 
     /**
      * 获取不重复楼盘和估价对象的一一对应集合
+     *
      * @throws Exception
      */
     private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() throws Exception {
@@ -2737,6 +2602,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价结果汇总表
+     *
      * @throws Exception
      */
     public String getJudgeSummarySheet() throws Exception {
@@ -2977,6 +2843,7 @@ public class GenerateBaseDataService {
 
     /**
      * 收益法租赁限制说明
+     *
      * @throws Exception
      */
     public String getTenancyrestrictionRemark() throws Exception {
@@ -3005,6 +2872,7 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 估价对象详细测算过程
+     *
      * @author: zch
      * @date: 2019/3/4 10:30
      */
@@ -3058,6 +2926,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价委托书复印件
+     *
      * @throws Exception
      */
     public String getJUDGEOBJECTPRINCIPALCOPYSHEET() throws Exception {
@@ -3157,6 +3026,7 @@ public class GenerateBaseDataService {
 
     /**
      * 估价中引用的专用文件资料
+     *
      * @throws Exception
      */
     public String getSpecial_documentation_referenced_in_valuation() throws Exception {
@@ -3216,6 +3086,7 @@ public class GenerateBaseDataService {
 
     /**
      * 房地产估价机构营业执照复印件
+     *
      * @throws Exception
      */
     public String getCopyBusinessLicenseRealEstateValuationAgency() throws Exception {
@@ -3246,6 +3117,7 @@ public class GenerateBaseDataService {
 
     /**
      * '房地产估价机构资质证书复印件
+     *
      * @throws Exception
      */
     public String getCopyQualificationCertificateRealEstateValuationInstitution() throws Exception {
@@ -3276,6 +3148,7 @@ public class GenerateBaseDataService {
 
     /**
      * 注册房地产估价师注册证书复印件
+     *
      * @param str
      * @return
      * @throws Exception
@@ -3325,6 +3198,7 @@ public class GenerateBaseDataService {
 
     /**
      * 获取如收益法,市场比较法，假设开发法，成本法等的id
+     *
      * @param methodNameEnum
      * @param schemeJudgeObject
      * @return SchemeInfo
@@ -3347,6 +3221,7 @@ public class GenerateBaseDataService {
 
     /**
      * 他权信息公示
+     *
      * @throws Exception
      */
     public String getHisRightInfoPublicity() throws Exception {
@@ -3363,6 +3238,7 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 申报所启用表单类型
+     *
      * @auther: zch
      * @date: 2019/2/25 10:09
      */
@@ -3474,6 +3350,9 @@ public class GenerateBaseDataService {
         if (!linkedHashMap.isEmpty()) {
             int i = 0;
             for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+                if (linkedHashMap.size() > 1) {
+                    buffer.append(String.format("%s、", i + 1));
+                }
                 //楼盘名称
                 String estateName = entry.getKey();
                 List<SchemeJudgeObject> schemeJudgeObjectList = entry.getValue();
@@ -3524,16 +3403,32 @@ public class GenerateBaseDataService {
                     }
                     seats.clear();
                     buffer.append(",");
-                    //设定用途
-                    buffer.append(BaseReportFieldEnum.SetUse.getName()).append(generateCommonMethod.getSetUses(schemeJudgeObjectList));
-                    //实际用途
-                    buffer.append(",").append(BaseReportFieldEnum.PracticalUse.getName()).append(generateCommonMethod.getPracticalUse(schemeJudgeObjectList));
-                    buffer.append(",").append("建筑面积").append(generateCommonMethod.getBuildingAndAssessArea(schemeJudgeObjectList));
-                    buffer.append(",").append("评估面积").append(generateCommonMethod.getBuildingAndAssessArea(schemeJudgeObjectList));
-                    buffer.append(",").append(BaseReportFieldEnum.LandUseRightType.getName()).append(generateCommonMethod.getUseRightType(schemeJudgeObjectList));
-                    buffer.append(",").append(BaseReportFieldEnum.PowerPerson.getName()).append(generateCommonMethod.getPowerPerson(schemeJudgeObjectList));
-                    buffer.append(",").append("房屋结构").append(generateCommonMethod.getBuildingStructureCategory(schemeJudgeObjectList, projectInfo));
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, buffer.toString())).append("</p>");
+                    Map<Integer, String> certUseMap = Maps.newHashMap();
+                    Map<Integer, String> practicalUseMap = Maps.newHashMap();
+                    Map<Integer, String> buildAreaMap = Maps.newHashMap();
+                    Map<Integer, String> evaluationAreaMap = Maps.newHashMap();
+                    Map<Integer, String> landRightNatureMap = Maps.newHashMap();
+                    Map<Integer, String> ownershipMap = Maps.newHashMap();
+                    Map<Integer, String> structureMap = Maps.newHashMap();
+                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                        Integer number = generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber());
+                        certUseMap.put(number, schemeJudgeObject.getCertUse());
+                        practicalUseMap.put(number, schemeJudgeObject.getPracticalUse());
+                        buildAreaMap.put(number, String.format("%s㎡", schemeJudgeObject.getFloorArea()));
+                        evaluationAreaMap.put(number, String.format("%s㎡", schemeJudgeObject.getEvaluationArea()));
+                        landRightNatureMap.put(number, declareRecord.getLandRightNature());
+                        ownershipMap.put(number, declareRecord.getOwnership());
+                        structureMap.put(number, declareRecord.getHousingStructure());
+                    }
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(certUseMap, "设定用途", false)).append(",");//设定用途
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(practicalUseMap, "实际用途", false)).append(",");//实际用途
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(buildAreaMap, "建筑面积", false)).append(",");//建筑面积
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(evaluationAreaMap, "评估面积", false)).append(",");//评估面积
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(landRightNatureMap, "权利性质", false)).append(",");//权利性质
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(ownershipMap, "权利人", false)).append(",");//权利人
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(structureMap, "房屋结构", false)).append(",");//房屋结构
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(buffer.toString())));
                     buffer.delete(0, buffer.toString().length());
                     i++;
                 }
@@ -3546,114 +3441,6 @@ public class GenerateBaseDataService {
 
 
     //------------------------------------------------------------||待删除方法 start -------------------------------------------------------//
-
-    /**
-     * 区位(2019-01-28 修改之后)
-     *
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getLocation_() throws Exception {
-        StringBuilder builder = new StringBuilder(24);
-        try {
-            SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
-            builder.append(schemeAreaGroup.getAreaName());
-            List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                builder.append(getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(0))).append(":");
-                builder.append(schemeJudgeObjectList.get(0).getSeat());
-                if (schemeJudgeObjectList.size() > 1) {
-                    builder.append("等");
-                }
-            }
-        } catch (Exception e) {
-            logger.error("(区位)拼接异常!");
-        }
-        if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString();
-        }
-        return errorStr;
-    }
-
-
-    /**
-     * 土地他项权利
-     *
-     * @return
-     */
-    @Deprecated
-    public String getInventoryRight() throws Exception {
-        return getHisRightType();
-    }
-
-    /**
-     * 土地使用管制
-     *
-     * @return
-     */
-    @Deprecated
-    public String getLandUseControl() throws Exception {
-        String s = getSeparationCertificateUses();
-        return s;
-    }
-
-
-    /**
-     * 评估方法总括
-     *
-     * @return
-     */
-    @Deprecated
-    public String getSummaryEvaluationMethod() {
-        StringBuilder builder = new StringBuilder(128);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
-            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-            builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject));
-            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                builder.append(":").append(schemeJudgeFunctionList.get(0).getName());
-                builder.append("等");
-            }
-        }
-        if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString();
-        }
-        return " ";
-    }
-
-    /**
-     * 价值表达结果
-     *
-     * @return
-     */
-    @Deprecated
-    public String getValueExpressionResult() {
-        return "抵押价值特殊处理";
-    }
-
-    /**
-     * 分类评估面积
-     *
-     * @return
-     */
-    @Deprecated
-    public String getEvaluationAreaCateGoryOne() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Set<String> stringSet = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                if (schemeJudgeObjectList.get(i).getPrice() != null) {
-                    if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getEvaluationArea().toString())) {
-                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeJudgeObjectList.get(i).getEvaluationArea().toString()));
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
-    }
 
     /**
      * 功能描述: 估价对象的单价
@@ -3843,7 +3630,7 @@ public class GenerateBaseDataService {
         this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
         this.generateHouseEntityService = SpringContextUtils.getBean(GenerateHouseEntityService.class);
         this.erpAreaService = SpringContextUtils.getBean(ErpAreaService.class);
-        this.taskExecutor = SpringContextUtils.getBean(TaskExecutor.class);
+        this.mdCommonService = SpringContextUtils.getBean(MdCommonService.class);
         this.generateEquityService = SpringContextUtils.getBean(GenerateEquityService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);

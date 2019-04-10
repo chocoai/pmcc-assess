@@ -865,7 +865,15 @@ public class GenerateCommonMethod {
      */
     public String judgeSummaryDesc(Map<Integer, String> map, String explain, Boolean isShowNumber) {
         if (map == null || map.size() <= 0) return "";
-        Map<String, List<Integer>> listMap = getStringListMap(map);
+        //map按key值排序
+        Map<Integer, String> sortMap=new TreeMap<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1.compareTo(o2);
+            }
+        });
+        sortMap.putAll(map);
+        Map<String, List<Integer>> listMap = getStringListMap(sortMap);
         StringBuilder judgeBuilder = new StringBuilder();
         StringBuilder contentBuilder = new StringBuilder();
         for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
@@ -881,7 +889,7 @@ public class GenerateCommonMethod {
     }
 
     private Map<String, List<Integer>> getStringListMap(Map<Integer, String> map) {
-        Map<String, List<Integer>> listMap = Maps.newHashMap();
+        Map<String, List<Integer>> listMap = Maps.newLinkedHashMap();
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             if (listMap.containsKey(entry.getValue())) {
                 List<Integer> list = listMap.get(entry.getValue());
@@ -903,7 +911,15 @@ public class GenerateCommonMethod {
      */
     public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumner) {
         if (map == null || map.size() <= 0) return "";
-        Map<String, List<Integer>> listMap = getStringListMap(map);
+        //map按key值排序
+        Map<Integer, String> sortMap=new TreeMap<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1.compareTo(o2);
+            }
+        });
+        sortMap.putAll(map);
+        Map<String, List<Integer>> listMap = getStringListMap(sortMap);
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
             if (listMap.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {

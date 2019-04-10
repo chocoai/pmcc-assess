@@ -8,6 +8,7 @@ import java.util.HashSet;
 public class SurveyRightGroupDto {
     private String key;
     private Integer groupId;
+    private Integer category;
     private String categoryName;
     private String remark;
     private HashSet<Integer> declareRecordIds;
@@ -26,6 +27,14 @@ public class SurveyRightGroupDto {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 
     public String getCategoryName() {

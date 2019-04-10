@@ -154,6 +154,7 @@ public class SurveyAssetInventoryRightRecordService {
                             SurveyRightGroupDto surveyRightGroupDto = new SurveyRightGroupDto();
                             surveyRightGroupDto.setKey(String.format("%s%s", baseDataDicService.getNameById(inventoryRight.getCategory()), inventoryRight.getRemark()));
                             surveyRightGroupDto.setGroupId(rightRecord.getId());
+                            surveyRightGroupDto.setCategory(inventoryRight.getCategory());
                             surveyRightGroupDto.setCategoryName(baseDataDicService.getNameById(inventoryRight.getCategory()));
                             surveyRightGroupDto.setRemark(inventoryRight.getRemark());
                             surveyRightGroupDto.setDeclareRecordIds(Sets.newHashSet(list));
@@ -167,7 +168,7 @@ public class SurveyAssetInventoryRightRecordService {
     }
 
     private void pushSurveyRightGroupDto(List<SurveyRightGroupDto> list, SurveyRightGroupDto surveyRightGroupDto) {
-        if (CollectionUtils.isEmpty(list) || surveyRightGroupDto == null) return;
+        if (list == null || surveyRightGroupDto == null) return;
         List<String> keys = LangUtils.transform(list, o -> o.getKey());
         if (keys.contains(surveyRightGroupDto.getKey())) {
             for (SurveyRightGroupDto rightGroupDto : list) {
@@ -190,18 +191,18 @@ public class SurveyAssetInventoryRightRecordService {
     public Map<String, List<Integer>> groupSpecialcase(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
         Map<String, List<Integer>> map = Maps.newHashMap();
         List<SurveyAssetInventoryRightRecord> rightRecords = getListByProjectId(projectId);
-        if(CollectionUtils.isEmpty(rightRecords)) return map;
+        if (CollectionUtils.isEmpty(rightRecords)) return map;
         List<Integer> declareIds = LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId());
         for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
             if (StringUtils.isNotBlank(rightRecord.getRecordIds()) && StringUtils.isNotBlank(rightRecord.getSpecialcase())) {
                 List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
                 Collection intersection = CollectionUtils.intersection(list, declareIds);//集合交集
                 if (CollectionUtils.isNotEmpty(intersection)) {
-                    if(map.containsKey(rightRecord.getSpecialcase())){
+                    if (map.containsKey(rightRecord.getSpecialcase())) {
                         List<Integer> integers = map.get(rightRecord.getSpecialcase());
-                        map.put(rightRecord.getSpecialcase(),Lists.newArrayList(CollectionUtils.union(integers,intersection)));
-                    }else{
-                        map.put(rightRecord.getSpecialcase(),Lists.newArrayList(intersection));
+                        map.put(rightRecord.getSpecialcase(), Lists.newArrayList(CollectionUtils.union(integers, intersection)));
+                    } else {
+                        map.put(rightRecord.getSpecialcase(), Lists.newArrayList(intersection));
                     }
                 }
             }
