@@ -77,7 +77,7 @@ public class GenerateHouseEntityService {
             int year = DateUtils.getYear(beCompletedTime);
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s年", year));
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "号分别为", false);
+        return generateCommonMethod.judgeEachDesc(map, "","，", false);
     }
 
     /**
@@ -97,7 +97,7 @@ public class GenerateHouseEntityService {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), baseDataDicService.getNameById(constructionQuality));
             }
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "号分别为", false);
+        return generateCommonMethod.judgeEachDesc(map, "","，", false);
     }
 
     /**
@@ -178,7 +178,7 @@ public class GenerateHouseEntityService {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", floorHeight));
             }
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "号分别为", false);
+        return generateCommonMethod.judgeEachDesc(map, "","，", false);
     }
 
     /**

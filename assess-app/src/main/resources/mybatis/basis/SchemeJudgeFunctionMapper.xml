@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeJudgeFunctionMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="method_type" property="methodType" jdbcType="INTEGER" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, judge_object_id, name, method_type, bis_applicable, applicable_reason, not_applicable_reason, 
-    thinking, creator, gmt_created, gmt_modified
+    id, area_group_id, judge_object_id, name, method_type, bis_applicable, applicable_reason, 
+    not_applicable_reason, thinking, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunctionExample" >
     select
@@ -110,14 +111,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_judge_function (judge_object_id, name, method_type, 
-      bis_applicable, applicable_reason, not_applicable_reason, 
-      thinking, creator, gmt_created, 
-      gmt_modified)
-    values (#{judgeObjectId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{methodType,jdbcType=INTEGER}, 
-      #{bisApplicable,jdbcType=BIT}, #{applicableReason,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
-      #{thinking,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_scheme_judge_function (area_group_id, judge_object_id, name, 
+      method_type, bis_applicable, applicable_reason, 
+      not_applicable_reason, thinking, creator, 
+      gmt_created, gmt_modified)
+    values (#{areaGroupId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{methodType,jdbcType=INTEGER}, #{bisApplicable,jdbcType=BIT}, #{applicableReason,jdbcType=VARCHAR}, 
+      #{notApplicableReason,jdbcType=VARCHAR}, #{thinking,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,6 +126,9 @@
     </selectKey>
     insert into tb_scheme_judge_function
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="areaGroupId != null" >
+        area_group_id,
+      </if>
       <if test="judgeObjectId != null" >
         judge_object_id,
       </if>
@@ -157,6 +161,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="areaGroupId != null" >
+        #{areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="judgeObjectId != null" >
         #{judgeObjectId,jdbcType=INTEGER},
       </if>
@@ -201,6 +208,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.areaGroupId != null" >
+        area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="record.judgeObjectId != null" >
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       </if>
@@ -239,6 +249,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_scheme_judge_function
     set id = #{record.id,jdbcType=INTEGER},
+      area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       method_type = #{record.methodType,jdbcType=INTEGER},
@@ -256,6 +267,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction" >
     update tb_scheme_judge_function
     <set >
+      <if test="areaGroupId != null" >
+        area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="judgeObjectId != null" >
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       </if>
@@ -291,7 +305,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction" >
     update tb_scheme_judge_function
-    set judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+    set area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       method_type = #{methodType,jdbcType=INTEGER},
       bis_applicable = #{bisApplicable,jdbcType=BIT},

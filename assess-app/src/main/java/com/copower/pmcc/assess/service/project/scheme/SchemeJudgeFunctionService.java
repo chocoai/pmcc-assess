@@ -50,6 +50,19 @@ public class SchemeJudgeFunctionService {
         return schemeJudgeFunctionDao.getSchemeJudgeFunction(schemeJudgeFunction);
     }
 
+    /**
+     * 获取委估对象适用方法
+     *
+     * @param areaId
+     * @return
+     */
+    public List<SchemeJudgeFunction> getApplicableJudgeFunctionsByAreaId(Integer areaId) {
+        SchemeJudgeFunction schemeJudgeFunction = new SchemeJudgeFunction();
+        schemeJudgeFunction.setAreaGroupId(areaId);
+        schemeJudgeFunction.setBisApplicable(true);
+        return schemeJudgeFunctionDao.getSchemeJudgeFunction(schemeJudgeFunction);
+    }
+
     @Transactional
     public void changeFunctionContent(List<SchemeJudgeFunction> functionList) {
         if (CollectionUtils.isEmpty(functionList)) return;
@@ -99,17 +112,20 @@ public class SchemeJudgeFunctionService {
 
         List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionApplyDto.getJudgeFunctions();
         if (CollectionUtils.isNotEmpty(judgeFunctions)) {
-            for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
-                if (judgeFunction.getId() != null && judgeFunction.getId() > 0) {
-                    schemeJudgeFunctionService.updateSchemeJudgeFunction(judgeFunction);
-                } else {
-                    judgeFunction.setCreator(commonService.thisUserAccount());
-                    schemeJudgeFunctionService.addSchemeJudgeFunction(judgeFunction);
-                }
-            }
+
             Integer judgeObjectId = schemeJudgeFunctionApplyDto.getJudgeObjectId();
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
             if (schemeJudgeObject != null) {
+                for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
+                    if (judgeFunction.getId() != null && judgeFunction.getId() > 0) {
+                        schemeJudgeFunctionService.updateSchemeJudgeFunction(judgeFunction);
+                    } else {
+                        judgeFunction.setAreaGroupId(schemeJudgeObject.getAreaGroupId());
+                        judgeFunction.setCreator(commonService.thisUserAccount());
+                        schemeJudgeFunctionService.addSchemeJudgeFunction(judgeFunction);
+                    }
+                }
+
                 schemeJudgeObject.setBisSetFunction(true);
                 schemeJudgeObject.setNotApplicableReason(schemeJudgeFunctionApplyDto.getNotApplicableReason());
                 schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);

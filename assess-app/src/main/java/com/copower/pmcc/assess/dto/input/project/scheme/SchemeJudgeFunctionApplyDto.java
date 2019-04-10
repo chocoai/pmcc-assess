@@ -8,9 +8,18 @@ import java.util.List;
  * Created by 13426 on 2018/5/21.
  */
 public class SchemeJudgeFunctionApplyDto {
+    private Integer areaId;
     private Integer judgeObjectId;
     private String notApplicableReason;
     private List<SchemeJudgeFunction> judgeFunctions;
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
+    }
 
     public Integer getJudgeObjectId() {
         return judgeObjectId;

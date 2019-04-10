@@ -210,8 +210,6 @@ public class DataReportAnalysisService {
         //变现时间
         String liquidTime = data.getLiquidTime();
         //区域
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
-        String areaName = schemeAreaGroup.getAreaName();
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
         if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
@@ -240,31 +238,6 @@ public class DataReportAnalysisService {
             }
             //估价对象区位分析
             if (AssessReportFieldConstant.LOCATION_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
-//                ArrayList<Integer> blockIds = new ArrayList<>();
-//                List<SchemeJudgeObject> noBlockIds = new ArrayList<>();
-//                for (SchemeJudgeObject judgeObject : judgeObjectList) {
-//                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-//                    BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-//                    if (!blockIds.contains(basicEstate.getBlockId()) && basicEstate.getBlockId() != null) {
-//                        blockIds.add(basicEstate.getBlockId());
-//                    }
-//                    if (basicEstate.getBlockId() == null) {
-//                        noBlockIds.add(judgeObject);
-//                    }
-//                }
-//                Map<BasicEstate, String> map = getSameBlock(judgeObjectList, blockIds);
-//                DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOCATION_ANALYSIS_PLATE);
-//                for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
-//                    DataBlock block = dataBlockService.getDataBlockById(entry.getKey().getBlockId());
-//                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", block.getDistrict())).append("</p>");
-//                }
-//                for (SchemeJudgeObject judgeObject : noBlockIds) {
-//                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-//                    BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-//                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", judgeObject.getNumber() + "号").replace("#{区县}", erpAreaService.getSysAreaName(basicEstate.getDistrict())).replace("#{版块名称}", basicEstate.getBlockName()).replace("#{版块描述}", "")).append("</p>");
-//                }
-
-
                 ArrayList<String> estateNames = new ArrayList<>();
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
@@ -372,8 +345,7 @@ public class DataReportAnalysisService {
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(other.getTemplate()).append("</p>");
                 //实现价格
                 DataReportTemplateItem realized = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.MARKET_VALUE_ANALYSIS_REALIZED_PRICE);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(realized.getTemplate().replace("#{出具报告区域}", areaName).replace("#{变现比率}", liquidRatios)).append("</p>");
-
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(realized.getTemplate().replace("#{变现比率}", liquidRatios)).append("</p>");
             }
 
             //变现时间费税及清偿
@@ -383,7 +355,7 @@ public class DataReportAnalysisService {
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(other.getTemplate()).append("</p>");
                 //政策
                 DataReportTemplateItem policy = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.PAY_OFF_ANALYSIS_POLICY);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(policy.getTemplate().replace("#{出具报告区域}", areaName).replace("#{变现时间}", liquidTime)).append("</p>");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(policy.getTemplate().replace("#{变现时间}", liquidTime)).append("</p>");
                 //费用一览表
                 DataReportTemplateItem schedule = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.PAY_OFF_ANALYSIS_SCHEDULE);
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(schedule.getTemplate()).append("</p>");
@@ -540,25 +512,6 @@ public class DataReportAnalysisService {
             }
         }
         return stringBuilder.toString();
-    }
-
-    public Map<BasicEstate, String> getSameBlock(List<SchemeJudgeObject> judgeObjectList, ArrayList<Integer> blockIds) throws Exception {
-        Map<BasicEstate, String> map = new HashMap<>();
-        for (Integer blockId : blockIds) {
-            BasicEstate basicEstate = new BasicEstate();
-            ArrayList<Integer> numbers = new ArrayList<>();
-            for (SchemeJudgeObject judgeObject : judgeObjectList) {
-                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-                BasicEstate estate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                if (blockId.equals(estate.getBlockId())) {
-                    basicEstate = estate;
-                    numbers.add(Integer.valueOf(judgeObject.getNumber()));
-                }
-            }
-            String number = generateCommonMethod.convertNumber(numbers) + "号";
-            map.put(basicEstate, number);
-        }
-        return map;
     }
 
     public Map<BasicEstate, String> getSameEstate(List<SchemeJudgeObject> judgeObjectList, ArrayList<String> estateNames) throws Exception {

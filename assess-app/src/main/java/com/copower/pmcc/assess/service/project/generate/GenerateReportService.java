@@ -565,13 +565,6 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
-                //变现比率
-                if (Objects.equal(BaseReportFieldEnum.LiquidRatios.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidRatios());
-                    if (baseReportField != null) {
-                    }
-                }
                 //出具报告城市
                 if (Objects.equal(BaseReportFieldEnum.ReportArea.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -671,18 +664,8 @@ public class GenerateReportService {
                     }
                 }
                 //评估方法 ,估价对象评估方法
-                if (Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), name) || Objects.equal(BaseReportFieldEnum.EvaluationMethodValuationObject.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethodValuationObject());
-                    if (baseReportField != null) {
-                    }
-                }
-                //评估方法总括
-                if (Objects.equal(BaseReportFieldEnum.SummaryEvaluationMethod.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSummaryEvaluationMethod());
-                    }
+                if (Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethod());
                 }
                 //土地他项权利情况
                 if (Objects.equal(BaseReportFieldEnum.inventoryRight.getName(), name)) {

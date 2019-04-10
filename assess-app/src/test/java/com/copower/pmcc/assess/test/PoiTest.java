@@ -335,13 +335,13 @@ public class PoiTest {
     public void testReplace() throws Exception {
         String tempDir = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\target\\pmcc-assess\\temporary\\20190311\\858484e801d94def834858eb7bd75478.doc";
         Map<String, String> textMap = Maps.newHashMap();
-        textMap.put("${估价技术思路}","测试数据");
+        textMap.put("${估价技术思路}", "测试数据");
         AsposeUtils.replaceText(tempDir, textMap);
     }
 
     @Test
-    public void testMerge(){
-        List<String> list= Lists.newArrayList();
+    public void testMerge() {
+        List<String> list = Lists.newArrayList();
         list.add("附22号1栋1单元1层1号");
         list.add("附22号2栋1单元3层2号");
         list.add("附212号1栋1单元1层1号");
@@ -395,12 +395,22 @@ public class PoiTest {
     public void testReplaceWord1() throws Exception {
         String templateFile = "D:\\test\\template.doc";
         Map<String, String> map = Maps.newHashMap();
-        map.put("${评估思路}","D:\\test\\风险提示.doc");
-        AsposeUtils.replaceTextToFile(templateFile,map);
+        map.put("${评估思路}", "D:\\test\\风险提示.doc");
+        AsposeUtils.replaceTextToFile(templateFile, map);
 
         Map<String, String> mapMark = Maps.newHashMap();
-        mapMark.put("评估思路Mark","D:\\test\\风险提示.doc");
-        AsposeUtils.replaceBookmarkToFile(templateFile,mapMark);
+        mapMark.put("评估思路Mark", "D:\\test\\风险提示.doc");
+        AsposeUtils.replaceBookmarkToFile(templateFile, mapMark);
+    }
+
+    @Test
+    public void testReplaceWord2() throws Exception {
+        Document document = new Document("D:\\test\\template.doc");
+        DocumentBuilder builder = new DocumentBuilder(document);
+        builder.moveToMergeField("${评估思路}",true,false);
+        builder.writeln("fffffffffffffff");
+
+        document.save("D:\\test\\template1.doc");
     }
 }
 

@@ -94,7 +94,6 @@ public enum BaseReportFieldEnum implements Serializable {
     XIEHE_certificateNo("机构证书号"),
     XIEHE_certificateEffectiveDate("机构证书有效期"),
 
-    EvaluationMethodValuationObject("估价对象评估方法"),
     SelectionValuationMethod("估价对象选择估价方法"),
     TotalValueValuationObject("估价对象的总价"),
     EvaluationExpression("分类评估单价计算试"),
@@ -116,8 +115,6 @@ public enum BaseReportFieldEnum implements Serializable {
     EVALUATION_PRINCIPLE("评估原则"),
     ANALYSIS_CATEGORY_LIQUIDITY("变现能力分析"),
     LIQUIDATION_ANALYSIS("变现分析税费"),
-    LiquidRatios("变现比率"),
-    LiquidTime("变现时间"),
     ANALYSIS_CATEGORY_RISK("风险提示"),
     ReportArea("出具报告区域"),
 
@@ -141,7 +138,6 @@ public enum BaseReportFieldEnum implements Serializable {
     theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods("本次估价的总体思路和评估方法的选取"),
     Location("区位"),
     PrincipalAddress("委托人地址"),
-    SummaryEvaluationMethod("评估方法总括"),
     UnitPriceValuator("估价对象的单价"),
     EvaluationPriceCateGory("分类评估单价"),
     ValueExpressionResult("价值表达结果"),

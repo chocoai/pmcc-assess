@@ -122,6 +122,7 @@
                                     </label>
                                     <div class="col-sm-10">
                                         <select class="form-control" required  name="category" onchange="changeRemark(this,'_number')">
+
                                         </select>
                                     </div>
                                 </div>
@@ -500,9 +501,6 @@
                         form.clearAll();
                         $("#" + commonField.divBox + value).modal("show");
                         form.initForm(data);
-                        AssessCommon.loadProjectClassifyListByField(AssessProjectClassifyKey.singleHousetaskRightCategory, data.category, function (html, item) {
-                            form.find("select[name='category']").empty().html(html).trigger('change');
-                        });
                         form.find("input[name='id']").val(data.id);
                         form.find("input[name='registerDate']").val(formatDate(data.registerDate, false));
                         form.find("input[name='beginDate']").val(formatDate(data.beginDate, false));
