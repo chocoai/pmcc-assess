@@ -456,7 +456,7 @@ public class SchemeJudgeObjectService {
         mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString(), ","));
         mergeJudgeObject.setName(String.format("%s%s", mergeJudgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
         mergeJudgeObject.setOwnership(publicService.districtString(ownershipList));
-        mergeJudgeObject.setSeat(publicService.fusinString(seatList));
+        mergeJudgeObject.setSeat(publicService.fusinString(seatList,false));
         mergeJudgeObject.setFloorArea(floorAreaTotal);
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
         mergeJudgeObject.setRentalPossessionDesc(rpdBuilder.toString());

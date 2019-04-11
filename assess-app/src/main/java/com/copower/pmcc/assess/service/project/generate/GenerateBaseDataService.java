@@ -316,7 +316,7 @@ public class GenerateBaseDataService {
                     });
                     buffer.append(estateName);
                     if (CollectionUtils.isNotEmpty(seats)) {
-                        String s = publicService.fusinString(seats);
+                        String s = publicService.fusinString(seats,false);
                         if (StringUtils.isNotBlank(s)) {
                             buffer.append(s);
                         }
@@ -1402,7 +1402,7 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getLiquidityRisk(SchemeSupportTypeEnum schemeSupportTypeEnum, Integer areaId) throws Exception {
+    public String getLiquidityRisk(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
         if (projectInfo == null || schemeSupportTypeEnum == null) return "";
         String result = "";
         switch (schemeSupportTypeEnum) {
@@ -1416,7 +1416,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+        builder.insertHtml(result, true);
         document.save(localPath);
         return localPath;
     }
@@ -3396,7 +3396,7 @@ public class GenerateBaseDataService {
                     });
                     buffer.append(estateName);
                     if (CollectionUtils.isNotEmpty(seats)) {
-                        String s = publicService.fusinString(seats);
+                        String s = publicService.fusinString(seats,false);
                         if (StringUtils.isNotBlank(s)) {
                             buffer.append(s);
                         }

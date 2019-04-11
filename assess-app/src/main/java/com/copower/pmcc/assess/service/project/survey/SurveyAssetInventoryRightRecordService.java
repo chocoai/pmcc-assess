@@ -151,14 +151,12 @@ public class SurveyAssetInventoryRightRecordService {
                     if (CollectionUtils.isNotEmpty(inventoryRights) && LangUtils.transform(inventoryRights, o -> o.getCategory()).contains(projectClassify.getId())) {
                         rightOtherEmpty = false;
                     }
-                    if (rightOtherEmpty == Boolean.TRUE && StringUtils.isBlank(surveyJudgeObjectGroupDto.getSpecialcase())) {
-                        surveyJudgeObjectGroupDto.setResult("强");
-                    }
                     if (rightOtherEmpty == Boolean.TRUE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getSpecialcase())) {
                         surveyJudgeObjectGroupDto.setResult("一般");
-                    }
-                    if (rightOtherEmpty == Boolean.FALSE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getSpecialcase())) {
+                    } else if (rightOtherEmpty == Boolean.FALSE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getSpecialcase())) {
                         surveyJudgeObjectGroupDto.setResult("弱");
+                    } else {
+                        surveyJudgeObjectGroupDto.setResult("强");
                     }
                     list.add(surveyJudgeObjectGroupDto);
                 }

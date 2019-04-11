@@ -84,7 +84,8 @@ public class AssessReportFieldConstant {
 
     public static final String LAND_ENTITY_ANALYSIS = "land.entity.analysis";//土地实体分析
     public static final String LAND_ENTITY_ANALYSIS_HOUSES = "land.entity.analysis.houses";//土地实体分析
-
+    public static final String ARCHITECTURAL_ENTITY_ANALYSIS = "architectural.entity.analysis";//建筑实体分析
+    public static final String UNIVERSALITY_ANALYSIS = "universality.analysis";//通用性分析
     public static final String INDEPENDENCE_ANALYSIS = "independence.analysis";//独立性分析
     public static final String INDEPENDENCE_ANALYSIS_INTACT = "independence.analysis.intact";//完好
     public static final String INDEPENDENCE_ANALYSIS_DAMAGE = "independence.analysis.damage";//损坏
@@ -120,4 +121,6 @@ public class AssessReportFieldConstant {
     public static final String VALUE_ANALYSIS_CONDITION3 = "value.analysis.condition3";//金额大于500万元时，数量小于5
     public static final String VALUE_ANALYSIS_CONDITION4 = "value.analysis.condition4";//金额大于500万元时，数量大于等于5
 
+    public static final String CASHABILITY_SUMMARY = "cashability.summary";//变现能力综述
+    public static final String CASHABILITY_SUMMARY_CONTENT = "cashability.summary.content";//变现能力综述内容
 }
