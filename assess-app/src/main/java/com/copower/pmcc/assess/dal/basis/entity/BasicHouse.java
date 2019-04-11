@@ -44,6 +44,8 @@ public class BasicHouse {
 
     private Date caseDate;
 
+    private String newDegree;
+
     private String creator;
 
     private Date gmtCreated;
@@ -208,6 +210,14 @@ public class BasicHouse {
 
     public void setCaseDate(Date caseDate) {
         this.caseDate = caseDate;
+    }
+
+    public String getNewDegree() {
+        return newDegree;
+    }
+
+    public void setNewDegree(String newDegree) {
+        this.newDegree = newDegree == null ? null : newDegree.trim();
     }
 
     public String getCreator() {
