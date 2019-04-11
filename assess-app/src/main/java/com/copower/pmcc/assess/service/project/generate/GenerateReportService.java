@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.aspose.words.BookmarkCollection;
-import com.aspose.words.Document;
+import com.aspose.words.*;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
@@ -38,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by kings on 2018-5-23.
@@ -164,6 +164,23 @@ public class GenerateReportService {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
                         String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+                        Document doc = new Document(path);
+//                        DocumentBuilder builder = new DocumentBuilder(doc);
+//                        //“目录”两个字居中显示、加粗、搜宋体
+//                        builder.getCurrentParagraph().getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+//                        builder.setBold(true);
+//                        builder.writeln("目录");
+//                        //清清除所有样式设置
+//                        builder.getParagraphFormat().clearFormatting();
+//                        //插入目录，这是固定的
+//                        builder.insertTableOfContents("\\o \"1-3\" \\h \\z \\u");
+//
+//                        //将光标移到目录书签
+//                        builder.moveToBookmark("TOC");
+//                        builder.insertBreak(BreakType.PAGE_BREAK);
+
+                        doc.updateFields();// 更新域
+                        doc.save(path);
                         if (StringUtils.isNotBlank(path)) {
                             this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT, sysAttachmentDtoList);
                         }
