@@ -1037,4 +1037,27 @@ public class GenerateCommonMethod {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getListByIds(judgeObjectIds);
         return LangUtils.transform(judgeObjectList, o -> parseIntJudgeNumber(o.getNumber()));
     }
+
+    public List<String> changeMapToList(Map<String, String> map, boolean flag, String suffix) {
+        List<String> stringList = Lists.newArrayList();
+        LinkedList<String> strings = Lists.newLinkedList();
+        if (!map.isEmpty()) {
+            map.entrySet().stream().forEach(entry -> {
+                if (flag) {
+                    strings.add(entry.getKey());
+                    strings.add(entry.getValue());
+                } else {
+                    strings.add(entry.getValue());
+                    strings.add(entry.getKey());
+                }
+                if (StringUtils.isNotEmpty(suffix)) {
+                    stringList.add(StringUtils.join(strings, suffix));
+                }else {
+                    stringList.add(StringUtils.join(strings));
+                }
+                strings.clear();
+            });
+        }
+        return stringList;
+    }
 }

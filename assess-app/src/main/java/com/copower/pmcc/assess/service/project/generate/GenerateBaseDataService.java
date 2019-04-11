@@ -1051,10 +1051,10 @@ public class GenerateBaseDataService {
         List<Integer> methodTypeList = LangUtils.transform(judgeFunctions, o -> o.getMethodType());
         List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList();
         List<BaseDataDic> resultList = LangUtils.filter(baseMethodList, o -> methodTypeList.contains(o.getId()));
-        if(CollectionUtils.isEmpty(resultList)) return "";
-        StringBuilder stringBuilder=new StringBuilder();
-        resultList.forEach(o->stringBuilder.append(o.getName()).append("，"));
-        return StringUtils.strip(stringBuilder.toString(),"，");
+        if (CollectionUtils.isEmpty(resultList)) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        resultList.forEach(o -> stringBuilder.append(o.getName()).append("，"));
+        return StringUtils.strip(stringBuilder.toString(), "，");
     }
 
     /**
@@ -1733,12 +1733,12 @@ public class GenerateBaseDataService {
      */
     public String getHisRightType() throws Exception {
         List<SurveyRightGroupDto> groupDtoList = surveyAssetInventoryRightRecordService.groupRightByCategory(projectId, schemeJudgeObjectDeclareList);
-        if(CollectionUtils.isEmpty(groupDtoList)) return "";
-        StringBuilder stringBuilder=new StringBuilder("、");
+        if (CollectionUtils.isEmpty(groupDtoList)) return "";
+        StringBuilder stringBuilder = new StringBuilder("、");
         for (SurveyRightGroupDto surveyRightGroupDto : groupDtoList) {
-            stringBuilder.append(String.format("《%s》、",surveyRightGroupDto.getCategoryName()));
+            stringBuilder.append(String.format("《%s》、", surveyRightGroupDto.getCategoryName()));
         }
-        return StringUtils.stripEnd(stringBuilder.toString(),"、");
+        return StringUtils.stripEnd(stringBuilder.toString(), "、");
     }
 
     /**
@@ -2444,9 +2444,13 @@ public class GenerateBaseDataService {
                         if (basicApply != null && basicApply.getId() != null) {
                             BasicEstate basicEstate = generateBaseExamineService.getEstate();
                             if (basicEstate != null && StringUtils.isNotBlank(basicEstate.getName())) {
-                                String value = StringUtils.isNotBlank(declareRecord.getStreetNumber()) ? declareRecord.getStreetNumber() : "街道无";
-                                stringMap.put(String.format("%s%s", basicEstate.getName(), value),
-                                        String.format("%s,%s", basicApply.getPlanDetailsId().toString(), schemeJudgeObject.getId().toString()));
+                                String value = declareRecord.getStreetNumber();
+                                if (StringUtils.isNotEmpty(value)) {
+                                    stringMap.put(value,
+                                            String.format("%s,%s",
+                                                    basicApply.getPlanDetailsId().toString(),
+                                                    schemeJudgeObject.getId().toString()));
+                                }
                             }
                         }
                     }
@@ -2472,75 +2476,63 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         StringBuilder stringBuilder = new StringBuilder(8);
-        LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
         LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getLinkedHashMapEstateNameSchemeJudgeObjectList(areaId);
-        if (!linkedHashMap.isEmpty()){
-            for (Map.Entry<String,List<SchemeJudgeObject>> entry:linkedHashMap.entrySet()){
-                if (CollectionUtils.isEmpty(entry.getValue())){
+        if (!linkedHashMap.isEmpty()) {
+            for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+                if (CollectionUtils.isEmpty(entry.getValue())) {
                     continue;
                 }
                 List<Integer> judgeObjectIds = Lists.newArrayList(entry.getValue().stream().map(oo -> oo.getId()).collect(Collectors.toList()));
-                stringBuilder.append("1:位置状况").append("\r");
+                if (CollectionUtils.isEmpty(judgeObjectIds)){
+                    continue;
+                }
+                documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey() + "</div>"));
+                stringBuilder.append("1、位置状况：").append("\r");
                 stringBuilder.append(String.format("坐落:%s", generateLoactionService.getSeat(judgeObjectIds))).append("\r");
                 stringBuilder.append(String.format("方位:%s", generateLoactionService.getPosition(judgeObjectIds))).append("\r");
-                stringBuilder.append(String.format("与重要场所的距离:")).append("\r");
+                stringBuilder.append(String.format("与重要场所的距离:"));
                 stringBuilder.append(generateLoactionService.getWithImportantLocationDistance(judgeObjectIds)).append("\r");
-                stringBuilder.append(String.format("临街（路）状况:")).append("\r");
+                stringBuilder.append(String.format("临街（路）状况:"));
                 stringBuilder.append(generateLoactionService.getFaceStreet(judgeObjectIds)).append("\r");
                 stringBuilder.append(String.format("楼层:%s", generateLoactionService.getFloor(judgeObjectIds))).append("\r");
+                stringBuilder.append(String.format("朝向:%s", generateLoactionService.getOrientation(judgeObjectIds))).append("\r");
+                stringBuilder.append("2、交通状况包括：").append("\r");
+                stringBuilder.append(String.format("道路状况:"));
+                stringBuilder.append(generateLoactionService.getRoadCondition(judgeObjectIds)).append("\r");
+                String s1 = generateLoactionService.getAccessAvailableMeansTransport(judgeObjectIds);
+                if (StringUtils.isNotEmpty(s1.trim())){
+                    stringBuilder.append(String.format("出入可利用的交通工具:"));
+                    stringBuilder.append(s1).append("\r");
+                }
+                String s2 = generateLoactionService.getTrafficControl(judgeObjectIds) ;
+                if (StringUtils.isNotEmpty(s2)){
+                    stringBuilder.append(String.format("交通管制情况:"));
+                    stringBuilder.append(s2).append("\r");
+                }
+                stringBuilder.append(String.format("停车方便度:"));
+                stringBuilder.append(generateLoactionService.getParkingConvenience(judgeObjectIds)).append("\r");
+                String s3 = generateLoactionService.getTrafficCharges(judgeObjectIds) ;
+                if (StringUtils.isNotEmpty(s3.trim())){
+                    stringBuilder.append(String.format("交通收费情况:"));
+                    stringBuilder.append(s3).append("\r");
+                }
+                stringBuilder.append("3、外部基础设施：");
+                stringBuilder.append(String.format(" %s", generateLoactionService.getExternalInfrastructure(judgeObjectIds))).append("\r");
+                stringBuilder.append("4、外部公共服务设施：");
+                stringBuilder.append(String.format("%s", generateLoactionService.getExternalPublicServiceFacilities(judgeObjectIds))).append("\r");
+                stringBuilder.append("5、周围环境：").append("\r");
+                stringBuilder.append("自然要素:");
+                stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(judgeObjectIds, EnvironmentalScienceEnum.NATURAL))).append("\r");
+                stringBuilder.append("人文环境要素:");
+                stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(judgeObjectIds, EnvironmentalScienceEnum.HUMANITY))).append("\r");
+                stringBuilder.append("景观:");
+                stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(judgeObjectIds, EnvironmentalScienceEnum.SCENERY))).append("\r");
+                stringBuilder.append("6、综述：").append("\r");
+                stringBuilder.append(String.format("%s", generateLoactionService.content(judgeObjectIds)));
                 if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
                     documentBuilder.writeln(stringBuilder.toString());
                     documentBuilder.writeln("\r");
                 }
-            }
-        }
-        for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
-            List<Integer> judgeObjectIds = Lists.newArrayList();
-            if (schemeJudgeObject.getBisMerge()) {
-                List<SchemeJudgeObject> schemeJudgeObjects = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
-                schemeJudgeObjects.add(schemeJudgeObject);
-                schemeJudgeObjects.stream().forEach(schemeJudgeObject1 -> judgeObjectIds.add(schemeJudgeObject1.getId()));
-            } else {
-                judgeObjectIds.add(schemeJudgeObject.getId());
-            }
-            BasicApply basicApply = schemeJudgeObjectEntry.getKey();
-            stringBuilder.append("1:位置状况").append("\r");
-            stringBuilder.append(String.format("坐落:%s", generateLoactionService.getSeat(schemeJudgeObject.getDeclareRecordId(), basicApply.getId()))).append("\r");
-            stringBuilder.append(String.format("方位:%s", generateLoactionService.getPosition(basicApply.getId()))).append("\r");
-            stringBuilder.append(String.format("与重要场所的距离:")).append("\r");
-            stringBuilder.append(generateLoactionService.getWithImportantLocationDistance(basicApply.getId())).append("\r");
-            stringBuilder.append(String.format("临街（路）状况:")).append("\r");
-            stringBuilder.append(generateLoactionService.getFaceStreet(basicApply)).append("\r");
-            stringBuilder.append(String.format("楼层:%s", generateLoactionService.getFloor(judgeObjectIds))).append("\r");
-            stringBuilder.append(String.format("朝向:%s", generateLoactionService.getOrientation(basicApply))).append("\r");
-            stringBuilder.append("2:交通状况包括").append("\r");
-            stringBuilder.append(String.format("道路状况:")).append("\r");
-            stringBuilder.append(generateLoactionService.getRoadCondition(basicApply)).append("\r");
-            stringBuilder.append(String.format("出入可利用的交通工具:")).append("\r");
-            stringBuilder.append(generateLoactionService.getAccessAvailableMeansTransport(basicApply)).append("\r");
-            stringBuilder.append(String.format("交通管制情况:")).append("\r");
-            stringBuilder.append(generateLoactionService.getTrafficControl(basicApply)).append("\r");
-            stringBuilder.append(String.format("停车方便度:")).append("\r");
-            stringBuilder.append(generateLoactionService.getParkingConvenience(basicApply)).append("\r");
-            stringBuilder.append(String.format("交通收费情况:")).append("\r");
-            stringBuilder.append(generateLoactionService.getTrafficCharges(basicApply)).append("\r");
-            stringBuilder.append("3:外部基础设施").append("\r");
-            stringBuilder.append(String.format("%s", generateLoactionService.getExternalInfrastructure(basicApply))).append("\r");
-            stringBuilder.append("4:外部公共服务设施").append("\r");
-            stringBuilder.append(String.format("%s", generateLoactionService.getExternalPublicServiceFacilities(basicApply))).append("\r");
-            stringBuilder.append("5:周围环境").append("\r");
-            stringBuilder.append("5.1:自然要素").append("\r");
-            stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL))).append("\r");
-            stringBuilder.append("5.2:人文环境要素").append("\r");
-            stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY))).append("\r");
-            stringBuilder.append("5.3:景观").append("\r");
-            stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY))).append("\r");
-            stringBuilder.append("6:综述").append("\r");
-            stringBuilder.append(String.format("%s", generateLoactionService.content(schemeJudgeObject, basicApply)));
-            if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
-//                documentBuilder.writeln(stringBuilder.toString());
-//                documentBuilder.writeln("\r");
             }
         }
         doc.save(localPath);
@@ -2555,9 +2547,10 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
-        documentBuilder.writeln("估价土地实体状况表");
         for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
             BasicApply basicApply = schemeJudgeObjectEntry.getKey();
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + generateBaseExamineService.getEstate().getName() + "</div>"));
             documentBuilder.writeln(String.format("1、名称:%s", generateLandEntityService.getLandName(basicApply)));
             documentBuilder.writeln(String.format("2、四至:%s", generateLandEntityService.fourTheFor(basicApply)));
             documentBuilder.writeln(String.format("3、土地面积:%s", generateLandEntityService.getLandArea(basicApply)));
@@ -2568,7 +2561,7 @@ public class GenerateBaseDataService {
             documentBuilder.writeln(String.format("8、基础设施完备度:%s", generateLandEntityService.getInfrastructureCompleteness(basicApply)));
             documentBuilder.writeln(String.format("9、开发程度:%s", generateLandEntityService.getDevelopmentDegree(basicApply)));
             documentBuilder.writeln(String.format("10、综上所述:"));
-            documentBuilder.writeln(String.format("%s", generateLandEntityService.getContent(basicApply, schemeJudgeObjectEntry.getValue())));
+            documentBuilder.writeln(String.format("%s", generateLandEntityService.getContent(basicApply)));
             documentBuilder.writeln();
         }
         doc.save(localPath);
@@ -2589,6 +2582,7 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isEmpty(integerList)) {
                     continue;
                 }
+                documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + listEntry.getKey() + "</div>"));
                 documentBuilder.writeln(String.format("1、楼盘名称:%s", listEntry.getKey()));
                 documentBuilder.writeln(String.format("2、建筑年份:%s", generateHouseEntityService.getBuildingYear(integerList)));
                 documentBuilder.writeln(String.format("3、工程质量:%s", generateHouseEntityService.getConstructionQuality(integerList)));
@@ -2601,7 +2595,7 @@ public class GenerateBaseDataService {
                 documentBuilder.writeln("10、设施设备");
                 documentBuilder.writeln(String.format("电梯:%s", generateHouseEntityService.getUnitElevator(integerList)));
                 String s2 = generateHouseEntityService.getTenPointTwo(integerList);
-                if (StringUtils.isNotBlank(s2.trim())){
+                if (StringUtils.isNotBlank(s2.trim())) {
                     documentBuilder.writeln(String.format("非工业与仓储的其他设施:"));
                     documentBuilder.writeln(String.format("%s", s2));
                 }

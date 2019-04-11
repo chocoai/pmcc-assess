@@ -288,7 +288,7 @@ public class DataReportAnalysisService {
                         numbers.append(item.getNumber()).append(",");
                     }
                     BasicApply apply = basicApplyDao.getBasicApplyById(entry.getKey().getApplyId());
-                    String content = generateLandEntityService.getContent(apply, entry.getValue().get(0));
+                    String content = generateLandEntityService.getContent(apply);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", getSubstitutionPrincipleName(numbers.toString())).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{楼盘名称}", entry.getKey().getName()).replace("#{土地实体结论}", content)).append("</p>");
                 }
             }

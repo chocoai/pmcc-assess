@@ -77,7 +77,7 @@ public class GenerateHouseEntityService {
             int year = DateUtils.getYear(beCompletedTime);
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s年", year));
         }
-        return generateCommonMethod.judgeEachDesc(map, "","，", false);
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
     }
 
     /**
@@ -97,7 +97,7 @@ public class GenerateHouseEntityService {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), baseDataDicService.getNameById(constructionQuality));
             }
         }
-        return generateCommonMethod.judgeEachDesc(map, "","，", false);
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
     }
 
     /**
@@ -178,7 +178,7 @@ public class GenerateHouseEntityService {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", floorHeight));
             }
         }
-        return generateCommonMethod.judgeEachDesc(map, "","，", false);
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
     }
 
     /**
@@ -294,9 +294,8 @@ public class GenerateHouseEntityService {
      */
     public String getOther(List<Integer> judgeObjectIds) throws Exception {
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> stringList = Sets.newLinkedHashSet();
-        StringBuffer stringBuffer = new StringBuffer();
-        StringBuilder stringBuilder = new StringBuilder(8);
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        Map<String, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
         Map<String, List<Integer>> buildMap = groupByBuilding(judgeObjectList);
         if (!buildMap.isEmpty()) {
@@ -305,14 +304,13 @@ public class GenerateHouseEntityService {
                 if (CollectionUtils.isEmpty(integerList)) {
                     continue;
                 }
-                stringBuilder.append(stringEntry.getKey()).append("栋");
                 for (int i = 0; i < integerList.size(); i++) {
                     SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
                     if (schemeJudgeObject == null || schemeJudgeObject.getDeclareRecordId() == null) {
                         continue;
                     }
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                    if (basicApply == null) {
+                    if (basicApply == null || basicApply.getId() == 0) {
                         continue;
                     }
                     GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -321,40 +319,44 @@ public class GenerateHouseEntityService {
                     if (basicBuilding != null && basicBuilding.getId() != null) {
                         BasicBuildingVo oo = basicBuildingService.getBasicBuildingVo(basicBuilding);
                         if (oo.getDataBuilder() != null) {
-                            stringList.add(oo.getDataBuilder().getName());
-                            stringList.add(oo.getDataBuilder().getCompanyNatureName());
-                            stringList.add(StringUtils.isNotBlank(oo.getDataBuilder().getSocialPrestigeName()) ? String.format("社会信誉%s", oo.getDataBuilder().getSocialPrestigeName()) : "");
-                            if (stringList.stream().filter(s -> StringUtils.isNotBlank(s)).count() == 3) {
-                                stringBuffer.append(StringUtils.join(stringList, ""));
+                            linkedHashSet.add(oo.getDataBuilder().getName());
+                            linkedHashSet.add(oo.getDataBuilder().getCompanyNatureName());
+                            linkedHashSet.add(StringUtils.isNotBlank(oo.getDataBuilder().getSocialPrestigeName()) ? String.format("社会信誉%s", oo.getDataBuilder().getSocialPrestigeName()) : "");
+                            if (linkedHashSet.stream().filter(s -> StringUtils.isNotBlank(s)).count() != 3) {
+                                linkedHashSet.clear();
                             }
-                            stringList.clear();
                         }
                     }
                     if (basicEstate != null && basicEstate.getId() != null) {
                         if (basicEstate.getDataDeveloper() != null) {
-                            stringList.add(basicEstate.getDataDeveloper().getName());
-                            stringList.add(basicEstate.getDataDeveloper().getCompanyNatureName());
-                            stringList.add(StringUtils.isNotBlank(basicEstate.getDataDeveloper().getSocialPrestigeName()) ? String.format("社会信誉%s", basicEstate.getDataDeveloper().getSocialPrestigeName()) : "");
-                            if (stringList.stream().filter(s -> StringUtils.isNotBlank(s)).count() == 3) {
-                                stringBuffer.append(StringUtils.join(stringList, ""));
+                            linkedHashSet.add(basicEstate.getDataDeveloper().getName());
+                            linkedHashSet.add(basicEstate.getDataDeveloper().getCompanyNatureName());
+                            linkedHashSet.add(StringUtils.isNotBlank(basicEstate.getDataDeveloper().getSocialPrestigeName()) ? String.format("社会信誉%s", basicEstate.getDataDeveloper().getSocialPrestigeName()) : "");
+                            if (linkedHashSet.stream().filter(s -> StringUtils.isNotBlank(s)).count() != 3) {
+                                linkedHashSet.clear();
                             }
-                            stringList.clear();
                         }
                     }
-                    stringSet.add(stringBuffer.toString());
-                    stringBuffer.delete(0, stringBuffer.toString().length());
+                    if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                        stringSet.add(StringUtils.join(linkedHashSet, "、"));
+                    }
+                    linkedHashSet.clear();
                 }
                 if (CollectionUtils.isNotEmpty(stringSet)) {
-                    stringBuilder.append(StringUtils.join(stringSet, ","));
-                    stringBuilder.append(";");
-                    stringSet.clear();
+                    map.put(StringUtils.join(stringSet, "，"), String.format("%s%s", stringEntry.getKey(), "栋"));
                 }
+                stringSet.clear();
             }
         }
-        if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
-            stringBuilder.append("无");
+        String s = "无";
+        if (!map.isEmpty()) {
+            if (map.entrySet().stream().count() == 1) {
+                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()), "");
+            } else {
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false,null ),"\r");
+            }
         }
-        return generateCommonMethod.trim(stringBuilder.toString());
+        return s;
     }
 
     /**
@@ -366,17 +368,19 @@ public class GenerateHouseEntityService {
      */
     public String getThirteen(List<Integer> judgeObjectIds) throws Exception {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
-        StringBuilder stringBuilder = new StringBuilder(8);
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
-        Map<String, List<Integer>> buildMap = groupByHouse(judgeObjectList);
-        if (!buildMap.isEmpty()) {
-            for (Map.Entry<String, List<Integer>> stringEntry : buildMap.entrySet()) {
+        Set<String> stringSet = Sets.newHashSet();
+        Map<String, List<Integer>> groupByHouse = groupByHouse(judgeObjectList);
+        Map<String, String> map = Maps.newHashMap();
+        String spCategoryName = "特种设备,其他";
+        String spTypeName = "设备部分,其它";
+        if (!groupByHouse.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> stringEntry : groupByHouse.entrySet()) {
                 List<Integer> integerList = stringEntry.getValue();
                 if (CollectionUtils.isEmpty(integerList)) {
                     continue;
                 }
-                stringBuilder.append(stringEntry.getKey()).append("号:");
                 for (int i = 0; i < integerList.size(); i++) {
                     SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
                     if (schemeJudgeObject == null || schemeJudgeObject.getDeclareRecordId() == null) {
@@ -405,7 +409,13 @@ public class GenerateHouseEntityService {
                             String s = "";
                             if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                                 damagedDegreeVoList.stream().forEach(oo -> {
-                                    stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
+                                    if (spCategoryName.indexOf(oo.getCategoryName()) != -1) {
+                                        if (spTypeName.indexOf(oo.getTypeName()) == -1) {
+                                            stringLinkedHashSet.add(String.format("%s%s", oo.getBasicallyIntact(), oo.getEntityConditionName()));
+                                        }
+                                    } else {
+                                        stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
+                                    }
                                 });
                                 s = StringUtils.join(stringLinkedHashSet, "、");
                                 stringLinkedHashSet.clear();
@@ -414,17 +424,23 @@ public class GenerateHouseEntityService {
                             }
                             linkedHashSet.add(String.format("%s：%s%s", stringListEntry.getKey(), s, "。"));
                         });
-                        stringBuilder.append(StringUtils.join(linkedHashSet, "\r"));
+                        stringSet.add(StringUtils.join(linkedHashSet, "\r"));
                         linkedHashSet.clear();
                     }
                 }
-                stringBuilder.append("").append("\r");
+                map.put(StringUtils.join(stringSet, "\r"), String.format("%s%s", stringEntry.getKey(), "号"));
+                stringSet.clear();
             }
         }
-        if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
-            stringBuilder.append("楼栋新旧程度及维护使用情况无数据");
+        String s = "无数据";
+        if (!map.isEmpty()) {
+            if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
+                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()), "");
+            } else {
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false,null ),"\r");
+            }
         }
-        return generateCommonMethod.trim(stringBuilder.toString());
+        return s;
     }
 
     /**
@@ -436,8 +452,9 @@ public class GenerateHouseEntityService {
      */
     public String getContent(List<Integer> judgeObjectIds, SchemeAreaGroup schemeAreaGroup) throws Exception {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
-        StringBuilder stringBuilder = new StringBuilder(8);
         int size = judgeObjectList.size();
+        Map<String, String> map = Maps.newHashMap();
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             for (int i = 0; i < size; i++) {
                 SchemeJudgeObject schemeJudgeObject = judgeObjectList.get(i);
@@ -445,15 +462,13 @@ public class GenerateHouseEntityService {
                     continue;
                 }
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                if (basicApply == null) {
+                if (basicApply == null || basicApply.getId() == 0) {
                     continue;
                 }
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                stringBuilder.append(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())).append("号");
                 BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingVo(generateBaseExamineService.getBasicBuilding());
-                stringBuilder
-                        .append(basicBuilding.getBuildingStructureTypeName())
-                        .append(basicBuilding.getBuildingStructureCategoryName());
+                linkedHashSet.add(basicBuilding.getBuildingStructureTypeName());
+                linkedHashSet.add(basicBuilding.getBuildingStructureCategoryName());
                 //建筑使用年限
                 String value = null;
                 if (StringUtils.isNotBlank(basicBuilding.getIndustryUseYearName())) {
@@ -499,7 +514,7 @@ public class GenerateHouseEntityService {
                         }
                     }
                     if (StringUtils.isNotBlank(text)) {
-                        stringBuilder.append(text).append(",");
+                        linkedHashSet.add(text);
                     }
                 }
                 String contentA = null;
@@ -546,46 +561,45 @@ public class GenerateHouseEntityService {
                 if (booleans.stream().filter(b -> b.booleanValue()).count() >= 2) {
                     contentA = "设备设施配置非常完备";
                 }
-                //维护使用情况
-//                stringBuilder.append("维护使用情况无,");
                 if (StringUtils.isNotBlank(contentA)) {
-                    stringBuilder.append(contentA).append("。");
+                    linkedHashSet.add(contentA);
                 }
                 if (!Objects.equal(basicBuilding.getBuildingStructureCategoryName(), "简易结构")) {
                     if (StringUtils.isNotBlank(contentA)) {
                         switch (contentA) {
                             case "设备设施基础配置不完备":
-                                stringBuilder.append("相对不利于提升房产价值").append("。");
+                                linkedHashSet.add("相对不利于提升房产价值。");
                                 break;
                             case "设备设施基础配置相对完备":
-                                stringBuilder.append("相对有利于提升房产价值").append("。");
+                                linkedHashSet.add("相对有利于提升房产价值。");
                                 break;
                             case "设备设施基础配置比较完备":
-                                stringBuilder.append("相对比较利于提升房产价值").append("。");
+                                linkedHashSet.add("相对比较利于提升房产价值。");
                                 break;
                             case "设备设施配置完备":
-                                stringBuilder.append("对于提升房产价值有比较大的影响").append("。");
+                                linkedHashSet.add("对于提升房产价值有比较大的影响。");
                                 break;
                             case "设备设施配置非常完备":
-                                stringBuilder.append("对于提升房产价值有比较大的影响").append("。");
+                                linkedHashSet.add("对于提升房产价值有比较大的影响。");
                                 break;
                             default:
                                 break;
                         }
                     }
                 }
-                if (i == size - 1 && size != 1) {
-                    stringBuilder.append(";");
-                } else {
-                    stringBuilder.append(",");
-                }
+                map.put(StringUtils.join(linkedHashSet.stream().filter(s -> StringUtils.isNotEmpty(s)).collect(Collectors.toList()), "，"), String.format("%s%s", generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), "号"));
+                linkedHashSet.clear();
             }
         }
-
-        if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
-            stringBuilder.append("无数据");
+        String s = "无";
+        if (!map.isEmpty()) {
+            if (map.entrySet().stream().map(entry -> entry.getKey()).count() == 1) {
+                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()), "");
+            } else {
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false,null ),"\r");
+            }
         }
-        return generateCommonMethod.trim(stringBuilder.toString());
+        return s;
     }
 
     /**
@@ -664,8 +678,6 @@ public class GenerateHouseEntityService {
             }).collect(Collectors.toList());
         }
         StringBuilder stringBuilder = new StringBuilder(8);
-        Set<String> stringSet = new HashSet<String>(0);
-        LinkedHashSet<String> centerSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> airConditionerSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> newWindSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> heatingSet = Sets.newLinkedHashSet();
@@ -673,6 +685,7 @@ public class GenerateHouseEntityService {
         LinkedHashSet<String> waterSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> waterDrainSet = Sets.newLinkedHashSet();
         Map<String, List<Integer>> houseMap = groupByHouse(judgeObjectList);
+        Map<String, String> map = Maps.newHashMap();
         if (!houseMap.isEmpty()) {
             for (Map.Entry<String, List<Integer>> stringEntry : houseMap.entrySet()) {
                 List<Integer> integerList = stringEntry.getValue();
@@ -762,7 +775,7 @@ public class GenerateHouseEntityService {
                                     stringBuilder.append(intelligentVoList.get(j).getGradeName()).append("材料");
                                 }
                                 if (StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName())) {
-                                    stringBuilder.append(intelligentVoList.get(j).getSwitchCircuitName() );
+                                    stringBuilder.append(intelligentVoList.get(j).getSwitchCircuitName());
                                 }
                                 stringBuilder.append("铺设方式").append(StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName()) ? intelligentVoList.get(j).getLayingMethodName() : "无");
                                 if (StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
@@ -784,7 +797,7 @@ public class GenerateHouseEntityService {
                             for (int j = 0; j < size; j++) {
                                 BasicHouseWater basicHouseWater = basicHouseWaterList.get(j);
                                 String gradeName = baseDataDicService.getNameById(basicHouseWater.getGrade());
-                                if (StringUtils.isEmpty(gradeName)){
+                                if (StringUtils.isEmpty(gradeName)) {
                                     continue;
                                 }
                                 String boosterEquipmentName = baseDataDicService.getNameById(basicHouseWater.getBoosterEquipment());
@@ -858,15 +871,20 @@ public class GenerateHouseEntityService {
                 if (CollectionUtils.isNotEmpty(stringList)) {
                     stringList = stringList.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList());
                     if (CollectionUtils.isNotEmpty(stringList)) {
-                        stringSet.add(String.format("%s%s%s", stringEntry.getKey().toString(), "号", StringUtils.join(stringList, ",")));
+                        map.put(StringUtils.join(stringList, ","), String.format("%s%s", stringEntry.getKey().toString(), "号"));
                     }
                 }
             }
         }
-        if (CollectionUtils.isEmpty(stringSet)) {
-            return "无数据";
+        String s = "无数据";
+        if (!map.isEmpty()) {
+            if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
+                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).distinct().collect(Collectors.toList()), "。\r");
+            } else {
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map,false,null),"。\n");
+            }
         }
-        return generateCommonMethod.trim(StringUtils.join(stringSet, "。\r"));
+        return s;
     }
 
 
@@ -882,7 +900,7 @@ public class GenerateHouseEntityService {
         LinkedHashSet<String> centerSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> quasiLoadNumber = Sets.newLinkedHashSet();
         LinkedHashSet<String> quasiLoadWeight = Sets.newLinkedHashSet();
-        Set<String> stringSet = Sets.newHashSet();
+        Map<String, String> map = Maps.newHashMap();
         if (!unitMap.isEmpty()) {
             for (Map.Entry<String, List<Integer>> stringEntry : unitMap.entrySet()) {
                 List<Integer> integerList = stringEntry.getValue();
@@ -960,15 +978,20 @@ public class GenerateHouseEntityService {
                     }
                 }
                 if (CollectionUtils.isNotEmpty(centerSet)) {
-                    stringSet.add(String.format("%s单元%s", stringEntry.getKey(), StringUtils.join(centerSet, ";")));
+                    map.put(StringUtils.join(centerSet, ";"), String.format("%s单元", stringEntry.getKey()));
                     centerSet.clear();
                 }
             }
         }
-        if (CollectionUtils.isEmpty(stringSet)) {
-            return "无数据";
+        String s = " ";
+        if (!map.isEmpty()) {
+            if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
+                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).distinct().collect(Collectors.toList()), "。");
+            } else {
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false,"" ),"。");
+            }
         }
-        return generateCommonMethod.trim(StringUtils.join(stringSet, "。"));
+        return s;
     }
 
     /**
@@ -1072,7 +1095,6 @@ public class GenerateHouseEntityService {
                 });
                 functionMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.strip(functionBuilder.toString(), ","));
             }
-
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
             List<BasicHouseRoom> roomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
             if (CollectionUtils.isNotEmpty(roomList)) {
@@ -1099,26 +1121,6 @@ public class GenerateHouseEntityService {
         if (StringUtils.isNotBlank(roomString))
             resultBuilder.append(";").append(roomString);
         return generateCommonMethod.trim(resultBuilder.toString());
-
-
-//        //房间中采光等信息按估价对象分别描述
-//        for (SchemeJudgeObject judgeObject : judgeObjectList) {
-//            stringBuilder.append(String.format("%s%s", judgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
-//            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-//            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-//            List<BasicHouseRoom> roomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
-//
-//            for (BasicHouseRoom room : roomList) {
-//                stringBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
-//                Map<String, String> stringMap = Maps.newHashMap();
-//                stringMap.put("通风", room.getAeration());
-//                stringMap.put("日照", room.getSunshine());
-//                stringMap.put("采光", room.getLighting());
-//                stringMap.put("隔音", room.getSoundInsulation());
-//                stringBuilder.append(generateCommonMethod.stringSummaryDesc(stringMap, "", "，"));
-//            }
-//        }
-//        return generateCommonMethod.trim(stringBuilder.toString());
     }
 
 }
