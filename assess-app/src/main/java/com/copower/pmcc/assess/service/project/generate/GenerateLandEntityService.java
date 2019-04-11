@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +28,8 @@ public class GenerateLandEntityService {
     private final String error = "无";
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 综上所述
@@ -39,18 +44,18 @@ public class GenerateLandEntityService {
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
         stringBuilder.append(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()).toString()).append("号");
         int startLength = stringBuilder.toString().length();
-        boolean flag = Lists.newArrayList(landStateVo.getEastTo(),landStateVo.getWestTo(),landStateVo.getSouthTo(),landStateVo.getNorthTo()).stream().filter(s -> StringUtils.isNotBlank(s)).count() >= 4;
+        boolean flag = Lists.newArrayList(landStateVo.getEastTo(), landStateVo.getWestTo(), landStateVo.getSouthTo(), landStateVo.getNorthTo()).stream().filter(s -> StringUtils.isNotBlank(s)).count() >= 4;
         if (flag) {
             stringBuilder.append("四至清淅");
         }
         if (StringUtils.isNotBlank(landStateVo.getLandUseTypeName())) {
-            if (flag){
+            if (flag) {
                 stringBuilder.append(",");
             }
             stringBuilder.append("用途明确");
         }
         if (StringUtils.isNotBlank(landStateVo.getLandArea())) {
-            if (StringUtils.isNotBlank(landStateVo.getLandArea())){
+            if (StringUtils.isNotBlank(landStateVo.getLandArea())) {
                 stringBuilder.append(",");
             }
             stringBuilder.append("面积确定");
@@ -84,8 +89,8 @@ public class GenerateLandEntityService {
             content = "";
         }
         if (!Objects.equal(landStateVo.getDevelopmentDegreeName(), "熟地")) {
-            if (stringBuilder.toString().length() != startLength){
-                stringBuilder.append(",") ;
+            if (stringBuilder.toString().length() != startLength) {
+                stringBuilder.append(",");
             }
             stringBuilder.append(content).append(",");
             stringBuilder.append("对估价对象价值产生较有利的影响。");
@@ -140,7 +145,7 @@ public class GenerateLandEntityService {
     public String getInfrastructureCompleteness(BasicApply basicApply) throws Exception {
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
-        return StringUtils.isNotBlank(landStateVo.getInfrastructureCompletenessName())?landStateVo.getInfrastructureCompletenessName():error;
+        return StringUtils.isNotBlank(landStateVo.getInfrastructureCompletenessName()) ? landStateVo.getInfrastructureCompletenessName() : error;
     }
 
     /**
@@ -154,10 +159,20 @@ public class GenerateLandEntityService {
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
         if (Objects.equal(landStateVo.getDevelopmentDegreeName(), "熟地")) {
-            return String.format("%s", landStateVo.getDevelopmentDegreeName());
-        } else {
-            return error;
+            if (StringUtils.isNotBlank(landStateVo.getDevelopmentDegreeContent())) {
+                List<String> stringList = Lists.newArrayList(landStateVo.getDevelopmentDegreeContent().split(","));
+                if (CollectionUtils.isNotEmpty(stringList)) {
+                    Set<String> stringSet = Sets.newHashSet();
+                    stringList.stream().forEach(s -> {
+                        stringSet.add(baseDataDicService.getNameById(s));
+                    });
+                    if (CollectionUtils.isNotEmpty(stringSet)){
+                        return StringUtils.join(stringSet,"、");
+                    }
+                }
+            }
         }
+        return error;
     }
 
     /**
@@ -183,7 +198,7 @@ public class GenerateLandEntityService {
                 stringBuilder.append(landStateVo.getFertility());
             }
         } else {
-            if (StringUtils.isNotBlank(stringBuilder.toString().trim())){
+            if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
                 stringBuilder.append("，");
             }
             if (StringUtils.isNotBlank(landStateVo.getHoldOn())) {
@@ -255,11 +270,11 @@ public class GenerateLandEntityService {
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
-        stringSet.add(String.format("%s", StringUtils.isNotBlank(landStateVo.getEastTo()) ? landStateVo.getEastTo() : error));
-        stringSet.add(String.format("%s", StringUtils.isNotBlank(landStateVo.getSouthTo()) ? landStateVo.getSouthTo() : error));
-        stringSet.add(String.format("%s", StringUtils.isNotBlank(landStateVo.getWestTo()) ? landStateVo.getWestTo() : error));
-        stringSet.add(String.format("%s", StringUtils.isNotBlank(landStateVo.getNorthTo()) ? landStateVo.getNorthTo() : error));
-        String v = StringUtils.join(stringSet.stream().filter(s -> !Objects.equal(error, s)).collect(Collectors.toList()), "、");
+        stringSet.add(landStateVo.getEastTo());
+        stringSet.add(landStateVo.getSouthTo());
+        stringSet.add(landStateVo.getWestTo());
+        stringSet.add(landStateVo.getNorthTo());
+        String v = StringUtils.join(stringSet.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList()), "、");
         return StringUtils.isNotBlank(v) ? v : error;
     }
 }
