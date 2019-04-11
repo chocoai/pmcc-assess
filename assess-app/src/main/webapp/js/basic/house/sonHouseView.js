@@ -1646,6 +1646,7 @@ damagedDegree.loadDamagedDegreeList = function () {
                                 trHtml = trHtml.replace(/{intact}/g, AssessCommon.toString(item.intact));
                                 trHtml = trHtml.replace(/{basicallyIntact}/g, AssessCommon.toString(item.basicallyIntact)).replace(/{generalDamage}/g, AssessCommon.toString(item.generalDamage));
                                 trHtml = trHtml.replace(/{seriousDamage}/g, AssessCommon.toString(item.seriousDamage)).replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
+                                trHtml = trHtml.replace(/{standardScore}/g, AssessCommon.toString(item.standardScore));
                                 trHtml = trHtml.replace(/{score}/g, AssessCommon.toString(item.score));
                                 $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').append(trHtml);
                                 var trElement = $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').find('tr:last');

@@ -22,6 +22,7 @@
     <result column="use_environment" property="useEnvironment" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="case_date" property="caseDate" jdbcType="TIMESTAMP" />
+    <result column="new_degree" property="newDegree" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -88,7 +89,7 @@
     id, apply_id, unit_id, house_number, floor, floor_desc, huxing_id, huxing_name, new_huxing_name, 
     spatial_distribution, spatial_distribution_desc, cert_use, practical_use, orientation, 
     area, research_type, right_interests_restriction, use_environment, description, case_date, 
-    creator, gmt_created, gmt_modified
+    new_degree, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample" >
     select
@@ -130,16 +131,18 @@
       spatial_distribution_desc, cert_use, practical_use, 
       orientation, area, research_type, 
       right_interests_restriction, use_environment, 
-      description, case_date, creator, 
-      gmt_created, gmt_modified)
+      description, case_date, new_degree, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{applyId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingId,jdbcType=INTEGER}, 
       #{huxingName,jdbcType=VARCHAR}, #{newHuxingName,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, 
       #{spatialDistributionDesc,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
       #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{researchType,jdbcType=INTEGER}, 
       #{rightInterestsRestriction,jdbcType=VARCHAR}, #{useEnvironment,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, #{newDegree,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -203,6 +206,9 @@
       </if>
       <if test="caseDate != null" >
         case_date,
+      </if>
+      <if test="newDegree != null" >
+        new_degree,
       </if>
       <if test="creator != null" >
         creator,
@@ -271,6 +277,9 @@
       </if>
       <if test="caseDate != null" >
         #{caseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newDegree != null" >
+        #{newDegree,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -352,6 +361,9 @@
       <if test="record.caseDate != null" >
         case_date = #{record.caseDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.newDegree != null" >
+        new_degree = #{record.newDegree,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -388,6 +400,7 @@
       use_environment = #{record.useEnvironment,jdbcType=INTEGER},
       description = #{record.description,jdbcType=VARCHAR},
       case_date = #{record.caseDate,jdbcType=TIMESTAMP},
+      new_degree = #{record.newDegree,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -455,6 +468,9 @@
       <if test="caseDate != null" >
         case_date = #{caseDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="newDegree != null" >
+        new_degree = #{newDegree,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -488,6 +504,7 @@
       use_environment = #{useEnvironment,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},
       case_date = #{caseDate,jdbcType=TIMESTAMP},
+      new_degree = #{newDegree,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

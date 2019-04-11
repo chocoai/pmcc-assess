@@ -1386,6 +1386,76 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andNewDegreeIsNull() {
+            addCriterion("new_degree is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeIsNotNull() {
+            addCriterion("new_degree is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeEqualTo(String value) {
+            addCriterion("new_degree =", value, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeNotEqualTo(String value) {
+            addCriterion("new_degree <>", value, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeGreaterThan(String value) {
+            addCriterion("new_degree >", value, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeGreaterThanOrEqualTo(String value) {
+            addCriterion("new_degree >=", value, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeLessThan(String value) {
+            addCriterion("new_degree <", value, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeLessThanOrEqualTo(String value) {
+            addCriterion("new_degree <=", value, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeLike(String value) {
+            addCriterion("new_degree like", value, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeNotLike(String value) {
+            addCriterion("new_degree not like", value, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeIn(List<String> values) {
+            addCriterion("new_degree in", values, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeNotIn(List<String> values) {
+            addCriterion("new_degree not in", values, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeBetween(String value1, String value2) {
+            addCriterion("new_degree between", value1, value2, "newDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewDegreeNotBetween(String value1, String value2) {
+            addCriterion("new_degree not between", value1, value2, "newDegree");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
