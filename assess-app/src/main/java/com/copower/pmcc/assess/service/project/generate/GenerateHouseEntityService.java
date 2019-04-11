@@ -16,7 +16,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,7 +76,7 @@ public class GenerateHouseEntityService {
             int year = DateUtils.getYear(beCompletedTime);
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s年", year));
         }
-        return generateCommonMethod.judgeEachDesc(map, "","，", false);
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
     }
 
     /**
@@ -97,7 +96,7 @@ public class GenerateHouseEntityService {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), baseDataDicService.getNameById(constructionQuality));
             }
         }
-        return generateCommonMethod.judgeEachDesc(map, "","，", false);
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
     }
 
     /**
@@ -178,7 +177,7 @@ public class GenerateHouseEntityService {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", floorHeight));
             }
         }
-        return generateCommonMethod.judgeEachDesc(map, "","，", false);
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
     }
 
     /**
@@ -278,11 +277,11 @@ public class GenerateHouseEntityService {
             SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            stringBuilder.append(String.format("外观风格%s,", baseDataDicService.getNameById(basicBuilding.getAppearanceStyle())));
+            stringBuilder.append(String.format("%s风格,", baseDataDicService.getNameById(basicBuilding.getAppearanceStyle())));
             stringBuilder.append(String.format("外观%s;", baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld())));
             stringMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), stringBuilder.toString());
         }
-        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(stringMap, "号", ";", false));
+        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(stringMap, "", ";", false));
     }
 
     /**
@@ -762,7 +761,7 @@ public class GenerateHouseEntityService {
                                     stringBuilder.append(intelligentVoList.get(j).getGradeName()).append("材料");
                                 }
                                 if (StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName())) {
-                                    stringBuilder.append(intelligentVoList.get(j).getSwitchCircuitName() );
+                                    stringBuilder.append(intelligentVoList.get(j).getSwitchCircuitName());
                                 }
                                 stringBuilder.append("铺设方式").append(StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName()) ? intelligentVoList.get(j).getLayingMethodName() : "无");
                                 if (StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
@@ -784,7 +783,7 @@ public class GenerateHouseEntityService {
                             for (int j = 0; j < size; j++) {
                                 BasicHouseWater basicHouseWater = basicHouseWaterList.get(j);
                                 String gradeName = baseDataDicService.getNameById(basicHouseWater.getGrade());
-                                if (StringUtils.isEmpty(gradeName)){
+                                if (StringUtils.isEmpty(gradeName)) {
                                     continue;
                                 }
                                 String boosterEquipmentName = baseDataDicService.getNameById(basicHouseWater.getBoosterEquipment());
@@ -1078,7 +1077,8 @@ public class GenerateHouseEntityService {
             if (CollectionUtils.isNotEmpty(roomList)) {
                 StringBuilder roomBuilder = new StringBuilder();
                 for (BasicHouseRoom room : roomList) {
-                    roomBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
+                    if (roomList.size() > 1)
+                        roomBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
                     Map<String, String> stringMap = Maps.newHashMap();
                     if (StringUtils.isNotBlank(room.getAeration()))
                         stringMap.put("通风", room.getAeration());
@@ -1094,31 +1094,11 @@ public class GenerateHouseEntityService {
             }
         }
         String functionString = generateCommonMethod.judgeEachDesc(functionMap, "", ";", false);
-        String roomString = generateCommonMethod.judgeEachDesc(roomMap, "号", ";", true);
+        String roomString = generateCommonMethod.judgeEachDesc(roomMap, "", ";", false);
         StringBuilder resultBuilder = new StringBuilder(functionString);
         if (StringUtils.isNotBlank(roomString))
             resultBuilder.append(";").append(roomString);
         return generateCommonMethod.trim(resultBuilder.toString());
-
-
-//        //房间中采光等信息按估价对象分别描述
-//        for (SchemeJudgeObject judgeObject : judgeObjectList) {
-//            stringBuilder.append(String.format("%s%s", judgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
-//            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-//            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-//            List<BasicHouseRoom> roomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
-//
-//            for (BasicHouseRoom room : roomList) {
-//                stringBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
-//                Map<String, String> stringMap = Maps.newHashMap();
-//                stringMap.put("通风", room.getAeration());
-//                stringMap.put("日照", room.getSunshine());
-//                stringMap.put("采光", room.getLighting());
-//                stringMap.put("隔音", room.getSoundInsulation());
-//                stringBuilder.append(generateCommonMethod.stringSummaryDesc(stringMap, "", "，"));
-//            }
-//        }
-//        return generateCommonMethod.trim(stringBuilder.toString());
     }
 
 }

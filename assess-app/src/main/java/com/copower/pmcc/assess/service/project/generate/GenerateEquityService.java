@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyJudgeObjectGroupDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.data.DataPropertyServiceItemVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -80,11 +81,12 @@ public class GenerateEquityService {
                     declareBuilder.append("国有土地使用权");
                 if (StringUtils.equals(declareRecord.getLandRightType(), "集用"))
                     declareBuilder.append("集体土地所有权");
-                declareBuilder.append(declareRecord.getLandRightNature()).append(declareRecord.getLandCertUse()).append(String.format("权益人%s", declareRecord.getOwnership()));
+                declareBuilder.append(declareRecord.getLandRightNature()).append("，")
+                        .append(declareRecord.getLandCertUse()).append("，").append(String.format("权益人%s", declareRecord.getOwnership()));
                 declareMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), declareBuilder.toString());
             }
         }
-        String declareDesc = generateCommonMethod.judgeEachDesc(declareMap, "号", ",", true);
+        String declareDesc = generateCommonMethod.judgeEachDesc(declareMap, "", ",", false);
         if (StringUtils.isNotBlank(declareDesc)) {
             stringBuilder.append(generateCommonMethod.trim(declareDesc));
         }
@@ -155,8 +157,11 @@ public class GenerateEquityService {
         if (CollectionUtils.isEmpty(groupDtoList)) return null;
         StringBuilder rightBuilder = new StringBuilder();
         for (SurveyRightGroupDto surveyRightGroupDto : groupDtoList) {
-            String judgeNumber = generateCommonMethod.convertNumber(schemeJudgeObjectService.getJudgeNumberByDeclareIds(Lists.newArrayList(surveyRightGroupDto.getDeclareRecordIds())));
-            rightBuilder.append(String.format("%s%s号%s，", surveyRightGroupDto.getCategoryName(), judgeNumber, surveyRightGroupDto.getRemark()));
+            if (groupDtoList.size() > 1) {
+                String judgeNumber = generateCommonMethod.convertNumber(schemeJudgeObjectService.getJudgeNumberByDeclareIds(Lists.newArrayList(surveyRightGroupDto.getDeclareRecordIds())));
+                rightBuilder.append(String.format("%s号", judgeNumber));
+            }
+            rightBuilder.append(surveyRightGroupDto.getRemark()).append("，");
         }
         return generateCommonMethod.trim(rightBuilder.toString());
     }
@@ -173,8 +178,11 @@ public class GenerateEquityService {
         if (map.isEmpty()) return null;
         StringBuilder specialcaseBuilder = new StringBuilder();
         for (Map.Entry<String, List<Integer>> stringListEntry : map.entrySet()) {
-            String judgeNumber = generateCommonMethod.convertNumber(schemeJudgeObjectService.getJudgeNumberByDeclareIds(Lists.newArrayList(stringListEntry.getValue())));
-            specialcaseBuilder.append(String.format("%s号%s，", judgeNumber, stringListEntry.getKey()));
+            if (map.size() > 1) {
+                String judgeNumber = generateCommonMethod.convertNumber(schemeJudgeObjectService.getJudgeNumberByDeclareIds(Lists.newArrayList(stringListEntry.getValue())));
+                specialcaseBuilder.append(String.format("%s号", judgeNumber));
+            }
+            specialcaseBuilder.append(stringListEntry.getKey()).append("，");
         }
         return generateCommonMethod.trim(specialcaseBuilder.toString());
     }
@@ -228,7 +236,7 @@ public class GenerateEquityService {
                 propertyMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), propertyBuilder.toString());
             }
         }
-        String declareDesc = generateCommonMethod.judgeEachDesc(declareMap, "号", ",", true);
+        String declareDesc = generateCommonMethod.judgeEachDesc(declareMap, "", ",", false);
         if (StringUtils.isNotBlank(declareDesc)) {
             stringBuilder.append(generateCommonMethod.trim(declareDesc));
         }
@@ -242,18 +250,45 @@ public class GenerateEquityService {
         if (StringUtils.isNotBlank(stringSpecialcase))
             stringBuilder.append(generateCommonMethod.trim(stringSpecialcase));
 
+        //他权综合描述
+        String stringRightComprehensiveDesc = this.getRightComprehensiveDesc(projectId, judgeObjects);
+        if (StringUtils.isNotBlank(stringRightComprehensiveDesc))
+            stringBuilder.append(generateCommonMethod.trim(stringRightComprehensiveDesc));
+
         //物业信誉与管理
-        String propertyDesc = generateCommonMethod.judgeEachDesc(propertyMap, "号", ",", true);
+        String propertyDesc = generateCommonMethod.judgeEachDesc(propertyMap, "", ",", false);
         if (StringUtils.isNotBlank(propertyDesc)) {
             stringBuilder.append(generateCommonMethod.trim(propertyDesc));
         }
 
         //房产评估综合评价
         String stringOverallMerit = getOverallMerit(StringUtils.isEmpty(stringRightCategory), StringUtils.isEmpty(stringSpecialcase), socialPrestige);
-        if(StringUtils.isNotBlank(stringOverallMerit)){
+        if (StringUtils.isNotBlank(stringOverallMerit)) {
             stringBuilder.append(generateCommonMethod.trim(stringOverallMerit));
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * 获取他权综合描述
+     *
+     * @param projectId
+     * @param judgeObjects
+     * @return
+     */
+    public String getRightComprehensiveDesc(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
+        List<SurveyJudgeObjectGroupDto> list = surveyAssetInventoryRightRecordService.groupJudgeObject(projectId, judgeObjects);
+        if (CollectionUtils.isEmpty(list)) return null;
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto : list) {
+            if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "强"))
+                map.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、无特定转让限制。");
+            if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "一般"))
+                map.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、转让受特定限制");
+            if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "弱"))
+                map.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、转让受到限制");
+        }
+        return generateCommonMethod.judgeSummaryDesc(map, "", false);
     }
 
     /**
