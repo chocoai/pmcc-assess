@@ -9,14 +9,17 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.data.SurveyDamageDto;
+import com.copower.pmcc.assess.dto.input.project.generate.EstateLiquidityAnalysisDto;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyJudgeObjectGroupDto;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.generate.GenerateHouseEntityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateLandEntityService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -34,6 +37,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -43,10 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service(value = "dataReportAnalysisService")
 public class DataReportAnalysisService {
@@ -72,7 +73,7 @@ public class DataReportAnalysisService {
     @Autowired
     private DataBlockService dataBlockService;
     @Autowired
-    private BasicEstateLandStateService basicEstateLandStateService;
+    private PublicService publicService;
     @Autowired
     private SurveyAssetInventoryService surveyAssetInventoryService;
     @Autowired
@@ -89,6 +90,8 @@ public class DataReportAnalysisService {
     private BasicApplyDao basicApplyDao;
     @Autowired
     private GenerateLandEntityService generateLandEntityService;
+    @Autowired
+    private GenerateHouseEntityService generateHouseEntityService;
 
 
     /**
@@ -203,7 +206,7 @@ public class DataReportAnalysisService {
     public String getReportLiquidity(ProjectInfo projectInfo, Integer areaGroupId) throws Exception {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
         if (baseDataDic == null) return "";
-
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
         //变现比率
         SchemeLiquidationAnalysis data = schemeLiquidationAnalysisService.getDataByAreaId(areaGroupId);
         String liquidRatios = data.getLiquidRatios();
@@ -212,8 +215,15 @@ public class DataReportAnalysisService {
         //区域
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
         if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
-        StringBuilder stringBuilder = new StringBuilder();
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> estateGroupMap = generateCommonMethod.getEstateGroupByAreaId(areaGroupId);
+        Map<String, EstateLiquidityAnalysisDto> analysisDtoMap = Maps.newHashMap();
+        for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : estateGroupMap.entrySet()) {
+            EstateLiquidityAnalysisDto estateLiquidityAnalysisDto = new EstateLiquidityAnalysisDto();
+            estateLiquidityAnalysisDto.setEstateName(entry.getKey().getName());
+            analysisDtoMap.put(entry.getKey().getName(), estateLiquidityAnalysisDto);
+        }
 
+        StringBuilder stringBuilder = new StringBuilder();
         //对应委估对象
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
         for (int i = 0; i < reportAnalysisList.size(); i++) {
@@ -236,25 +246,8 @@ public class DataReportAnalysisService {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(buildingProfile.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{楼盘概况}", entry.getKey().getLocationDescribe())).append("</p>");
                 }
             }
-            //估价对象区位分析
-            if (AssessReportFieldConstant.LOCATION_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
-                ArrayList<String> estateNames = new ArrayList<>();
-                for (SchemeJudgeObject judgeObject : judgeObjectList) {
-                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-                    BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                    if (!estateNames.contains(basicEstate.getName())) {
-                        estateNames.add(basicEstate.getName());
-                    }
-                }
-                Map<BasicEstate, String> map = getSameEstate(judgeObjectList, estateNames);
-                DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOCATION_ANALYSIS_PLATE);
-                for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
-                    DataBlock block = dataBlockService.getDataBlockById(entry.getKey().getBlockId());
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", block.getDistrict())).append("</p>");
-                }
-            }
-            //估价区位分析
-            if (AssessReportFieldConstant.ZONE_BIT_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+            //估价对象区位分析 与 估价区位分析
+            if (AssessReportFieldConstant.ZONE_BIT_ANALYSIS.equals(dataReportAnalysis.getFieldName()) || AssessReportFieldConstant.LOCATION_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
                 ArrayList<String> estateNames = new ArrayList<>();
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
@@ -284,7 +277,7 @@ public class DataReportAnalysisService {
                 DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LAND_ENTITY_ANALYSIS_HOUSES);
                 for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
                     StringBuilder numbers = new StringBuilder();
-                    for (SchemeJudgeObject item: entry.getValue()) {
+                    for (SchemeJudgeObject item : entry.getValue()) {
                         numbers.append(item.getNumber()).append(",");
                     }
                     BasicApply apply = basicApplyDao.getBasicApplyById(entry.getKey().getApplyId());
@@ -292,12 +285,63 @@ public class DataReportAnalysisService {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", getSubstitutionPrincipleName(numbers.toString())).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{楼盘名称}", entry.getKey().getName()).replace("#{土地实体结论}", content)).append("</p>");
                 }
             }
+            //估价对象建筑实体分析
+            if (AssessReportFieldConstant.ARCHITECTURAL_ENTITY_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaGroupId);
+                if (!map.isEmpty()) {
+                    for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
+                        String content = generateHouseEntityService.getContent(LangUtils.transform(entry.getValue(), o -> o.getId()), schemeAreaGroup);
+                        stringBuilder.append(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(content))));
+                    }
+                }
+            }
+            //变现能力通用性分析
+            if (AssessReportFieldConstant.UNIVERSALITY_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaGroupId);
+                if (!map.isEmpty()) {
+                    for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
+                        StringBuilder content = new StringBuilder();
+                        List<Integer> judgeNumbers = Lists.newArrayList();
+                        Map<Integer, String> certUseMap = Maps.newHashMap();
+                        Map<Integer, String> practicalUseMap = Maps.newHashMap();
+                        for (SchemeJudgeObject schemeJudgeObject : entry.getValue()) {
+                            Integer number = generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber());
+                            judgeNumbers.add(number);
+                            certUseMap.put(number, schemeJudgeObject.getCertUse());
+                            practicalUseMap.put(number, schemeJudgeObject.getPracticalUse());
+                        }
+                        content.append(generateCommonMethod.convertNumber(judgeNumbers)).append("号均位于");
+                        content.append(publicService.fusinString(LangUtils.transform(entry.getValue(), o -> o.getSeat()),true)).append("，");
+                        content.append(generateCommonMethod.judgeSummaryDesc(certUseMap, "证载用途", false)).append("，");
+                        content.append(generateCommonMethod.judgeSummaryDesc(practicalUseMap, "实际用途", false)).append("，其用途符合该区域的未来发展方向，");
+                        List<SurveyJudgeObjectGroupDto> list = surveyAssetInventoryRightRecordService.groupJudgeObject(projectInfo.getId(), entry.getValue());
+                        if (CollectionUtils.isNotEmpty(list)) {
+                            Map<Integer, String> comprehensiveMap = Maps.newHashMap();
+                            Map<Integer, String> resultMap = Maps.newHashMap();
+                            for (SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto : list) {
+                                resultMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), surveyJudgeObjectGroupDto.getResult());
+                                if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "强"))
+                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、无特定转让限制");
+                                if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "一般"))
+                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、转让受特定限制");
+                                if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "弱"))
+                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、转让受到限制");
+                            }
+                            content.append(generateCommonMethod.judgeSummaryDesc(comprehensiveMap, "", false)).append("，");
+                            String desc = generateCommonMethod.judgeSummaryDesc(resultMap, "通用性", false);
+                            EstateLiquidityAnalysisDto analysisDto = analysisDtoMap.get(entry.getKey().getName());
+                            analysisDto.setGenerality(desc);
+                            content.append(desc).append("，");
 
+                        }
+                        stringBuilder.append(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(content.toString()))));
+                    }
+                }
+            }
             //独立性分析
             if (AssessReportFieldConstant.INDEPENDENCE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
                 //完好委估对象
                 StringBuilder intact = new StringBuilder();
-
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     StringBuilder damageContent = new StringBuilder();
                     //对应资产清查内容
@@ -489,25 +533,39 @@ public class DataReportAnalysisService {
                 Integer num = judgeObjectList.size();
                 BigDecimal totalRealEstate = generateCommonMethod.getTotalRealEstate(areaGroupId);
                 BigDecimal rank = new BigDecimal("5000000");
+                DataReportTemplateItem dataReportTemplateByField = null;
                 if (rank.compareTo(totalRealEstate) == 1 && num < 5) {
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION1);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
-
+                    dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION1);
                 }
                 if (rank.compareTo(totalRealEstate) == 1 && num >= 5) {
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION2);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
-
+                    dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION2);
                 }
                 if (rank.compareTo(totalRealEstate) < 1 && num < 5) {
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION3);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
-
+                    dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION3);
                 }
                 if (rank.compareTo(totalRealEstate) < 1 && num >= 5) {
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION4);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
-
+                    dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION4);
+                }
+                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate()));
+            }
+            //变现能力综述
+            if (AssessReportFieldConstant.CASHABILITY_SUMMARY.equals(dataReportAnalysis.getFieldName())) {
+                DataReportTemplateItem templateItem = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.CASHABILITY_SUMMARY_CONTENT);
+                for (Map.Entry<String, EstateLiquidityAnalysisDto> entry : analysisDtoMap.entrySet()) {
+                    EstateLiquidityAnalysisDto analysisDto = entry.getValue();
+                    String s = templateItem.getTemplate()
+                            .replace("#{通用性}",StringUtils.isEmpty(analysisDto.getGenerality())?"":String.format(analysisDto.getGenerality()) )
+                            .replace("#{独立使用性}", StringUtils.isEmpty(analysisDto.getIndependence())?"":String.format(analysisDto.getIndependence()) )
+                            .replace("#{单个产权面积}", StringUtils.isEmpty(analysisDto.getPropertyRight())?"":String.format(analysisDto.getPropertyRight()) );
+                    String mobility = "好";
+                    if (analysisDto.getGenerality().contains("弱") || analysisDto.getIndependence().contains("差")) {
+                        mobility = "较差";
+                    }
+                    if (analysisDto.getGenerality().contains("一般") || analysisDto.getGenerality().contains("一般") || analysisDto.getGenerality().contains("适中")) {
+                        mobility = "较好";
+                    }
+                    s = s.replace("#{流动性}", mobility);
+                    stringBuilder.append(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(s))));
                 }
             }
         }

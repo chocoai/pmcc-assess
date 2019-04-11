@@ -866,7 +866,7 @@ public class GenerateCommonMethod {
     public String judgeSummaryDesc(Map<Integer, String> map, String explain, Boolean isShowNumber) {
         if (map == null || map.size() <= 0) return "";
         //map按key值排序
-        Map<Integer, String> sortMap=new TreeMap<>(new Comparator<Integer>() {
+        Map<Integer, String> sortMap = new TreeMap<>(new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
                 return o1.compareTo(o2);
@@ -912,7 +912,7 @@ public class GenerateCommonMethod {
     public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumner) {
         if (map == null || map.size() <= 0) return "";
         //map按key值排序
-        Map<Integer, String> sortMap=new TreeMap<>(new Comparator<Integer>() {
+        Map<Integer, String> sortMap = new TreeMap<>(new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
                 return o1.compareTo(o2);
@@ -925,7 +925,7 @@ public class GenerateCommonMethod {
             if (listMap.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
                 return explain + stringListEntry.getKey();
             }
-            builder.append(convertNumber(stringListEntry.getValue())).append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
+            builder.append(String.format("%s号", convertNumber(stringListEntry.getValue()))).append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
         }
         return builder.toString();
     }

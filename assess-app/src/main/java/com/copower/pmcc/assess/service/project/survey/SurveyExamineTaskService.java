@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
@@ -102,6 +103,8 @@ public class SurveyExamineTaskService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ResidueRatioService residueRatioService;
 
     /**
      * 获取调查任务
@@ -678,6 +681,10 @@ public class SurveyExamineTaskService {
                     basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree);
                 }
             }
+            //写入成新率
+            String newDegree = residueRatioService.getObservationalRatio(basicHouse.getId());
+            basicHouse.setNewDegree(newDegree);
+            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
         }
 
         //案例

@@ -290,7 +290,7 @@ public class PublicService {
      * @param list
      * @return
      */
-    public String fusinString(List<String> list) {
+    public String fusinString(List<String> list,Boolean onlySame) {
         if (CollectionUtils.isEmpty(list)) return null;
         //去除重复
         list = generateCommonMethod.removeDuplicate(list);
@@ -303,6 +303,7 @@ public class PublicService {
         }
         //samePart 如果后面为数字则去掉数字
         samePart = samePart.replaceAll("\\d+$", "");
+        if(onlySame) return samePart;
         StringBuilder resultBuilder = new StringBuilder(samePart);
         for (String s : list) {
             resultBuilder.append(s.replace(samePart, "")).append("、");

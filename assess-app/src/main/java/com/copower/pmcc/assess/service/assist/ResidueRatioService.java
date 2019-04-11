@@ -113,16 +113,38 @@ public class ResidueRatioService {
         return alreadyObj;
     }
 
-    public BigDecimal getScoreTotal(Integer houseId, String type) {
+    public BigDecimal getTypeScore(Integer houseId, String type) {
         DataDamagedDegree degree = dataDamagedDegreeService.getCacheDamagedDegreeByFieldName(type);
         BigDecimal weight = degree.getWeight();
         List<BasicHouseDamagedDegreeVo> structuralList = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId, degree.getId());
         BigDecimal scoreTotal = new BigDecimal("0");
         for (BasicHouseDamagedDegreeVo item : structuralList) {
-            scoreTotal = scoreTotal.add(item.getScore());
+            if (item.getScore() != null) {
+                scoreTotal = scoreTotal.add(item.getScore());
+            }
         }
         return scoreTotal.multiply(weight);
     }
 
+
+    //观察法成新率
+    public String getObservationalRatio(Integer houseId) {
+        BigDecimal structuralScore = this.getTypeScore(houseId, "structural.part");
+        BigDecimal decorationScore = this.getTypeScore(houseId, "decoration.part");
+        BigDecimal equipmentScore = this.getTypeScore(houseId, "equipment.part");
+        BigDecimal otherScore = this.getTypeScore(houseId, "other");
+        BigDecimal total = structuralScore.add(decorationScore).add(equipmentScore).add(otherScore);
+        String level = "%50";
+        if (total.compareTo(new BigDecimal("85")) == 1 && total.compareTo(new BigDecimal("100")) < 1) {
+            level = "90%";
+        }
+        if (total.compareTo(new BigDecimal("65")) == 1 && total.compareTo(new BigDecimal("85")) < 1) {
+            level = "75%";
+        }
+        if (total.compareTo(new BigDecimal("50")) == 1 && total.compareTo(new BigDecimal("65")) < 1) {
+            level = "60%";
+        }
+        return level;
+    }
 
 }

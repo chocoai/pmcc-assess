@@ -16,7 +16,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -278,11 +277,11 @@ public class GenerateHouseEntityService {
             SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            stringBuilder.append(String.format("外观风格%s,", baseDataDicService.getNameById(basicBuilding.getAppearanceStyle())));
+            stringBuilder.append(String.format("%s风格,", baseDataDicService.getNameById(basicBuilding.getAppearanceStyle())));
             stringBuilder.append(String.format("外观%s;", baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld())));
             stringMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), stringBuilder.toString());
         }
-        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(stringMap, "号", ";", false));
+        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(stringMap, "", ";", false));
     }
 
     /**
@@ -1100,7 +1099,8 @@ public class GenerateHouseEntityService {
             if (CollectionUtils.isNotEmpty(roomList)) {
                 StringBuilder roomBuilder = new StringBuilder();
                 for (BasicHouseRoom room : roomList) {
-                    roomBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
+                    if (roomList.size() > 1)
+                        roomBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
                     Map<String, String> stringMap = Maps.newHashMap();
                     if (StringUtils.isNotBlank(room.getAeration()))
                         stringMap.put("通风", room.getAeration());
@@ -1116,7 +1116,7 @@ public class GenerateHouseEntityService {
             }
         }
         String functionString = generateCommonMethod.judgeEachDesc(functionMap, "", ";", false);
-        String roomString = generateCommonMethod.judgeEachDesc(roomMap, "号", ";", true);
+        String roomString = generateCommonMethod.judgeEachDesc(roomMap, "", ";", false);
         StringBuilder resultBuilder = new StringBuilder(functionString);
         if (StringUtils.isNotBlank(roomString))
             resultBuilder.append(";").append(roomString);

@@ -1,13 +1,13 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyJudgeObjectGroupDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryRightRecordVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -42,6 +42,8 @@ public class SurveyAssetInventoryRightRecordService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @Autowired
     private CommonService commonService;
@@ -128,6 +130,41 @@ public class SurveyAssetInventoryRightRecordService {
         return resultList;
     }
 
+    public List<SurveyJudgeObjectGroupDto> groupJudgeObject(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
+        List<SurveyAssetInventoryRightRecord> rightRecords = getListByProjectId(projectId);
+        if (CollectionUtils.isEmpty(rightRecords)) return null;
+        List<SurveyJudgeObjectGroupDto> list = Lists.newArrayList();
+        //他权其它
+        BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER);
+        for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
+            List<Integer> declareIds = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
+            for (SchemeJudgeObject judgeObject : judgeObjects) {
+                if (declareIds.contains(judgeObject.getDeclareRecordId())) {
+                    SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto = new SurveyJudgeObjectGroupDto();
+                    surveyJudgeObjectGroupDto.setJudgeObjectNumber(judgeObject.getNumber());
+                    surveyJudgeObjectGroupDto.setJudgeObjectId(judgeObject.getId());
+                    surveyJudgeObjectGroupDto.setDeclareRecordId(judgeObject.getDeclareRecordId());
+                    surveyJudgeObjectGroupDto.setSpecialcase(rightRecord.getSpecialcase());
+                    List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(rightRecord.getId());
+                    surveyJudgeObjectGroupDto.setRightList(inventoryRights);
+                    Boolean rightOtherEmpty = true;
+                    if (CollectionUtils.isNotEmpty(inventoryRights) && LangUtils.transform(inventoryRights, o -> o.getCategory()).contains(projectClassify.getId())) {
+                        rightOtherEmpty = false;
+                    }
+                    if (rightOtherEmpty == Boolean.TRUE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getSpecialcase())) {
+                        surveyJudgeObjectGroupDto.setResult("一般");
+                    } else if (rightOtherEmpty == Boolean.FALSE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getSpecialcase())) {
+                        surveyJudgeObjectGroupDto.setResult("弱");
+                    } else {
+                        surveyJudgeObjectGroupDto.setResult("强");
+                    }
+                    list.add(surveyJudgeObjectGroupDto);
+                }
+            }
+        }
+        return list;
+    }
+
 
     /**
      * 根据类别将他权分组
@@ -155,7 +192,7 @@ public class SurveyAssetInventoryRightRecordService {
                             surveyRightGroupDto.setKey(String.format("%s%s", baseDataDicService.getNameById(inventoryRight.getCategory()), inventoryRight.getRemark()));
                             surveyRightGroupDto.setGroupId(rightRecord.getId());
                             surveyRightGroupDto.setCategory(inventoryRight.getCategory());
-                            surveyRightGroupDto.setCategoryName(baseDataDicService.getNameById(inventoryRight.getCategory()));
+                            surveyRightGroupDto.setCategoryName(baseProjectClassifyService.getNameById(inventoryRight.getCategory()));
                             surveyRightGroupDto.setRemark(inventoryRight.getRemark());
                             surveyRightGroupDto.setDeclareRecordIds(Sets.newHashSet(list));
                             this.pushSurveyRightGroupDto(groupDtoList, surveyRightGroupDto);

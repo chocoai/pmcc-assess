@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.aspose.words.BookmarkCollection;
-import com.aspose.words.Document;
+import com.aspose.words.*;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
@@ -38,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by kings on 2018-5-23.
@@ -164,6 +164,23 @@ public class GenerateReportService {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
                         String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+                        Document doc = new Document(path);
+//                        DocumentBuilder builder = new DocumentBuilder(doc);
+//                        //“目录”两个字居中显示、加粗、搜宋体
+//                        builder.getCurrentParagraph().getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+//                        builder.setBold(true);
+//                        builder.writeln("目录");
+//                        //清清除所有样式设置
+//                        builder.getParagraphFormat().clearFormatting();
+//                        //插入目录，这是固定的
+//                        builder.insertTableOfContents("\\o \"1-3\" \\h \\z \\u");
+//
+//                        //将光标移到目录书签
+//                        builder.moveToBookmark("TOC");
+//                        builder.insertBreak(BreakType.PAGE_BREAK);
+
+                        doc.updateFields();// 更新域
+                        doc.save(path);
                         if (StringUtils.isNotBlank(path)) {
                             this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT, sysAttachmentDtoList);
                         }
@@ -342,11 +359,11 @@ public class GenerateReportService {
                 }
                 //变现能力分析
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk(SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_LIQUIDITY, generateReportGeneration.getAreaGroupId()));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk(SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_LIQUIDITY));
                 }
                 //风险提示
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk(SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_RISK, generateReportGeneration.getAreaGroupId()));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk(SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_RISK));
                 }
                 //社会经济发展概况
                 if (Objects.equal(BaseReportFieldEnum.BACKGROUND_ANALYSIS_DEVELOPMENT.getName(), name)) {
@@ -490,24 +507,15 @@ public class GenerateReportService {
                 }
                 //注册房产估价师
                 if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuer.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuer(generateReportGeneration.getRealEstateAppraiser()));
-                    }
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuer(generateReportGeneration.getRealEstateAppraiser()));
                 }
                 //注册房产估价师及注册号
                 if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportGeneration));
-                    }
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportGeneration));
                 }
                 //注册房产估价师 注册号
                 if (Objects.equal(BaseReportFieldEnum.registrationNumber.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegistrationNumber(generateReportGeneration.getRealEstateAppraiser()));
-                    }
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegistrationNumber(generateReportGeneration.getRealEstateAppraiser()));
                 }
                 //注册房产估价师 注册房地产估价师注册证书复印件
                 if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerValuationInstitution.getName(), name)) {
@@ -651,7 +659,7 @@ public class GenerateReportService {
                 }
                 //评估方法 ,估价对象评估方法
                 if (Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), name)) {
-//                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethod());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethod());
                 }
                 //出租或占用情况
                 if (Objects.equal(BaseReportFieldEnum.rentalPossessionDesc.getName(), name)) {
@@ -721,10 +729,7 @@ public class GenerateReportService {
                 }
                 //变现分析税费
                 if (Objects.equal(BaseReportFieldEnum.LIQUIDATION_ANALYSIS.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidationAnalysis());
-                    }
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidationAnalysis());
                 }
                 //法定优先受偿款
                 if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement.getName(), name)) {
