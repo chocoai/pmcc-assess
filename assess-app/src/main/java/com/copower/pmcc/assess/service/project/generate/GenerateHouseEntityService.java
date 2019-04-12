@@ -1100,7 +1100,7 @@ public class GenerateHouseEntityService {
                 StringBuilder roomBuilder = new StringBuilder();
                 for (BasicHouseRoom room : roomList) {
                     if (roomList.size() > 1)
-                        roomBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
+                        roomBuilder.append(room.getRoomType());
                     Map<String, String> stringMap = Maps.newHashMap();
                     if (StringUtils.isNotBlank(room.getAeration()))
                         stringMap.put("通风", room.getAeration());

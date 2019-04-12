@@ -327,7 +327,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             stringBuilder = new StringBuilder();
                             if (CollectionUtils.isNotEmpty(roomList)) {
                                 for (BasicHouseRoom room : roomList) {
-                                    stringBuilder.append(StringUtils.isEmpty(room.getAeration()) ? "" : String.format("%s%s、", baseDataDicService.getNameById(room.getRoomType()), room.getAeration()));
+                                    stringBuilder.append(StringUtils.isEmpty(room.getAeration()) ? "" : String.format("%s%s、", room.getRoomType(), room.getAeration()));
                                 }
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.AERATION.getKey(), stringBuilder.toString()));
@@ -336,7 +336,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             stringBuilder = new StringBuilder();
                             if (CollectionUtils.isNotEmpty(roomList)) {
                                 for (BasicHouseRoom room : roomList) {
-                                    stringBuilder.append(StringUtils.isEmpty(room.getLighting()) ? "" : String.format("%s%s、", baseDataDicService.getNameById(room.getRoomType()), room.getLighting()));
+                                    stringBuilder.append(StringUtils.isEmpty(room.getLighting()) ? "" : String.format("%s%s、", room.getRoomType(), room.getLighting()));
                                 }
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LIGHTING.getKey(), stringBuilder.toString()));
@@ -345,7 +345,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             stringBuilder = new StringBuilder();
                             if (CollectionUtils.isNotEmpty(roomList)) {
                                 for (BasicHouseRoom room : roomList) {
-                                    stringBuilder.append(StringUtils.isEmpty(room.getSunshine()) ? "" : String.format("%s%s、", baseDataDicService.getNameById(room.getRoomType()), room.getSunshine()));
+                                    stringBuilder.append(StringUtils.isEmpty(room.getSunshine()) ? "" : String.format("%s%s、",room.getRoomType(), room.getSunshine()));
                                 }
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.SUNSHINE.getKey(), stringBuilder.toString()));
@@ -458,7 +458,7 @@ public class MdMarketCompareFieldService extends BaseService {
                                             stringBuilder.append(roomDecorate.getPartName()).append(roomDecorate.getMaterialName()).append(",");
                                         }
                                         if (decorate.length() > 0) {
-                                            stringBuilder.append(String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), decorate));
+                                            stringBuilder.append(String.format("%s:%s；", room.getRoomType(), decorate));
                                         }
                                     }
                                 }
