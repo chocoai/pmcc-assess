@@ -687,17 +687,6 @@ public class GenerateCommonMethod {
         return builder.toString();
     }
 
-
-    public String getListByIndex(Set<String> stringSet, int index) {
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            if (stringList.size() - 1 >= index) {
-                return stringList.get(index);
-            }
-        }
-        return null;
-    }
-
     public String getLocalPath() {
         return getLocalPath(null);
     }

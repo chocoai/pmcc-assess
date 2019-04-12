@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.common;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -47,10 +48,14 @@ public class PoiUtils {
             try {
                 cellValue = String.valueOf(cell.getStringCellValue());
             } catch (IllegalStateException e) {
-                cellValue = String.valueOf(cell.getNumericCellValue());
+                try {
+                    cellValue = String.valueOf(cell.getNumericCellValue());
+                } catch (Exception e1) {
+                    return cellValue;
+                }
             }
         }
-        return cellValue;
+        return StringUtils.trim(cellValue);
     }
 
     /**

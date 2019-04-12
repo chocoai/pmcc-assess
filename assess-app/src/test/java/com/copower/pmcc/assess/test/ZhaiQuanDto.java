@@ -8,11 +8,20 @@ import java.util.List;
  * Created by kings on 2019-4-12.
  */
 public class ZhaiQuanDto {
+    private String mutiDywFlag;
     private String ejfh;
     private String khmc;
     private String number;
     private KeyValueDto customerInfo;
     private List<ZhaiQuanDywDto> dywInfo;
+
+    public String getMutiDywFlag() {
+        return mutiDywFlag;
+    }
+
+    public void setMutiDywFlag(String mutiDywFlag) {
+        this.mutiDywFlag = mutiDywFlag;
+    }
 
     public String getEjfh() {
         return ejfh;
