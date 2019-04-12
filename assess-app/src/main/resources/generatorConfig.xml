@@ -42,6 +42,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_scheme_judge_function" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_basic_building" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_basic_house_room" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
     </context>
 </generatorConfiguration>

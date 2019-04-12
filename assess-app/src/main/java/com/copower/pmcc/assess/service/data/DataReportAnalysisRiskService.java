@@ -5,8 +5,8 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
-import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class DataReportAnalysisRiskService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ErpAreaService erpAreaService;
+    private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private DataReportTemplateItemService dataReportTemplateItemService;
 
@@ -61,9 +61,9 @@ public class DataReportAnalysisRiskService {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < reportAnalysisList.size(); i++) {
             DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, dataReportAnalysis.getName())).append("</p>");
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, dataReportAnalysis.getName())));
             stringBuilder.append(dataReportAnalysis.getTemplate());
         }
-        return stringBuilder.toString();
+        return generateCommonMethod.getWarpCssHtml(stringBuilder.toString());
     }
 }
