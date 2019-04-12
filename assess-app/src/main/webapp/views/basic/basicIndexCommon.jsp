@@ -9,6 +9,7 @@
 <script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/practicalUse.js"></script>
 
 <script src="${pageContext.request.contextPath}/js/select/selectMap/distance.get.fun.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js"></script>

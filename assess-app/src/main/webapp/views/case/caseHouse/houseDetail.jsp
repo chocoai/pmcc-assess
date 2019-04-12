@@ -94,7 +94,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">实际用途</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseHouse.practicalUseName}</label>
+                        <label class="form-control">${caseHouse.practicalUse}</label>
                     </div>
                 </div>
 

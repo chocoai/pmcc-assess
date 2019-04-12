@@ -192,9 +192,6 @@ public class BasicHouseService {
         if (basicHouse.getCertUse() != null) {
             vo.setCertUseName(baseDataDicService.getNameById(basicHouse.getCertUse()));
         }
-        if (basicHouse.getPracticalUse() != null) {
-            vo.setPracticalUseName(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
-        }
         if (basicHouse.getOrientation() != null) {
             vo.setOrientationName(baseDataDicService.getNameById(basicHouse.getOrientation()));
         }
