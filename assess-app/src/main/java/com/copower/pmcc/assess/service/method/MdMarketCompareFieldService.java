@@ -483,6 +483,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case NEW_DEGREE://成新度
                             stringBuilder = new StringBuilder();
+                            stringBuilder.append(examineHouse.getNewDegree());
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NEW_DEGREE.getKey(), stringBuilder.toString()));
                             break;
                         case Other://其它

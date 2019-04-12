@@ -151,7 +151,7 @@
                 residueRatio.loadList(defaults.houseId, "residueRatioOther", AssessDicKey.damaged_degree_other);
 
                 residueRatio.initAgeLimit(defaults.residueRatioId);
-                residueRatio.initObserve(defaults.residueRatioId);
+                residueRatio.initObserve(defaults.residueRatioId, defaults.houseId);
                 residueRatio.ratioChange();
             }
         });
@@ -355,7 +355,6 @@
                 $("#residueRatioDecorationScore").attr("value") >= 0 &&
                 $("#residueRatioEquipmentScore").attr("value") >= 0 &&
                 $("#residueRatioOtherScore").attr("value") >= 0) {
-
                 if (!$("#residueRatioType0").is(":checked")) {
                     observeCxl = residueRatio.getLevel(observeCxl);
                 }
@@ -392,18 +391,19 @@
             level = 60;
         }
         $("#residue_ratio_cxl").text(level + "%");
-        $("#residue_ratio_resultValue").val(level + "%")
+        $("#residue_ratio_resultValue").val(level + "%");
         return level;
     }
 
     //观察法回显数据
-    residueRatio.initObserve = function (residueRatioId) {
+    residueRatio.initObserve = function (residueRatioId, houseId) {
         $.ajax({
             url: "${pageContext.request.contextPath}/residueRatio/initObserve",
             type: "post",
             dataType: "json",
             data: {
                 residueRatioId: residueRatioId,
+                houseId: houseId
             },
             success: function (result) {
                 if (result.ret) {
