@@ -203,15 +203,15 @@ public class BasicBuildingService {
         if (basicBuilding.getBeCompletedTime() != null) {
             vo.setBeCompletedTimeName(DateUtils.format(basicBuilding.getBeCompletedTime()));
         }
-        if (org.apache.commons.lang3.math.NumberUtils.isNumber(basicBuilding.getProperty())){
-            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(Integer.parseInt(basicBuilding.getProperty()));
+        if (basicBuilding.getProperty()!=null){
+            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
             if (dataProperty != null){
                 vo.setPropertyName(dataProperty.getName());
                 vo.setDataProperty(dataPropertyService.getDataPropertyVo(dataProperty));
             }
         }
-        if (org.apache.commons.lang3.math.NumberUtils.isNumber(basicBuilding.getBuilder())){
-            DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(Integer.parseInt(basicBuilding.getBuilder()));
+        if (basicBuilding.getBuilder()!=null){
+            DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(basicBuilding.getBuilder());
             if (dataBuilder != null){
                 vo.setBuildingName(dataBuilder.getName());
                 vo.setDataBuilder(dataBuilderService.getDataBuilderVo(dataBuilder));

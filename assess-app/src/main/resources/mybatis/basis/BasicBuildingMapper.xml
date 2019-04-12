@@ -11,9 +11,9 @@
     <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
     <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
     <result column="location" property="location" jdbcType="VARCHAR" />
-    <result column="builder" property="builder" jdbcType="VARCHAR" />
+    <result column="builder" property="builder" jdbcType="INTEGER" />
     <result column="builder_name" property="builderName" jdbcType="VARCHAR" />
-    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="INTEGER" />
     <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
     <result column="unit_interval" property="unitInterval" jdbcType="VARCHAR" />
     <result column="property_fee" property="propertyFee" jdbcType="DECIMAL" />
@@ -161,8 +161,8 @@
       gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, 
       #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
-      #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=VARCHAR}, 
-      #{builderName,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, #{propertyName,jdbcType=VARCHAR}, 
+      #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, 
+      #{builderName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, #{propertyName,jdbcType=VARCHAR}, 
       #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
       #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
       #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
@@ -327,13 +327,13 @@
         #{location,jdbcType=VARCHAR},
       </if>
       <if test="builder != null" >
-        #{builder,jdbcType=VARCHAR},
+        #{builder,jdbcType=INTEGER},
       </if>
       <if test="builderName != null" >
         #{builderName,jdbcType=VARCHAR},
       </if>
       <if test="property != null" >
-        #{property,jdbcType=VARCHAR},
+        #{property,jdbcType=INTEGER},
       </if>
       <if test="propertyName != null" >
         #{propertyName,jdbcType=VARCHAR},
@@ -461,13 +461,13 @@
         location = #{record.location,jdbcType=VARCHAR},
       </if>
       <if test="record.builder != null" >
-        builder = #{record.builder,jdbcType=VARCHAR},
+        builder = #{record.builder,jdbcType=INTEGER},
       </if>
       <if test="record.builderName != null" >
         builder_name = #{record.builderName,jdbcType=VARCHAR},
       </if>
       <if test="record.property != null" >
-        property = #{record.property,jdbcType=VARCHAR},
+        property = #{record.property,jdbcType=INTEGER},
       </if>
       <if test="record.propertyName != null" >
         property_name = #{record.propertyName,jdbcType=VARCHAR},
@@ -572,9 +572,9 @@
       building_name = #{record.buildingName,jdbcType=VARCHAR},
       floor_count = #{record.floorCount,jdbcType=INTEGER},
       location = #{record.location,jdbcType=VARCHAR},
-      builder = #{record.builder,jdbcType=VARCHAR},
+      builder = #{record.builder,jdbcType=INTEGER},
       builder_name = #{record.builderName,jdbcType=VARCHAR},
-      property = #{record.property,jdbcType=VARCHAR},
+      property = #{record.property,jdbcType=INTEGER},
       property_name = #{record.propertyName,jdbcType=VARCHAR},
       unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
       property_fee = #{record.propertyFee,jdbcType=DECIMAL},
@@ -636,13 +636,13 @@
         location = #{location,jdbcType=VARCHAR},
       </if>
       <if test="builder != null" >
-        builder = #{builder,jdbcType=VARCHAR},
+        builder = #{builder,jdbcType=INTEGER},
       </if>
       <if test="builderName != null" >
         builder_name = #{builderName,jdbcType=VARCHAR},
       </if>
       <if test="property != null" >
-        property = #{property,jdbcType=VARCHAR},
+        property = #{property,jdbcType=INTEGER},
       </if>
       <if test="propertyName != null" >
         property_name = #{propertyName,jdbcType=VARCHAR},
@@ -744,9 +744,9 @@
       building_name = #{buildingName,jdbcType=VARCHAR},
       floor_count = #{floorCount,jdbcType=INTEGER},
       location = #{location,jdbcType=VARCHAR},
-      builder = #{builder,jdbcType=VARCHAR},
+      builder = #{builder,jdbcType=INTEGER},
       builder_name = #{builderName,jdbcType=VARCHAR},
-      property = #{property,jdbcType=VARCHAR},
+      property = #{property,jdbcType=INTEGER},
       property_name = #{propertyName,jdbcType=VARCHAR},
       unit_interval = #{unitInterval,jdbcType=VARCHAR},
       property_fee = #{propertyFee,jdbcType=DECIMAL},

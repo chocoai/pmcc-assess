@@ -686,62 +686,52 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andBuilderEqualTo(String value) {
+        public Criteria andBuilderEqualTo(Integer value) {
             addCriterion("builder =", value, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderNotEqualTo(String value) {
+        public Criteria andBuilderNotEqualTo(Integer value) {
             addCriterion("builder <>", value, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderGreaterThan(String value) {
+        public Criteria andBuilderGreaterThan(Integer value) {
             addCriterion("builder >", value, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderGreaterThanOrEqualTo(String value) {
+        public Criteria andBuilderGreaterThanOrEqualTo(Integer value) {
             addCriterion("builder >=", value, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderLessThan(String value) {
+        public Criteria andBuilderLessThan(Integer value) {
             addCriterion("builder <", value, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderLessThanOrEqualTo(String value) {
+        public Criteria andBuilderLessThanOrEqualTo(Integer value) {
             addCriterion("builder <=", value, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderLike(String value) {
-            addCriterion("builder like", value, "builder");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuilderNotLike(String value) {
-            addCriterion("builder not like", value, "builder");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuilderIn(List<String> values) {
+        public Criteria andBuilderIn(List<Integer> values) {
             addCriterion("builder in", values, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderNotIn(List<String> values) {
+        public Criteria andBuilderNotIn(List<Integer> values) {
             addCriterion("builder not in", values, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderBetween(String value1, String value2) {
+        public Criteria andBuilderBetween(Integer value1, Integer value2) {
             addCriterion("builder between", value1, value2, "builder");
             return (Criteria) this;
         }
 
-        public Criteria andBuilderNotBetween(String value1, String value2) {
+        public Criteria andBuilderNotBetween(Integer value1, Integer value2) {
             addCriterion("builder not between", value1, value2, "builder");
             return (Criteria) this;
         }
@@ -826,62 +816,52 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andPropertyEqualTo(String value) {
+        public Criteria andPropertyEqualTo(Integer value) {
             addCriterion("property =", value, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyNotEqualTo(String value) {
+        public Criteria andPropertyNotEqualTo(Integer value) {
             addCriterion("property <>", value, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyGreaterThan(String value) {
+        public Criteria andPropertyGreaterThan(Integer value) {
             addCriterion("property >", value, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyGreaterThanOrEqualTo(String value) {
+        public Criteria andPropertyGreaterThanOrEqualTo(Integer value) {
             addCriterion("property >=", value, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyLessThan(String value) {
+        public Criteria andPropertyLessThan(Integer value) {
             addCriterion("property <", value, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyLessThanOrEqualTo(String value) {
+        public Criteria andPropertyLessThanOrEqualTo(Integer value) {
             addCriterion("property <=", value, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyLike(String value) {
-            addCriterion("property like", value, "property");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyNotLike(String value) {
-            addCriterion("property not like", value, "property");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyIn(List<String> values) {
+        public Criteria andPropertyIn(List<Integer> values) {
             addCriterion("property in", values, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyNotIn(List<String> values) {
+        public Criteria andPropertyNotIn(List<Integer> values) {
             addCriterion("property not in", values, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyBetween(String value1, String value2) {
+        public Criteria andPropertyBetween(Integer value1, Integer value2) {
             addCriterion("property between", value1, value2, "property");
             return (Criteria) this;
         }
 
-        public Criteria andPropertyNotBetween(String value1, String value2) {
+        public Criteria andPropertyNotBetween(Integer value1, Integer value2) {
             addCriterion("property not between", value1, value2, "property");
             return (Criteria) this;
         }

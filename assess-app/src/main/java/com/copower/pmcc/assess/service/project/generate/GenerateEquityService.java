@@ -215,9 +215,9 @@ public class GenerateEquityService {
 
             BasicApply exploreBasicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(exploreBasicApply.getId());
-            if (StringUtils.isNotBlank(basicBuilding.getProperty())) {//物业信誉与管理
+            if (basicBuilding.getProperty()!=null) {//物业信誉与管理
                 StringBuilder propertyBuilder = new StringBuilder();
-                DataProperty dataProperty = dataPropertyService.getByDataPropertyId(Integer.valueOf(basicBuilding.getProperty()));
+                DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
                 BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
                 socialPrestige = baseDataDic.getName();
                 propertyBuilder.append(String.format("%s信誉%s，", dataProperty.getName(), baseDataDic.getRemark()));

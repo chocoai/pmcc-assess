@@ -8,7 +8,7 @@ public class BasicHouseRoom {
 
     private Integer houseId;
 
-    private Integer roomType;
+    private String roomType;
 
     private String name;
 
@@ -56,12 +56,12 @@ public class BasicHouseRoom {
         this.houseId = houseId;
     }
 
-    public Integer getRoomType() {
+    public String getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(Integer roomType) {
-        this.roomType = roomType;
+    public void setRoomType(String roomType) {
+        this.roomType = roomType == null ? null : roomType.trim();
     }
 
     public String getName() {

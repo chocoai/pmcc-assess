@@ -22,11 +22,11 @@ public class BasicBuilding {
 
     private String location;
 
-    private String builder;
+    private Integer builder;
 
     private String builderName;
 
-    private String property;
+    private Integer property;
 
     private String propertyName;
 
@@ -158,12 +158,12 @@ public class BasicBuilding {
         this.location = location == null ? null : location.trim();
     }
 
-    public String getBuilder() {
+    public Integer getBuilder() {
         return builder;
     }
 
-    public void setBuilder(String builder) {
-        this.builder = builder == null ? null : builder.trim();
+    public void setBuilder(Integer builder) {
+        this.builder = builder;
     }
 
     public String getBuilderName() {
@@ -174,12 +174,12 @@ public class BasicBuilding {
         this.builderName = builderName == null ? null : builderName.trim();
     }
 
-    public String getProperty() {
+    public Integer getProperty() {
         return property;
     }
 
-    public void setProperty(String property) {
-        this.property = property == null ? null : property.trim();
+    public void setProperty(Integer property) {
+        this.property = property;
     }
 
     public String getPropertyName() {
