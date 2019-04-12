@@ -253,6 +253,15 @@ var matchingMainRoad;
         init: function (item) {
             $("#" + matchingMainRoad.prototype.config().frm).clearAll();
             $("#" + matchingMainRoad.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_traffic_flow, item.trafficFlow, function (html, data) {
+                $("#" + matchingMainRoad.prototype.config().frm).find("select.trafficFlow").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_visitors_flowrate, item.visitorsFlowrate, function (html, data) {
+                $("#" + matchingMainRoad.prototype.config().frm).find("select.visitorsFlowrate").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, item.position, function (html, data) {
+                $("#" + matchingMainRoad.prototype.config().frm).find('select.position').empty().html(html).trigger('change');
+            }, true);
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, item.distance, function (html, data) {
                 $("#" + matchingMainRoad.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
             });

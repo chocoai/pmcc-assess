@@ -130,11 +130,17 @@ commonColumn.matchingMainRoadColumn = function () {
     var cols = [];
     cols.push({field: 'name', title: '名称'});
     cols.push({field: 'distanceName', title: '距离'});
-    cols.push({field: 'limitSpeialName', title: '特殊限行'});
-    cols.push({field: 'limitSpeed', title: '限行速度'});
-    cols.push({field: 'limitTime', title: '限行时间'});
-    cols.push({field: 'limitName', title: '是否限行'});
+    cols.push({field: 'flagName', title: '是否限行'});
     cols.push({field: 'costStandard', title: '收费标准'});
+    cols.push({field: 'positionName', title: '方位'});
+    cols.push({field: 'trafficFlowName', title: '交通流量'});
+    cols.push({field: 'visitorsFlowrateName', title: '人流量'});
+    cols.push({
+        field: 'id', title: '限行时间,限行速度,特殊限行', formatter: function (value, row, index) {
+            var str = row.limitTime+row.limitSpeed+row.limitSpeialName;
+            return str;
+        }
+    });
     return cols;
 }
 

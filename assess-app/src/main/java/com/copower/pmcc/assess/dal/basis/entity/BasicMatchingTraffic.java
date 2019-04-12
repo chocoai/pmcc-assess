@@ -29,6 +29,12 @@ public class BasicMatchingTraffic {
 
     private String costStandard;
 
+    private Integer position;
+
+    private Integer trafficFlow;
+
+    private Integer visitorsFlowrate;
+
     private String creator;
 
     private Date gmtCreated;
@@ -137,6 +143,30 @@ public class BasicMatchingTraffic {
 
     public void setCostStandard(String costStandard) {
         this.costStandard = costStandard == null ? null : costStandard.trim();
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public Integer getTrafficFlow() {
+        return trafficFlow;
+    }
+
+    public void setTrafficFlow(Integer trafficFlow) {
+        this.trafficFlow = trafficFlow;
+    }
+
+    public Integer getVisitorsFlowrate() {
+        return visitorsFlowrate;
+    }
+
+    public void setVisitorsFlowrate(Integer visitorsFlowrate) {
+        this.visitorsFlowrate = visitorsFlowrate;
     }
 
     public String getCreator() {

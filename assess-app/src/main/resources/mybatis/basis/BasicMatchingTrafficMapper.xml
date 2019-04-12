@@ -15,6 +15,9 @@
     <result column="limit_speial" property="limitSpeial" jdbcType="INTEGER" />
     <result column="flag" property="flag" jdbcType="BIT" />
     <result column="cost_standard" property="costStandard" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="traffic_flow" property="trafficFlow" jdbcType="INTEGER" />
+    <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -79,7 +82,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, nature, estate_id, type, name, distance, line_name, the_line, limit_speed, limit_time, 
-    limit_speial, flag, cost_standard, creator, gmt_created, gmt_modified
+    limit_speial, flag, cost_standard, position, traffic_flow, visitors_flowrate, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTrafficExample" >
     select
@@ -119,12 +123,14 @@
       name, distance, line_name, 
       the_line, limit_speed, limit_time, 
       limit_speial, flag, cost_standard, 
+      position, traffic_flow, visitors_flowrate, 
       creator, gmt_created, gmt_modified
       )
     values (#{nature,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{distance,jdbcType=INTEGER}, #{lineName,jdbcType=VARCHAR}, 
       #{theLine,jdbcType=VARCHAR}, #{limitSpeed,jdbcType=VARCHAR}, #{limitTime,jdbcType=VARCHAR}, 
       #{limitSpeial,jdbcType=INTEGER}, #{flag,jdbcType=BIT}, #{costStandard,jdbcType=VARCHAR}, 
+      #{position,jdbcType=INTEGER}, #{trafficFlow,jdbcType=INTEGER}, #{visitorsFlowrate,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -169,6 +175,15 @@
       </if>
       <if test="costStandard != null" >
         cost_standard,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="trafficFlow != null" >
+        traffic_flow,
+      </if>
+      <if test="visitorsFlowrate != null" >
+        visitors_flowrate,
       </if>
       <if test="creator != null" >
         creator,
@@ -216,6 +231,15 @@
       </if>
       <if test="costStandard != null" >
         #{costStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=INTEGER},
+      </if>
+      <if test="trafficFlow != null" >
+        #{trafficFlow,jdbcType=INTEGER},
+      </if>
+      <if test="visitorsFlowrate != null" >
+        #{visitorsFlowrate,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -276,6 +300,15 @@
       <if test="record.costStandard != null" >
         cost_standard = #{record.costStandard,jdbcType=VARCHAR},
       </if>
+      <if test="record.position != null" >
+        position = #{record.position,jdbcType=INTEGER},
+      </if>
+      <if test="record.trafficFlow != null" >
+        traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitorsFlowrate != null" >
+        visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -305,6 +338,9 @@
       limit_speial = #{record.limitSpeial,jdbcType=INTEGER},
       flag = #{record.flag,jdbcType=BIT},
       cost_standard = #{record.costStandard,jdbcType=VARCHAR},
+      position = #{record.position,jdbcType=INTEGER},
+      traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
+      visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -351,6 +387,15 @@
       <if test="costStandard != null" >
         cost_standard = #{costStandard,jdbcType=VARCHAR},
       </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=INTEGER},
+      </if>
+      <if test="trafficFlow != null" >
+        traffic_flow = #{trafficFlow,jdbcType=INTEGER},
+      </if>
+      <if test="visitorsFlowrate != null" >
+        visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -377,6 +422,9 @@
       limit_speial = #{limitSpeial,jdbcType=INTEGER},
       flag = #{flag,jdbcType=BIT},
       cost_standard = #{costStandard,jdbcType=VARCHAR},
+      position = #{position,jdbcType=INTEGER},
+      traffic_flow = #{trafficFlow,jdbcType=INTEGER},
+      visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

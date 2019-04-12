@@ -1052,7 +1052,7 @@ public class GenerateCommonMethod {
                 }
                 if (StringUtils.isNotEmpty(suffix)) {
                     stringList.add(StringUtils.join(strings, suffix));
-                }else {
+                } else {
                     stringList.add(StringUtils.join(strings));
                 }
                 strings.clear();
@@ -1060,4 +1060,29 @@ public class GenerateCommonMethod {
         }
         return stringList;
     }
+
+    /**
+     * 数字转换为带圆圈的数字 (由于word目前标准子集中只有20,所以暂时只有20)
+     *
+     * @param number
+     * @return
+     */
+    public String parseToCircleNumber(final Integer number) {
+        final String s = "①,②,③,④,⑤,⑥,⑦,⑧,⑨,⑩,⑪,⑫,⑬,⑭,⑮,⑯,⑰,⑱,⑲,⑳";
+        final String[] strs = s.split(",");
+        List<String> stringList = Lists.newArrayList();
+        Map<Integer, String> map = Maps.newHashMap();
+        for (int i = 0; i < strs.length; i++) {
+            map.put(i + 1, strs[i]);
+            stringList.add(String.valueOf(i + 1));
+        }
+        if (number == null) {
+            return null;
+        }
+        if (!stringList.contains(number.toString())) {
+            return number.toString();
+        }
+        return map.get(number);
+    }
+
 }

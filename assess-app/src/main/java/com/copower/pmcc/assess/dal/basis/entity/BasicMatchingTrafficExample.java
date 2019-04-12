@@ -955,6 +955,186 @@ public class BasicMatchingTrafficExample {
             return (Criteria) this;
         }
 
+        public Criteria andPositionIsNull() {
+            addCriterion("position is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionIsNotNull() {
+            addCriterion("position is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionEqualTo(Integer value) {
+            addCriterion("position =", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotEqualTo(Integer value) {
+            addCriterion("position <>", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionGreaterThan(Integer value) {
+            addCriterion("position >", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("position >=", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionLessThan(Integer value) {
+            addCriterion("position <", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionLessThanOrEqualTo(Integer value) {
+            addCriterion("position <=", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionIn(List<Integer> values) {
+            addCriterion("position in", values, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotIn(List<Integer> values) {
+            addCriterion("position not in", values, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionBetween(Integer value1, Integer value2) {
+            addCriterion("position between", value1, value2, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotBetween(Integer value1, Integer value2) {
+            addCriterion("position not between", value1, value2, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowIsNull() {
+            addCriterion("traffic_flow is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowIsNotNull() {
+            addCriterion("traffic_flow is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowEqualTo(Integer value) {
+            addCriterion("traffic_flow =", value, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowNotEqualTo(Integer value) {
+            addCriterion("traffic_flow <>", value, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowGreaterThan(Integer value) {
+            addCriterion("traffic_flow >", value, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowGreaterThanOrEqualTo(Integer value) {
+            addCriterion("traffic_flow >=", value, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowLessThan(Integer value) {
+            addCriterion("traffic_flow <", value, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowLessThanOrEqualTo(Integer value) {
+            addCriterion("traffic_flow <=", value, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowIn(List<Integer> values) {
+            addCriterion("traffic_flow in", values, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowNotIn(List<Integer> values) {
+            addCriterion("traffic_flow not in", values, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowBetween(Integer value1, Integer value2) {
+            addCriterion("traffic_flow between", value1, value2, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andTrafficFlowNotBetween(Integer value1, Integer value2) {
+            addCriterion("traffic_flow not between", value1, value2, "trafficFlow");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateIsNull() {
+            addCriterion("visitors_flowrate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateIsNotNull() {
+            addCriterion("visitors_flowrate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateEqualTo(Integer value) {
+            addCriterion("visitors_flowrate =", value, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateNotEqualTo(Integer value) {
+            addCriterion("visitors_flowrate <>", value, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateGreaterThan(Integer value) {
+            addCriterion("visitors_flowrate >", value, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("visitors_flowrate >=", value, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateLessThan(Integer value) {
+            addCriterion("visitors_flowrate <", value, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateLessThanOrEqualTo(Integer value) {
+            addCriterion("visitors_flowrate <=", value, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateIn(List<Integer> values) {
+            addCriterion("visitors_flowrate in", values, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateNotIn(List<Integer> values) {
+            addCriterion("visitors_flowrate not in", values, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateBetween(Integer value1, Integer value2) {
+            addCriterion("visitors_flowrate between", value1, value2, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVisitorsFlowrateNotBetween(Integer value1, Integer value2) {
+            addCriterion("visitors_flowrate not between", value1, value2, "visitorsFlowrate");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

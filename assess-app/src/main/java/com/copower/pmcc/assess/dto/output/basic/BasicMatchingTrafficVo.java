@@ -8,10 +8,13 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTraffic;
  * @Description:
  */
 public class BasicMatchingTrafficVo extends BasicMatchingTraffic {
+    private String flagName;
     private String distanceName;
     private String natureName;
     private String limitSpeialName;
-    private String limitName;
+    private String positionName;
+    private String trafficFlowName;
+    private String visitorsFlowrateName;
 
     public String getDistanceName() {
         return distanceName;
@@ -37,11 +40,36 @@ public class BasicMatchingTrafficVo extends BasicMatchingTraffic {
         this.limitSpeialName = limitSpeialName;
     }
 
-    public String getLimitName() {
-        return limitName;
+
+    public String getPositionName() {
+        return positionName;
     }
 
-    public void setLimitName(String limitName) {
-        this.limitName = limitName;
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
+    }
+
+    public String getTrafficFlowName() {
+        return trafficFlowName;
+    }
+
+    public void setTrafficFlowName(String trafficFlowName) {
+        this.trafficFlowName = trafficFlowName;
+    }
+
+    public String getVisitorsFlowrateName() {
+        return visitorsFlowrateName;
+    }
+
+    public void setVisitorsFlowrateName(String visitorsFlowrateName) {
+        this.visitorsFlowrateName = visitorsFlowrateName;
+    }
+
+    public String getFlagName() {
+        return flagName;
+    }
+
+    public void setFlagName(String flagName) {
+        this.flagName = flagName;
     }
 }

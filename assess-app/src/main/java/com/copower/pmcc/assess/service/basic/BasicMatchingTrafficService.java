@@ -129,14 +129,17 @@ public class BasicMatchingTrafficService {
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingTraffic.getDistance()));
         vo.setNatureName(baseDataDicService.getNameById(basicMatchingTraffic.getNature()));
         vo.setLimitSpeialName(baseDataDicService.getNameById(basicMatchingTraffic.getLimitSpeial()));
+        vo.setTrafficFlowName(baseDataDicService.getNameById(basicMatchingTraffic.getTrafficFlow()));
+        vo.setPositionName(baseDataDicService.getNameById(basicMatchingTraffic.getPosition()));
+        vo.setVisitorsFlowrateName(baseDataDicService.getNameById(basicMatchingTraffic.getVisitorsFlowrate()));
         if (basicMatchingTraffic.getFlag() != null){
             if (basicMatchingTraffic.getFlag()){
-                vo.setLimitName("是");
+                vo.setFlagName("是");
             }else {
-                vo.setLimitName("否");
+                vo.setFlagName("否");
             }
         }else {
-            vo.setLimitName("无");
+            vo.setFlagName("无");
         }
         return vo;
     }

@@ -21,7 +21,7 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="楼栋号" required="required"
-                               name="buildingNumber" class="form-control" onblur="buildingNumberBlur(this);">
+                               name="buildingNumber" class="form-control" onblur="buildingNumberBlur(this);" value="${basicBuilding.buildingNumber}">
                         <span class="input-group-btn">
                             <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
@@ -45,7 +45,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="楼栋名称" name="buildingName"
-                           class="form-control" required="required">
+                           class="form-control" required="required" value="${basicBuilding.buildingName}">
                 </div>
             </div>
             <div class="x-valid">
@@ -54,7 +54,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="总层数(数字)" data-rule-number='true'
-                           name="floorCount" class="form-control" required="required">
+                           name="floorCount" class="form-control" required="required" value="${basicBuilding.floorCount}">
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="首层位置(数字)" data-rule-number='true'
-                           name="firstFloor" class="form-control">
+                           name="firstFloor" class="form-control" value="${basicBuilding.firstFloor}">
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="最高层(数字)" data-rule-number='true'
-                           name="maxFloor" class="form-control">
+                           name="maxFloor" class="form-control" value="${basicBuilding.maxFloor}">
                 </div>
             </div>
             <div class="x-valid">
@@ -104,7 +104,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="套内面积(数字)" data-rule-number='true'
-                           name="inJacketArea" class="form-control">
+                           name="inJacketArea" class="form-control" value="${basicBuilding.inJacketArea}">
                 </div>
             </div>
             <div class="x-valid">
@@ -113,7 +113,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="使用面积(数字)" data-rule-number='true'
-                           name="useArea" class="form-control">
+                           name="useArea" class="form-control" value="${basicBuilding.useArea}">
                 </div>
             </div>
         </div>
@@ -123,7 +123,7 @@
                     所在位置
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="所在位置" name="location" class="form-control">
+                    <input type="text" placeholder="所在位置" name="location" class="form-control" value="${basicBuilding.location}">
                 </div>
             </div>
             <div class="x-valid">
@@ -146,7 +146,7 @@
                     户型区间
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="户型区间" name="unitInterval" class="form-control">
+                    <input type="text" placeholder="户型区间" name="unitInterval" class="form-control" value="${basicBuilding.unitInterval}">
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="物业费(数字)" name="propertyFee" data-rule-number='true'
-                           class="form-control">
+                           class="form-control" value="${basicBuilding.propertyFee}">
                 </div>
             </div>
             <div class="x-valid">
@@ -166,7 +166,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="配套公共设施使用费(数字)" name="facilitiesUseFee"
-                           data-rule-number='true' class="form-control">
+                           data-rule-number='true' class="form-control" value="${basicBuilding.facilitiesUseFee}">
                 </div>
             </div>
             <div class="x-valid">
@@ -175,7 +175,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="建筑高度(数字)" data-rule-number='true'
-                           name="buildingHeight" class="form-control">
+                           name="buildingHeight" class="form-control" value="${basicBuilding.buildingHeight}">
                 </div>
             </div>
         </div>
@@ -186,7 +186,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="建筑面积(数字)" data-rule-number='true'
-                           name="buildingArea" class="form-control">
+                           name="buildingArea" class="form-control" value="${basicBuilding.buildingArea}">
                 </div>
             </div>
             <div class="x-valid">
@@ -195,7 +195,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="占地面积(数字)" data-rule-number='true'
-                           name="coverAnArea" class="form-control">
+                           name="coverAnArea" class="form-control" value="${basicBuilding.coverAnArea}">
                 </div>
             </div>
             <div class="x-valid">
@@ -204,7 +204,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="层高(数字)" data-rule-number='true'
-                           name="floorHeight" class="form-control">
+                           name="floorHeight" class="form-control" value="${basicBuilding.floorHeight}">
                 </div>
             </div>
         </div>
@@ -215,7 +215,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="土地使用年限(数字)" data-rule-number='true'
-                           name="landUseYear" class="form-control">
+                           name="landUseYear" class="form-control" value="${basicBuilding.landUseYear}">
                 </div>
             </div>
             <div class="x-valid">
@@ -264,8 +264,8 @@
                     物业公司
                 </label>
                 <div class="col-sm-3">
-                    <input type="hidden" name="property" placeholder="物业公司" class="form-control">
-                    <input type="text" name="propertyName" placeholder="物业公司" class="form-control">
+                    <input type="hidden" name="property" placeholder="物业公司" class="form-control" value="${basicBuilding.property}">
+                    <input type="text" name="propertyName" placeholder="物业公司" class="form-control" value="${basicBuilding.propertyName}">
                 </div>
             </div>
         </div>
@@ -294,8 +294,8 @@
                     建筑公司
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="建筑公司" class="form-control" name="builderName">
-                    <input type="hidden" placeholder="建筑公司" class="form-control" name="builder">
+                    <input type="text" placeholder="建筑公司" class="form-control" name="builderName" value="${basicBuilding.builderName}">
+                    <input type="hidden" placeholder="建筑公司" class="form-control" name="builder" value="${basicBuilding.builder}">
                 </div>
             </div>
         </div>
