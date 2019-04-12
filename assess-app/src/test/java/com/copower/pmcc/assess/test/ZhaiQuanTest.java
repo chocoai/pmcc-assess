@@ -159,9 +159,9 @@ public class ZhaiQuanTest {
             for (KeyValueDto dto : zhaiQuanDto.getCustomerInfo().getKeyValueDtos()) {
                 switch (dto.getKey()) {
                     case "dkffsj":
-                    case "htqdr":
                     case "fxjzr":
                     case "bgcjsj":
+                        map.put(String.format("${source_%s}", dto.getKey()), dto.getValue());
                         map.put(String.format("${%s}", dto.getKey()), DateUtils.formatDate(DateUtils.convertDate(dto.getValue()), DateUtils.DATE_CHINESE_PATTERN));
                         break;
                     case "bjscbl":
@@ -179,10 +179,13 @@ public class ZhaiQuanTest {
             for (ZhaiQuanDywDto zhaiQuanDywDto : zhaiQuanDto.getDywInfo()) {
                 stringBuilder.append(String.format("    抵押物为借款人拥有位于%s房产。房产性质为%s，面积%s平方米。" +
                                 "已办理抵押登记手续。现对应贷款本金余额%s元。"
-                        ,zhaiQuanDywDto.getDywdz(),zhaiQuanDywDto.getFcxz()
-                        ,zhaiQuanDywDto.getFcmj(),zhaiQuanDywDto.getXbjye()));
+                        , zhaiQuanDywDto.getDywdz(), zhaiQuanDywDto.getFcxz()
+                        , zhaiQuanDywDto.getFcmj(), zhaiQuanDywDto.getXbjye()));
             }
-            map.put("${dywInfo}",  stringBuilder.toString());
+            map.put("${htqdr}", map.get("dkffsj"));
+            map.put("${bgyxq}", DateUtils.formatDate(DateUtils.addDay(DateUtils.convertDate(String.valueOf(map.get("${source_fxjzr}"))), 364), DateUtils.DATE_CHINESE_PATTERN));
+
+            map.put("${dywInfo}", stringBuilder.toString());
             AsposeUtils.replaceText(newWordPath, map);
         }
     }
