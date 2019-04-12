@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.google.common.base.Objects;
@@ -89,13 +88,11 @@ public class GenerateLandEntityService {
     /**
      * 用途
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String getLandUse(BasicApply basicApply) throws Exception {
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+    public String getLandUse(BasicEstateLandStateVo landStateVo) throws Exception {
         String v = landStateVo.getLandUseTypeName();
         return StringUtils.isNotBlank(v) ? v : error;
     }
@@ -103,13 +100,11 @@ public class GenerateLandEntityService {
     /**
      * 形状
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String getShapeState(BasicApply basicApply) throws Exception {
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+    public String getShapeState(BasicEstateLandStateVo landStateVo) throws Exception {
         String v = null;
         if (StringUtils.isNotBlank(landStateVo.getShapeStateName())) {
             v = String.format("%s", landStateVo.getShapeStateName());
@@ -122,26 +117,22 @@ public class GenerateLandEntityService {
     /**
      * 基础设施完备度
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String getInfrastructureCompleteness(BasicApply basicApply) throws Exception {
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+    public String getInfrastructureCompleteness(BasicEstateLandStateVo landStateVo) throws Exception {
         return StringUtils.isNotBlank(landStateVo.getInfrastructureCompletenessName()) ? landStateVo.getInfrastructureCompletenessName() : error;
     }
 
     /**
      * 开发程度
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String getDevelopmentDegree(BasicApply basicApply) throws Exception {
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+    public String getDevelopmentDegree(BasicEstateLandStateVo landStateVo) throws Exception {
         if (Objects.equal(landStateVo.getDevelopmentDegreeName(), "熟地")) {
             if (StringUtils.isNotBlank(landStateVo.getDevelopmentDegreeContent())) {
                 List<String> stringList = Lists.newArrayList(landStateVo.getDevelopmentDegreeContent().split(","));
@@ -166,14 +157,12 @@ public class GenerateLandEntityService {
     /**
      * 土壤与地质
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String getSoil(BasicApply basicApply) throws Exception {
+    public String getSoil(BasicEstateLandStateVo landStateVo) throws Exception {
         StringBuilder stringBuilder = new StringBuilder(8);
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
         List<String> typeList = Lists.newArrayList("林地", "园地", "水域", "耕地", "草地");
         if (StringUtils.isNotBlank(landStateVo.getContaminated())) {
             stringBuilder.append("土壤").append(landStateVo.getContaminatedName());
@@ -206,26 +195,22 @@ public class GenerateLandEntityService {
     /**
      * 地势
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String getTopographicTerrain(BasicApply basicApply) throws Exception {
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+    public String getTopographicTerrain(BasicEstateLandStateVo landStateVo) throws Exception {
         return StringUtils.isNotBlank(landStateVo.getTopographicTerrainName()) ? landStateVo.getTopographicTerrainName() : error;
     }
 
     /**
      * 土地面积
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String getLandArea(BasicApply basicApply) throws Exception {
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+    public String getLandArea(BasicEstateLandStateVo landStateVo) throws Exception {
         String value = landStateVo.getLandArea();
         if (StringUtils.isNotBlank(value)) {
             return String.format("%s ㎡", value);
@@ -237,27 +222,23 @@ public class GenerateLandEntityService {
     /**
      * 土地名称
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String getLandName(BasicApply basicApply) throws Exception {
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+    public String getLandName(BasicEstateLandStateVo landStateVo) throws Exception {
         return landStateVo.getName();
     }
 
     /**
      * 四至
      *
-     * @param basicApply
+     * @param landStateVo
      * @return
      * @throws Exception
      */
-    public String fourTheFor(BasicApply basicApply) throws Exception {
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+    public String fourTheFor(BasicEstateLandStateVo landStateVo) throws Exception {
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
         if (StringUtils.isNotBlank(landStateVo.getEastTo())) {
             stringSet.add(String.format("%s%s","东至",landStateVo.getEastTo()));
         }

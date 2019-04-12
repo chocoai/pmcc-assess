@@ -4,14 +4,12 @@ import com.copower.pmcc.assess.common.enums.EnvironmentalScienceEnum;
 import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
 import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineMatchingTrafficTypeEnum;
-import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseFaceStreetVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -39,13 +37,9 @@ import java.util.stream.Collectors;
 @Service
 public class GenerateLoactionService {
     @Autowired
-    private SchemeJudgeObjectDao schemeJudgeObjectDao;
-    @Autowired
     private SurveyCommonService surveyCommonService;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
-    @Autowired
-    private BasicApplyService basicApplyService;
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -79,26 +73,31 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getFaceStreet(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        Map<Integer, String> map = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            if (basicApply == null || basicApply.getId() == 0) {
-                continue;
-            }
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
-            if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
-                StringBuilder contentBuilder = new StringBuilder();
-                basicHouseFaceStreetVoList.stream().forEach(basicHouseFaceStreetVo -> {
-                    contentBuilder.append(String.format("%s%s，", basicHouseFaceStreetVo.getPositionName(), basicHouseFaceStreetVo.getStreetName()));
-                });
-                if (contentBuilder.length() > 0) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
+        try {
+            Map<Integer, String> map = Maps.newHashMap();
+            for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                if (basicApply == null || basicApply.getId() == 0) {
+                    continue;
+                }
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
+                if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
+                    StringBuilder contentBuilder = new StringBuilder();
+                    basicHouseFaceStreetVoList.stream().forEach(basicHouseFaceStreetVo -> {
+                        contentBuilder.append(String.format("%s%s，", basicHouseFaceStreetVo.getPositionName(), basicHouseFaceStreetVo.getStreetName()));
+                    });
+                    if (contentBuilder.length() > 0) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
+                    }
                 }
             }
+            String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
+            return StringUtils.strip(s,"，");
+        }catch (Exception ex){
+            logger.error(ex.getMessage(),ex);
+            return "";
         }
-        String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-        return generateCommonMethod.getIndentHtml(generateCommonMethod.trim(s));
     }
 
     /**
@@ -130,19 +129,19 @@ public class GenerateLoactionService {
         if (CollectionUtils.isNotEmpty(matchingMarketList)) {
             for (int i = 0; i < matchingMarketList.size(); i++) {
                 BasicMatchingLeisurePlace leisurePlace = matchingMarketList.get(i);
-                builder.append("购物商场距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
+                builder.append("购物商场距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
             }
         }
         if (CollectionUtils.isNotEmpty(matchingRestaurantList)) {
             for (int i = 0; i < matchingRestaurantList.size(); i++) {
                 BasicMatchingLeisurePlace leisurePlace = matchingRestaurantList.get(i);
-                builder.append("餐饮距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
+                builder.append("餐饮距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
             }
         }
         if (CollectionUtils.isNotEmpty(matchingRecreationList)) {
             for (int i = 0; i < matchingRecreationList.size(); i++) {
                 BasicMatchingLeisurePlace leisurePlace = matchingRecreationList.get(i);
-                builder.append("休闲娱乐距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
+                builder.append("休闲娱乐距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
             }
         }
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
@@ -157,22 +156,22 @@ public class GenerateLoactionService {
                 } else {
                     v = basicMatchingFinanceVo.getDistance();
                 }
-                builder.append("金融距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(basicMatchingFinanceVo.getCategory()), basicMatchingFinanceVo.getName()), v));
+                builder.append("金融距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(basicMatchingFinanceVo.getCategory()), basicMatchingFinanceVo.getName()), v));
             }
         }
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
             for (int i = 0; i < basicMatchingMedicalList.size(); i++) {
                 BasicMatchingMedical basicMatchingMedical = basicMatchingMedicalList.get(i);
-                builder.append("医疗距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel()), basicMatchingMedical.getOrganizationName()), baseDataDicService.getNameById(basicMatchingMedical.getDistance())));
+                builder.append("医疗距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel()), basicMatchingMedical.getOrganizationName()), baseDataDicService.getNameById(basicMatchingMedical.getDistance())));
             }
         }
         if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
             for (int i = 0; i < basicMatchingEducationList.size(); i++) {
                 BasicMatchingEducation basicMatchingEducation = basicMatchingEducationList.get(i);
-                builder.append("教育距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName()), baseDataDicService.getNameById(basicMatchingEducation.getDistance())));
+                builder.append("教育距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName()), baseDataDicService.getNameById(basicMatchingEducation.getDistance())));
             }
         }
-        return generateCommonMethod.trim(builder.toString());
+        return StringUtils.strip(builder.toString(),"，");
     }
 
     private String getExternalPublicServiceFacilitiesDistance(String name, String number) {
@@ -424,7 +423,7 @@ public class GenerateLoactionService {
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-        return generateCommonMethod.getIndentHtml(generateCommonMethod.trim(s));
+        return StringUtils.strip(s,";");
     }
 
     /**
@@ -576,12 +575,8 @@ public class GenerateLoactionService {
      *
      * @return
      */
-    public String getWithImportantLocationDistance(BasicEstate basicEstate) throws Exception {
+    public String getWithImportantLocationDistance(BasicApply basicApply) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
-        BasicApply basicApply = basicApplyService.getByBasicApplyId(basicEstate.getApplyId());
-        if (basicApply == null || basicApply.getId() == 0) {
-            return "";
-        }
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
         List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList().stream()
@@ -600,7 +595,7 @@ public class GenerateLoactionService {
             if (CollectionUtils.isNotEmpty(trafficHubList)) {
                 for (int i = 0; i < trafficHubList.size(); i++) {
                     BasicMatchingTrafficVo basicMatchingTrafficVo = trafficHubList.get(i);
-                    stringBuilder.append(String.format("%s", getDistance(basicMatchingTrafficVo.getName(), basicMatchingTrafficVo.getDistanceName()), ""));
+                    stringBuilder.append(String.format("%s，", getDistance(basicMatchingTrafficVo.getName(), basicMatchingTrafficVo.getDistanceName()), ""));
                 }
             }
             //主要转换
@@ -613,7 +608,7 @@ public class GenerateLoactionService {
             if (CollectionUtils.isNotEmpty(mainConversionList)) {
                 for (int i = 0; i < mainConversionList.size(); i++) {
                     BasicMatchingTrafficVo basicMatchingTrafficVo = mainConversionList.get(i);
-                    stringBuilder.append(String.format("%s", getDistance(basicMatchingTrafficVo.getName(), basicMatchingTrafficVo.getDistanceName()), ""));
+                    stringBuilder.append(String.format("%s，", getDistance(basicMatchingTrafficVo.getName(), basicMatchingTrafficVo.getDistanceName()), ""));
                 }
             }
         }
@@ -626,7 +621,7 @@ public class GenerateLoactionService {
                 for (int i = 0; i < basicMatchingLeisurePlaceList.size(); i++) {
                     BasicMatchingLeisurePlace leisurePlace = basicMatchingLeisurePlaceList.get(i);
                     if (leisurePlace.getDistance() != null) {
-                        stringBuilder.append(String.format("%s", getDistance(leisurePlace.getName(), baseDataDicService.getNameById(leisurePlace.getDistance())), ""));
+                        stringBuilder.append(String.format("%s，", getDistance(leisurePlace.getName(), baseDataDicService.getNameById(leisurePlace.getDistance())), ""));
                     }
                 }
             }
@@ -635,7 +630,7 @@ public class GenerateLoactionService {
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
             for (int i = 0; i < basicMatchingFinanceVoList.size(); i++) {
                 BasicMatchingFinanceVo basicMatchingFinanceVo = basicMatchingFinanceVoList.get(i);
-                stringBuilder.append(String.format("%s", getDistance(basicMatchingFinanceVo.getName(), basicMatchingFinanceVo.getDistanceName()), ""));
+                stringBuilder.append(String.format("%s，", getDistance(basicMatchingFinanceVo.getName(), basicMatchingFinanceVo.getDistanceName()), ""));
             }
         }
         //医疗
@@ -643,7 +638,7 @@ public class GenerateLoactionService {
             for (int i = 0; i < basicMatchingMedicalList.size(); i++) {
                 BasicMatchingMedical basicMatchingMedical = basicMatchingMedicalList.get(i);
                 if (basicMatchingMedical.getDistance() != null) {
-                    stringBuilder.append(String.format("%s", getDistance(basicMatchingMedical.getOrganizationName(), baseDataDicService.getNameById(basicMatchingMedical.getDistance())), ""));
+                    stringBuilder.append(String.format("%s，", getDistance(basicMatchingMedical.getOrganizationName(), baseDataDicService.getNameById(basicMatchingMedical.getDistance())), ""));
                 }
             }
         }
@@ -672,7 +667,7 @@ public class GenerateLoactionService {
             }
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-        return generateCommonMethod.getIndentHtml(generateCommonMethod.trim(s));
+        return StringUtils.strip(s,";");
     }
 
 
@@ -736,7 +731,7 @@ public class GenerateLoactionService {
             }
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-        return generateCommonMethod.getIndentHtml(generateCommonMethod.trim(s));
+        return StringUtils.strip(s,";");
     }
 
     private String getDistance(String name, String number) {

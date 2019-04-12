@@ -63,11 +63,10 @@ public class GenerateHouseEntityService {
     /**
      * 获取建造年份
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
-    public String getBuildingYear(List<Integer> judgeObjectIds) {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getBuildingYear(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -82,11 +81,10 @@ public class GenerateHouseEntityService {
     /**
      * 获取工程质量
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
-    public String getConstructionQuality(List<Integer> judgeObjectIds) {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getConstructionQuality(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -105,8 +103,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectIds
      * @return
      */
-    public String getBuildingStructure(List<Integer> judgeObjectIds) {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getBuildingStructure(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         StringBuilder builder = new StringBuilder(8);
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -129,11 +126,10 @@ public class GenerateHouseEntityService {
     /**
      * 获取建筑规模
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
-    public String getBuildingScale(List<Integer> judgeObjectIds) {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getBuildingScale(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -163,11 +159,10 @@ public class GenerateHouseEntityService {
     /**
      * 获取层高
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
-    public String getFloorHeight(List<Integer> judgeObjectIds) {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getFloorHeight(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -186,8 +181,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectIds
      * @return
      */
-    public String getSpatialDistribution(List<Integer> judgeObjectIds) throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getSpatialDistribution(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         Map<Integer, String> map = Maps.newHashMap();
         BaseDataDic production = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_PRODUCTION);
         BaseDataDic office = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_OFFICE);
@@ -222,11 +216,10 @@ public class GenerateHouseEntityService {
     /**
      * 获取装饰装修
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
-    public String getDecoration(List<Integer> judgeObjectIds) throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getDecoration(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         Map<Integer, String> outfitMap = Maps.newHashMap();
         Map<Integer, String> unitDecorateMap = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -265,11 +258,10 @@ public class GenerateHouseEntityService {
     /**
      * 获取外观
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
-    public String getAppearance(List<Integer> judgeObjectIds) throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getAppearance(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         Map<String, List<Integer>> map = groupByBuilding(judgeObjectList);
         Map<Integer, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
@@ -287,15 +279,14 @@ public class GenerateHouseEntityService {
     /**
      * 其它
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      * @throws Exception
      */
-    public String getOther(List<Integer> judgeObjectIds) throws Exception {
+    public String getOther(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         Map<String, String> map = Maps.newHashMap();
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
         Map<String, List<Integer>> buildMap = groupByBuilding(judgeObjectList);
         if (!buildMap.isEmpty()) {
             for (Map.Entry<String, List<Integer>> stringEntry : buildMap.entrySet()) {
@@ -365,8 +356,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getThirteen(List<Integer> judgeObjectIds) throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getThirteen(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
         Set<String> stringSet = Sets.newHashSet();
@@ -445,12 +435,11 @@ public class GenerateHouseEntityService {
     /**
      * 建筑实体分析
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      * @throws Exception
      */
-    public String getContent(List<Integer> judgeObjectIds, SchemeAreaGroup schemeAreaGroup) throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getContent(List<SchemeJudgeObject> judgeObjectList, SchemeAreaGroup schemeAreaGroup) throws Exception {
         int size = judgeObjectList.size();
         Map<String, String> map = Maps.newHashMap();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
@@ -890,11 +879,10 @@ public class GenerateHouseEntityService {
     /**
      * 单元电梯
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
-    public String getUnitElevator(List<Integer> judgeObjectIds) throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getUnitElevator(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         Map<String, List<Integer>> unitMap = groupByUnit(judgeObjectList);
         LinkedHashSet<String> centerSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> quasiLoadNumber = Sets.newLinkedHashSet();
@@ -1076,11 +1064,10 @@ public class GenerateHouseEntityService {
     /**
      * 获取建筑功能
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
-    public String getBuildingFunction(List<Integer> judgeObjectIds) {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getBuildingFunction(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> functionMap = Maps.newHashMap();
         Map<Integer, String> roomMap = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {

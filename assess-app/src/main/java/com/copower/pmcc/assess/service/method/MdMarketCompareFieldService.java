@@ -209,7 +209,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case WITH_IMPORTANT_LOCATION_DISTANCE://与重要场所的距离
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateLoactionService.getWithImportantLocationDistance(examineEstate));
+                            stringBuilder.append(generateLoactionService.getWithImportantLocationDistance(basicApply));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.WITH_IMPORTANT_LOCATION_DISTANCE.getKey(), stringBuilder.toString()));
                             break;
                         case TEMPORARY_ROAD_CONDITION://临街（路）状况
@@ -301,7 +301,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case BUILDING_SCALE://建筑规模
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateHouseEntityService.getBuildingScale(Lists.newArrayList(judgeObject.getId())));
+                            stringBuilder.append(generateHouseEntityService.getBuildingScale(Lists.newArrayList(judgeObject)));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_SCALE.getKey(), stringBuilder.toString()));
                             break;
                         case BUILDING_STRUCTURE://建筑结构

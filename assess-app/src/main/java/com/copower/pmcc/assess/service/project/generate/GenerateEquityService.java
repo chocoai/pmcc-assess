@@ -98,7 +98,7 @@ public class GenerateEquityService {
             String buildingDensity = estateLandState.getBuildingDensity();//建筑密度
             String greenSpaceRate = estateLandState.getGreenSpaceRate();//绿地率
             if (StringUtils.isNotBlank(plotRatio) || StringUtils.isNotBlank(buildingDensity) || StringUtils.isNotBlank(greenSpaceRate)) {
-                StringBuilder landStateBuilder = new StringBuilder("规划条件");
+                StringBuilder landStateBuilder = new StringBuilder("规划条件:");
                 if (StringUtils.isNotBlank(plotRatio))
                     landStateBuilder.append(String.format("容积率%s，", plotRatio));
                 if (StringUtils.isNotBlank(buildingDensity))
@@ -111,7 +111,7 @@ public class GenerateEquityService {
             //土地利用现状
             if (estateLandState.getDevelopmentDegree() != null) {
                 String degreeName = baseDataDicService.getNameById(estateLandState.getDevelopmentDegree());
-                StringBuilder utilizeBuilder = new StringBuilder(degreeName);
+                StringBuilder utilizeBuilder = new StringBuilder("土地开发程度:");
                 if (degreeName.contains("熟地")) {
                     if (StringUtils.isNotBlank(estateLandState.getDevelopmentDegreeContent())) {
                         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(estateLandState.getDevelopmentDegreeContent()));

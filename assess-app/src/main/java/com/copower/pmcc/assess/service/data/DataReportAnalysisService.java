@@ -290,7 +290,7 @@ public class DataReportAnalysisService {
                 LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaGroupId);
                 if (!map.isEmpty()) {
                     for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
-                        String content = generateHouseEntityService.getContent(LangUtils.transform(entry.getValue(), o -> o.getId()), schemeAreaGroup);
+                        String content = generateHouseEntityService.getContent(entry.getValue(), schemeAreaGroup);
                         stringBuilder.append(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(content))));
                     }
                 }
