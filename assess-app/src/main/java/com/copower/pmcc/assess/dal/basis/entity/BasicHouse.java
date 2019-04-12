@@ -28,7 +28,7 @@ public class BasicHouse {
 
     private Integer certUse;
 
-    private Integer practicalUse;
+    private String practicalUse;
 
     private Integer orientation;
 
@@ -148,12 +148,12 @@ public class BasicHouse {
         this.certUse = certUse;
     }
 
-    public Integer getPracticalUse() {
+    public String getPracticalUse() {
         return practicalUse;
     }
 
-    public void setPracticalUse(Integer practicalUse) {
-        this.practicalUse = practicalUse;
+    public void setPracticalUse(String practicalUse) {
+        this.practicalUse = practicalUse == null ? null : practicalUse.trim();
     }
 
     public Integer getOrientation() {
