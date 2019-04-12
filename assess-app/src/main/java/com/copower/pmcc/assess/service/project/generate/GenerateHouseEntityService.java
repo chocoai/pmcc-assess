@@ -14,6 +14,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.sun.prism.impl.BaseMesh;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -284,152 +285,97 @@ public class GenerateHouseEntityService {
      * @throws Exception
      */
     public String getOther(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        Map<String, String> map = Maps.newHashMap();
-        Map<String, List<Integer>> buildMap = groupByBuilding(judgeObjectList);
-        if (!buildMap.isEmpty()) {
-            for (Map.Entry<String, List<Integer>> stringEntry : buildMap.entrySet()) {
-                List<Integer> integerList = stringEntry.getValue();
-                if (CollectionUtils.isEmpty(integerList)) {
-                    continue;
+        Map<Integer, String> builderMap = Maps.newHashMap();
+        Map<Integer, String> developerMap = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            if (basicApply == null || basicApply.getId() == 0) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
+            BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingVo(generateBaseExamineService.getBasicBuilding());
+            if (basicBuilding != null && basicBuilding.getId() != null) {
+                StringBuilder builderString = new StringBuilder();
+                StringBuilder developerString = new StringBuilder();
+                if (basicBuilding.getDataBuilder() != null) {
+                    builderString.append("建造商").append(basicBuilding.getDataBuilder().getName()).append("，")
+                            .append(basicBuilding.getDataBuilder().getCompanyNatureName()).append("，");
+                    builderString.append(StringUtils.isNotBlank(basicBuilding.getDataBuilder().getSocialPrestigeName()) ? String.format("社会信誉%s;", basicBuilding.getDataBuilder().getSocialPrestigeName()) : "");
+                    builderMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), builderString.toString());
                 }
-                for (int i = 0; i < integerList.size(); i++) {
-                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
-                    if (schemeJudgeObject == null || schemeJudgeObject.getDeclareRecordId() == null) {
-                        continue;
-                    }
-                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                    if (basicApply == null || basicApply.getId() == 0) {
-                        continue;
-                    }
-                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                    BasicBuilding basicBuilding = generateBaseExamineService.getBasicBuilding();
-                    BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
-                    if (basicBuilding != null && basicBuilding.getId() != null) {
-                        BasicBuildingVo oo = basicBuildingService.getBasicBuildingVo(basicBuilding);
-                        if (oo.getDataBuilder() != null) {
-                            linkedHashSet.add(oo.getDataBuilder().getName());
-                            linkedHashSet.add(oo.getDataBuilder().getCompanyNatureName());
-                            linkedHashSet.add(StringUtils.isNotBlank(oo.getDataBuilder().getSocialPrestigeName()) ? String.format("社会信誉%s", oo.getDataBuilder().getSocialPrestigeName()) : "");
-                            if (linkedHashSet.stream().filter(s -> StringUtils.isNotBlank(s)).count() != 3) {
-                                linkedHashSet.clear();
-                            }
-                        }
-                    }
-                    if (basicEstate != null && basicEstate.getId() != null) {
-                        if (basicEstate.getDataDeveloper() != null) {
-                            linkedHashSet.add(basicEstate.getDataDeveloper().getName());
-                            linkedHashSet.add(basicEstate.getDataDeveloper().getCompanyNatureName());
-                            linkedHashSet.add(StringUtils.isNotBlank(basicEstate.getDataDeveloper().getSocialPrestigeName()) ? String.format("社会信誉%s", basicEstate.getDataDeveloper().getSocialPrestigeName()) : "");
-                            if (linkedHashSet.stream().filter(s -> StringUtils.isNotBlank(s)).count() != 3) {
-                                linkedHashSet.clear();
-                            }
-                        }
-                    }
-                    if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                        stringSet.add(StringUtils.join(linkedHashSet, "、"));
-                    }
-                    linkedHashSet.clear();
+                if (basicEstate.getDataDeveloper() != null) {
+                    developerString.append("开发商").append(basicEstate.getDataDeveloper().getName()).append("，")
+                            .append(basicEstate.getDataDeveloper().getCompanyNatureName()).append("，");
+                    developerString.append(StringUtils.isNotBlank(basicEstate.getDataDeveloper().getSocialPrestigeName()) ? String.format("社会信誉%s;", basicEstate.getDataDeveloper().getSocialPrestigeName()) : "");
+                    developerMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), developerString.toString());
                 }
-                if (CollectionUtils.isNotEmpty(stringSet)) {
-                    map.put(StringUtils.join(stringSet, "，"), String.format("%s%s", stringEntry.getKey(), "栋"));
-                }
-                stringSet.clear();
             }
         }
-        String s = "无";
-        if (!map.isEmpty()) {
-            if (map.entrySet().stream().count() == 1) {
-                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()), "");
-            } else {
-                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false,null ),"\r");
-            }
-        }
-        return s;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(generateCommonMethod.judgeEachDesc(builderMap, "", ";", false));
+        stringBuilder.append(generateCommonMethod.judgeEachDesc(developerMap, "", ";", false));
+        return StringUtils.strip(stringBuilder.toString(), ";");
     }
 
     /**
      * 较好新旧程度及维护使用情况
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      * @throws Exception
      */
-    public String getThirteen(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
         Set<String> stringSet = Sets.newHashSet();
-        Map<String, List<Integer>> groupByHouse = groupByHouse(judgeObjectList);
-        Map<String, String> map = Maps.newHashMap();
         String spCategoryName = "特种设备,其他";
         String spTypeName = "设备部分,其它";
-        if (!groupByHouse.isEmpty()) {
-            for (Map.Entry<String, List<Integer>> stringEntry : groupByHouse.entrySet()) {
-                List<Integer> integerList = stringEntry.getValue();
-                if (CollectionUtils.isEmpty(integerList)) {
-                    continue;
-                }
-                for (int i = 0; i < integerList.size(); i++) {
-                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
-                    if (schemeJudgeObject == null || schemeJudgeObject.getDeclareRecordId() == null) {
-                        continue;
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            if (basicApply == null) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            List<BasicHouseDamagedDegreeVo> degreeVoList = generateBaseExamineService.getDamagedDegreeVoList();
+            Map<String, List<BasicHouseDamagedDegreeVo>> stringListMap = Maps.newHashMap();
+            if (CollectionUtils.isNotEmpty(degreeVoList)) {
+                degreeVoList.stream().forEach(oo -> {
+                    List<BasicHouseDamagedDegreeVo> damagedDegreeVoList = stringListMap.get(oo.getTypeName());
+                    if (CollectionUtils.isEmpty(damagedDegreeVoList)) {
+                        damagedDegreeVoList = Lists.newArrayList();
                     }
-                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                    if (basicApply == null) {
-                        continue;
-                    }
-                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                    List<BasicHouseDamagedDegreeVo> degreeVoList = generateBaseExamineService.getDamagedDegreeVoList();
-                    Map<String, List<BasicHouseDamagedDegreeVo>> stringListMap = Maps.newHashMap();
-                    if (CollectionUtils.isNotEmpty(degreeVoList)) {
-                        degreeVoList.stream().forEach(oo -> {
-                            List<BasicHouseDamagedDegreeVo> damagedDegreeVoList = stringListMap.get(oo.getTypeName());
-                            if (CollectionUtils.isEmpty(damagedDegreeVoList)) {
-                                damagedDegreeVoList = Lists.newArrayList();
-                            }
-                            damagedDegreeVoList.add(oo);
-                            stringListMap.put(oo.getTypeName(), damagedDegreeVoList);
-                        });
-                    }
-                    if (!stringListMap.isEmpty()) {
-                        stringListMap.entrySet().stream().forEach(stringListEntry -> {
-                            List<BasicHouseDamagedDegreeVo> damagedDegreeVoList = stringListEntry.getValue();
-                            String s = "";
-                            if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
-                                damagedDegreeVoList.stream().forEach(oo -> {
-                                    if (spCategoryName.indexOf(oo.getCategoryName()) != -1) {
-                                        if (spTypeName.indexOf(oo.getTypeName()) == -1) {
-                                            stringLinkedHashSet.add(String.format("%s%s", oo.getBasicallyIntact(), oo.getEntityConditionName()));
-                                        }
-                                    } else {
-                                        stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
-                                    }
-                                });
-                                s = StringUtils.join(stringLinkedHashSet, "、");
-                                stringLinkedHashSet.clear();
+                    damagedDegreeVoList.add(oo);
+                    stringListMap.put(oo.getTypeName(), damagedDegreeVoList);
+                });
+            }
+            if (!stringListMap.isEmpty()) {
+                stringListMap.entrySet().stream().forEach(stringListEntry -> {
+                    List<BasicHouseDamagedDegreeVo> damagedDegreeVoList = stringListEntry.getValue();
+                    String s = "";
+                    if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
+                        damagedDegreeVoList.stream().forEach(oo -> {
+                            if (spCategoryName.indexOf(oo.getCategoryName()) != -1) {
+                                if (spTypeName.indexOf(oo.getTypeName()) == -1) {
+                                    stringLinkedHashSet.add(String.format("%s%s", oo.getBasicallyIntact(), oo.getEntityConditionName()));
+                                }
                             } else {
-                                s = "无";
+                                stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
                             }
-                            linkedHashSet.add(String.format("%s：%s%s", stringListEntry.getKey(), s, "。"));
                         });
-                        stringSet.add(StringUtils.join(linkedHashSet, "\r"));
-                        linkedHashSet.clear();
+                        s = StringUtils.join(stringLinkedHashSet, "、");
+                        stringLinkedHashSet.clear();
+                    } else {
+                        s = "无";
                     }
-                }
-                map.put(StringUtils.join(stringSet, "\r"), String.format("%s%s", stringEntry.getKey(), "号"));
-                stringSet.clear();
+                    linkedHashSet.add(String.format("%s：%s%s", stringListEntry.getKey(), s, "。"));
+                });
+                stringSet.add(StringUtils.join(linkedHashSet, "\r"));
+                linkedHashSet.clear();
             }
         }
-        String s = "无数据";
-        if (!map.isEmpty()) {
-            if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
-                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()), "");
-            } else {
-                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false,null ),"\r");
-            }
-        }
-        return s;
+        return generateCommonMethod.judgeEachDesc(map,"",";",false);
     }
 
     /**
@@ -584,7 +530,7 @@ public class GenerateHouseEntityService {
             if (map.entrySet().stream().map(entry -> entry.getKey()).count() == 1) {
                 s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()), "");
             } else {
-                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false,null ),"\r");
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false, null), "\r");
             }
         }
         return s;
@@ -597,8 +543,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getTenPointThree(List<Integer> judgeObjectIds) throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getMatchingEquipment(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
             if (schemeJudgeObject.getDeclareRecordId() == null) {
                 return false;
@@ -647,12 +592,11 @@ public class GenerateHouseEntityService {
     /**
      * 非工业与仓储的其他设施
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      * @throws Exception
      */
-    public String getTenPointTwo(List<Integer> judgeObjectIds) throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+    public String getOtherEquipment(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
                 if (schemeJudgeObject.getDeclareRecordId() == null) {
@@ -864,12 +808,12 @@ public class GenerateHouseEntityService {
                 }
             }
         }
-        String s = "无数据";
+        String s = "";
         if (!map.isEmpty()) {
             if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
                 s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).distinct().collect(Collectors.toList()), "。\r");
             } else {
-                s = StringUtils.join(generateCommonMethod.changeMapToList(map,false,null),"。\n");
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false, null), "。\n");
             }
         }
         return s;
@@ -975,7 +919,7 @@ public class GenerateHouseEntityService {
             if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
                 s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).distinct().collect(Collectors.toList()), "。");
             } else {
-                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false,"" ),"。");
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false, ""), "。");
             }
         }
         return s;

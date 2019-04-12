@@ -18,9 +18,11 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataBlockService;
+import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.generate.GenerateEquityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateHouseEntityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateLoactionService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -105,6 +107,10 @@ public class MdMarketCompareFieldService extends BaseService {
     private GenerateLoactionService generateLoactionService;
     @Autowired
     private GenerateHouseEntityService generateHouseEntityService;
+    @Autowired
+    private GenerateEquityService generateEquityService;
+    @Autowired
+    private DataPropertyService dataPropertyService;
 
     /**
      * 获取市场比较法各个字段对应值
@@ -273,7 +279,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_RIGHT_NATURE.getKey(), stringBuilder.toString()));
                             break;
                         case HOUSE_NATURE://房屋性质
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.HOUSE_NATURE.getKey(), baseDataDicService.getNameById(declareRecord.getNature())));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.HOUSE_NATURE.getKey(), declareRecord.getNature()));
                             break;
                         case HOUSE_CERT_USE://房屋用途
                             stringBuilder = new StringBuilder();
@@ -281,13 +287,11 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.HOUSE_CERT_USE.getKey(), stringBuilder.toString()));
                             break;
                         case PROPERTY_MANAGEMENT://物业管理情况
-                            stringBuilder = new StringBuilder();
-
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PROPERTY_MANAGEMENT.getKey(), stringBuilder.toString()));
+                            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(examineBuilding.getProperty());
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PROPERTY_MANAGEMENT.getKey(), generateEquityService.getProperty(dataProperty)));
                             break;
                         case OTHER_SPECIAL_SITUATIONS://其它特殊情况
-                            String specialCase = null;
-
+                            String specialCase = generateEquityService.getSpecialcase(projectInfo.getId(),Lists.newArrayList(judgeObject));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OTHER_SPECIAL_SITUATIONS.getKey(), specialCase));
                             break;
                         case BUILDING_AREA://建筑面积（㎡）
@@ -318,10 +322,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey(), StringUtils.strip(stringBuilder.toString(), ",")));
                             break;
                         case APPEARANCE://外观
-                            stringBuilder = new StringBuilder();
-                            stringBuilder.append(String.format("外观风格%s,", baseDataDicService.getNameById(examineBuilding.getAppearanceStyle())));
-                            stringBuilder.append(String.format("外观%s;", baseDataDicService.getNameById(examineBuilding.getAppearanceNewAndOld())));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.APPEARANCE.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.APPEARANCE.getKey(), generateHouseEntityService.getAppearance(Lists.newArrayList(judgeObject))));
                             break;
                         case AERATION://通风
                             stringBuilder = new StringBuilder();
@@ -488,8 +489,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case Other://其它
                             stringBuilder = new StringBuilder();
-
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.Other.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.Other.getKey(), generateHouseEntityService.getOther(Lists.newArrayList(judgeObject))));
                             break;
                         case BUILDING_YEAR://竣工时间
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_YEAR.getKey(), DateUtils.formatDate(examineBuilding.getBeCompletedTime()), isCase));

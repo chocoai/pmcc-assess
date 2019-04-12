@@ -2482,7 +2482,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        StringBuilder stringBuilder = new StringBuilder(8);
+
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
         if (!linkedHashMap.isEmpty()) {
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
@@ -2498,7 +2498,7 @@ public class GenerateBaseDataService {
                 List<SchemeJudgeObject> judgeObjects = entry.getValue();
                 if (linkedHashMap.size() > 1)
                     documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
-
+                StringBuilder stringBuilder = new StringBuilder(8);
                 stringBuilder.append(generateCommonMethod.getIndentHtml("1、位置状况"));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s", generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate, judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)))));
@@ -2609,16 +2609,16 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(("10、设施设备")));
                 stringBuilder.append(generateCommonMethod.getIndentHtml((String.format("电梯:%s", generateCommonMethod.trim(generateHouseEntityService.getUnitElevator(judgeObjects))))));
 
-                String s2 = generateHouseEntityService.getTenPointTwo(integerList);
-                if (StringUtils.isNotBlank(s2.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("非工业与仓储的其他设施:%s", generateCommonMethod.trim(s2))));
+                String otherEquipment = generateHouseEntityService.getOtherEquipment(judgeObjects);
+                if (StringUtils.isNotBlank(otherEquipment)) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("非工业与仓储的其他设施:%s", generateCommonMethod.trim(otherEquipment))));
                 }
-                String s1 = generateHouseEntityService.getTenPointThree(integerList);
-                if (StringUtils.isNotBlank(s1.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("房屋配套设备设施工:%s", generateCommonMethod.trim(s1))));
+                String matchingEquipment = generateHouseEntityService.getMatchingEquipment(judgeObjects);
+                if (StringUtils.isNotBlank(matchingEquipment)) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("房屋配套设备设施工:%s", generateCommonMethod.trim(matchingEquipment))));
                 }
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("11、建筑功能:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingFunction(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("12、新旧程度及维护使用情况", generateCommonMethod.trim(generateHouseEntityService.getThirteen(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("12、新旧程度及维护使用情况", generateCommonMethod.trim(generateHouseEntityService.getDamagedDegree(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("13、其它:%s", generateCommonMethod.trim(generateHouseEntityService.getOther(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("14、建筑实体分析:%s", generateCommonMethod.trim(generateHouseEntityService.getContent(judgeObjects, schemeAreaGroup)))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);

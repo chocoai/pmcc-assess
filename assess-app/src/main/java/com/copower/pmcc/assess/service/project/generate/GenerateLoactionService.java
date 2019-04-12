@@ -412,18 +412,18 @@ public class GenerateLoactionService {
                         contentBuilder.append(basicHouseFaceStreetVo.getStreetName());
                     }
                     if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getTrafficFlowName())) {
-                        contentBuilder.append(String.format("交通流量%s", basicHouseFaceStreetVo.getTrafficFlowName()));
+                        contentBuilder.append(String.format("交通流量%s，", basicHouseFaceStreetVo.getTrafficFlowName()));
                     }
                     if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getVisitorsFlowrateName())) {
-                        contentBuilder.append(String.format("人流量%s", basicHouseFaceStreetVo.getVisitorsFlowrateName()));
+                        contentBuilder.append(String.format("人流量%s，", basicHouseFaceStreetVo.getVisitorsFlowrateName()));
                     }
-                    contentBuilder.append("、");
+                    contentBuilder.append(";");
                 }
             }
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
         }
-        String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-        return StringUtils.strip(s,";");
+        String s = generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        return StringUtils.strip(s,"。");
     }
 
     /**
@@ -712,8 +712,7 @@ public class GenerateLoactionService {
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
                 if (basicApply != null) {
                     if (judgeObjectList.size() != 1) {
-                        stringBuffer.append(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
-                        stringBuffer.append("号位于");
+                        stringBuffer.append("位于");
                     }
                     GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                     BasicBuilding basicBuilding = generateBaseExamineService.getBasicBuilding();

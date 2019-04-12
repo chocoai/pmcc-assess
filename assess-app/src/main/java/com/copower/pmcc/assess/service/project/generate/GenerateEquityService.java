@@ -216,24 +216,10 @@ public class GenerateEquityService {
             BasicApply exploreBasicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(exploreBasicApply.getId());
             if (basicBuilding.getProperty()!=null) {//物业信誉与管理
-                StringBuilder propertyBuilder = new StringBuilder();
                 DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
                 BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
                 socialPrestige = baseDataDic.getName();
-                propertyBuilder.append(String.format("%s信誉%s，", dataProperty.getName(), baseDataDic.getRemark()));
-                List<DataPropertyServiceItemVo> serviceItemVoList = dataPropertyServiceItemService.getListByMasterId(Integer.valueOf(basicBuilding.getProperty()));
-                if (CollectionUtils.isNotEmpty(serviceItemVoList)) {
-                    List<BaseDataDic> reputationList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_COMPANY_REPUTATION);
-                    reputationList.sort((o1, o2) -> o2.getSorting().compareTo(o1.getSorting()));
-                    List<Integer> gradeEvaluations = LangUtils.transform(serviceItemVoList, o -> o.getGradeEvaluation());
-                    for (BaseDataDic dataDic : reputationList) {
-                        if (gradeEvaluations.contains(dataDic.getId())) {
-                            propertyBuilder.append(String.format("管理%s，", dataDic.getRemark()));
-                            break;
-                        }
-                    }
-                }
-                propertyMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), propertyBuilder.toString());
+                propertyMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), getProperty(dataProperty));
             }
         }
         String declareDesc = generateCommonMethod.judgeEachDesc(declareMap, "", ",", false);
@@ -267,6 +253,25 @@ public class GenerateEquityService {
             stringBuilder.append(generateCommonMethod.trim(stringOverallMerit));
         }
         return stringBuilder.toString();
+    }
+
+    public String getProperty(DataProperty dataProperty){
+        StringBuilder propertyBuilder = new StringBuilder();
+        BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
+        propertyBuilder.append(String.format("%s信誉%s，", dataProperty.getName(), baseDataDic.getRemark()));
+        List<DataPropertyServiceItemVo> serviceItemVoList = dataPropertyServiceItemService.getListByMasterId(dataProperty.getId());
+        if (CollectionUtils.isNotEmpty(serviceItemVoList)) {
+            List<BaseDataDic> reputationList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_COMPANY_REPUTATION);
+            reputationList.sort((o1, o2) -> o2.getSorting().compareTo(o1.getSorting()));
+            List<Integer> gradeEvaluations = LangUtils.transform(serviceItemVoList, o -> o.getGradeEvaluation());
+            for (BaseDataDic dataDic : reputationList) {
+                if (gradeEvaluations.contains(dataDic.getId())) {
+                    propertyBuilder.append(String.format("管理%s，", dataDic.getRemark()));
+                    break;
+                }
+            }
+        }
+        return propertyBuilder.toString();
     }
 
     /**
