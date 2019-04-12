@@ -543,6 +543,12 @@
     };
 
     houseCommon.autocompleteStart = function () {
+        houseCommon.houseForm.find('input[name=practicalUse]').apPracticalUse({
+            onSelect:function (id, name) {
+                houseCommon.houseForm.find('input[name=practicalUseId]').val(id);
+                houseCommon.houseForm.find('input[name=practicalUse]').val(name);
+            }
+        });
         $("#txt_House_search").apHouse({
             caseUnitId: function () {
                 return basicCommon.getCaseUnitId();

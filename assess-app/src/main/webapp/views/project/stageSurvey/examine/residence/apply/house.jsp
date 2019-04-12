@@ -143,8 +143,10 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 practicalUse" name="practicalUse" required>
-                    </select>
+                 <%--<select class="form-control search-select select2 practicalUse" name="practicalUse" required>
+                    </select>--%>
+                    <input type="text" placeholder="实际用途" class="form-control" name="practicalUse">
+                    <input type="hidden" placeholder="实际用途" class="form-control" name="practicalUseId">
                 </div>
             </div>
             <div class="x-valid">

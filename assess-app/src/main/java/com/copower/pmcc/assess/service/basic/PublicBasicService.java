@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
+import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.data.DataBlockService;
@@ -110,6 +111,8 @@ public class PublicBasicService {
     private PublicService publicService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
+    @Autowired
+    private ResidueRatioService residueRatioService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -872,6 +875,10 @@ public class PublicBasicService {
                         for (BasicHouseDamagedDegree degree : damagedDegreeList) {
                             basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree);
                         }
+                        //写入成新率
+                        String newDegree = residueRatioService.getObservationalRatio(basicHouse.getId());
+                        basicHouse.setNewDegree(newDegree);
+                        basicHouseService.saveAndUpdateBasicHouse(basicHouse);
                     }
                 }
             }

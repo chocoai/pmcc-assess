@@ -69,9 +69,9 @@ public class ResidueRatioController {
 
     @ResponseBody
     @RequestMapping(value = "/initObserve", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult initObserve(Integer residueRatioId) {
+    public HttpResult initObserve(Integer residueRatioId, Integer houseId) {
         try {
-            HashMap<String, String> observeDate = residueRatioService.getObserveDate(residueRatioId);
+            HashMap<String, String> observeDate = residueRatioService.getObserveDate(residueRatioId, houseId);
             return HttpResult.newCorrectResult(JSONObject.toJSON(observeDate));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

@@ -3,10 +3,12 @@ package com.copower.pmcc.assess.service.assist;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.data.ToolResidueRatioDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
 import com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,6 +37,9 @@ public class ResidueRatioService {
     private DataDamagedDegreeService dataDamagedDegreeService;
     @Autowired
     private ToolResidueRatioDao toolResidueRatioDao;
+    @Autowired
+    private BasicHouseService basicHouseService;
+
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -54,6 +59,11 @@ public class ResidueRatioService {
                         BigDecimal score = new BigDecimal(reallyScore);
                         item.setScore(score);
                         basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(item);
+                        //写入成新率
+                        BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseId);
+                        String resultValue = toolResidueRatio.getResultValue();
+                        basicHouse.setNewDegree(resultValue);
+                        basicHouseService.saveAndUpdateBasicHouse(basicHouse);
                     }
                 }
             }
@@ -76,7 +86,7 @@ public class ResidueRatioService {
         return toolResidueRatio;
     }
 
-    public HashMap<String, String> getObserveDate(Integer residueRatioId) {
+    public HashMap<String, String> getObserveDate(Integer residueRatioId, Integer houseId) {
         HashMap<String, String> observeDateMap = new HashMap<>();
         if (residueRatioId != null) {
             ToolResidueRatio toolResidueRatio = toolResidueRatioDao.getToolResidueRatio(residueRatioId);
@@ -95,8 +105,31 @@ public class ResidueRatioService {
                         }
                     }
                 }
+            } else {
+                if(houseId != null) {
+                    BigDecimal structuralScore = this.getTypeScore(houseId, "structural.part");
+                    BigDecimal decorationScore = this.getTypeScore(houseId, "decoration.part");
+                    BigDecimal equipmentScore = this.getTypeScore(houseId, "equipment.part");
+                    BigDecimal otherScore = this.getTypeScore(houseId, "other");
+                    observeDateMap.put("residueRatioStructuralScore", structuralScore.toString());
+                    observeDateMap.put("residueRatioDecorationScore", decorationScore.toString());
+                    observeDateMap.put("residueRatioEquipmentScore", equipmentScore.toString());
+                    observeDateMap.put("residueRatioOtherScore", otherScore.toString());
+                    List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId);
+                    if (CollectionUtils.isNotEmpty(list)) {
+                        for (BasicHouseDamagedDegreeVo item : list) {
+                            String scoreId = "scores" + item.getCategory();
+                            String score = "0";
+                            if(item.getScore()!=null) {
+                                score = item.getScore().toString();
+                            }
+                            observeDateMap.put(scoreId, score);
+                        }
+                    }
+                }
             }
         }
+
         return observeDateMap;
     }
 

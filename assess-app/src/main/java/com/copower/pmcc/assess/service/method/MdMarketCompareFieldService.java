@@ -204,17 +204,17 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case POSITION://房地产方位
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateLoactionService.getPosition(Lists.newArrayList(judgeObject.getId())));
+                            stringBuilder.append(generateLoactionService.getPosition(examineEstate));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.POSITION.getKey(), stringBuilder.toString()));
                             break;
                         case WITH_IMPORTANT_LOCATION_DISTANCE://与重要场所的距离
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateLoactionService.getWithImportantLocationDistance(Lists.newArrayList(judgeObject.getId())));
+                            stringBuilder.append(generateLoactionService.getWithImportantLocationDistance(examineEstate));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.WITH_IMPORTANT_LOCATION_DISTANCE.getKey(), stringBuilder.toString()));
                             break;
                         case TEMPORARY_ROAD_CONDITION://临街（路）状况
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateLoactionService.getFaceStreet(Lists.newArrayList(judgeObject.getId())));
+                            stringBuilder.append(generateLoactionService.getFaceStreet(Lists.newArrayList(judgeObject)));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TEMPORARY_ROAD_CONDITION.getKey(), stringBuilder.toString()));
                             break;
                         case FLOOR://楼层
@@ -226,40 +226,40 @@ public class MdMarketCompareFieldService extends BaseService {
                         case TRAFFIC_CONDITIONS://交通条件
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(String.format("道路状况:")).append("\r");
-                            stringBuilder.append(generateLoactionService.getRoadCondition(Lists.newArrayList(judgeObject.getId()))).append("\r");
+                            stringBuilder.append(generateLoactionService.getRoadCondition(Lists.newArrayList(judgeObject))).append("\r");
                             stringBuilder.append(String.format("出入可利用的交通工具:")).append("\r");
-                            stringBuilder.append(generateLoactionService.getAccessAvailableMeansTransport(Lists.newArrayList(judgeObject.getId()))).append("\r");
+                            stringBuilder.append(generateLoactionService.getAccessAvailableMeansTransport(basicApply)).append("\r");
                             stringBuilder.append(String.format("交通管制情况:")).append("\r");
-                            stringBuilder.append(generateLoactionService.getTrafficControl(Lists.newArrayList(judgeObject.getId()))).append("\r");
+                            stringBuilder.append(generateLoactionService.getTrafficControl(basicApply)).append("\r");
                             stringBuilder.append(String.format("停车方便度:")).append("\r");
-                            stringBuilder.append(generateLoactionService.getParkingConvenience(Lists.newArrayList(judgeObject.getId()))).append("\r");
+                            stringBuilder.append(generateLoactionService.getParkingConvenience(basicApply)).append("\r");
                             stringBuilder.append(String.format("交通收费情况:")).append("\r");
-                            stringBuilder.append(generateLoactionService.getTrafficCharges(Lists.newArrayList(judgeObject.getId()))).append("\r");
+                            stringBuilder.append(generateLoactionService.getTrafficCharges(basicApply)).append("\r");
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRAFFIC_CONDITIONS.getKey(), stringBuilder.toString()));
                             break;
                         case URBAN_INFRASTRUCTURE://外部基础设施
                             stringBuilder = new StringBuilder();
-                            generateLoactionService.getExternalInfrastructure(Lists.newArrayList(judgeObject.getId()));
+                            generateLoactionService.getExternalInfrastructure(basicApply);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.URBAN_INFRASTRUCTURE.getKey(), stringBuilder.toString()));
                             break;
                         case PUBLIC_SERVICE_FACILITIES://公共服务设施
                             stringBuilder = new StringBuilder();
-                            generateLoactionService.getExternalPublicServiceFacilities(Lists.newArrayList(judgeObject.getId()));
+                            generateLoactionService.getExternalPublicServiceFacilities(basicApply);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PUBLIC_SERVICE_FACILITIES.getKey(), stringBuilder.toString()));
                             break;
                         case NATURAL://自然环境
                             stringBuilder = new StringBuilder();
-                            generateLoactionService.getEnvironmentalScience(Lists.newArrayList(judgeObject.getId()), EnvironmentalScienceEnum.NATURAL);
+                            generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NATURAL.getKey(), stringBuilder.toString()));
                             break;
                         case CULTURAL://人文环境
                             stringBuilder = new StringBuilder();
-                            generateLoactionService.getEnvironmentalScience(Lists.newArrayList(judgeObject.getId()), EnvironmentalScienceEnum.HUMANITY);
+                            generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.CULTURAL.getKey(), stringBuilder.toString()));
                             break;
                         case SCENERY://景观
                             stringBuilder = new StringBuilder();
-                            generateLoactionService.getEnvironmentalScience(Lists.newArrayList(judgeObject.getId()), EnvironmentalScienceEnum.SCENERY);
+                            generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.SCENERY.getKey(), stringBuilder.toString()));
                             break;
                         case LAND_RIGHT_TYPE://土地权利类型
@@ -483,6 +483,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case NEW_DEGREE://成新度
                             stringBuilder = new StringBuilder();
+                            stringBuilder.append(examineHouse.getNewDegree());
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NEW_DEGREE.getKey(), stringBuilder.toString()));
                             break;
                         case Other://其它

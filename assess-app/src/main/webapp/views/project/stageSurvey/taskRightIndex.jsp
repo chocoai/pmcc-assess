@@ -122,7 +122,9 @@
                                     </label>
                                     <div class="col-sm-10">
                                         <select class="form-control" required  name="category" onchange="changeRemark(this,'_number')">
-
+                                            <c:forEach var="item" items="${inventoryRightTypeList}">
+                                                <option value="${item.id}">${item.name}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
