@@ -1,10 +1,14 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryRightRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -20,7 +24,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -40,10 +43,14 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
     private CommonService commonService;
     @Autowired
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskRightIndex", "", 0, "0", "");
+        List<BaseProjectClassify> inventoryRightTypeList = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_CATEGORY);
+        modelAndView.addObject("inventoryRightTypeList",inventoryRightTypeList);
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         modelAndView.addObject("declareRecordList",declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId()));
         this.clear(projectPlanDetails);
