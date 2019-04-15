@@ -8,6 +8,7 @@
             var defaults = {
                 offset: 0,
                 limit: 10,
+                practicalUseId:null,
                 onSelect: function (id, name) {
 
                 }
@@ -17,13 +18,14 @@
             var params = AssessDefault.autocomplete();
             params.source = function (request, response) {
                 $.ajax({
-                    url: getContextPath() + "/setUseField/getSetUseFieldList",
+                    url: getContextPath() + "/basicHouseRoom/getRoomTypeList",
                     type: "get",
                     dataType: "json",
                     data: {
                         offset: defaults.offset,
                         limit: defaults.limit,
-                        name: $(that).val()
+                        name: $(that).val(),
+                        pid:defaults.practicalUseId
                     },
                     success: function (data) {
                         if (data) {

@@ -41,9 +41,8 @@
                                             房间类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select required="required" name="roomType"
-                                                    class="form-control search-select select2 roomType">
-                                            </select>
+                                            <input type="text" placeholder="房间类型" class="form-control" name="roomType">
+                                            <input type="hidden" placeholder="房间类型" class="form-control" name="roomTypeId">
                                         </div>
                                     </div>
                                     <div class="x-valid">
