@@ -486,42 +486,19 @@ public class GenerateCommonMethod {
     }
 
     public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject) {
-        StringBuilder stringBuilder = new StringBuilder(24);
+        StringBuilder stringBuilder = new StringBuilder(8);
         if (schemeJudgeObject == null) {
             return "";
         }
         if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
-            String[] strings = schemeJudgeObject.getNumber().split(",");
-            //显示委估对象最多3个
-            final int max = 3;
-            if (strings.length > 3) {
-                //合并委估对象大于了3个以上的情况
-                for (int i = 0; i < max; i++) {
-                    stringBuilder.append(strings[i]);
-                    if (i != max - 1) {
-                        stringBuilder.append(",");
-                    }
-                }
-            } else {
-                stringBuilder.append(parseIntJudgeNumber(schemeJudgeObject.getNumber()).toString());
-                //拆分情况
-                if (schemeJudgeObject.getSplitNumber() != null) {
-//                    stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
-                }
-            }
+            Integer num = this.parseIntJudgeNumber(schemeJudgeObject.getNumber());
+            String val = this.convertNumber(Lists.newArrayList(num));
+            stringBuilder.append(val);
             stringBuilder.append("号");
-            if (strings.length > 3) {
-                stringBuilder.append("等");
-            }
-            if (false) {
-                stringBuilder.append(SchemeJudgeObjectName);
-            }
         }
         if (StringUtils.isEmpty(stringBuilder.toString())) {
             if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
                 stringBuilder.append(schemeJudgeObject.getName());
-            } else {
-                stringBuilder.append(" ");
             }
         }
         return stringBuilder.toString();
@@ -604,6 +581,21 @@ public class GenerateCommonMethod {
             }
             String text = this.convert(ints, 0);
             text = text.substring(0, text.length() - 1);
+            StringBuilder stringBuilder = new StringBuilder(8);
+            if (StringUtils.isNotEmpty(text)) {
+                for (int i = 0; i < text.length(); i++) {
+                    char c = text.charAt(i);
+                    String s = String.valueOf(c);
+                    if (NumberUtils.isNumber(s)) {
+                        stringBuilder.append(this.parseToCircleNumber(Integer.parseInt(s)));
+                    } else {
+                        stringBuilder.append(c);
+                    }
+                }
+            }
+            if (StringUtils.isNotEmpty(stringBuilder.toString())){
+                text = stringBuilder.toString();
+            }
             return text;
         }
         return " ";
