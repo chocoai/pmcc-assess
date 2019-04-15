@@ -368,12 +368,6 @@
      * 房屋信息自动补全
      */
     basicApplyIndex.autocompleteHouse = function () {
-        houseCommon.houseForm.find('input[name=practicalUse]').apPracticalUse({
-            onSelect:function (id, name) {
-                houseCommon.houseForm.find('input[name=practicalUseId]').val(id);
-                houseCommon.houseForm.find('input[name=practicalUse]').val(name);
-            }
-        });
         var that = basicCommon.basicApplyForm.find('[name=houseNumber]');
         var group = $(that).closest('.form-group');
         var defaults = AssessDefault.autocomplete();
