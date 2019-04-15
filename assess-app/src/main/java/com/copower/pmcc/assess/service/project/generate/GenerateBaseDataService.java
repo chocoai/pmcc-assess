@@ -446,7 +446,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalValueValuationObject() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -480,7 +480,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
-        List<SchemeJudgeObjectVo> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().map(schemeJudgeObject -> {
+        List<SchemeJudgeObjectVo> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId).stream().map(schemeJudgeObject -> {
             return schemeJudgeObjectService.getSchemeJudgeObjectVo(schemeJudgeObject);
         }).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -544,6 +544,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int k = 0; k < schemeJudgeObjectList.size(); k++) {
@@ -553,16 +554,18 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isEmpty(schemeSurePriceItemList)) {
                     continue;
                 }
-                builder.writeln(String.format("%s", getSchemeJudgeObjectShowName(schemeJudgeObject)));
                 for (SchemeSurePriceItem schemeSurePriceItem : schemeSurePriceItemList) {
                     if (StringUtils.isNotBlank(schemeSurePriceItem.getMethodName()) && schemeSurePriceItem.getTrialPrice() != null) {
-                        builder.writeln(String.format("%s%s元", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
+                        linkedHashSet.add(String.format("%s%s元", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
                     }
                 }
                 if (schemeSurePrice != null && schemeSurePrice.getPrice() != null) {
-                    builder.writeln(String.format("最终单价%s元", schemeSurePrice.getPrice().toString()));
+                    linkedHashSet.add(String.format("最终单价%s元", schemeSurePrice.getPrice().toString()));
                 }
+                String s = String.format("%s%s 。", getSchemeJudgeObjectShowName(schemeJudgeObject), StringUtils.join(linkedHashSet, "，"));
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(s), false);
                 builder.writeln();
+                linkedHashSet.clear();
             }
         }
         doc.save(localPath);
@@ -571,7 +574,7 @@ public class GenerateBaseDataService {
 
     //房地产总价
     private BigDecimal getTotalRealEstate() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         BigDecimal temp = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -724,7 +727,7 @@ public class GenerateBaseDataService {
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
             stringSet.clear();
         }
-        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()) , true);
+        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
         doc.save(localPath);
         return localPath;
     }
@@ -784,7 +787,7 @@ public class GenerateBaseDataService {
                 } else {
                     switch (j) {
                         case 0:
-                            builder.writeln(String.format("%s%s", schemeJudgeObject.getNumber(), "号"));
+                            builder.writeln(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
                             break;
                         case 1:
                             builder.writeln(String.format("%s%s", declareRecord.getName(), ""));
@@ -1085,7 +1088,8 @@ public class GenerateBaseDataService {
                             stringBuilder.append(schemeJudgeFunction.getApplicableReason()).append(";");
                         }
                     }
-                    builder.writeln(stringBuilder.toString());
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()),false);
+                    builder.writeln();
                     stringBuilder.delete(0, builder.toString().length());
                 }
             }
@@ -2108,41 +2112,39 @@ public class GenerateBaseDataService {
     public String getDeterminationMarketValueValuationObject() throws Exception {
         String localPath = getLocalPath();
         Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        StringBuilder stringBuilder = new StringBuilder(16);
+        List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
+        List<SchemeJudgeObject> schemeJudgeObjectListA = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectListB = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectListC = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListA)){
+            schemeJudgeObjectList.addAll(schemeJudgeObjectListA);
+        }
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListB)){
+            schemeJudgeObjectList.addAll(schemeJudgeObjectListB);
+        }
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListC)){
+            schemeJudgeObjectList.addAll(schemeJudgeObjectListC);
+        }
+        schemeJudgeObjectList = schemeJudgeObjectList.stream().distinct().collect(Collectors.toList());
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.writeln(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    StringBuilder stringBuilder = new StringBuilder(16);
-                    stringBuilder.append(schemeJudgeFunctionList.stream().filter(schemeJudgeFunction -> Objects.equal(CalculationMethodNameEnum.MdCompare.getName(), schemeJudgeFunction.getName())).findFirst().get().getName());
-                    stringBuilder.append("与");
-                    stringBuilder.append(schemeJudgeFunctionList.stream().filter(schemeJudgeFunction -> Objects.equal(CalculationMethodNameEnum.MdIncome.getName(), schemeJudgeFunction.getName())).findFirst().get().getName());
-                    stringBuilder.append("测算结果相近，通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，");
-                    stringBuilder.append(schemeJudgeFunctionList.stream().filter(schemeJudgeFunction -> Objects.equal(CalculationMethodNameEnum.MdCompare.getName(), schemeJudgeFunction.getName())).findFirst().get().getName());
-                    stringBuilder.append("的试算结果与");
-                    stringBuilder.append(schemeJudgeFunctionList.stream().filter(schemeJudgeFunction -> Objects.equal(CalculationMethodNameEnum.MdIncome.getName(), schemeJudgeFunction.getName())).findFirst().get().getName());
-                    stringBuilder.append("试算结果均能反映估价对象市场价值，");
-                    //权重说明
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
-                            if (schemeSurePrice != null) {
-                                stringBuilder.append(schemeSurePrice.getWeightExplain());
-                            }
-                        }
-                    }
-                    builder.writeln(stringBuilder.toString());
-                    stringBuilder.delete(0, stringBuilder.toString().length());
-
-                    stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append("的单价=").append(getEvaluationExpression());
+                    linkedHashSet.add(schemeJudgeFunctionList.stream().filter(schemeJudgeFunction -> Objects.equal(CalculationMethodNameEnum.MdCompare.getName(), schemeJudgeFunction.getName())).findFirst().get().getName());
+                    linkedHashSet.add("与");
+                    linkedHashSet.add(schemeJudgeFunctionList.stream().filter(schemeJudgeFunction -> Objects.equal(CalculationMethodNameEnum.MdIncome.getName(), schemeJudgeFunction.getName())).findFirst().get().getName());
+                    linkedHashSet.add("测算结果相近，通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，");
+                    linkedHashSet.add(schemeJudgeFunctionList.stream().filter(schemeJudgeFunction -> Objects.equal(CalculationMethodNameEnum.MdCompare.getName(), schemeJudgeFunction.getName())).findFirst().get().getName());
+                    linkedHashSet.add("的试算结果与");
+                    linkedHashSet.add(schemeJudgeFunctionList.stream().filter(schemeJudgeFunction -> Objects.equal(CalculationMethodNameEnum.MdIncome.getName(), schemeJudgeFunction.getName())).findFirst().get().getName());
+                    linkedHashSet.add("试算结果均能反映估价对象市场价值。");
                     List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
                     if (CollectionUtils.isNotEmpty(schemeSurePriceItemList)) {
+                        stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append("的单价=").append("（").append(getEvaluationExpression()).append("）");
                         for (SchemeSurePriceItem schemeSurePriceItem : schemeSurePriceItemList) {
                             if (Objects.equal(schemeSurePriceItem.getMethodName(), CalculationMethodNameEnum.MdCompare.getName())) {
                                 if (schemeSurePriceItem.getTrialPrice() != null && schemeSurePriceItem.getWeight() != null) {
@@ -2161,10 +2163,19 @@ public class GenerateBaseDataService {
                             }
                         }
                     }
-                    builder.writeln(stringBuilder.toString());
+                    stringSet.add(stringBuilder.toString());
                     stringBuilder.delete(0, stringBuilder.toString().length());
                 }
             }
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(StringUtils.join(linkedHashSet, "")), false);
+            stringSet.stream().forEach(s -> {
+                try {
+                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(s), false);
+                } catch (Exception e) {
+                }
+            });
         }
         doc.save(localPath);
         return localPath;
@@ -2180,8 +2191,9 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         DataEvaluationMethod dataEvaluationMethodMdCompare = evaluationMethodService.getMethodAllList().stream().filter(dataEvaluation -> {
             if (Objects.equal(CalculationMethodNameEnum.MdCompare.getName(), dataEvaluation.getName())) {
                 return true;
@@ -2196,7 +2208,6 @@ public class GenerateBaseDataService {
         }).findFirst().get();
         DataMethodFormula compareFormula = null;
         DataMethodFormula mdIncomeFormula = null;
-
         if (dataEvaluationMethodMdCompare != null) {
             List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethodMdCompare.getMethod());
             if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
@@ -2209,32 +2220,58 @@ public class GenerateBaseDataService {
                 mdIncomeFormula = dataMethodFormulaList.get(0);
             }
         }
-
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                documentBuilder.writeln(getSchemeJudgeObjectShowName(schemeJudgeObject));
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
                     for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
                         if (Objects.equal(schemeJudgeFunction.getName(), CalculationMethodNameEnum.MdCompare.getName())) {
-                            documentBuilder.writeln(CalculationMethodNameEnum.MdCompare.getName());
                             if (compareFormula != null && StringUtils.isNotBlank(compareFormula.getFormula())) {
-                                documentBuilder.writeln(String.format("%s:%s", "公式", compareFormula.getFormula()));
-                            } else {
-                                documentBuilder.writeln(String.format("%s:%s", "公式", "无"));
+                                linkedHashSet.add(CalculationMethodNameEnum.MdCompare.getName());
+                                linkedHashSet.add(String.format("%s:%s", "公式", compareFormula.getFormula()));
+                                String key = StringUtils.join(linkedHashSet, "");
+                                List<Integer> integerList = map.get(key);
+                                if (CollectionUtils.isEmpty(integerList)) {
+                                    integerList = Lists.newArrayList();
+                                }
+                                integerList.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
+                                if (StringUtils.isNotEmpty(key)) {
+                                    map.put(key, integerList);
+                                }
+                                linkedHashSet.clear();
                             }
                         }
                         if (Objects.equal(schemeJudgeFunction.getName(), CalculationMethodNameEnum.MdIncome.getName())) {
-                            documentBuilder.writeln(CalculationMethodNameEnum.MdIncome.getName());
                             if (mdIncomeFormula != null && StringUtils.isNotBlank(mdIncomeFormula.getFormula())) {
-                                documentBuilder.writeln(String.format("%s:%s", "公式", mdIncomeFormula.getFormula()));
-                            } else {
-                                documentBuilder.writeln(String.format("%s:%s", "公式", "无"));
+                                linkedHashSet.add(CalculationMethodNameEnum.MdIncome.getName());
+                                linkedHashSet.add(String.format("%s:%s", "公式", compareFormula.getFormula()));
+                                String key = StringUtils.join(linkedHashSet, "");
+                                List<Integer> integerList = map.get(key);
+                                if (CollectionUtils.isEmpty(integerList)) {
+                                    integerList = Lists.newArrayList();
+                                }
+                                integerList.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
+                                if (StringUtils.isNotEmpty(key)) {
+                                    map.put(key, integerList);
+                                }
+                                linkedHashSet.clear();
                             }
                         }
                     }
                 }
             }
+        }
+        if (!map.isEmpty()) {
+            map.entrySet().stream().forEach(stringListEntry -> {
+                linkedHashSet.add(stringListEntry.getKey());
+                linkedHashSet.add(String.format("%s号", generateCommonMethod.convertNumber(stringListEntry.getValue())));
+                try {
+                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(StringUtils.join(linkedHashSet, "")), false);
+                    documentBuilder.writeln();
+                } catch (Exception e) {
+                }
+                linkedHashSet.clear();
+            });
         }
         doc.save(localPath);
         return localPath;
