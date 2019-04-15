@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.output.basic.BasicHouseFaceStreetVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -46,6 +47,8 @@ public class GenerateLoactionService {
     private DataBlockService dataBlockService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ErpAreaService erpAreaService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private StringBuffer stringBuffer = new StringBuffer(8);
     private final String error = "无";
@@ -235,7 +238,7 @@ public class GenerateLoactionService {
                 hashSet.clear();
             }
         }
-        return generateCommonMethod.trim(builder.toString());
+        return StringUtils.strip(builder.toString(),"，");
     }
 
     private void environmentalScience(EnvironmentalScienceEnum scienceEnum, String a, String b, String c, String d, String key, LinkedHashSet<String> hashSet, List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList) {
@@ -378,7 +381,7 @@ public class GenerateLoactionService {
                 builder.append(stringBuilder.toString());
             }
         }
-        return generateCommonMethod.trim(builder.toString());
+        return StringUtils.strip(builder.toString(),"、");
     }
 
 
@@ -681,9 +684,9 @@ public class GenerateLoactionService {
     public String getPosition(BasicEstate basicEstate) throws Exception {
         stringBuffer.delete(0, stringBuffer.toString().length());
         if (basicEstate != null) {
-            stringBuffer.append(baseDataDicService.getNameById(basicEstate.getProvince()))
-                    .append(baseDataDicService.getNameById(basicEstate.getCity()))
-                    .append(baseDataDicService.getNameById(basicEstate.getDistrict()));
+            stringBuffer.append(erpAreaService.getSysAreaName(basicEstate.getProvince()))
+                    .append(erpAreaService.getSysAreaName(basicEstate.getCity()))
+                    .append(erpAreaService.getSysAreaName(basicEstate.getDistrict()));
         }
         if (basicEstate.getBlockId() != null) {
             DataBlock dataBlock = dataBlockService.getDataBlockById(basicEstate.getBlockId());
@@ -695,6 +698,7 @@ public class GenerateLoactionService {
                 stringBuffer.append(dataBlock.getName());
             }
         }
+        stringBuffer.append(baseDataDicService.getNameById(basicEstate.getPosition()));
         return stringBuffer.toString();
     }
 

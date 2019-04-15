@@ -12,6 +12,8 @@ public class ZhaiQuanDto {
     private String ejfh;
     private String khmc;
     private String number;
+    private String role;
+    private String version;
     private KeyValueDto customerInfo;
     private List<ZhaiQuanDywDto> dywInfo;
 
@@ -41,6 +43,22 @@ public class ZhaiQuanDto {
 
     public String getNumber() {
         return number;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public void setNumber(String number) {

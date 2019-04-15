@@ -98,6 +98,7 @@ public class MarketCompareController {
             mdMarketCompareService.selectCase(mcId, planDetailsIdString,judgeObjectId);
             MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
             mdCompareInitParamVo.setMcId(mcId);
+            mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);
             mdCompareInitParamVo.setMarketCompare(mdMarketCompareService.getMdMarketCompare(mcId));
             mdCompareInitParamVo.setFields(mdMarketCompareService.getSetUseFieldList());
             mdCompareInitParamVo.setEvaluation(mdMarketCompareService.getEvaluationListByMcId(mcId));

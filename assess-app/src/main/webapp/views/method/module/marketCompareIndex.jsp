@@ -700,6 +700,7 @@
                         $('#modal_select_case').modal('hide');
                         marketCompare.init({
                             mcId: result.data.mcId,
+                            judgeObjectId: result.data.judgeObjectId,
                             marketCompare: result.data.marketCompare,
                             fields: result.data.fields,
                             evaluation: result.data.evaluation,

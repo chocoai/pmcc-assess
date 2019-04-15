@@ -274,7 +274,7 @@ public class GenerateHouseEntityService {
             stringBuilder.append(String.format("外观%s;", baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld())));
             stringMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), stringBuilder.toString());
         }
-        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(stringMap, "", ";", false));
+        return StringUtils.strip(generateCommonMethod.judgeEachDesc(stringMap, "", ";", false),";");
     }
 
     /**

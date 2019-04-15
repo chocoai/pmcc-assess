@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class MdCompareInitParamVo {
     private Integer mcId;
+    private Integer judgeObjectId;
     private MdMarketCompare marketCompare;
     private List<DataSetUseField> fields;
     private MdMarketCompareItem evaluation;
@@ -24,6 +25,14 @@ public class MdCompareInitParamVo {
 
     public void setMcId(Integer mcId) {
         this.mcId = mcId;
+    }
+
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
+    }
+
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 
     public MdMarketCompare getMarketCompare() {
