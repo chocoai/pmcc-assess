@@ -293,7 +293,7 @@ commonColumn.unitElevatorColumn = function () {
 //房屋-房间
 commonColumn.houseRoomColumn = function () {
     var cols = [];
-    cols.push({field: 'roomTypeName', title: '房间类型'});
+    cols.push({field: 'roomType', title: '房间类型'});
     cols.push({field: 'area', title: '面积'});
     cols.push({field: 'layerHeight', title: '层高(m)'});
     cols.push({field: 'clearHeight', title: '净高(m)'});

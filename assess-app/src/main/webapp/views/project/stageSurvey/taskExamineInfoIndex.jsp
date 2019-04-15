@@ -155,7 +155,7 @@
 <script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/house.case.js'></script>
-<script src='${pageContext.request.contextPath}/js/autocomplete/practicalUse.js'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/roomType.js'></script>
 
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>

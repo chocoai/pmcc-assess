@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.dal.basis.dao.base.BaseDataDicDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseRoomDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
+import com.copower.pmcc.assess.dal.basis.entity.DataSetUseField;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -16,6 +19,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +41,8 @@ public class BasicHouseRoomService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BasicHouseRoomDao basicHouseRoomDao;
+    @Autowired
+    private BaseDataDicDao cmsBaseDataDicDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -155,4 +161,19 @@ public class BasicHouseRoomService {
     }
 
 
+    /**
+     * 获取设定用途字段列表
+     *
+     * @return
+     */
+    public BootstrapTableVo getRoomTypeList(String name, Integer pid) {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        //List<DataSetUseField> list = dataSetUseFieldDao.getListObject(name, 0);
+        List<BaseDataDic> data = cmsBaseDataDicDao.getListByPid(pid, name);
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(data) ? new ArrayList<BaseDataDic>() : data);
+        return bootstrapTableVo;
+    }
 }

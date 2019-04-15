@@ -1013,7 +1013,7 @@ var houseIntelligent;
                     var intelligentSystem = "";
                     var layingMethod = "";
                     var intelligenceGrade = "";
-                    var number = "" ;
+                    var number = "";
                     if (n.intelligentSystem) {
                         intelligentSystem = n.intelligentSystem.key + "";
                         number = houseIntelligent.prototype.getNumber(n.intelligentSystem.key);
@@ -1026,43 +1026,43 @@ var houseIntelligent;
                         intelligenceGrade = n.intelligenceGrade.key + "";
                         number = houseIntelligent.prototype.getNumber(n.intelligenceGrade.key);
                     }
-                    if (!houseIntelligent.prototype.isNotBlank(intelligentSystem)){
-                        intelligentSystem = "intelligentSystem" +number ;
+                    if (!houseIntelligent.prototype.isNotBlank(intelligentSystem)) {
+                        intelligentSystem = "intelligentSystem" + number;
                     }
-                    if (!houseIntelligent.prototype.isNotBlank(layingMethod)){
-                        layingMethod = "layingMethod" +number ;
+                    if (!houseIntelligent.prototype.isNotBlank(layingMethod)) {
+                        layingMethod = "layingMethod" + number;
                     }
-                    if (!houseIntelligent.prototype.isNotBlank(intelligenceGrade)){
-                        intelligenceGrade = "intelligenceGrade" +number ;
+                    if (!houseIntelligent.prototype.isNotBlank(intelligenceGrade)) {
+                        intelligenceGrade = "intelligenceGrade" + number;
                     }
                     var html = houseIntelligent.prototype.createHTML(intelligentSystem, layingMethod, intelligenceGrade);
                     form.find(".system").append(html);
 
-                    if (n.intelligentSystem){
+                    if (n.intelligentSystem) {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, n.intelligentSystem.value, function (html, data) {
                             form.find("." + intelligentSystem).select2().empty().html(html).trigger('change');
                         });
-                    }else {
+                    } else {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, null, function (html, data) {
                             form.find("." + intelligentSystem).select2().empty().html(html).trigger('change');
                         });
                     }
 
-                    if (n.layingMethod){
+                    if (n.layingMethod) {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, n.layingMethod.value, function (html, data) {
                             form.find("." + layingMethod).select2().empty().html(html).trigger('change');
                         });
-                    }else {
+                    } else {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, null, function (html, data) {
                             form.find("." + layingMethod).select2().empty().html(html).trigger('change');
                         });
                     }
 
-                    if (n.intelligenceGrade){
+                    if (n.intelligenceGrade) {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, n.intelligenceGrade.value, function (html, data) {
                             form.find("." + intelligenceGrade).select2().empty().html(html).trigger('change');
                         });
-                    }else {
+                    } else {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, null, function (html, data) {
                             form.find("." + intelligenceGrade).select2().empty().html(html).trigger('change');
                         });
@@ -1072,8 +1072,8 @@ var houseIntelligent;
                 });
             }
         },
-        getNumber:function (str) {
-            if (str){
+        getNumber: function (str) {
+            if (str) {
                 var reg = /[1-9][0-9]*/g;
                 return str.match(reg)[0];
             }
@@ -1594,12 +1594,16 @@ var houseRoom;
             $("#" + houseRoom.prototype.config().frm).initForm(item);
             var practicalUse = houseCommon.houseForm.find('[name=practicalUse]').val();
             if (houseRoom.prototype.isEmpty(practicalUse)) {
-                AssessCommon.loadDataDicByPid(practicalUse, item.roomType, function (html, data) {
-                    $("#" + houseRoom.prototype.config().frm).find('select.roomType').empty().html(html).trigger('change');
+                // AssessCommon.loadDataDicByPid(practicalUse, item.roomType, function (html, data) {
+                //     $("#" + houseRoom.prototype.config().frm).find('select.roomType').empty().html(html).trigger('change');
+                // });
+                $("#" + houseRoom.prototype.config().frm).find('input[name=roomType]').apPracticalUse({
+                    practicalUseId:  practicalUse
                 });
             } else {
                 Alert("请先选择房屋下的实际用途");
             }
+
         }
     }
 
