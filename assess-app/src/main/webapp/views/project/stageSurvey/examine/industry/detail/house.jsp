@@ -93,7 +93,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouse.practicalUse}</label>
+                    <label class="form-control">${basicHouse.practicalUseName}</label>
                 </div>
             </div>
             <div class="x-valid">

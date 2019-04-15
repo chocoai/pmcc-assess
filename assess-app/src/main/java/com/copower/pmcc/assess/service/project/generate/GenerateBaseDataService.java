@@ -1427,7 +1427,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(result, true);
+         builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
         document.save(localPath);
         return localPath;
     }

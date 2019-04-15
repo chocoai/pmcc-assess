@@ -198,6 +198,9 @@ public class BasicHouseService {
         if (basicHouse.getResearchType() != null) {
             vo.setResearchTypeName(baseDataDicService.getNameById(basicHouse.getResearchType()));
         }
+        if (basicHouse.getPracticalUse() != null) {
+            vo.setPracticalUseName(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
+        }
         return vo;
     }
 
