@@ -35,8 +35,8 @@ public class AssessReportFieldConstant {
 
 
     public static final String HYPOTHESIS_GIST_INSUFFICIENT = "hypothesis.gist.insufficient";//依据不足假设
-    public static final String REFERENCE_SAME = "reference.same";//参考同类
-    public static final String ASSET_CHECK = "asset.check";//资产清查（入户调查）
+    public static final String HYPOTHESIS_GIST_INSUFFICIENT_REFERENCE_NORMAL = "hypothesis.gist.insufficient.reference.normal";//参考同类（不配合）缴纳情况正常
+    public static final String HYPOTHESIS_GIST_INSUFFICIENT_REFERENCE_ABNORMALITY = "hypothesis.gist.insufficient.reference.abnormality";//参考同类（不配合）缴纳情况不正常
 
 
     public static final String HYPOTHESIS_DEPART_FROM_FACT = "hypothesis.depart.from.fact";//背离事实假设
