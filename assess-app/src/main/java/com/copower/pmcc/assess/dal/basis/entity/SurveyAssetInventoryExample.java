@@ -1015,146 +1015,6 @@ public class SurveyAssetInventoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andZoneDamageIsNull() {
-            addCriterion("zone_damage is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageIsNotNull() {
-            addCriterion("zone_damage is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageEqualTo(String value) {
-            addCriterion("zone_damage =", value, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageNotEqualTo(String value) {
-            addCriterion("zone_damage <>", value, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageGreaterThan(String value) {
-            addCriterion("zone_damage >", value, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageGreaterThanOrEqualTo(String value) {
-            addCriterion("zone_damage >=", value, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageLessThan(String value) {
-            addCriterion("zone_damage <", value, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageLessThanOrEqualTo(String value) {
-            addCriterion("zone_damage <=", value, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageLike(String value) {
-            addCriterion("zone_damage like", value, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageNotLike(String value) {
-            addCriterion("zone_damage not like", value, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageIn(List<String> values) {
-            addCriterion("zone_damage in", values, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageNotIn(List<String> values) {
-            addCriterion("zone_damage not in", values, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageBetween(String value1, String value2) {
-            addCriterion("zone_damage between", value1, value2, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andZoneDamageNotBetween(String value1, String value2) {
-            addCriterion("zone_damage not between", value1, value2, "zoneDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageIsNull() {
-            addCriterion("entity_damage is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageIsNotNull() {
-            addCriterion("entity_damage is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageEqualTo(String value) {
-            addCriterion("entity_damage =", value, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageNotEqualTo(String value) {
-            addCriterion("entity_damage <>", value, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageGreaterThan(String value) {
-            addCriterion("entity_damage >", value, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageGreaterThanOrEqualTo(String value) {
-            addCriterion("entity_damage >=", value, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageLessThan(String value) {
-            addCriterion("entity_damage <", value, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageLessThanOrEqualTo(String value) {
-            addCriterion("entity_damage <=", value, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageLike(String value) {
-            addCriterion("entity_damage like", value, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageNotLike(String value) {
-            addCriterion("entity_damage not like", value, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageIn(List<String> values) {
-            addCriterion("entity_damage in", values, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageNotIn(List<String> values) {
-            addCriterion("entity_damage not in", values, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageBetween(String value1, String value2) {
-            addCriterion("entity_damage between", value1, value2, "entityDamage");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntityDamageNotBetween(String value1, String value2) {
-            addCriterion("entity_damage not between", value1, value2, "entityDamage");
-            return (Criteria) this;
-        }
-
         public Criteria andRimIsNormalIsNull() {
             addCriterion("rim_is_normal is null");
             return (Criteria) this;
@@ -1222,6 +1082,76 @@ public class SurveyAssetInventoryExample {
 
         public Criteria andRimIsNormalNotBetween(String value1, String value2) {
             addCriterion("rim_is_normal not between", value1, value2, "rimIsNormal");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageIsNull() {
+            addCriterion("zone_damage is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageIsNotNull() {
+            addCriterion("zone_damage is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageEqualTo(String value) {
+            addCriterion("zone_damage =", value, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageNotEqualTo(String value) {
+            addCriterion("zone_damage <>", value, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageGreaterThan(String value) {
+            addCriterion("zone_damage >", value, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageGreaterThanOrEqualTo(String value) {
+            addCriterion("zone_damage >=", value, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageLessThan(String value) {
+            addCriterion("zone_damage <", value, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageLessThanOrEqualTo(String value) {
+            addCriterion("zone_damage <=", value, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageLike(String value) {
+            addCriterion("zone_damage like", value, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageNotLike(String value) {
+            addCriterion("zone_damage not like", value, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageIn(List<String> values) {
+            addCriterion("zone_damage in", values, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageNotIn(List<String> values) {
+            addCriterion("zone_damage not in", values, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageBetween(String value1, String value2) {
+            addCriterion("zone_damage between", value1, value2, "zoneDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andZoneDamageNotBetween(String value1, String value2) {
+            addCriterion("zone_damage not between", value1, value2, "zoneDamage");
             return (Criteria) this;
         }
 
@@ -1365,6 +1295,76 @@ public class SurveyAssetInventoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andEntityDamageIsNull() {
+            addCriterion("entity_damage is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageIsNotNull() {
+            addCriterion("entity_damage is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageEqualTo(String value) {
+            addCriterion("entity_damage =", value, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageNotEqualTo(String value) {
+            addCriterion("entity_damage <>", value, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageGreaterThan(String value) {
+            addCriterion("entity_damage >", value, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageGreaterThanOrEqualTo(String value) {
+            addCriterion("entity_damage >=", value, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageLessThan(String value) {
+            addCriterion("entity_damage <", value, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageLessThanOrEqualTo(String value) {
+            addCriterion("entity_damage <=", value, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageLike(String value) {
+            addCriterion("entity_damage like", value, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageNotLike(String value) {
+            addCriterion("entity_damage not like", value, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageIn(List<String> values) {
+            addCriterion("entity_damage in", values, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageNotIn(List<String> values) {
+            addCriterion("entity_damage not in", values, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageBetween(String value1, String value2) {
+            addCriterion("entity_damage between", value1, value2, "entityDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityDamageNotBetween(String value1, String value2) {
+            addCriterion("entity_damage not between", value1, value2, "entityDamage");
+            return (Criteria) this;
+        }
+
         public Criteria andDamageRemarkIsNull() {
             addCriterion("damage_remark is null");
             return (Criteria) this;
@@ -1432,6 +1432,146 @@ public class SurveyAssetInventoryExample {
 
         public Criteria andDamageRemarkNotBetween(String value1, String value2) {
             addCriterion("damage_remark not between", value1, value2, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusIsNull() {
+            addCriterion("payment_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusIsNotNull() {
+            addCriterion("payment_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusEqualTo(String value) {
+            addCriterion("payment_status =", value, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusNotEqualTo(String value) {
+            addCriterion("payment_status <>", value, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusGreaterThan(String value) {
+            addCriterion("payment_status >", value, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("payment_status >=", value, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusLessThan(String value) {
+            addCriterion("payment_status <", value, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusLessThanOrEqualTo(String value) {
+            addCriterion("payment_status <=", value, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusLike(String value) {
+            addCriterion("payment_status like", value, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusNotLike(String value) {
+            addCriterion("payment_status not like", value, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusIn(List<String> values) {
+            addCriterion("payment_status in", values, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusNotIn(List<String> values) {
+            addCriterion("payment_status not in", values, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusBetween(String value1, String value2) {
+            addCriterion("payment_status between", value1, value2, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentStatusNotBetween(String value1, String value2) {
+            addCriterion("payment_status not between", value1, value2, "paymentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentIsNull() {
+            addCriterion("payment_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentIsNotNull() {
+            addCriterion("payment_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentEqualTo(String value) {
+            addCriterion("payment_content =", value, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentNotEqualTo(String value) {
+            addCriterion("payment_content <>", value, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentGreaterThan(String value) {
+            addCriterion("payment_content >", value, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentGreaterThanOrEqualTo(String value) {
+            addCriterion("payment_content >=", value, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentLessThan(String value) {
+            addCriterion("payment_content <", value, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentLessThanOrEqualTo(String value) {
+            addCriterion("payment_content <=", value, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentLike(String value) {
+            addCriterion("payment_content like", value, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentNotLike(String value) {
+            addCriterion("payment_content not like", value, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentIn(List<String> values) {
+            addCriterion("payment_content in", values, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentNotIn(List<String> values) {
+            addCriterion("payment_content not in", values, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentBetween(String value1, String value2) {
+            addCriterion("payment_content between", value1, value2, "paymentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentContentNotBetween(String value1, String value2) {
+            addCriterion("payment_content not between", value1, value2, "paymentContent");
             return (Criteria) this;
         }
 

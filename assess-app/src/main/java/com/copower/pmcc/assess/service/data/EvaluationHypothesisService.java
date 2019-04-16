@@ -274,6 +274,10 @@ public class EvaluationHypothesisService {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
                 }
+                if (CollectionUtils.isEmpty(actualTimenumbers) && CollectionUtils.isEmpty(purposeNumbers)) {
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append("无未定事项假设。").append("</p>");
+                }
                 if (CollectionUtils.isNotEmpty(group)) {
                     if(group.size()==1){
                         for (Map.Entry<List<Integer>, String> entry : group.get(0).entrySet()) {
@@ -355,37 +359,53 @@ public class EvaluationHypothesisService {
                         }
                     }
                 }
+                if(flag == true){
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append("无不相一致假设。").append("</p>");
+
+                }
 
             }
 
             //依据不足假设
             if (AssessReportFieldConstant.HYPOTHESIS_GIST_INSUFFICIENT.equals(basis.getFieldName())) {
-                //参考同类委估对象号
-                StringBuilder referenceNum = new StringBuilder();
-                //入户调查估对象号
-                StringBuilder assetCheckNum = new StringBuilder();
+                //参考同类（不配合）缴纳情况正常
+                StringBuilder paymentNormal = new StringBuilder();
+                //参考同类（不配合）缴纳情况不正常
+                StringBuilder paymentAbnormality = new StringBuilder();
+
 
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
                     BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                    //对应资产清查内容
+                    SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
+                    //参考同类（不配合）
                     Integer type = basicHouse.getResearchType();
-                    //参考同类
                     if (type != null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
-                        referenceNum.append(judgeObject.getNumber()).append(",");
+                        if("正常".equals(surveyAssetInventory.getPaymentStatus())){
+                            paymentNormal.append(judgeObject.getNumber()).append(",");
+                        }else if("不正常".equals(surveyAssetInventory.getPaymentStatus())){
+                            paymentAbnormality.append(judgeObject.getNumber()).append(",");
+                        }
                     }
-                    //入户调查
-                    if (type != null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_INVESTIGATE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
-                        assetCheckNum.append(judgeObject.getNumber()).append(",");
-                    }
-
                 }
-                if (StringUtils.isNotBlank(referenceNum)) {
+                if (StringUtils.isNotBlank(paymentNormal)||StringUtils.isNotBlank(paymentAbnormality)) {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
                 }
-                if (StringUtils.isNotBlank(referenceNum)) {
-                    String number = getSubstitutionPrincipleName(referenceNum.toString());
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REFERENCE_SAME);
+                if (StringUtils.isEmpty(paymentNormal)&&StringUtils.isEmpty(paymentAbnormality)) {
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append("无依据不足假设").append("</p>");
+                }
+                if (StringUtils.isNotBlank(paymentNormal)) {
+                    String number = getSubstitutionPrincipleName(paymentNormal.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_GIST_INSUFFICIENT_REFERENCE_NORMAL);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)).append("</p>");
+                }
+                if (StringUtils.isNotBlank(paymentAbnormality)) {
+                    String number = getSubstitutionPrincipleName(paymentAbnormality.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_GIST_INSUFFICIENT_REFERENCE_ABNORMALITY);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)).append("</p>");
                 }
 
@@ -409,6 +429,7 @@ public class EvaluationHypothesisService {
 
                 //有抵押权委估对象
                 StringBuilder havePledge = new StringBuilder();
+                String pledgeRemark = new String();
                 StringBuilder pledgeContent = new StringBuilder();
                 //有其他
                 StringBuilder haveOther = new StringBuilder();
@@ -419,7 +440,6 @@ public class EvaluationHypothesisService {
 
                 Integer rightId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE).getId();
                 Integer otherId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER).getId();
-
 
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     //对应资产清查内容
@@ -440,6 +460,7 @@ public class EvaluationHypothesisService {
                     for (SurveyAssetInventoryRight inventoryRight : rightList) {
                         if (rightId.equals(inventoryRight.getCategory())) {
                             havePledge.append(judgeObject.getNumber()).append(",");
+                            pledgeRemark = inventoryRight.getRemark();
                         }
                         if (otherId.equals(inventoryRight.getCategory())) {
                             haveOther.append(judgeObject.getNumber()).append(",");
@@ -447,7 +468,6 @@ public class EvaluationHypothesisService {
                         }
                     }
                 }
-
 
                 if (valuationDate.compareTo(investigationsEndDate) != 0) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DATE_ARE_CONSISTENT);
@@ -465,7 +485,7 @@ public class EvaluationHypothesisService {
                 }
                 if (StringUtils.isNotBlank(havePledge)) {
                     String number = getSubstitutionPrincipleName(havePledge.toString());
-                    pledgeContent.append(number).append("委估对象抵押");
+                    pledgeContent.append(number).append("委估对象").append(pledgeRemark);
                     if (StringUtils.isNotBlank(haveOther)) {
                         pledgeContent.append("、");
                     }
@@ -482,7 +502,6 @@ public class EvaluationHypothesisService {
                 if (StringUtils.isNotBlank(content)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_DEPART_FROM_FACT_PLEDGE);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(tagfilter(dataReportTemplateByField.getTemplate().replace("#{内容}", content))).append("</p>");
-
                 }
 
             }

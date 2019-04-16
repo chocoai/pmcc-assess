@@ -151,6 +151,7 @@
                     var char = streetNumber.charAt(streetNumber.length - 1)
                     if (char != "号") {
                         streetNumber = streetNumber + "号";
+                        engine.find("input[name='streetNumber']").val(streetNumber);
                     }
                 }
                 if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
@@ -395,6 +396,7 @@
                     var char = streetNumber.charAt(streetNumber.length - 1)
                     if (char != "号") {
                         streetNumber = streetNumber + "号";
+                        engine.find("input[name='streetNumber']").val(streetNumber);
                     }
                 }
                 if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
@@ -1855,7 +1857,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地使用年限起
+                    土地使用年限起<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <input placeholder="土地使用年限起"
@@ -2161,7 +2163,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地使用年限起
+                    土地使用年限起<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <input placeholder="土地使用年限起"
