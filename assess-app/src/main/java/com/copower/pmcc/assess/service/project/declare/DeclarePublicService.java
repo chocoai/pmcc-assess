@@ -142,7 +142,7 @@ public class DeclarePublicService {
             Pattern p = Pattern.compile(reg);
             Matcher m = p.matcher(located);
             while (m.find()) {
-                oo.setStreetNumber(m.group().substring(0, m.group().length() - 1));
+                oo.setStreetNumber(m.group());
             }
 
             reg = "(?<=附)(\\d+)";//匹配附后面的数字
@@ -432,7 +432,7 @@ public class DeclarePublicService {
                 Pattern p = Pattern.compile(reg);
                 Matcher m = p.matcher(located);
                 while (m.find()) {
-                    declareRealtyLandCert.setStreetNumber(m.group().substring(0, m.group().length() - 1));
+                    declareRealtyLandCert.setStreetNumber(m.group());
                 }
 
                 reg = "(?<=附)(\\d+)";//匹配附后面的数字
@@ -656,7 +656,7 @@ public class DeclarePublicService {
                 Pattern p = Pattern.compile(reg);
                 Matcher m = p.matcher(located);
                 while (m.find()) {
-                    declareRealtyHouseCert.setStreetNumber(m.group().substring(0, m.group().length() - 1));
+                    declareRealtyHouseCert.setStreetNumber(m.group());
                 }
 
                 reg = "(?<=附)(\\d+)";//匹配附后面的数字
