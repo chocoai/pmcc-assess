@@ -61,20 +61,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            供应方式
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="supplyWeast" class="form-control search-select select2">
-                                                <option>请选择</option>
-                                                <option value="集中">集中</option>
-                                                <option value="独立">独立</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
+import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
@@ -214,6 +215,13 @@ public class BasicApplyService {
         BasicApplyVo vo = new BasicApplyVo();
         BeanUtils.copyProperties(basicApply, vo);
         vo.setFullName(getFullName(basicApply.getEstateName(), basicApply.getBuildingNumber(), basicApply.getUnitNumber(), basicApply.getHouseNumber()));
+        if (basicApply.getType() != null){
+            for (BasicApplyTypeEnum typeEnum:BasicApplyTypeEnum.values()){
+                if (basicApply.getType().intValue() == typeEnum.getId().intValue()){
+                    vo.setTypeName(typeEnum.getName());
+                }
+            }
+        }
         return vo;
     }
 

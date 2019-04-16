@@ -13,6 +13,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,10 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -160,6 +163,10 @@ public class BasicEstateLandStateService {
         vo.setFertilityName(baseDataDicService.getNameById(basicEstateLandState.getFertility()));
         vo.setContaminatedName(baseDataDicService.getNameById(basicEstateLandState.getContaminated()));
         vo.setBearingCapacityName(baseDataDicService.getNameById(basicEstateLandState.getBearingCapacity()));
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(basicEstateLandState.getDevelopmentDegreeContent())){
+            List<String> stringList = Lists.newArrayList(basicEstateLandState.getDevelopmentDegreeContent().split(",")).stream().map(s -> baseDataDicService.getNameById(s)).collect(Collectors.toList());
+            vo.setDevelopmentDegreeContentName(org.apache.commons.lang3.StringUtils.join(stringList,"、"));
+        }
         return vo;
     }
 

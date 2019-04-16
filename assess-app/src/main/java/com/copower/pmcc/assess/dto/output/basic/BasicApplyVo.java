@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
  */
 public class BasicApplyVo extends BasicApply {
     private String fullName;
+    private String typeName;
 
     public String getFullName() {
         return fullName;
@@ -16,5 +17,13 @@ public class BasicApplyVo extends BasicApply {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

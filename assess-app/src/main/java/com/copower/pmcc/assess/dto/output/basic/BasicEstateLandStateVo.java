@@ -22,6 +22,7 @@ public class BasicEstateLandStateVo extends BasicEstateLandState {
     private String phName;
     private String fertilityName;
     private String holdOnName;
+    private String developmentDegreeContentName;
 
     public String getLandUseTypeName() {
         return landUseTypeName;
@@ -125,5 +126,13 @@ public class BasicEstateLandStateVo extends BasicEstateLandState {
 
     public void setHoldOnName(String holdOnName) {
         this.holdOnName = holdOnName;
+    }
+
+    public String getDevelopmentDegreeContentName() {
+        return developmentDegreeContentName;
+    }
+
+    public void setDevelopmentDegreeContentName(String developmentDegreeContentName) {
+        this.developmentDegreeContentName = developmentDegreeContentName;
     }
 }

@@ -36,10 +36,18 @@ public class MapController {
     public ModelAndView houseTagging(Integer attachmentId, String lng, String lat, String deg, Boolean readonly) {
         ModelAndView modelAndView = new ModelAndView("base/houseTaggingView");
         if (attachmentId != null) {
-            String huxingImg = baseAttachmentService.getViewImageUrl(attachmentId);
-            modelAndView.addObject("huxingImg", huxingImg);
+            try {
+                String huxingImg = baseAttachmentService.getViewImageUrl(attachmentId);
+                if (StringUtils.isNotEmpty(huxingImg)) {
+                    if (com.copower.pmcc.assess.common.FileUtils.checkImgSuffix(huxingImg)) {
+                        modelAndView.addObject("huxingImg", huxingImg);
+                    }
+                    modelAndView.addObject("attachmentId", attachmentId);
+                }
+            } catch (Exception e) {
+                logger.error(String.format("%s%s","附件可能被删除了",e.getMessage()), e);
+            }
         }
-        modelAndView.addObject("attachmentId", attachmentId);
         modelAndView.addObject("lng", StringUtils.isEmpty(lng) ? "" : lng);
         modelAndView.addObject("lat", StringUtils.isEmpty(lat) ? "" : lat);
         modelAndView.addObject("deg", StringUtils.isEmpty(deg) ? "" : deg);

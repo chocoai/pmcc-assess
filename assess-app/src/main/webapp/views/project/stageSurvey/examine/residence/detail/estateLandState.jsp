@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
  土地实体情况
 --%>
@@ -114,16 +115,19 @@
                     <label class="form-control">${basicEstateLandState.developmentDegreeName}</label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid" style="display: none">
-                <label class="col-sm-1 control-label">土地开发程度备注</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地开发程度备注"
-                           name="developmentDegreeRemark" value="${basicEstateLandState.developmentDegreeRemark}">
-                </div>
-            </div>
-            <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer">
+            <div class="x-valid">
+                <c:if test="${basicEstateLandState.developmentDegreeName == '熟地'}">
+                    <label class="col-sm-1 control-label"></label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstateLandState.developmentDegreeContentName}</label>
+                    </div>
+                </c:if>
+                <c:if test="${basicEstateLandState.developmentDegreeName != '熟地'}">
+                    <label class="col-sm-1 control-label">土地开发程度备注</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstateLandState.developmentDegreeRemark}</label>
+                    </div>
+                </c:if>
             </div>
         </div>
         <div class="form-group">
@@ -177,27 +181,32 @@
                     <label class="form-control">${basicEstateLandState.phName}</label>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">肥力</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.fertilityName}</label>
+            <c:if test="${not empty basicEstateLandState.fertilityName}">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">肥力</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstateLandState.fertilityName}</label>
+                    </div>
                 </div>
-            </div>
+            </c:if>
         </div>
         <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">承载力</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.bearingCapacityName}</label>
+            <c:if test="${not empty basicEstateLandState.bearingCapacityName}">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">承载力</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstateLandState.bearingCapacityName}</label>
+                    </div>
                 </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">稳定性</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.holdOnName}</label>
+            </c:if>
+            <c:if test="${not empty basicEstateLandState.holdOnName}">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">稳定性</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstateLandState.holdOnName}</label>
+                    </div>
                 </div>
-            </div>
-
+            </c:if>
         </div>
         <div class="form-group">
 

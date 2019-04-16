@@ -349,7 +349,7 @@ commonColumn.houseWaterDrainColumn = function () {
     cols.push({field: 'typeName', title: '类别'});
     // cols.push({field: 'organizationName', title: '体系'});
     cols.push({field: 'processingModeName', title: '排水处理方式'});
-    cols.push({field: 'evaluate', title: '排水系统评价'});
+    // cols.push({field: 'evaluate', title: '排水系统评价'});
     return cols;
 }
 
@@ -358,7 +358,7 @@ commonColumn.houseHeatingColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'gradeName', title: '档次'});
-    cols.push({field: 'supplyWeast', title: '供应方式'});
+    // cols.push({field: 'supplyWeast', title: '供应方式'});
     cols.push({field: 'categoryName', title: '类别'});
     cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
@@ -370,7 +370,7 @@ commonColumn.houseAirConditionerColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'gradeName', title: '档次'});
-    cols.push({field: 'supplyWeast', title: '供应方式'});
+    // cols.push({field: 'supplyWeast', title: '供应方式'});
     cols.push({field: 'categoryName', title: '类别'});
     cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
@@ -382,7 +382,7 @@ commonColumn.houseNewWindColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'categoryName', title: '类别'});
-    cols.push({field: 'supplyWeast', title: '供应方式'});
+    // cols.push({field: 'supplyWeast', title: '供应方式'});
     cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});

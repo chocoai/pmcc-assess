@@ -593,7 +593,7 @@ public class GenerateCommonMethod {
                     }
                 }
             }
-            if (StringUtils.isNotEmpty(stringBuilder.toString())){
+            if (StringUtils.isNotEmpty(stringBuilder.toString())) {
                 text = stringBuilder.toString();
             }
             return text;
@@ -1064,6 +1064,34 @@ public class GenerateCommonMethod {
             return number.toString();
         }
         return map.get(number);
+    }
+
+    /**
+     * 根据距离分组
+     *
+     * @param map
+     * @return (距离, List < id >)
+     */
+    public Map<String, List<Integer>> getGroupByDistance(Map<Integer, String> map) {
+        Map<String, List<Integer>> listMap = Maps.newHashMap();
+        if (!map.isEmpty()) {
+            map.entrySet().stream().forEach(entry -> {
+                String key = entry.getValue();
+                if (NumberUtils.isNumber(entry.getValue())) {
+                    key = baseDataDicService.getNameById(entry.getValue());
+                }
+                key = getNumber(key);
+                List<Integer> integerList = listMap.get(key);
+                if (CollectionUtils.isEmpty(integerList)) {
+                    integerList = Lists.newArrayList();
+                }
+                integerList.add(entry.getKey());
+                if (StringUtils.isNumeric(key)) {
+                    listMap.put(key, integerList);
+                }
+            });
+        }
+        return listMap;
     }
 
 }

@@ -1,14 +1,8 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.copower.pmcc.assess.common.enums.EnvironmentalScienceEnum;
-import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingTrafficTypeEnum;
+import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseFaceStreetVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
+import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
@@ -20,13 +14,13 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -96,95 +90,13 @@ public class GenerateLoactionService {
                 }
             }
             String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-            return StringUtils.strip(s,"，");
-        }catch (Exception ex){
-            logger.error(ex.getMessage(),ex);
+            return StringUtils.strip(s, "，");
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
             return "";
         }
     }
 
-    /**
-     * 外部公共服务设施
-     *
-     * @param basicApply
-     * @return
-     * @throws Exception
-     */
-    public String getExternalPublicServiceFacilities(BasicApply basicApply) throws Exception {
-        StringBuilder builder = new StringBuilder();
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
-        List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
-        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
-        List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
-        //购物商场
-        List<BasicMatchingLeisurePlace> matchingMarketList = basicMatchingLeisurePlaceList.stream()
-                .filter(basicMatchingLeisurePlace -> Objects.equal(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey(), basicMatchingLeisurePlace.getType()))
-                .collect(Collectors.toList());
-        //餐饮
-        List<BasicMatchingLeisurePlace> matchingRestaurantList = basicMatchingLeisurePlaceList.stream()
-                .filter(basicMatchingLeisurePlace -> Objects.equal(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey(), basicMatchingLeisurePlace.getType()))
-                .collect(Collectors.toList());
-        //休闲娱乐
-        List<BasicMatchingLeisurePlace> matchingRecreationList = basicMatchingLeisurePlaceList.stream()
-                .filter(basicMatchingLeisurePlace -> Objects.equal(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey(), basicMatchingLeisurePlace.getType()))
-                .collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(matchingMarketList)) {
-            for (int i = 0; i < matchingMarketList.size(); i++) {
-                BasicMatchingLeisurePlace leisurePlace = matchingMarketList.get(i);
-                builder.append("购物商场距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
-            }
-        }
-        if (CollectionUtils.isNotEmpty(matchingRestaurantList)) {
-            for (int i = 0; i < matchingRestaurantList.size(); i++) {
-                BasicMatchingLeisurePlace leisurePlace = matchingRestaurantList.get(i);
-                builder.append("餐饮距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
-            }
-        }
-        if (CollectionUtils.isNotEmpty(matchingRecreationList)) {
-            for (int i = 0; i < matchingRecreationList.size(); i++) {
-                BasicMatchingLeisurePlace leisurePlace = matchingRecreationList.get(i);
-                builder.append("休闲娱乐距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(leisurePlace.getCategory()), leisurePlace.getName()), baseDataDicService.getNameById(leisurePlace.getDistance())));
-            }
-        }
-        if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            for (int i = 0; i < basicMatchingFinanceVoList.size(); i++) {
-                BasicMatchingFinanceVo basicMatchingFinanceVo = basicMatchingFinanceVoList.get(i);
-                String v = null;
-                if (NumberUtils.isNumber(basicMatchingFinanceVo.getDistance())) {
-                    v = baseDataDicService.getNameById(basicMatchingFinanceVo.getDistance());
-                    if (StringUtils.isEmpty(v)) {
-                        v = basicMatchingFinanceVo.getDistance();
-                    }
-                } else {
-                    v = basicMatchingFinanceVo.getDistance();
-                }
-                builder.append("金融距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(basicMatchingFinanceVo.getCategory()), basicMatchingFinanceVo.getName()), v));
-            }
-        }
-        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            for (int i = 0; i < basicMatchingMedicalList.size(); i++) {
-                BasicMatchingMedical basicMatchingMedical = basicMatchingMedicalList.get(i);
-                builder.append("医疗距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel()), basicMatchingMedical.getOrganizationName()), baseDataDicService.getNameById(basicMatchingMedical.getDistance())));
-            }
-        }
-        if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
-            for (int i = 0; i < basicMatchingEducationList.size(); i++) {
-                BasicMatchingEducation basicMatchingEducation = basicMatchingEducationList.get(i);
-                builder.append("教育距离").append(getExternalPublicServiceFacilitiesDistance(String.format("%s%s，", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName()), baseDataDicService.getNameById(basicMatchingEducation.getDistance())));
-            }
-        }
-        return StringUtils.strip(builder.toString(),"，");
-    }
-
-    private String getExternalPublicServiceFacilitiesDistance(String name, String number) {
-        number = generateCommonMethod.getNumber(number);
-        if ("0".equals(number)) {
-            return String.format("附件有%s", name);
-        } else {
-            return String.format("大约%s米有%s", number, name);
-        }
-    }
 
     /**
      * 环境
@@ -238,7 +150,7 @@ public class GenerateLoactionService {
                 hashSet.clear();
             }
         }
-        return StringUtils.strip(builder.toString(),"，");
+        return StringUtils.strip(builder.toString(), "，");
     }
 
     private void environmentalScience(EnvironmentalScienceEnum scienceEnum, String a, String b, String c, String d, String key, LinkedHashSet<String> hashSet, List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList) {
@@ -287,10 +199,11 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getExternalInfrastructure(BasicApply basicApply) throws Exception {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
         List<BasicEstateSupply> basicEstateSupplyList = generateBaseExamineService.getBasicEstateSupplyList();
+        List<BasicEstateNetwork> basicEstateNetworkList = generateBaseExamineService.getBasicEstateNetworkList();
         if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
             basicHouseFaceStreetVoList.stream().forEach(basicHouseFaceStreetVo -> {
                 String v = null;
@@ -333,55 +246,66 @@ public class GenerateLoactionService {
                     v = "无基本的配套道路体系";
                 }
                 if (StringUtils.isNotBlank(v)) {
-                    builder.append(v);
+                    stringBuilder.append(v).append("，");
                 }
             });
         }
-        if (CollectionUtils.isNotEmpty(basicEstateSupplyList)) {
-            StringBuilder stringBuilder = new StringBuilder(8);
-            long estateSupplyGas = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), basicEstateSupply.getType())).count();
-            long estateSupplyHeating = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName(), basicEstateSupply.getType())).count();
-            long estateSupplyWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName(), basicEstateSupply.getType())).count();
-            long estateDrainWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), basicEstateSupply.getType())).count();
-            long estateSupplyPower = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), basicEstateSupply.getType())).count();
-            stringBuilder.append(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName());
-            if (estateSupplyGas == 0) {
-                stringBuilder.append("无");
-            } else {
-                stringBuilder.append("、");
-            }
-            stringBuilder.append(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName());
-            if (estateSupplyHeating == 0) {
-                stringBuilder.append("无");
-            } else {
-                stringBuilder.append("、");
-            }
-            stringBuilder.append(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName());
-            if (estateSupplyWater == 0) {
-                stringBuilder.append("无");
-            } else {
-                stringBuilder.append("、");
-            }
-            stringBuilder.append(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName());
-            if (estateDrainWater == 0) {
-                stringBuilder.append("无");
-            } else {
-                stringBuilder.append("、");
-            }
-            stringBuilder.append(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName());
-            if (estateSupplyPower == 0) {
-                stringBuilder.append("无");
-            } else {
-                stringBuilder.append("、");
-            }
-            long count = estateSupplyGas + estateSupplyHeating + estateSupplyWater + estateDrainWater + estateSupplyPower;
-            if (count == 0) {
-
-            } else {
-                builder.append(stringBuilder.toString());
+        if (basicApply.getType().intValue() == BasicApplyTypeEnum.RESIDENCE.getId().intValue()) {
+            BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+            if (StringUtils.isNotBlank(landStateVo.getDevelopmentDegreeContentName())) {
+                stringBuilder.append(landStateVo.getDevelopmentDegreeContentName());
             }
         }
-        return StringUtils.strip(builder.toString(),"、");
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        if (basicApply.getType().intValue() == BasicApplyTypeEnum.INDUSTRY.getId().intValue()) {
+            LinkedHashMap<String, Long> map = Maps.newLinkedHashMap();
+            long estateNetwork = 0;
+            long estateSupplyGas = 0;
+            long estateSupplyHeating = 0;
+            long estateSupplyWater = 0;
+            long estateDrainWater = 0;
+            long estateSupplyPower = 0;
+            if (CollectionUtils.isNotEmpty(basicEstateNetworkList)) {
+                estateNetwork = basicEstateNetworkList.stream().filter(oo -> oo.getSupplier() != null).count() > 0 ? 1 : 0;
+            }
+            if (CollectionUtils.isNotEmpty(basicEstateSupplyList)) {
+                estateSupplyGas = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
+                estateSupplyHeating = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
+                estateSupplyWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
+                estateDrainWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
+                estateSupplyPower = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
+            }
+            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), estateSupplyGas);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName(), estateSupplyHeating);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName(), estateSupplyWater);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), estateDrainWater);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), estateSupplyPower);
+            map.put("通讯设施", estateNetwork);
+            long count = estateSupplyGas + estateSupplyHeating + estateSupplyWater + estateDrainWater + estateSupplyPower + estateNetwork;
+            if (count == 6) {
+                //all every good
+                stringBuilder.append("供电、供气、供热、给水排水、通讯设施完善。");
+            }
+            if (count != 6) {
+                if (!map.isEmpty()) {
+                    map.entrySet().stream().forEach(entry -> {
+                        if (entry.getValue().intValue() == 1) {
+                            linkedHashSet.add(entry.getKey());
+                        }
+                    });
+                    stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("完善");
+                    linkedHashSet.clear();
+                    map.entrySet().stream().forEach(entry -> {
+                        if (entry.getValue().intValue() == 0) {
+                            linkedHashSet.add(entry.getKey());
+                        }
+                    });
+                    stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("不完善。");
+                    linkedHashSet.clear();
+                }
+            }
+        }
+        return generateCommonMethod.trim(stringBuilder.toString());
     }
 
 
@@ -426,7 +350,7 @@ public class GenerateLoactionService {
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", "。", false);
-        return StringUtils.strip(s,"。");
+        return StringUtils.strip(s, "。");
     }
 
     /**
@@ -579,75 +503,253 @@ public class GenerateLoactionService {
      * @return
      */
     public String getWithImportantLocationDistance(BasicApply basicApply) throws Exception {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
-        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList().stream()
-                .filter(basicMatchingLeisurePlace -> Objects.equal(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey(), basicMatchingLeisurePlace.getType()))
-                .collect(Collectors.toList());
+        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
         List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
         List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
+        Map<Integer, String> integerStringMap = Maps.newHashMap();
+        Map<String, List<Integer>> entryMap = Maps.newHashMap();
+        Map<String, List<String>> listMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
             //交通枢纽
-            List<BasicMatchingTrafficVo> trafficHubList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
-                if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName()) && basicMatchingTrafficVo.getDistance() != null) {
-                    return true;
+            if (basicMatchingTrafficList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName())).count() >= 1) {
+                basicMatchingTrafficList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName())).forEach(oo -> {
+                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+                });
+                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+                if (!entryMap.isEmpty()) {
+                    entryMap.entrySet().stream().forEach(entry -> {
+                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingTrafficList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                        listMap.put(entry.getKey(), stringList);
+                    });
                 }
-                return true;
-            }).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(trafficHubList)) {
-                for (int i = 0; i < trafficHubList.size(); i++) {
-                    BasicMatchingTrafficVo basicMatchingTrafficVo = trafficHubList.get(i);
-                    stringBuilder.append(String.format("%s，", getDistance(basicMatchingTrafficVo.getName(), basicMatchingTrafficVo.getDistanceName()), ""));
+                if (!listMap.isEmpty()) {
+                    stringBuilder.append(this.getDistanceDec(ExamineMatchingTrafficTypeEnum.TrafficHub.getDes(), listMap));
                 }
+                integerStringMap.clear();
+                entryMap.clear();
+                listMap.clear();
             }
             //主要转换
-            List<BasicMatchingTrafficVo> mainConversionList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
-                if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName()) && basicMatchingTrafficVo.getDistance() != null) {
-                    return true;
+            if (basicMatchingTrafficList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName())).count() >= 1) {
+                basicMatchingTrafficList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName())).forEach(oo -> {
+                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+                });
+                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+                if (!entryMap.isEmpty()) {
+                    entryMap.entrySet().stream().forEach(entry -> {
+                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingTrafficList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                        listMap.put(entry.getKey(), stringList);
+                    });
                 }
-                return false;
-            }).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(mainConversionList)) {
-                for (int i = 0; i < mainConversionList.size(); i++) {
-                    BasicMatchingTrafficVo basicMatchingTrafficVo = mainConversionList.get(i);
-                    stringBuilder.append(String.format("%s，", getDistance(basicMatchingTrafficVo.getName(), basicMatchingTrafficVo.getDistanceName()), ""));
+                if (!listMap.isEmpty()) {
+                    stringBuilder.append(this.getDistanceDec(ExamineMatchingTrafficTypeEnum.MainConversion.getDes(), listMap));
                 }
+                integerStringMap.clear();
+                entryMap.clear();
+                listMap.clear();
             }
         }
         //购物商场
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-            basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceList.stream().filter(leisurePlace -> {
-                return true;
-            }).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-                for (int i = 0; i < basicMatchingLeisurePlaceList.size(); i++) {
-                    BasicMatchingLeisurePlace leisurePlace = basicMatchingLeisurePlaceList.get(i);
-                    if (leisurePlace.getDistance() != null) {
-                        stringBuilder.append(String.format("%s，", getDistance(leisurePlace.getName(), baseDataDicService.getNameById(leisurePlace.getDistance())), ""));
-                    }
+            if (basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).count() >= 1) {
+                basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).forEach(oo -> {
+                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+                });
+                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+                if (!entryMap.isEmpty()) {
+                    entryMap.entrySet().stream().forEach(entry -> {
+                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                        listMap.put(entry.getKey(), stringList);
+                    });
                 }
+                if (!listMap.isEmpty()) {
+                    stringBuilder.append(this.getDistanceDec(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), listMap));
+                }
+                integerStringMap.clear();
+                entryMap.clear();
+                listMap.clear();
             }
         }
         //金融服务
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            for (int i = 0; i < basicMatchingFinanceVoList.size(); i++) {
-                BasicMatchingFinanceVo basicMatchingFinanceVo = basicMatchingFinanceVoList.get(i);
-                stringBuilder.append(String.format("%s，", getDistance(basicMatchingFinanceVo.getName(), basicMatchingFinanceVo.getDistanceName()), ""));
+            basicMatchingFinanceVoList.stream().forEach(oo -> {
+                integerStringMap.put(oo.getId(), StringUtils.isNotBlank(oo.getDistance()) ? oo.getDistance() : "0");
+            });
+            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!entryMap.isEmpty()) {
+                entryMap.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingFinanceVoList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
             }
+            if (!listMap.isEmpty()) {
+                stringBuilder.append(this.getDistanceDec("金融服务", listMap));
+            }
+            integerStringMap.clear();
+            entryMap.clear();
+            listMap.clear();
         }
         //医疗
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            for (int i = 0; i < basicMatchingMedicalList.size(); i++) {
-                BasicMatchingMedical basicMatchingMedical = basicMatchingMedicalList.get(i);
-                if (basicMatchingMedical.getDistance() != null) {
-                    stringBuilder.append(String.format("%s，", getDistance(basicMatchingMedical.getOrganizationName(), baseDataDicService.getNameById(basicMatchingMedical.getDistance())), ""));
-                }
+            basicMatchingMedicalList.stream().forEach(oo -> {
+                integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+            });
+            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!entryMap.isEmpty()) {
+                entryMap.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingMedicalList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getOrganizationName()).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
             }
+            if (!listMap.isEmpty()) {
+                stringBuilder.append(this.getDistanceDec("医疗", listMap));
+            }
+            integerStringMap.clear();
+            entryMap.clear();
+            listMap.clear();
         }
         return stringBuilder.toString();
     }
 
+    /**
+     * 外部公共服务设施
+     *
+     * @param basicApply
+     * @return
+     * @throws Exception
+     */
+    public String getExternalPublicServiceFacilities(BasicApply basicApply) throws Exception {
+        StringBuilder builder = new StringBuilder(8);
+        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+        List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
+        List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
+        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
+        List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
+        Map<Integer, String> integerStringMap = Maps.newHashMap();
+        Map<String, List<Integer>> entryMap = Maps.newHashMap();
+        Map<String, List<String>> listMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
+            //购物商场
+            if (basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).count() >= 1) {
+                basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).forEach(oo -> {
+                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+                });
+                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+                if (!entryMap.isEmpty()) {
+                    entryMap.entrySet().stream().forEach(entry -> {
+                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                        listMap.put(entry.getKey(), stringList);
+                    });
+                }
+                if (!listMap.isEmpty()) {
+                    builder.append(this.getDistanceDec(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), listMap));
+                }
+                integerStringMap.clear();
+                entryMap.clear();
+                listMap.clear();
+            }
+            //餐饮
+            if (basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())).count() >= 1) {
+                basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())).forEach(oo -> {
+                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+                });
+                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+                if (!entryMap.isEmpty()) {
+                    entryMap.entrySet().stream().forEach(entry -> {
+                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                        listMap.put(entry.getKey(), stringList);
+                    });
+                }
+                if (!listMap.isEmpty()) {
+                    builder.append(this.getDistanceDec(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), listMap));
+                }
+                integerStringMap.clear();
+                entryMap.clear();
+                listMap.clear();
+            }
+            //休闲娱乐
+            if (basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())).count() >= 1) {
+                basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())).forEach(oo -> {
+                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+                });
+                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+                if (!entryMap.isEmpty()) {
+                    entryMap.entrySet().stream().forEach(entry -> {
+                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                        listMap.put(entry.getKey(), stringList);
+                    });
+                }
+                if (!listMap.isEmpty()) {
+                    builder.append(this.getDistanceDec(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), listMap));
+                }
+                integerStringMap.clear();
+                entryMap.clear();
+                listMap.clear();
+            }
+        }
+        //金融服务
+        if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
+            basicMatchingFinanceVoList.stream().forEach(oo -> {
+                integerStringMap.put(oo.getId(), StringUtils.isNotBlank(oo.getDistance()) ? oo.getDistance() : "0");
+            });
+            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!entryMap.isEmpty()) {
+                entryMap.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingFinanceVoList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
+            }
+            if (!listMap.isEmpty()) {
+                builder.append(this.getDistanceDec("金融服务", listMap));
+            }
+            integerStringMap.clear();
+            entryMap.clear();
+            listMap.clear();
+        }
+        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
+            basicMatchingMedicalList.stream().forEach(oo -> {
+                integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+            });
+            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!entryMap.isEmpty()) {
+                entryMap.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingMedicalList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getOrganizationName()).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
+            }
+            if (!listMap.isEmpty()) {
+                builder.append(this.getDistanceDec("医疗", listMap));
+            }
+            integerStringMap.clear();
+            entryMap.clear();
+            listMap.clear();
+        }
+        if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
+            basicMatchingEducationList.stream().forEach(oo -> {
+                integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+            });
+            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!entryMap.isEmpty()) {
+                entryMap.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> {
+                        BasicMatchingEducation basicMatchingEducation = basicMatchingEducationList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get();
+                        return String.format("%s%s，", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName());
+                    }).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
+            }
+            if (!listMap.isEmpty()) {
+                builder.append(this.getDistanceDec("教育", listMap));
+            }
+            integerStringMap.clear();
+            entryMap.clear();
+            listMap.clear();
+        }
+        return StringUtils.strip(builder.toString(), "，");
+    }
 
     /**
      * 朝向
@@ -670,7 +772,7 @@ public class GenerateLoactionService {
             }
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-        return StringUtils.strip(s,";");
+        return StringUtils.strip(s, ";");
     }
 
 
@@ -734,16 +836,33 @@ public class GenerateLoactionService {
             }
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-        return StringUtils.strip(s,";");
+        return StringUtils.strip(s, ";");
     }
 
-    private String getDistance(String name, String number) {
-        number = generateCommonMethod.getNumber(number);
-        if ("0".equals(number)) {
-            return String.format("附近有%s", name);
-        } else {
-            return String.format("距%s大约%s米", name, number);
+
+    /**
+     * @param title 类似于(餐饮)
+     * @param map
+     * @return 餐饮:附近有串串A,串串B;距离大约500米有火锅小郡肝串串,xx火锅;
+     */
+    private String getDistanceDec(String title, Map<String, List<String>> map) {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        if (!map.isEmpty()) {
+            stringBuilder.append(title);
+            map.entrySet().stream().forEach(entry -> {
+                if ("0".equals(entry.getKey())) {
+                    stringBuilder.append("附近有");
+                } else {
+                    stringBuilder.append("距离大约").append(entry.getKey()).append("米").append("有");
+                }
+                stringBuilder.append(StringUtils.join(entry.getValue(), "，")).append("；");
+            });
         }
+        if (StringUtils.isNotEmpty(stringBuilder.toString().trim())) {
+            String text = stringBuilder.toString();
+            return text;
+        }
+        return "";
     }
 
     /**
