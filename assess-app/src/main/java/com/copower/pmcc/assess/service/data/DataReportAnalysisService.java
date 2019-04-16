@@ -260,7 +260,11 @@ public class DataReportAnalysisService {
                 DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ZONE_BIT_ANALYSIS_PLATE);
                 for (Map.Entry<BasicEstate, String> entry : map.entrySet()) {
                     DataBlock block = dataBlockService.getDataBlockById(entry.getKey().getBlockId());
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", block.getDistrict())).append("</p>");
+                    if (block != null) {
+                        stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", block.getDistrict())).append("</p>");
+                    } else {
+                        stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}", entry.getValue()).replace("#{区县}", erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{版块名称}", entry.getKey().getBlockName()).replace("#{版块描述}", "")).append("</p>");
+                    }
                 }
             }
             //估价对象土地实体分析
@@ -310,8 +314,13 @@ public class DataReportAnalysisService {
                             certUseMap.put(number, schemeJudgeObject.getCertUse());
                             practicalUseMap.put(number, schemeJudgeObject.getPracticalUse());
                         }
-                        content.append(generateCommonMethod.convertNumber(judgeNumbers)).append("号均位于");
-                        content.append(publicService.fusinString(LangUtils.transform(entry.getValue(), o -> o.getSeat()),true)).append("，");
+                        if (judgeNumbers.size() > 1) {
+                            content.append(generateCommonMethod.convertNumber(judgeNumbers)).append("号均位于");
+                        }
+                        if (judgeNumbers.size() == 1) {
+                            content.append(generateCommonMethod.convertNumber(judgeNumbers)).append("号位于");
+                        }
+                        content.append(publicService.fusinString(LangUtils.transform(entry.getValue(), o -> o.getSeat()), true)).append("，");
                         content.append(generateCommonMethod.judgeSummaryDesc(certUseMap, "证载用途", false)).append("，");
                         content.append(generateCommonMethod.judgeSummaryDesc(practicalUseMap, "实际用途", false)).append("，其用途符合该区域的未来发展方向，");
                         List<SurveyJudgeObjectGroupDto> list = surveyAssetInventoryRightRecordService.groupJudgeObject(projectInfo.getId(), entry.getValue());
@@ -554,9 +563,9 @@ public class DataReportAnalysisService {
                 for (Map.Entry<String, EstateLiquidityAnalysisDto> entry : analysisDtoMap.entrySet()) {
                     EstateLiquidityAnalysisDto analysisDto = entry.getValue();
                     String s = templateItem.getTemplate()
-                            .replace("#{通用性}",StringUtils.isEmpty(analysisDto.getGenerality())?"":String.format(analysisDto.getGenerality()) )
-                            .replace("#{独立使用性}", StringUtils.isEmpty(analysisDto.getIndependence())?"":String.format(analysisDto.getIndependence()) )
-                            .replace("#{单个产权面积}", StringUtils.isEmpty(analysisDto.getPropertyRight())?"":String.format(analysisDto.getPropertyRight()) );
+                            .replace("#{通用性}", StringUtils.isEmpty(analysisDto.getGenerality()) ? "" : String.format(analysisDto.getGenerality()))
+                            .replace("#{独立使用性}", StringUtils.isEmpty(analysisDto.getIndependence()) ? "" : String.format(analysisDto.getIndependence()))
+                            .replace("#{单个产权面积}", StringUtils.isEmpty(analysisDto.getPropertyRight()) ? "" : String.format(analysisDto.getPropertyRight()));
                     String mobility = "好";
                     if (analysisDto.getGenerality().contains("弱") || analysisDto.getIndependence().contains("差")) {
                         mobility = "较差";
