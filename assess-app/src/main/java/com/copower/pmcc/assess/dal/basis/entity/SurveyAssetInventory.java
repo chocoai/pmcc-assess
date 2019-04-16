@@ -31,17 +31,21 @@ public class SurveyAssetInventory {
 
     private String certificate;
 
-    private String zoneDamage;
-
-    private String entityDamage;
-
     private String rimIsNormal;
+
+    private String zoneDamage;
 
     private String abnormality;
 
     private String entityIsDamage;
 
+    private String entityDamage;
+
     private String damageRemark;
+
+    private String paymentStatus;
+
+    private String paymentContent;
 
     private String transferLimit;
 
@@ -165,28 +169,20 @@ public class SurveyAssetInventory {
         this.certificate = certificate == null ? null : certificate.trim();
     }
 
-    public String getZoneDamage() {
-        return zoneDamage;
-    }
-
-    public void setZoneDamage(String zoneDamage) {
-        this.zoneDamage = zoneDamage == null ? null : zoneDamage.trim();
-    }
-
-    public String getEntityDamage() {
-        return entityDamage;
-    }
-
-    public void setEntityDamage(String entityDamage) {
-        this.entityDamage = entityDamage == null ? null : entityDamage.trim();
-    }
-
     public String getRimIsNormal() {
         return rimIsNormal;
     }
 
     public void setRimIsNormal(String rimIsNormal) {
         this.rimIsNormal = rimIsNormal == null ? null : rimIsNormal.trim();
+    }
+
+    public String getZoneDamage() {
+        return zoneDamage;
+    }
+
+    public void setZoneDamage(String zoneDamage) {
+        this.zoneDamage = zoneDamage == null ? null : zoneDamage.trim();
     }
 
     public String getAbnormality() {
@@ -205,12 +201,36 @@ public class SurveyAssetInventory {
         this.entityIsDamage = entityIsDamage == null ? null : entityIsDamage.trim();
     }
 
+    public String getEntityDamage() {
+        return entityDamage;
+    }
+
+    public void setEntityDamage(String entityDamage) {
+        this.entityDamage = entityDamage == null ? null : entityDamage.trim();
+    }
+
     public String getDamageRemark() {
         return damageRemark;
     }
 
     public void setDamageRemark(String damageRemark) {
         this.damageRemark = damageRemark == null ? null : damageRemark.trim();
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus == null ? null : paymentStatus.trim();
+    }
+
+    public String getPaymentContent() {
+        return paymentContent;
+    }
+
+    public void setPaymentContent(String paymentContent) {
+        this.paymentContent = paymentContent == null ? null : paymentContent.trim();
     }
 
     public String getTransferLimit() {

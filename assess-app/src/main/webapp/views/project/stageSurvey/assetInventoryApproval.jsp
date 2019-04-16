@@ -168,7 +168,33 @@
                     </table>
                 </div>
             </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>税费缴纳调查</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form id="taxesPaymentSurvey" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    缴纳情况
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${surveyAssetInventory.paymentStatus}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="paymentItem">
 
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -438,7 +464,7 @@
 
             writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
             writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
-
+            writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
     })
 
@@ -544,6 +570,37 @@
             html += "</div>";
             html += "</div>";
             $("." + item).append(html);
+        })
+    }
+
+    function writePaymentHTMLData(json) {
+        $(".paymentItem").empty();
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var html = "<div class='form-group' >";
+            html += "<div class='x-valid'>";
+
+            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<label class='form-control'>" + n["projectName"];
+            html += "</label>";
+            html += "</div>";
+
+            html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<label class='form-control'>" + n["remark"];
+            html += "</label>";
+            html += "</div>";
+
+            html += "<label class='col-sm-1 control-label'>" + "金额" + "</label>";
+            html += "<div class='col-sm-2'>";
+            html += "<label class='form-control'>" + n["money"];
+            html += "</label>";
+            html += "</div>";
+
+            html += "</div>";
+            html += "</div>";
+            $(".paymentItem").append(html);
         })
     }
 

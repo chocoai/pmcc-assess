@@ -277,6 +277,49 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
+                    <h3>税费缴纳调查</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form id="taxesPaymentSurvey" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    缴纳情况
+                                </label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" id="paymentStatus" name="paymentStatus" required
+                                            onchange="showButton()">
+                                        <option value="">请选择</option>
+                                        <option value="正常" selected="selected">正常</option>
+                                        <option value="不正常">不正常</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <div style="display:none" id="showPaymentAdd">
+                                    <label class="col-sm-1 control-label">
+                                        明细新增
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <div class="btn btn-xs btn-success" onclick="appendPaymentHTML(this)"><i
+                                                class="fa fa-plus"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="paymentItem">
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h3>损坏调查表</h3>
                     <div class="clearfix"></div>
                 </div>
@@ -699,8 +742,13 @@
             }
             writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
             writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
+            if ("${surveyAssetInventory.paymentStatus}") {
+                $("#paymentStatus").val("${surveyAssetInventory.paymentStatus}");
+            }
+            writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
         showOther();
+        showButton();
     })
     ;
 
@@ -835,6 +883,7 @@
         data.surveyAssetInventory.rimIsNormal = $("#rimIsNormal").val();
         data.surveyAssetInventory.entityIsDamage = $("#entityIsDamage").val();
         data.surveyAssetInventory.transferLimit = $("#transferLimit").val();
+        data.surveyAssetInventory.paymentStatus = $("#paymentStatus").val();
 
         data.surveyAssetInventory.zoneDamage = [];
         data.surveyAssetInventory.entityDamage = [];
@@ -858,6 +907,20 @@
             }
         });
 
+        data.surveyAssetInventory.paymentContent = [];
+        $("#taxesPaymentSurvey").find('.form-group').each(function () {
+            var paymentItem = {};
+            var projectName = $(this).find('[name^=projectName]').val();
+            var remark = $(this).find('[name^=remark]').val();
+            var money = $(this).find('[name^=money]').val();
+            if (projectName && money) {
+                paymentItem.projectName = projectName;
+                paymentItem.remark = remark;
+                paymentItem.money = money;
+                data.surveyAssetInventory.paymentContent.push(paymentItem);
+            }
+
+        });
         return data;
     }
 
@@ -869,6 +932,9 @@
             return false;
         }
         if (!$("#damageSurvey").valid()) {
+            return false;
+        }
+        if (!$("#taxesPaymentSurvey").valid()) {
             return false;
         }
         var formData = JSON.stringify(getFormData());
@@ -1089,6 +1155,72 @@
         })
     }
 
+    function appendPaymentHTML(this_) {
+        var html = "<div class='form-group' >";
+        html += "<div class='x-valid'>";
+
+        html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+        html += "<div class='col-sm-3'>";
+        html += "<input type='text' required class='form-control' name='projectName" + num + "'>";
+        html += "</div>";
+
+        html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
+        html += "<div class='col-sm-3'>";
+        html += "<input type='text' class='form-control' name='remark " + num + "'>";
+        html += "</div>";
+
+        html += "<div class='x-valid'>";
+        html += "<label class='col-sm-1 control-label'>" + "金额" + "</label>";
+        html += "<div class='col-sm-2'>";
+        html += "<input type='text' required class='form-control' name='money " + num + "' data-rule-number='true'>";
+        html += "</div>";
+        html += "</div>";
+
+        html += " <div class='col-sm-1'>";
+        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+        html += "</div>";
+
+        html += "</div>";
+        html += "</div>";
+
+        num++;
+        $(".paymentItem").append(html);
+    }
+
+    function writePaymentHTMLData(json) {
+        $(".paymentItem").empty();
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var html = "<div class='form-group' >";
+            html += "<div class='x-valid'>";
+
+            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<input type='text' required class='form-control' name='projectName "+ i + "' value='" + n["projectName"] + "'>";
+            html += "</div>";
+
+            html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<input type='text' required class='form-control' name='remark" + i + "' value='" + n["remark"] + "'>";
+            html += "</div>";
+
+            html += "<div class='x-valid'>";
+            html += "<label class='col-sm-1 control-label'>" + "金额" + "</label>";
+            html += "<div class='col-sm-2'>";
+            html += "<input type='text' required class='form-control' name='money" + i + "' value='" + n["money"] + "'>";
+            html += "</div>";
+            html += "</div>";
+
+            html += " <div class='col-sm-1'>";
+            html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
+            html += "</div>";
+            $(".paymentItem").append(html);
+        })
+    }
+
     function showButton() {
         if ($("#rimIsNormal").val() == "不正常") {
             $("#showZoneAdd").show();
@@ -1101,6 +1233,12 @@
         } else {
             $(".entity").empty();
             $("#showEntityAdd").hide();
+        }
+        if ($("#paymentStatus").val() == "不正常") {
+            $("#showPaymentAdd").show();
+        } else {
+            $(".paymentItem").empty();
+            $("#showPaymentAdd").hide();
         }
     }
 </script>
