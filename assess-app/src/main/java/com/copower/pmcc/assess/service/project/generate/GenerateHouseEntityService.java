@@ -14,7 +14,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.sun.prism.impl.BaseMesh;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -274,7 +273,7 @@ public class GenerateHouseEntityService {
             stringBuilder.append(String.format("外观%s;", baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld())));
             stringMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), stringBuilder.toString());
         }
-        return StringUtils.strip(generateCommonMethod.judgeEachDesc(stringMap, "", ";", false),";");
+        return StringUtils.strip(generateCommonMethod.judgeEachDesc(stringMap, "", ";", false), ";");
     }
 
     /**
@@ -328,7 +327,6 @@ public class GenerateHouseEntityService {
     public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
-        Set<String> stringSet = Sets.newHashSet();
         String spCategoryName = "特种设备,其他";
         String spTypeName = "设备部分,其它";
         Map<Integer, String> map = Maps.newHashMap();
@@ -371,11 +369,11 @@ public class GenerateHouseEntityService {
                     }
                     linkedHashSet.add(String.format("%s：%s%s", stringListEntry.getKey(), s, "。"));
                 });
-                stringSet.add(StringUtils.join(linkedHashSet, "\r"));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()),StringUtils.join(linkedHashSet, "\r") );
                 linkedHashSet.clear();
             }
         }
-        return generateCommonMethod.judgeEachDesc(map,"",";",false);
+        return generateCommonMethod.judgeEachDesc(map, "", ";", false);
     }
 
     /**
@@ -539,7 +537,7 @@ public class GenerateHouseEntityService {
     /**
      * 房屋配套设备设施工
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      * @throws Exception
      */
@@ -566,6 +564,9 @@ public class GenerateHouseEntityService {
                 for (int i = 0; i < integerList.size(); i++) {
                     SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                    if (basicApply == null || basicApply.getType() == 0) {
+                        continue;
+                    }
                     GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                     List<BasicHouseCorollaryEquipment> equipmentList = generateBaseExamineService.getBasicHouseCorollaryEquipmentList();
                     if (CollectionUtils.isEmpty(equipmentList)) {
@@ -590,13 +591,12 @@ public class GenerateHouseEntityService {
     }
 
     /**
-     * 非工业与仓储的其他设施
+     * 供水
      *
      * @param judgeObjectList
      * @return
-     * @throws Exception
      */
-    public String getOtherEquipment(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getHouseWater(List<SchemeJudgeObject> judgeObjectList) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
                 if (schemeJudgeObject.getDeclareRecordId() == null) {
@@ -610,12 +610,270 @@ public class GenerateHouseEntityService {
             }).collect(Collectors.toList());
         }
         StringBuilder stringBuilder = new StringBuilder(8);
-        LinkedHashSet<String> airConditionerSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> newWindSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> heatingSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> intelligentSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> waterSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> waterDrainSet = Sets.newLinkedHashSet();
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        Map<String, List<Integer>> houseMap = groupByHouse(judgeObjectList);
+        Map<String, String> map = Maps.newHashMap();
+        if (!houseMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> stringEntry : houseMap.entrySet()) {
+                List<Integer> integerList = stringEntry.getValue();
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                for (int i = 0; i < integerList.size(); i++) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
+                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    List<BasicHouseWater> basicHouseWaterList = Lists.newArrayList();
+                    try {
+                        basicHouseWaterList = generateBaseExamineService.getBasicHouseWaterList();
+                    } catch (Exception e) {
+                    }
+                    if (CollectionUtils.isNotEmpty(basicHouseWaterList)) {
+                        basicHouseWaterList.stream().forEach(basicHouseWater -> {
+                            String gradeName = baseDataDicService.getNameById(basicHouseWater.getGrade());
+                            int num = 0;
+                            if (StringUtils.isEmpty(gradeName)) {
+                                num++;
+                            }
+                            String boosterEquipmentName = baseDataDicService.getNameById(basicHouseWater.getBoosterEquipment());
+                            if (StringUtils.isEmpty(boosterEquipmentName)) {
+                                num++;
+                            }
+                            String pipeMaterialName = baseDataDicService.getNameById(basicHouseWater.getPipeMaterial());
+                            if (StringUtils.isEmpty(pipeMaterialName)) {
+                                num++;
+                            }
+                            String pipingLayoutName = baseDataDicService.getNameById(basicHouseWater.getPipingLayout());
+                            if (StringUtils.isEmpty(pipingLayoutName)) {
+                                num++;
+                            }
+                            String supplyModeName = baseDataDicService.getNameById(basicHouseWater.getSupplyMode());
+                            if (StringUtils.isEmpty(supplyModeName)) {
+                                num++;
+                            }
+                            String fireWaterSupplyName = baseDataDicService.getNameById(basicHouseWater.getFireWaterSupply());
+                            if (StringUtils.isEmpty(fireWaterSupplyName)) {
+                                num++;
+                            }
+                            if (num == 0) {
+                                stringBuilder.append("给水采用")
+                                        .append(gradeName)
+                                        .append(boosterEquipmentName)
+                                        .append(pipeMaterialName)
+                                        .append(pipingLayoutName)
+                                        .append(supplyModeName)
+                                        .append("，")
+                                        .append("消防给水")
+                                        .append(fireWaterSupplyName);
+                            }
+                            if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
+                                linkedHashSet.add(stringBuilder.toString());
+                            }
+                            stringBuilder.delete(0, stringBuilder.toString().length());
+                        });
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                    if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                        map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", stringEntry.getKey().toString(), "号"));
+                    }
+                }
+                linkedHashSet.clear();
+            }
+        }
+        String s = "";
+        if (!map.isEmpty()) {
+            if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
+                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).distinct().collect(Collectors.toList()), "。\r");
+            } else {
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false, null), "。\n");
+            }
+        }
+        return s;
+    }
+
+    /**
+     * 排水
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    public String getHouseWaterDrain(List<SchemeJudgeObject> judgeObjectList) {
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
+                if (schemeJudgeObject.getDeclareRecordId() == null) {
+                    return false;
+                }
+                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                if (basicApply == null || basicApply.getType() == 1) {
+                    return false;
+                }
+                return true;
+            }).collect(Collectors.toList());
+        }
+        StringBuilder stringBuilder = new StringBuilder(8);
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        Map<String, List<Integer>> houseMap = groupByHouse(judgeObjectList);
+        Map<String, String> map = Maps.newHashMap();
+        if (!houseMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> stringEntry : houseMap.entrySet()) {
+                List<Integer> integerList = stringEntry.getValue();
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                for (int i = 0; i < integerList.size(); i++) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
+                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    List<BasicHouseWaterDrain> voList = Lists.newArrayList();
+                    try {
+                        voList = generateBaseExamineService.getBasicHouseWaterDrainList();
+                    } catch (Exception e) {
+                    }
+                    if (CollectionUtils.isNotEmpty(voList)) {
+                        voList.stream().forEach(basicHouseWaterDrain -> {
+                            int number = 0;
+                            String typeName = baseDataDicService.getNameById(basicHouseWaterDrain.getType());
+                            if (StringUtils.isEmpty(typeName)) {
+                                number++;
+                            }
+                            String processingModeName = baseDataDicService.getNameById(basicHouseWaterDrain.getProcessingMode());
+                            if (StringUtils.isEmpty(processingModeName)) {
+                                number++;
+                            }
+                            if (number == 0) {
+                                stringBuilder.append(typeName).append("采用")
+                                        .append(processingModeName).append(baseDataDicService.getNameById(basicHouseWaterDrain.getDrainSystem()));
+                            }
+                            if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
+                                linkedHashSet.add(stringBuilder.toString());
+                            }
+                            stringBuilder.delete(0, stringBuilder.toString().length());
+                        });
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                    if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                        map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", stringEntry.getKey().toString(), "号"));
+                    }
+                }
+                linkedHashSet.clear();
+            }
+        }
+        String s = "";
+        if (!map.isEmpty()) {
+            if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
+                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).distinct().collect(Collectors.toList()), "。\r");
+            } else {
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false, null), "。\n");
+            }
+        }
+        return s;
+    }
+
+    /**
+     * 电力通讯网络
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    public String getIntelligent(List<SchemeJudgeObject> judgeObjectList) {
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
+                if (schemeJudgeObject.getDeclareRecordId() == null) {
+                    return false;
+                }
+                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                if (basicApply == null || basicApply.getType() == 1) {
+                    return false;
+                }
+                return true;
+            }).collect(Collectors.toList());
+        }
+        StringBuilder stringBuilder = new StringBuilder(8);
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        Map<String, List<Integer>> houseMap = groupByHouse(judgeObjectList);
+        Map<String, String> map = Maps.newHashMap();
+        if (!houseMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> stringEntry : houseMap.entrySet()) {
+                List<Integer> integerList = stringEntry.getValue();
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                for (int i = 0; i < integerList.size(); i++) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
+                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    List<BasicHouseIntelligentVo> voList = generateBaseExamineService.getBasicHouseIntelligentList();
+                    if (CollectionUtils.isNotEmpty(voList)) {
+                        voList.stream().forEach(oo -> {
+                            if (StringUtils.isNotBlank(oo.getIntelligentSystemName())) {
+                                if (StringUtils.isNotBlank(oo.getGradeName())) {
+                                    stringBuilder.append("电路采用");
+                                    stringBuilder.append(oo.getGradeName()).append("材料");
+                                }
+                                if (StringUtils.isNotBlank(oo.getSwitchCircuitName())) {
+                                    stringBuilder.append(oo.getSwitchCircuitName());
+                                }
+                                stringBuilder.append("铺设方式").append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无");
+                                if (StringUtils.isNotBlank(oo.getLampsLanternsName())) {
+                                    stringBuilder.append("，").append("灯具为").append(oo.getLampsLanternsName());
+                                }
+                                String s = oo.getIntelligentSystemName();
+                                s = s.replaceAll("；", "");
+                                s = s.replaceAll(";", "");
+                                s = s.replaceAll("/", "-");
+                                stringBuilder.append(s);
+                                if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
+                                    linkedHashSet.add(stringBuilder.toString());
+                                }
+                                stringBuilder.delete(0, stringBuilder.toString().length());
+                            }
+                        });
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                    if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                        map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", stringEntry.getKey().toString(), "号"));
+                    }
+                }
+                linkedHashSet.clear();
+            }
+        }
+        String s = "";
+        if (!map.isEmpty()) {
+            if (map.entrySet().stream().map(entry -> entry.getKey()).distinct().count() == 1) {
+                s = StringUtils.join(map.entrySet().stream().map(entry -> entry.getKey()).distinct().collect(Collectors.toList()), "。\r");
+            } else {
+                s = StringUtils.join(generateCommonMethod.changeMapToList(map, false, null), "。\n");
+            }
+        }
+        return s;
+    }
+
+    /**
+     * 空调，新风，供暖
+     *
+     * @param judgeObjectList
+     * @param equipmentTypeEnum
+     * @return
+     * @throws Exception
+     */
+    public String getHouseEquipment(List<SchemeJudgeObject> judgeObjectList, ExamineHouseEquipmentTypeEnum equipmentTypeEnum) throws Exception {
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
+                if (schemeJudgeObject.getDeclareRecordId() == null) {
+                    return false;
+                }
+                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                if (basicApply == null || basicApply.getType() == 1) {
+                    return false;
+                }
+                return true;
+            }).collect(Collectors.toList());
+        }
+        StringBuilder stringBuilder = new StringBuilder(8);
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         Map<String, List<Integer>> houseMap = groupByHouse(judgeObjectList);
         Map<String, String> map = Maps.newHashMap();
         if (!houseMap.isEmpty()) {
@@ -633,179 +891,43 @@ public class GenerateHouseEntityService {
                     if (CollectionUtils.isNotEmpty(equipmentList2)) {
                         equipmentList2.stream().forEach(oo -> equipmentList.add(basicHouseEquipmentService.getBasicHouseEquipmentVo(oo)));
                     }
-                    List<BasicHouseIntelligentVo> intelligentVoList = generateBaseExamineService.getBasicHouseIntelligentList();
-                    //供水
-                    List<BasicHouseWater> basicHouseWaterList = generateBaseExamineService.getBasicHouseWaterList();
-                    //排水
-                    List<BasicHouseWaterDrain> houseWaterDrainList = generateBaseExamineService.getBasicHouseWaterDrainList();
-                    if (CollectionUtils.isEmpty(equipmentList) && CollectionUtils.isEmpty(intelligentVoList)
-                            && CollectionUtils.isEmpty(basicHouseWaterList) && CollectionUtils.isEmpty(houseWaterDrainList)) {
+                    if (CollectionUtils.isEmpty(equipmentList)) {
                         continue;
                     }
+                    List<BasicHouseEquipmentVo> voList = Lists.newArrayList();
                     if (CollectionUtils.isNotEmpty(equipmentList)) {
-                        List<BasicHouseEquipmentVo> houseAirConditioner = equipmentList.stream().filter(oo -> com.google.common.base.Objects.equal(ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey(), oo.getType())).collect(Collectors.toList());
-                        List<BasicHouseEquipmentVo> houseNewWind = equipmentList.stream().filter(oo -> com.google.common.base.Objects.equal(ExamineHouseEquipmentTypeEnum.houseNewWind.getKey(), oo.getType())).collect(Collectors.toList());
-                        List<BasicHouseEquipmentVo> houseHeating = equipmentList.stream().filter(oo -> com.google.common.base.Objects.equal(ExamineHouseEquipmentTypeEnum.houseHeating.getKey(), oo.getType())).collect(Collectors.toList());
-                        if (CollectionUtils.isNotEmpty(houseAirConditioner)) {
-                            for (int j = 0; j < houseAirConditioner.size(); j++) {
-                                BasicHouseEquipmentVo oo = houseAirConditioner.get(j);
-                                if (StringUtils.isEmpty(oo.getGradeName())) {
-                                    continue;
+                        voList.addAll(equipmentList.stream()
+                                .filter(oo -> com.google.common.base.Objects.equal(equipmentTypeEnum.getKey(), oo.getType()))
+                                .collect(Collectors.toList()));
+                    }
+                    if (CollectionUtils.isNotEmpty(voList)) {
+                        voList.stream().forEach(oo -> {
+                            if (StringUtils.isNotBlank(oo.getEquipment()) && StringUtils.isNotBlank(oo.getCategoryName())) {
+                                stringBuilder.append(oo.getEquipment()).append("牌");
+                                if (StringUtils.isNotBlank(oo.getGradeName())) {
+                                    stringBuilder.append(oo.getGradeName());
                                 }
-                                if (StringUtils.isEmpty(oo.getCategoryName())) {
-                                    continue;
-                                }
-                                stringBuilder.append(oo.getEquipment());
-                                stringBuilder.append(oo.getGradeName());
                                 stringBuilder.append(oo.getCategoryName());
-                                stringBuilder.append(oo.getSupplyWeast());
-                                airConditionerSet.add(stringBuilder.toString());
+                                if (StringUtils.isNotBlank(oo.getSupplyModeName())) {
+                                    stringBuilder.append(oo.getSupplyModeName());
+                                }
+                                if (StringUtils.isNotBlank(oo.getEquipmentPriceName())) {
+                                    stringBuilder.append(oo.getEquipmentPriceName());
+                                }
+                                if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
+                                    linkedHashSet.add(stringBuilder.toString());
+                                }
                                 stringBuilder.delete(0, stringBuilder.toString().length());
                             }
-                        }
-                        //
-                        if (CollectionUtils.isNotEmpty(houseNewWind)) {
-                            for (int j = 0; j < houseNewWind.size(); j++) {
-                                BasicHouseEquipmentVo oo = houseAirConditioner.get(j);
-                                if (StringUtils.isEmpty(oo.getGradeName())) {
-                                    continue;
-                                }
-                                if (StringUtils.isEmpty(oo.getCategoryName())) {
-                                    continue;
-                                }
-                                stringBuilder.append(oo.getEquipment());
-                                stringBuilder.append(oo.getGradeName());
-                                stringBuilder.append(oo.getCategoryName());
-                                stringBuilder.append(oo.getSupplyWeast());
-                                newWindSet.add(stringBuilder.toString());
-                                stringBuilder.delete(0, stringBuilder.toString().length());
-                            }
-                        }
-                        //
-                        if (CollectionUtils.isNotEmpty(houseHeating)) {
-                            for (int j = 0; j < houseHeating.size(); j++) {
-                                BasicHouseEquipmentVo oo = houseAirConditioner.get(j);
-                                if (StringUtils.isEmpty(oo.getGradeName())) {
-                                    continue;
-                                }
-                                if (StringUtils.isEmpty(oo.getCategoryName())) {
-                                    continue;
-                                }
-                                stringBuilder.append(oo.getEquipment());
-                                stringBuilder.append(oo.getGradeName());
-                                stringBuilder.append(oo.getCategoryName());
-                                stringBuilder.append(oo.getSupplyWeast());
-                                heatingSet.add(stringBuilder.toString());
-                                stringBuilder.delete(0, stringBuilder.toString().length());
-                            }
-                        }
-                        //电力通讯网络
-                        if (CollectionUtils.isNotEmpty(intelligentVoList)) {
-                            for (int j = 0; j < intelligentVoList.size(); j++) {
-                                if (StringUtils.isNotBlank(intelligentVoList.get(j).getGradeName())) {
-                                    stringBuilder.append("电路采用");
-                                    stringBuilder.append(intelligentVoList.get(j).getGradeName()).append("材料");
-                                }
-                                if (StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName())) {
-                                    stringBuilder.append(intelligentVoList.get(j).getSwitchCircuitName());
-                                }
-                                stringBuilder.append("铺设方式").append(StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName()) ? intelligentVoList.get(j).getLayingMethodName() : "无");
-                                if (StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
-                                    stringBuilder.append(intelligentVoList.get(j).getLampsLanternsName());
-                                }
-                                if (StringUtils.isNotBlank(intelligentVoList.get(j).getIntelligentSystemName())) {
-                                    stringBuilder.append(intelligentVoList.get(j).getIntelligentSystemName());
-                                }
-                                String s = stringBuilder.toString();
-                                s = s.replace("；", "");
-                                s = s.replace(";", "");
-                                intelligentSet.add(s);
-                                stringBuilder.delete(0, stringBuilder.toString().length());
-                            }
-                        }
-
-                        if (CollectionUtils.isNotEmpty(basicHouseWaterList)) {
-                            int size = basicHouseWaterList.size();
-                            for (int j = 0; j < size; j++) {
-                                BasicHouseWater basicHouseWater = basicHouseWaterList.get(j);
-                                String gradeName = baseDataDicService.getNameById(basicHouseWater.getGrade());
-                                if (StringUtils.isEmpty(gradeName)) {
-                                    continue;
-                                }
-                                String boosterEquipmentName = baseDataDicService.getNameById(basicHouseWater.getBoosterEquipment());
-                                if (StringUtils.isEmpty(boosterEquipmentName)) {
-                                    continue;
-                                }
-                                String pipeMaterialName = baseDataDicService.getNameById(basicHouseWater.getPipeMaterial());
-                                if (StringUtils.isEmpty(pipeMaterialName)) {
-                                    continue;
-                                }
-                                String pipingLayoutName = baseDataDicService.getNameById(basicHouseWater.getPipingLayout());
-                                if (StringUtils.isEmpty(pipingLayoutName)) {
-                                    continue;
-                                }
-                                String supplyModeName = baseDataDicService.getNameById(basicHouseWater.getSupplyMode());
-                                if (StringUtils.isEmpty(supplyModeName)) {
-                                    continue;
-                                }
-                                String fireWaterSupplyName = baseDataDicService.getNameById(basicHouseWater.getFireWaterSupply());
-                                if (StringUtils.isEmpty(fireWaterSupplyName)) {
-                                    continue;
-                                }
-                                stringBuilder.append("给水采用")
-                                        .append(gradeName)
-                                        .append(boosterEquipmentName)
-                                        .append(pipeMaterialName)
-                                        .append(pipingLayoutName)
-                                        .append(supplyModeName)
-                                        .append("")
-                                        .append("消防给水")
-                                        .append(fireWaterSupplyName);
-                                waterSet.add(stringBuilder.toString());
-                                stringBuilder.delete(0, stringBuilder.toString().length());
-                            }
-                        }
-                        if (CollectionUtils.isNotEmpty(houseWaterDrainList)) {
-                            for (int j = 0; j < houseWaterDrainList.size(); j++) {
-                                BasicHouseWaterDrain basicHouseWaterDrain = houseWaterDrainList.get(j);
-                                String typeName = baseDataDicService.getNameById(basicHouseWaterDrain.getType());
-                                if (StringUtils.isEmpty(typeName)) {
-                                    continue;
-                                }
-                                String processingModeName = baseDataDicService.getNameById(basicHouseWaterDrain.getProcessingMode());
-                                if (StringUtils.isEmpty(processingModeName)) {
-                                    continue;
-                                }
-                                stringBuilder.append(typeName)
-                                        .append(processingModeName)
-                                        .append("").append(StringUtils.isNotBlank(basicHouseWaterDrain.getEvaluate()) ? basicHouseWaterDrain.getEvaluate() : "无");
-                                waterDrainSet.add(stringBuilder.toString());
-                                stringBuilder.delete(0, stringBuilder.toString().length());
-                            }
-                        }
+                        });
                     }
                 }
-                List<String> stringList = Lists.newArrayList(
-                        StringUtils.join(airConditionerSet, "、"),
-                        StringUtils.join(newWindSet, "、"),
-                        StringUtils.join(heatingSet, "、"),
-                        StringUtils.join(intelligentSet, "、"),
-                        StringUtils.join(waterSet, "、"),
-                        StringUtils.join(waterDrainSet, "、")
-                );
-                airConditionerSet.clear();
-                newWindSet.clear();
-                heatingSet.clear();
-                heatingSet.clear();
-                intelligentSet.clear();
-                waterSet.clear();
-                waterDrainSet.clear();
-                if (CollectionUtils.isNotEmpty(stringList)) {
-                    stringList = stringList.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList());
-                    if (CollectionUtils.isNotEmpty(stringList)) {
-                        map.put(StringUtils.join(stringList, ","), String.format("%s%s", stringEntry.getKey().toString(), "号"));
+                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                    if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                        map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", stringEntry.getKey().toString(), "号"));
                     }
                 }
+                linkedHashSet.clear();
             }
         }
         String s = "";
@@ -829,8 +951,7 @@ public class GenerateHouseEntityService {
     public String getUnitElevator(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         Map<String, List<Integer>> unitMap = groupByUnit(judgeObjectList);
         LinkedHashSet<String> centerSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> quasiLoadNumber = Sets.newLinkedHashSet();
-        LinkedHashSet<String> quasiLoadWeight = Sets.newLinkedHashSet();
+        LinkedHashSet<String> newLinkedHashSet = Sets.newLinkedHashSet();
         Map<String, String> map = Maps.newHashMap();
         if (!unitMap.isEmpty()) {
             for (Map.Entry<String, List<Integer>> stringEntry : unitMap.entrySet()) {
@@ -858,60 +979,47 @@ public class GenerateHouseEntityService {
                             number = basicUnitElevatorList.stream().filter(oo -> oo.getNumber() != null).mapToInt(oo -> oo.getNumber()).sum();
                         }
                         if (basicUnitElevatorList.stream().filter(oo -> {
-                            if (oo.getQuasiLoadNumber() != null) {
-                                if (oo.getType() != null) {
-                                    return StringUtils.isNotBlank(oo.getBrand());
-                                }
+                            if (oo.getType() != null) {
+                                return StringUtils.isNotBlank(oo.getBrand());
                             }
                             return false;
                         }).count() >= 1) {
                             basicUnitElevatorList.stream().forEach(oo -> {
-                                quasiLoadNumber.add(String.format("%s%s牌准载人数%s人",
-                                        baseDataDicService.getNameById(oo.getType()),
-                                        oo.getBrand(),
-                                        oo.getQuasiLoadNumber().toString()));
-                            });
-                        }
-                        if (basicUnitElevatorList.stream().filter(oo -> {
-                            if (StringUtils.isNotBlank(oo.getQuasiLoadWeight())) {
-                                if (oo.getType() != null) {
-                                    return StringUtils.isNotBlank(oo.getBrand());
+                                String s1 = "";
+                                if (oo.getQuasiLoadNumber() != null) {
+                                    s1 = String.format("%s%s牌准载人数%s人",
+                                            baseDataDicService.getNameById(oo.getType()),
+                                            oo.getBrand(),
+                                            oo.getQuasiLoadNumber().toString());
                                 }
-                            }
-                            return false;
-                        }).count() >= 1) {
-                            basicUnitElevatorList.stream().forEach(oo -> {
-                                quasiLoadWeight.add(String.format("%s%s牌准载重量%s",
-                                        baseDataDicService.getNameById(oo.getType()),
-                                        oo.getBrand(),
-                                        String.format("%s%s", oo.getQuasiLoadWeight(), "kg")));
+                                String s2 = "";
+                                if (StringUtils.isNotBlank(oo.getQuasiLoadWeight())) {
+                                    String s = "";
+                                    if (oo.getQuasiLoadNumber() == null) {
+                                        s = String.format("%s牌", oo.getBrand());
+                                    }
+                                    s2 = String.format("%s准载重量%s", s,
+                                            String.format("%s%s", oo.getQuasiLoadWeight(), "kg"));
+                                }
+                                newLinkedHashSet.add(String.format("%s%s", s1, s2));
                             });
                         }
-                        String s1 = "";
-                        String s2 = "";
-                        if (CollectionUtils.isNotEmpty(quasiLoadNumber)) {
-                            s1 = StringUtils.join(quasiLoadNumber, "、");
-                            quasiLoadNumber.clear();
-                        }
-                        if (CollectionUtils.isNotEmpty(quasiLoadWeight)) {
-                            s2 = StringUtils.join(quasiLoadWeight, "、");
-                            quasiLoadWeight.clear();
-                        }
-                        if (StringUtils.isNotBlank(s1) || StringUtils.isNotBlank(s2)) {
-                            List<String> stringList = Lists.newArrayList(s1, s2);
-                            centerSet.add(String.format("共%d%s%s",
-                                    number, "部电梯",
-                                    StringUtils.join(
-                                            stringList.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList()), ","
-                                    ))
+                        if (CollectionUtils.isNotEmpty(newLinkedHashSet)) {
+                            String s = "";
+                            if (integerList.size() > 1) {
+                                s = generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject);
+                            }
+                            centerSet.add(String.format("%s共%d%s%s", s,
+                                    number, "部电梯", StringUtils.join(newLinkedHashSet, "、"))
                             );
                         }
+                        newLinkedHashSet.clear();
                     }
                 }
                 if (CollectionUtils.isNotEmpty(centerSet)) {
                     map.put(StringUtils.join(centerSet, ";"), String.format("%s单元", stringEntry.getKey()));
-                    centerSet.clear();
                 }
+                centerSet.clear();
             }
         }
         String s = " ";

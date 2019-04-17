@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
-import com.aspose.words.Document;
-import com.aspose.words.DocumentBuilder;
-import com.aspose.words.SaveFormat;
-import com.aspose.words.Table;
+import com.aspose.words.*;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
@@ -61,6 +58,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -2552,7 +2550,10 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s", generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate, judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApply)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", generateCommonMethod.trim(generateLoactionService.getFaceStreet(judgeObjects)))));
+                String faceStreet = generateLoactionService.getFaceStreet(judgeObjects);
+                if (StringUtils.isNotBlank(faceStreet.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", generateCommonMethod.trim(faceStreet))));
+                }
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("2、交通状况包括"));
@@ -2613,16 +2614,67 @@ public class GenerateBaseDataService {
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("1、名称:%s", generateCommonMethod.trim(generateLandEntityService.getLandName(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("2、四至:%s", generateCommonMethod.trim(generateLandEntityService.fourTheFor(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("3、土地面积:%s", generateCommonMethod.trim(generateLandEntityService.getLandArea(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("4、用途:%s", generateCommonMethod.trim(generateLandEntityService.getLandUse(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("5、形状:%s", generateCommonMethod.trim(generateLandEntityService.getShapeState(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、地势:%s", generateCommonMethod.trim(generateLandEntityService.getTopographicTerrain(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("7、土壤与地质:%s", generateCommonMethod.trim(generateLandEntityService.getSoil(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("8、基础设施完备度:%s", generateCommonMethod.trim(generateLandEntityService.getInfrastructureCompleteness(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("9、开发程度:%s", generateCommonMethod.trim(generateLandEntityService.getDevelopmentDegree(landStateVo)))));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("10、综上所述:%s", generateCommonMethod.trim(generateLandEntityService.getContent(basicApply)))));
+            int index = 0;
+            {
+                String s = generateLandEntityService.getLandName(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、名称:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.fourTheFor(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、四至:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.getLandArea(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、土地面积:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.getLandUse(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、用途:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.getShapeState(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、形状:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.getTopographicTerrain(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、地势:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.getSoil(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、土壤与地质:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.getInfrastructureCompleteness(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、基础设施完备度:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.getDevelopmentDegree(landStateVo);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、开发程度:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
+            {
+                String s = generateLandEntityService.getContent(basicApply);
+                if (StringUtils.isNotBlank(s.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、综上所述:%s", ++index, generateCommonMethod.trim(s))));
+                }
+            }
             documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
         }
         doc.save(localPath);
@@ -2637,14 +2689,13 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         Map<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        LinkedHashMap<String, String> stringLinkedHashMap = Maps.newLinkedHashMap();
         if (!linkedHashMap.isEmpty()) {
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> listEntry : linkedHashMap.entrySet()) {
-                List<Integer> integerList = null;
                 BasicEstate basicEstate = listEntry.getKey();
                 List<SchemeJudgeObject> judgeObjects = listEntry.getValue();
                 if (linkedHashMap.size() > 1)
                     documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
-
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("1、楼盘名称:%s", generateCommonMethod.trim(basicEstate.getName()))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("2、建筑年份:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingYear(judgeObjects)))));
@@ -2656,20 +2707,33 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("8、装饰装修:%s", generateCommonMethod.trim(generateHouseEntityService.getDecoration(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("9、外观:%s", generateCommonMethod.trim(generateHouseEntityService.getAppearance(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(("10、设施设备")));
-                stringBuilder.append(generateCommonMethod.getIndentHtml((String.format("电梯:%s", generateCommonMethod.trim(generateHouseEntityService.getUnitElevator(judgeObjects))))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml((String.format("11、电梯:%s", generateCommonMethod.trim(generateHouseEntityService.getUnitElevator(judgeObjects))))));
 
-                String otherEquipment = generateHouseEntityService.getOtherEquipment(judgeObjects);
-                if (StringUtils.isNotBlank(otherEquipment)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("非工业与仓储的其他设施:%s", generateCommonMethod.trim(otherEquipment))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("12、非工业与仓储的其他设施:")));
+                {
+                    stringLinkedHashMap.put(generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseAirConditioner), "空调 ");
+                    stringLinkedHashMap.put(generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseNewWind), "新风 ");
+                    stringLinkedHashMap.put(generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseHeating), "新风 ");
+                    stringLinkedHashMap.put(generateHouseEntityService.getIntelligent(judgeObjects), "电力通讯网络 ");
+                    stringLinkedHashMap.put(generateHouseEntityService.getHouseWater(judgeObjects), "供水 ");
+                    stringLinkedHashMap.put(generateHouseEntityService.getHouseWaterDrain(judgeObjects), "排水 ");
+                    if (!stringLinkedHashMap.isEmpty()) {
+                        stringLinkedHashMap.entrySet().stream().forEach(entry -> {
+                            if (StringUtils.isNotBlank(entry.getKey().trim())) {
+                                stringBuilder.append(generateCommonMethod.getIndentHtml((String.format("%s%s", entry.getValue(), generateCommonMethod.trim(entry.getKey())))));
+                            }
+                        });
+                        stringLinkedHashMap.clear();
+                    }
                 }
                 String matchingEquipment = generateHouseEntityService.getMatchingEquipment(judgeObjects);
                 if (StringUtils.isNotBlank(matchingEquipment)) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("房屋配套设备设施工:%s", generateCommonMethod.trim(matchingEquipment))));
                 }
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("11、建筑功能:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingFunction(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("12、新旧程度及维护使用情况", generateCommonMethod.trim(generateHouseEntityService.getDamagedDegree(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("13、其它:%s", generateCommonMethod.trim(generateHouseEntityService.getOther(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("14、建筑实体分析:%s", generateCommonMethod.trim(generateHouseEntityService.getContent(judgeObjects, schemeAreaGroup)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("13、建筑功能:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingFunction(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("14、新旧程度及维护使用情况: %s", generateCommonMethod.trim(generateHouseEntityService.getDamagedDegree(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("15、其它:%s", generateCommonMethod.trim(generateHouseEntityService.getOther(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("16、建筑实体分析:%s", generateCommonMethod.trim(generateHouseEntityService.getContent(judgeObjects, schemeAreaGroup)))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
             }
         }
@@ -3033,7 +3097,8 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = this.schemeJudgeObjectDeclareList;
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
+                builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                 List<String> imgPathList = Lists.newArrayList();
                 List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
@@ -3061,7 +3126,8 @@ public class GenerateBaseDataService {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     List<Map<String,String>> imgList = Lists.newArrayList();
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
+                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
                         Map<String,String> imgMap = Maps.newHashMap();
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
@@ -3069,7 +3135,12 @@ public class GenerateBaseDataService {
                         imgMap.put(imgPath,imgName);
                         imgList.add(imgMap);
                     }
-                    AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
+                    if(imgList.size()==1){
+                        AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
+                    }
+                    if(imgList.size()>1) {
+                        AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
+                    }
                 }
             }
         }

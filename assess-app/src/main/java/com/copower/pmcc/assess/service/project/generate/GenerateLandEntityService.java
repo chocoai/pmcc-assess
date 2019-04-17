@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 public class GenerateLandEntityService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final String error = "无";
+    private final String error = "";
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
