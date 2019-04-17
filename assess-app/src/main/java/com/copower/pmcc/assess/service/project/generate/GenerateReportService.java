@@ -951,7 +951,9 @@ public class GenerateReportService {
         //替换
         if (!fileMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, fileMap);
-            AsposeUtils.replaceText(localPath, textMap);
+            if (!textMap.isEmpty()) {
+                AsposeUtils.replaceText(localPath, textMap);
+            }
         }
         if (!textMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, textMap);

@@ -428,7 +428,7 @@ public class AsposeUtils {
         //根据不同列数设置 表格与图片的宽度 总宽度为560
         int maxWidth = 560;
         int cellWidth = maxWidth / colCount;
-        int imageMaxWidth = cellWidth - (60/colCount);
+        int imageMaxWidth = cellWidth - (60 / colCount);
         for (int j = 0; j < rowLength; j++) {
             for (int k = 0; k < colCount; k++) {
                 builder.insertCell();
@@ -459,5 +459,71 @@ public class AsposeUtils {
     public static int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
         int targetHeight = sourceHeight / (sourceWidth / targeWidth);
         return targetHeight;
+    }
+
+    public static void imageInsertToWrod2(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder) throws Exception {
+        if (CollectionUtils.isEmpty(imgList)) throw new RuntimeException("imgPathList empty");
+        if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
+        if (builder == null) throw new RuntimeException("builder empty");
+        Table table = builder.startTable();
+        int rowLength = (imgList.size() % colCount > 0 ? (imgList.size() / colCount) + 1 : imgList.size() / colCount)*2;//行数
+        Integer index = 0;
+        //根据不同列数设置 表格与图片的宽度 总宽度为560
+        int maxWidth = 560;
+        int cellWidth = maxWidth / colCount;
+        int imageMaxWidth = cellWidth - (60 / colCount);
+        for (int j = 0; j < rowLength; j++) {
+            //插入图片
+            if (j % 2 == 0) {
+                for (int k = 0; k < colCount; k++) {
+                    builder.insertCell();
+                    index = j/2 * colCount + k;
+                    if (index < imgList.size()) {
+                        Map<String, String> stringStringMap = imgList.get(index);
+                        String imgPath = "";
+                        for (String key : stringStringMap.keySet()) {
+                            imgPath = key;
+                        }
+                        File file = new File(imgPath);
+                        BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
+                        int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
+                        int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
+                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
+                                RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
+                        //设置样式
+                        builder.getCellFormat().getBorders().setColor(Color.white);
+                        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+                        builder.getCellFormat().setWidth(cellWidth);
+                        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+                        builder.getRowFormat().setAlignment(RowAlignment.CENTER);
+                        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    }
+                }
+                builder.endRow();
+            }
+            //插入名称
+            if(j%2!=0) {
+                for (int k = 0; k < colCount; k++) {
+                    builder.insertCell();
+                    index = j / 2 * colCount + k;
+                    if (index < imgList.size()) {
+                        Map<String, String> stringStringMap = imgList.get(index);
+                        String imgName = "";
+                        for (String key : stringStringMap.keySet()) {
+                            imgName = stringStringMap.get(key);
+                        }
+                        //设置样式
+                        builder.write(imgName);
+                    }
+                }
+                builder.endRow();
+            }
+
+        }
+
+        // table.setBorders(0, 0, Color.white);
     }
 }
