@@ -72,23 +72,29 @@ public class GenerateEquityService {
      */
     public String getLandEquity(BasicEstate basicEstate, List<SchemeJudgeObject> judgeObjects) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
-        Map<Integer, String> declareMap = Maps.newHashMap();
+        Map<Integer, String> natrueMap = Maps.newHashMap();
+        Map<Integer, String> landCertUseMap = Maps.newHashMap();
+        Map<Integer, String> ownershipMap = Maps.newHashMap();
         for (SchemeJudgeObject judgeObject : judgeObjects) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
             if (declareRecord != null) {
-                StringBuilder declareBuilder = new StringBuilder();
-                if (StringUtils.equals(declareRecord.getLandRightType(), "国用"))
-                    declareBuilder.append("国有土地使用权");
-                if (StringUtils.equals(declareRecord.getLandRightType(), "集用"))
-                    declareBuilder.append("集体土地所有权");
-                declareBuilder.append(declareRecord.getLandRightNature()).append("，")
-                        .append(declareRecord.getLandCertUse()).append("，").append(String.format("权益人%s", declareRecord.getOwnership()));
-                declareMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), declareBuilder.toString());
+                Integer number = generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber());
+                natrueMap.put(number, declareRecord.getLandRightNature());
+                landCertUseMap.put(number, declareRecord.getLandCertUse());
+                ownershipMap.put(number, declareRecord.getOwnership());
             }
         }
-        String declareDesc = generateCommonMethod.judgeEachDesc(declareMap, "", ",", false);
-        if (StringUtils.isNotBlank(declareDesc)) {
-            stringBuilder.append(generateCommonMethod.trim(declareDesc));
+        String natrueString = generateCommonMethod.judgeEachDesc(natrueMap, "", ",", false);
+        String landCertUseString = generateCommonMethod.judgeEachDesc(landCertUseMap, "", ",", false);
+        String ownershipString = generateCommonMethod.judgeEachDesc(ownershipMap, "", ",", false);
+        if (StringUtils.isNotBlank(natrueString)) {
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地取得方式:%s", generateCommonMethod.trim(natrueString))));
+        }
+        if (StringUtils.isNotBlank(landCertUseString)) {
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地用途:%s", generateCommonMethod.trim(landCertUseString))));
+        }
+        if (StringUtils.isNotBlank(ownershipString)) {
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("权益人:%s", generateCommonMethod.trim(ownershipString))));
         }
 
         BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
@@ -98,20 +104,20 @@ public class GenerateEquityService {
             String buildingDensity = estateLandState.getBuildingDensity();//建筑密度
             String greenSpaceRate = estateLandState.getGreenSpaceRate();//绿地率
             if (StringUtils.isNotBlank(plotRatio) || StringUtils.isNotBlank(buildingDensity) || StringUtils.isNotBlank(greenSpaceRate)) {
-                StringBuilder landStateBuilder = new StringBuilder("规划条件:");
+                StringBuilder landStateBuilder = new StringBuilder();
                 if (StringUtils.isNotBlank(plotRatio))
                     landStateBuilder.append(String.format("容积率%s，", plotRatio));
                 if (StringUtils.isNotBlank(buildingDensity))
                     landStateBuilder.append(String.format("建筑密度%s，", buildingDensity));
                 if (StringUtils.isNotBlank(greenSpaceRate))
                     landStateBuilder.append(String.format("绿地率%s，", greenSpaceRate));
-                stringBuilder.append(generateCommonMethod.trim(landStateBuilder.toString()));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("规划条件:%s", generateCommonMethod.trim(landStateBuilder.toString()))));
             }
 
             //土地利用现状
             if (estateLandState.getDevelopmentDegree() != null) {
                 String degreeName = baseDataDicService.getNameById(estateLandState.getDevelopmentDegree());
-                StringBuilder utilizeBuilder = new StringBuilder("土地开发程度:");
+                StringBuilder utilizeBuilder = new StringBuilder();
                 if (degreeName.contains("熟地")) {
                     if (StringUtils.isNotBlank(estateLandState.getDevelopmentDegreeContent())) {
                         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(estateLandState.getDevelopmentDegreeContent()));
@@ -120,7 +126,7 @@ public class GenerateEquityService {
                 } else {
                     utilizeBuilder.append(estateLandState.getDevelopmentDegreeRemark());
                 }
-                stringBuilder.append(generateCommonMethod.trim(utilizeBuilder.toString()));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地开发程度:%s", generateCommonMethod.trim(utilizeBuilder.toString()))));
             }
         }
         return stringBuilder.toString();
@@ -195,67 +201,78 @@ public class GenerateEquityService {
      */
     public String getHouseEquity(List<SchemeJudgeObject> judgeObjects, Integer projectId) {
         StringBuilder stringBuilder = new StringBuilder();
-        Map<Integer, String> declareMap = Maps.newHashMap();
         Map<Integer, String> propertyMap = Maps.newHashMap();
         String socialPrestige = null;
+        Map<Integer, String> natureMap = Maps.newHashMap();
+        Map<Integer, String> certUseMap = Maps.newHashMap();
+        Map<Integer, String> publicSituationMap = Maps.newHashMap();
+        Map<Integer, String> ownershipMap = Maps.newHashMap();
         for (SchemeJudgeObject judgeObject : judgeObjects) {
+            Integer number = generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber());
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
             if (declareRecord != null) {
-                StringBuilder declareBuilder = new StringBuilder();
-                if (StringUtils.isNotBlank(declareRecord.getNature()))
-                    declareBuilder.append(String.format("房屋性质%s、", declareRecord.getNature()));
-                if (StringUtils.isNotBlank(declareRecord.getCertUse()))
-                    declareBuilder.append(String.format("规划用途%s、", declareRecord.getCertUse()));
-                if (StringUtils.isNotBlank(declareRecord.getPublicSituation()))
-                    declareBuilder.append(String.format("共有情况%s、", declareRecord.getPublicSituation()));
-                if (StringUtils.isNotBlank(declareRecord.getOwnership()))
-                    declareBuilder.append(String.format("权益人%s、", declareRecord.getOwnership()));
-                declareMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), declareBuilder.toString());
+                natureMap.put(number, declareRecord.getNature());
+                certUseMap.put(number, declareRecord.getCertUse());
+                publicSituationMap.put(number, declareRecord.getPublicSituation());
+                ownershipMap.put(number, declareRecord.getOwnership());
             }
 
             BasicApply exploreBasicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(exploreBasicApply.getId());
-            if (basicBuilding.getProperty()!=null) {//物业信誉与管理
+            if (basicBuilding.getProperty() != null) {//物业信誉与管理
                 DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
                 BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
                 socialPrestige = baseDataDic.getName();
-                propertyMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), getProperty(dataProperty));
+                propertyMap.put(number, getProperty(dataProperty));
             }
         }
-        String declareDesc = generateCommonMethod.judgeEachDesc(declareMap, "", ",", false);
-        if (StringUtils.isNotBlank(declareDesc)) {
-            stringBuilder.append(generateCommonMethod.trim(declareDesc));
+        String natureString = generateCommonMethod.judgeEachDesc(natureMap, "", ",", false);
+        if (StringUtils.isNotBlank(natureString)) {
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("房屋性质:%s", generateCommonMethod.trim(natureString))));
         }
+        String certUseString = generateCommonMethod.judgeEachDesc(certUseMap, "", ",", false);
+        if (StringUtils.isNotBlank(certUseString)) {
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("规划用途:%s", generateCommonMethod.trim(certUseString))));
+        }
+        String publicSituationString = generateCommonMethod.judgeEachDesc(publicSituationMap, "", ",", false);
+        if (StringUtils.isNotBlank(publicSituationString)) {
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("共有情况:%s", generateCommonMethod.trim(publicSituationString))));
+        }
+        String ownershipString = generateCommonMethod.judgeEachDesc(ownershipMap, "", ",", false);
+        if (StringUtils.isNotBlank(ownershipString)) {
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("权益人:%s", generateCommonMethod.trim(ownershipString))));
+        }
+
 
         //他项权利类别
         String stringRightCategory = this.getRightCategory(projectId, judgeObjects);
         if (StringUtils.isNotBlank(stringRightCategory))
-            stringBuilder.append(generateCommonMethod.trim(stringRightCategory));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他项权利:%s", generateCommonMethod.trim(stringRightCategory))));
         //特殊情况
         String stringSpecialcase = this.getSpecialcase(projectId, judgeObjects);
         if (StringUtils.isNotBlank(stringSpecialcase))
-            stringBuilder.append(generateCommonMethod.trim(stringSpecialcase));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("特殊情况:%s",generateCommonMethod.trim(stringSpecialcase))));
 
         //他权综合描述
         String stringRightComprehensiveDesc = this.getRightComprehensiveDesc(projectId, judgeObjects);
         if (StringUtils.isNotBlank(stringRightComprehensiveDesc))
-            stringBuilder.append(generateCommonMethod.trim(stringRightComprehensiveDesc));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他权综述:%s",generateCommonMethod.trim(stringRightComprehensiveDesc))));
 
         //物业信誉与管理
         String propertyDesc = generateCommonMethod.judgeEachDesc(propertyMap, "", ",", false);
         if (StringUtils.isNotBlank(propertyDesc)) {
-            stringBuilder.append(generateCommonMethod.trim(propertyDesc));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("物业:%s",generateCommonMethod.trim(propertyDesc))));
         }
 
         //房产评估综合评价
         String stringOverallMerit = getOverallMerit(StringUtils.isEmpty(stringRightCategory), StringUtils.isEmpty(stringSpecialcase), socialPrestige);
         if (StringUtils.isNotBlank(stringOverallMerit)) {
-            stringBuilder.append(generateCommonMethod.trim(stringOverallMerit));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综合评价:%s",generateCommonMethod.trim(stringOverallMerit))));
         }
         return stringBuilder.toString();
     }
 
-    public String getProperty(DataProperty dataProperty){
+    public String getProperty(DataProperty dataProperty) {
         StringBuilder propertyBuilder = new StringBuilder();
         BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
         propertyBuilder.append(String.format("%s信誉%s，", dataProperty.getName(), baseDataDic.getRemark()));

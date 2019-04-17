@@ -266,6 +266,18 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSeat() throws Exception {
+//        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaId);
+//        if (map.isEmpty()) return "";
+//        Map<String, List<String>> aa = Maps.newHashMap();
+//        StringBuilder stringBuilder = new StringBuilder();
+//        for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
+//            List<SchemeJudgeObject> judgeObjects = entry.getValue();
+//            declareRecordService.getDeclareRecordListByIds(LangUtils.transform(judgeObjects,o->o.getDeclareRecordId()));
+//            SchemeJudgeObject judgeObject = judgeObjects.get(0);
+//            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
+//
+//        }
+
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         StringBuffer buffer = new StringBuffer(8);
         StringBuffer stringBuffer = new StringBuffer(8);
@@ -1088,7 +1100,7 @@ public class GenerateBaseDataService {
                             stringBuilder.append(schemeJudgeFunction.getApplicableReason()).append(";");
                         }
                     }
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()),false);
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
                     builder.writeln();
                     stringBuilder.delete(0, builder.toString().length());
                 }
@@ -1427,7 +1439,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-         builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
         document.save(localPath);
         return localPath;
     }
@@ -2118,13 +2130,13 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectListA = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         List<SchemeJudgeObject> schemeJudgeObjectListB = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
         List<SchemeJudgeObject> schemeJudgeObjectListC = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListA)){
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListA)) {
             schemeJudgeObjectList.addAll(schemeJudgeObjectListA);
         }
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListB)){
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListB)) {
             schemeJudgeObjectList.addAll(schemeJudgeObjectListB);
         }
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListC)){
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectListC)) {
             schemeJudgeObjectList.addAll(schemeJudgeObjectListC);
         }
         schemeJudgeObjectList = schemeJudgeObjectList.stream().distinct().collect(Collectors.toList());

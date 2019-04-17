@@ -330,18 +330,17 @@ public class DataReportAnalysisService {
                             for (SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto : list) {
                                 resultMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), surveyJudgeObjectGroupDto.getResult());
                                 if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "强"))
-                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、无特定转让限制");
+                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "产权清晰、权利明确、无特定转让限制");
                                 if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "一般"))
-                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、转让受特定限制");
+                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "产权清晰、权利明确、转让受特定限制");
                                 if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "弱"))
-                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、转让受到限制");
+                                    comprehensiveMap.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "产权清晰、权利明确、转让受到限制");
                             }
                             content.append(generateCommonMethod.judgeSummaryDesc(comprehensiveMap, "", false)).append("，");
                             String desc = generateCommonMethod.judgeSummaryDesc(resultMap, "通用性", false);
                             EstateLiquidityAnalysisDto analysisDto = analysisDtoMap.get(entry.getKey().getName());
                             analysisDto.setGenerality(desc);
                             content.append(desc).append("，");
-
                         }
                         stringBuilder.append(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(content.toString()))));
                     }

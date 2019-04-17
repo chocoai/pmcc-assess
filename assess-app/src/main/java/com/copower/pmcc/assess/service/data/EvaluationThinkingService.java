@@ -180,7 +180,7 @@ public class EvaluationThinkingService {
         //第三段内容： 当只有项目委托目的为抵押的时候才有第三段内容
         if (map == null) return null;
         if (projectInfo == null) return null;
-        StringBuilder firstDesc = new StringBuilder("<p style=\"text-indent:2em\">");//第一段描述
+        StringBuilder firstDesc = new StringBuilder("<div style=\"text-indent:2em\">");//第一段描述
         StringBuilder secondDesc = new StringBuilder();//第二段描述
         StringBuilder thirdDesc = new StringBuilder();//第三段描述
         List<Integer> baseMethodList = Lists.newArrayList();
@@ -196,11 +196,11 @@ public class EvaluationThinkingService {
             List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(baseMethodList.get(0)));
             if (CollectionUtils.isNotEmpty(thinkingList)) {
                 String thinkingTemp = thinkingList.get(0).getTemplateContent().replaceAll("#\\{估价对象号\\}", this.getJudgeNumber(map.get(baseMethodList.get(0))));
-                firstDesc.append("① ").append(thinkingTemp);
+                firstDesc.append("(1)").append(thinkingTemp);
             }
         } else {
             String baseJudgeNumberString = generateCommonMethod.convertNumber(baseJudgeNumber);
-            firstDesc.append(String.format("① 先设立估价对象%s的市场价格为标准价，", baseJudgeNumberString));
+            firstDesc.append(String.format("(1)先设立估价对象%s的市场价格为标准价，", baseJudgeNumberString));
             String firstString = new String();
             for (Integer methodTyp : baseMethodList) {
                 if (mdCommonService.isCompareMethod(methodTyp))
@@ -214,21 +214,21 @@ public class EvaluationThinkingService {
             }
             firstDesc.append(StringUtils.strip(firstString, "和")).append(String.format("为导向综合求取估价对象%s的市场价值。", baseJudgeNumberString));
         }
-        firstDesc.append("</p>");
+        firstDesc.append("</div>");
         if (CollectionUtils.isNotEmpty(baseOtherList)) {
             String otherJudgeNumberString = generateCommonMethod.convertNumber(otherJudgeNumber);
-            secondDesc.append("<p style=\"text-indent:2em\">").append(String.format("② 再通%s对估价对象%s进行特定因素调整，得到其市场价值。"
+            secondDesc.append("<div style=\"text-indent:2em\">").append(String.format("(2)再通过%s对估价对象%s进行特定因素调整，得到其市场价值。"
                             , baseDataDicService.getNameById(baseOtherList.get(0)), otherJudgeNumberString));
-            secondDesc.append("</p>");
+            secondDesc.append("</div>");
         }
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
         if (dataDic != null && projectInfo.getEntrustPurpose().equals(dataDic.getId())) {
-            thirdDesc.append("<p style=\"text-indent:2em\">");
+            thirdDesc.append("<div style=\"text-indent:2em\">");
             if (secondDesc.length() > 0)
-                thirdDesc.append("③ ");
+                thirdDesc.append("(3)");
             else
-                thirdDesc.append("② ");
-            thirdDesc.append("最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。").append("</p>");
+                thirdDesc.append("(2)");
+            thirdDesc.append("最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。").append("</div>");
         }
         return stringBuilder.append(firstDesc).append(secondDesc).append(thirdDesc).toString();
     }
