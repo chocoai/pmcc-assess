@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
-import com.aspose.words.Document;
-import com.aspose.words.DocumentBuilder;
-import com.aspose.words.SaveFormat;
-import com.aspose.words.Table;
+import com.aspose.words.*;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
@@ -61,6 +58,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -3033,7 +3031,8 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = this.schemeJudgeObjectDeclareList;
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
+                builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                 List<String> imgPathList = Lists.newArrayList();
                 List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
@@ -3061,7 +3060,8 @@ public class GenerateBaseDataService {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     List<Map<String,String>> imgList = Lists.newArrayList();
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
+                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
                         Map<String,String> imgMap = Maps.newHashMap();
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
@@ -3069,7 +3069,12 @@ public class GenerateBaseDataService {
                         imgMap.put(imgPath,imgName);
                         imgList.add(imgMap);
                     }
-                    AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
+                    if(imgList.size()==1){
+                        AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
+                    }
+                    if(imgList.size()>1) {
+                        AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
+                    }
                 }
             }
         }

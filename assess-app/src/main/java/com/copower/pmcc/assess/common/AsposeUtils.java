@@ -423,7 +423,7 @@ public class AsposeUtils {
         if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
         if (builder == null) throw new RuntimeException("builder empty");
         Table table = builder.startTable();
-        int rowLength = imgPathList.size() % colCount > 0 ? (imgPathList.size() / colCount) + 1 : imgPathList.size() / colCount;//列数
+        int rowLength = imgPathList.size() % colCount > 0 ? (imgPathList.size() / colCount) + 1 : imgPathList.size() / colCount;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
         int maxWidth = 560;
@@ -439,21 +439,23 @@ public class AsposeUtils {
                     BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
                     int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
                     int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
-                    builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 20,
-                            RelativeVerticalPosition.MARGIN, 10, targetWidth, targeHeight, WrapType.SQUARE);
+                    if(imgPathList.size()==1){targeHeight = 250;}
+                    builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
+                            RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
                     //设置样式
                     builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
                     builder.getCellFormat().setWidth(cellWidth);
+                    builder.getCellFormat().getBorders().setColor(Color.white);
                     builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
                     builder.getRowFormat().setAlignment(RowAlignment.CENTER);
                 }
             }
             builder.endRow();
         }
-        table.setBorders(0, 0, Color.white);
+        //table.setBorders(0, 0, Color.white);
     }
 
     public static int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
@@ -488,6 +490,7 @@ public class AsposeUtils {
                         BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
                         int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
                         int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
+                        if(imgList.size()==1){targeHeight = 250;}
                         builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
                                 RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
                         //设置样式
