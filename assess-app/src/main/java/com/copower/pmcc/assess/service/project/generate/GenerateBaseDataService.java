@@ -1325,7 +1325,7 @@ public class GenerateBaseDataService {
         if (end == null) {
             end = new Date();
         }
-        return String.format("%s%s", DateUtils.format(start, DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(end, DateUtils.DATE_CHINESE_PATTERN));
+        return String.format("%s至%s", DateUtils.format(start, DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(end, DateUtils.DATE_CHINESE_PATTERN));
     }
 
     /**
@@ -2942,7 +2942,7 @@ public class GenerateBaseDataService {
         }
         String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
+            s = "不考虑估价对象租赁因素影响。";
         }
         return s;
     }

@@ -270,13 +270,23 @@ public class DataReportAnalysisService {
             //估价对象土地实体分析
             if (AssessReportFieldConstant.LAND_ENTITY_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
                 ArrayList<String> estateNames = new ArrayList<>();
+                Map<Integer, String> landEntityAnalysisMap = Maps.newHashMap();
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    StringBuilder landEntityAnalysisBuilder = new StringBuilder();
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+                    String content = generateLandEntityService.getContent(basicApply);//土地实体结论
+                    BasicEstate estate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                    landEntityAnalysisBuilder.append(erpAreaService.getSysAreaName(estate.getDistrict()));
+                    landEntityAnalysisBuilder.append(estate.getName());
+                    landEntityAnalysisBuilder.append(content);
+
                     BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
                     if (!estateNames.contains(basicEstate.getName())) {
                         estateNames.add(basicEstate.getName());
                     }
                 }
+
+
                 Map<BasicEstate, List<SchemeJudgeObject>> map = getSameEstate2(judgeObjectList, estateNames);
                 DataReportTemplateItem plate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LAND_ENTITY_ANALYSIS_HOUSES);
                 for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {

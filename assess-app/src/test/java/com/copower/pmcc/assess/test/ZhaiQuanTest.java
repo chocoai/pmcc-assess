@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +14,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,8 +27,16 @@ import java.util.Map;
  */
 public class ZhaiQuanTest {
     public static void main(String[] args) throws Exception {
-        String wordPath = "C:\\Users\\kings\\Desktop\\zhaiquan\\新客户原始报告模板.doc";
-        String excelPath = "C:\\Users\\kings\\Desktop\\zhaiquan\\新客户原始报告数据-雅安(2).xlsx";
+        //绵阳 成都74
+        String area = "成都";
+        String wordPath = "C:\\Users\\kings\\Desktop\\zhaiquan\\新客户原始报告模板定稿.doc";
+        String excelPath = "";
+        excelPath = "C:\\Users\\kings\\Desktop\\报告生成\\新客户原始报告数据-" + area + ".xlsx";
+        excelPath = "E:\\报告生成\\新客户原始报告数据-" + area + ".xlsx";
+
+        String newPath = "";
+        newPath = "D:\\zhaiquan\\";
+        newPath = "E:\\报告生成\\";
         //读取excel 生成对应替换内容
         InputStream is = new FileInputStream(excelPath);
         Workbook hssfWorkbook = PoiUtils.isExcel2003(excelPath) ? new HSSFWorkbook(is) : new XSSFWorkbook(is);
@@ -59,7 +68,7 @@ public class ZhaiQuanTest {
                     fieldIndex.put(i, value);
                 }
             } else if (rowNum > 4) {
-                String mutiDywFlag = PoiUtils.getCellValue(row.getCell(4));
+                String mutiDywFlag = PoiUtils.getCellValue(row.getCell(0));
                 if (StringUtils.equals(mutiDywFlag, "1") && StringUtils.equals(preZhaiQuanDto.getMutiDywFlag(), "1")) {
                     List<ZhaiQuanDywDto> dywInfo = preZhaiQuanDto.getDywInfo();
                     ZhaiQuanDywDto zhaiQuanDywDto = new ZhaiQuanDywDto();
@@ -107,12 +116,27 @@ public class ZhaiQuanTest {
                         switch (fieldIndex.get(i)) {
                             case "dywdz":
                                 zhaiQuanDywDto.setDywdz(value);
+
+                                KeyValueDto dto1 = new KeyValueDto();
+                                dto1.setKey(fieldIndex.get(i));
+                                dto1.setValue(value);
+                                customerInfoFields.add(dto1);
                                 break;
                             case "fcxz":
                                 zhaiQuanDywDto.setFcxz(value);
+
+                                KeyValueDto dto2 = new KeyValueDto();
+                                dto2.setKey(fieldIndex.get(i));
+                                dto2.setValue(value);
+                                customerInfoFields.add(dto2);
                                 break;
                             case "fcmj":
                                 zhaiQuanDywDto.setFcmj(value);
+
+                                KeyValueDto dto3 = new KeyValueDto();
+                                dto3.setKey(fieldIndex.get(i));
+                                dto3.setValue(value);
+                                customerInfoFields.add(dto3);
                                 break;
                             case "xbjye":
                                 zhaiQuanDywDto.setXbjye(value);
@@ -131,7 +155,7 @@ public class ZhaiQuanTest {
                                     zhaiQuanDto.setKhmc(value);
                                 }
                                 if (StringUtils.equals(fieldIndex.get(i), "number")) {
-                                    zhaiQuanDto.setNumber(String.valueOf(list.size() + 1));
+                                    zhaiQuanDto.setNumber(value);
                                 }
                                 if (StringUtils.equals(fieldIndex.get(i), "role")) {
                                     zhaiQuanDto.setRole(value);
@@ -154,12 +178,12 @@ public class ZhaiQuanTest {
                 }
             }
         }
-
-        for (ZhaiQuanDto zhaiQuanDto : list) {//开始替换生成文件
-            String newWordPath = String.format("D:\\zhaiquan\\%s%s号-%s-%s%s35-%s.doc",
+        for (int k = 0; k < list.size(); k++) {
+            ZhaiQuanDto zhaiQuanDto = list.get(k);
+            String newWordPath = String.format(newPath + area + "\\%s%s号-%s-%s%s%s.doc",
                     zhaiQuanDto.getEjfh(), zhaiQuanDto.getNumber(), zhaiQuanDto.getKhmc(),
                     zhaiQuanDto.getRole(), zhaiQuanDto.getVersion(), zhaiQuanDto.getNumber());
-            FileUtils.copyFile(wordPath, newWordPath);
+            copyFile(wordPath, newWordPath);
             Map<String, String> map = Maps.newHashMap();
             for (KeyValueDto dto : zhaiQuanDto.getCustomerInfo().getKeyValueDtos()) {
                 switch (dto.getKey()) {
@@ -174,6 +198,11 @@ public class ZhaiQuanTest {
                         break;
                     case "bjscbl":
                     case "bxscbl":
+                    case "dywbxl":
+                    case "pmfbl":
+                    case "ssfbl":
+                    case "zxfbl":
+                    case "sfjdfbl":
                         BigDecimal bigDecimal = new BigDecimal(dto.getValue());
                         bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
                         map.put(String.format("${%s}", dto.getKey()), bigDecimal.multiply(new BigDecimal("100")) + "%");
@@ -182,6 +211,7 @@ public class ZhaiQuanTest {
                     case "bj":
                     case "lx":
                     case "scje":
+                    case "xgsfhj":
                         BigDecimal decimal = new BigDecimal(dto.getValue());
                         decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
                         map.put(String.format("${%s}", dto.getKey()), decimal.toString());
@@ -193,7 +223,7 @@ public class ZhaiQuanTest {
             }
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < zhaiQuanDto.getDywInfo().size(); i++) {
-                ZhaiQuanDywDto zhaiQuanDywDto=zhaiQuanDto.getDywInfo().get(i);
+                ZhaiQuanDywDto zhaiQuanDywDto = zhaiQuanDto.getDywInfo().get(i);
                 stringBuilder.append(String.format("抵押物为借款人拥有位于%s房产。房产性质为%s，面积%s平方米。" +
                                 "已办理抵押登记手续。现对应贷款本金余额%s元。"
                         , zhaiQuanDywDto.getDywdz(), zhaiQuanDywDto.getFcxz()
@@ -203,6 +233,30 @@ public class ZhaiQuanTest {
             map.put("${number}", zhaiQuanDto.getNumber());
             map.put("${dywInfo}", stringBuilder.toString());
             AsposeUtils.replaceText(newWordPath, map);
+        }
+    }
+
+    public static void copyFile(String oldPath, String newPath) throws Exception {
+        try {
+            int bytesum = 0;
+            File oldfile = new File(oldPath);
+            if (!oldfile.exists()) {
+                throw new Exception("原文件不存在");
+            } else {
+                InputStream inStream = new FileInputStream(oldPath);
+                FileOutputStream fs = new FileOutputStream(newPath);
+                byte[] buffer = new byte[1444];
+
+                int byteread;
+                while ((byteread = inStream.read(buffer)) != -1) {
+                    bytesum += byteread;
+                    fs.write(buffer, 0, byteread);
+                }
+
+                inStream.close();
+            }
+        } catch (Exception var9) {
+            throw new Exception(var9);
         }
     }
 }
