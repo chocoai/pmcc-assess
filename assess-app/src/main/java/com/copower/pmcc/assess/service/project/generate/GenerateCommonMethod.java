@@ -1021,22 +1021,23 @@ public class GenerateCommonMethod {
 
     public List<String> changeMapToList(Map<String, String> map, boolean flag, String suffix) {
         List<String> stringList = Lists.newArrayList();
-        LinkedList<String> strings = Lists.newLinkedList();
+        StringBuilder stringBuilder = new StringBuilder(8);
         if (!map.isEmpty()) {
             map.entrySet().stream().forEach(entry -> {
                 if (flag) {
-                    strings.add(entry.getKey());
-                    strings.add(entry.getValue());
+                    stringBuilder.append(entry.getKey());
+                    stringBuilder.append(entry.getValue());
                 } else {
-                    strings.add(entry.getValue());
-                    strings.add(entry.getKey());
+                    stringBuilder.append(entry.getValue());
+                    stringBuilder.append(entry.getKey());
                 }
                 if (StringUtils.isNotEmpty(suffix)) {
-                    stringList.add(StringUtils.join(strings, suffix));
+                    stringBuilder.append(suffix);
+                    stringList.add(stringBuilder.toString());
                 } else {
-                    stringList.add(StringUtils.join(strings));
+                    stringList.add(stringBuilder.toString());
                 }
-                strings.clear();
+                stringBuilder.delete(0,stringBuilder.toString().length());
             });
         }
         return stringList;
