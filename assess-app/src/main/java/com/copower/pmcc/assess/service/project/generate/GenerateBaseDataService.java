@@ -3060,13 +3060,16 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    List<String> imgPathList = Lists.newArrayList();
+                    List<Map<String,String>> imgList = Lists.newArrayList();
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
+                        Map<String,String> imgMap = Maps.newHashMap();
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
-                        imgPathList.add(imgPath);
+                        String imgName = sysAttachmentDto.getFileName();
+                        imgMap.put(imgPath,imgName);
+                        imgList.add(imgMap);
                     }
-                    AsposeUtils.imageInsertToWrod(imgPathList, 3, builder);
+                    AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
                 }
             }
         }

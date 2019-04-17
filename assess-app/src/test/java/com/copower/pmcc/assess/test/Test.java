@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.test;
 
 
 import com.aspose.words.*;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -10,7 +11,11 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Collections;
@@ -115,47 +120,106 @@ public class Test {
     @org.junit.Test
     public void imageInsertWordTest() throws Exception {
         //list为图片地址
-        List<String> list = Lists.newArrayList();
-        list.add("D:\\test\\1.jpg");
-        list.add("D:\\test\\2.jpg");
-        list.add("D:\\test\\1.jpg");
-        list.add("D:\\test\\2.jpg");
-        list.add("D:\\test\\1.jpg");
-        list.add("D:\\test\\2.jpg");
-        list.add("D:\\test\\1.jpg");
-        list.add("D:\\test\\2.jpg");
-        list.add("D:\\test\\1.jpg");
+        List<Map<String,String>> imglist = Lists.newArrayList();
+        Map<String,String> imgMap = Maps.newHashMap();
+        imgMap.put("D:\\test\\1.jpg","1");
+        imglist.add(imgMap);
+        Map<String,String> imgMap2 = Maps.newHashMap();
+        imgMap2.put("D:\\test\\2.jpg","2");
+        imglist.add(imgMap2);
+        Map<String,String> imgMap3 = Maps.newHashMap();
+        imgMap3.put("D:\\test\\1.jpg","1");
+        imglist.add(imgMap3);
+        Map<String,String> imgMap4 = Maps.newHashMap();
+        imgMap4.put("D:\\test\\2.jpg","2");
+        imglist.add(imgMap4);
+        Map<String,String> imgMap5 = Maps.newHashMap();
+        imgMap5.put("D:\\test\\1.jpg","1");
+        imglist.add(imgMap5);
+        Map<String,String> imgMap6 = Maps.newHashMap();
+        imgMap6.put("D:\\test\\2.jpg","2");
+        imglist.add(imgMap6);
+        Map<String,String> imgMap7 = Maps.newHashMap();
+        imgMap7.put("D:\\test\\1.jpg","1");
+        imglist.add(imgMap7);
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
 
-        Table table = builder.startTable();
+        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
 
+        Table table = builder.startTable();
+       // table.setBorders(0, 0, Color.black);
 
         int colLength = 2;//列数
-        int rowLength = list.size() % colLength > 0 ? (list.size() / colLength) + 1 : list.size() / colLength;//列数
+        int rowLength = (imglist.size() % colLength > 0 ? (imglist.size() / colLength) + 1 : imglist.size() / colLength)*2;//行数
         Integer index = 0;
+        //根据不同列数设置 表格与图片的宽度 总宽度为560
+        int maxWidth = 560;
+        int cellWidth = maxWidth / colLength;
+        int imageMaxWidth = cellWidth - (60/colLength);
         for (int j = 0; j < rowLength; j++) {
-            for (int k = 0; k < colLength; k++) {
-                builder.insertCell();
-                index = j * colLength + k;
-                if (index < list.size()) {
-                    builder.insertImage(list.get(index), RelativeHorizontalPosition.MARGIN, 40,
-                            RelativeVerticalPosition.MARGIN, 10, 150, 150, WrapType.SQUARE);
-                    //设置样式
-                    builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
-                    builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
-                    builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
-                    builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-                    builder.getCellFormat().setWidth(200);
-                    builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-                    builder.getRowFormat().setAlignment(RowAlignment.CENTER);
+            if(j%2==0) {
+                for (int k = 0; k < colLength; k++) {
+                    builder.insertCell();
+                    index = j/2 * colLength + k;
+                    if (index < imglist.size()) {
+                        Map<String, String> stringStringMap = imglist.get(index);
+                        String imgPath = "";
+                        for (String key : stringStringMap.keySet()) {
+                            imgPath = key;
+                        }
+                        File file = new File(imgPath);
+                        BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
+                        int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
+                        int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
+                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
+                                RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
+                        //设置样式
+                        builder.getCellFormat().getBorders().setColor(Color.white);
+                        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+                        builder.getCellFormat().setWidth(cellWidth);
+                        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+                        builder.getRowFormat().setAlignment(RowAlignment.CENTER);
+                        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    }
                 }
+                builder.endRow();
             }
-            builder.endRow();
+            if(j%2!=0) {
+                for (int k = 0; k < colLength; k++) {
+                    builder.insertCell();
+                    index = j / 2 * colLength + k;
+                    if (index < imglist.size()) {
+                        Map<String, String> stringStringMap = imglist.get(index);
+                        String imgName = "";
+                        for (String key : stringStringMap.keySet()) {
+                            imgName = stringStringMap.get(key);
+                        }
+                        //设置样式
+                        builder.write(imgName);
+                    }
+                }
+                builder.endRow();
+            }
+
         }
-        table.setBorders(0, 0, Color.white);
+
+        //this.completeTableBorder(document);
         document.save("D:\\test\\2.doc");
     }
+
+
+
+    public static int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
+        int targetHeight = sourceHeight / (sourceWidth / targeWidth);
+        return targetHeight;
+    }
+
 
     //word测试格式问题
     @org.junit.Test
