@@ -28,15 +28,15 @@ import java.util.Map;
 public class ZhaiQuanTest {
     public static void main(String[] args) throws Exception {
         //绵阳 成都74
-        String area = "成都";
+        String area = "广元";
         String wordPath = "C:\\Users\\kings\\Desktop\\zhaiquan\\新客户原始报告模板定稿.doc";
         String excelPath = "";
         excelPath = "C:\\Users\\kings\\Desktop\\报告生成\\新客户原始报告数据-" + area + ".xlsx";
-        excelPath = "E:\\报告生成\\新客户原始报告数据-" + area + ".xlsx";
+        //excelPath = "E:\\报告生成\\新客户原始报告数据-" + area + ".xlsx";
 
         String newPath = "";
         newPath = "D:\\zhaiquan\\";
-        newPath = "E:\\报告生成\\";
+        //newPath = "E:\\报告生成\\";
         //读取excel 生成对应替换内容
         InputStream is = new FileInputStream(excelPath);
         Workbook hssfWorkbook = PoiUtils.isExcel2003(excelPath) ? new HSSFWorkbook(is) : new XSSFWorkbook(is);
@@ -211,7 +211,14 @@ public class ZhaiQuanTest {
                     case "bj":
                     case "lx":
                     case "scje":
+                    case "dywsczj":
+                    case "dywbxjz":
+                    case "pmfje":
+                    case "ssfje":
+                    case "zxfje":
+                    case "sfjdfje":
                     case "xgsfhj":
+                    case "bxjsr":
                         BigDecimal decimal = new BigDecimal(dto.getValue());
                         decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
                         map.put(String.format("${%s}", dto.getKey()), decimal.toString());
