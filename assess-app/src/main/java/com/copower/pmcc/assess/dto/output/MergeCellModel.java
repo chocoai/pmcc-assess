@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dto.output;
 
+import com.aspose.words.Cell;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -19,12 +20,20 @@ public class MergeCellModel implements Serializable {
 
     private Integer endColumnIndex;
 
+    private Cell cellStartRange;
+    private Cell cellEndRange;
+
 
     public MergeCellModel(Integer startRowIndex, Integer startColumnIndex, Integer endRowIndex, Integer endColumnIndex) {
         this.startRowIndex = startRowIndex;
         this.startColumnIndex = startColumnIndex;
         this.endRowIndex = endRowIndex;
         this.endColumnIndex = endColumnIndex;
+    }
+
+    public MergeCellModel(Cell cellStartRange,Cell cellEndRange) {
+        this.cellStartRange = cellStartRange;
+        this.cellEndRange = cellEndRange;
     }
 
     private MergeCellModel(){}
@@ -45,6 +54,22 @@ public class MergeCellModel implements Serializable {
         return endColumnIndex;
     }
 
+    public Cell getCellStartRange() {
+        return cellStartRange;
+    }
+
+    public void setCellStartRange(Cell cellStartRange) {
+        this.cellStartRange = cellStartRange;
+    }
+
+    public Cell getCellEndRange() {
+        return cellEndRange;
+    }
+
+    public void setCellEndRange(Cell cellEndRange) {
+        this.cellEndRange = cellEndRange;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,6 +83,8 @@ public class MergeCellModel implements Serializable {
                 .append(startColumnIndex, that.startColumnIndex)
                 .append(endRowIndex, that.endRowIndex)
                 .append(endColumnIndex, that.endColumnIndex)
+                .append(cellStartRange, that.cellStartRange)
+                .append(cellEndRange, that.cellEndRange)
                 .isEquals();
     }
 
@@ -68,6 +95,21 @@ public class MergeCellModel implements Serializable {
                 .append(startColumnIndex)
                 .append(endRowIndex)
                 .append(endColumnIndex)
+                .append(cellStartRange)
+                .append(cellEndRange)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("MergeCellModel{");
+        sb.append("startRowIndex=").append(startRowIndex);
+        sb.append(", startColumnIndex=").append(startColumnIndex);
+        sb.append(", endRowIndex=").append(endRowIndex);
+        sb.append(", endColumnIndex=").append(endColumnIndex);
+        sb.append(", cellStartRange=").append(cellStartRange);
+        sb.append(", cellEndRange=").append(cellEndRange);
+        sb.append('}');
+        return sb.toString();
     }
 }
