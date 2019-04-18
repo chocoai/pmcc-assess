@@ -257,93 +257,6 @@ public class GenerateBaseDataService {
         return s;
     }
 
-
-    /**
-     * 座落
-     *
-     * @throws Exception
-     */
-    public String getSeat() throws Exception {
-//        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaId);
-//        if (map.isEmpty()) return "";
-//        Map<String, List<String>> aa = Maps.newHashMap();
-//        StringBuilder stringBuilder = new StringBuilder();
-//        for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
-//            List<SchemeJudgeObject> judgeObjects = entry.getValue();
-//            declareRecordService.getDeclareRecordListByIds(LangUtils.transform(judgeObjects,o->o.getDeclareRecordId()));
-//            SchemeJudgeObject judgeObject = judgeObjects.get(0);
-//            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
-//
-//        }
-
-        LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
-        StringBuffer buffer = new StringBuffer(8);
-        StringBuffer stringBuffer = new StringBuffer(8);
-        List<String> seats = Lists.newArrayList();
-        final String zero = "0";
-        LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getSchemeJudgeObjectLinkedHashMap(
-                generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true),
-                projectInfo);
-        if (!linkedHashMap.isEmpty()) {
-            for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
-                //楼盘名称
-                String estateName = entry.getKey();
-                List<SchemeJudgeObject> schemeJudgeObjectList = entry.getValue();
-                List<DeclareRecord> declareRecordList = Lists.newArrayList();
-                //当估价对象不存在的情况下不予以拼接
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> declareRecordList.add(declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId())));
-                    if (CollectionUtils.isEmpty(declareRecordList)) {
-                        continue;
-                    }
-                    declareRecordList.stream().forEach(declareRecord -> {
-                        if (StringUtils.isNotBlank(declareRecord.getAttachedNumber())) {
-                            stringBuffer.append("附").append(declareRecord.getAttachedNumber()).append("号");
-                        }
-                        if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())) {
-                            stringBuffer.append(declareRecord.getBuildingNumber());
-                        } else {
-                            stringBuffer.append(zero);
-                        }
-                        stringBuffer.append("栋");
-                        if (StringUtils.isNotBlank(declareRecord.getUnit())) {
-                            stringBuffer.append(declareRecord.getUnit());
-                        } else {
-                            stringBuffer.append(zero);
-                        }
-                        stringBuffer.append("单元");
-                        if (StringUtils.isNotBlank(declareRecord.getFloor())) {
-                            stringBuffer.append(declareRecord.getFloor());
-                        } else {
-                            stringBuffer.append(zero);
-                        }
-                        stringBuffer.append("层");
-                        if (StringUtils.isNotBlank(declareRecord.getRoomNumber())) {
-                            stringBuffer.append(declareRecord.getRoomNumber());
-                        } else {
-                            stringBuffer.append(zero);
-                        }
-                        stringBuffer.append("号");
-                        seats.add(stringBuffer.toString());
-                        stringBuffer.delete(0, stringBuffer.toString().length());
-                    });
-                    buffer.append(estateName);
-                    if (CollectionUtils.isNotEmpty(seats)) {
-                        String s = publicService.fusinString(seats, false);
-                        if (StringUtils.isNotBlank(s)) {
-                            buffer.append(s);
-                        }
-                    }
-                    seats.clear();
-                    stringSet.add(buffer.toString());
-                    buffer.delete(0, buffer.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringMerge(stringSet, ";");
-        return s;
-    }
-
     /**
      * 外聘专家工作概况
      *
@@ -420,11 +333,25 @@ public class GenerateBaseDataService {
      * 估价项目名称
      */
     public String getValuationProjectName() throws Exception {
-        String s = getSeat();
-        if (getSchemeAreaGroup().getEntrustPurpose() != null) {
-            s = String.format("%s%s", s, baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        if (map.isEmpty()) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
+            List<SchemeJudgeObject> judgeObjects = entry.getValue();
+            List<DeclareRecord> recordList = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId()));
+            DeclareRecord declareRecord = recordList.get(0);
+            String streetNumber = declareRecord.getStreetNumber();
+            List<String> list = Lists.newArrayList();
+            for (DeclareRecord record : recordList) {
+                list.add(record.getSeat().replace(streetNumber, ""));
+            }
+            stringBuilder.append(String.format("%s%s", streetNumber, entry.getKey().getName()));
+            stringBuilder.append(publicService.fusinString(list, false)).append(";");
         }
-        return s;
+        if (getSchemeAreaGroup().getEntrustPurpose() != null) {
+            stringBuilder.append(baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
+        }
+        return stringBuilder.toString();
     }
 
 
@@ -1757,7 +1684,10 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isEmpty(groupDtoList)) return "";
         StringBuilder stringBuilder = new StringBuilder("、");
         for (SurveyRightGroupDto surveyRightGroupDto : groupDtoList) {
-            stringBuilder.append(String.format("《%s》、", surveyRightGroupDto.getCategoryName()));
+            if (StringUtils.equals(surveyRightGroupDto.getCategoryName(), "其它"))
+                stringBuilder.append(String.format("《他项权-%s》、", surveyRightGroupDto.getCategoryName()));
+            else
+                stringBuilder.append(String.format("《%s》、", surveyRightGroupDto.getCategoryName()));
         }
         return StringUtils.stripEnd(stringBuilder.toString(), "、");
     }
@@ -1891,6 +1821,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getOptimumUtilizationDescription() throws Exception {
+
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -3125,20 +3056,20 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    List<Map<String,String>> imgList = Lists.newArrayList();
+                    List<Map<String, String>> imgList = Lists.newArrayList();
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
-                        Map<String,String> imgMap = Maps.newHashMap();
+                        Map<String, String> imgMap = Maps.newHashMap();
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
                         String imgName = sysAttachmentDto.getFileName();
-                        imgMap.put(imgPath,imgName);
+                        imgMap.put(imgPath, imgName);
                         imgList.add(imgMap);
                     }
-                    if(imgList.size()==1){
+                    if (imgList.size() == 1) {
                         AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
                     }
-                    if(imgList.size()>1) {
+                    if (imgList.size() > 1) {
                         AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
                     }
                 }
@@ -3490,99 +3421,52 @@ public class GenerateBaseDataService {
         Document document = new Document();
         StringBuilder stringBuilder = new StringBuilder(16);
         StringBuffer buffer = new StringBuffer(8);
-        StringBuffer stringBuffer = new StringBuffer(8);
-        List<String> seats = Lists.newArrayList();
-        final String zero = "0";
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
-        LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getSchemeJudgeObjectLinkedHashMap(
-                generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true),
-                projectInfo);
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
         if (!linkedHashMap.isEmpty()) {
             int i = 0;
-            for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
                 if (linkedHashMap.size() > 1) {
                     buffer.append(String.format("%s、", i + 1));
                 }
-                //楼盘名称
-                String estateName = entry.getKey();
-                List<SchemeJudgeObject> schemeJudgeObjectList = entry.getValue();
-                List<DeclareRecord> declareRecordList = Lists.newArrayList();
-                //当估价对象不存在的情况下不予以拼接
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> declareRecordList.add(declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId())));
-                    if (CollectionUtils.isEmpty(declareRecordList)) {
-                        continue;
-                    }
-                    declareRecordList.stream().forEach(declareRecord -> {
-                        if (StringUtils.isNotBlank(declareRecord.getAttachedNumber())) {
-                            stringBuffer.append("附").append(declareRecord.getAttachedNumber()).append("号");
-                        }
-                        if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())) {
-                            stringBuffer.append(declareRecord.getBuildingNumber());
-                        } else {
-                            stringBuffer.append(zero);
-                        }
-                        stringBuffer.append("栋");
-                        if (StringUtils.isNotBlank(declareRecord.getUnit())) {
-                            stringBuffer.append(declareRecord.getUnit());
-                        } else {
-                            stringBuffer.append(zero);
-                        }
-                        stringBuffer.append("单元");
-                        if (StringUtils.isNotBlank(declareRecord.getFloor())) {
-                            stringBuffer.append(declareRecord.getFloor());
-                        } else {
-                            stringBuffer.append(zero);
-                        }
-                        stringBuffer.append("层");
-                        if (StringUtils.isNotBlank(declareRecord.getRoomNumber())) {
-                            stringBuffer.append(declareRecord.getRoomNumber());
-                        } else {
-                            stringBuffer.append(zero);
-                        }
-                        stringBuffer.append("号");
-                        seats.add(stringBuffer.toString());
-                        stringBuffer.delete(0, stringBuffer.toString().length());
-                    });
-                    buffer.append(estateName);
-                    if (CollectionUtils.isNotEmpty(seats)) {
-                        String s = publicService.fusinString(seats, false);
-                        if (StringUtils.isNotBlank(s)) {
-                            buffer.append(s);
-                        }
-                    }
-                    seats.clear();
-                    buffer.append(",");
-                    Map<Integer, String> certUseMap = Maps.newHashMap();
-                    Map<Integer, String> practicalUseMap = Maps.newHashMap();
-                    Map<Integer, String> buildAreaMap = Maps.newHashMap();
-                    Map<Integer, String> evaluationAreaMap = Maps.newHashMap();
-                    Map<Integer, String> landRightNatureMap = Maps.newHashMap();
-                    Map<Integer, String> ownershipMap = Maps.newHashMap();
-                    Map<Integer, String> structureMap = Maps.newHashMap();
-                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                        Integer number = generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber());
-                        certUseMap.put(number, schemeJudgeObject.getCertUse());
-                        practicalUseMap.put(number, schemeJudgeObject.getPracticalUse());
-                        buildAreaMap.put(number, String.format("%s㎡", schemeJudgeObject.getFloorArea()));
-                        evaluationAreaMap.put(number, String.format("%s㎡", schemeJudgeObject.getEvaluationArea()));
-                        landRightNatureMap.put(number, declareRecord.getLandRightNature());
-                        ownershipMap.put(number, declareRecord.getOwnership());
-                        structureMap.put(number, declareRecord.getHousingStructure());
-                    }
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(certUseMap, "设定用途", false)).append(",");//设定用途
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(practicalUseMap, "实际用途", false)).append(",");//实际用途
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(buildAreaMap, "建筑面积", false)).append(",");//建筑面积
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(evaluationAreaMap, "评估面积", false)).append(",");//评估面积
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(landRightNatureMap, "权利性质", false)).append(",");//权利性质
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(ownershipMap, "权利人", false)).append(",");//权利人
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(structureMap, "房屋结构", false)).append(",");//房屋结构
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(buffer.toString())));
-                    buffer.delete(0, buffer.toString().length());
-                    i++;
+                List<DeclareRecord> recordList = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(entry.getValue(), o -> o.getDeclareRecordId()));
+                String streetNumber = recordList.get(0).getStreetNumber();
+                List<String> list = Lists.newArrayList();
+                for (DeclareRecord declareRecord : recordList) {
+                    list.add(declareRecord.getSeat().replace(streetNumber, ""));
                 }
+                buffer.append(streetNumber).append(entry.getKey().getName()).append(publicService.fusinString(list, false));
+                buffer.append(",");
+                Map<Integer, String> certUseMap = Maps.newHashMap();
+                Map<Integer, String> practicalUseMap = Maps.newHashMap();
+                Map<Integer, String> buildAreaMap = Maps.newHashMap();
+                Map<Integer, String> evaluationAreaMap = Maps.newHashMap();
+                Map<Integer, String> landRightNatureMap = Maps.newHashMap();
+                Map<Integer, String> ownershipMap = Maps.newHashMap();
+                Map<Integer, String> structureMap = Maps.newHashMap();
+                for (SchemeJudgeObject schemeJudgeObject : entry.getValue()) {
+                    DeclareRecord declareRecord = recordList.stream().filter(o -> o.getId().equals(schemeJudgeObject.getDeclareRecordId())).findFirst().get();
+                    Integer number = generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber());
+                    certUseMap.put(number, schemeJudgeObject.getCertUse());
+                    practicalUseMap.put(number, schemeJudgeObject.getPracticalUse());
+                    buildAreaMap.put(number, String.format("%s㎡", schemeJudgeObject.getFloorArea()));
+                    evaluationAreaMap.put(number, String.format("%s㎡", schemeJudgeObject.getEvaluationArea()));
+                    landRightNatureMap.put(number, declareRecord.getLandRightNature());
+                    ownershipMap.put(number, declareRecord.getOwnership());
+                    structureMap.put(number, declareRecord.getHousingStructure());
+                }
+                buffer.append(generateCommonMethod.judgeSummaryDesc(certUseMap, "设定用途", false)).append(",");//设定用途
+                buffer.append(generateCommonMethod.judgeSummaryDesc(practicalUseMap, "实际用途", false)).append(",");//实际用途
+                buffer.append(generateCommonMethod.judgeSummaryDesc(buildAreaMap, "建筑面积", false)).append(",");//建筑面积
+                buffer.append(generateCommonMethod.judgeSummaryDesc(evaluationAreaMap, "评估面积", false)).append(",");//评估面积
+                buffer.append(generateCommonMethod.judgeSummaryDesc(landRightNatureMap, "权利性质", false)).append(",");//权利性质
+                buffer.append(generateCommonMethod.judgeSummaryDesc(ownershipMap, "权利人", false)).append(",");//权利人
+                buffer.append(generateCommonMethod.judgeSummaryDesc(structureMap, "房屋结构", false)).append(",");//房屋结构
+                stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(buffer.toString())));
+                buffer.delete(0, buffer.toString().length());
+                i++;
+
             }
         }
         documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
@@ -3669,63 +3553,6 @@ public class GenerateBaseDataService {
         if (StringUtils.isNotBlank(s.trim())) {
             s = errorStr;
         }
-        return s;
-    }
-
-    /**
-     * 委托人地址
-     *
-     * @return
-     */
-    @Deprecated
-    public String getPrincipalAddress() {
-        String str = projectInfo.getConsignorVo().getCsAddress();
-        if (StringUtils.isNotBlank(str)) {
-            return str;
-        } else {
-            return errorStr;
-        }
-    }
-
-    /**
-     * 委托人法定代表人
-     *
-     * @return
-     */
-    @Deprecated
-    public String getPrincipalLegalRepresentative() {
-        String str = projectInfo.getConsignorVo().getCsLegalRepresentative();
-        if (StringUtils.isNotBlank(str)) {
-            return str;
-        } else {
-            return errorStr;
-        }
-    }
-
-    /**
-     * 权重说明
-     *
-     * @return
-     */
-    @Deprecated
-    public String getWeightSpecification() {
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(projectId);
-                query.setDeclareRecordId(schemeJudgeObjectList.get(i).getDeclareRecordId());
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetailsList.get(0).getId());
-                    if (schemeSurePrice != null) {
-                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeSurePrice.getWeightExplain()));
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 

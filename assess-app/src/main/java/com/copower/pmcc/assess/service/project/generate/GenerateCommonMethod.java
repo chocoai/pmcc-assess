@@ -276,112 +276,6 @@ public class GenerateCommonMethod {
     }
 
     /**
-     * 获取 (楼盘名称和街道号) 的估价对象集合
-     *
-     * @param schemeJudgeObjectList
-     * @param projectInfo
-     * @return
-     * @throws Exception
-     */
-    public LinkedHashMap<String, List<SchemeJudgeObject>> getSchemeJudgeObjectLinkedHashMap(List<SchemeJudgeObject> schemeJudgeObjectList, ProjectInfo projectInfo) throws Exception {
-        LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = Maps.newLinkedHashMap();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return false;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList) || CollectionUtils.isEmpty(projectPhases)) {
-            return linkedHashMap;
-        }
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord == null) {
-                continue;
-            }
-            //是否可以出局报告
-            if (declareRecord.getBisPartIn()) {
-                String name = declareRecord.getStreetNumber();
-                if (StringUtils.isNotBlank(name)) {
-                    List<SchemeJudgeObject> judgeObjectList = linkedHashMap.get(name);
-                    if (CollectionUtils.isEmpty(judgeObjectList)) {
-                        judgeObjectList = Lists.newArrayList();
-                    }
-                    judgeObjectList.add(schemeJudgeObject);
-                    judgeObjectList = this.removeDuplicate(judgeObjectList);
-                    linkedHashMap.put(name, judgeObjectList);
-                }
-            }
-        }
-        //再次重新拼接
-        LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
-        if (!linkedHashMap.isEmpty()) {
-            for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
-                String name = null;
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(projectInfo.getId());
-                query.setProjectPhaseId(projectPhases.get(0).getId());
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                        //只找一个楼盘
-                        try {
-                            name = new GenerateBaseExamineService(projectPlanDetails.getId()).getEstate().getName();
-                        } catch (Exception e) {
-                            name = null;
-                        }
-                        if (StringUtils.isNotBlank(name)) {
-                            break;
-                        }
-                    }
-                }
-                if (StringUtils.isNotBlank(name)) {
-                    name = String.format("%s号%s", entry.getKey(), name);
-                    listLinkedHashMap.put(name, entry.getValue());
-                } else {
-                    continue;
-                }
-            }
-        }
-        return listLinkedHashMap;
-    }
-
-    /**
-     * 相同楼盘名称的估价对象集合
-     *
-     * @return
-     * @throws Exception
-     */
-    public LinkedHashMap<String, List<SchemeJudgeObject>> getLinkedHashMapEstateNameSchemeJudgeObjectList(Integer areaId) throws Exception {
-        LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            if (basicApply == null || basicApply.getId() == null) {
-                continue;
-            }
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            BasicEstate basicEstate = generateBaseExamineService.getEstate();
-            if (basicEstate == null || StringUtils.isEmpty(basicEstate.getName())) {
-                continue;
-            }
-            List<SchemeJudgeObject> schemeJudgeObjects = listLinkedHashMap.get(basicEstate.getName());
-            if (CollectionUtils.isEmpty(schemeJudgeObjects)) {
-                schemeJudgeObjects = Lists.newArrayList();
-            }
-            schemeJudgeObjects.add(schemeJudgeObject);
-            listLinkedHashMap.put(basicEstate.getName(), schemeJudgeObjects);
-        }
-        return listLinkedHashMap;
-    }
-
-    /**
      * 获取区域下楼盘的分组
      *
      * @param areaId
@@ -910,6 +804,29 @@ public class GenerateCommonMethod {
         }
         return builder.toString();
     }
+
+    /**
+     * 估价对象分别描述
+     * @param map
+     * @param explain
+     * @param symbol
+     * @param isShowJudgeNumner
+     * @return
+     */
+    public String judgeEachDescExtend(Map<String, String> map, String explain, String symbol, Boolean isShowJudgeNumner) {
+        //先处理map key,先处理连续未拆分的估价对象，再将拆分的估价对象搁置一边，最后将拆分的对象插入到描述一致的分组中
+        if (map == null || map.size() <= 0) return "";
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+
+
+        }
+
+//        if (map.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
+//            return explain + entry.getKey();
+//        }
+        return null;
+    }
+
 
     /**
      * 字符串合并描述
