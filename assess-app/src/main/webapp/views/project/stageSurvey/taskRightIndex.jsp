@@ -21,7 +21,7 @@
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">权证信息<span
                                 class="symbol required"></span></label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-5" style="overflow:auto;height:60px;">
                             <select class="form-control search-select select2" multiple="multiple" required="required"
                                     name="recordIds">
                                 <c:forEach var="items" items="${declareRecordList}">
@@ -521,17 +521,23 @@
         var form = $("#" + commonField.inventoryFrm + value);
         var id = form.find("select[name='category']").val() ;
         if(id){
-            AssessCommon.getDataDicInfo(id,function (data) {
-                var text = data.remark ;
-                if (text){
-                    if (text.toString().length == 0){
+            $.ajax({
+                url: getContextPath() + '/baseProjectClassify/getProjectClassifyInfo',
+                type: 'get',
+                data: {id: id},
+                dataType: 'json',
+                success: function (result) {
+                    var text = result.data.remark ;
+                    if (text){
+                        if (text.toString().length == 0){
+                            text = "无" ;
+                        }
+                    }else {
                         text = "无" ;
                     }
-                }else {
-                    text = "无" ;
+                    form.find("textarea[name='remark']").val(text) ;
                 }
-                form.find("textarea[name='remark']").val(text) ;
-            });
+            })
         }
     }
 

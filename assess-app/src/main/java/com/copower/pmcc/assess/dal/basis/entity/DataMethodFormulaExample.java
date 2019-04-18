@@ -295,6 +295,76 @@ public class DataMethodFormulaExample {
             return (Criteria) this;
         }
 
+        public Criteria andRelevantParameterIsNull() {
+            addCriterion("relevant_parameter is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterIsNotNull() {
+            addCriterion("relevant_parameter is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterEqualTo(String value) {
+            addCriterion("relevant_parameter =", value, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterNotEqualTo(String value) {
+            addCriterion("relevant_parameter <>", value, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterGreaterThan(String value) {
+            addCriterion("relevant_parameter >", value, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterGreaterThanOrEqualTo(String value) {
+            addCriterion("relevant_parameter >=", value, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterLessThan(String value) {
+            addCriterion("relevant_parameter <", value, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterLessThanOrEqualTo(String value) {
+            addCriterion("relevant_parameter <=", value, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterLike(String value) {
+            addCriterion("relevant_parameter like", value, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterNotLike(String value) {
+            addCriterion("relevant_parameter not like", value, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterIn(List<String> values) {
+            addCriterion("relevant_parameter in", values, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterNotIn(List<String> values) {
+            addCriterion("relevant_parameter not in", values, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterBetween(String value1, String value2) {
+            addCriterion("relevant_parameter between", value1, value2, "relevantParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevantParameterNotBetween(String value1, String value2) {
+            addCriterion("relevant_parameter not between", value1, value2, "relevantParameter");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
