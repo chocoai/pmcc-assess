@@ -521,17 +521,23 @@
         var form = $("#" + commonField.inventoryFrm + value);
         var id = form.find("select[name='category']").val() ;
         if(id){
-            AssessCommon.getDataDicInfo(id,function (data) {
-                var text = data.remark ;
-                if (text){
-                    if (text.toString().length == 0){
+            $.ajax({
+                url: getContextPath() + '/baseProjectClassify/getProjectClassifyInfo',
+                type: 'get',
+                data: {id: id},
+                dataType: 'json',
+                success: function (result) {
+                    var text = result.data.remark ;
+                    if (text){
+                        if (text.toString().length == 0){
+                            text = "无" ;
+                        }
+                    }else {
                         text = "无" ;
                     }
-                }else {
-                    text = "无" ;
+                    form.find("textarea[name='remark']").val(text) ;
                 }
-                form.find("textarea[name='remark']").val(text) ;
-            });
+            })
         }
     }
 
