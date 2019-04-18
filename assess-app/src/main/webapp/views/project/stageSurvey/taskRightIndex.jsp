@@ -21,7 +21,7 @@
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">权证信息<span
                                 class="symbol required"></span></label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-5" style="overflow:auto;height:60px;">
                             <select class="form-control search-select select2" multiple="multiple" required="required"
                                     name="recordIds">
                                 <c:forEach var="items" items="${declareRecordList}">
