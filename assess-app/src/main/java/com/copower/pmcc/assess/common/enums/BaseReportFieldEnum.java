@@ -19,7 +19,6 @@ public enum BaseReportFieldEnum implements Serializable {
     ValueType("价值类型"),
     ValueTypeDesc("价值类型描述"),
     DelegatePurpose("委托目的"),
-    Seat("坐落"),
     CertificationPurpose("证载用途"),
     ScopePropertyExplain("财产范围说明"),
     BuildingAndAssessArea("建筑面积及评估面积"),
@@ -128,11 +127,10 @@ public enum BaseReportFieldEnum implements Serializable {
     BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),
 
     //------------------------||待废除--------------------------
-    PrincipalAddress("委托人地址"),
     UnitPriceValuator("估价对象的单价"),
     EvaluationPriceCateGory("分类评估单价"),
     PrincipalLegalRepresentative("委托人法定代表人"),
-    WeightSpecification("权重说明");
+    ;
 
     private String key;
 
