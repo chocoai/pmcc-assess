@@ -809,9 +809,20 @@ public class GenerateCommonMethod {
     public void mergeCellTable(Set<MergeCellModel> mergeCellModelList, Table table) {
         if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
             for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+                Cell cellStartRange = null;
+                Cell cellEndRange = null;
+                if (mergeCellModel.getCellEndRange() == null && mergeCellModel.getCellStartRange() == null) {
+                    cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
+                    cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
+                } else {
+                    cellStartRange = mergeCellModel.getCellStartRange();
+                    cellEndRange = mergeCellModel.getCellEndRange();
+                }
+                if (cellStartRange != null && cellEndRange != null) {
+                    if (table != null) {
+                        AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+                    }
+                }
             }
         }
     }
@@ -1037,7 +1048,7 @@ public class GenerateCommonMethod {
                 } else {
                     stringList.add(stringBuilder.toString());
                 }
-                stringBuilder.delete(0,stringBuilder.toString().length());
+                stringBuilder.delete(0, stringBuilder.toString().length());
             });
         }
         return stringList;
@@ -1093,6 +1104,27 @@ public class GenerateCommonMethod {
             });
         }
         return listMap;
+    }
+
+    /**
+     * 根据估价对象获取 BasicApply
+     *
+     * @param schemeJudgeObject
+     * @return
+     */
+    public BasicApply getBasicApplyBySchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
+        if (schemeJudgeObject.getDeclareRecordId() == null) {
+            return null;
+        }
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        if (declareRecord == null) {
+            return null;
+        }
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+        if (basicApply == null) {
+            return null;
+        }
+        return basicApply;
     }
 
 }

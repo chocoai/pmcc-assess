@@ -38,10 +38,7 @@ import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.*;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.*;
@@ -54,6 +51,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -111,6 +109,7 @@ public class GenerateBaseDataService {
     private MdCommonService mdCommonService;
     private GenerateEquityService generateEquityService;
     private BasicApplyService basicApplyService;
+    private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
 
     /**
      * 构造器必须传入的参数
@@ -2344,6 +2343,51 @@ public class GenerateBaseDataService {
         return notSetUpTotalPrice;
     }
 
+    private Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> getSurveyAssetInventoryRightRecordListMap(List<SchemeJudgeObject> list) {
+        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> map = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (SchemeJudgeObject oo : list) {
+                schemeJudgeObjectList.add(oo);
+            }
+        }
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
+        ProjectPlanDetails query = new ProjectPlanDetails();
+        query.setProjectId(projectId);
+        query.setProjectPhaseId(projectPhase.getId());
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+            SurveyAssetInventoryRightRecordCenter selectRightRecordCenter = new SurveyAssetInventoryRightRecordCenter();
+            selectRightRecordCenter.setProjectId(projectPlanDetailsList.stream().findFirst().get().getProjectId());
+            selectRightRecordCenter.setPlanDetailsId(projectPlanDetailsList.stream().findFirst().get().getId());
+            selectRightRecordCenter.setProcessInsId(projectPlanDetailsList.stream().findFirst().get().getProcessInsId());
+            List<SurveyAssetInventoryRightRecordCenter> centerList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordCenterList(selectRightRecordCenter);
+            if (CollectionUtils.isNotEmpty(centerList)) {
+                List<SurveyAssetInventoryRightRecord> rightRecordList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordList(centerList.stream().findFirst().get().getId(), projectId, centerList.stream().findFirst().get().getPlanDetailsId());
+                if (CollectionUtils.isNotEmpty(rightRecordList)) {
+                    for (SurveyAssetInventoryRightRecord rightRecord : rightRecordList) {
+                        SchemeReimbursementItemVo vo = schemeReimbursementService.getSchemeReimbursementItemVoByInventoryRightRecordId(rightRecord.getId());
+                        if (vo != null && StringUtils.isNotBlank(rightRecord.getRecordIds())) {
+                            List<Integer> integerList = Lists.newArrayList(rightRecord.getRecordIds().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
+                            List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
+                            for (Integer integer : integerList) {
+                                if (schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).count() >= 1) {
+                                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).findFirst().get();
+                                    judgeObjectList.add(schemeJudgeObject);
+                                    schemeJudgeObjectList.remove(schemeJudgeObject);
+                                }
+                            }
+                            if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                                map.put(vo, generateCommonMethod.removeDuplicate(judgeObjectList));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
     /**
      * 估价结果一览表
      *
@@ -2351,125 +2395,199 @@ public class GenerateBaseDataService {
      */
     public String getjudgeBuildResultSurveySheet() throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> schemeJudgeObjectListMap = schemeReimbursementService.getSchemeReimbursementItemVoMapAndSchemeJudgeObject(schemeJudgeObjectList, projectId);
-        schemeJudgeObjectList = generateCommonMethod.getSortSchemeJudgeObject(schemeJudgeObjectList);
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null) {
-                continue;
-            }
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord == null) {
-                continue;
-            }
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            if (basicApply == null) {
-                continue;
-            }
-            schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
-        }
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath();
         Table table = builder.startTable();
         final int colMax = 11;
-        for (int j = 0; j < colMax; j++) {
-            builder.insertCell();
-            if (j == 0) builder.writeln("估价对象");
-            if (j == 1) builder.writeln("坐落");
-            if (j == 2) builder.writeln("用途(证载)");
-            if (j == 3) builder.writeln("用途(实际)");
-            if (j == 4) builder.writeln("房屋总层数");
-            if (j == 5) builder.writeln("所在层数");
-            if (j == 6) builder.writeln("建筑面积㎡");
-            if (j == 7) builder.writeln("单价（元/㎡）");
-            if (j == 8) builder.writeln("评估总价（万元）");
-            if (j == 9) builder.writeln("法定优先受偿款(万元)");
-            if (j == 10) builder.writeln("抵押价值(万元)");
-        }
-        builder.endRow();
-        if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
-            for (Map.Entry<BasicApply, SchemeJudgeObject> integerEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-                for (int j = 0; j < colMax; j++) {
-                    builder.insertCell();
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(integerEntry.getValue().getDeclareRecordId());
-                    if (j == 0) {
-                        builder.writeln(getSchemeJudgeObjectShowName(integerEntry.getValue()));
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = this.getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList);
+        if (!reimbursementItemVoListMap.isEmpty()) {
+            List<SchemeJudgeObject> listA = Lists.newArrayList();
+            List<SchemeJudgeObject> objectList = Lists.newArrayList();
+            reimbursementItemVoListMap.entrySet().stream().forEach(entry -> listA.addAll(entry.getValue()));
+            if (CollectionUtils.isNotEmpty(listA)) {
+                objectList = Lists.newArrayList(CollectionUtils.subtract(schemeJudgeObjectList, listA.stream().distinct().collect(Collectors.toList())));
+            }
+            writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价（元/㎡）", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)")));
+            //组遍历
+            reimbursementItemVoListMap.entrySet().stream().forEach(entry -> {
+                SchemeReimbursementItemVo itemVo = new SchemeReimbursementItemVo();
+                BeanUtils.copyProperties(entry.getKey(), itemVo);
+                for (SchemeJudgeObject schemeJudgeObject : entry.getValue()) {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply != null) {
+                        schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
                     }
-                    //抵押=总价-法定
-                    if (Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
-                        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = Lists.newArrayList();
-                        if (!schemeJudgeObjectListMap.isEmpty()) {
-                            schemeReimbursementItemVoList = schemeJudgeObjectListMap.get(integerEntry.getValue());
+                }
+                if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
+                    try {
+                        BigDecimal evaluationArea = new BigDecimal(0);
+                        BigDecimal price = new BigDecimal(0);
+                        BigDecimal total = new BigDecimal(0);
+                        for (Map.Entry<BasicApply, SchemeJudgeObject> integerEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
+                            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(integerEntry.getValue().getDeclareRecordId());
+                            if (declareRecord != null && declareRecord.getPracticalArea() != null) {
+                                evaluationArea = evaluationArea.add(declareRecord.getPracticalArea());
+                            }
+                            if (declareRecord != null && declareRecord.getPrice() != null) {
+                                price = price.add(declareRecord.getPrice());
+                            }
+                            if (declareRecord != null && declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
+                                total = total.add(declareRecord.getPracticalArea().multiply(declareRecord.getPrice()));
+                            }
+                            this.writeJudgeObjectResultSurveyInCell(itemVo, integerEntry.getKey(), integerEntry.getValue(), builder, colMax);
+                            //第一个估价对象写入,其余不再写入因此写入空数据
+                            BeanUtils.copyProperties(new SchemeReimbursementItemVo(), itemVo);
                         }
-                        BigDecimal notSetUpTotalPrice = getSchemeReimbursementSetUpTotalPrice(schemeReimbursementItemVoList);
-                        if (j == 9) {
-                            builder.writeln(notSetUpTotalPrice.toString());
-                        }
-                        if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
-                            BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
-                            BigDecimal mortgage = totol.subtract(notSetUpTotalPrice);
-                            mortgage = mortgage.divide(new BigDecimal(10000));
-                            mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        Cell cellRange0 = null;
+                        for (int j = 0; j < colMax; j++) {
+                            Cell cell = builder.insertCell();
+                            if (j == 0) {
+                                cellRange0 = cell;
+                                builder.writeln("小计");
+                            }
+                            if (j == 5) {
+                                mergeCellModelList.add(new MergeCellModel(cellRange0, cell));
+                            }
+                            if (j == 6) {
+                                builder.writeln(evaluationArea.toString());
+                            }
+                            if (j == 7) {
+                                builder.writeln(price.toString());
+                            }
+                            if (j == 8) {
+                                BigDecimal temp = new BigDecimal(total.toString());
+                                temp = temp.divide(new BigDecimal(10000));
+                                temp = temp.setScale(4, BigDecimal.ROUND_HALF_UP);
+                                builder.writeln(temp.toString());
+                            }
+                            BigDecimal notSetUpTotalPrice = getSchemeReimbursementSetUpTotalPrice(Lists.newArrayList(entry.getKey()));
+                            if (j == 9) {
+                                builder.writeln(notSetUpTotalPrice.toString());
+                            }
                             if (j == 10) {
+                                BigDecimal temp = new BigDecimal(new BigDecimal(10000).multiply(notSetUpTotalPrice).toString());
+                                BigDecimal mortgage = total.subtract(temp);
+                                mortgage = mortgage.divide(new BigDecimal(10000));
+                                mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
                                 builder.writeln(mortgage.toString());
                             }
                         }
+                        builder.endRow();
+                    } catch (Exception e) {
                     }
-                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(integerEntry.getKey());
-                    if (j == 1) {
-                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {
-                            builder.writeln(declareRecord.getSeat());
-                        }
+                }
+                schemeJudgeObjectLinkedHashMap.clear();
+            });
+            //分组剩余的(大部分情况下不可能,但是不能排除意外嘛)
+            if (CollectionUtils.isNotEmpty(objectList)) {
+                for (SchemeJudgeObject schemeJudgeObject : objectList) {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply != null) {
+                        schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
                     }
-                    if (j == 2) {
-                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getCertUse())) {
-                            builder.writeln(declareRecord.getCertUse());
-                        }
-                    }
-                    if (j == 3) {
-                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getPracticalUse())) {
-                            builder.writeln(declareRecord.getPracticalUse());
-                        }
-                    }
-                    if (j == 4) {
+                }
+                if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
+                    for (Map.Entry<BasicApply, SchemeJudgeObject> integerEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
                         try {
-                            builder.writeln(generateBaseExamineService.getBasicBuilding().getFloorCount().toString());
+                            this.writeJudgeObjectResultSurveyInCell(new SchemeReimbursementItemVo(), integerEntry.getKey(), integerEntry.getValue(), builder, colMax);
                         } catch (Exception e) {
-                            builder.writeln("0");
-                        }
-                    }
-                    if (j == 5) {
-                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getFloor())) {
-                            builder.writeln(declareRecord.getFloor());
-                        }
-                    }
-                    if (j == 6) {
-                        if (declareRecord != null && declareRecord.getPracticalArea() != null) {
-                            builder.writeln(declareRecord.getPracticalArea().toString());
-                        }
-                    }
-                    if (j == 7) {
-                        if (declareRecord != null && declareRecord.getPrice() != null) {
-                            builder.writeln(declareRecord.getPrice().toString());
-                        }
-                    }
-                    if (j == 8) {
-                        if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
-                            BigDecimal total = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
-                            total = total.divide(new BigDecimal(10000));
-                            total = total.setScale(4, BigDecimal.ROUND_HALF_UP);
-                            builder.writeln(total.toString());
                         }
                     }
                 }
-                builder.endRow();
+                schemeJudgeObjectLinkedHashMap.clear();
             }
         }
+        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
         builder.endTable();
         doc.save(localPath);
         return localPath;
+    }
+
+    /**
+     * 估价结果一览表 (肢体)
+     *
+     * @param itemVo
+     * @param basicApply
+     * @param schemeJudgeObject
+     * @param builder
+     * @param colMax
+     * @throws Exception
+     */
+    private void writeJudgeObjectResultSurveyInCell(SchemeReimbursementItemVo itemVo, BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, final int colMax) throws Exception {
+        for (int j = 0; j < colMax; j++) {
+            builder.insertCell();
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (j == 0) {
+                builder.writeln(getSchemeJudgeObjectShowName(schemeJudgeObject));
+            }
+            //抵押=总价-法定
+            if (Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
+                BigDecimal notSetUpTotalPrice = getSchemeReimbursementSetUpTotalPrice(Lists.newArrayList(itemVo));
+                if (j == 9) {
+                    builder.writeln(notSetUpTotalPrice.toString());
+                }
+                if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
+                    BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
+                    BigDecimal mortgage = totol.subtract(notSetUpTotalPrice);
+                    mortgage = mortgage.divide(new BigDecimal(10000));
+                    mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
+                    if (j == 10) {
+                        builder.writeln(mortgage.toString());
+                    }
+                }
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            if (j == 1) {
+                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {
+                    builder.writeln(declareRecord.getSeat());
+                }
+            }
+            if (j == 2) {
+                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getCertUse())) {
+                    builder.writeln(declareRecord.getCertUse());
+                }
+            }
+            if (j == 3) {
+                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getPracticalUse())) {
+                    builder.writeln(declareRecord.getPracticalUse());
+                }
+            }
+            if (j == 4) {
+                try {
+                    builder.writeln(generateBaseExamineService.getBasicBuilding().getFloorCount().toString());
+                } catch (Exception e) {
+                    builder.writeln("0");
+                }
+            }
+            if (j == 5) {
+                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getFloor())) {
+                    builder.writeln(declareRecord.getFloor());
+                }
+            }
+            if (j == 6) {
+                if (declareRecord != null && declareRecord.getPracticalArea() != null) {
+                    builder.writeln(declareRecord.getPracticalArea().toString());
+                }
+            }
+            if (j == 7) {
+                if (declareRecord != null && declareRecord.getPrice() != null) {
+                    builder.writeln(declareRecord.getPrice().toString());
+                }
+            }
+            if (j == 8) {
+                if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
+                    BigDecimal total = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
+                    total = total.divide(new BigDecimal(10000));
+                    total = total.setScale(4, BigDecimal.ROUND_HALF_UP);
+                    builder.writeln(total.toString());
+                }
+            }
+        }
+        builder.endRow();
     }
 
     /**
@@ -3125,20 +3243,20 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    List<Map<String,String>> imgList = Lists.newArrayList();
+                    List<Map<String, String>> imgList = Lists.newArrayList();
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
-                        Map<String,String> imgMap = Maps.newHashMap();
+                        Map<String, String> imgMap = Maps.newHashMap();
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
                         String imgName = sysAttachmentDto.getFileName();
-                        imgMap.put(imgPath,imgName);
+                        imgMap.put(imgPath, imgName);
                         imgList.add(imgMap);
                     }
-                    if(imgList.size()==1){
+                    if (imgList.size() == 1) {
                         AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
                     }
-                    if(imgList.size()>1) {
+                    if (imgList.size() > 1) {
                         AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
                     }
                 }
@@ -3735,6 +3853,16 @@ public class GenerateBaseDataService {
     private GenerateBaseDataService() {
     }
 
+    private void writeWordTitle(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
+        if (CollectionUtils.isNotEmpty(titles)) {
+            for (String title : titles) {
+                builder.insertCell();
+                builder.writeln(title);
+            }
+            builder.endRow();
+        }
+    }
+
     public GenerateBaseDataService(ProjectInfoVo projectInfoVo, Integer areaId, BaseReportTemplate baseReportTemplate, ProjectPlan projectPlan) {
         this.projectId = projectInfoVo.getId();
         this.projectInfo = projectInfoVo;
@@ -3784,6 +3912,7 @@ public class GenerateBaseDataService {
         this.mdCommonService = SpringContextUtils.getBean(MdCommonService.class);
         this.generateEquityService = SpringContextUtils.getBean(GenerateEquityService.class);
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
+        this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {
