@@ -9,6 +9,8 @@ public class DataMethodFormula {
 
     private String formula;
 
+    private String relevantParameter;
+
     private String creator;
 
     private Date gmtCreated;
@@ -37,6 +39,14 @@ public class DataMethodFormula {
 
     public void setFormula(String formula) {
         this.formula = formula == null ? null : formula.trim();
+    }
+
+    public String getRelevantParameter() {
+        return relevantParameter;
+    }
+
+    public void setRelevantParameter(String relevantParameter) {
+        this.relevantParameter = relevantParameter == null ? null : relevantParameter.trim();
     }
 
     public String getCreator() {

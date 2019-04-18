@@ -123,4 +123,7 @@ public class AssessReportFieldConstant {
 
     public static final String CASHABILITY_SUMMARY = "cashability.summary";//变现能力综述
     public static final String CASHABILITY_SUMMARY_CONTENT = "cashability.summary.content";//变现能力综述内容
+
+    public static final String RISK_ANALYSIS_TAXES_PAYMENT = "risk.analysis.taxes.payment";//风险分析税费缴纳
+    public static final String RISK_ANALYSIS_TAXES_PAYMENT_SURVEY = "risk.analysis.taxes.payment.survey";//风险分析税费缴纳调查
 }

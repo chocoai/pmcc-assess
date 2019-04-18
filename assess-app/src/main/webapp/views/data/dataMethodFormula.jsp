@@ -78,7 +78,28 @@
     $(function () {
         dataMethodFormula.prototype.loadDataDicList();
     });
-    var ue = UE.getEditor('formula');
+    var ue = UE.getEditor('formula', {
+        toolbars: [
+            ['source','autotypeset','bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 120,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
+    var ue2 = UE.getEditor('relevantParameter', {
+        toolbars: [
+            ['source','autotypeset','bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 120,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
     var dataMethodFormula = function () {
 
     };
@@ -94,6 +115,7 @@
             var cols = [];
             cols.push({field: 'methodType', title: '方法'});
             cols.push({field: 'formula', title: '公式内容'});
+            cols.push({field: 'relevantParameter', title: '相关参数'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -148,6 +170,7 @@
             }
             var data = formParams(dataMethodFormula.prototype.config().frm);
             data.formula = ue.getContent();
+            data.relevantParameter = ue2.getContent();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataMethodFormula/saveAndUpdateDataMethodFormula",
                 type: "post",
@@ -179,8 +202,10 @@
                         $("#" + dataMethodFormula.prototype.config().frm).clearAll();
                         $("#" + dataMethodFormula.prototype.config().frm).initForm(result.data);
                         var content = result.data.formula;
+                        var relevantParameterContent = result.data.relevantParameter;
                         setTimeout(function () {
                             ue.setContent(content, false);
+                            ue2.setContent(relevantParameterContent, false);
                         }, 500);
                         $('#' + dataMethodFormula.prototype.config().box).modal("show");
                     }
@@ -232,6 +257,16 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <div style="width:99%;height:200px;" id="formula"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            相关参数
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div style="width:99%;height:200px;" id="relevantParameter"></div>
                                         </div>
                                     </div>
                                 </div>

@@ -1431,7 +1431,7 @@ public class GenerateBaseDataService {
                 result = dataReportAnalysisService.getReportLiquidity(this.projectInfo, areaId);
                 break;
             case REPORT_ANALYSIS_CATEGORY_RISK:
-                result = dataReportAnalysisRiskService.getReportRisk();
+                result = dataReportAnalysisRiskService.getReportRisk(areaId);
                 break;
         }
         String localPath = getLocalPath();
