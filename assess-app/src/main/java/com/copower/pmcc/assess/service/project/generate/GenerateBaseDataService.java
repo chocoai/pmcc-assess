@@ -3149,7 +3149,7 @@ public class GenerateBaseDataService {
                 builder.writeln(CalculationMethodNameEnum.MdCompare.getName());
                 schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdCompare, schemeJudgeObject);
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeInfo.getMethodDataId(), new Date(), areaId);
+                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), new Date(), areaId);
                     try {
                         String temp = generateMdCompareService.generateCompareFile();
                         File file = new File(temp);
