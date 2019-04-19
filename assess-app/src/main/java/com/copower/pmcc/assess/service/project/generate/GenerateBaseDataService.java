@@ -110,6 +110,7 @@ public class GenerateBaseDataService {
     private GenerateEquityService generateEquityService;
     private BasicApplyService basicApplyService;
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
+    private DataBestUseDescriptionService dataBestUseDescriptionService;
 
     /**
      * 构造器必须传入的参数
@@ -1814,28 +1815,18 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 最佳利用描述
+     * 最佳利用方式
      *
      * @return
      * @throws Exception
      */
-    public String getOptimumUtilizationDescription() throws Exception {
-
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getBestUse() != null) {
-                    String key = baseDataDicService.getNameById(schemeJudgeObject.getBestUse());
-                    generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
-                }
-            }
+    public String getOptimumUtilizationMode() throws Exception {
+        Map<String, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectList) {
+            DataBestUseDescription bestUseDescription = dataBestUseDescriptionService.getBestUseDescriptionById(schemeJudgeObject.getBestUse());
+            map.put(schemeJudgeObject.getNumber(), bestUseDescription.getName());
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, "");
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
+        return StringUtils.strip(generateCommonMethod.judgeEachDescExtend(map, "", ";", false), ";");
     }
 
     /**
@@ -3740,6 +3731,7 @@ public class GenerateBaseDataService {
         this.generateEquityService = SpringContextUtils.getBean(GenerateEquityService.class);
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
         this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
+        this.dataBestUseDescriptionService = SpringContextUtils.getBean(DataBestUseDescriptionService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

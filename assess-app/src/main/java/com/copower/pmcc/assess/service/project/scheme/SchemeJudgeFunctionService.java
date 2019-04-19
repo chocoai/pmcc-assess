@@ -92,11 +92,7 @@ public class SchemeJudgeFunctionService {
      */
     public SchemeJudgeFunctionApplyDto getJudgeFunction(Integer judgeObjectId) {
         SchemeJudgeFunctionApplyDto schemeJudgeFunctionApplyDto = new SchemeJudgeFunctionApplyDto();
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        if(judgeObject!=null){
-            schemeJudgeFunctionApplyDto.setNotApplicableReason(judgeObject.getNotApplicableReason());
-        }
-        schemeJudgeFunctionApplyDto.setJudgeFunctions(schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObjectId));
+        schemeJudgeFunctionApplyDto.setJudgeFunctions(schemeJudgeFunctionService.getSchemeJudgeFunctions(judgeObjectId));
         return schemeJudgeFunctionApplyDto;
     }
 

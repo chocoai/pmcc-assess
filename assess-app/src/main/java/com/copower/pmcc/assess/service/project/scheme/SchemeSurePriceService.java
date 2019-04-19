@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,6 +55,8 @@ public class SchemeSurePriceService {
     private SchemeJudgeFunctionDao schemeJudgeFunctionDao;
     @Autowired
     private MdCommonService mdCommonService;
+    @Autowired
+    private PublicService publicService;
 
     /**
      * 保存确定单价信息
@@ -80,13 +84,13 @@ public class SchemeSurePriceService {
         return schemeSurePriceDao.getSchemeSurePrice(where);
     }
 
-    public SchemeSurePrice getSchemeSurePriceBySchemeJudgeObjectId(Integer schemeJudgeObjectId){
+    public SchemeSurePrice getSchemeSurePriceBySchemeJudgeObjectId(Integer schemeJudgeObjectId) {
         SchemeSurePrice where = new SchemeSurePrice();
         where.setJudgeObjectId(schemeJudgeObjectId);
         List<SchemeSurePrice> schemeSurePriceList = schemeSurePriceDao.getSurePriceList(where);
-        if (CollectionUtils.isNotEmpty(schemeSurePriceList)){
+        if (CollectionUtils.isNotEmpty(schemeSurePriceList)) {
             return schemeSurePriceList.get(0);
-        }else {
+        } else {
             return null;
         }
     }
@@ -120,7 +124,7 @@ public class SchemeSurePriceService {
             List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionDao.getSchemeJudgeFunction(functionWhere);
             if (CollectionUtils.isNotEmpty(judgeFunctions)) {
                 List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList();
-                List<Integer> methodTypeList=LangUtils.transform(baseMethodList,o->o.getId());
+                List<Integer> methodTypeList = LangUtils.transform(baseMethodList, o -> o.getId());
                 List<SchemeJudgeFunction> filter = LangUtils.filter(judgeFunctions, o -> methodTypeList.contains(o.getMethodType()));
                 for (SchemeJudgeFunction judgeFunction : filter) {
                     SchemeSurePriceItem schemeSurePriceItem = new SchemeSurePriceItem();
@@ -133,7 +137,24 @@ public class SchemeSurePriceService {
                 }
             }
         }
-        return schemeSurePriceItemDao.getSurePriceItemList(where);
+
+        List<SchemeSurePriceItem> priceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
+        //如果价格差异小于等于10% 自动设置对应权重 求取平均价
+        List<BigDecimal> decimalList = LangUtils.transform(priceItemList, o -> o.getTrialPrice());
+        Collections.sort(decimalList);
+        if (publicService.computeDifference(decimalList.get(0), decimalList.get(decimalList.size() - 1)) <= 10) {
+            BigDecimal averageWeight = new BigDecimal("1").divide(new BigDecimal(priceItemList.size()), 4, BigDecimal.ROUND_HALF_DOWN);
+            for (int i = 0; i < priceItemList.size(); i++) {
+                if (i == priceItemList.size() - 1) {
+                    priceItemList.get(i).setWeight(new BigDecimal("1").subtract(averageWeight.multiply(new BigDecimal(priceItemList.size() - 1))));
+                } else {
+                    priceItemList.get(i).setWeight(averageWeight);
+                }
+                schemeSurePriceItemDao.updateSurePriceItem(priceItemList.get(i));
+            }
+            return schemeSurePriceItemDao.getSurePriceItemList(where);
+        }
+        return priceItemList;
     }
 
     /**

@@ -136,17 +136,17 @@
                 </div>
             </c:forEach>
             <%--<div class="x_panel">--%>
-                <%--<div class="x_title collapse-link">--%>
-                    <%--<ul class="nav navbar-right panel_toolbox">--%>
-                        <%--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>--%>
-                    <%--</ul>--%>
-                    <%--<h3>他项权利</h3>--%>
-                    <%--<div class="clearfix"></div>--%>
-                <%--</div>--%>
-                <%--<div class="x_content collapse">--%>
-                    <%--<table class="table table-bordered" id="tb_inventory_right_list">--%>
-                    <%--</table>--%>
-                <%--</div>--%>
+            <%--<div class="x_title collapse-link">--%>
+            <%--<ul class="nav navbar-right panel_toolbox">--%>
+            <%--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>--%>
+            <%--</ul>--%>
+            <%--<h3>他项权利</h3>--%>
+            <%--<div class="clearfix"></div>--%>
+            <%--</div>--%>
+            <%--<div class="x_content collapse">--%>
+            <%--<table class="table table-bordered" id="tb_inventory_right_list">--%>
+            <%--</table>--%>
+            <%--</div>--%>
             <%--</div>--%>
             <div class="x_panel">
                 <div class="x_content">
@@ -471,57 +471,42 @@
         </div>
     </div>
 </div>
-<!--查看委估对象其它信息-->
-<div id="modal_other_info" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="modal_method_info" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">其它信息</h3>
+                <h3 class="modal-title">评估方法</h3>
             </div>
             <div class="modal-body">
-                <form id="frm_other_info" class="form-horizontal">
-                    <input type="hidden" name="id">
+                <form id="frm_method_info" class="form-horizontal">
+                    <input type="hidden" name="judgeObjectId">
                     <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                变现比率
-                            </label>
-                            <div class="col-sm-10">
-                                <label class="form-control" name="liquidRatio"></label>
-                            </div>
+                        <div class="col-sm-12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="20%">适用方法</th>
+                                    <th width="60%">适用原因</th>
+                                </tr>
+                                </thead>
+                                <tbody id="applicableTbody">
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                变现比率说明
-                            </label>
-                            <div class="col-sm-10">
-                                <label class="form-control" name="liquidRatioExplain"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                担保物设立情况
-                            </label>
-                            <div class="col-sm-10">
-                                <label class="form-control" name="collateralFound"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                出租占用情况
-                            </label>
-                            <div class="col-sm-10">
-                                <label class="form-control" name="rentalPossessionDesc"></label>
-                            </div>
+                        <div class="col-sm-12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="20%">不适用方法</th>
+                                    <th width="60%">不适用原因</th>
+                                </tr>
+                                </thead>
+                                <tbody id="notApplicableTbody">
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </form>
@@ -534,18 +519,6 @@
         </div>
     </div>
 </div>
-
-<!--动态字段-->
-<script type="text/html" id="dynamicFieldHtml">
-    <label class="col-sm-2 control-label">
-        {name}
-    </label>
-    <div class="x-valid">
-        <div class="col-sm-4">
-            <input type="text" class="form-control" data-name="{name}" onkeyup="{functionName}(this);">
-        </div>
-    </div>
-</script>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
     <tr>
@@ -559,11 +532,6 @@
             <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
-        <%--<td>--%>
-        <%--<label class="form-control" data-name="name">--%>
-        <%--<span>{name}</span>--%>
-        <%--</label>--%>
-        <%--</td>--%>
         <td><label class="form-control" data-name="ownership">{ownership}
             <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
                class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
@@ -578,10 +546,8 @@
         <td><label class="form-control">{floorArea}</label></td>
         <td><label class="form-control">{evaluationArea}</label></td>
         <td>
-            <a href="javascript://" onclick="setEvaluationMethod(this);"
+            <a href="javascript://" onclick="programmeMethod.setMethod(this);"
                class="btn btn-xs btn-primary judge-method tooltips">评估方法</a>
-            <a href="javascript://" title="其它信息" onclick="programme.viewOtherInfo(this);"
-               class="btn btn-xs btn-primary judge-other tooltips">其它信息</a>
         </td>
     </tr>
 </script>
@@ -842,226 +808,39 @@
         var rentalPossessionDesc = $(_this).closest('tr').find('[data-name=rentalPossessionDesc]').val();
         layer.open({
             title: '出租或占用情况描述'
-            ,content: rentalPossessionDesc
+            , content: rentalPossessionDesc
         });
     }
 
 </script>
 <script type="text/javascript">
-    /*
-     *------------------------------------------------------------------------------------------------------
-     *评估方法设置相关
-     *------------------------------------------------------------------------------------------------------
-     */
+    var programmeMethod = {};
 
-    //方法适用原因字段替换
-    function methodApplicableFieldReplace(_this) {
-        //1.先找到模板 2.再依次找到字段填写的信息
-        var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="methodTemplate"]').find('option:selected').attr("data-applicable");
-        tabPane.find('.applicableReason-field').find('input:text').each(function () {
-            if ($(this).val()) {
-                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-            }
-        })
-        tabPane.find('[name="applicableReason"]').val(template);
-    }
-
-    //方法不适用原因字段替换
-    function methodNotApplicableFieldReplace(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="methodTemplate"]').find('option:selected').attr("data-not-applicable");
-        tabPane.find('.notApplicableReason-field').find('input:text').each(function () {
-            if ($(this).val()) {
-                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-            }
-        })
-        tabPane.find('[name="notApplicableReason"]').val(template);
-    }
-
-    //思路适用原因字段替换
-    function thinkingApplicableFieldReplace(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="thinkingTemplate"]').find('option:selected').attr("data-applicable");
-        tabPane.find('.applicableThinking-field').find('input:text').each(function () {
-            if ($(this).val()) {
-                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-            }
-        })
-        tabPane.find('[name="applicableThinking"]').val(template);
-    }
-
-    //思路不适用原因字段替换
-    function thinkingNotApplicableFieldReplace(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="thinkingTemplate"]').find('option:selected').attr("data-not-applicable");
-        tabPane.find('.notApplicableThinking-field').find('input:text').each(function () {
-            if ($(this).val()) {
-                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-            }
-        })
-        tabPane.find('[name="notApplicableThinking"]').val(template);
-    }
-
-    //创建动态字段html
-    function createDynaicFieldHtml(fieldArray, functionName) {
-        if (fieldArray) {
-            var resultHtml = '<div class="form-group">';
-            $.each(fieldArray, function (i, item) {
-                if (i > 0 && i % 2 == 0) {
-                    resultHtml += '</div><div class="form-group">';
-                }
-                var templateHtml = $("#dynamicFieldHtml").html();
-                templateHtml = templateHtml.replace(/{name}/g, item).replace(/{functionName}/, functionName);
-                resultHtml += templateHtml;
-            })
-            resultHtml += '</div>';
-            return resultHtml;
-        } else {
-            return '';
-        }
-    }
-
-    //方法信息是否填写完整
-    function methodHasWriteFull(judgeFunction) {
-        if (judgeFunction) {
-            if (judgeFunction.bisApplicable == undefined) return false;
-            if (judgeFunction.bisApplicable == 'true') {
-                if (!judgeFunction.applicableReason || !judgeFunction.applicableThinking) return false;
-            } else {
-                if (!judgeFunction.notApplicableReason || !judgeFunction.notApplicableThinking) return false;
-            }
-        }
-        return true;
-    }
-
-    //设置评估方法
-    function setEvaluationMethod(_this) {
+    programmeMethod.setMethod = function (_this) {
+        $('#applicableTbody,#notApplicableTbody').empty();
         var judgeObjectId = $(_this).closest("tr").find('[data-name="id"]').val();
-        $("#myTabContent").find('[name="judgeObjectId"]').val(judgeObjectId);
-        programme.config.currJudgeMethodButton = $(_this);
-        //还原数据状态
-        cleanEvaluationMethod();
-        //如果该估计对象已经设置过评估方法，则将数据填充回去
         $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeFunctions',
+            url: '${pageContext.request.contextPath}/schemeProgramme/getJudgeFunction',
             data: {
                 judgeObjectId: judgeObjectId
             },
-            type: "get",
-            dataType: "json",
             success: function (result) {
                 if (result.ret && result.data) {
-                    $.each(result.data, function (i, item) {
-                        var methodTypeEle = $("#myTabContent").find('.tab-pane').find('[name="methodType"][value="' + item.methodType + '"]')
-                        var tabPane = $(methodTypeEle).closest(".tab-pane");
-                        tabPane.find('[name="id"]').val(item.id);
-                        if (item.bisApplicable) {
-                            tabPane.find('[name="bisApplicable"][value="true"]').prop('checked', true);
-                            tabPane.find('.applicable').show();
+                    var htmlTemplate = '<tr data-method-type="{methodType}"><td>{methodName}</td>' +
+                        '<td><div class="x-valid"> <label class="form-control">{content}</label></div></td></tr>';
+                    $.each(result.data.judgeFunctions, function (i, item) {
+                        var trHtml = new String(htmlTemplate);
+                        trHtml = trHtml.replace(/{methodType}/g, item.methodType).replace(/{methodName}/g, item.name);
+                        if (item.bisApplicable == true) {
+                            $("#applicableTbody").append(trHtml.replace(/{content}/g, AssessCommon.toString(item.applicableReason)));
                         } else {
-                            tabPane.find('[name="bisApplicable"][value="false"]').prop('checked', true);
-                            tabPane.find('.not-applicable').show();
+                            $("#notApplicableTbody").append(trHtml.replace(/{content}/g, AssessCommon.toString(item.notApplicableReason)));
                         }
-                        tabPane.find('[name="applicableReason"]').val(item.applicableReason);
-                        tabPane.find('[name="notApplicableReason"]').val(item.notApplicableReason);
-                        tabPane.find('[name="applicableThinking"]').val(item.applicableThinking);
-                        tabPane.find('[name="notApplicableThinking"]').val(item.notApplicableThinking);
                     })
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
-        });
-        $("#divBoxMethodExtend").modal();
-    }
-
-    //清空
-    function cleanEvaluationMethod() {
-        $("#myTab").find('a:first').tab('show');
-        $("#myTabContent").find('form').each(function () {
-            $(this).clearValid();
         })
-        $("#myTabContent").find('[name="id"]').val('0');
-        $("#myTabContent").find('[name="bisApplicable"]').attr("checked", false);
-        $("#myTabContent").find('[name="applicableReason"]').val('');
-        $("#myTabContent").find('[name="notApplicableReason"]').val('');
-        $("#myTabContent").find('[name="applicableThinking"]').val('');
-        $("#myTabContent").find('[name="notApplicableThinking"]').val('');
-
-        $("#myTabContent").find('[name="methodTemplate"]').val('');
-        $("#myTabContent").find('[name="thinkingTemplate"]').val('');
-
-        $("#myTabContent").find('.applicable').hide();
-        $("#myTabContent").find('.not-applicable').hide();
-        $("#myTabContent").find('.applicableReason-field').empty();
-        $("#myTabContent").find('.applicableThinking-field').empty();
-        $("#myTabContent").find('.notApplicableReason-field').empty();
-        $("#myTabContent").find('.notApplicableThinking-field').empty();
-    }
-
-    //评估方法模板选项change
-    function evaluationMethodChange(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var bisApplicable = tabPane.find('[name=bisApplicable]:checked').val();
-        var option = $(_this).find('option:selected');
-        tabPane.find('.applicableReason-field').empty();
-        tabPane.find('.notApplicableReason-field').empty();
-        if (bisApplicable == "true") {
-            tabPane.find('[name="applicableReason"]').val(option.attr("data-applicable"));
-            var fieldArray = AssessCommon.extractField(option.attr("data-applicable"));
-            if (fieldArray && fieldArray.length > 0) {
-                var html = createDynaicFieldHtml(fieldArray, 'methodApplicableFieldReplace');
-                tabPane.find('.applicableReason-field').append(html);
-            }
-        } else if (bisApplicable == "false") {
-            tabPane.find('[name="notApplicableReason"]').val(option.attr("data-not-applicable"));
-            var fieldArray = AssessCommon.extractField(option.attr("data-not-applicable"));
-            if (fieldArray && fieldArray.length > 0) {
-                var html = createDynaicFieldHtml(fieldArray, 'methodNotApplicableFieldReplace');
-                tabPane.find('.notApplicableReason-field').append(html);
-            }
-        }
-    }
-
-    //评估思路模板选项change
-    function evaluationThinkingChange(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var bisApplicable = tabPane.find('[name=bisApplicable]:checked').val();
-        var option = $(_this).find('option:selected');
-        tabPane.find('.applicableThinking-field').empty();
-        tabPane.find('.notApplicableThinking-field').empty();
-        if (bisApplicable == "true") {
-            tabPane.find('[name="applicableThinking"]').val(option.attr("data-applicable"));
-            var fieldArray = AssessCommon.extractField(option.attr("data-applicable"));
-            if (fieldArray && fieldArray.length > 0) {
-                var html = createDynaicFieldHtml(fieldArray, 'thinkingApplicableFieldReplace');
-                tabPane.find('.applicableThinking-field').append(html);
-            }
-        } else if (bisApplicable == "false") {
-            tabPane.find('[name="notApplicableThinking"]').val(option.attr("data-not-applicable"));
-            var fieldArray = AssessCommon.extractField(option.attr("data-not-applicable"));
-            if (fieldArray && fieldArray.length > 0) {
-                var html = createDynaicFieldHtml(fieldArray, 'thinkingNotApplicableFieldReplace');
-                tabPane.find('.notApplicableThinking-field').append(html);
-            }
-        }
-    }
-
-    //适用切换
-    function applicableChange(_this, isApplicable) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var thisRadio = $(_this).find('input:radio');
-        thisRadio.attr('checked', true);
-        $(_this).closest('.btn-group').find('input:radio').not(thisRadio).attr('checked', false);
-        if (isApplicable) {
-            tabPane.find('.applicable').show();
-            tabPane.find('.not-applicable').hide();
-        } else {
-            tabPane.find('.applicable').hide();
-            tabPane.find('.not-applicable').show();
-        }
+        $("#modal_method_info").modal();
     }
 </script>
 

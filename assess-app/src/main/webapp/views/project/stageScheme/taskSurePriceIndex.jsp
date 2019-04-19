@@ -291,6 +291,7 @@
                     $("#tbody_data_section").find('.x-percent').each(function () {
                         AssessCommon.elementParsePercent($(this));
                     })
+                    surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
                 }
                 else {
                     Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);

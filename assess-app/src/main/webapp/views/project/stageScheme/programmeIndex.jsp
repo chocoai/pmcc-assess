@@ -201,8 +201,8 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <select class="form-control" name="propertyScope" required></select>
-                                        <%--<input type="text" class="form-control" name="propertyScope"--%>
-                                               <%--placeholder="财产范围" value="${item.propertyScope}" required>--%>
+                                            <%--<input type="text" class="form-control" name="propertyScope"--%>
+                                            <%--placeholder="财产范围" value="${item.propertyScope}" required>--%>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -261,18 +261,18 @@
                 </div>
             </c:forEach>
             <%--<div class="x_panel">--%>
-                <%--<div class="x_title collapse-link">--%>
-                    <%--<ul class="nav navbar-right panel_toolbox">--%>
-                        <%--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>--%>
-                    <%--</ul>--%>
-                    <%--<h3>他项权利</h3>--%>
-                    <%--<div class="clearfix"></div>--%>
-                <%--</div>--%>
-                <%--<div class="x_content collapse">--%>
-                    <%--<table class="table table-bordered" id="tb_inventory_right_list">--%>
-                        <%--<!-- cerare document add ajax data-->--%>
-                    <%--</table>--%>
-                <%--</div>--%>
+            <%--<div class="x_title collapse-link">--%>
+            <%--<ul class="nav navbar-right panel_toolbox">--%>
+            <%--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>--%>
+            <%--</ul>--%>
+            <%--<h3>他项权利</h3>--%>
+            <%--<div class="clearfix"></div>--%>
+            <%--</div>--%>
+            <%--<div class="x_content collapse">--%>
+            <%--<table class="table table-bordered" id="tb_inventory_right_list">--%>
+            <%--<!-- cerare document add ajax data-->--%>
+            <%--</table>--%>
+            <%--</div>--%>
             <%--</div>--%>
             <div class="x_panel">
                 <div class="x_content">
@@ -365,20 +365,12 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th width="40%">不适用方法</th>
+                                    <th width="20%">不适用方法</th>
+                                    <th width="20%">模板</th>
                                     <th width="60%">不适用原因</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td id="notApplicableTd">
-                                    </td>
-                                    <td>
-                                        <div class="x-valid"><textarea class="form-control" id="notApplicableReason"
-                                                                       name="notApplicableReason" required></textarea>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <tbody id="notApplicableTbody">
                                 </tbody>
                             </table>
                         </div>
@@ -711,7 +703,7 @@
             <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
                class="btn btn-xs btn-success judge-method tooltips">方法</a>
             <%--<a href="javascript://" title="其它信息" onclick="programme.editOtherInfo(this);"--%>
-               <%--class="btn btn-xs btn-success judge-other tooltips">其它信息</a>--%>
+            <%--class="btn btn-xs btn-success judge-other tooltips">其它信息</a>--%>
         </td>
     </tr>
 </script>
@@ -985,7 +977,7 @@
                         }
                         lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
                         lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
-                        if(item.splitNumber){
+                        if (item.splitNumber) {
                             lastTr.find('td:last').find('.judge-merge').remove();
                         }
                         if (item.bisSetFunction) {
@@ -1799,10 +1791,13 @@
             },
             success: function (result) {
                 if (result.ret && result.data) {
-                    $('#notApplicableReason').val(result.data.notApplicableReason);
                     $.each(result.data.judgeFunctions, function (i, item) {
-                        $("#frm_method_info").find('.btn-select-use[data-method-type=' + item.methodType + ']').trigger('click');
-                        $("#applicableTbody tr[data-method-type=" + item.methodType + "]").find('textarea').val(item.applicableReason);
+                        if (item.bisApplicable == true) {
+                            $("#frm_method_info").find('.btn-select-use[data-method-type=' + item.methodType + ']').trigger('click');
+                            $("#applicableTbody tr[data-method-type=" + item.methodType + "]").find('textarea').val(item.applicableReason);
+                        } else {
+                            $("#notApplicableTbody tr[data-method-type=" + item.methodType + "]").find('textarea').val(item.notApplicableReason);
+                        }
                     })
                 }
             }
@@ -1818,21 +1813,21 @@
         var useFlag = $(_this).attr('data-use-flag');
         var methodType = $(_this).attr('data-method-type');
         var methodName = $(_this).attr('data-method-name');
+        var htmlTemplate = '<tr data-method-type="{methodType}">' +
+            '<td>{methodName}</td><td> <select class="form-control" onchange="programmeMethod.methodTempChange(this);"></select></td>' +
+            '<td><div class="x-valid"> <textarea class="form-control" name="{reasonName}{methodType}" required></textarea></div></td></tr>';
+
         if (useFlag == 'false') {
-            var trHtml = '<tr data-method-type="' + methodType + '">';
-            trHtml += ' <td>' + methodName + '</td><td> <select class="form-control" onchange="programmeMethod.methodTempChange(this);"></select> </td>';
-            trHtml += '<td><div class="x-valid"> <textarea class="form-control" name="applicableReason' + methodType + '" required></textarea> </div></td></tr>';
+            var trHtml = new String(htmlTemplate);
+            trHtml = trHtml.replace(/{methodType}/g, methodType).replace(/{methodName}/g, methodName).replace(/{reasonName}/g, "applicableReason");
             $("#applicableTbody").append(trHtml);
             programmeMethod.getMethodTemplate($("#applicableTbody").find('tr:last').find('select'), methodType);
             //不适用方法中移除该项
-            var spans = $('#notApplicableTd span');
-            if (spans.length > 0) {
-                spans.each(function () {
-                    if ($(this).attr('data-method-type') == methodType) {
-                        $(this).remove();
-                    }
-                })
-            }
+            $("#notApplicableTbody tr").each(function () {
+                if ($(this).attr('data-method-type') == methodType) {
+                    $(this).remove();
+                }
+            })
         } else {
             $("#applicableTbody tr").each(function () {
                 if ($(this).attr('data-method-type') == methodType) {
@@ -1842,10 +1837,13 @@
         }
         $(_this).attr('data-use-flag', useFlag == 'false' ? true : false).toggleClass('btn-default').toggleClass('btn-success');
         //自动获取不适用方法
-        $('#notApplicableTd').empty();
+        $('#notApplicableTbody').empty();
         $("#baseMethodTd").find('.btn-select-use').each(function () {
             if ($(this).attr('data-use-flag') == 'false') {
-                $('#notApplicableTd').append('<span style="margin: 10px;" data-method-type="' + $(this).attr('data-method-type') + '">' + $(this).attr('data-method-name') + '</span>');
+                var trHtml = new String(htmlTemplate);
+                trHtml = trHtml.replace(/{methodType}/g, $(this).attr('data-method-type')).replace(/{methodName}/g, $(this).attr('data-method-name')).replace(/{reasonName}/g, "notApplicableReason");
+                $("#notApplicableTbody").append(trHtml);
+                programmeMethod.getMethodTemplate($("#notApplicableTbody").find('tr:last').find('select'), $(this).attr('data-method-type'));
             }
         })
     }
@@ -1868,7 +1866,7 @@
                 if (result.ret) {
                     var html = '<option>-请选择-</option>';
                     $.each(result.data, function (i, item) {
-                        html += ' <option value="' + item.id + '" data-applicableReason="' + item.applicableReason + '">' + item.name + '</option>';
+                        html += ' <option value="' + item.id + '" data-applicableReason="' + item.applicableReason + '" data-notApplicableReason="' + item.notApplicableReason + '">' + item.name + '</option>';
                     })
                     $element.append(html);
                 }
@@ -1878,7 +1876,8 @@
 
     //方法模板change
     programmeMethod.methodTempChange = function (_this) {
-        $(_this).closest('tr').find('textarea').val($(_this).find('option:selected').attr('data-applicableReason'));
+        $(_this).closest('tr').find('textarea[name^=applicableReason]').val($(_this).find('option:selected').attr('data-applicableReason'));
+        $(_this).closest('tr').find('textarea[name^=notApplicableReason]').val($(_this).find('option:selected').attr('data-notApplicableReason'));
     }
 
     //获取保存的数据
@@ -1906,12 +1905,13 @@
             data.judgeFunctions.push(judgeFunction);
         })
 
-        $('#notApplicableTd').find('span').each(function () {
+        $("#notApplicableTbody tr").each(function () {
             var judgeFunction = {};
             judgeFunction.judgeObjectId = judgeObjectId;
-            judgeFunction.name = $(this).text();
+            judgeFunction.name = $(this).find('td:eq(0)').text();
             judgeFunction.methodType = $(this).attr('data-method-type');
             judgeFunction.bisApplicable = false;
+            judgeFunction.notApplicableReason = $(this).find('textarea').val();
             data.judgeFunctions.push(judgeFunction);
         })
         return data;

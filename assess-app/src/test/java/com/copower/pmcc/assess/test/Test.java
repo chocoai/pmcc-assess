@@ -414,7 +414,7 @@ public class Test {
 
     @org.junit.Test
     public void testCompute(){
-        System.out.print(computeDifference(new BigDecimal("100"),new BigDecimal("90")));
+        System.out.print(computeDifference(new BigDecimal("100"),new BigDecimal("100")));
     }
 
     public int computeDifference(BigDecimal var1, BigDecimal var2) {

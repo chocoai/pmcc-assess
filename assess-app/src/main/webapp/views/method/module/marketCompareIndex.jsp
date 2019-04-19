@@ -240,8 +240,8 @@
                     $(this).trigger('click');
                 }
             })
-            $('#tb_md_mc_item_list').find('tr[data-group="trading.time"]').each(function () {
-                $(this).find('td:gt(1)').each(function () {
+            $('#tb_md_mc_item_list').find('tr[data-group="trading.time"][data-name="text"]').each(function () {
+                $(this).find('td').each(function () {
                     $(this).append('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.tradingTimeExplain(this,' + defaluts.readonly + ');" value="修正说明">');
                 })
             })

@@ -745,7 +745,7 @@ public class GenerateReportService {
                 }
                 //最佳利用方式
                 if (Objects.equal(BaseReportFieldEnum.BestUseDesc.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOptimumUtilizationDescription());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOptimumUtilizationMode());
                 }
                 //资产清查实际地址
                 if (Objects.equal(BaseReportFieldEnum.ActualAddressAssetInventory.getName(), name)) {

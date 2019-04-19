@@ -818,7 +818,8 @@ public class GenerateCommonMethod {
 
     /**
      * 估价对象分别描述
-     * @param map
+     *
+     * @param map               合并拆分对象map
      * @param explain
      * @param symbol
      * @param isShowJudgeNumner
@@ -827,15 +828,53 @@ public class GenerateCommonMethod {
     public String judgeEachDescExtend(Map<String, String> map, String explain, String symbol, Boolean isShowJudgeNumner) {
         //先处理map key,先处理连续未拆分的估价对象，再将拆分的估价对象搁置一边，最后将拆分的对象插入到描述一致的分组中
         if (map == null || map.size() <= 0) return "";
+        Map<Integer, String> standardMap = Maps.newHashMap();//标准值map
+        Map<String, String> splitMap = Maps.newHashMap();//拆分对象map
         for (Map.Entry<String, String> entry : map.entrySet()) {
-
-
+            String key = entry.getKey();
+            for (String s : StringUtils.split(key, ",")) {
+                if (s.contains("-")) {
+                    splitMap.put(s, entry.getValue());
+                } else {
+                    standardMap.put(Integer.valueOf(s), entry.getValue());
+                }
+            }
         }
+        Map<Integer, String> sortMap = new TreeMap<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1.compareTo(o2);
+            }
+        });
+        sortMap.putAll(standardMap);
+        Map<String, List<Integer>> listMap = getStringListMap(sortMap);
 
-//        if (map.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
-//            return explain + entry.getKey();
-//        }
-        return null;
+        List<String> removeKeys = Lists.newArrayList();
+        Map<String, String> resultMap = Maps.newHashMap();
+        for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
+            StringBuilder numberBuilder = new StringBuilder(convertNumber(stringListEntry.getValue()));
+            for (Map.Entry<String, String> splitEntry : splitMap.entrySet()) {
+                if (StringUtils.equals(splitEntry.getValue(), stringListEntry.getKey())) {
+                    numberBuilder.append(",").append(splitEntry.getKey());
+                    removeKeys.add(splitEntry.getKey());
+                }
+            }
+            resultMap.put(numberBuilder.toString(),stringListEntry.getKey());
+        }
+        removeKeys.forEach(o -> splitMap.remove(o));
+        if(!splitMap.isEmpty()){
+            resultMap.putAll(splitMap);
+        }
+        StringBuilder builder = new StringBuilder();
+        if(!resultMap.isEmpty()){
+            for (Map.Entry<String, String> resultEntry : resultMap.entrySet()) {
+                if (resultMap.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
+                    return explain + resultEntry.getValue();
+                }
+                builder.append(String.format("%s号", resultEntry.getKey())).append(StringUtils.defaultString(explain)).append(resultEntry.getValue()).append(symbol);
+            }
+        }
+        return builder.toString();
     }
 
 

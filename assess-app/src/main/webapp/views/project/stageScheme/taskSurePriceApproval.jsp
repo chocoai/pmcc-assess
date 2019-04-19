@@ -40,16 +40,18 @@
                         </c:forEach>
                         </tbody>
                     </table>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">
-                                权重说明
-                            </label>
-                            <div class="col-sm-11">
-                                <label class="form-control">${schemeSurePrice.weightExplain}</label>
+                    <c:if test="${not empty schemeSurePrice.weightExplain}">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    权重说明
+                                </label>
+                                <div class="col-sm-11">
+                                    <label class="form-control">${schemeSurePrice.weightExplain}</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </c:if>
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-1 control-label">
