@@ -345,7 +345,6 @@ public class PublicService {
         if (var1 == null || var2 == null) return -1;//表示错误数据
         BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
         BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
-        //maxDecimal.divide(minDecimal)
-        return 10;
+        return maxDecimal.divide(minDecimal,2,BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
     }
 }

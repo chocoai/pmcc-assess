@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.test;
 
 
 import com.aspose.words.*;
-import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -411,5 +410,17 @@ public class Test {
         doc.updateFields();// 更新域
         doc.save("D:\\test\\1.doc");
 
+    }
+
+    @org.junit.Test
+    public void testCompute(){
+        System.out.print(computeDifference(new BigDecimal("100"),new BigDecimal("90")));
+    }
+
+    public int computeDifference(BigDecimal var1, BigDecimal var2) {
+        if (var1 == null || var2 == null) return -1;//表示错误数据
+        BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
+        BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
+        return maxDecimal.divide(minDecimal,2,BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
     }
 }
