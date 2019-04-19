@@ -378,29 +378,6 @@ public class GenerateBaseDataService {
 
 
     /**
-     * 估价对象的总价
-     *
-     * @return
-     */
-    public String getTotalValueValuationObject() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        Set<String> stringSet = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
-                    if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
-                        BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
-                        stringSet.add(String.format("%s:%s万元", getSchemeJudgeObjectShowName(schemeJudgeObject), generateCommonMethod.getBigDecimalRound(bigDecimal, true)));
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
-    }
-
-
-    /**
      * 分类评估单价计算试
      */
     public String getEvaluationExpression() {
@@ -642,24 +619,15 @@ public class GenerateBaseDataService {
             stringSet.clear();
             row++;
         }
-        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = getSchemeReimbursementItemVoList();
-        if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-            BigDecimal bigDecimal = new BigDecimal(0);
-            if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-                for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
-                    if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
-                        bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
-                    }
-                }
-            }
-            String s = generateCommonMethod.getBigDecimalRound(bigDecimal, false);
+        if (CollectionUtils.isNotEmpty(getSchemeReimbursementItemVoList())) {
+            String s = getStatutoryPriorityAmountTotal();
             stringSet.add("根据估价委托人提供的《法定优先受偿款情况说明》");
             stringSet.add("估价对象于价值时点已设定抵押权");
             stringSet.add("本次评估是抵押权存续期间的房地产估价（同行续贷）");
             stringSet.add("经过沟通");
             stringSet.add("抵押权人已经知晓法定优先受偿款对估价对象价值的影响");
             stringSet.add("且并不需要我们在抵押价值中予以扣除法定优先受偿款");
-            stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款为%s元（大写：%s ）", s, CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(bigDecimal, false))));
+            stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款合计为%s万元（大写：%s ）", s, CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(new BigDecimal(s).multiply(new BigDecimal(10000)), false))));
             stringSet.add("在此提请报告使用人加以关注。");
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
             stringSet.clear();
@@ -1013,24 +981,20 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(8);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = getLocalPath();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Set<String> stringSet = Sets.newHashSet();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObject));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (StringUtils.isNotBlank(schemeJudgeFunction.getApplicableReason())) {
-                            stringBuilder.append(schemeJudgeFunction.getName()).append("估价方法:");
-                            stringBuilder.append(schemeJudgeFunction.getApplicableReason()).append(";");
-                        }
-                    }
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
-                    builder.writeln();
-                    stringBuilder.delete(0, builder.toString().length());
-                }
-            }
+            List<Integer> integerList = Lists.newArrayList();
+            schemeJudgeObjectList.stream().forEach(oo -> integerList.add(generateCommonMethod.parseIntJudgeNumber(oo.getNumber())));
+            stringBuilder.append(generateCommonMethod.convertNumber(integerList));
+            stringSet.add(getCompareAssistApplyReason());
+            stringSet.add(getIncomeAssistApplyReason());
+            stringBuilder.append(StringUtils.join(stringSet.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList()), "，"));
         }
+        if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
+            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(stringBuilder.toString())), false);
+        }
+        builder.writeln();
         doc.save(localPath);
         return localPath;
     }
@@ -1851,39 +1815,6 @@ public class GenerateBaseDataService {
         return bigDecimal.toString();
     }
 
-    /**
-     * 法定优先受偿款金额
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getStatutoryPriorityAmount() throws Exception {
-        Set<String> stringSet = Sets.newHashSet();
-        Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> map = schemeReimbursementService.getSchemeReimbursementItemVoMapAndSchemeJudgeObject(getSchemeJudgeObjectList(), projectId);
-        if (!map.isEmpty()) {
-            map.entrySet().stream().forEach(entry -> {
-                List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = entry.getValue();
-                if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-                    schemeReimbursementItemVoList = schemeReimbursementItemVoList.stream().distinct().collect(Collectors.toList());
-                    if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-                        BigDecimal bigDecimal = new BigDecimal(0);
-                        for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
-                            if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
-                                bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
-                            }
-                        }
-                        stringSet.add(String.format("%s:%s、", generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey()), bigDecimal.toString()));
-
-                    }
-                }
-            });
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = "0";
-        }
-        return s;
-    }
 
     /**
      * 假设开发法适用原因

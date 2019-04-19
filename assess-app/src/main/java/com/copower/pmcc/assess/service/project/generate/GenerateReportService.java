@@ -685,11 +685,6 @@ public class GenerateReportService {
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationPriceCateGoryOne());
                     }
                 }
-                //估价对象的总价
-                if (Objects.equal(BaseReportFieldEnum.TotalValueValuationObject.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTotalValueValuationObject());
-                }
                 //估价对象的单价
                 if (Objects.equal(BaseReportFieldEnum.UnitPriceValuator.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -775,12 +770,6 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.StatutoryPriorityAmountTotal.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryPriorityAmountTotal());
-
-                }
-                //法定优先受偿款金额
-                if (Objects.equal(BaseReportFieldEnum.StatutoryPriorityAmount.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryPriorityAmount());
 
                 }
                 //估价对象区位状况表
