@@ -5,6 +5,7 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldCompareEnum;
 import com.copower.pmcc.assess.common.enums.MethodCompareFieldEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
+import com.copower.pmcc.assess.service.data.DataMethodFormulaService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
@@ -40,6 +42,7 @@ import java.util.List;
 public class GenerateMdCompareService {
 
     private Integer mcId;
+    private Integer schemeJudgeObjectId;
     private Date valueTimePoint;
     private Integer areaId;
     private List<DataSetUseField> setUseFieldList;
@@ -56,6 +59,7 @@ public class GenerateMdCompareService {
     private BasicApplyService basicApplyService;
     private BasicHouseTradingService basicHouseTradingService;
     private BaseDataDicService baseDataDicService;
+    private DataMethodFormulaService dataMethodFormulaService;
     private SchemeAreaGroupService schemeAreaGroupService;
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private DataHousePriceIndexDao dataHousePriceIndexDao;
@@ -65,7 +69,8 @@ public class GenerateMdCompareService {
     private GenerateMdCompareService() {
     }
 
-    public GenerateMdCompareService(Integer mcId, Date date, Integer areaId) throws Exception {
+    public GenerateMdCompareService(Integer schemeJudgeObjectId, Integer mcId, Date date, Integer areaId) throws Exception {
+        this.schemeJudgeObjectId = schemeJudgeObjectId;
         this.mcId = mcId;
         this.valueTimePoint = date;
         this.areaId = areaId;
@@ -77,6 +82,7 @@ public class GenerateMdCompareService {
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
         this.basicHouseTradingService = SpringContextUtils.getBean(BasicHouseTradingService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
         this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
@@ -185,6 +191,9 @@ public class GenerateMdCompareService {
         if (fieldCompareEnum != null) {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
+                case DESIGN_FORMULAS:
+                    localPath = getDesignFormulas(marketCompareItemDtos, title);
+                    break;
                 case CASE_NUMBER:
                     localPath = getCaseNumber(title, caseItemList.size());
                     break;
@@ -972,4 +981,43 @@ public class GenerateMdCompareService {
         generateCommonMethod.settingBuildingTable(builder);
     }
 
+
+
+    /**
+     * 比较法计算公式
+     *
+     * @param marketCompareItemDtos 估价对象内容
+     * @return
+     */
+    public String getDesignFormulas(List<MarketCompareItemDto> marketCompareItemDtos,String title) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+        String number = getSubstitutionPrincipleName(schemeJudgeObject.getNumber());
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(number).append("市场比较法");
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(stringBuilder.toString())), true);
+        //获取比较法公式
+        DataMethodFormula formula = new DataMethodFormula();
+        BaseDataDic compareType = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        List<DataMethodFormula> formulaList = dataMethodFormulaService.getDataMethodFormulaList(compareType.getId());
+        if (CollectionUtils.isNotEmpty(formulaList)) {
+            formula = formulaList.get(0);
+        }
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(formula.getFormula())), true);
+        doc.save(localPath);
+        return localPath;
+    }
+
+    public String getSubstitutionPrincipleName(String str) {
+        String[] s = str.toString().split(",");
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for (String item : s) {
+            if (!numbers.contains(Integer.valueOf(item))) {
+                numbers.add(Integer.valueOf(item));
+            }
+        }
+        return generateCommonMethod.convertNumber(numbers) + "号";
+    }
 }

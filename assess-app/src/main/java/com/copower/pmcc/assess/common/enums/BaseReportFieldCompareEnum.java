@@ -33,6 +33,7 @@ public enum BaseReportFieldCompareEnum {
     COUNT_RESULT("比较法测算结果"),
 
     HOUSEPRICE_INDEX( "比较法房价指数表"),
+    DESIGN_FORMULAS( "比较法计算公式"),
     ;
     private String key;
 

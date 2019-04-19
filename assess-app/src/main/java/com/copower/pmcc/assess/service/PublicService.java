@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -290,7 +291,7 @@ public class PublicService {
      * @param list
      * @return
      */
-    public String fusinString(List<String> list,Boolean onlySame) {
+    public String fusinString(List<String> list, Boolean onlySame) {
         if (CollectionUtils.isEmpty(list)) return null;
         //去除重复
         list = generateCommonMethod.removeDuplicate(list);
@@ -303,7 +304,7 @@ public class PublicService {
         }
         //samePart 如果后面为数字则去掉数字
         samePart = samePart.replaceAll("\\d+$", "");
-        if(onlySame) return samePart;
+        if (onlySame) return samePart;
         StringBuilder resultBuilder = new StringBuilder(samePart);
         for (String s : list) {
             resultBuilder.append(s.replace(samePart, "")).append("、");
@@ -313,6 +314,7 @@ public class PublicService {
 
     /**
      * 获取两字符串相同部分
+     *
      * @param var1
      * @param var2
      * @return
@@ -329,5 +331,20 @@ public class PublicService {
             }
         }
         return result.toString();
+    }
+
+
+    /**
+     * 计算数值差异
+     *
+     * @param var1
+     * @param var2
+     * @return 返回10则有10%的差异
+     */
+    public int computeDifference(BigDecimal var1, BigDecimal var2) {
+        if (var1 == null || var2 == null) return -1;//表示错误数据
+        BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
+        BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
+        return maxDecimal.divide(minDecimal,2,BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
     }
 }
