@@ -333,5 +333,19 @@ public class PublicService {
         return result.toString();
     }
 
+    /**
+     * 计算数值差异
+     *
+     * @param var1
+     * @param var2
+     * @return 返回10则有10%的差异
+     */
+    public int computeDifference(BigDecimal var1, BigDecimal var2) {
+        if (var1 == null || var2 == null) return -1;//表示错误数据
+        BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
+        BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
+        return maxDecimal.divide(minDecimal,2,BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
+    }
+
 
 }

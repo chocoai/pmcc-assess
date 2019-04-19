@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
@@ -62,6 +63,8 @@ public class GenerateCommonMethod {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private SurveyCommonService surveyCommonService;
+    @Autowired
+    private PublicService publicService;
 
     public final String SchemeJudgeObjectName = "委估对象";
     public final String errorStr = "无";
@@ -1091,10 +1094,7 @@ public class GenerateCommonMethod {
      * @return 返回10则有10%的差异
      */
     public int computeDifference(BigDecimal var1, BigDecimal var2) {
-        if (var1 == null || var2 == null) return -1;//表示错误数据
-        BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
-        BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
-        return maxDecimal.divide(minDecimal,2,BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
+        return publicService.computeDifference(var1, var2);
     }
 
 }
