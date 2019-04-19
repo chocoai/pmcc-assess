@@ -73,7 +73,6 @@ public enum BaseReportFieldEnum implements Serializable {
     DeterminationMarketValueValuationObject("估价对象市场价值的确定"),
     HotTip("特别提示"),
 
-    registrationNumber("注册号"),
     RegisteredRealEstateValuer("注册房产估价师"),
     RegisteredRealEstateValuerAndNumber("注册房产估价师及注册号"),
     XIEHE_organizationInfo("房地产估价机构信息"),

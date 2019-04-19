@@ -1058,35 +1058,6 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 注册房产估价师 编号
-     *
-     * @param str
-     * @throws Exception
-     */
-    public String getRegistrationNumber(String str) throws Exception {
-        Set<String> stringSet = Sets.newLinkedHashSet();
-        String[] strings = str.split(",");
-        for (String id : strings) {
-            DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(Integer.parseInt(id));
-            if (dataQualificationVo != null) {
-                if (StringUtils.isNotBlank(dataQualificationVo.getUserAccount())) {
-                    for (String account : dataQualificationVo.getUserAccount().split(",")) {
-                        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
-                        if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
-                            adPersonalQualificationDtoList.stream().forEach(adPersonalQualificationDto -> stringSet.add(adPersonalQualificationDto.getCertificateNo()));
-                        }
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringMerge(stringSet, ",");
-        if (StringUtils.isNotBlank(s.trim())) {
-            return s;
-        }
-        return errorStr;
-    }
-
-    /**
      * 房地产估价机构信息
      *
      * @return
@@ -1098,7 +1069,6 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
         StringBuilder stringBuilder = new StringBuilder(8);
-        stringBuilder.append("<p>");
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "机构名称", qualificationDto.getOrganizationName())));
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "住所", qualificationDto.getOrganizationAddress())));
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "法定代表人", qualificationDto.getLegalRepresentative())));
@@ -1107,7 +1077,6 @@ public class GenerateBaseDataService {
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "资质证书编号", qualificationDto.getCertificateNo())));
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "资质证书有效期", qualificationDto.getCertificateEffectiveDate())));
         stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.format("%s:%s", "经营范围", StringUtils.isEmpty(qualificationDto.getBusinessScopeName()) ? "评估房产" : qualificationDto.getBusinessScopeName())));
-        stringBuilder.append("</p>");
         documentBuilder.insertHtml(stringBuilder.toString(), true);
         doc.save(localPath);
         return localPath;
