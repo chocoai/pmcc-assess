@@ -95,7 +95,7 @@ public enum BaseReportFieldEnum implements Serializable {
 
     collateralFound("担保物权设立情况"),
     ComputationProcess("主要计算过程"),
-    UnitPriceAdjustmentTable("单价调整表"),
+    SelectionApplicationParameters("相关参数选取与应用"),
     StatusBuildingRightsInterests("建筑物权益状况"),
     TaxBurden("税费负担"),
     PaymentMethod("付款方式"),
