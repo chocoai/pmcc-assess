@@ -513,10 +513,6 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportGeneration));
                 }
-                //注册房产估价师 注册号
-                if (Objects.equal(BaseReportFieldEnum.registrationNumber.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegistrationNumber(generateReportGeneration.getRealEstateAppraiser()));
-                }
                 //注册房产估价师 注册房地产估价师注册证书复印件
                 if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerValuationInstitution.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
