@@ -314,6 +314,15 @@
                     </div>
                 </div>
                 <div class="x-valid">
+                    <label class="col-sm-1 control-label">单价内涵</label>
+                    <div class="col-sm-3">
+                        <label class="form-control"
+                               name="priceConnotationName">${basicHouseTrading.priceConnotationName}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
                     <label class="col-sm-1 control-label">交易单价（元）</label>
                     <div class="col-sm-3">
                         <label class="form-control" name="tradingUnitPrice">${caseHouseTrading.tradingUnitPrice}</label>

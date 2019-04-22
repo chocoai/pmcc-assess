@@ -51,7 +51,7 @@ public class SchemeJudgeFunctionService {
     }
 
     /**
-     * 获取委估对象适用方法
+     * 获取适用方法
      *
      * @param areaId
      * @return
@@ -60,6 +60,18 @@ public class SchemeJudgeFunctionService {
         SchemeJudgeFunction schemeJudgeFunction = new SchemeJudgeFunction();
         schemeJudgeFunction.setAreaGroupId(areaId);
         schemeJudgeFunction.setBisApplicable(true);
+        return schemeJudgeFunctionDao.getSchemeJudgeFunction(schemeJudgeFunction);
+    }
+
+    /**
+     * 取得不适用方法
+     * @param areaId
+     * @return
+     */
+    public List<SchemeJudgeFunction> getNotApplicableJudgeFunctionsByAreaId(Integer areaId) {
+        SchemeJudgeFunction schemeJudgeFunction = new SchemeJudgeFunction();
+        schemeJudgeFunction.setAreaGroupId(areaId);
+        schemeJudgeFunction.setBisApplicable(false);
         return schemeJudgeFunctionDao.getSchemeJudgeFunction(schemeJudgeFunction);
     }
 

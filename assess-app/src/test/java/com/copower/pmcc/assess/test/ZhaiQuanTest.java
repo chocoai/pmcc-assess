@@ -28,7 +28,7 @@ import java.util.Map;
 public class ZhaiQuanTest {
     public static void main(String[] args) throws Exception {
         //绵阳 成都74
-        String area = "广元";
+        String area = "巴中";
         String wordPath = "C:\\Users\\kings\\Desktop\\zhaiquan\\新客户原始报告模板定稿.doc";
         String excelPath = "";
         excelPath = "C:\\Users\\kings\\Desktop\\报告生成\\新客户原始报告数据-" + area + ".xlsx";

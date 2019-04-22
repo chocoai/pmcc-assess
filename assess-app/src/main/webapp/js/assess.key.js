@@ -194,6 +194,7 @@ AssessDicKey.examineHouseInformationSourceType = "examine.house.information.sour
 AssessDicKey.examineHouseInformationSourceTypeOpen = "examine.house.information.source.type.open";//信息来源类型-公开信息
 AssessDicKey.examineHouseInformationSourceCategory = "examine.house.information.source.category";//信息来源类别
 AssessDicKey.examineHouseResearchType = "examine.house.research.type";//调查方式
+AssessDicKey.examineHousePriceConnotation = "examine.house.price.connotation";//单价内涵
 
 
 AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位

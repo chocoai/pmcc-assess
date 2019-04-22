@@ -372,6 +372,15 @@
                 </div>
             </div>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">单价内涵<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 priceConnotation" name="priceConnotation" required>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">交易单价（元）<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="交易单价（元）" class="form-control" name="tradingUnitPrice" required

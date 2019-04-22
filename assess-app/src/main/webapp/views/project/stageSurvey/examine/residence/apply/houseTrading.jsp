@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div  id="abnormalTransaction" style="display: none;">
+            <div id="abnormalTransaction" style="display: none;">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">说明事项类型</label>
                     <div class="col-sm-3">
@@ -204,6 +204,15 @@
                     ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">单价内涵<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 priceConnotation" name="priceConnotation" required>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易单价（元）${empty surveyCaseStudy?"":'<span class="symbol required"></span>'} </label>
                 <div class="col-sm-3">

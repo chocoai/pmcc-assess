@@ -86,6 +86,7 @@ public enum BaseReportFieldEnum implements Serializable {
     XIEHE_certificateEffectiveDate("机构证书有效期"),
 
     SelectionValuationMethod("估价对象选择估价方法"),
+    NotSelectionValuationMethod("估价对象不选择估价方法"),
     EvaluationExpression("分类评估单价计算试"),
     EvaluationMethodResult("分类评估方法结果"),
 

@@ -180,7 +180,7 @@ public class EvaluationThinkingService {
         //第三段内容： 当只有项目委托目的为抵押的时候才有第三段内容
         if (map == null) return null;
         if (projectInfo == null) return null;
-        StringBuilder firstDesc = new StringBuilder("<div style=\"text-indent:2em\">");//第一段描述
+        StringBuilder firstDesc = new StringBuilder("");//第一段描述
         StringBuilder secondDesc = new StringBuilder();//第二段描述
         StringBuilder thirdDesc = new StringBuilder();//第三段描述
         List<Integer> baseMethodList = Lists.newArrayList();
@@ -214,23 +214,22 @@ public class EvaluationThinkingService {
             }
             firstDesc.append(StringUtils.strip(firstString, "和")).append(String.format("为导向综合求取估价对象%s的市场价值。", baseJudgeNumberString));
         }
-        firstDesc.append("</div>");
         if (CollectionUtils.isNotEmpty(baseOtherList)) {
             String otherJudgeNumberString = generateCommonMethod.convertNumber(otherJudgeNumber);
-            secondDesc.append("<div style=\"text-indent:2em\">").append(String.format("(2)再通过%s对估价对象%s进行特定因素调整，得到其市场价值。"
+            secondDesc.append(String.format("(2)再通过%s对估价对象%s进行特定因素调整，得到其市场价值。"
                             , baseDataDicService.getNameById(baseOtherList.get(0)), otherJudgeNumberString));
-            secondDesc.append("</div>");
         }
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
         if (dataDic != null && projectInfo.getEntrustPurpose().equals(dataDic.getId())) {
-            thirdDesc.append("<div style=\"text-indent:2em\">");
             if (secondDesc.length() > 0)
                 thirdDesc.append("(3)");
             else
                 thirdDesc.append("(2)");
-            thirdDesc.append("最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。").append("</div>");
+            thirdDesc.append("最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。");
         }
-        return stringBuilder.append(firstDesc).append(secondDesc).append(thirdDesc).toString();
+        return stringBuilder.append(generateCommonMethod.getIndentHtml(firstDesc.toString()))
+                .append(generateCommonMethod.getIndentHtml(secondDesc.toString()))
+                .append(generateCommonMethod.getIndentHtml(thirdDesc.toString())).toString();
     }
 
     private String getJudgeNumber(String number) {
