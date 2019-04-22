@@ -676,6 +676,76 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
+        public Criteria andAdditionalCaptureIsNull() {
+            addCriterion("additional_capture is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureIsNotNull() {
+            addCriterion("additional_capture is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureEqualTo(String value) {
+            addCriterion("additional_capture =", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureNotEqualTo(String value) {
+            addCriterion("additional_capture <>", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureGreaterThan(String value) {
+            addCriterion("additional_capture >", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureGreaterThanOrEqualTo(String value) {
+            addCriterion("additional_capture >=", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureLessThan(String value) {
+            addCriterion("additional_capture <", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureLessThanOrEqualTo(String value) {
+            addCriterion("additional_capture <=", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureLike(String value) {
+            addCriterion("additional_capture like", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureNotLike(String value) {
+            addCriterion("additional_capture not like", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureIn(List<String> values) {
+            addCriterion("additional_capture in", values, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureNotIn(List<String> values) {
+            addCriterion("additional_capture not in", values, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureBetween(String value1, String value2) {
+            addCriterion("additional_capture between", value1, value2, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureNotBetween(String value1, String value2) {
+            addCriterion("additional_capture not between", value1, value2, "additionalCapture");
+            return (Criteria) this;
+        }
+
         public Criteria andAdditionalRatioIsNull() {
             addCriterion("additional_ratio is null");
             return (Criteria) this;

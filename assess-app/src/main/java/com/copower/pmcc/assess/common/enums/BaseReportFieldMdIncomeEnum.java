@@ -61,7 +61,9 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
 
     IncomePayBack("收益法报酬率"),
     IncomePrice("收益法测算价格"),
-    IncomeMethodFormula("收益法公式"),
+    IncomeUnitPriceConnotation("收益法单价内涵"),
+    IncomeMethodFormula("收益法计算公式"),
+    IncomeDetermineRentalWay("收益法确定月租金方式"),
 
     //------------------------------------------------------
 

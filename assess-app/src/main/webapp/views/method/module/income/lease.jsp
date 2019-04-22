@@ -302,19 +302,19 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                交易税费率<span class="symbol required"></span>
+                                其它交易税费率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="transactionTaxeFeeRatio" placeholder="交易税费率"
+                                <input type="text" name="transactionTaxeFeeRatio" placeholder="其它交易税费率"
                                        class="form-control x-percent" required="required">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                交易税费说明<span class="symbol required"></span>
+                                其它交易税费率说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="transactionTaxeFeeExplain" placeholder="交易税费说明"
+                                <input type="text" name="transactionTaxeFeeExplain" placeholder="其它交易税费率说明"
                                        class="form-control" required="required">
                             </div>
                         </div>
@@ -326,6 +326,16 @@
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="landUseTax" placeholder="土地使用税" class="form-control"
+                                       data-rule-number="true"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                有效出租收缴率<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="additionalCapture" placeholder="有效出租收缴率" class="form-control"
                                        data-rule-number="true"
                                        required="required">
                             </div>

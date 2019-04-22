@@ -14,7 +14,6 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.dto.output.data.DataTaxRateAllocationVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseCostVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
 import com.copower.pmcc.assess.service.ToolRewardRateService;
@@ -47,8 +46,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -370,7 +371,7 @@ public class GenerateMdIncomeService {
                 }
                 //收益法公式
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeMethodFormula.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeMethodFormula());
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeMethodFormula());
                 }
                 //收益法报酬率
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomePayBack.getName())) {
@@ -395,6 +396,14 @@ public class GenerateMdIncomeService {
                 //收益法投资带来的优惠
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeFinancingAdvantage.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeFinancingAdvantage());
+                }
+                //收益法单价内涵
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeUnitPriceConnotation.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeUnitPriceConnotation());
+                }
+                //收益法确定月租金方式
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeDetermineRentalWay.getName())) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeDetermineRentalWay());
                 }
             } catch (Exception e) {
                 String error = e.getMessage();
@@ -457,14 +466,12 @@ public class GenerateMdIncomeService {
      * @date: 2019/2/27 18:18
      */
     public String getIncomebuildingStructureType() throws Exception {
-        if (getSchemeInfo().getPlanDetailsId() != null) {
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
-            if (generateBaseExamineService.getBasicApply() != null) {
-                if (generateBaseExamineService.getBasicBuilding() != null) {
-                    if (generateBaseExamineService.getBasicBuilding().getBuildingStructureType() != null) {
-                        return baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureType());
-                    }
-                }
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+        if (generateBaseExamineService.getBasicBuilding() != null) {
+            if (generateBaseExamineService.getBasicBuilding().getBuildingStructureType() != null) {
+                return baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureType());
             }
         }
         return errorStr;
@@ -479,14 +486,12 @@ public class GenerateMdIncomeService {
      * @date: 2019/2/27 18:10
      */
     public String getIncomeCompletionTime() throws Exception {
-        if (getSchemeInfo().getPlanDetailsId() != null) {
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
-            if (generateBaseExamineService.getBasicApply() != null) {
-                if (generateBaseExamineService.getBasicBuilding() != null) {
-                    if (generateBaseExamineService.getBasicBuilding().getBeCompletedTime() != null) {
-                        return DateUtils.format(generateBaseExamineService.getBasicBuilding().getBeCompletedTime(), DateUtils.DATE_CHINESE_PATTERN);
-                    }
-                }
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+        if (generateBaseExamineService.getBasicBuilding() != null) {
+            if (generateBaseExamineService.getBasicBuilding().getBeCompletedTime() != null) {
+                return DateUtils.format(generateBaseExamineService.getBasicBuilding().getBeCompletedTime(), DateUtils.DATE_CHINESE_PATTERN);
             }
         }
         return errorStr;
@@ -501,9 +506,11 @@ public class GenerateMdIncomeService {
      * @date: 2019/2/28 10:34
      */
     public String getIncomeUsedLife() throws Exception {
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
-        if (getSchemeInfo().getPlanDetailsId() != null && schemeAreaGroup.getValueTimePoint() != null) {
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
+        BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+        if (schemeAreaGroup.getValueTimePoint() != null) {
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             if (generateBaseExamineService.getBasicApply() != null) {
                 if (generateBaseExamineService.getBasicBuilding() != null) {
                     if (generateBaseExamineService.getBasicBuilding().getBeCompletedTime() != null) {
@@ -526,16 +533,16 @@ public class GenerateMdIncomeService {
      */
     public String getIncomeBuildEconomicLife() throws Exception {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
-        if (getSchemeInfo().getPlanDetailsId() != null && schemeAreaGroup.getValueTimePoint() != null) {
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
-            if (generateBaseExamineService.getBasicApply() != null) {
-                if (generateBaseExamineService.getBasicBuilding() != null) {
-                    if (generateBaseExamineService.getBasicBuilding().getResidenceUseYear() != null) {
-                        try {//可能会有值但是找不到数据实体(后期更改配置数据的情况)允许异常
-                            return dataBuildingNewRateService.getByiDdataBuildingNewRate(generateBaseExamineService.getBasicBuilding().getResidenceUseYear()).getDurableLife().toString();
-                        } catch (Exception e) {
-                        }
-                    }
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        if (schemeAreaGroup.getValueTimePoint() != null && schemeJudgeObject != null) {
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            if (generateBaseExamineService.getBasicBuilding() != null) {
+                if (generateBaseExamineService.getBasicBuilding().getResidenceUseYear() != null) {
+                    return baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getResidenceUseYear());
+                }
+                if (generateBaseExamineService.getBasicBuilding().getIndustryUseYear() != null) {
+                    return dataBuildingNewRateService.getByiDdataBuildingNewRate(generateBaseExamineService.getBasicBuilding().getIndustryUseYear()).getDurableLife().toString();
                 }
             }
         }
@@ -624,29 +631,79 @@ public class GenerateMdIncomeService {
      * @date: 2019/2/28 14:13
      */
     public String getIncomeGetMdCompare() throws Exception {
-        DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(oo -> {
-            if (oo.getName().equals(CalculationMethodNameEnum.MdCompare.getName())) {
-                return true;
+        DataEvaluationMethod dataEvaluationMethod = null;
+        SchemeInfo schemeInfo = null;
+        List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
+        if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
+            if (dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdCompare.getName().indexOf(oo.getName()) != -1).count() >= 1) {
+                dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdCompare.getName().indexOf(oo.getName()) != -1).findFirst().get();
             }
-            return false;
-        }).findFirst().get();
+        }
         if (dataEvaluationMethod != null) {
-            SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(getSchemeJudgeObject().getId(), dataEvaluationMethod.getMethod());
-            if (schemeInfo != null) {
-                if (schemeInfo.getMethodDataId() != null) {
-                    try {
-                        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(),schemeInfo.getMethodDataId(), new Date(), areaId);
-                        String temp = generateMdCompareService.generateCompareFile();
-                        File file = new File(temp);
-                        if (file.isFile()) {
-                            return temp;
-                        }
-                    } catch (Exception e) {
+            schemeInfo = schemeInfoService.getSchemeInfo(getSchemeJudgeObject().getId(), dataEvaluationMethod.getMethod());
+        }
+        if (schemeInfo != null) {
+            if (schemeInfo.getMethodDataId() != null) {
+                try {
+                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), schemeInfo.getMethodDataId(), new Date(), areaId);
+                    String temp = generateMdCompareService.generateCompareFile();
+                    File file = new File(temp);
+                    if (file.isFile()) {
+                        return temp;
                     }
+                } catch (Exception e) {
                 }
             }
         }
         return null;
+    }
+
+    //收益法单价内涵
+    public String getIncomeUnitPriceConnotation() throws Exception {
+        BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+        if (basicApply != null) {
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicHouseTrading houseTrading = generateBaseExamineService.getBasicTrading();
+            if (houseTrading != null) {
+                return "<收益法单价内涵暂时未添加字段>" ;
+            }
+        }
+        return errorStr;
+    }
+
+    //收益法确定月租金方式
+    public String getIncomeDetermineRentalWay() throws Exception {
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
+        List<MdIncomeLeaseVo> mdIncomeLeaseList = getMdIncomeLeaseList();
+        boolean flag = false;
+        if (CollectionUtils.isNotEmpty(mdIncomeLeaseList)) {
+            flag = mdIncomeLeaseList.stream().filter(oo -> oo.getMcId() != null).count() >= 1;
+        }
+        if (flag) {
+            List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
+            DataEvaluationMethod dataEvaluationMethod = null;
+            if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
+                if (dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdIncome.getName().indexOf(oo.getName()) != -1).count() >= 1) {
+                    dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdIncome.getName().indexOf(oo.getName()) != -1).findFirst().get();
+                }
+            }
+            if (dataEvaluationMethod != null) {
+                List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethod.getMethod());
+                if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
+                    if (StringUtils.isNotBlank(dataMethodFormulaList.stream().findFirst().get().getFormula())) {
+                        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(dataMethodFormulaList.stream().findFirst().get().getFormula()), false);
+                    }
+                }
+            }
+        }
+        if (!flag) {
+            String val = " ";
+            documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(errorStr), false);
+        }
+        document.save(localPath);
+        return localPath;
     }
 
     /**
@@ -658,21 +715,26 @@ public class GenerateMdIncomeService {
      * @date: 2019/2/28 16:37
      */
     public String getIncomeMethodFormula() throws Exception {
-        DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(dataEvaluation -> {
-            if (Objects.equal(CalculationMethodNameEnum.MdIncome.getName(), dataEvaluation.getName())) {
-                return true;
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
+        List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
+        DataEvaluationMethod dataEvaluationMethod = null;
+        if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
+            if (dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdIncome.getName().indexOf(oo.getName()) != -1).count() >= 1) {
+                dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdIncome.getName().indexOf(oo.getName()) != -1).findFirst().get();
             }
-            return false;
-        }).findFirst().get();
+        }
         if (dataEvaluationMethod != null) {
             List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethod.getMethod());
             if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
-                if (StringUtils.isNotBlank(dataMethodFormulaList.get(0).getFormula())) {
-                    return dataMethodFormulaList.get(0).getFormula();
+                if (StringUtils.isNotBlank(dataMethodFormulaList.stream().findFirst().get().getFormula())) {
+                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(dataMethodFormulaList.stream().findFirst().get().getFormula()), false);
                 }
             }
         }
-        return errorStr;
+        document.save(localPath);
+        return localPath;
     }
 
     /**
@@ -687,13 +749,8 @@ public class GenerateMdIncomeService {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord != null) {
-                if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
-                    DeclareRealtyLandCert declareRealtyLandCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(declareRecord.getDataTableId());
-                    if (declareRealtyLandCert != null && declareRealtyLandCert.getTerminationDate() != null) {
-                        return DateUtils.format(declareRealtyLandCert.getTerminationDate(), DateUtils.DATE_CHINESE_PATTERN);
-                    }
-                }
+            if (declareRecord != null && declareRecord.getLandUseEndDate() != null) {
+                return DateUtils.format(declareRecord.getLandUseEndDate(), DateUtils.DATE_CHINESE_PATTERN);
             }
         }
         return errorStr;
@@ -1037,7 +1094,7 @@ public class GenerateMdIncomeService {
             });
         }
         if (StringUtils.isEmpty(builder.toString().trim())) {
-            builder.append(errorStr);
+            builder.append("不考虑估价对象租赁因素影响");
         }
         return builder.toString();
     }
@@ -2131,7 +2188,7 @@ public class GenerateMdIncomeService {
     }
 
     private void appendElement(StringBuilder builder, String content, Date start, Date end) {
-        if (StringUtils.isEmpty(content)){
+        if (StringUtils.isEmpty(content)) {
             return;
         }
         List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();

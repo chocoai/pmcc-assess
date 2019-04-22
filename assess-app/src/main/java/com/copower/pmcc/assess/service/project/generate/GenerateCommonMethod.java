@@ -319,10 +319,9 @@ public class GenerateCommonMethod {
         Ordering<SchemeJudgeObject> ordering = Ordering.from(new Comparator<SchemeJudgeObject>() {
             @Override
             public int compare(SchemeJudgeObject o1, SchemeJudgeObject o2) {
-                Integer a = Integer.parseInt(o1.getNumber().substring(0, 1));
-                Integer b = Integer.parseInt(o2.getNumber().substring(0, 1));
-                int num = a.compareTo(b);
-                return num;
+                Integer a = parseIntJudgeNumber(o1.getNumber());
+                Integer b =  parseIntJudgeNumber(o2.getNumber());
+                return a.compareTo(b);
             }
         });
         schemeJudgeObjectList.sort(ordering);
@@ -586,9 +585,6 @@ public class GenerateCommonMethod {
         return toSetStringMerge(stringSet, ",");
     }
 
-    public String toSetStringSplitNull(Set<String> stringSet) {
-        return toSetStringMerge(stringSet, null);
-    }
 
     public String toSetStringMerge(Set<String> stringSet, String split) {
         return this.toSetStringSplitCommaSuffix(stringSet, split, null);

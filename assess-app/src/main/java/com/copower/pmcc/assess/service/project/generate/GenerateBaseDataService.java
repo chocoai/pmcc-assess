@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
 import com.aspose.words.*;
+import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
@@ -43,9 +44,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.*;
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -1838,6 +1837,7 @@ public class GenerateBaseDataService {
 
     /**
      * 各种评估方法的取值 (example:市场比较法适用原因)
+     *
      * @param key
      * @param think
      * @param applicableReason
@@ -1943,12 +1943,12 @@ public class GenerateBaseDataService {
                             stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
                         }
                         stringBuilder.append("+").append(mdCompareItem.getTrialPrice().toString()).append("×");
-                        if (mdCompareItem.getWeight() != null){
+                        if (mdCompareItem.getWeight() != null) {
                             BigDecimal bigDecimal = mdCompareItem.getWeight().multiply(new BigDecimal(100));
                             bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
                             stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
-                        }else {
-                            BigDecimal bigDecimal = new BigDecimal(((1 - d)* 100)).multiply(new BigDecimal(100));
+                        } else {
+                            BigDecimal bigDecimal = new BigDecimal(((1 - d) * 100)).multiply(new BigDecimal(100));
                             bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
                             stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
                         }
@@ -2937,8 +2937,9 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getTenancyrestrictionRemark() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(8);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Set<String> stringSet = Sets.newHashSet();
+        Multimap<String, String> multimap = ArrayListMultimap.create();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 SchemeInfo schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdIncome, schemeJudgeObject);
@@ -2946,18 +2947,24 @@ public class GenerateBaseDataService {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String value = generateMdIncomeService.getTenancyrestrictionReamrk();
                     if (StringUtils.isNotBlank(value)) {
-                        if (!Objects.equal(errorStr, value)) {
-                            stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), value));
-                        }
+                        multimap.put(value, getSchemeJudgeObjectShowName(schemeJudgeObject));
                     }
                 }
             }
         }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        if (StringUtils.isEmpty(s.trim()) || "无".equals(s)) {
-            s = "不考虑估价对象租赁因素影响。";
+        if (!multimap.isEmpty()) {
+            if (multimap.keys().stream().distinct().count() == 1) {
+                stringBuilder.append(multimap.keys().stream().distinct().findFirst().get());
+            } else {
+                Set<String> strings = Sets.newHashSet();
+                multimap.entries().stream().distinct().forEach(oo -> strings.add(String.format("%s%s",oo.getValue(),oo.getKey())));
+                stringBuilder.append(StringUtils.join(strings,"、"));
+            }
         }
-        return s;
+        if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
+            stringBuilder.append(errorStr);
+        }
+        return stringBuilder.toString();
     }
 
     /**
@@ -3304,17 +3311,19 @@ public class GenerateBaseDataService {
      * @return SchemeInfo
      */
     private SchemeInfo getSchemeInfoId(CalculationMethodNameEnum methodNameEnum, SchemeJudgeObject schemeJudgeObject) {
-        DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(oo -> {
-            if (oo.getName().equals(methodNameEnum.getName())) {
-                return true;
+        List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
+        DataEvaluationMethod dataEvaluationMethod = null;
+        SchemeInfo schemeInfo = null;
+        if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
+            if (dataEvaluationMethodList.stream().filter(oo -> methodNameEnum.getName().indexOf(oo.getName()) != -1).count() >= 1) {
+                dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> methodNameEnum.getName().indexOf(oo.getName()) != -1).findFirst().get();
             }
-            return false;
-        }).findFirst().get();
+        }
         if (dataEvaluationMethod != null) {
-            SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
-            if (schemeInfo != null) {
-                return schemeInfo;
-            }
+            schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
+        }
+        if (schemeInfo != null) {
+            return schemeInfo;
         }
         return null;
     }
