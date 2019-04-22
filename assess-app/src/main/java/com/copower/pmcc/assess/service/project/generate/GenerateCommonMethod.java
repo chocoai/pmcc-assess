@@ -464,6 +464,43 @@ public class GenerateCommonMethod {
 
 
     /**
+     * 类似于这样的1=2-7-20-32-1-fhd-6364转换为 List形式并且里面的数字如20和32等会是一个元素而像'='或者'-'或者'f'等这样的非数字则单独是一个元素
+     * @param text
+     * @return
+     */
+    public List<String> convertNumberHelp(String text) {
+        List<String> stringList = Lists.newArrayList();
+        if (StringUtils.isEmpty(text.trim())) {
+            return stringList;
+        }
+        StringBuilder stringBuilder = new StringBuilder(8);
+        stringBuilder.append(text);
+        String regEx = "[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(text);
+        while (m.find()) {
+            String string = stringBuilder.toString();
+            int index = string.indexOf(m.group());
+            String number = string.substring(0, index);
+            if (NumberUtils.isNumber(number)) {
+                stringList.add(number);
+            }
+            stringList.add(m.group());
+            string = string.substring(index + 1, stringBuilder.toString().length());
+            stringBuilder.delete(0, stringBuilder.toString().length());
+            stringBuilder.append(string);
+        }
+        if (NumberUtils.isNumber(stringBuilder.toString())) {
+            stringList.add(stringBuilder.toString());
+        }
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            //去重复 (不改变顺序)
+            stringList = stringList.stream().distinct().collect(Collectors.toList());
+        }
+        return stringList;
+    }
+
+    /**
      * 数字转换
      *
      * @param numbers
@@ -471,24 +508,28 @@ public class GenerateCommonMethod {
      */
     public String convertNumber(List<Integer> numbers) {
         if (CollectionUtils.isNotEmpty(numbers)) {
+            numbers = numbers.stream().distinct().collect(Collectors.toList());
             Collections.sort(numbers);
             Integer[] ints = new Integer[numbers.size()];
             for (int i = 0; i < numbers.size(); i++) {
                 ints[i] = numbers.get(i);
             }
-            String text = this.convert(ints, 0);
-            text = text.substring(0, text.length() - 1);
+            String text = null;
+            if (ints.length > 1){
+                text = this.convert(ints, 0);
+            }else {
+                text = ints[0].toString();
+            }
             StringBuilder stringBuilder = new StringBuilder(8);
-            if (StringUtils.isNotEmpty(text)) {
-                for (int i = 0; i < text.length(); i++) {
-                    char c = text.charAt(i);
-                    String s = String.valueOf(c);
+            List<String> stringList = convertNumberHelp(text);
+            if (CollectionUtils.isNotEmpty(stringList)){
+                stringList.stream().forEach(s -> {
                     if (NumberUtils.isNumber(s)) {
                         stringBuilder.append(this.parseToCircleNumber(Integer.parseInt(s)));
                     } else {
-                        stringBuilder.append(c);
+                        stringBuilder.append(s);
                     }
-                }
+                });
             }
             if (StringUtils.isNotEmpty(stringBuilder.toString())) {
                 text = stringBuilder.toString();

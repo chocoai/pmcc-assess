@@ -2968,7 +2968,7 @@ public class GenerateBaseDataService {
      */
     public String getDetailedCalculationProcessValuationObject() throws Exception {
         String localPath = getLocalPath();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         Map<String, String> map = Maps.newHashMap();
