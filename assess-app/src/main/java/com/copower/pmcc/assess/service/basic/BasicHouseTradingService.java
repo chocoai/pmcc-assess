@@ -125,6 +125,7 @@ public class BasicHouseTradingService {
         vo.setInformationTypeName(baseDataDicService.getNameById(basicHouseTrading.getInformationType()));
         vo.setInformationCategoryName(baseDataDicService.getNameById(basicHouseTrading.getInformationCategory()));
         vo.setScopePropertyName(baseDataDicService.getNameById(basicHouseTrading.getScopeProperty()));
+        vo.setPriceConnotationName(baseDataDicService.getNameById(basicHouseTrading.getPriceConnotation()));
         return vo;
     }
 

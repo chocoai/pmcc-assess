@@ -135,6 +135,9 @@
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseInformationSourceCategory, data.basicHouseTrading.informationCategory, function (html, data) {
                     houseCommon.houseTradingForm.find("select.informationCategory").empty().html(html).trigger('change');
                 });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePriceConnotation, data.basicHouseTrading.priceConnotation, function (html, data) {
+                    houseCommon.houseTradingForm.find("select.priceConnotation").empty().html(html).trigger('change');
+                });
             }
         });
 

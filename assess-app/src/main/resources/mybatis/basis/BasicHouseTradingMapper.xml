@@ -34,6 +34,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="price_connotation" property="priceConnotation" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -99,7 +100,7 @@
     description_content, installment_interest_rate, payment_method, transaction_situation, 
     tax_burden, scope_property, scope_include, scope_not_include, scope_property_explain, 
     down_payment_ratio, lending_rate, loan_period, deposit, information_type, information_category, 
-    name, phone, creator, gmt_created, gmt_modified
+    name, phone, creator, gmt_created, gmt_modified, price_connotation
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" >
     select
@@ -145,7 +146,8 @@
       down_payment_ratio, lending_rate, loan_period, 
       deposit, information_type, information_category, 
       name, phone, creator, 
-      gmt_created, gmt_modified)
+      gmt_created, gmt_modified, price_connotation
+      )
     values (#{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
       #{tradingType,jdbcType=INTEGER}, #{tradingTotalPrice,jdbcType=DECIMAL}, #{tradingUnitPrice,jdbcType=DECIMAL}, 
       #{buyerExtraTax,jdbcType=VARCHAR}, #{buyerExtraFee,jdbcType=VARCHAR}, #{rentingExtraTax,jdbcType=VARCHAR}, 
@@ -156,7 +158,8 @@
       #{downPaymentRatio,jdbcType=VARCHAR}, #{lendingRate,jdbcType=DECIMAL}, #{loanPeriod,jdbcType=INTEGER}, 
       #{deposit,jdbcType=VARCHAR}, #{informationType,jdbcType=INTEGER}, #{informationCategory,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{priceConnotation,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -257,6 +260,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="priceConnotation != null" >
+        price_connotation,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
@@ -351,6 +357,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="priceConnotation != null" >
+        #{priceConnotation,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -459,6 +468,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.priceConnotation != null" >
+        price_connotation = #{record.priceConnotation,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -497,7 +509,8 @@
       phone = #{record.phone,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      price_connotation = #{record.priceConnotation,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -598,6 +611,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="priceConnotation != null" >
+        price_connotation = #{priceConnotation,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -633,7 +649,8 @@
       phone = #{phone,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      price_connotation = #{priceConnotation,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

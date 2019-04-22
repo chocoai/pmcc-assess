@@ -18,6 +18,15 @@ public class BasicHouseTradingVo extends BasicHouseTrading {
     private String informationCategoryName;
     private String financingConditionsName;
     private String scopePropertyName;
+    private String priceConnotationName;
+
+    public String getPriceConnotationName() {
+        return priceConnotationName;
+    }
+
+    public void setPriceConnotationName(String priceConnotationName) {
+        this.priceConnotationName = priceConnotationName;
+    }
 
     public String getTradingTimeName() {
         return tradingTimeName;
