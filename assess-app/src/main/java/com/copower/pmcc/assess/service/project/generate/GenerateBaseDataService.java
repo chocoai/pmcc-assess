@@ -2682,7 +2682,7 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("13、建筑功能:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingFunction(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("14、新旧程度及维护使用情况: %s", generateCommonMethod.trim(generateHouseEntityService.getDamagedDegree(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("15、其它:%s", generateCommonMethod.trim(generateHouseEntityService.getOther(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("16、建筑实体分析:%s", generateCommonMethod.trim(generateHouseEntityService.getContent(judgeObjects, schemeAreaGroup)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("16、建筑实体分析:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildEntityAnalysis(judgeObjects, schemeAreaGroup)))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
             }
         }

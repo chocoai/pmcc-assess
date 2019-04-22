@@ -369,7 +369,7 @@ public class GenerateHouseEntityService {
                     }
                     linkedHashSet.add(String.format("%s：%s%s", stringListEntry.getKey(), s, "。"));
                 });
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()),StringUtils.join(linkedHashSet, "\r") );
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(linkedHashSet, "\r"));
                 linkedHashSet.clear();
             }
         }
@@ -383,7 +383,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getContent(List<SchemeJudgeObject> judgeObjectList, SchemeAreaGroup schemeAreaGroup) throws Exception {
+    public String getBuildEntityAnalysis(List<SchemeJudgeObject> judgeObjectList, SchemeAreaGroup schemeAreaGroup) throws Exception {
         int size = judgeObjectList.size();
         Map<String, String> map = Maps.newHashMap();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
@@ -399,8 +399,7 @@ public class GenerateHouseEntityService {
                 }
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                 BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingVo(generateBaseExamineService.getBasicBuilding());
-                linkedHashSet.add(basicBuilding.getBuildingStructureTypeName());
-                linkedHashSet.add(basicBuilding.getBuildingStructureCategoryName());
+                linkedHashSet.add(String.format("%s%s", basicBuilding.getBuildingStructureTypeName(), basicBuilding.getBuildingStructureCategoryName()));
                 //建筑使用年限
                 String value = null;
                 if (StringUtils.isNotBlank(basicBuilding.getIndustryUseYearName())) {
