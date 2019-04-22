@@ -686,10 +686,13 @@ public class GenerateReportService {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUnitPriceValuator());
                 }
-                //估价对象选择估价方法
+                //估价对象适用的估价方法
                 if (Objects.equal(BaseReportFieldEnum.SelectionValuationMethod.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionValuationMethod());
+                }
+                //估价对象不适用的估价方法
+                if (Objects.equal(BaseReportFieldEnum.NotSelectionValuationMethod.getName(), name)) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNotSelectionValuationMethod());
                 }
                 //分类评估单价计算试
                 if (Objects.equal(BaseReportFieldEnum.EvaluationExpression.getName(), name)) {

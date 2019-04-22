@@ -126,6 +126,7 @@ public class GenerateBaseDataService {
     private List<SchemeJudgeObject> schemeJudgeObjectList = null;
     private List<SchemeJudgeObject> schemeJudgeObjectFullList = null;
     private List<SchemeJudgeObject> schemeJudgeObjectDeclareList = null;
+    private Map<Integer, SchemeJudgeObject> schemeJudgeObjectMap = null;
     //===========================================获取的值===============================
 
     //报告出具日期
@@ -912,30 +913,81 @@ public class GenerateBaseDataService {
     public String getSelectionValuationMethod() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        StringBuilder stringBuilder = new StringBuilder(8);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = getLocalPath();
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            List<Integer> integerList = Lists.newArrayList(schemeJudgeObjectList.stream().map(oo -> generateCommonMethod.parseIntJudgeNumber(oo.getNumber())).collect(Collectors.toList()));
-            stringBuilder.append(generateCommonMethod.convertNumber(integerList)).append("号");
-            {
-                String s = getCompareAssistApplyReason();
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringSet.add(StringUtils.trimToEmpty(s));
-                }
+        List<SchemeJudgeFunction> functionList = schemeJudgeFunctionService.getApplicableJudgeFunctionsByAreaId(areaId);
+        if (CollectionUtils.isNotEmpty(functionList)) {
+            Map<String, String> compareMap = Maps.newHashMap();
+            Map<String, String> incomeMap = Maps.newHashMap();
+            Map<String, String> costMap = Maps.newHashMap();
+            Map<String, String> developmentMap = Maps.newHashMap();
+            for (SchemeJudgeFunction judgeFunction : functionList) {
+                SchemeJudgeObject judgeObject = this.schemeJudgeObjectMap.get(judgeFunction.getJudgeObjectId());
+                if (judgeObject == null) continue;
+                if (mdCommonService.isCompareMethod(judgeFunction.getMethodType()))
+                    compareMap.put(judgeObject.getNumber(), judgeFunction.getApplicableReason());
+                if (mdCommonService.isIncomeMethod(judgeFunction.getMethodType()))
+                    incomeMap.put(judgeObject.getNumber(), judgeFunction.getApplicableReason());
+                if (mdCommonService.isCostMethod(judgeFunction.getMethodType()))
+                    costMap.put(judgeObject.getNumber(), judgeFunction.getApplicableReason());
+                if (mdCommonService.isDevelopmentMethod(judgeFunction.getMethodType()))
+                    developmentMap.put(judgeObject.getNumber(), judgeFunction.getApplicableReason());
             }
-            {
-                String s = getIncomeAssistApplyReason();
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringSet.add(StringUtils.trimToEmpty(s));
-                }
-            }
-            stringBuilder.append(StringUtils.join(stringSet.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList()), ""));
+            String compareContent = generateCommonMethod.judgeEachDescExtend(compareMap, "", "。", true);
+            String incomeContent = generateCommonMethod.judgeEachDescExtend(incomeMap, "", "。", true);
+            String costContent = generateCommonMethod.judgeEachDescExtend(costMap, "", "。", true);
+            String deveolpmentContent = generateCommonMethod.judgeEachDescExtend(developmentMap, "", "。", true);
+            if (StringUtils.isNotBlank(compareContent))
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(compareContent))), false);
+            if (StringUtils.isNotBlank(incomeContent))
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(incomeContent))), false);
+            if (StringUtils.isNotBlank(costContent))
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(costContent))), false);
+            if (StringUtils.isNotBlank(deveolpmentContent))
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(deveolpmentContent))), false);
         }
-        if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
-            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(stringBuilder.toString()))), false);
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 估价对象不适用的估价方法
+     */
+    public String getNotSelectionValuationMethod() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
+        String localPath = getLocalPath();
+        List<SchemeJudgeFunction> functionList = schemeJudgeFunctionService.getNotApplicableJudgeFunctionsByAreaId(areaId);
+        if (CollectionUtils.isNotEmpty(functionList)) {
+            Map<String, String> compareMap = Maps.newHashMap();
+            Map<String, String> incomeMap = Maps.newHashMap();
+            Map<String, String> costMap = Maps.newHashMap();
+            Map<String, String> developmentMap = Maps.newHashMap();
+            for (SchemeJudgeFunction judgeFunction : functionList) {
+                SchemeJudgeObject judgeObject = this.schemeJudgeObjectMap.get(judgeFunction.getJudgeObjectId());
+                if (judgeObject == null) continue;
+                if (mdCommonService.isCompareMethod(judgeFunction.getMethodType()))
+                    compareMap.put(judgeObject.getNumber(), judgeFunction.getNotApplicableReason());
+                if (mdCommonService.isIncomeMethod(judgeFunction.getMethodType()))
+                    incomeMap.put(judgeObject.getNumber(), judgeFunction.getNotApplicableReason());
+                if (mdCommonService.isCostMethod(judgeFunction.getMethodType()))
+                    costMap.put(judgeObject.getNumber(), judgeFunction.getNotApplicableReason());
+                if (mdCommonService.isDevelopmentMethod(judgeFunction.getMethodType()))
+                    developmentMap.put(judgeObject.getNumber(), judgeFunction.getNotApplicableReason());
+            }
+            String compareContent = generateCommonMethod.judgeEachDescExtend(compareMap, "", "。", true);
+            String incomeContent = generateCommonMethod.judgeEachDescExtend(incomeMap, "", "。", true);
+            String costContent = generateCommonMethod.judgeEachDescExtend(costMap, "", "。", true);
+            String deveolpmentContent = generateCommonMethod.judgeEachDescExtend(developmentMap, "", "。", true);
+            if (StringUtils.isNotBlank(compareContent))
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(compareContent))), false);
+            if (StringUtils.isNotBlank(incomeContent))
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(incomeContent))), false);
+            if (StringUtils.isNotBlank(costContent))
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(costContent))), false);
+            if (StringUtils.isNotBlank(deveolpmentContent))
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(deveolpmentContent))), false);
         }
         doc.save(localPath);
         return localPath;
@@ -1838,6 +1890,7 @@ public class GenerateBaseDataService {
 
     /**
      * 各种评估方法的取值 (example:市场比较法适用原因)
+     *
      * @param key
      * @param think
      * @param applicableReason
@@ -1943,12 +1996,12 @@ public class GenerateBaseDataService {
                             stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
                         }
                         stringBuilder.append("+").append(mdCompareItem.getTrialPrice().toString()).append("×");
-                        if (mdCompareItem.getWeight() != null){
+                        if (mdCompareItem.getWeight() != null) {
                             BigDecimal bigDecimal = mdCompareItem.getWeight().multiply(new BigDecimal(100));
                             bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
                             stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
-                        }else {
-                            BigDecimal bigDecimal = new BigDecimal(((1 - d)* 100)).multiply(new BigDecimal(100));
+                        } else {
+                            BigDecimal bigDecimal = new BigDecimal(((1 - d) * 100)).multiply(new BigDecimal(100));
                             bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
                             stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
                         }
@@ -3423,7 +3476,7 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         String reportThinking = evaluationThinkingService.getReportThinking(map, this.projectInfo, baseJudgeNumber, otherJudgeNumber);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(reportThinking)), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(reportThinking), true);
         document.save(localPath);
         return localPath;
     }
@@ -3654,6 +3707,7 @@ public class GenerateBaseDataService {
         this.schemeJudgeObjectList = judgeObjectList;
         this.schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
         this.schemeJudgeObjectDeclareList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        this.schemeJudgeObjectMap = FormatUtils.mappingSingleEntity(this.schemeJudgeObjectList, o -> o.getId());
     }
 
 

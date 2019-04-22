@@ -465,6 +465,7 @@ public class GenerateCommonMethod {
 
     /**
      * 类似于这样的1=2-7-20-32-1-fhd-6364转换为 List形式并且里面的数字如20和32等会是一个元素而像'='或者'-'或者'f'等这样的非数字则单独是一个元素
+     *
      * @param text
      * @return
      */
@@ -515,14 +516,14 @@ public class GenerateCommonMethod {
                 ints[i] = numbers.get(i);
             }
             String text = null;
-            if (ints.length > 1){
+            if (ints.length > 1) {
                 text = this.convert(ints, 0);
-            }else {
+            } else {
                 text = ints[0].toString();
             }
             StringBuilder stringBuilder = new StringBuilder(8);
             List<String> stringList = convertNumberHelp(text);
-            if (CollectionUtils.isNotEmpty(stringList)){
+            if (CollectionUtils.isNotEmpty(stringList)) {
                 stringList.stream().forEach(s -> {
                     if (NumberUtils.isNumber(s)) {
                         stringBuilder.append(this.parseToCircleNumber(Integer.parseInt(s)));
@@ -904,7 +905,7 @@ public class GenerateCommonMethod {
                     removeKeys.add(splitEntry.getKey());
                 }
             }
-            resultMap.put(numberBuilder.toString(), stringListEntry.getKey());
+            resultMap.put(StringUtils.strip(numberBuilder.toString(), ","), stringListEntry.getKey());
         }
         removeKeys.forEach(o -> splitMap.remove(o));
         if (!splitMap.isEmpty()) {
