@@ -202,6 +202,9 @@ public class GenerateMdCompareService {
         if (fieldCompareEnum != null) {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
+                case PRICE_CONNOTATION:
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.PRICE_CONNOTATION.getKey());
+                    break;
                 case DESIGN_FORMULAS:
                     localPath = getDesignFormulas(title);
                     break;
@@ -221,16 +224,16 @@ public class GenerateMdCompareService {
                     localPath = getEntityConditionTable(marketCompareItemDtos, data, title, false);
                     break;
                 case PROPERTY_RANGE:
-                    localPath = getComparePropertyRange(marketCompareItemDtos, MethodCompareFieldEnum.SCOPE_PROPERTY.getKey());
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.SCOPE_PROPERTY.getKey());
                     break;
                 case PAYMENT_METHOD:
-                    localPath = getComparePropertyRange(marketCompareItemDtos, MethodCompareFieldEnum.PAYMENT_METHOD.getKey());
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.PAYMENT_METHOD.getKey());
                     break;
                 case FINANCING_CONDITION:
-                    localPath = getComparePropertyRange(marketCompareItemDtos, MethodCompareFieldEnum.FINANCING_CONDITIONS.getKey());
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.FINANCING_CONDITIONS.getKey());
                     break;
                 case TAX_BURDEN:
-                    localPath = getComparePropertyRange(marketCompareItemDtos, MethodCompareFieldEnum.TAX_BURDEN.getKey());
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.TAX_BURDEN.getKey());
                     break;
                 case TRANSACTION_MODIFICATION:
 
@@ -556,6 +559,7 @@ public class GenerateMdCompareService {
      */
     public String getCalculationTable(MdMarketCompareItem
                                               mdMarketCompareItem, List<MdMarketCompareItem> caseItemList) throws Exception {
+
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
@@ -569,17 +573,21 @@ public class GenerateMdCompareService {
             builder.writeln(caseItem.getName());
         }
         builder.endRow();
+
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             //交易价格
+            DataSetUseField tradingPrice = dataSetUseFieldService.getCacheSetUseFieldByFieldName(MethodCompareFieldEnum.TRADING_PRICE.getKey());
             builder.insertCell();
             builder.writeln("交易价格");
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
-                if (StringUtils.isNotBlank(caseItem.getSpecificPrice())) {
-                    builder.writeln(caseItem.getSpecificPrice());
-                } else {
-                    builder.writeln("空");
+                List<MarketCompareItemDto> data = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto item : data) {
+                    if (tradingPrice.getFieldName().equals(item.getName())) {
+                        builder.writeln(item.getValue());
+                    }
                 }
+
             }
             builder.endRow();
 
@@ -870,12 +878,12 @@ public class GenerateMdCompareService {
 
 
     /**
-     * 财产范围
+     * 比较基础
      *
      * @param marketCompareItemDtos 估价对象
      * @return
      */
-    public String getComparePropertyRange(List<MarketCompareItemDto> marketCompareItemDtos, String fieldName) throws Exception {
+    public String getComparisonBasis(List<MarketCompareItemDto> marketCompareItemDtos, String fieldName) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
@@ -1028,7 +1036,7 @@ public class GenerateMdCompareService {
                                     } else {
                                         builder.writeln(DateUtils.format(mdMarketCompare.getValueTimePoint(), DateUtils.DATE_CHINESE_PATTERN));
                                     }
-                                }else {
+                                } else {
                                     builder.insertCell();
                                     if (isIndex) {
                                         builder.writeln(item2.getScore().toString());

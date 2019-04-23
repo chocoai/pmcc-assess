@@ -16,6 +16,7 @@ public enum MethodCompareFieldEnum {
     TRADING_TRANSACTION_SITUATION("trading.transaction.situation", "交易情况"),//ps:房屋-交易情况-交易情况
     TRADING_PRICE("trading.price", "交易价格"),//ps:房屋-交易情况-交易价格
     TRADING_TIME("trading.time", "交易时间"),//ps:房屋-交易情况-交易时间
+    PRICE_CONNOTATION("price.connotation", "单价内涵"),//ps:房屋-交易情况-单价内涵
 
     //区位状况-----------------------------------------------------------------------------------------------区位状况
     LOCATION("location", "坐落"),//ps:权证的坐落

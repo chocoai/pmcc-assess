@@ -721,6 +721,13 @@ public class SurveyExamineTaskService {
                 }
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             }
+
+            if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
+                basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
+                if (basicTrading != null) {
+                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
+                }
+            }
         }
     }
 

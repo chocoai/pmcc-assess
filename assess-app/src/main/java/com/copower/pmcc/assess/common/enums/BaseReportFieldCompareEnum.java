@@ -34,6 +34,8 @@ public enum BaseReportFieldCompareEnum {
 
     HOUSEPRICE_INDEX( "比较法房价指数表"),
     DESIGN_FORMULAS( "比较法计算公式"),
+
+    PRICE_CONNOTATION( "比较法单价内涵"),
     ;
     private String key;
 
