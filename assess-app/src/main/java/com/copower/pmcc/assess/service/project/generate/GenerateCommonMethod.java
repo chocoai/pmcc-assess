@@ -730,8 +730,7 @@ public class GenerateCommonMethod {
 
     public void setDefaultDocumentBuilderSetting(DocumentBuilder builder) throws Exception {
         builder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
-        builder.getFont().setSize(14.5);
-        //
+        builder.getFont().setSize(14);
 //        builder.getParagraphFormat().setAlignment(ParagraphAlignment.LEFT);
     }
 
