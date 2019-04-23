@@ -320,7 +320,7 @@ public class GenerateCommonMethod {
             @Override
             public int compare(SchemeJudgeObject o1, SchemeJudgeObject o2) {
                 Integer a = parseIntJudgeNumber(o1.getNumber());
-                Integer b =  parseIntJudgeNumber(o2.getNumber());
+                Integer b = parseIntJudgeNumber(o2.getNumber());
                 return a.compareTo(b);
             }
         });
@@ -507,9 +507,9 @@ public class GenerateCommonMethod {
      * @return
      */
     public String convertNumber(List<Integer> numbers) {
+        StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(numbers)) {
-            numbers = numbers.stream().distinct().collect(Collectors.toList());
-            Collections.sort(numbers);
+            numbers = numbers.stream().distinct().sorted().collect(Collectors.toList());
             Integer[] ints = new Integer[numbers.size()];
             for (int i = 0; i < numbers.size(); i++) {
                 ints[i] = numbers.get(i);
@@ -517,10 +517,24 @@ public class GenerateCommonMethod {
             String text = null;
             if (ints.length > 1) {
                 text = this.convert(ints, 0);
+                LinkedList<String> stringList = Lists.newLinkedList();
+                for (char c : text.toCharArray()) {
+                    stringList.add(String.valueOf(c));
+                }
+                for (int i = 0; i < stringList.size(); i++) {
+                    if (i == stringList.size()-1 ){
+                        if (NumberUtils.isNumber(stringList.get(i))){
+                            stringBuilder.append(stringList.get(i));
+                        }
+                    }else {
+                        stringBuilder.append(stringList.get(i));
+                    }
+                }
+                text = stringBuilder.toString();
+                stringBuilder.delete(0,stringBuilder.toString().length());
             } else {
                 text = ints[0].toString();
             }
-            StringBuilder stringBuilder = new StringBuilder(8);
             List<String> stringList = convertNumberHelp(text);
             if (CollectionUtils.isNotEmpty(stringList)) {
                 stringList.stream().forEach(s -> {
@@ -536,7 +550,7 @@ public class GenerateCommonMethod {
             }
             return text;
         }
-        return " ";
+        return "";
     }
 
     /**
