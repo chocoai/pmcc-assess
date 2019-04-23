@@ -142,8 +142,8 @@ public class MdMarketCompareFieldService extends BaseService {
             block = block == null ? new DataBlock() : block;
             //取得交易信息
             BasicHouseTrading houseTrading = null;
-            if (isCase == Boolean.TRUE)//为案例时才取交易信息
-                houseTrading = basicHouseTradingService.getTradingByHouseId(examineHouse.getId());
+           // if (isCase == Boolean.TRUE)//为案例时才取交易信息
+            houseTrading = basicHouseTradingService.getTradingByHouseId(examineHouse.getId());
             houseTrading = houseTrading == null ? new BasicHouseTrading() : houseTrading;
             //取得申报记录信息
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
@@ -514,6 +514,9 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case CONSTRUCTION_QUALITY://工程质量
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.CONSTRUCTION_QUALITY.getKey(), baseDataDicService.getNameById(examineBuilding.getConstructionQuality())));
+                            break;
+                        case PRICE_CONNOTATION://单价内涵
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PRICE_CONNOTATION.getKey(), baseDataDicService.getNameById(houseTrading.getPriceConnotation())));
                             break;
 
                     }

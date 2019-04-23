@@ -28,6 +28,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.sf.jsqlparser.expression.StringValue;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.helper.DataUtil;
@@ -202,6 +203,9 @@ public class GenerateMdCompareService {
         if (fieldCompareEnum != null) {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
+                case PRICE_CONNOTATION:
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.PRICE_CONNOTATION.getKey());
+                    break;
                 case DESIGN_FORMULAS:
                     localPath = getDesignFormulas(title);
                     break;
@@ -221,16 +225,16 @@ public class GenerateMdCompareService {
                     localPath = getEntityConditionTable(marketCompareItemDtos, data, title, false);
                     break;
                 case PROPERTY_RANGE:
-                    localPath = getComparePropertyRange(marketCompareItemDtos, MethodCompareFieldEnum.SCOPE_PROPERTY.getKey());
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.SCOPE_PROPERTY.getKey());
                     break;
                 case PAYMENT_METHOD:
-                    localPath = getComparePropertyRange(marketCompareItemDtos, MethodCompareFieldEnum.PAYMENT_METHOD.getKey());
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.PAYMENT_METHOD.getKey());
                     break;
                 case FINANCING_CONDITION:
-                    localPath = getComparePropertyRange(marketCompareItemDtos, MethodCompareFieldEnum.FINANCING_CONDITIONS.getKey());
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.FINANCING_CONDITIONS.getKey());
                     break;
                 case TAX_BURDEN:
-                    localPath = getComparePropertyRange(marketCompareItemDtos, MethodCompareFieldEnum.TAX_BURDEN.getKey());
+                    localPath = getComparisonBasis(marketCompareItemDtos, MethodCompareFieldEnum.TAX_BURDEN.getKey());
                     break;
                 case TRANSACTION_MODIFICATION:
 
@@ -556,6 +560,7 @@ public class GenerateMdCompareService {
      */
     public String getCalculationTable(MdMarketCompareItem
                                               mdMarketCompareItem, List<MdMarketCompareItem> caseItemList) throws Exception {
+
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
@@ -569,17 +574,21 @@ public class GenerateMdCompareService {
             builder.writeln(caseItem.getName());
         }
         builder.endRow();
+
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             //交易价格
+            DataSetUseField tradingPrice = dataSetUseFieldService.getCacheSetUseFieldByFieldName(MethodCompareFieldEnum.TRADING_PRICE.getKey());
             builder.insertCell();
             builder.writeln("交易价格");
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
-                if (StringUtils.isNotBlank(caseItem.getSpecificPrice())) {
-                    builder.writeln(caseItem.getSpecificPrice());
-                } else {
-                    builder.writeln("空");
+                List<MarketCompareItemDto> data = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto item : data) {
+                    if (tradingPrice.getFieldName().equals(item.getName())) {
+                        builder.writeln(item.getValue());
+                    }
                 }
+
             }
             builder.endRow();
 
@@ -870,12 +879,12 @@ public class GenerateMdCompareService {
 
 
     /**
-     * 财产范围
+     * 比较基础
      *
      * @param marketCompareItemDtos 估价对象
      * @return
      */
-    public String getComparePropertyRange(List<MarketCompareItemDto> marketCompareItemDtos, String fieldName) throws Exception {
+    public String getComparisonBasis(List<MarketCompareItemDto> marketCompareItemDtos, String fieldName) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
@@ -938,7 +947,7 @@ public class GenerateMdCompareService {
                 weightRemark.replace(weightRemark.length() - 1, weightRemark.length(), "。");
             }
         }
-        front.append(weightRemark).append(size + "比较价格差异幅度较小，我们认为" + size + "个比较实例与估价对象在同一区域范围内，其价格具有一致性，综合考虑各种因素，并结合该区域同类房地产交易价格水平，确定以" + size + "个交易案例比较价格的算术平均值作为估价对象的比较价格，计算过程如下：");
+        front.append(weightRemark).append(toChinese(String.valueOf(size)) + "个比较价格差异幅度较小，我们认为" + toChinese(String.valueOf(size)) + "个比较实例与估价对象在同一区域范围内，其价格具有一致性，综合考虑各种因素，并结合该区域同类房地产交易价格水平，确定以" + toChinese(String.valueOf(size)) + "个交易案例比较价格的算术平均值作为估价对象的比较价格，计算过程如下：");
         num = num.divide(new BigDecimal(String.valueOf(caseItemList.size())), 2, RoundingMode.CEILING);
         String result = String.format("%.2f", num);
         content.deleteCharAt(content.length() - 1);
@@ -1028,7 +1037,7 @@ public class GenerateMdCompareService {
                                     } else {
                                         builder.writeln(DateUtils.format(mdMarketCompare.getValueTimePoint(), DateUtils.DATE_CHINESE_PATTERN));
                                     }
-                                }else {
+                                } else {
                                     builder.insertCell();
                                     if (isIndex) {
                                         builder.writeln(item2.getScore().toString());
@@ -1100,6 +1109,22 @@ public class GenerateMdCompareService {
             }
             builder.writeln(String.format("%.2f", temp));
         }
+    }
+
+    public String toChinese(String str) {
+        String[] s1 = { "零", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
+        String[] s2 = { "十", "百", "千", "万", "十", "百", "千", "亿", "十", "百", "千" };
+        String result = "";
+        int n = str.length();
+        for (int i = 0; i < n; i++) {
+            int num = str.charAt(i) - '0';
+            if (i != n - 1 && num != 0) {
+                result += s1[num] + s2[n - 2 - i];
+            } else {
+                result += s1[num];
+            }
+        }
+        return result;
     }
 
 }
