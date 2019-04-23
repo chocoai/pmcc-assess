@@ -142,7 +142,7 @@ public class MdMarketCompareFieldService extends BaseService {
             block = block == null ? new DataBlock() : block;
             //取得交易信息
             BasicHouseTrading houseTrading = null;
-           // if (isCase == Boolean.TRUE)//为案例时才取交易信息
+            // if (isCase == Boolean.TRUE)//为案例时才取交易信息
             houseTrading = basicHouseTradingService.getTradingByHouseId(examineHouse.getId());
             houseTrading = houseTrading == null ? new BasicHouseTrading() : houseTrading;
             //取得申报记录信息
@@ -224,7 +224,8 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TEMPORARY_ROAD_CONDITION.getKey(), stringBuilder.toString()));
                             break;
                         case FLOOR://楼层
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), String.valueOf(examineHouse.getFloor())));
+                            String floor = String.format("%s栋%s单元%s层", examineBuilding.getBuildingNumber(), examineUnit.getUnitNumber(), examineHouse.getHouseNumber());
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), floor));
                             break;
                         case ORIENTATION://朝向
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ORIENTATION.getKey(), baseDataDicService.getNameById(examineHouse.getOrientation())));
@@ -309,7 +310,8 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OTHER_SPECIAL_SITUATIONS.getKey(), specialCase));
                             break;
                         case BUILDING_AREA://建筑面积（㎡）
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_AREA.getKey(), String.valueOf(examineEstate.getFloorArea() == null ? "" : examineEstate.getFloorArea())));
+                            String buildingArea = examineEstate.getFloorArea() == null ? "" : String.format("%平方米", examineEstate.getFloorArea());
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_AREA.getKey(), buildingArea));
                             break;
                         case FLOOR_HEIGHT://层高
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey(), String.valueOf(examineBuilding.getFloorHeight() == null ? "" : examineBuilding.getFloorHeight())));
@@ -403,15 +405,16 @@ public class MdMarketCompareFieldService extends BaseService {
                         case INTELLIGENT_LEVEL://设施设备及智能化程度(空调与新风情况)
                             stringBuilder = new StringBuilder();
                             if (CollectionUtils.isNotEmpty(equipmentList)) {
+                                String supplyMode = "";
                                 for (BasicHouseEquipment examineHouseEquipment : equipmentList) {
                                     if (StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()) ||
                                             StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey())) {
                                         stringBuilder.append(examineHouseEquipment.getEquipment());
-                                        stringBuilder.append(baseDataDicService.getNameById(examineHouseEquipment.getGrade()));
-
-                                        stringBuilder.append(examineHouseEquipment.getEquipmentPrice()).append("、");
+                                        stringBuilder.append(baseDataDicService.getNameById(examineHouseEquipment.getGrade())).append("、");
+                                        supplyMode = baseDataDicService.getNameById(examineHouseEquipment.getSupplyMode());
                                     }
                                 }
+                                stringBuilder.append(supplyMode);
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.INTELLIGENT_LEVEL.getKey(), StringUtils.strip(stringBuilder.toString(), "、")));
                             break;
@@ -549,10 +552,11 @@ public class MdMarketCompareFieldService extends BaseService {
         marketCompareItemDto.setName(name);
         marketCompareItemDto.setScore(100);
         marketCompareItemDto.setRatio(new BigDecimal("1"));
+        value=value.replaceAll("^[,，.。;；、]+[,，.。;；、]+$","");
         if (isCase) {
-            marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "无" : StringUtils.strip(value, "；"));
+            marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "无" : value);
         } else {
-            marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "" : StringUtils.strip(value, "；"));
+            marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "" : value);
         }
         return marketCompareItemDto;
     }

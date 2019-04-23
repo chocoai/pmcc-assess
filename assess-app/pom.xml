@@ -50,7 +50,7 @@
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>bpm-api</artifactId>
-            <version>1.0.80</version>
+            <version>1.0.86</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.copower</groupId>
