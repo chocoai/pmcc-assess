@@ -266,18 +266,6 @@ public class GenerateCommonMethod {
         return s;
     }
 
-    public String writeStringInDocument(String content) throws Exception {
-        String localPath = getLocalPath();
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        this.settingBuildingTable(builder);
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(getWarpCssHtml(content));
-        }
-        doc.save(localPath);
-        return localPath;
-    }
-
     /**
      * 获取区域下楼盘的分组
      *
@@ -1135,6 +1123,16 @@ public class GenerateCommonMethod {
      */
     public int computeDifference(BigDecimal var1, BigDecimal var2) {
         return publicService.computeDifference(var1, var2);
+    }
+
+    public void writeWordTitle(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
+        if (CollectionUtils.isNotEmpty(titles)) {
+            for (String title : titles) {
+                builder.insertCell();
+                builder.writeln(title);
+            }
+            builder.endRow();
+        }
     }
 
 }

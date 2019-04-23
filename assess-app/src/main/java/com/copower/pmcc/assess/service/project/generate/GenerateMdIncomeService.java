@@ -1282,6 +1282,7 @@ public class GenerateMdIncomeService {
                 if (mdIncomeDateSection != null) {
                     if (mdIncomeDateSection.getIncomeTotal() != null) {
                         BigDecimal temp = mdIncomeLeaseCostVo.getMaintenanceCostRatio().multiply(mdIncomeDateSection.getIncomeTotal());
+                        temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
                         this.appendElement(builder, temp.toString(), mdIncomeDateSection.getBeginDate(), mdIncomeDateSection.getEndDate());
                     }
                 }
@@ -1378,6 +1379,7 @@ public class GenerateMdIncomeService {
                     if (mdIncomeDateSection != null) {
                         if (mdIncomeDateSection.getIncomeTotal() != null) {
                             BigDecimal temp = mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio().multiply(mdIncomeDateSection.getIncomeTotal());
+                            temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
                             this.appendElement(builder, temp.toString(), mdIncomeDateSection.getBeginDate(), mdIncomeDateSection.getEndDate());
                         }
                     }
@@ -1652,6 +1654,7 @@ public class GenerateMdIncomeService {
                         if (mdIncomeDateSection != null) {
                             if (mdIncomeDateSection.getIncomeTotal() != null) {
                                 BigDecimal temp = mdIncomeLeaseCostVo.getInsurancePremiumRatio().multiply(mdIncomeDateSection.getIncomeTotal());
+                                temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
                                 this.appendElement(builder, temp.toString(), mdIncomeDateSection.getBeginDate(), mdIncomeDateSection.getEndDate());
                             }
                         }
@@ -1729,6 +1732,7 @@ public class GenerateMdIncomeService {
                     if (mdIncomeDateSection != null) {
                         if (mdIncomeDateSection.getIncomeTotal() != null) {
                             BigDecimal temp = mdIncomeLeaseCostVo.getManagementCostRatio().multiply(mdIncomeDateSection.getIncomeTotal());
+                            temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
                             this.appendElement(builder, temp.toString(), mdIncomeDateSection.getBeginDate(), mdIncomeDateSection.getEndDate());
                         }
                     }
@@ -1774,6 +1778,7 @@ public class GenerateMdIncomeService {
                     MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
                     if (mdIncomeDateSection != null) {
                         BigDecimal temp = mdIncomeLeaseCostVo.getAdditionalRatio().multiply(mdIncomeDateSection.getIncomeTotal());
+                        temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
                         this.appendElement(builder, temp.toString(), mdIncomeDateSection.getBeginDate(), mdIncomeDateSection.getEndDate());
                     }
                 });

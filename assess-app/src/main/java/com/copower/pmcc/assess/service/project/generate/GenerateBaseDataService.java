@@ -410,7 +410,12 @@ public class GenerateBaseDataService {
                 if (schemeSurePrice != null && schemeSurePrice.getPrice() != null) {
                     linkedHashSet.add(String.format("最终单价%s元", schemeSurePrice.getPrice().toString()));
                 }
-                String s = String.format("%s%s 。", getSchemeJudgeObjectShowName(schemeJudgeObject), StringUtils.join(linkedHashSet, "，"));
+                List<Integer> integerList = Lists.newArrayList();
+                if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())){
+                    List<String> stringList = Lists.newArrayList(schemeJudgeObject.getNumber().split(","));
+                    stringList.stream().forEach(s -> integerList.add(Integer.parseInt(s)));
+                }
+                String s = String.format("%s号%s 。", generateCommonMethod.convertNumber(integerList), StringUtils.join(linkedHashSet, "，"));
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(s), false);
                 builder.writeln();
                 linkedHashSet.clear();
@@ -2040,16 +2045,19 @@ public class GenerateBaseDataService {
      */
     public Document getUnitPriceAdjustmentDocument(List<SchemeJudgeObjectVo> schemeJudgeObjectList) throws Exception {
         Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
+        generateCommonMethod.settingBuildingTable(builder);
         final String nullString = "";
         List<String> stringList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("权证号", "楼层", "房号", "价格", "因素")));
+            generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价编号", "权证号", "楼层", "房号", "价格", "因素")));
             for (SchemeJudgeObjectVo schemeJudgeObject : schemeJudgeObjectList) {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
                 if (declareRecord == null) {
                     continue;
                 }
+                stringList.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
                 stringList.add(StringUtils.isNotBlank(declareRecord.getName()) ? declareRecord.getName() : nullString);
                 stringList.add(StringUtils.isNotBlank(declareRecord.getFloor()) ? declareRecord.getFloor() : nullString);
                 stringList.add(StringUtils.isNotBlank(declareRecord.getRoomNumber()) ? declareRecord.getRoomNumber() : nullString);
@@ -2059,7 +2067,7 @@ public class GenerateBaseDataService {
                     stringList.add(nullString);
                 }
                 stringList.add(StringUtils.isNotBlank(schemeJudgeObject.getCoefficient()) ? schemeJudgeObject.getCoefficient() : nullString);
-                writeWordTitle(builder, Lists.newLinkedList(stringList));
+                generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(stringList));
                 stringList.clear();
             }
         }
@@ -2080,9 +2088,12 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
         StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            List<Integer> integerList = Lists.newArrayList();
+            schemeJudgeObjectList.stream().forEach(oo -> integerList.add(generateCommonMethod.parseIntJudgeNumber(oo.getNumber())));
             for (CalculationMethodNameEnum methodNameEnum : CalculationMethodNameEnum.values()) {
                 String formula = getDataMethodFormula(schemeJudgeObjectList, methodNameEnum, "公式");
                 if (StringUtils.isNotBlank(formula.trim())) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(integerList));
                     stringBuilder.append(StringUtils.trimToEmpty(formula));
                 }
             }
@@ -2107,9 +2118,12 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
         StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            List<Integer> integerList = Lists.newArrayList();
+            schemeJudgeObjectList.stream().forEach(oo -> integerList.add(generateCommonMethod.parseIntJudgeNumber(oo.getNumber())));
             for (CalculationMethodNameEnum methodNameEnum : CalculationMethodNameEnum.values()) {
                 String formula = getDataMethodFormula(schemeJudgeObjectList, methodNameEnum, "参数");
                 if (StringUtils.isNotBlank(formula.trim())) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(integerList));
                     stringBuilder.append(StringUtils.trimToEmpty(formula));
                 }
             }
@@ -2181,20 +2195,51 @@ public class GenerateBaseDataService {
         //1.先根据楼盘分组，再分别获取到楼盘下的权益信息
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
-        if (linkedHashMap.isEmpty()) return "";
-        for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
-            //根据不同项目类别确定获取数据的方法
-            if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey().getName() + "</div>"));
-            }
-            if (projectInfo.getProjectCategoryName().contains("房产")) {
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateEquityService.getLandEquity(entry.getKey(), entry.getValue()))), false);
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateEquityService.getHouseEquity(entry.getValue(), projectId))), false);
-            } else if (projectInfo.getProjectCategoryName().contains("土地")) {
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId)), false);
+        if (!linkedHashMap.isEmpty()) {
+            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+                //根据不同项目类别确定获取数据的方法
+                if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey().getName() + "</div>"));
+                }
+                if (projectInfo.getProjectCategoryName().contains("房产")) {
+                    {
+                        String s = null;
+                        try {
+                            s = generateEquityService.getLandEquity(entry.getKey(), entry.getValue());
+                        } catch (Exception e) {
+                            logger.error("土地权益状况未获取到", e);
+                        }
+                        if (StringUtils.isNotBlank(s)) {
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
+                        }
+                    }
+                    {
+                        String s = null;
+                        try {
+                            s = generateEquityService.getHouseEquity(entry.getValue(), projectId);
+                        } catch (Exception e) {
+                            logger.error("房屋权益状况未获取到", e);
+                        }
+                        if (StringUtils.isNotBlank(s)) {
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
+                        }
+                    }
+                } else if (projectInfo.getProjectCategoryName().contains("土地")) {
+                    {
+                        String s = null;
+                        try {
+                            s = generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId);
+                        } catch (Exception e) {
+                            logger.error("土地权益状况未获取到", e);
+                        }
+                        if (StringUtils.isNotBlank(s)) {
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
+                        }
+                    }
+                }
             }
         }
         String localPath = getLocalPath();
@@ -2294,7 +2339,7 @@ public class GenerateBaseDataService {
             if (CollectionUtils.isNotEmpty(listA)) {
                 objectList = Lists.newArrayList(CollectionUtils.subtract(schemeJudgeObjectList, listA.stream().distinct().collect(Collectors.toList())));
             }
-            writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价（元/㎡）", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)")));
+            generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价（元/㎡）", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)")));
             //组遍历
             reimbursementItemVoListMap.entrySet().stream().forEach(entry -> {
                 SchemeReimbursementItemVo itemVo = new SchemeReimbursementItemVo();
@@ -2321,9 +2366,7 @@ public class GenerateBaseDataService {
                             if (declareRecord != null && declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
                                 total = total.add(declareRecord.getPracticalArea().multiply(declareRecord.getPrice()));
                             }
-                            this.writeJudgeObjectResultSurveyInCell(itemVo, integerEntry.getKey(), integerEntry.getValue(), builder, colMax);
-                            //第一个估价对象写入,其余不再写入因此写入空数据
-                            BeanUtils.copyProperties(new SchemeReimbursementItemVo(), itemVo);
+                            this.writeJudgeObjectResultSurveyInCell(new SchemeReimbursementItemVo(), integerEntry.getKey(), integerEntry.getValue(), builder, colMax);
                         }
                         Cell cellRange0 = null;
                         for (int j = 0; j < colMax; j++) {
@@ -3009,8 +3052,8 @@ public class GenerateBaseDataService {
                 stringBuilder.append(multimap.keys().stream().distinct().findFirst().get());
             } else {
                 Set<String> strings = Sets.newHashSet();
-                multimap.entries().stream().distinct().forEach(oo -> strings.add(String.format("%s%s",oo.getValue(),oo.getKey())));
-                stringBuilder.append(StringUtils.join(strings,"、"));
+                multimap.entries().stream().distinct().forEach(oo -> strings.add(String.format("%s%s", oo.getValue(), oo.getKey())));
+                stringBuilder.append(StringUtils.join(strings, "、"));
             }
         }
         if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
@@ -3639,16 +3682,6 @@ public class GenerateBaseDataService {
 
 
     private GenerateBaseDataService() {
-    }
-
-    private void writeWordTitle(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
-        if (CollectionUtils.isNotEmpty(titles)) {
-            for (String title : titles) {
-                builder.insertCell();
-                builder.writeln(title);
-            }
-            builder.endRow();
-        }
     }
 
     public GenerateBaseDataService(ProjectInfoVo projectInfoVo, Integer areaId, BaseReportTemplate baseReportTemplate, ProjectPlan projectPlan) {
