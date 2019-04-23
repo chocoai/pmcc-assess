@@ -7,6 +7,10 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.assess.service.data.DataPropertyServiceItemService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.bpm.api.dto.ProcessInfoDto;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -43,6 +47,10 @@ public class DataPropertyController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private DataPropertyServiceItemService dataPropertyServiceItemService;
+    @Autowired
+    private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -54,8 +62,15 @@ public class DataPropertyController {
         modelAndView.addObject("reputations", baseDataDic);
         List<BaseDataDic> serviceContent = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_SERVICE_CONTENT);
         modelAndView.addObject("serviceContent", serviceContent);
-
         dataPropertyServiceItemService.initClean();
+
+        try {
+            List<ProcessInfoDto> list = bpmRpcProcessInsManagerService.getProcessListByUserAccount("wangpc", 1, 100);
+            List<ProjectResponsibilityDto> responsibilityDtoList = bpmRpcProjectTaskService.getProjectTasksByUserAccount("wangpc", 1, 100);
+        }catch (Exception e){
+
+        }
+
         return modelAndView;
     }
 
