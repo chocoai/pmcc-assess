@@ -403,7 +403,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.BUILDING_AREA.getKey()) || data.getName().equals(MethodCompareFieldEnum.BUILDING_SCALE.getKey())) {
-                        this.jointContent(content,data,isIndex);
+                        this.jointContent(content, data, isIndex);
                     }
                 }
                 builder.writeln(content.deleteCharAt(content.length() - 1).toString());
@@ -420,7 +420,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey()) || data.getName().equals(MethodCompareFieldEnum.NET_HEIGHT.getKey())) {
-                        this.jointContent(content,data,isIndex);
+                        this.jointContent(content, data, isIndex);
                     }
                 }
                 builder.writeln(content.deleteCharAt(content.length() - 1).toString());
@@ -437,7 +437,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ELEVATOR_HOUSEHOLD_RATIO.getKey()) || data.getName().equals(MethodCompareFieldEnum.PLANE_LAYOUT.getKey())) {
-                        this.jointContent(content,data,isIndex);
+                        this.jointContent(content, data, isIndex);
                     }
                 }
                 builder.writeln(content.deleteCharAt(content.length() - 1).toString());
@@ -454,7 +454,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey()) || data.getName().equals(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey())) {
-                        this.jointContent(content,data,isIndex);
+                        this.jointContent(content, data, isIndex);
                     }
                 }
                 builder.writeln(content.deleteCharAt(content.length() - 1).toString());
@@ -472,7 +472,7 @@ public class GenerateMdCompareService {
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.INTELLIGENT_LEVEL.getKey()) || data.getName().equals(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEATING_MODE.getKey()) || data.getName().equals(MethodCompareFieldEnum.NETWORK.getKey())) {
-                        this.jointContent(content,data,isIndex);
+                        this.jointContent(content, data, isIndex);
                     }
                 }
                 builder.writeln(content.deleteCharAt(content.length() - 1).toString());
@@ -492,7 +492,7 @@ public class GenerateMdCompareService {
                             || data.getName().equals(MethodCompareFieldEnum.SUNSHINE.getKey()) || data.getName().equals(MethodCompareFieldEnum.SOUND_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEAT_PRESERVATION.getKey()) || data.getName().equals(MethodCompareFieldEnum.HEAT_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.WATERPROOF.getKey())) {
-                        this.jointContent(content,data,isIndex);
+                        this.jointContent(content, data, isIndex);
                     }
                 }
                 builder.writeln(content.deleteCharAt(content.length() - 1).toString());
@@ -986,7 +986,11 @@ public class GenerateMdCompareService {
                                 } else {
                                     builder.insertCell();
                                     if (isIndex) {
-                                        builder.writeln(item2.getScore().toString());
+                                        if (item2.getScore() != null) {
+                                            builder.writeln(item2.getScore().toString());
+                                        } else {
+                                            builder.writeln("");
+                                        }
                                     } else {
                                         builder.writeln(item2.getValue());
                                     }
@@ -1040,11 +1044,19 @@ public class GenerateMdCompareService {
             for (MarketCompareItemDto item2 : dtos) {
                 for (DataSetUseField useField : cacheSetUseFieldList) {
                     if (useField.getFieldName().equals(item2.getName())) {
-                        temp = temp.multiply(new BigDecimal(String.valueOf(item2.getRatio())));
+                        if (item2.getRatio() != null) {
+                            temp = temp.multiply(new BigDecimal(String.valueOf(item2.getRatio())));
+                        }else{
+                            temp = new BigDecimal("0");
+                        }
                     }
                 }
             }
-            builder.writeln(String.format("%.2f", temp));
+            if(temp.compareTo(new BigDecimal("0"))!=0) {
+                builder.writeln(String.format("%.2f", temp));
+            }else {
+                builder.writeln("系数异常");
+            }
         }
     }
 
@@ -1069,9 +1081,9 @@ public class GenerateMdCompareService {
      * 拼接内容
      *
      * @param isIndex 是否指数表
-     * @param data      数据
+     * @param data    数据
      */
-    public void jointContent(StringBuilder content, MarketCompareItemDto data , boolean isIndex) {
+    public void jointContent(StringBuilder content, MarketCompareItemDto data, boolean isIndex) {
         if (isIndex) {
             content.append(MethodCompareFieldEnum.getNameByKey(data.getName())).append(":");
             content.append(data.getScore()).append(";");
