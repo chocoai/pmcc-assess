@@ -646,7 +646,8 @@
                 tableName: AssessDBKey.BaseReportField,
                 tableId: isNotBlank(id) ? id : "0"
             },
-            deleteFlag: true
+            deleteFlag: true,
+            editFlag:true
         });
         FileUtils.getFileShows({
             target: 'baseReportField_id_File',
@@ -655,7 +656,8 @@
                 tableName: AssessDBKey.BaseReportField,
                 tableId: isNotBlank(id) ? id : "0"
             },
-            deleteFlag: true
+            deleteFlag: true,
+            editFlag:true
         });
     }
 </script>
