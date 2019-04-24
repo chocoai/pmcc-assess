@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
@@ -26,6 +27,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdCommonService;
@@ -50,7 +52,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -110,6 +111,7 @@ public class GenerateBaseDataService {
     private BasicApplyService basicApplyService;
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
     private DataBestUseDescriptionService dataBestUseDescriptionService;
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 构造器必须传入的参数
@@ -381,7 +383,7 @@ public class GenerateBaseDataService {
      * 分类评估单价计算试
      */
     public String getEvaluationExpression() {
-        return "市场比较法价格*权重+收益法价格*权重";
+        return "比较法价格*权重+收益法价格*权重";
     }
 
     /**
@@ -411,7 +413,7 @@ public class GenerateBaseDataService {
                     linkedHashSet.add(String.format("最终单价%s元", schemeSurePrice.getPrice().toString()));
                 }
                 List<Integer> integerList = Lists.newArrayList();
-                if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())){
+                if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
                     List<String> stringList = Lists.newArrayList(schemeJudgeObject.getNumber().split(","));
                     stringList.stream().forEach(s -> integerList.add(Integer.parseInt(s)));
                 }
@@ -502,7 +504,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         int row = 0;
-        if (true) {
+        {
             stringSet.add("本函内容摘自估价报告");
             stringSet.add("欲了解本次估价项目全面情况");
             stringSet.add("请详见估价结果报告");
@@ -511,16 +513,16 @@ public class GenerateBaseDataService {
             stringSet.clear();
             row++;
         }
-        if (true) {
+        {
             Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> hashMap = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
-            final String mortgage = "抵押权";
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE);
             List<Integer> integerList = Lists.newArrayList();
             if (!hashMap.isEmpty()) {
                 hashMap.entrySet().stream().forEach(entry -> {
                     if (CollectionUtils.isNotEmpty(entry.getValue())) {
                         entry.getValue().stream().forEach(oo -> {
                             if (oo.getCategory() != null) {
-                                if (Objects.equal(mortgage, baseDataDicService.getNameById(oo.getCategory()))) {
+                                if (Objects.equal(projectClassify.getId(), oo.getCategory())) {
                                     integerList.add(generateCommonMethod.parseIntJudgeNumber(entry.getKey().getNumber()));
                                 }
                             }
@@ -529,7 +531,7 @@ public class GenerateBaseDataService {
                 });
             }
             if (CollectionUtils.isNotEmpty(integerList)) {
-                stringSet.add(String.format("%s号有%s", StringUtils.join(integerList.stream().distinct().collect(Collectors.toList()), "、"), mortgage));
+                stringSet.add(String.format("%s号有%s", generateCommonMethod.convertNumber(integerList.stream().distinct().collect(Collectors.toList())), projectClassify.getName()));
                 stringSet.add("根据委托人介绍及估价人员在");
                 stringSet.add(erpAreaService.getAreaFullName(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict()));
                 DataHisRightInfoPublicity infoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
@@ -548,28 +550,30 @@ public class GenerateBaseDataService {
                 row++;
             }
         }
-        String addressAssetInventory = getActualAddressAssetInventory();
-        String certificateAssetInventory = getCertificateAssetInventory();
-        if (StringUtils.isNotBlank(addressAssetInventory) && StringUtils.isNotBlank(certificateAssetInventory)) {
-            stringSet.add(String.format("估价对象现场查勘地址为%s", addressAssetInventory));
-            stringSet.add(String.format("本次评估根据委托方提供的由%s", certificateAssetInventory));
-            stringSet.add("本次以上地址为同一地址。");
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
-            stringSet.clear();
-            row++;
-        }
-        if (CollectionUtils.isNotEmpty(getSchemeReimbursementItemVoList())) {
-            String s = getStatutoryPriorityAmountTotal();
-            stringSet.add("根据估价委托人提供的《法定优先受偿款情况说明》");
-            stringSet.add("估价对象于价值时点已设定抵押权");
-            stringSet.add("本次评估是抵押权存续期间的房地产估价（同行续贷）");
-            stringSet.add("经过沟通");
-            stringSet.add("抵押权人已经知晓法定优先受偿款对估价对象价值的影响");
-            stringSet.add("且并不需要我们在抵押价值中予以扣除法定优先受偿款");
-            stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款合计为%s万元（大写：%s ）", s, CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(new BigDecimal(s).multiply(new BigDecimal(10000)), false))));
-            stringSet.add("在此提请报告使用人加以关注。");
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
-            stringSet.clear();
+        {
+            String addressAssetInventory = getActualAddressAssetInventory();
+            String certificateAssetInventory = getCertificateAssetInventory();
+            if (StringUtils.isNotBlank(addressAssetInventory) && StringUtils.isNotBlank(certificateAssetInventory)) {
+                stringSet.add(String.format("估价对象现场查勘地址为%s", addressAssetInventory));
+                stringSet.add(String.format("本次评估根据委托方提供的由%s", certificateAssetInventory));
+                stringSet.add("本次以上地址为同一地址。");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
+                stringSet.clear();
+                row++;
+            }
+            if (CollectionUtils.isNotEmpty(getSchemeReimbursementItemVoList())) {
+                String s = getStatutoryPriorityAmountTotal();
+                stringSet.add("根据估价委托人提供的《法定优先受偿款情况说明》");
+                stringSet.add("估价对象于价值时点已设定抵押权");
+                stringSet.add("本次评估是抵押权存续期间的房地产估价（同行续贷）");
+                stringSet.add("经过沟通");
+                stringSet.add("抵押权人已经知晓法定优先受偿款对估价对象价值的影响");
+                stringSet.add("且并不需要我们在抵押价值中予以扣除法定优先受偿款");
+                stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款合计为%s万元（大写：%s ）", s, CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(new BigDecimal(s).multiply(new BigDecimal(10000)), false))));
+                stringSet.add("在此提请报告使用人加以关注。");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))).append("</p>");
+                stringSet.clear();
+            }
         }
         documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
         doc.save(localPath);
@@ -1951,6 +1955,8 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         StringBuilder stringBuilder = new StringBuilder(8);
+        BaseDataDic mdIncome =  baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
+        BaseDataDic mdCompare =  baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         final int TEN = 10;
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
         Map<SchemeJudgeObject, List<SchemeSurePriceItem>> objectListMap = Maps.newHashMap();
@@ -1967,11 +1973,11 @@ public class GenerateBaseDataService {
                 List<SchemeSurePriceItem> schemeSurePriceItemList = entry.getValue();
                 SchemeSurePriceItem mdIncomeItem = null;
                 SchemeSurePriceItem mdCompareItem = null;
-                if (schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().indexOf(CalculationMethodNameEnum.MdIncome.getName()) != -1).count() >= 1) {
-                    mdIncomeItem = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().indexOf(CalculationMethodNameEnum.MdIncome.getName()) != -1).findFirst().get();
+                if (schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().equals(mdIncome.getName())).count() >= 1) {
+                    mdIncomeItem = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().equals(mdIncome.getName())).findFirst().get();
                 }
-                if (schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().indexOf(CalculationMethodNameEnum.MdCompare.getName()) != -1).count() >= 1) {
-                    mdCompareItem = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().indexOf(CalculationMethodNameEnum.MdCompare.getName()) != -1).findFirst().get();
+                if (schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().equals(mdCompare.getName())).count() >= 1) {
+                    mdCompareItem = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().equals(mdCompare.getName())).findFirst().get();
                 }
                 Integer computeDifference = null;
                 if (mdIncomeItem != null && mdCompareItem != null) {
@@ -1980,11 +1986,11 @@ public class GenerateBaseDataService {
                 if (computeDifference != null) {
                     stringBuilder.delete(0, stringBuilder.toString().length());
                     stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey()));
-                    stringBuilder.append(CalculationMethodNameEnum.MdIncome.getName()).append("与").append(CalculationMethodNameEnum.MdCompare.getName());
+                    stringBuilder.append(mdIncome.getName()).append("与").append(mdCompare.getName());
                     if (computeDifference.intValue() > TEN) {
                         stringBuilder.append("测算结果有一定差异").append("，");
-                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，比较法的试算结果更接近市场状况。");
-                        stringBuilder.append("故最终单价=").append("（").append(getEvaluationExpression()).append("）");
+                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，").append(mdCompare.getName()).append("的试算结果更接近市场状况。");
+                        stringBuilder.append("故最终单价=");
                         double[] doubles = new double[]{mdIncomeItem.getTrialPrice().doubleValue(), mdCompareItem.getTrialPrice().doubleValue()};
                         double max = Arrays.stream(doubles).max().getAsDouble();
                         double min = Arrays.stream(doubles).min().getAsDouble();
@@ -2009,13 +2015,14 @@ public class GenerateBaseDataService {
                             bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
                             stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
                         }
+                        stringBuilder.append("（").append(getEvaluationExpression()).append("）");
                     }
                     if (computeDifference.intValue() <= TEN) {
                         stringBuilder.append("测算结果相近，通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素").append("，");
                         stringBuilder.append(CalculationMethodNameEnum.MdIncome.getName()).append("的试算结果与").append(CalculationMethodNameEnum.MdCompare.getName());
                         stringBuilder.append("试算结果均能反映估价对象市场价值").append("。");
-                        stringBuilder.append("故最终单价=").append("（").append(getEvaluationExpression()).append("）");
-                        stringBuilder.append(mdIncomeItem.getTrialPrice().toString()).append("×").append("50%").append("+").append(mdCompareItem.getTrialPrice().toString()).append("×").append("50%");
+                        stringBuilder.append("故最终单价=");
+                        stringBuilder.append(mdIncomeItem.getTrialPrice().toString()).append("×").append("50%").append("+").append(mdCompareItem.getTrialPrice().toString()).append("×").append("50%").append("（").append(getEvaluationExpression()).append("）");
                     }
                 }
                 try {
@@ -2090,7 +2097,8 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             List<Integer> integerList = Lists.newArrayList();
             schemeJudgeObjectList.stream().forEach(oo -> integerList.add(generateCommonMethod.parseIntJudgeNumber(oo.getNumber())));
-            for (CalculationMethodNameEnum methodNameEnum : CalculationMethodNameEnum.values()) {
+            List<String> stringList = Lists.newArrayList(AssessDataDicKeyConstant.MD_MARKET_COMPARE,AssessDataDicKeyConstant.MD_INCOME,AssessDataDicKeyConstant.MD_COST,AssessDataDicKeyConstant.MD_DEVELOPMENT,AssessDataDicKeyConstant.MD_STANDARD_ADJUSTMENT_PRICE);
+            for (String methodNameEnum:stringList) {
                 String formula = getDataMethodFormula(schemeJudgeObjectList, methodNameEnum, "公式");
                 if (StringUtils.isNotBlank(formula.trim())) {
                     stringBuilder.append(generateCommonMethod.convertNumber(integerList));
@@ -2120,7 +2128,8 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             List<Integer> integerList = Lists.newArrayList();
             schemeJudgeObjectList.stream().forEach(oo -> integerList.add(generateCommonMethod.parseIntJudgeNumber(oo.getNumber())));
-            for (CalculationMethodNameEnum methodNameEnum : CalculationMethodNameEnum.values()) {
+            List<String> stringList = Lists.newArrayList(AssessDataDicKeyConstant.MD_MARKET_COMPARE,AssessDataDicKeyConstant.MD_INCOME,AssessDataDicKeyConstant.MD_COST,AssessDataDicKeyConstant.MD_DEVELOPMENT,AssessDataDicKeyConstant.MD_STANDARD_ADJUSTMENT_PRICE);
+            for (String methodNameEnum:stringList) {
                 String formula = getDataMethodFormula(schemeJudgeObjectList, methodNameEnum, "参数");
                 if (StringUtils.isNotBlank(formula.trim())) {
                     stringBuilder.append(generateCommonMethod.convertNumber(integerList));
@@ -2139,18 +2148,21 @@ public class GenerateBaseDataService {
      * 获取方法的参数或者公式
      *
      * @param schemeJudgeObjectList
-     * @param methodNameEnum
+     * @param fieldName
      * @param name
      * @return
      */
-    private String getDataMethodFormula(List<SchemeJudgeObject> schemeJudgeObjectList, CalculationMethodNameEnum methodNameEnum, String name) {
+    private String getDataMethodFormula(List<SchemeJudgeObject> schemeJudgeObjectList, String fieldName, String name) {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        BaseDataDic byFieldName =  baseDataDicService.getCacheDataDicByFieldName(fieldName);
         List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
         DataEvaluationMethod evaluationMethod = null;
         DataMethodFormula dataMethodFormula = null;
         if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
-            if (dataEvaluationMethodList.stream().filter(dataEvaluation -> methodNameEnum.getName().indexOf(dataEvaluation.getName()) != -1).count() >= 1) {
-                evaluationMethod = dataEvaluationMethodList.stream().filter(dataEvaluation -> methodNameEnum.getName().indexOf(dataEvaluation.getName()) != -1).findFirst().get();
+            if (byFieldName != null){
+                if (dataEvaluationMethodList.stream().filter(dataEvaluation -> Objects.equal(byFieldName.getName(),dataEvaluation.getName())).count() >= 1) {
+                    evaluationMethod = dataEvaluationMethodList.stream().filter(dataEvaluation -> Objects.equal(byFieldName.getName(),dataEvaluation.getName())).findFirst().get();
+                }
             }
         }
         if (evaluationMethod != null) {
@@ -2164,14 +2176,16 @@ public class GenerateBaseDataService {
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
                     for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (schemeJudgeFunction.getName().indexOf(methodNameEnum.getName()) != -1) {
-                            if (dataMethodFormula != null) {
-                                linkedHashSet.add(methodNameEnum.getName());
-                                if ("公式".equals(name)) {
-                                    linkedHashSet.add(dataMethodFormula.getFormula());
-                                }
-                                if ("参数".equals(name)) {
-                                    linkedHashSet.add(dataMethodFormula.getRelevantParameter());
+                        if (byFieldName != null){
+                            if (Objects.equal(byFieldName.getName(),schemeJudgeFunction.getName())) {
+                                if (dataMethodFormula != null) {
+                                    linkedHashSet.add(byFieldName.getName());
+                                    if ("公式".equals(name)) {
+                                        linkedHashSet.add(dataMethodFormula.getFormula());
+                                    }
+                                    if ("参数".equals(name)) {
+                                        linkedHashSet.add(dataMethodFormula.getRelevantParameter());
+                                    }
                                 }
                             }
                         }
@@ -2284,32 +2298,35 @@ public class GenerateBaseDataService {
         query.setProjectId(projectId);
         query.setProjectPhaseId(projectPhase.getId());
         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-            SurveyAssetInventoryRightRecordCenter selectRightRecordCenter = new SurveyAssetInventoryRightRecordCenter();
-            selectRightRecordCenter.setProjectId(projectPlanDetailsList.stream().findFirst().get().getProjectId());
-            selectRightRecordCenter.setPlanDetailsId(projectPlanDetailsList.stream().findFirst().get().getId());
-            selectRightRecordCenter.setProcessInsId(projectPlanDetailsList.stream().findFirst().get().getProcessInsId());
-            List<SurveyAssetInventoryRightRecordCenter> centerList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordCenterList(selectRightRecordCenter);
-            if (CollectionUtils.isNotEmpty(centerList)) {
-                List<SurveyAssetInventoryRightRecord> rightRecordList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordList(centerList.stream().findFirst().get().getId(), projectId, centerList.stream().findFirst().get().getPlanDetailsId());
-                if (CollectionUtils.isNotEmpty(rightRecordList)) {
-                    for (SurveyAssetInventoryRightRecord rightRecord : rightRecordList) {
-                        SchemeReimbursementItemVo vo = schemeReimbursementService.getSchemeReimbursementItemVoByInventoryRightRecordId(rightRecord.getId());
-                        if (vo != null && StringUtils.isNotBlank(rightRecord.getRecordIds())) {
-                            List<Integer> integerList = Lists.newArrayList(rightRecord.getRecordIds().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
-                            List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
-                            for (Integer integer : integerList) {
-                                if (schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).count() >= 1) {
-                                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).findFirst().get();
-                                    judgeObjectList.add(schemeJudgeObject);
-                                    schemeJudgeObjectList.remove(schemeJudgeObject);
-                                }
-                            }
-                            if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                                map.put(vo, generateCommonMethod.removeDuplicate(judgeObjectList));
-                            }
-                        }
+        if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
+            return map;
+        }
+        SurveyAssetInventoryRightRecordCenter selectRightRecordCenter = new SurveyAssetInventoryRightRecordCenter();
+        selectRightRecordCenter.setProjectId(projectPlanDetailsList.stream().findFirst().get().getProjectId());
+        selectRightRecordCenter.setPlanDetailsId(projectPlanDetailsList.stream().findFirst().get().getId());
+        selectRightRecordCenter.setProcessInsId(projectPlanDetailsList.stream().findFirst().get().getProcessInsId());
+        List<SurveyAssetInventoryRightRecordCenter> centerList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordCenterList(selectRightRecordCenter);
+        if (CollectionUtils.isEmpty(centerList)) {
+            return map;
+        }
+        List<SurveyAssetInventoryRightRecord> rightRecordList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordList(centerList.stream().findFirst().get().getId(), projectId, centerList.stream().findFirst().get().getPlanDetailsId());
+        if (CollectionUtils.isEmpty(rightRecordList)) {
+            return map;
+        }
+        for (SurveyAssetInventoryRightRecord rightRecord : rightRecordList) {
+            SchemeReimbursementItemVo vo = schemeReimbursementService.getSchemeReimbursementItemVoByInventoryRightRecordId(rightRecord.getId());
+            if (vo != null && StringUtils.isNotBlank(rightRecord.getRecordIds())) {
+                List<Integer> integerList = Lists.newArrayList(rightRecord.getRecordIds().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
+                List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
+                for (Integer integer : integerList) {
+                    if (schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).count() >= 1) {
+                        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).findFirst().get();
+                        judgeObjectList.add(schemeJudgeObject);
+                        schemeJudgeObjectList.remove(schemeJudgeObject);
                     }
+                }
+                if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                    map.put(vo, judgeObjectList.stream().distinct().collect(Collectors.toList()));
                 }
             }
         }
@@ -2342,8 +2359,6 @@ public class GenerateBaseDataService {
             generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价（元/㎡）", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)")));
             //组遍历
             reimbursementItemVoListMap.entrySet().stream().forEach(entry -> {
-                SchemeReimbursementItemVo itemVo = new SchemeReimbursementItemVo();
-                BeanUtils.copyProperties(entry.getKey(), itemVo);
                 for (SchemeJudgeObject schemeJudgeObject : entry.getValue()) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply != null) {
@@ -2866,13 +2881,13 @@ public class GenerateBaseDataService {
             MdMarketCompare mdMarketCompare = null;
             MdIncome mdIncome = null;
             if (true) {
-                SchemeInfo schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdCompare, schemeJudgeObjectList.get(j - 2));
+                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_MARKET_COMPARE, schemeJudgeObjectList.get(j - 2));
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     mdMarketCompare = mdMarketCompareService.getMdMarketCompare(schemeInfo.getMethodDataId());
                 }
             }
             if (true) {
-                SchemeInfo schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdCompare, schemeJudgeObjectList.get(j - 2));
+                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObjectList.get(j - 2));
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
                 }
@@ -3037,7 +3052,7 @@ public class GenerateBaseDataService {
         Multimap<String, String> multimap = ArrayListMultimap.create();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                SchemeInfo schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdIncome, schemeJudgeObject);
+                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObject);
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String value = generateMdIncomeService.getTenancyrestrictionReamrk();
@@ -3080,7 +3095,7 @@ public class GenerateBaseDataService {
                 SchemeInfo schemeInfo = null;
                 //市场比较法
                 builder.writeln(CalculationMethodNameEnum.MdCompare.getName());
-                schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdCompare, schemeJudgeObject);
+                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_MARKET_COMPARE, schemeJudgeObject);
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), new Date(), areaId);
                     try {
@@ -3096,7 +3111,7 @@ public class GenerateBaseDataService {
                 }
                 //收益法
                 builder.writeln(CalculationMethodNameEnum.MdIncome.getName());
-                schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdIncome, schemeJudgeObject);
+                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObject);
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String temp = generateMdIncomeService.generateCompareFile();
@@ -3401,17 +3416,20 @@ public class GenerateBaseDataService {
     /**
      * 获取如收益法,市场比较法，假设开发法，成本法等的id
      *
-     * @param methodNameEnum
+     * @param fieldName
      * @param schemeJudgeObject
      * @return SchemeInfo
      */
-    private SchemeInfo getSchemeInfoId(CalculationMethodNameEnum methodNameEnum, SchemeJudgeObject schemeJudgeObject) {
+    private SchemeInfo getSchemeInfoId(String fieldName, SchemeJudgeObject schemeJudgeObject) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(fieldName);
         List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
         DataEvaluationMethod dataEvaluationMethod = null;
         SchemeInfo schemeInfo = null;
         if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
-            if (dataEvaluationMethodList.stream().filter(oo -> methodNameEnum.getName().indexOf(oo.getName()) != -1).count() >= 1) {
-                dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> methodNameEnum.getName().indexOf(oo.getName()) != -1).findFirst().get();
+            if (baseDataDic != null) {
+                if (dataEvaluationMethodList.stream().filter(oo -> Objects.equal(baseDataDic.getName(), oo.getName())).count() >= 1) {
+                    dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> Objects.equal(baseDataDic.getName(), oo.getName())).findFirst().get();
+                }
             }
         }
         if (dataEvaluationMethod != null) {
@@ -3735,6 +3753,7 @@ public class GenerateBaseDataService {
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
         this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
         this.dataBestUseDescriptionService = SpringContextUtils.getBean(DataBestUseDescriptionService.class);
+        this.baseProjectClassifyService = SpringContextUtils.getBean(BaseProjectClassifyService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {
@@ -3787,10 +3806,18 @@ public class GenerateBaseDataService {
     }
 
     public List<SchemeReimbursementItemVo> getSchemeReimbursementItemVoList() {
-        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getSchemeReimbursementByAreaId(areaId, projectId);
         List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = Lists.newArrayList();
-        if (schemeReimbursement != null) {
-            schemeReimbursementItemVoList = schemeReimbursementService.getItemByMasterId(schemeReimbursement.getId());
+        SchemeReimbursement query = new SchemeReimbursement();
+        query.setAreaId(areaId);
+        query.setProjectId(projectId);
+        List<SchemeReimbursement> schemeReimbursementList = schemeReimbursementService.getObjectList(query);
+        if (CollectionUtils.isNotEmpty(schemeReimbursementList)) {
+            schemeReimbursementList.stream().forEach(schemeReimbursement -> {
+                List<SchemeReimbursementItemVo> vos = schemeReimbursementService.getItemByMasterId(schemeReimbursement.getId());
+                if (CollectionUtils.isNotEmpty(vos)) {
+                    schemeReimbursementItemVoList.addAll(vos);
+                }
+            });
         }
         return schemeReimbursementItemVoList;
     }
