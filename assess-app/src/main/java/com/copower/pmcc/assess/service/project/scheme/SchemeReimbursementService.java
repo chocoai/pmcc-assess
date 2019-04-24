@@ -139,15 +139,11 @@ public class SchemeReimbursementService {
     public String getFullDescription(SchemeReimbursementItem object) {
         StringBuilder builder = new StringBuilder(8);
         BigDecimal decimal = new BigDecimal("10000");
-        builder.append(String.format("假定未设立法定优先受偿权总价%s万元,", (object.getNotSetUpTotalPrice().divide(decimal))));
         builder.append(String.format("已抵押担保的债权数额总价%s万元,", (object.getMortgagedTotalPrice().divide(decimal))));
         builder.append(String.format("拖欠的建设工程价款总价%s万元,", (object.getOwedTotalPrice().divide(decimal))));
         builder.append(String.format("其它法定优先受偿款总价%s万元,", (object.getOtherTotalPrice().divide(decimal))));
         builder.append(String.format("估价师知悉的法定优先受偿款总价%s万元,", (object.getKnowTotalPrice().divide(decimal))));
-        builder.append(String.format("抵押价值总价%s万元;", (object.getMortgageTotalPrice().divide(decimal))));
-        if (StringUtils.isEmpty(builder.toString().trim())) {
-            builder.append("");
-        }
+
         return builder.toString();
     }
 
