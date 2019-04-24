@@ -38,18 +38,27 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     MaintenanceCostRatio("收益法维修保养费率"),
     ManagementCostTax("收益法管理费率"),
     InsurancePremiumTax("收益法保险费率"),
-    IncomeAdditionalRatio("收益法租赁税费"),
-    IncomePropertyTax("收益法房产税"),
+    IncomeAdditionalRatio("收益法租赁税率"),
+    IncomePropertyTax("收益法房产税"),// ==收益法房产税税率
     IncomestampTax("收益法印花税"),
     IncomeTransactionTax("收益法其它交易费率"),
-    IncomeAggregateTaxesFees("收益法合计税费"),
     RentGrowthForecast("收益法租金增长率"),
+    IncomeLocalEducationRatio("收益法地方教育费附加税率"),
+    IncomeEducationRatio("收益法教育费附加税率"),
+    IncomeconstructionTaxRatio("收益法城建税税率"),
+    IncomesalesTaxRatio("收益法增值税率"),
+    IncomesalesTaxRatioCorrect("收益法增值修正税率"),
+    IncomePropertyTaxCorrect("收益法房产税修正税率"),
+    IncomeCityLocalEducationTaxCorrect("城市地方教育修正"),
+    LandUseTax("收益法土地使用税"),
+    IncomeAdditionalCapture("收益法有效收缴率"),
 
+    LandUseCost("收益法土地使用税费"),
+    IncomeAdditionalRatioCost("收益法租赁税费"),
     IncomeTransaction("收益法其它相关费用"),
     InsurancePremiumCost("收益法年保险费"),
     ManagementCost("收益法年管理费"),
     MaintenanceCost("收益法年维修费"),
-    LandUseTax("收益法土地使用税"),
     OtherIncome("收益法其它收入"),
     ReplacementCost("收益法重置成本"),
     GrossIncome("收益法年有效毛收入"),
@@ -72,29 +81,12 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
 
     //------------------------------------------------------
 
-    EntrustedInformation("委托资料"),
     YearDepositRate("一年期定期存款利率"),
     EffectiveIncomeFormula("有效收入公式"),
 
-    RemunerationRateSheet("报酬率测算表"),
     IncomeMethodPriceCalculatingSheet("收益法价格测算表")
     ;
-    private String key;
-
     private String name;
-    private String describe;
-
-    BaseReportFieldMdIncomeEnum(String key, String name, String describe) {
-        this.key = key;
-        this.name = name;
-        this.describe = describe;
-    }
-    BaseReportFieldMdIncomeEnum(String name, String describe) {
-        this.key = key;
-        this.name = name;
-        this.describe = describe;
-    }
-
     BaseReportFieldMdIncomeEnum(String name) {
         this.name = name;
     }
@@ -106,25 +98,6 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
             }
         }
         return null;
-    }
-
-    public static List<KeyValueDto> getBaseReportFieldEnumList() {
-        List<KeyValueDto> keyValueDtos = new ArrayList<>();
-        for (BaseReportFieldMdIncomeEnum e : BaseReportFieldMdIncomeEnum.values()) {
-            KeyValueDto keyValueDto = new KeyValueDto();
-            keyValueDto.setKey(String.valueOf(e.getKey()));
-            keyValueDto.setValue(e.getName());
-            keyValueDtos.add(keyValueDto);
-        }
-        return keyValueDtos;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public String getName() {
