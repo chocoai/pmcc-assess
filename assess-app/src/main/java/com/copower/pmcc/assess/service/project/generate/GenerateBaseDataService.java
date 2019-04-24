@@ -363,19 +363,11 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSeparationCertificateUses() throws Exception {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getCertUse())).collect(Collectors.toList());
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), schemeJudgeObjectList.get(i).getCertUse());
-            }
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectDeclareList) {
+            map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
+        return generateCommonMethod.judgeSummaryDesc(map, "证载用途为", false);
     }
 
 
@@ -1391,12 +1383,11 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getSetUse() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        String s = generateCommonMethod.getSetUses(schemeJudgeObjectList);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectDeclareList) {
+            map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
         }
-        return s;
+        return generateCommonMethod.judgeSummaryDesc(map, "设定用途为", false);
     }
 
 
@@ -1406,12 +1397,11 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getPracticalUse() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        String s = generateCommonMethod.getPracticalUse(schemeJudgeObjectList);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectDeclareList) {
+            map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
         }
-        return s;
+        return generateCommonMethod.judgeSummaryDesc(map, "实际用途为", false);
     }
 
     /**
