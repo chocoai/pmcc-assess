@@ -28,12 +28,10 @@
                             <thead>
                             <tr>
                                 <th class="hidden-xs">估价对象</th>
-                                <th class="hidden-xs">假定未设立法定优先受偿权总价(元)</th>
                                 <th class="hidden-xs">已抵押担保的债权数额总价(元)</th>
                                 <th class="hidden-xs">拖欠的建设工程价款总价(元)</th>
                                 <th class="hidden-xs">其它法定优先受偿款总价(元)</th>
                                 <th class="hidden-xs">估价师知悉的法定优先受偿款总价(元)</th>
-                                <th class="hidden-xs">抵押价值总价(元)</th>
                             </tr>
                             </thead>
                             <tbody id="tbody_data_section">
@@ -100,9 +98,6 @@
                         html += item.name;
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
-                        html += Number(item.notSetUpTotalPrice).toFixed(2);
-                        html += "</td>";
-                        html += "<td class='hidden-xs'>";
                         html += Number(item.mortgagedTotalPrice).toFixed(2);
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
@@ -117,9 +112,6 @@
                         html += Number(item.knowTotalPrice).toFixed(2);
                         html += "</td>";
 
-                        html += "<td class='hidden-xs'>";
-                        html += Number(item.mortgageTotalPrice).toFixed(2);
-                        html += "</td>";
                         html += "</tr>";
                     });
                     $("#tbody_data_section").append(html);

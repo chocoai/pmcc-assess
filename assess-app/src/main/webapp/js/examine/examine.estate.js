@@ -101,7 +101,7 @@
         estateCommon.estateForm.clearAll();
         estateCommon.estateLandStateForm.clearAll();
         estateCommon.estateForm.initForm(data.estate);
-        estateCommon.getLocationDescribe(data.estate.blockId);
+       // estateCommon.getLocationDescribe(data.estate.blockId);
         estateCommon.estateLandStateForm.initForm(data.land);
         AssessCommon.initAreaInfo({
             provinceTarget: estateCommon.estateForm.find("select[name='province']"),

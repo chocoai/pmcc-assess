@@ -135,9 +135,10 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">基础设施完备度</label>
+                <label class="col-sm-1 control-label">基础设施完备度<span
+                        class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 infrastructureCompleteness" name="infrastructureCompleteness">
+                    <select class="form-control search-select select2 infrastructureCompleteness" name="infrastructureCompleteness" required>
                     </select>
                 </div>
             </div>

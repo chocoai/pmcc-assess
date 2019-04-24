@@ -182,7 +182,7 @@
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">财产范围</label>
+                <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 scopeProperty" name="scopeProperty" required>
                     </select>
@@ -205,14 +205,14 @@
         </div>
         <div class="form-group" >
             <div class="x-valid">
-                <label class="col-sm-1 control-label">税费负担</label>
+                <label class="col-sm-1 control-label">税费负担<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 taxBurden" name="taxBurden" required>
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易情况</label>
+                <label class="col-sm-1 control-label">交易情况<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select class="form-control transactionSituation" name="transactionSituation" required>
                     </select>
@@ -240,19 +240,19 @@
         <div class="x_title">融资条件</div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">首付款比例</label>
+                <label class="col-sm-1 control-label">首付款比例<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" name="downPaymentRatio" placeholder="首付款比例" required>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">贷款利率</label>
+                <label class="col-sm-1 control-label">贷款利率<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" name="lendingRate" placeholder="贷款利率" required>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">贷款期限</label>
+                <label class="col-sm-1 control-label">贷款期限<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" name="loanPeriod" placeholder="贷款期限" required>
                 </div>
@@ -271,7 +271,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">付款方式</label>
+                <label class="col-sm-1 control-label">付款方式<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select class="form-control paymentMethod" name="paymentMethod" required>
                     </select>

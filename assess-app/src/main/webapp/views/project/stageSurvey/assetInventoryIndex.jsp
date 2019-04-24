@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">用途</label>
+                                    <label class="col-sm-1 control-label">证载用途</label>
                                     <div class="col-sm-3">
                                         <select class="form-control" id="application" name="application">
                                             <option value="">-请选择-</option>
