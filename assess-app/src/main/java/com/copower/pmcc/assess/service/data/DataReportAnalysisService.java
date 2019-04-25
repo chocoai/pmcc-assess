@@ -478,12 +478,12 @@ public class DataReportAnalysisService {
             SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
             if ("不可分".equals(surveyAssetInventory.getSegmentationLimit())) {
                 resultMap.put(number, impartibility.getTemplate());
-            }
-            if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && passId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
-                resultMap.put(number, detachableCanRush.getTemplate());
-            }
-            if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && refuseId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
-                resultMap.put(number, detachableNotRush.getTemplate());
+            }else if("可分".equals(surveyAssetInventory.getSegmentationLimit())){
+                if(refuseId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))){
+                    resultMap.put(number, detachableNotRush.getTemplate());
+                }else{
+                    resultMap.put(number, detachableCanRush.getTemplate());
+                }
             }
         }
         String s = generateCommonMethod.judgeEachDesc(resultMap, "", "", false);
@@ -574,17 +574,19 @@ public class DataReportAnalysisService {
             if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
                 rightList = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(surveyAssetInventoryRightRecordList.get(0).getId());
             }
+            StringBuilder stringBuilder=new StringBuilder();
             for (SurveyAssetInventoryRight inventoryRight : rightList) {
                 if (pledgeId.equals(inventoryRight.getCategory())) {//抵押
-                    resultMap.put(number,pledgeTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getRemark()));
+                    stringBuilder.append(pledgeTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getInfluence()));
                 }
                 if (rentId.equals(inventoryRight.getCategory())) {//出租
-                    resultMap.put(number,rentTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getRemark()));
+                    stringBuilder.append(rentTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getInfluence()));
                 }
                 if (otherId.equals(inventoryRight.getCategory())) {//其它
-                    resultMap.put(number,otherTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getRemark()));
+                    stringBuilder.append(otherTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getInfluence()));
                 }
             }
+            resultMap.put(number,stringBuilder.toString());
         }
         return generateCommonMethod.judgeEachDesc(resultMap, "", "。", false);
     }

@@ -1275,6 +1275,76 @@ public class SurveyAssetInventoryRightExample {
             return (Criteria) this;
         }
 
+        public Criteria andInfluenceIsNull() {
+            addCriterion("influence is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceIsNotNull() {
+            addCriterion("influence is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceEqualTo(String value) {
+            addCriterion("influence =", value, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceNotEqualTo(String value) {
+            addCriterion("influence <>", value, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceGreaterThan(String value) {
+            addCriterion("influence >", value, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceGreaterThanOrEqualTo(String value) {
+            addCriterion("influence >=", value, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceLessThan(String value) {
+            addCriterion("influence <", value, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceLessThanOrEqualTo(String value) {
+            addCriterion("influence <=", value, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceLike(String value) {
+            addCriterion("influence like", value, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceNotLike(String value) {
+            addCriterion("influence not like", value, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceIn(List<String> values) {
+            addCriterion("influence in", values, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceNotIn(List<String> values) {
+            addCriterion("influence not in", values, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceBetween(String value1, String value2) {
+            addCriterion("influence between", value1, value2, "influence");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfluenceNotBetween(String value1, String value2) {
+            addCriterion("influence not between", value1, value2, "influence");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
