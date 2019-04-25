@@ -90,12 +90,10 @@ public class DataReportAnalysisRiskService {
                     } else {
                         paymentAbnormality.add(Integer.valueOf(judgeObject.getNumber()));
                         damageContent.append(generateCommonMethod.convertNumber(paymentAbnormality)).append("号估价对象税费缴纳不正常，");
-                    }
-                    if ("不正常".equals(surveyAssetInventory.getPaymentStatus())) {
                         List<SurveyTaxesPaymentDto> dataList = JSON.parseArray(surveyAssetInventory.getPaymentContent(), SurveyTaxesPaymentDto.class);
                         if (CollectionUtils.isNotEmpty(dataList)) {
                             for (SurveyTaxesPaymentDto dto : dataList) {
-                                damageContent.append("项目：").append(dto.getProjectName()).append("，金额").append(dto.getMoney()).append("元，说明：").append(dto.getRemark()).append(";");
+                                damageContent.append(dto.getProjectName()).append(dto.getRemark()).append(dto.getMoney()).append("元;");
                             }
                             damageContent.deleteCharAt(damageContent.length() - 1);
                             damageContent.append("。");
@@ -107,13 +105,13 @@ public class DataReportAnalysisRiskService {
                         stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{税费缴纳调查}", damageContent)).append("</p>");
                     }
                 }
-                if (paymentNormal != null) {
-                    String number = generateCommonMethod.convertNumber(paymentNormal);
-                    StringBuilder content = new StringBuilder();
-                    content.append(number).append("号估价对象缴纳税费正常。");
-                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.RISK_ANALYSIS_TAXES_PAYMENT_SURVEY);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{税费缴纳调查}", content)).append("</p>");
-                }
+//                if (paymentNormal != null) {
+//                    String number = generateCommonMethod.convertNumber(paymentNormal);
+//                    StringBuilder content = new StringBuilder();
+//                    content.append(number).append("号估价对象缴纳税费正常。");
+//                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.RISK_ANALYSIS_TAXES_PAYMENT_SURVEY);
+//                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{税费缴纳调查}", content)).append("</p>");
+//                }
             }
         }
         return generateCommonMethod.getWarpCssHtml(stringBuilder.toString());

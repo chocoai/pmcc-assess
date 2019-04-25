@@ -77,25 +77,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">特殊情况</label>
-                        <div class="col-sm-11">
-                        <textarea placeholder="特殊情况" class="form-control"
-                                  name="specialcase"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">特殊情况附件</label>
-                        <div class="col-sm-4">
-                            <input id="specialCaseFile_number" type="file" multiple="false">
-                            <div id="_specialCaseFile_number"></div>
-                        </div>
-                    </div>
-                </div>
             </form>
             <input type="file" id="ajaxFileUpload_number" name="file" style="display: none;"
                    onchange="importRightData(this,'_number');">
@@ -138,6 +119,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <c:if test="${projectInfo.entrustPurpose == pledgeId}">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">对变现能力的影响<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" required="required"
+                                                      name="influence"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:if>
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-2 control-label">

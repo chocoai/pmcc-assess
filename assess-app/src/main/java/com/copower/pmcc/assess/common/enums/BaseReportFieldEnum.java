@@ -36,6 +36,7 @@ public enum BaseReportFieldEnum implements Serializable {
     totalAmountMortgageValueCapitalization("抵押价值总金额大写"),
     HisRightInfoPublicity("他权信息公示"),
     HisRightType("他权类别"),
+    HisRightTypeAndDetail("他权类别及明细"),
     AssetInventoryAgreement("资产清查一致说明"),
     ActualAddressAssetInventory("资产清查实际地址"),
     CertificateAssetInventory("资产清查证明人"),

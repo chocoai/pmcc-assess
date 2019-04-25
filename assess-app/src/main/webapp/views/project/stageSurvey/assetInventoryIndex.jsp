@@ -1164,10 +1164,15 @@
         html += "<input type='text' required class='form-control' name='projectName" + num + "'>";
         html += "</div>";
 
-        html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
+        html += "<label class='col-sm-1 control-label'>" + "类型" + "</label>";
         html += "<div class='col-sm-3'>";
-        html += "<input type='text' class='form-control' name='remark " + num + "'>";
+        html += "<select  class='form-control' name='remark " + num + "'>";
+        html += "<option value='应缴' selected>"+"应缴"+"</option>";
+        html += "<option value='未缴'>"+"未缴"+"</option>";
+        html += "<option value='欠缴'>"+"欠缴"+"</option>";
+        html += "</select>";
         html += "</div>";
+
 
         html += "<div class='x-valid'>";
         html += "<label class='col-sm-1 control-label'>" + "金额" + "</label>";
@@ -1199,10 +1204,15 @@
             html += "<input type='text' required class='form-control' name='projectName "+ i + "' value='" + n["projectName"] + "'>";
             html += "</div>";
 
-            html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
+            html += "<label class='col-sm-1 control-label'>" + "类型" + "</label>";
             html += "<div class='col-sm-3'>";
-            html += "<input type='text' required class='form-control' name='remark" + i + "' value='" + n["remark"] + "'>";
+            html += "<select id='select" + i + "' required class='form-control' name='remark" + i + "' >";
+            html += "<option value='应缴'>"+"应缴"+"</option>";
+            html += "<option value='未缴'>"+"未缴"+"</option>";
+            html += "<option value='欠缴'>"+"欠缴"+"</option>";
+            html += "</select>";
             html += "</div>";
+
 
             html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "金额" + "</label>";
@@ -1218,6 +1228,8 @@
             html += "</div>";
             html += "</div>";
             $(".paymentItem").append(html);
+            var selectId = "select"+i;
+           $("#"+selectId).val(n["remark"]);
         })
     }
 

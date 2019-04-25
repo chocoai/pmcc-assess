@@ -88,6 +88,10 @@ public class AssessDataDicKeyConstant {
      */
     public static final String MD_INCOME_HISTORY_TYPE_INCOME = "md.income.history.type.income"; //收入类
     public static final String MD_INCOME_HISTORY_TYPE_COST = "md.income.history.type.cost"; //成本类
+    public static final String MD_INCOME_RENTAL_GROWTH_RATE_EXPLAIN_EDITABLE = "md.income.rental_growth_rate_explain.editable"; //租金增长率描述（可调整）
+    public static final String MD_INCOME_RENTAL_GROWTH_RATE_EXPLAIN_READONLY = "md.income.rental_growth_rate_explain.readonly"; //租金增长率描述（固定
+    public static final String MD_INCOME_TRANSACTION_TAXE_FEE_RATIO_EDITABLE = "md.income.transaction_taxe_fee_ratio.editable"; //其它相关费用说明（可调整）
+    public static final String MD_INCOME_TRANSACTION_TAXE_FEE_RATIO_READONLY = "md.income.transaction_taxe_fee_ratio.readonly"; //其它相关费用说明（固定）
 
     /**
      * 税率配置

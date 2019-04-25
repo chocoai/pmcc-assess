@@ -198,10 +198,10 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(houseTrading.getTradingTime()), isCase));
                             break;
                         case TRADING_PRICE://交易价格
-                            if (houseTrading.getTradingUnitPrice() == null)
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_PRICE.getKey(), null, isCase));
+                            if (houseTrading.getTradingUnitPrice() != null && isCase)
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_PRICE.getKey(), String.valueOf(houseTrading.getTradingUnitPrice())));
                             else
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_PRICE.getKey(), String.valueOf(houseTrading.getTradingUnitPrice()), isCase));
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_PRICE.getKey(), null));
                             break;
                         case LOCATION://房地产坐落
                             stringBuilder = new StringBuilder();
@@ -223,9 +223,15 @@ public class MdMarketCompareFieldService extends BaseService {
                             stringBuilder.append(generateLoactionService.getFaceStreet(Lists.newArrayList(judgeObject)));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TEMPORARY_ROAD_CONDITION.getKey(), stringBuilder.toString()));
                             break;
-                        case FLOOR://楼层
-                            String floor = String.format("%s栋%s单元%s层", examineBuilding.getBuildingNumber(), examineUnit.getUnitNumber(), examineHouse.getHouseNumber());
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), floor));
+                        case FLOOR://楼栋楼层
+                            stringBuilder = new StringBuilder();
+                            if(StringUtils.isNotBlank(examineBuilding.getBuildingNumber()))
+                                stringBuilder.append(String.format("%s栋",examineBuilding.getBuildingNumber()));
+                            if(examineBuilding.getFloorCount()!=null)
+                                stringBuilder.append(String.format("%s层建筑",examineBuilding.getFloorCount()));
+                            if(StringUtils.isNotBlank(examineHouse.getFloor()))
+                                stringBuilder.append(String.format("第%s层",examineHouse.getFloor()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), stringBuilder.toString()));
                             break;
                         case ORIENTATION://朝向
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ORIENTATION.getKey(), baseDataDicService.getNameById(examineHouse.getOrientation())));
@@ -306,11 +312,16 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PROPERTY_MANAGEMENT.getKey(), stringBuilder.toString()));
                             break;
                         case OTHER_SPECIAL_SITUATIONS://其它特殊情况
-                            String specialCase = generateEquityService.getSpecialcase(projectInfo.getId(), Lists.newArrayList(judgeObject));
+                            String specialCase = generateEquityService.getTransferLimit(Lists.newArrayList(judgeObject),null);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OTHER_SPECIAL_SITUATIONS.getKey(), specialCase));
                             break;
                         case BUILDING_AREA://建筑面积（㎡）
-                            String buildingArea = examineEstate.getFloorArea() == null ? "" : String.format("%平方米", examineEstate.getFloorArea());
+                            String buildingArea = null;
+                            if (isCase) {
+                                buildingArea = examineHouse.getArea() == null ? "" : String.format("%平方米", examineHouse.getArea());
+                            } else {
+                                buildingArea = judgeObject.getEvaluationArea() == null ? "" : String.format("%平方米", judgeObject.getEvaluationArea());
+                            }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_AREA.getKey(), buildingArea));
                             break;
                         case FLOOR_HEIGHT://层高
@@ -552,12 +563,8 @@ public class MdMarketCompareFieldService extends BaseService {
         marketCompareItemDto.setName(name);
         marketCompareItemDto.setScore(100);
         marketCompareItemDto.setRatio(new BigDecimal("1"));
-        value=value.replaceAll("^[,，.。;；、]+[,，.。;；、]+$","");
-        if (isCase) {
-            marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "无" : value);
-        } else {
-            marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "" : value);
-        }
+        value = value.replaceAll("^[,，.。;；、]+[,，.。;；、]+$", "");
+        marketCompareItemDto.setValue(StringUtils.isBlank(value) ? (isCase ? "无" : "") : value);
         return marketCompareItemDto;
     }
 

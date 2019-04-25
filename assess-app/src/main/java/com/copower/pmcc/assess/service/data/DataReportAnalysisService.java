@@ -256,7 +256,7 @@ public class DataReportAnalysisService {
             }
             //房地产市场状况
             if (AssessReportFieldConstant.HOUSE_MARKET_CONDITION.equals(dataReportAnalysis.getFieldName())) {
-                stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getHouseMarketCondition(estateGroupMap))));
+
             }
             //其他分析
             if (AssessReportFieldConstant.OTHER_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
@@ -286,7 +286,7 @@ public class DataReportAnalysisService {
             //变现能力综述
             if (AssessReportFieldConstant.CASHABILITY_SUMMARY.equals(dataReportAnalysis.getFieldName())) {
                 DataReportTemplateItem templateItem = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.CASHABILITY_SUMMARY_CONTENT);
-                HashSet<String> stringHashSet= Sets.newHashSet();
+                HashSet<String> stringHashSet = Sets.newHashSet();
                 for (Map.Entry<String, EstateLiquidityAnalysisDto> entry : analysisDtoMap.entrySet()) {
                     EstateLiquidityAnalysisDto analysisDto = entry.getValue();
                     String s = templateItem.getTemplate()
@@ -303,7 +303,7 @@ public class DataReportAnalysisService {
                     s = s.replace("#{流动性}", mobility);
                     stringHashSet.add(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(s)));
                 }
-                stringHashSet.forEach(o->stringBuilder.append(o));
+                stringHashSet.forEach(o -> stringBuilder.append(o));
             }
         }
         return stringBuilder.toString();
@@ -478,12 +478,12 @@ public class DataReportAnalysisService {
             SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
             if ("不可分".equals(surveyAssetInventory.getSegmentationLimit())) {
                 resultMap.put(number, impartibility.getTemplate());
-            }
-            if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && passId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
-                resultMap.put(number, detachableCanRush.getTemplate());
-            }
-            if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && refuseId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
-                resultMap.put(number, detachableNotRush.getTemplate());
+            } else if ("可分".equals(surveyAssetInventory.getSegmentationLimit())) {
+                if (refuseId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
+                    resultMap.put(number, detachableNotRush.getTemplate());
+                } else {
+                    resultMap.put(number, detachableCanRush.getTemplate());
+                }
             }
         }
         String s = generateCommonMethod.judgeEachDesc(resultMap, "", "", false);
@@ -534,6 +534,7 @@ public class DataReportAnalysisService {
 
     /**
      * 获取房地产市场状况
+     *
      * @param map
      * @return
      */
@@ -554,11 +555,12 @@ public class DataReportAnalysisService {
 
     /**
      * 获取其它分析
+     *
      * @param judgeObjectList
      * @return
      */
-    public String getOtherAnalysis(List<SchemeJudgeObject> judgeObjectList){
-        Map<Integer, String> resultMap = Maps.newHashMap();
+    public String getOtherAnalysis(List<SchemeJudgeObject> judgeObjectList) {
+
         Integer pledgeId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE).getId();
         Integer otherId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER).getId();
         Integer rentId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_RENT).getId();
@@ -566,6 +568,9 @@ public class DataReportAnalysisService {
         DataReportTemplateItem pledgeTemplate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.OTHER_ANALYSIS_PLEDGE);
         DataReportTemplateItem rentTemplate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.OTHER_ANALYSIS_RENT);
         DataReportTemplateItem otherTemplate = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.OTHER_ANALYSIS_OTHER);
+        Map<Integer, String> pledgeMap = Maps.newHashMap();
+        Map<Integer, String> rentMap = Maps.newHashMap();
+        Map<Integer, String> otherMap = Maps.newHashMap();
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
             Integer number = generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber());
             //对应的他权信息
@@ -576,16 +581,23 @@ public class DataReportAnalysisService {
             }
             for (SurveyAssetInventoryRight inventoryRight : rightList) {
                 if (pledgeId.equals(inventoryRight.getCategory())) {//抵押
-                    resultMap.put(number,pledgeTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getRemark()));
+                    pledgeMap.put(number, pledgeTemplate.getTemplate().replace("#{他权描述}", StringUtils.defaultString(inventoryRight.getInfluence())));
                 }
                 if (rentId.equals(inventoryRight.getCategory())) {//出租
-                    resultMap.put(number,rentTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getRemark()));
+                    rentMap.put(number, rentTemplate.getTemplate().replace("#{他权描述}", StringUtils.defaultString(inventoryRight.getInfluence())));
                 }
                 if (otherId.equals(inventoryRight.getCategory())) {//其它
-                    resultMap.put(number,otherTemplate.getTemplate().replace("#{他权描述}",inventoryRight.getRemark()));
+                    otherMap.put(number, otherTemplate.getTemplate().replace("#{他权描述}", StringUtils.defaultString(inventoryRight.getInfluence())));
                 }
             }
         }
-        return generateCommonMethod.judgeEachDesc(resultMap, "", "。", false);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (!pledgeMap.isEmpty())
+            stringBuilder.append(generateCommonMethod.judgeEachDesc(pledgeMap, "", "。", true));
+        if (!rentMap.isEmpty())
+            stringBuilder.append(generateCommonMethod.judgeEachDesc(rentMap, "", "。", true));
+        if (!otherMap.isEmpty())
+            stringBuilder.append(generateCommonMethod.judgeEachDesc(otherMap, "", "。", true));
+        return stringBuilder.toString();
     }
 }

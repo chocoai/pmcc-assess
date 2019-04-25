@@ -44,26 +44,6 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        特殊情况
-                                    </label>
-                                    <div class="col-sm-11">
-                                        <label class="form-control">
-                                                ${item.specialcase}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">特殊情况附件</label>
-                                    <div class="col-sm-4">
-                                        <div id="_specialCaseFile${status.count}"></div>
-                                    </div>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>

@@ -462,6 +462,7 @@
                             <div class="col-sm-10">
                                 <textarea name="rentalGrowthRateExplain" placeholder="租金增长率说明" class="form-control"
                                           required></textarea>
+                                <label>${rentalGrowthRateExplainReadonly}</label>
                             </div>
                         </div>
                     </div>
