@@ -181,6 +181,11 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_EDUCATION_FEE_PLUS);
         if (taxRateAllocation != null)
             modelAndView.addObject("educationRatio", taxRateAllocation.getTaxRate());
+
+        modelAndView.addObject("rentalGrowthRateExplainEditable", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_RENTAL_GROWTH_RATE_EXPLAIN_EDITABLE).getRemark());
+        modelAndView.addObject("rentalGrowthRateExplainReadonly", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_RENTAL_GROWTH_RATE_EXPLAIN_READONLY).getRemark());
+        modelAndView.addObject("transactionTaxeFeeRatioEditable", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_TRANSACTION_TAXE_FEE_RATIO_EDITABLE).getRemark());
+        modelAndView.addObject("transactionTaxeFeeRatioReadonly", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_TRANSACTION_TAXE_FEE_RATIO_READONLY).getRemark());
     }
 
     /**
