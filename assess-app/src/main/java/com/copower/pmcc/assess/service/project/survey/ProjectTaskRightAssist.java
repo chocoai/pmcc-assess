@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryRightRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -45,6 +46,8 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -53,6 +56,9 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
         modelAndView.addObject("inventoryRightTypeList",inventoryRightTypeList);
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         modelAndView.addObject("declareRecordList",declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId()));
+        //抵押评估
+        Integer pledgeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId();
+        modelAndView.addObject("pledgeId",pledgeId);
         this.clear(projectPlanDetails);
         return modelAndView;
     }
@@ -71,6 +77,9 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
         this.clear(projectPlanDetails);
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         modelAndView.addObject("declareRecordList",declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId()));
+        //抵押评估
+        Integer pledgeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId();
+        modelAndView.addObject("pledgeId",pledgeId);
         return modelAndView;
     }
 
