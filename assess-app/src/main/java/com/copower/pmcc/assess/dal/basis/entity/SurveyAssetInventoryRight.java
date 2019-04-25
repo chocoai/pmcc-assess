@@ -39,6 +39,8 @@ public class SurveyAssetInventoryRight {
 
     private String remark;
 
+    private String influence;
+
     private String creator;
 
     private Date gmtCreated;
@@ -187,6 +189,14 @@ public class SurveyAssetInventoryRight {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getInfluence() {
+        return influence;
+    }
+
+    public void setInfluence(String influence) {
+        this.influence = influence == null ? null : influence.trim();
     }
 
     public String getCreator() {
