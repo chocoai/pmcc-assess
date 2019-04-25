@@ -77,25 +77,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">特殊情况</label>
-                        <div class="col-sm-11">
-                        <textarea placeholder="特殊情况" class="form-control"
-                                  name="specialcase"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">特殊情况附件</label>
-                        <div class="col-sm-4">
-                            <input id="specialCaseFile_number" type="file" multiple="false">
-                            <div id="_specialCaseFile_number"></div>
-                        </div>
-                    </div>
-                </div>
             </form>
             <input type="file" id="ajaxFileUpload_number" name="file" style="display: none;"
                    onchange="importRightData(this,'_number');">

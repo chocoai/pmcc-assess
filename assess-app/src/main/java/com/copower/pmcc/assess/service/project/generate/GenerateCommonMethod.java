@@ -969,7 +969,7 @@ public class GenerateCommonMethod {
         str = str.replaceAll(",+", ",").replaceAll(";+", ";")
                 .replaceAll("，+", "，").replaceAll("、+", "、")
                 .replaceAll("。+", "。").replaceAll("；+", "；")
-                .replaceAll("，。", "。").replaceAll("；。", "。")
+                .replaceAll("，\\s+。", "。").replaceAll("；\\s。", "。")
                 .replaceAll("[,|，|、|;|；|.|。]+$", "。");
         return str;
     }

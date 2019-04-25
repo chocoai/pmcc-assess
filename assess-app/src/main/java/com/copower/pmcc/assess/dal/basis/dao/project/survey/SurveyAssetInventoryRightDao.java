@@ -35,7 +35,7 @@ public class SurveyAssetInventoryRightDao {
 
     public List<SurveyAssetInventoryRight> getSurveyAssetInventoryRightList(SurveyAssetInventoryRight surveyAssetInventoryRight){
         SurveyAssetInventoryRightExample example = new SurveyAssetInventoryRightExample();
-        example.setOrderByClause("id desc");
+        example.setOrderByClause("id");
         MybatisUtils.convertObj2Example(surveyAssetInventoryRight, example);
         return surveyAssetInventoryRightMapper.selectByExample(example);
     }
@@ -50,7 +50,7 @@ public class SurveyAssetInventoryRightDao {
     public List<SurveyAssetInventoryRight> getListByPlanDetailsId(Integer planDetailsId) {
         SurveyAssetInventoryRightExample example = new SurveyAssetInventoryRightExample();
         example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
-        example.setOrderByClause("id desc");
+        example.setOrderByClause("id");
         List<SurveyAssetInventoryRight> surveyAssetInventoryRights = surveyAssetInventoryRightMapper.selectByExample(example);
         return surveyAssetInventoryRights;
     }
@@ -62,7 +62,7 @@ public class SurveyAssetInventoryRightDao {
         if(StringUtils.isNotBlank(certName)){
             criteria.andCertNameLike(String.format("%%%s%%",certName));
         }
-        example.setOrderByClause("id desc");
+        example.setOrderByClause("id");
         List<SurveyAssetInventoryRight> surveyAssetInventoryRights = surveyAssetInventoryRightMapper.selectByExample(example);
         return surveyAssetInventoryRights;
     }
