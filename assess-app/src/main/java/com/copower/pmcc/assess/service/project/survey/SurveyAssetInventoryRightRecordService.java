@@ -13,7 +13,6 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +43,8 @@ public class SurveyAssetInventoryRightRecordService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
     @Autowired
     private CommonService commonService;
@@ -136,6 +137,9 @@ public class SurveyAssetInventoryRightRecordService {
         List<SurveyJudgeObjectGroupDto> list = Lists.newArrayList();
         //他权其它
         BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER);
+        List<SurveyAssetInventory> inventoryList = surveyAssetInventoryService.getDataByDeclareIds(LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId()));
+        Map<Integer, String> transferLimitMap = FormatUtils.mappingSingleEntity(inventoryList, o -> o.getDeclareRecordId(), o -> o.getTransferLimit());
+
         for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
             List<Integer> declareIds = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
             for (SchemeJudgeObject judgeObject : judgeObjects) {
@@ -144,16 +148,16 @@ public class SurveyAssetInventoryRightRecordService {
                     surveyJudgeObjectGroupDto.setJudgeObjectNumber(judgeObject.getNumber());
                     surveyJudgeObjectGroupDto.setJudgeObjectId(judgeObject.getId());
                     surveyJudgeObjectGroupDto.setDeclareRecordId(judgeObject.getDeclareRecordId());
-                    surveyJudgeObjectGroupDto.setSpecialcase(rightRecord.getSpecialcase());
+                    surveyJudgeObjectGroupDto.setTransferLimit(transferLimitMap.get(judgeObject.getDeclareRecordId()));//取资产清查中的转让限制
                     List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(rightRecord.getId());
                     surveyJudgeObjectGroupDto.setRightList(inventoryRights);
                     Boolean rightOtherEmpty = true;
                     if (CollectionUtils.isNotEmpty(inventoryRights) && LangUtils.transform(inventoryRights, o -> o.getCategory()).contains(projectClassify.getId())) {
                         rightOtherEmpty = false;
                     }
-                    if (rightOtherEmpty == Boolean.TRUE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getSpecialcase())) {
+                    if (rightOtherEmpty == Boolean.TRUE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getTransferLimit())) {
                         surveyJudgeObjectGroupDto.setResult("一般");
-                    } else if (rightOtherEmpty == Boolean.FALSE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getSpecialcase())) {
+                    } else if (rightOtherEmpty == Boolean.FALSE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getTransferLimit())) {
                         surveyJudgeObjectGroupDto.setResult("弱");
                     } else {
                         surveyJudgeObjectGroupDto.setResult("强");
@@ -218,34 +222,6 @@ public class SurveyAssetInventoryRightRecordService {
         }
     }
 
-    /**
-     * 特殊情况分组
-     *
-     * @param projectId
-     * @param judgeObjects
-     * @return
-     */
-    public Map<String, List<Integer>> groupSpecialcase(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
-        Map<String, List<Integer>> map = Maps.newHashMap();
-        List<SurveyAssetInventoryRightRecord> rightRecords = getListByProjectId(projectId);
-        if (CollectionUtils.isEmpty(rightRecords)) return map;
-        List<Integer> declareIds = LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId());
-        for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
-            if (StringUtils.isNotBlank(rightRecord.getRecordIds()) && StringUtils.isNotBlank(rightRecord.getSpecialcase())) {
-                List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
-                Collection intersection = CollectionUtils.intersection(list, declareIds);//集合交集
-                if (CollectionUtils.isNotEmpty(intersection)) {
-                    if (map.containsKey(rightRecord.getSpecialcase())) {
-                        List<Integer> integers = map.get(rightRecord.getSpecialcase());
-                        map.put(rightRecord.getSpecialcase(), Lists.newArrayList(CollectionUtils.union(integers, intersection)));
-                    } else {
-                        map.put(rightRecord.getSpecialcase(), Lists.newArrayList(intersection));
-                    }
-                }
-            }
-        }
-        return map;
-    }
 
 
     public boolean addSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) throws Exception {

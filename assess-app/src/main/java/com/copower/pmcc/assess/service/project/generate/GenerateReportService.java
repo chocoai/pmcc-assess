@@ -731,7 +731,11 @@ public class GenerateReportService {
                 }
                 //他权类别
                 if (Objects.equal(BaseReportFieldEnum.HisRightType.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHisRightType());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHisRightType(false));
+                }
+                //他权类别及明细
+                if (Objects.equal(BaseReportFieldEnum.HisRightTypeAndDetail.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHisRightType(true));
                 }
                 //担保物权设立情况
                 if (Objects.equal(BaseReportFieldEnum.collateralFound.getName(), name)) {

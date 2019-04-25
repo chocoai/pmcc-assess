@@ -1604,15 +1604,15 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getHisRightType() throws Exception {
+    public String getHisRightType(Boolean containDetail) throws Exception {
         List<SurveyRightGroupDto> groupDtoList = surveyAssetInventoryRightRecordService.groupRightByCategory(projectId, schemeJudgeObjectDeclareList);
         if (CollectionUtils.isEmpty(groupDtoList)) return "";
-        StringBuilder stringBuilder = new StringBuilder("、");
-        for (SurveyRightGroupDto surveyRightGroupDto : groupDtoList) {
-            if (StringUtils.equals(surveyRightGroupDto.getCategoryName(), "其它"))
-                stringBuilder.append(String.format("《他项权-%s》、", surveyRightGroupDto.getCategoryName()));
-            else
-                stringBuilder.append(String.format("《%s》、", surveyRightGroupDto.getCategoryName()));
+        StringBuilder stringBuilder = new StringBuilder("、《他权权证》");
+        if(containDetail){
+            for (SurveyRightGroupDto surveyRightGroupDto : groupDtoList) {
+                if (!StringUtils.equals(surveyRightGroupDto.getCategoryName(), "其它"))
+                    stringBuilder.append(String.format("%s、", surveyRightGroupDto.getCategoryName()));
+            }
         }
         return StringUtils.stripEnd(stringBuilder.toString(), "、");
     }
