@@ -61,8 +61,7 @@
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
-                            <td class="hidden-xs" id="evaluationArea">
-                                ${groupArea}
+                            <td class="hidden-xs" id="evaluationArea" value="${groupArea}">
                             </td>
                         </tr>
                         <tr>
@@ -72,8 +71,7 @@
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
-                            <td class="hidden-xs" id="evaluationPrice">
-                                ${groupPrice}
+                            <td class="hidden-xs" id="evaluationPrice" value="${groupPrice}">
                             </td>
                         </tr>
                         </tbody>
@@ -114,6 +112,12 @@
 <script type="application/javascript">
     $(function () {
         getAnalysisItemList();
+        if ("${groupPrice}") {
+            $("#evaluationPrice").text(fmoney("${groupPrice}", 2))
+        }
+        if ("${groupArea}") {
+            $("#evaluationArea").text(fmoney("${groupArea}", 2))
+        }
     });
 
     function submit() {
@@ -133,8 +137,8 @@
     function initResult() {
         var salesTax = "${salesTax}";
         var total = 0;
-        var evaluationArea = $("#evaluationArea").text();
-        var evaluationPrice = $("#evaluationPrice").text();
+        var evaluationArea = $("#evaluationArea").val();
+        var evaluationPrice = $("#evaluationPrice").val();
         $("#tbody_data_section").find('tr').each(function () {
             var $taxRateValue = $(this).find('[name^=taxRateValue]');
             var rate = $taxRateValue.val();
@@ -159,8 +163,8 @@
                         }
                         break;
                     }
-                    //地方教育税附加
-                    case "data.tax.rate.allocation.local.education.tax.additional": {
+                    //教育税附加
+                    case "data.tax.rate.allocation.education.fee.plus": {
                         if (rate && evaluationPrice) {
                             var temp = evaluationPrice / 1.05;
                             price = Number(temp * salesTax * rate).toFixed(2);
@@ -194,9 +198,10 @@
                 }
             }
             total += Number(price);
-            $(this).find('[name^=price]').val(price);
+            $(this).find('[name^=price]').val(fmoney(price, 2));
+            $(this).find('[name^=price]').attr("data-value", price);
         })
-        $('#master').find('[name=total]').text(Number(total).toFixed(2));
+        $('#master').find('[name=total]').text(fmoney(Number(total).toFixed(2), 2));
     }
 
     //获取需要保存的数据
@@ -211,7 +216,8 @@
         $("#tbody_data_section").find('tr').each(function () {
             var analysisItem = {};
             analysisItem.id = $(this).find('[name=id]').val();
-            analysisItem.price = $(this).find('[name^=price]').val();
+            analysisItem.price = $(this).find('[name^=price]').attr('data-value');
+            analysisItem.taxRateValue = $(this).find('[name^=taxRateValue]').attr('data-value');
             analysisItem.remark = $(this).find('[name^=remark]').val();
             analysisItem.calculateBase = $(this).find('[name^=calculateBase]').val();
             analysisItem.calculationFormula = $(this).find('[name^=calculationFormula]').val();
@@ -237,6 +243,7 @@
                     console.log(result.data)
                     var html = "";
                     $.each(result.data, function (i, item) {
+                        var textPrice = fmoney(item.price, 2);
                         html += "<tr>";
                         html += "<td class='hidden-xs'>";
                         html += '<input type="hidden" name="id" value="' + item.id + '">';
@@ -266,7 +273,7 @@
 
                         html += "<td class='hidden-xs'>";
                         html += "<div class='x-valid'>";
-                        html += "<input type='text' required  data-key='price_" + item.typeKey + "' name='price_" + item.id + "' value='" + AssessCommon.toString(item.price) + "' onblur='getTotal()'  class='form-control' data-rule-number='true'>";
+                        html += "<input type='text' required  data-key='price_" + item.typeKey + "' name='price_" + item.id + "' data-value='" + item.price + "' value='" + textPrice + "' class='form-control' data-rule-number='true' readonly>";
                         html += "</div>";
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
@@ -322,10 +329,10 @@
         var constructionTax = $("input[data-key='data.tax.rate.allocation.construction.tax']").attr('data-value');
         var constructionPrice = "price_data.tax.rate.allocation.construction.tax";
         //地方教育税附加率
-        var educationTax = $("input[data-key='data.tax.rate.allocation.local.education.tax.additional']").attr('data-value');
-        var educationPrice ="price_data.tax.rate.allocation.local.education.tax.additional";
-        var evaluationArea = $("#evaluationArea").text();
-        var evaluationPrice = $("#evaluationPrice").text();
+        var educationTax = $("input[data-key='data.tax.rate.allocation.education.fee.plus']").attr('data-value');
+        var educationPrice = "price_data.tax.rate.allocation.education.fee.plus";
+        var evaluationArea = $("#evaluationArea").val();
+        var evaluationPrice = $("#evaluationPrice").val();
         var $taxRateValue = $(_this).parent().parent().find('[name^=taxRateValue]');
         var rate = $taxRateValue.val();
         var price = 0;
@@ -339,8 +346,10 @@
                         var temp = evaluationPrice / 1.05;
                         price = Number(temp * rate).toFixed(2);
                     }
-                    $('input[data-key="'+ constructionPrice +'"]').val((price*constructionTax).toFixed(2));
-                    $('input[data-key="'+ educationPrice +'"]').val((price*educationTax).toFixed(2));
+                    $('input[data-key="' + constructionPrice + '"]').attr("data-value", (price * constructionTax).toFixed(2));
+                    $('input[data-key="' + educationPrice + '"]').attr("data-value", (price * educationTax).toFixed(2));
+                    $('input[data-key="' + constructionPrice + '"]').val(fmoney(price * constructionTax, 2));
+                    $('input[data-key="' + educationPrice + '"]').val(fmoney(price * educationTax, 2));
                     break;
                 }
                 //城建税
@@ -351,8 +360,8 @@
                     }
                     break;
                 }
-                //地方教育税附加
-                case "data.tax.rate.allocation.local.education.tax.additional": {
+                //教育税附加
+                case "data.tax.rate.allocation.education.fee.plus": {
                     if (rate && evaluationPrice) {
                         var temp = evaluationPrice / 1.05;
                         price = Number(temp * salesTax * rate).toFixed(2);
@@ -385,7 +394,8 @@
                 price = Number(evaluationArea * rate).toFixed(2);
             }
         }
-        $(_this).parent().parent().find('[name^=price]').val(price);
+        $(_this).parent().parent().find('[name^=price]').attr("data-value", price);
+        $(_this).parent().parent().find('[name^=price]').val(fmoney(price, 2));
         getTotal();
     }
 
@@ -394,7 +404,7 @@
         var total = 0;
         $("#tbody_data_section").find('tr').each(function () {
             var price = 0;
-            price = $(this).find('[name^=price]').val();
+            price = $(this).find('[name^=price]').attr('data-value');
             if (price) {
                 total += Number(price);
             }
@@ -402,6 +412,19 @@
         $('#master').find('[name=total]').text(Number(total).toFixed(2));
     }
 
+
+    //格式化金额
+    function fmoney(s, n) {
+        n = n > 0 && n <= 20 ? n : 2;
+        s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";//更改这里n数也可确定要保留的小数位
+        var l = s.split(".")[0].split("").reverse(),
+            r = s.split(".")[1];
+        t = "";
+        for (i = 0; i < l.length; i++) {
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+        }
+        return t.split("").reverse().join("") + "." + r.substring(0, 2);//保留2位小数  如果要改动 把substring 最后一位数改动就可
+    }
 
 </script>
 

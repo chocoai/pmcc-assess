@@ -61,7 +61,6 @@
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationArea">
-                                ${groupArea}
                             </td>
                         </tr>
                         <tr>
@@ -72,7 +71,6 @@
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationPrice">
-                                ${groupPrice}
                             </td>
                         </tr>
                         </tbody>
@@ -106,6 +104,12 @@
 
     $(function () {
         getAnalysisItemList();
+        if("${groupPrice}"){
+            $("#evaluationPrice").text(fmoney("${groupPrice}",2))
+        }
+        if("${groupArea}"){
+            $("#evaluationArea").text(fmoney("${groupArea}",2))
+        }
     });
 
     function getAnalysisItemList() {
@@ -150,7 +154,7 @@
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         html += "<div class='x-valid'>";
-                        html +=  AssessCommon.toString(item.price);
+                        html +=  fmoney(item.price,2);
                         html += "</div>";
                         html += "</td>";
                         html += "</tr>";
@@ -159,6 +163,22 @@
                 }
             }
         });
+    }
+
+
+    //格式化金额
+    function fmoney(s, n)
+    {
+        n = n > 0 && n <= 20 ? n : 2;
+        s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";//更改这里n数也可确定要保留的小数位
+        var l = s.split(".")[0].split("").reverse(),
+            r = s.split(".")[1];
+        t = "";
+        for(i = 0; i < l.length; i++ )
+        {
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+        }
+        return t.split("").reverse().join("") + "." + r.substring(0,2);//保留2位小数  如果要改动 把substring 最后一位数改动就可
     }
 </script>
 </body>
