@@ -119,6 +119,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <c:if test="${projectInfo.entrustPurpose == pledgeId}">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">对变现能力的影响<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" required="required"
+                                                      name="influence"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:if>
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-2 control-label">
