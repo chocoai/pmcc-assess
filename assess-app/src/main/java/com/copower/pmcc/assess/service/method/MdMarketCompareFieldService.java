@@ -312,7 +312,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PROPERTY_MANAGEMENT.getKey(), stringBuilder.toString()));
                             break;
                         case OTHER_SPECIAL_SITUATIONS://其它特殊情况
-                            String specialCase = generateEquityService.getSpecialcase(projectInfo.getId(), Lists.newArrayList(judgeObject));
+                            String specialCase = generateEquityService.getTransferLimit(Lists.newArrayList(judgeObject),null);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OTHER_SPECIAL_SITUATIONS.getKey(), specialCase));
                             break;
                         case BUILDING_AREA://建筑面积（㎡）

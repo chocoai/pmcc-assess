@@ -11,7 +11,7 @@ public class SurveyJudgeObjectGroupDto {
     private String judgeObjectNumber;
     private Integer judgeObjectId;
     private Integer declareRecordId;
-    private String specialcase;
+    private String transferLimit;
     private List<SurveyAssetInventoryRight> rightList;
     private String result;
 
@@ -39,12 +39,12 @@ public class SurveyJudgeObjectGroupDto {
         this.declareRecordId = declareRecordId;
     }
 
-    public String getSpecialcase() {
-        return specialcase;
+    public String getTransferLimit() {
+        return transferLimit;
     }
 
-    public void setSpecialcase(String specialcase) {
-        this.specialcase = specialcase;
+    public void setTransferLimit(String transferLimit) {
+        this.transferLimit = transferLimit;
     }
 
     public List<SurveyAssetInventoryRight> getRightList() {

@@ -110,6 +110,10 @@ public class SurveyAssetInventoryService extends BaseService {
         return surveyAssetInventoryDao.getDataByDeclareId(declareId);
     }
 
+    public List<SurveyAssetInventory> getDataByDeclareIds(List<Integer> declareIds) {
+        return surveyAssetInventoryDao.getDataByDeclareIds(declareIds);
+    }
+
     /**
      * 反写申报记录数据的证载用途与实际用途
      *

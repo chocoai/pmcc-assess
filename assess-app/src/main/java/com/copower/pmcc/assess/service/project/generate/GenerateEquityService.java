@@ -1,20 +1,23 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectSimpleDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyJudgeObjectGroupDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.data.DataPropertyServiceItemVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.assess.service.data.DataPropertyServiceItemService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -48,7 +51,7 @@ public class GenerateEquityService {
     @Autowired
     private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
     @Autowired
-    private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
+    private SurveyAssetInventoryService surveyAssetInventoryService;
     @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
@@ -56,11 +59,13 @@ public class GenerateEquityService {
     @Autowired
     private DataPropertyServiceItemService dataPropertyServiceItemService;
     @Autowired
-    private BasicEstateService basicEstateService;
+    private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -144,8 +149,8 @@ public class GenerateEquityService {
         String stringRightCategory = this.getRightCategory(projectId, judgeObjects);
         if (StringUtils.isNotBlank(stringRightCategory))
             stringBuilder.append(stringRightCategory);
-        //特殊情况
-        String stringSpecialcase = this.getSpecialcase(projectId, judgeObjects);
+        //转让限制
+        String stringSpecialcase = this.getTransferLimit(judgeObjects, null);
         if (StringUtils.isNotBlank(stringSpecialcase))
             stringBuilder.append(stringSpecialcase);
         return stringBuilder.toString();
@@ -173,24 +178,27 @@ public class GenerateEquityService {
     }
 
     /**
-     * 获取特殊情况
+     * 获取转让限制
      *
-     * @param projectId
      * @param judgeObjects
      * @return
      */
-    public String getSpecialcase(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
-        Map<String, List<Integer>> map = surveyAssetInventoryRightRecordService.groupSpecialcase(projectId, judgeObjects);
-        if (map.isEmpty()) return null;
-        StringBuilder specialcaseBuilder = new StringBuilder();
-        for (Map.Entry<String, List<Integer>> stringListEntry : map.entrySet()) {
-            if (map.size() > 1) {
-                String judgeNumber = generateCommonMethod.convertNumber(schemeJudgeObjectService.getJudgeNumberByDeclareIds(Lists.newArrayList(stringListEntry.getValue())));
-                specialcaseBuilder.append(String.format("%s号", judgeNumber));
+    public String getTransferLimit(List<SchemeJudgeObject> judgeObjects, Map<Integer, SchemeJudgeObjectSimpleDto> judgeObjectSimpleDtoMap) {
+        Map<Integer, String> judgeObjectMap = FormatUtils.mappingSingleEntity(judgeObjects, o -> o.getId(), o -> o.getNumber());
+        List<SurveyAssetInventory> inventoryList = surveyAssetInventoryService.getDataByDeclareIds(LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId()));
+        Map<Integer, String> resultMap = Maps.newHashMap();
+        for (SurveyAssetInventory surveyAssetInventory : inventoryList) {
+            String transferLimit = surveyAssetInventory.getTransferLimit();
+            String number = judgeObjectMap.get(surveyAssetInventory.getDeclareRecordId());
+            if (StringUtils.isNotBlank(transferLimit) && StringUtils.isNotBlank(number)) {
+                resultMap.put(generateCommonMethod.parseIntJudgeNumber(number), transferLimit);
+                if (judgeObjectSimpleDtoMap != null && !judgeObjectSimpleDtoMap.isEmpty()) {
+                    SchemeJudgeObjectSimpleDto simpleDto = judgeObjectSimpleDtoMap.get(surveyAssetInventory.getDeclareRecordId());
+                    simpleDto.setTransferLimit(transferLimit);
+                }
             }
-            specialcaseBuilder.append(stringListEntry.getKey()).append("，");
         }
-        return generateCommonMethod.trim(specialcaseBuilder.toString());
+        return generateCommonMethod.judgeEachDesc(resultMap, "", "。", false);
     }
 
     /**
@@ -199,15 +207,16 @@ public class GenerateEquityService {
      * @param judgeObjects
      * @return
      */
-    public String getHouseEquity(List<SchemeJudgeObject> judgeObjects, Integer projectId) {
+    public String getHouseEquity(List<SchemeJudgeObject> judgeObjects, Integer projectId) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         Map<Integer, String> propertyMap = Maps.newHashMap();
-        String socialPrestige = null;
         Map<Integer, String> natureMap = Maps.newHashMap();
         Map<Integer, String> certUseMap = Maps.newHashMap();
         Map<Integer, String> publicSituationMap = Maps.newHashMap();
         Map<Integer, String> ownershipMap = Maps.newHashMap();
+        Map<Integer, SchemeJudgeObjectSimpleDto> judgeObjectSimpleDtoMap = Maps.newHashMap();//用于综合评价生成
         for (SchemeJudgeObject judgeObject : judgeObjects) {
+            SchemeJudgeObjectSimpleDto simpleDto = new SchemeJudgeObjectSimpleDto();
             Integer number = generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber());
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
             if (declareRecord != null) {
@@ -216,15 +225,18 @@ public class GenerateEquityService {
                 publicSituationMap.put(number, declareRecord.getPublicSituation());
                 ownershipMap.put(number, declareRecord.getOwnership());
             }
-
             BasicApply exploreBasicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(exploreBasicApply.getId());
             if (basicBuilding.getProperty() != null) {//物业信誉与管理
                 DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
                 BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
-                socialPrestige = baseDataDic.getName();
+                simpleDto.setSocialPrestige(baseDataDic.getName());
                 propertyMap.put(number, getProperty(dataProperty));
             }
+            simpleDto.setDeclareRecordId(judgeObject.getDeclareRecordId());
+            simpleDto.setJudgeObjectId(judgeObject.getId());
+            simpleDto.setNumber(number);
+            judgeObjectSimpleDtoMap.put(judgeObject.getDeclareRecordId(), simpleDto);
         }
         String natureString = generateCommonMethod.judgeEachDesc(natureMap, "", ",", false);
         if (StringUtils.isNotBlank(natureString)) {
@@ -242,32 +254,30 @@ public class GenerateEquityService {
         if (StringUtils.isNotBlank(ownershipString)) {
             stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("权益人:%s", generateCommonMethod.trim(ownershipString))));
         }
-
-
         //他项权利类别
         String stringRightCategory = this.getRightCategory(projectId, judgeObjects);
         if (StringUtils.isNotBlank(stringRightCategory))
             stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他项权利:%s", generateCommonMethod.trim(stringRightCategory))));
-        //特殊情况
-        String stringSpecialcase = this.getSpecialcase(projectId, judgeObjects);
-        if (StringUtils.isNotBlank(stringSpecialcase))
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("特殊情况:%s",generateCommonMethod.trim(stringSpecialcase))));
+        //转让限制
+        String stringTransferLimit = this.getTransferLimit(judgeObjects, judgeObjectSimpleDtoMap);
+        if (StringUtils.isNotBlank(stringTransferLimit))
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("转让限制:%s", generateCommonMethod.trim(stringTransferLimit))));
 
         //他权综合描述
         String stringRightComprehensiveDesc = this.getRightComprehensiveDesc(projectId, judgeObjects);
         if (StringUtils.isNotBlank(stringRightComprehensiveDesc))
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他权综述:%s",generateCommonMethod.trim(stringRightComprehensiveDesc))));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他权综述:%s", generateCommonMethod.trim(stringRightComprehensiveDesc))));
 
         //物业信誉与管理
         String propertyDesc = generateCommonMethod.judgeEachDesc(propertyMap, "", ",", false);
         if (StringUtils.isNotBlank(propertyDesc)) {
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("物业:%s",generateCommonMethod.trim(propertyDesc))));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("物业:%s", generateCommonMethod.trim(propertyDesc))));
         }
 
         //房产评估综合评价
-        String stringOverallMerit = getOverallMerit(StringUtils.isEmpty(stringRightCategory), StringUtils.isEmpty(stringSpecialcase), socialPrestige);
+        String stringOverallMerit = getOverallMerit(projectId, judgeObjectSimpleDtoMap);
         if (StringUtils.isNotBlank(stringOverallMerit)) {
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综合评价:%s",generateCommonMethod.trim(stringOverallMerit))));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综合评价:%s", generateCommonMethod.trim(stringOverallMerit))));
         }
         return stringBuilder.toString();
     }
@@ -304,62 +314,95 @@ public class GenerateEquityService {
         Map<Integer, String> map = Maps.newHashMap();
         for (SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto : list) {
             if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "强"))
-                map.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、无特定转让限制。");
+                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权力明确、无特定转让限制。");
             if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "一般"))
-                map.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、转让受特定限制");
+                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权力明确、转让受特定限制");
             if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "弱"))
-                map.put(surveyJudgeObjectGroupDto.getJudgeObjectId(), "对产权清晰、权力明确、转让受到限制");
+                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权力明确、转让受到限制");
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "", false);
+        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
     }
 
     /**
      * 获取房产评估综合评价
      *
-     * @param isRightEmpty
-     * @param isSpecialcaseEmpty
-     * @param socialPrestige
      * @return
      */
-    public String getOverallMerit(Boolean isRightEmpty, Boolean isSpecialcaseEmpty, String socialPrestige) {
-        if (StringUtils.isBlank(socialPrestige)) return null;
-        if (isRightEmpty && isSpecialcaseEmpty) {
-            switch (socialPrestige) {
-                case "优":
-                    return "对提升房产价值有较大影响。";
-                case "良":
-                    return "对提升房产价值有一定影响。";
-                case "中":
-                    return "对提升房产价值影响一般。";
-                case "差":
-                    return "对提升房产价值有一定的负面影响。";
+    public String getOverallMerit(Integer projectId, Map<Integer, SchemeJudgeObjectSimpleDto> judgeObjectSimpleDtoMap) throws Exception {
+        //先找出有他权其它的权证数据
+        Integer otherId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER).getId();
+        SurveyAssetInventoryRight where = new SurveyAssetInventoryRight();
+        where.setProjectId(projectId);
+        where.setCategory(otherId);
+        List<SurveyAssetInventoryRight> rights = surveyAssetInventoryRightService.getSurveyAssetInventoryRightList(where);
+        if (CollectionUtils.isNotEmpty(rights)) {
+            for (SurveyAssetInventoryRight right : rights) {
+                SurveyAssetInventoryRightRecord rightRecord = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordById(right.getInventoryRightRecordId());
+                for (Integer integer : FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()))) {
+                    SchemeJudgeObjectSimpleDto simpleDto = judgeObjectSimpleDtoMap.get(integer);
+                    if (simpleDto != null)
+                        simpleDto.setRightOther(right.getRemark());
+                }
             }
         }
-        if (isRightEmpty && !isSpecialcaseEmpty) {
-            switch (socialPrestige) {
-                case "优":
-                    return "对提升房产价值受到一定限制。";
-                case "良":
-                    return "对提升房产价值受到较大限限制。";
-                case "中":
-                    return "对提升房产价值受到比较大的限限制。";
-                case "差":
-                    return "对提升房产价值受到相当大的限限制。";
+        Map<Integer, String> resultMap = Maps.newHashMap();
+        for (Map.Entry<Integer, SchemeJudgeObjectSimpleDto> simpleDtoEntry : judgeObjectSimpleDtoMap.entrySet()) {
+            SchemeJudgeObjectSimpleDto judgeObjectSimpleDto = simpleDtoEntry.getValue();
+            Boolean isRightEmpty = StringUtils.isBlank(judgeObjectSimpleDto.getRightOther());
+            Boolean isTransferLimit = StringUtils.isBlank(judgeObjectSimpleDto.getTransferLimit());
+            String socialPrestige = StringUtils.isBlank(judgeObjectSimpleDto.getSocialPrestige()) ? "优" : judgeObjectSimpleDto.getSocialPrestige();
+            String msg = "";
+            if (isRightEmpty && isTransferLimit) {
+                switch (socialPrestige) {
+                    case "优":
+                        msg = "对提升房产价值有较大影响。";
+                        break;
+                    case "良":
+                        msg = "对提升房产价值有一定影响。";
+                        break;
+                    case "中":
+                        msg = "对提升房产价值影响一般。";
+                        break;
+                    case "差":
+                        msg = "对提升房产价值有一定的负面影响。";
+                        break;
+                }
             }
-        }
-        if (!isRightEmpty && !isSpecialcaseEmpty) {
-            switch (socialPrestige) {
-                case "优":
-                    return "对提升房产价值受到比较大的限制。";
-                case "良":
-                    return "对提升房产价值受到相当大的限制。";
-                case "中":
-                    return "对提升房产价值受到严得限制。";
-                case "差":
-                    return "对提升房产价值受到重大限制。";
+            if (isRightEmpty && !isTransferLimit) {
+                switch (socialPrestige) {
+                    case "优":
+                        msg = "对提升房产价值受到一定限制。";
+                        break;
+                    case "良":
+                        msg = "对提升房产价值受到较大限限制。";
+                        break;
+                    case "中":
+                        msg = "对提升房产价值受到比较大的限限制。";
+                        break;
+                    case "差":
+                        msg = "对提升房产价值受到相当大的限限制。";
+                        break;
+                }
             }
+            if (!isRightEmpty && !isTransferLimit) {
+                switch (socialPrestige) {
+                    case "优":
+                        msg = "对提升房产价值受到比较大的限制。";
+                        break;
+                    case "良":
+                        msg = "对提升房产价值受到相当大的限制。";
+                        break;
+                    case "中":
+                        msg = "对提升房产价值受到严得限制。";
+                        break;
+                    case "差":
+                        msg = "对提升房产价值受到重大限制。";
+                        break;
+                }
+            }
+            resultMap.put(judgeObjectSimpleDto.getNumber(), msg);
         }
-        return null;
+        return generateCommonMethod.judgeEachDesc(resultMap, "", ".", false);
     }
 
 }
