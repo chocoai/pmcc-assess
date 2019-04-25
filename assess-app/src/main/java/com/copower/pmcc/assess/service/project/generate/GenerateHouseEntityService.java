@@ -327,8 +327,9 @@ public class GenerateHouseEntityService {
     public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
-        String spCategoryName = "特种设备,其他";
-        String spTypeName = "设备部分,其它";
+        //类型一共其实有4个类型也就是4部分
+        List<String> typeList = Lists.newArrayList("其它","设备部分");
+        List<String> categoryList = Lists.newArrayList("抗震设防","消防栓","避雷针");
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -354,11 +355,17 @@ public class GenerateHouseEntityService {
                     String s = "";
                     if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                         damagedDegreeVoList.stream().forEach(oo -> {
-                            if (spCategoryName.indexOf(oo.getCategoryName()) != -1) {
-                                if (spTypeName.indexOf(oo.getTypeName()) == -1) {
-                                    stringLinkedHashSet.add(String.format("%s%s", oo.getBasicallyIntact(), oo.getEntityConditionName()));
-                                }
-                            } else {
+                            int num = 0;
+                            if (typeList.stream().anyMatch(ss -> Objects.equal(ss,oo.getTypeName()))){
+                                num++;
+                            }
+                            if (categoryList.stream().anyMatch(ss -> StringUtils.indexOf(oo.getCategoryName(),ss) != -1)){
+                                num++;
+                            }
+                            if (num == 2){
+                                stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), oo.getEntityConditionName()));
+                            }
+                            if (num != 2){
                                 stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
                             }
                         });

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.aspose.words.*;
+import com.aspose.words.BookmarkCollection;
+import com.aspose.words.Document;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
@@ -37,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by kings on 2018-5-23.
@@ -794,9 +794,11 @@ public class GenerateReportService {
                 //估价结果一览表
                 if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet());
-                    }
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet(true));
+                }
+                if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet2.getName(), name)) {
+                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet(false));
                 }
                 //主要计算过程
                 if (Objects.equal(BaseReportFieldEnum.ComputationProcess.getName(), name)) {

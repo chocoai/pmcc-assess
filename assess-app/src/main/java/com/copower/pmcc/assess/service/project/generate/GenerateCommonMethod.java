@@ -510,16 +510,16 @@ public class GenerateCommonMethod {
                     stringList.add(String.valueOf(c));
                 }
                 for (int i = 0; i < stringList.size(); i++) {
-                    if (i == stringList.size()-1 ){
-                        if (NumberUtils.isNumber(stringList.get(i))){
+                    if (i == stringList.size() - 1) {
+                        if (NumberUtils.isNumber(stringList.get(i))) {
                             stringBuilder.append(stringList.get(i));
                         }
-                    }else {
+                    } else {
                         stringBuilder.append(stringList.get(i));
                     }
                 }
                 text = stringBuilder.toString();
-                stringBuilder.delete(0,stringBuilder.toString().length());
+                stringBuilder.delete(0, stringBuilder.toString().length());
             } else {
                 text = ints[0].toString();
             }
@@ -1129,7 +1129,21 @@ public class GenerateCommonMethod {
         if (CollectionUtils.isNotEmpty(titles)) {
             for (String title : titles) {
                 builder.insertCell();
-                builder.writeln(title);
+                builder.write(title);
+            }
+            builder.endRow();
+        }
+    }
+
+    public void writeWordTitle(DocumentBuilder builder, LinkedList<Double> doubleLinkedList,LinkedList<String> linkedLists) throws Exception {
+        if (CollectionUtils.isNotEmpty(linkedLists) && CollectionUtils.isNotEmpty(doubleLinkedList)) {
+            if (linkedLists.size() != doubleLinkedList.size()){
+                return;
+            }
+            for (int i = 0; i < linkedLists.size(); i++) {
+                Cell cell = builder.insertCell();
+                cell.getCellFormat().setWidth(doubleLinkedList.get(i).doubleValue());
+                builder.write(linkedLists.get(i));
             }
             builder.endRow();
         }

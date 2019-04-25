@@ -554,7 +554,7 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    stringBuilder.append(this.getDistanceDec(ExamineMatchingTrafficTypeEnum.TrafficHub.getDes(), listMap));
+                    stringBuilder.append(this.getDistanceDec("", listMap));
                 }
                 integerStringMap.clear();
                 entryMap.clear();
@@ -573,7 +573,7 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    stringBuilder.append(this.getDistanceDec(ExamineMatchingTrafficTypeEnum.MainConversion.getDes(), listMap));
+                    stringBuilder.append(this.getDistanceDec("", listMap));
                 }
                 integerStringMap.clear();
                 entryMap.clear();
@@ -594,7 +594,7 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    stringBuilder.append(this.getDistanceDec(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), listMap));
+                    stringBuilder.append(this.getDistanceDec("", listMap));
                 }
                 integerStringMap.clear();
                 entryMap.clear();
@@ -614,7 +614,7 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                stringBuilder.append(this.getDistanceDec("金融服务", listMap));
+                stringBuilder.append(this.getDistanceDec("", listMap));
             }
             integerStringMap.clear();
             entryMap.clear();
@@ -633,7 +633,7 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                stringBuilder.append(this.getDistanceDec("医疗", listMap));
+                stringBuilder.append(this.getDistanceDec("", listMap));
             }
             integerStringMap.clear();
             entryMap.clear();
@@ -649,8 +649,8 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getExternalPublicServiceFacilities(BasicApply basicApply) throws Exception {
-        StringBuilder builder = new StringBuilder(8);
+    public List<String> getExternalPublicServiceFacilities(BasicApply basicApply) throws Exception {
+        List<String> stringArrayList = Lists.newArrayList();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
         List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
@@ -673,7 +673,8 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    builder.append(this.getDistanceDec(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), listMap));
+                    String s = this.getDistanceDec(String.format("%s%s",ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(),":"), listMap);
+                    stringArrayList.add(s);
                 }
                 integerStringMap.clear();
                 entryMap.clear();
@@ -692,7 +693,8 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    builder.append(this.getDistanceDec(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), listMap));
+                    String s = this.getDistanceDec(String.format("%s%s",ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(),":"), listMap);
+                    stringArrayList.add(s);
                 }
                 integerStringMap.clear();
                 entryMap.clear();
@@ -711,7 +713,8 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    builder.append(this.getDistanceDec(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), listMap));
+                    String s = this.getDistanceDec(String.format("%s%s",ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(),":"), listMap);
+                    stringArrayList.add(s);
                 }
                 integerStringMap.clear();
                 entryMap.clear();
@@ -731,7 +734,8 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                builder.append(this.getDistanceDec("金融服务", listMap));
+                String s = this.getDistanceDec(String.format("%s%s","金融服务",":"), listMap);
+                stringArrayList.add(s);;
             }
             integerStringMap.clear();
             entryMap.clear();
@@ -749,7 +753,8 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                builder.append(this.getDistanceDec("医疗", listMap));
+                String s = this.getDistanceDec(String.format("%s%s","医疗",":"), listMap);
+                stringArrayList.add(s);;
             }
             integerStringMap.clear();
             entryMap.clear();
@@ -770,13 +775,14 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                builder.append(this.getDistanceDec("教育", listMap));
+                String s = this.getDistanceDec(String.format("%s%s","教育",":"), listMap);
+                stringArrayList.add(s);;
             }
             integerStringMap.clear();
             entryMap.clear();
             listMap.clear();
         }
-        return StringUtils.strip(builder.toString(), "，");
+        return stringArrayList;
     }
 
     /**
