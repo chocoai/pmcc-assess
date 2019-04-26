@@ -148,6 +148,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">证书信息</label>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-success" onclick="checkRealEstate()"
+                                            data-toggle="modal"> 查看
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -497,7 +507,7 @@
 </div>
 </body>
 
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<%--<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -661,9 +671,10 @@
             </div>
         </div>
     </div>
-</div>
-<input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="importRightData();">
+</div>--%>
+<%--<input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="importRightData();">--%>
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/project/stageSurvey/certificate.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="application/javascript">
 
@@ -974,117 +985,6 @@
         });
     }
 
-    //他权
-    function addData() {
-        $("#frm_inventory_right").clearAll();
-        $("#frm_inventory_right").find('[name=id]').val(0);
-        loadInventoryRightFile(0);
-    }
-
-    //他权保存
-    function saveData() {
-        var data = formParams("frm_inventory_right");
-        data.projectId = '${projectId}';
-        data.certName = '${declareRecord.name}';
-        data.planDetailsId = ${projectPlanDetails.id};
-        if ($("#frm_inventory_right").valid()) {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/save",
-                type: "post",
-                dataType: "json",
-                data: {formData: JSON.stringify(data)},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        loadAssetRightList();
-                        $('#divBox').modal('hide');
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        }
-    }
-
-    //他权修改
-    function editData(index) {
-        var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm_inventory_right").clearAll();
-        $("#frm_inventory_right").initForm(row);
-        $("#registerDate").val(formatDate(row.registerDate, false));
-        $("#beginDate").val(formatDate(row.beginDate, false));
-        $("#endDate").val(formatDate(row.endDate, false));
-        AssessCommon.loadDataDicByPid(row.type, row.category, function (html) {
-            $("#category").html(html);
-        })
-        loadInventoryRightFile(row.id);
-        $('#divBox').modal();
-    }
-
-    //他权删除
-    function delData(id) {
-        Alert("确认要删除么？", 2, null, function () {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/delete",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        loadAssetRightList();//重载 (刷新)
-                    }
-                    else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        })
-    }
-
-    //导入他权数据
-    function importRightData() {
-        Loading.progressShow();
-        $.ajaxFileUpload({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/importData",
-            data: {
-                projectId: '${projectId}',
-                certName: '${declareRecord.name}',
-                planDetailsId: ' ${projectPlanDetails.id}'
-            },//要传到后台的参数，没有可以不写
-            secureuri: false,//是否启用安全提交，默认为false
-            fileElementId: 'ajaxFileUpload',//文件选择框的id属性
-            dataType: 'json',//服务器返回的格式
-            async: false,
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert(result.data.replace(/\n/g, '<br/>'));
-                    loadAssetRightList();
-                } else {
-                    Alert("导入数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result, status, e) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-
-    }
 
     function showOther() {
         if ($("#segmentationLimit").val() == "可分") {
@@ -1095,6 +995,31 @@
             $("#showUse").hide();
         }
     }
+
+
+    //获取对应房产证信息
+    function checkRealEstate() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declareRecord/getCertificateId",
+            type: "get",
+            dataType: "json",
+            data: {declareRecordId:"${projectPlanDetails.declareRecordId}"},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    certificate.prototype.getAndInit(result.data.dataTableName, result.data.dataTableId);
+                }
+                else {
+                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
 
     var num = 0;
 

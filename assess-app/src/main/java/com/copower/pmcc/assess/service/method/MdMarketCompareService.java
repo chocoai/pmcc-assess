@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -9,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
+import com.copower.pmcc.assess.dto.output.method.MdCompareCaseVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
@@ -22,7 +24,6 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -101,6 +102,7 @@ public class MdMarketCompareService {
             getSubFieldList(fieldList, useField.getId());
         }
     }
+
     public List<DataSetUseField> getShowSetUseFieldList() {
         List<DataSetUseField> fieldList = Lists.newArrayList();
         List<DataSetUseField> setUseFields = dataSetUseFieldService.getShowSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE);
@@ -142,6 +144,7 @@ public class MdMarketCompareService {
         MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
         mdMarketCompareItem.setMcId(mdMarketCompare.getId());
         mdMarketCompareItem.setName("估价对象");
+        mdMarketCompareItem.setArea(judgeObject.getEvaluationArea());
         mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
         mdMarketCompareItem.setCreator(commonService.thisUserAccount());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
@@ -175,11 +178,37 @@ public class MdMarketCompareService {
     }
 
     /**
+     * 加载项目所有案例数据
+     *
+     * @param planDetailsIds
+     * @return
+     */
+    public List<MdCompareCaseVo> getCasesAll(List<Integer> planDetailsIds) {
+        if (CollectionUtils.isEmpty(planDetailsIds)) return null;
+        List<ProjectPlanDetails> planDetails = projectPlanDetailsService.getProjectPlanDetailsByIds(planDetailsIds);
+        if (CollectionUtils.isEmpty(planDetails)) return null;
+        List<MdCompareCaseVo> voList = Lists.newArrayList();
+        for (ProjectPlanDetails planDetail : planDetails) {
+            MdCompareCaseVo mdCompareCaseVo = new MdCompareCaseVo();
+            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetail.getId());
+            if (basicApply == null) continue;
+            mdCompareCaseVo.setPlanDetailsId(planDetail.getId());
+            mdCompareCaseVo.setName(planDetail.getProjectPhaseName());
+            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+            if (basicHouse == null) continue;
+            mdCompareCaseVo.setArea(basicHouse.getArea());
+            mdCompareCaseVo.setAreaDesc(basicHouse.getAreaDesc());
+            voList.add(mdCompareCaseVo);
+        }
+        return voList;
+    }
+
+    /**
      * 选择案例
      *
-     * @param planDetailsIdString
+     * @param areaDescJson
      */
-    public void selectCase(Integer mcId, String planDetailsIdString,Integer judgeObjectId) {
+    public void selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId) throws Exception {
         //清除原案例信息
         MdMarketCompareItem where = new MdMarketCompareItem();
         where.setMcId(mcId);
@@ -193,18 +222,18 @@ public class MdMarketCompareService {
         MdMarketCompare marketCompare = mdMarketCompareDao.getMarketCompareById(mcId);
 
         //添加选择后的案例信息
-        List<Integer> planDetailsIdList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdString));
-        if (CollectionUtils.isNotEmpty(planDetailsIdList)) {
+        List<MdCompareCaseVo> list = JSONObject.parseArray(areaDescJson, MdCompareCaseVo.class);
+        if (CollectionUtils.isNotEmpty(list)) {
             List<DataSetUseField> setUseFieldList = getSetUseFieldList();
             ProjectInfo projectInfo = null;
-            int i=1;
+            int i = 1;
             SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            for (Integer planDetailsId : planDetailsIdList) {
-                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            for (MdCompareCaseVo mdCompareCaseVo : list) {
+                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(mdCompareCaseVo.getPlanDetailsId());
                 MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
                 mdMarketCompareItem.setMcId(mcId);
-                mdMarketCompareItem.setPlanDetailsId(planDetailsId);
-                mdMarketCompareItem.setName(String.format("案例%s",i));
+                mdMarketCompareItem.setPlanDetailsId(mdCompareCaseVo.getPlanDetailsId());
+                mdMarketCompareItem.setName(String.format("案例%s", i));
                 mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
                 mdMarketCompareItem.setCreator(commonService.thisUserAccount());
                 mdMarketCompareItem.setMustAdjustPrice(false);
@@ -212,8 +241,19 @@ public class MdMarketCompareService {
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
                 mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, judgeObject, projectPlanDetails.getId(), setUseFieldList, true));
                 //获取成新率相关参数
-                setResidueRatioParam(mdMarketCompareItem, planDetailsId, marketCompare.getValueTimePoint());
+                setResidueRatioParam(mdMarketCompareItem, mdCompareCaseVo.getPlanDetailsId(), marketCompare.getValueTimePoint());
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
+
+                if(StringUtils.isNotBlank(mdCompareCaseVo.getAreaDesc())){
+                    BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(mdCompareCaseVo.getPlanDetailsId());
+                    if(basicApply!=null){
+                        BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                        if(basicHouse!=null){
+                            basicHouse.setAreaDesc(mdCompareCaseVo.getAreaDesc());
+                            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                        }
+                    }
+                }
                 i++;
             }
         }

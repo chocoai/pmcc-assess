@@ -13,13 +13,13 @@
         <input type="hidden" name="id" value="${basicHouse.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">房号</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.houseNumber}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">所在楼层<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">所在楼层</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.floor}</label>
                 </div>
@@ -70,19 +70,42 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">空间布局</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.spatialDistributionName}</label>
+                    <select class="form-control spatialDistribution" name="spatialDistribution" >
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">空间布局描述</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.spatialDistributionDesc}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">朝向</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.orientationName}</label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+           
             <div class="x-valid">
-                <label class="col-sm-1 control-label">面积<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">面积</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.area}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">调查方式<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">面积描述</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.areaDesc}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">调查方式</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.researchTypeName}</label>
                 </div>
@@ -90,14 +113,14 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">证载用途<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">证载用途</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.certUseName}</label>
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">实际用途</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.practicalUseName}</label>
                 </div>

@@ -495,6 +495,10 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
     }
 
+    public List<ProjectPlanDetails> getProjectPlanDetailsByIds(List<Integer> ids){
+        return projectPlanDetailsDao.getProjectPlanDetailsByIds(ids);
+    }
+
     /**
      * 删除阶段下的所有任务
      *

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -35,6 +36,17 @@ public class DeclareRecordController {
         try {
             declareRecordService.addOrRemoveDeclareRecord(ids, bisPartIn);
             return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCertificateId", name = "获取证书id", method = RequestMethod.GET)
+    public HttpResult getCertificateId(Integer declareRecordId) {
+        try {
+            DeclareRecord declareRecordById = declareRecordService.getDeclareRecordById(declareRecordId);
+            return HttpResult.newCorrectResult(declareRecordById);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

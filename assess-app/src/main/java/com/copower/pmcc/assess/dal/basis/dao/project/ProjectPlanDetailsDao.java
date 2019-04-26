@@ -153,4 +153,11 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.deleteByExample(example) > 0;
     }
 
+    public List<ProjectPlanDetails> getProjectPlanDetailsByIds(List<Integer> ids){
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
+
 }

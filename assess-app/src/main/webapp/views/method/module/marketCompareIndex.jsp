@@ -9,7 +9,7 @@
             市场比较法
             <small id="small_select_case">
                 <input type="button" class="btn btn-primary btn-xs" value="选择案例"
-                       onclick="$('#modal_select_case').modal();">
+                       onclick="marketCompare.loadCaseAll();">
             </small>
         </h3>
         <div class="clearfix"></div>
@@ -51,7 +51,19 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">选择案例</h3>
             </div>
-            <div class="modal-body select-case">
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>名称</th>
+                        <th>面积</th>
+                        <th>面积说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
@@ -65,6 +77,14 @@
         </div>
     </div>
 </div>
+<script type="text/html" id="selectCaseHtml">
+    <tr>
+        <th scope="row"><input type="checkbox" value="{planDetailsId}"></th>
+        <td data-name="name">{name}</td>
+        <td data-name="area">{area}</td>
+        <td><input type="text" class="form-control" name="areaDesc" value="{areaDesc}"></td>
+    </tr>
+</script>
 
 
 <script type="text/javascript">
@@ -186,7 +206,9 @@
         marketCompare.fields = [];
         marketCompare.mcId = 0;
         marketCompare.price = 0;
+        marketCompare.evaluation = {};
         marketCompare.judgeObjectId = 0;
+        marketCompare.casesAll = [];
         marketCompare.init = function (options) {
             var defaluts = {
                 marketCompare: undefined,//主表信息
@@ -214,24 +236,16 @@
                 Alert("委估对象为空！");
                 return;
             }
-
             marketCompare.mcId = defaluts.mcId;
+            marketCompare.evaluation = defaluts.evaluation;
+            marketCompare.casesAll = defaluts.casesAll;
             marketCompare.judgeObjectId = defaluts.judgeObjectId;
             $("#tb_md_mc_item_list").empty();
             marketCompare.initHead(defaluts);
             marketCompare.initBody(defaluts);
             marketCompare.initResult(defaluts);
-
             if (!defaluts.readonly) {
                 setElementEditable();
-                //选择案例
-                if (defaluts.casesAll) {
-                    $(".select-case").empty();
-                    $.each(defaluts.casesAll, function (i, item) {
-                        var html = '<span class="checkbox-inline"><input type="checkbox" id="case' + item.id + '" value="' + item.id + '"><label for="case' + item.id + '">' + item.projectPhaseName + '</label></span>';
-                        $(".select-case").append(html);
-                    })
-                }
             } else {
                 $("#small_select_case").hide();
             }
@@ -250,7 +264,7 @@
                     $(this).find('a').after('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.callResidueRatio(this,' + defaluts.readonly + ');" value="成新率">');
                 })
             })
-            marketCompare.calculation();//初始化后默认测试一次
+            marketCompare.calculation();//初始化后默认测算一次
         }
 
         //初始头部
@@ -595,7 +609,7 @@
                     fieldContent.value = fieldContent.value == '空' ? '' : fieldContent.value;
                     data.evaluationItem.jsonContent.push(fieldContent);
                 }
-            })
+            });
 
             $.each(caseItemIdArray, function (i, item) {
                 var caseItem = {};
@@ -672,11 +686,65 @@
             })
         }
 
+        //加载所有案例
+        marketCompare.loadCaseAll = function () {
+            var planDetailsIdArray = [];
+            $.each(marketCompare.casesAll, function (i, item) {
+                planDetailsIdArray.push(item.id);
+            })
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/marketCompare/getCasesAll',
+                data: {
+                    planDetailsIds: planDetailsIdArray.join()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret && result.data) {
+                        var html = '';
+                        $.each(result.data, function (i, item) {
+                            var htmlTemp = $("#selectCaseHtml").html();
+                            htmlTemp = htmlTemp.replace(/{planDetailsId}/, item.planDetailsId).replace(/{name}/, item.name);
+                            htmlTemp = htmlTemp.replace(/{area}/, item.area).replace(/{areaDesc}/, AssessCommon.toString(item.areaDesc));
+                            html += htmlTemp;
+                        })
+                        $("#modal_select_case").find('tbody').empty().append(html);
+                        $('#modal_select_case').modal();
+                    }
+                }
+            })
+
+        }
+
         //选择案例
         marketCompare.selectCase = function () {
-            var cbxs = $(".select-case").find('input:checkbox:checked');
+            //如果案例的面积超过估价对象面积3倍则必须为面积添加说明
+            var cbxs = $("#modal_select_case").find('input:checkbox:checked');
             if (cbxs.length <= 0) {
                 Alert("还未选择任何案例");
+                return false;
+            }
+
+            var errmsg = '';
+            var areaDescArray = [];
+            var evaluationArea = marketCompare.evaluation.area;
+            $.each(cbxs, function (i, item) {
+                var tr = $(item).closest('tr');
+                var name = tr.find('[data-name=name]').text();
+                var area = tr.find('[data-name=area]').text();
+                var areaDesc = tr.find('[name=areaDesc]').val();
+                if (AssessCommon.isNumber(area) && AssessCommon.isNumber(evaluationArea)) {
+                    if (parseFloat(evaluationArea)* 3 < parseFloat(area)  && areaDesc.length<=0) {
+                        errmsg += name + "必须填写面积说明";
+                        return false;
+                    }
+                }
+                areaDescArray.push({"planDetailsId": $(item).val(), "areaDesc": areaDesc});
+            })
+            if (errmsg.length > 0) {
+                Alert(errmsg);
                 return false;
             }
             var caseArray = [];
@@ -689,7 +757,7 @@
                 data: {
                     mcId: marketCompare.mcId,
                     judgeObjectId: marketCompare.judgeObjectId,
-                    planDetailsIdString: caseArray.join()
+                    areaDescJson: JSON.stringify(areaDescArray)
                 },
                 type: 'post',
                 dataType: 'json',
@@ -704,6 +772,7 @@
                             marketCompare: result.data.marketCompare,
                             fields: result.data.fields,
                             evaluation: result.data.evaluation,
+                            casesAll: marketCompare.casesAll,
                             cases: result.data.cases
                         });
                     } else {
@@ -751,14 +820,7 @@
                     }
                 }
             })
-
-            console.log(itemId);
             var th = $('#tb_md_mc_item_list').find('thead th[data-item-id=' + itemId + ']');
-            console.log(th.find('[name=residueRatioId]').val());
-            console.log(th.find('[name=usedYear]').val());
-            console.log(th.find('[name=usableYear]').val());
-            console.log(th.find('[name=houseId]').val());
-
         }
 
         //交易时间修正说明

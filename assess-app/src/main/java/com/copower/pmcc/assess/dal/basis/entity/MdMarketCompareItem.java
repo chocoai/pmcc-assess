@@ -26,6 +26,8 @@ public class MdMarketCompareItem {
 
     private Integer houseId;
 
+    private BigDecimal area;
+
     private BigDecimal initialPrice;
 
     private Boolean mustAdjustPrice;
@@ -134,6 +136,14 @@ public class MdMarketCompareItem {
 
     public void setHouseId(Integer houseId) {
         this.houseId = houseId;
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
     }
 
     public BigDecimal getInitialPrice() {

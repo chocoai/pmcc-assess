@@ -34,6 +34,8 @@ public class BasicHouse {
 
     private BigDecimal area;
 
+    private String areaDesc;
+
     private Integer researchType;
 
     private String rightInterestsRestriction;
@@ -51,6 +53,8 @@ public class BasicHouse {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer priceConnotation;
 
     public Integer getId() {
         return id;
@@ -172,6 +176,14 @@ public class BasicHouse {
         this.area = area;
     }
 
+    public String getAreaDesc() {
+        return areaDesc;
+    }
+
+    public void setAreaDesc(String areaDesc) {
+        this.areaDesc = areaDesc == null ? null : areaDesc.trim();
+    }
+
     public Integer getResearchType() {
         return researchType;
     }
@@ -242,5 +254,13 @@ public class BasicHouse {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getPriceConnotation() {
+        return priceConnotation;
+    }
+
+    public void setPriceConnotation(Integer priceConnotation) {
+        this.priceConnotation = priceConnotation;
     }
 }

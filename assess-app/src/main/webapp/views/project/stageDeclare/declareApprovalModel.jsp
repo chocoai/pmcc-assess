@@ -488,7 +488,7 @@
                     类型
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="typeName"></label>
+                    <label class="form-control" name="landRightTypeName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -621,10 +621,10 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    使用权类型
+                    权利性质
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="useRightTypeName"></label>
+                    <label class="form-control" name="landRightNatureName"></label>
                 </div>
             </div>
             <div class="x-valid">
