@@ -17,6 +17,8 @@
     <result column="other_income" property="otherIncome" jdbcType="DECIMAL" />
     <result column="other_income_remark" property="otherIncomeRemark" jdbcType="VARCHAR" />
     <result column="gross_income" property="grossIncome" jdbcType="DECIMAL" />
+    <result column="additional_capture" property="additionalCapture" jdbcType="VARCHAR" />
+    <result column="additional_capture_remark" property="additionalCaptureRemark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -82,7 +84,8 @@
   <sql id="Base_Column_List" >
     id, income_id, section_id, mc_id, rental_income, rentals, rentals_remark, month_number, 
     deposit, deposit_remark, deposit_rate, deposit_rate_remark, other_income, other_income_remark, 
-    gross_income, creator, gmt_created, gmt_modified
+    gross_income, additional_capture, additional_capture_remark, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample" >
     select
@@ -122,14 +125,16 @@
       rental_income, rentals, rentals_remark, 
       month_number, deposit, deposit_remark, 
       deposit_rate, deposit_rate_remark, other_income, 
-      other_income_remark, gross_income, creator, 
-      gmt_created, gmt_modified)
+      other_income_remark, gross_income, additional_capture, 
+      additional_capture_remark, creator, gmt_created, 
+      gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{mcId,jdbcType=INTEGER}, 
       #{rentalIncome,jdbcType=DECIMAL}, #{rentals,jdbcType=DECIMAL}, #{rentalsRemark,jdbcType=VARCHAR}, 
       #{monthNumber,jdbcType=INTEGER}, #{deposit,jdbcType=DECIMAL}, #{depositRemark,jdbcType=VARCHAR}, 
       #{depositRate,jdbcType=DECIMAL}, #{depositRateRemark,jdbcType=VARCHAR}, #{otherIncome,jdbcType=DECIMAL}, 
-      #{otherIncomeRemark,jdbcType=VARCHAR}, #{grossIncome,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{otherIncomeRemark,jdbcType=VARCHAR}, #{grossIncome,jdbcType=DECIMAL}, #{additionalCapture,jdbcType=VARCHAR}, 
+      #{additionalCaptureRemark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -178,6 +183,12 @@
       </if>
       <if test="grossIncome != null" >
         gross_income,
+      </if>
+      <if test="additionalCapture != null" >
+        additional_capture,
+      </if>
+      <if test="additionalCaptureRemark != null" >
+        additional_capture_remark,
       </if>
       <if test="creator != null" >
         creator,
@@ -231,6 +242,12 @@
       </if>
       <if test="grossIncome != null" >
         #{grossIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="additionalCapture != null" >
+        #{additionalCapture,jdbcType=VARCHAR},
+      </if>
+      <if test="additionalCaptureRemark != null" >
+        #{additionalCaptureRemark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -297,6 +314,12 @@
       <if test="record.grossIncome != null" >
         gross_income = #{record.grossIncome,jdbcType=DECIMAL},
       </if>
+      <if test="record.additionalCapture != null" >
+        additional_capture = #{record.additionalCapture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.additionalCaptureRemark != null" >
+        additional_capture_remark = #{record.additionalCaptureRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -328,6 +351,8 @@
       other_income = #{record.otherIncome,jdbcType=DECIMAL},
       other_income_remark = #{record.otherIncomeRemark,jdbcType=VARCHAR},
       gross_income = #{record.grossIncome,jdbcType=DECIMAL},
+      additional_capture = #{record.additionalCapture,jdbcType=VARCHAR},
+      additional_capture_remark = #{record.additionalCaptureRemark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -380,6 +405,12 @@
       <if test="grossIncome != null" >
         gross_income = #{grossIncome,jdbcType=DECIMAL},
       </if>
+      <if test="additionalCapture != null" >
+        additional_capture = #{additionalCapture,jdbcType=VARCHAR},
+      </if>
+      <if test="additionalCaptureRemark != null" >
+        additional_capture_remark = #{additionalCaptureRemark,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -408,6 +439,8 @@
       other_income = #{otherIncome,jdbcType=DECIMAL},
       other_income_remark = #{otherIncomeRemark,jdbcType=VARCHAR},
       gross_income = #{grossIncome,jdbcType=DECIMAL},
+      additional_capture = #{additionalCapture,jdbcType=VARCHAR},
+      additional_capture_remark = #{additionalCaptureRemark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

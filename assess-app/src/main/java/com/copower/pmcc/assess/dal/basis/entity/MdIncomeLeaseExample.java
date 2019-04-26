@@ -1046,6 +1046,146 @@ public class MdIncomeLeaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andAdditionalCaptureIsNull() {
+            addCriterion("additional_capture is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureIsNotNull() {
+            addCriterion("additional_capture is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureEqualTo(String value) {
+            addCriterion("additional_capture =", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureNotEqualTo(String value) {
+            addCriterion("additional_capture <>", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureGreaterThan(String value) {
+            addCriterion("additional_capture >", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureGreaterThanOrEqualTo(String value) {
+            addCriterion("additional_capture >=", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureLessThan(String value) {
+            addCriterion("additional_capture <", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureLessThanOrEqualTo(String value) {
+            addCriterion("additional_capture <=", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureLike(String value) {
+            addCriterion("additional_capture like", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureNotLike(String value) {
+            addCriterion("additional_capture not like", value, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureIn(List<String> values) {
+            addCriterion("additional_capture in", values, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureNotIn(List<String> values) {
+            addCriterion("additional_capture not in", values, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureBetween(String value1, String value2) {
+            addCriterion("additional_capture between", value1, value2, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureNotBetween(String value1, String value2) {
+            addCriterion("additional_capture not between", value1, value2, "additionalCapture");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkIsNull() {
+            addCriterion("additional_capture_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkIsNotNull() {
+            addCriterion("additional_capture_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkEqualTo(String value) {
+            addCriterion("additional_capture_remark =", value, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkNotEqualTo(String value) {
+            addCriterion("additional_capture_remark <>", value, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkGreaterThan(String value) {
+            addCriterion("additional_capture_remark >", value, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("additional_capture_remark >=", value, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkLessThan(String value) {
+            addCriterion("additional_capture_remark <", value, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkLessThanOrEqualTo(String value) {
+            addCriterion("additional_capture_remark <=", value, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkLike(String value) {
+            addCriterion("additional_capture_remark like", value, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkNotLike(String value) {
+            addCriterion("additional_capture_remark not like", value, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkIn(List<String> values) {
+            addCriterion("additional_capture_remark in", values, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkNotIn(List<String> values) {
+            addCriterion("additional_capture_remark not in", values, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkBetween(String value1, String value2) {
+            addCriterion("additional_capture_remark between", value1, value2, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCaptureRemarkNotBetween(String value1, String value2) {
+            addCriterion("additional_capture_remark not between", value1, value2, "additionalCaptureRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

@@ -769,7 +769,7 @@ public class GenerateLoactionService {
                 entryMap.entrySet().stream().forEach(entry -> {
                     List<String> stringList = entry.getValue().stream().map(po -> {
                         BasicMatchingEducation basicMatchingEducation = basicMatchingEducationList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get();
-                        return String.format("%s%s，", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName());
+                        return String.format("%s%s", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName());
                     }).collect(Collectors.toList());
                     listMap.put(entry.getKey(), stringList);
                 });

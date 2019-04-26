@@ -20,7 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -328,8 +331,8 @@ public class GenerateHouseEntityService {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
         //类型一共其实有4个类型也就是4部分
-        List<String> typeList = Lists.newArrayList("其它","设备部分");
-        List<String> categoryList = Lists.newArrayList("抗震设防","消防栓","避雷针");
+        List<String> typeList = Lists.newArrayList("其它", "设备部分");
+        List<String> categoryList = Lists.newArrayList("抗震设防", "消防栓", "避雷针");
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -356,16 +359,16 @@ public class GenerateHouseEntityService {
                     if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                         damagedDegreeVoList.stream().forEach(oo -> {
                             int num = 0;
-                            if (typeList.stream().anyMatch(ss -> Objects.equal(ss,oo.getTypeName()))){
+                            if (typeList.stream().anyMatch(ss -> Objects.equal(ss, oo.getTypeName()))) {
                                 num++;
                             }
-                            if (categoryList.stream().anyMatch(ss -> StringUtils.indexOf(oo.getCategoryName(),ss) != -1)){
+                            if (categoryList.stream().anyMatch(ss -> StringUtils.indexOf(oo.getCategoryName(), ss) != -1)) {
                                 num++;
                             }
-                            if (num == 2){
+                            if (num == 2) {
                                 stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), oo.getEntityConditionName()));
                             }
-                            if (num != 2){
+                            if (num != 2) {
                                 stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
                             }
                         });
@@ -749,7 +752,7 @@ public class GenerateHouseEntityService {
                             }
                             if (number == 0) {
                                 stringBuilder.append(typeName).append("采用")
-                                        .append(processingModeName).append(baseDataDicService.getNameById(basicHouseWaterDrain.getDrainSystem()));
+                                        .append(baseDataDicService.getNameById(basicHouseWaterDrain.getDrainSystem())).append(processingModeName).append("处理");
                             }
                             if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
                                 linkedHashSet.add(stringBuilder.toString());
@@ -798,6 +801,7 @@ public class GenerateHouseEntityService {
         }
         StringBuilder stringBuilder = new StringBuilder(8);
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        LinkedHashSet<String> centerList = Sets.newLinkedHashSet();
         Map<String, List<Integer>> houseMap = groupByHouse(judgeObjectList);
         Map<String, String> map = Maps.newHashMap();
         if (!houseMap.isEmpty()) {
@@ -821,18 +825,20 @@ public class GenerateHouseEntityService {
                                 if (StringUtils.isNotBlank(oo.getSwitchCircuitName())) {
                                     stringBuilder.append(oo.getSwitchCircuitName());
                                 }
-                                stringBuilder.append("铺设方式").append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无");
+                                stringBuilder.append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无").append("铺设");
+                                centerList.add(stringBuilder.toString());
                                 if (StringUtils.isNotBlank(oo.getLampsLanternsName())) {
-                                    stringBuilder.append("，").append("灯具为").append(oo.getLampsLanternsName());
+                                    centerList.add(String.format("%s%s","灯具为",oo.getLampsLanternsName()));
                                 }
                                 String s = oo.getIntelligentSystemName();
                                 s = s.replaceAll("；", "");
                                 s = s.replaceAll(";", "");
                                 s = s.replaceAll("/", "-");
-                                stringBuilder.append(s);
-                                if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
-                                    linkedHashSet.add(stringBuilder.toString());
+                                centerList.add(s);
+                                if (CollectionUtils.isNotEmpty(centerList)) {
+                                    linkedHashSet.add(StringUtils.join(centerList,"，"));
                                 }
+                                centerList.clear();
                                 stringBuilder.delete(0, stringBuilder.toString().length());
                             }
                         });
@@ -914,11 +920,9 @@ public class GenerateHouseEntityService {
                                     stringBuilder.append(oo.getGradeName());
                                 }
                                 stringBuilder.append(oo.getCategoryName());
+
                                 if (StringUtils.isNotBlank(oo.getSupplyModeName())) {
-                                    stringBuilder.append(oo.getSupplyModeName());
-                                }
-                                if (StringUtils.isNotBlank(oo.getEquipmentPriceName())) {
-                                    stringBuilder.append(oo.getEquipmentPriceName());
+                                    stringBuilder.append(",分房").append(oo.getSupplyModeName());
                                 }
                                 if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
                                     linkedHashSet.add(stringBuilder.toString());
@@ -930,7 +934,7 @@ public class GenerateHouseEntityService {
                 }
                 if (CollectionUtils.isNotEmpty(linkedHashSet)) {
                     if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                        map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", stringEntry.getKey().toString(), "号"));
+                        map.put(StringUtils.join(linkedHashSet, ";"), String.format("%s%s", stringEntry.getKey().toString(), "号"));
                     }
                 }
                 linkedHashSet.clear();
@@ -956,9 +960,9 @@ public class GenerateHouseEntityService {
      */
     public String getUnitElevator(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         Map<String, List<Integer>> unitMap = groupByUnit(judgeObjectList);
-        LinkedHashSet<String> centerSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> newLinkedHashSet = Sets.newLinkedHashSet();
         Map<String, String> map = Maps.newHashMap();
+        Map<String, List<Integer>> listMap = Maps.newHashMap();
         if (!unitMap.isEmpty()) {
             for (Map.Entry<String, List<Integer>> stringEntry : unitMap.entrySet()) {
                 List<Integer> integerList = stringEntry.getValue();
@@ -967,10 +971,7 @@ public class GenerateHouseEntityService {
                 }
                 for (int i = 0; i < integerList.size(); i++) {
                     SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(integerList.get(i));
-                    if (schemeJudgeObject == null || schemeJudgeObject.getDeclareRecordId() == null) {
-                        continue;
-                    }
-                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
                         continue;
                     }
@@ -1011,21 +1012,26 @@ public class GenerateHouseEntityService {
                             });
                         }
                         if (CollectionUtils.isNotEmpty(newLinkedHashSet)) {
-                            String s = "";
-                            if (integerList.size() > 1) {
-                                s = generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject);
-                            }
-                            centerSet.add(String.format("%s共%d%s%s", s,
-                                    number, "部电梯", StringUtils.join(newLinkedHashSet, "、"))
-                            );
+                            String key = String.format("%d%s%s", number, "部电梯", StringUtils.join(newLinkedHashSet, "、"));
+                            List<Integer> integers = listMap.get(key);
+                            if (CollectionUtils.isEmpty(integers))integers = Lists.newArrayList();
+                            integers.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
+                            listMap.put(key, integers);
                         }
                         newLinkedHashSet.clear();
                     }
                 }
-                if (CollectionUtils.isNotEmpty(centerSet)) {
-                    map.put(StringUtils.join(centerSet, ";"), String.format("%s单元", stringEntry.getKey()));
+                if (!listMap.isEmpty()) {
+                    if (listMap.entrySet().size() == 1) {
+                        map.put(listMap.entrySet().stream().limit(1).findFirst().get().getKey(), String.format("%s单元", stringEntry.getKey()));
+                    } else {
+                        listMap.entrySet().stream().forEach(stringListEntry -> {
+                            String key = String.format("%s%s", generateCommonMethod.convertNumber(stringListEntry.getValue()), stringListEntry.getKey());
+                            map.put(key, String.format("%s单元", stringEntry.getKey()));
+                        });
+                    }
                 }
-                centerSet.clear();
+                listMap.clear();
             }
         }
         String s = " ";

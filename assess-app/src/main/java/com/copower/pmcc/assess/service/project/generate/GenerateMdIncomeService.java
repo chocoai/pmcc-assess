@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
 import com.copower.pmcc.assess.common.enums.CalculationMethodNameEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;
@@ -210,7 +211,19 @@ public class GenerateMdIncomeService implements Serializable {
                 }
                 //收益法有效收缴率
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalCapture.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomeAdditionalCapture));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeAdditionalCapture));
+                }
+                //收益法有效收缴费
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureCost));
+                }
+                //收益法有效收缴率说明
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark));
+                }
+                //收益法押金收入
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeDepositCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeDepositCost));
                 }
                 //收益法年维修费
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MaintenanceCost.getName())) {
@@ -606,14 +619,19 @@ public class GenerateMdIncomeService implements Serializable {
      * @date: 2019/2/28 14:01
      */
     public String getIncomeYears() throws Exception {
-        try {
-            BigDecimal houseSurplusYear = getMdIncome().getHouseRemainingYear();
-            BigDecimal landSurplusYear = getMdIncome().getLandRemainingYear();
-            BigDecimal compare = houseSurplusYear.max(landSurplusYear);
-            return compare.toString();
-        } catch (Exception e) {
-            return errorStr;
+        List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
+        List<Double> doubleList = Lists.newArrayList(new Double(0));
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            leaseVoList.stream().forEach(mdIncomeLeaseCostVo -> {
+                MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+                if (mdIncomeDateSection != null) {
+                    if (mdIncomeDateSection.getYearCount() != null) {
+                        doubleList.add(mdIncomeDateSection.getYearCount().doubleValue());
+                    }
+                }
+            });
         }
+        return String.valueOf(doubleList.stream().mapToDouble(Double::doubleValue).sum());
     }
 
     /**
@@ -694,19 +712,27 @@ public class GenerateMdIncomeService implements Serializable {
     public String getIncomeMethodFormula() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
+        List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
         List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
         DataEvaluationMethod dataEvaluationMethod = null;
+        BaseDataDic byFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
         if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
-            if (dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdIncome.getName().indexOf(oo.getName()) != -1).count() >= 1) {
-                dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdIncome.getName().indexOf(oo.getName()) != -1).findFirst().get();
+            if (dataEvaluationMethodList.stream().anyMatch(oo -> Objects.equal(byFieldName.getName(), oo.getName()))) {
+                dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> Objects.equal(byFieldName.getName(), oo.getName())).findFirst().get();
             }
         }
         if (dataEvaluationMethod != null) {
             List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethod.getMethod());
             if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
                 if (StringUtils.isNotBlank(dataMethodFormulaList.stream().findFirst().get().getFormula())) {
-                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(dataMethodFormulaList.stream().findFirst().get().getFormula()), false);
+                    String s = null;
+                    if (leaseVoList.size() == 1) {
+                        s = dataMethodFormulaList.stream().findFirst().get().getFormula();
+                    } else {
+                        s = "V1+V2";
+                    }
+                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(s), false);
                 }
             }
         }
@@ -859,16 +885,40 @@ public class GenerateMdIncomeService implements Serializable {
                         case MonthRentalIncome:
                             cost = mdIncomeLeaseVo.getRentalIncome();
                             break;
+                        case IncomeAdditionalCapture:
+                            if (NumberUtils.isNumber(mdIncomeLeaseVo.getAdditionalCapture())) {
+                                BigDecimal bigDecimal = new BigDecimal(mdIncomeLeaseVo.getAdditionalCapture());
+                                bigDecimal = bigDecimal.multiply(new BigDecimal(100));
+                                bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+                                value = String.format("%s%s", bigDecimal.toString(), "%");
+                            }
+                            break;
+                        case IncomeAdditionalCaptureRemark:
+                            value = mdIncomeLeaseVo.getAdditionalCaptureRemark();
+                            break;
+                        case IncomeAdditionalCaptureCost:
+                            if (NumberUtils.isNumber(mdIncomeLeaseVo.getAdditionalCapture())) {
+                                MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseVo.getSectionId());
+                                if (mdIncomeDateSection != null) {
+                                    cost = mdIncomeDateSection.getIncomeTotal().multiply(new BigDecimal(mdIncomeLeaseVo.getAdditionalCapture()));
+                                }
+                            }
+                            break;
                         case MonthNumber:
                             if (mdIncomeLeaseVo.getMonthNumber() != null) {
                                 cost = new BigDecimal(mdIncomeLeaseVo.getMonthNumber());
+                            }
+                            break;
+                        case IncomeDepositCost:
+                            if (mdIncomeLeaseVo.getDeposit() != null && mdIncomeLeaseVo.getDepositRate() != null) {
+                                cost = mdIncomeLeaseVo.getDeposit().multiply(mdIncomeLeaseVo.getDepositRate());
                             }
                             break;
                         case Rentals:
                             cost = mdIncomeLeaseVo.getRentals();
                             break;
                         case YearDepositRate:
-                            cost = mdIncomeLeaseVo.getDepositRate();
+                            cost = mdIncomeLeaseVo.getDepositRate().multiply(new BigDecimal(100));
                             break;
                         case OtherIncome:
                             cost = mdIncomeLeaseVo.getOtherIncome();
@@ -1175,11 +1225,6 @@ public class GenerateMdIncomeService implements Serializable {
                         case IncomeAdditionalRatio:
                             if (mdIncomeLeaseCostVo.getAdditionalRatio() != null) {
                                 decimal = mdIncomeLeaseCostVo.getAdditionalRatio();
-                            }
-                            break;
-                        case IncomeAdditionalCapture:
-                            if (NumberUtils.isNumber(mdIncomeLeaseCostVo.getAdditionalCapture())){
-                                decimal = new BigDecimal(mdIncomeLeaseCostVo.getAdditionalCapture());
                             }
                             break;
                         default:

@@ -1,10 +1,6 @@
 package com.copower.pmcc.assess.common.enums;
 
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author: zch
@@ -33,6 +29,7 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     IncomeDepositExplain("收益法押金说明"),
     TransactionTaxeFeeExplain("收益法其它交易费说明"),
     RentalGrowthRateExplain("收益法租金增长率说明"),
+    IncomeAdditionalCaptureRemark("收益法有效收缴率说明"),
 
     Rentals("收益法出租率"),
     MaintenanceCostRatio("收益法维修保养费率"),
@@ -53,6 +50,8 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     LandUseTax("收益法土地使用税"),
     IncomeAdditionalCapture("收益法有效收缴率"),
 
+    IncomeDepositCost("收益法押金收入"),
+    IncomeAdditionalCaptureCost("收益法有效收缴费"),
     LandUseCost("收益法土地使用税费"),
     IncomeAdditionalRatioCost("收益法租赁税费"),
     IncomeTransaction("收益法其它相关费用"),
@@ -78,10 +77,10 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     IncomeMethodFormula("收益法计算公式"),
     IncomeDetermineRentalWay("收益法确定月租金方式"),
     MonthNumber("收益法出租月份数"),
+    YearDepositRate("一年期定期存款利率"),
 
     //------------------------------------------------------
 
-    YearDepositRate("一年期定期存款利率"),
     EffectiveIncomeFormula("有效收入公式"),
 
     IncomeMethodPriceCalculatingSheet("收益法价格测算表")

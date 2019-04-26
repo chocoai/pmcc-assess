@@ -22,8 +22,6 @@ public class MdIncomeLeaseCost {
 
     private String additional;
 
-    private String additionalCapture;
-
     private BigDecimal additionalRatio;
 
     private String insurancePremium;
@@ -126,14 +124,6 @@ public class MdIncomeLeaseCost {
 
     public void setAdditional(String additional) {
         this.additional = additional == null ? null : additional.trim();
-    }
-
-    public String getAdditionalCapture() {
-        return additionalCapture;
-    }
-
-    public void setAdditionalCapture(String additionalCapture) {
-        this.additionalCapture = additionalCapture == null ? null : additionalCapture.trim();
     }
 
     public BigDecimal getAdditionalRatio() {

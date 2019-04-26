@@ -11,7 +11,6 @@
     <result column="maintenance" property="maintenance" jdbcType="VARCHAR" />
     <result column="maintenance_cost_ratio" property="maintenanceCostRatio" jdbcType="DECIMAL" />
     <result column="additional" property="additional" jdbcType="VARCHAR" />
-    <result column="additional_capture" property="additionalCapture" jdbcType="VARCHAR" />
     <result column="additional_ratio" property="additionalRatio" jdbcType="DECIMAL" />
     <result column="insurance_premium" property="insurancePremium" jdbcType="VARCHAR" />
     <result column="insurance_premium_ratio" property="insurancePremiumRatio" jdbcType="DECIMAL" />
@@ -89,8 +88,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, income_id, section_id, replacement_value, management_cost, management_cost_ratio, 
-    maintenance, maintenance_cost_ratio, additional, additional_capture, additional_ratio, 
-    insurance_premium, insurance_premium_ratio, land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
+    maintenance, maintenance_cost_ratio, additional, additional_ratio, insurance_premium, 
+    insurance_premium_ratio, land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
     transaction_taxe_fee_explain, property_tax_ratio, stamp_duty_ratio, sales_tax_ratio, 
     construction_tax_ratio, local_education_ratio, education_ratio, creator, gmt_created, 
     gmt_modified
@@ -131,8 +130,8 @@
     </selectKey>
     insert into tb_md_income_lease_cost (income_id, section_id, replacement_value, 
       management_cost, management_cost_ratio, maintenance, 
-      maintenance_cost_ratio, additional, additional_capture, 
-      additional_ratio, insurance_premium, insurance_premium_ratio, 
+      maintenance_cost_ratio, additional, additional_ratio, 
+      insurance_premium, insurance_premium_ratio, 
       land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
       transaction_taxe_fee_explain, property_tax_ratio, 
       stamp_duty_ratio, sales_tax_ratio, construction_tax_ratio, 
@@ -140,8 +139,8 @@
       gmt_created, gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{replacementValue,jdbcType=DECIMAL}, 
       #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=DECIMAL}, #{maintenance,jdbcType=VARCHAR}, 
-      #{maintenanceCostRatio,jdbcType=DECIMAL}, #{additional,jdbcType=VARCHAR}, #{additionalCapture,jdbcType=VARCHAR}, 
-      #{additionalRatio,jdbcType=DECIMAL}, #{insurancePremium,jdbcType=VARCHAR}, #{insurancePremiumRatio,jdbcType=DECIMAL}, 
+      #{maintenanceCostRatio,jdbcType=DECIMAL}, #{additional,jdbcType=VARCHAR}, #{additionalRatio,jdbcType=DECIMAL}, 
+      #{insurancePremium,jdbcType=VARCHAR}, #{insurancePremiumRatio,jdbcType=DECIMAL}, 
       #{landUseTax,jdbcType=DECIMAL}, #{useTaxParameter,jdbcType=VARCHAR}, #{transactionTaxeFeeRatio,jdbcType=DECIMAL}, 
       #{transactionTaxeFeeExplain,jdbcType=VARCHAR}, #{propertyTaxRatio,jdbcType=DECIMAL}, 
       #{stampDutyRatio,jdbcType=DECIMAL}, #{salesTaxRatio,jdbcType=DECIMAL}, #{constructionTaxRatio,jdbcType=DECIMAL}, 
@@ -177,9 +176,6 @@
       </if>
       <if test="additional != null" >
         additional,
-      </if>
-      <if test="additionalCapture != null" >
-        additional_capture,
       </if>
       <if test="additionalRatio != null" >
         additional_ratio,
@@ -254,9 +250,6 @@
       </if>
       <if test="additional != null" >
         #{additional,jdbcType=VARCHAR},
-      </if>
-      <if test="additionalCapture != null" >
-        #{additionalCapture,jdbcType=VARCHAR},
       </if>
       <if test="additionalRatio != null" >
         #{additionalRatio,jdbcType=DECIMAL},
@@ -344,9 +337,6 @@
       <if test="record.additional != null" >
         additional = #{record.additional,jdbcType=VARCHAR},
       </if>
-      <if test="record.additionalCapture != null" >
-        additional_capture = #{record.additionalCapture,jdbcType=VARCHAR},
-      </if>
       <if test="record.additionalRatio != null" >
         additional_ratio = #{record.additionalRatio,jdbcType=DECIMAL},
       </if>
@@ -411,7 +401,6 @@
       maintenance = #{record.maintenance,jdbcType=VARCHAR},
       maintenance_cost_ratio = #{record.maintenanceCostRatio,jdbcType=DECIMAL},
       additional = #{record.additional,jdbcType=VARCHAR},
-      additional_capture = #{record.additionalCapture,jdbcType=VARCHAR},
       additional_ratio = #{record.additionalRatio,jdbcType=DECIMAL},
       insurance_premium = #{record.insurancePremium,jdbcType=VARCHAR},
       insurance_premium_ratio = #{record.insurancePremiumRatio,jdbcType=DECIMAL},
@@ -458,9 +447,6 @@
       </if>
       <if test="additional != null" >
         additional = #{additional,jdbcType=VARCHAR},
-      </if>
-      <if test="additionalCapture != null" >
-        additional_capture = #{additionalCapture,jdbcType=VARCHAR},
       </if>
       <if test="additionalRatio != null" >
         additional_ratio = #{additionalRatio,jdbcType=DECIMAL},
@@ -523,7 +509,6 @@
       maintenance = #{maintenance,jdbcType=VARCHAR},
       maintenance_cost_ratio = #{maintenanceCostRatio,jdbcType=DECIMAL},
       additional = #{additional,jdbcType=VARCHAR},
-      additional_capture = #{additionalCapture,jdbcType=VARCHAR},
       additional_ratio = #{additionalRatio,jdbcType=DECIMAL},
       insurance_premium = #{insurancePremium,jdbcType=VARCHAR},
       insurance_premium_ratio = #{insurancePremiumRatio,jdbcType=DECIMAL},

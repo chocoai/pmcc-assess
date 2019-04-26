@@ -230,6 +230,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                有效收缴率<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="additionalCapture" placeholder="有效收缴率" class="form-control x-percent"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                有效收缴率说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="additionalCaptureRemark" placeholder="有效收缴率说明" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -326,16 +346,6 @@
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="landUseTax" placeholder="土地使用税" class="form-control"
-                                       data-rule-number="true"
-                                       required="required">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                有效出租收缴率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="additionalCapture" placeholder="有效出租收缴率" class="form-control"
                                        data-rule-number="true"
                                        required="required">
                             </div>

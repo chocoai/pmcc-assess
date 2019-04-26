@@ -34,6 +34,10 @@ public class MdIncomeLease {
 
     private BigDecimal grossIncome;
 
+    private String additionalCapture;
+
+    private String additionalCaptureRemark;
+
     private String creator;
 
     private Date gmtCreated;
@@ -158,6 +162,22 @@ public class MdIncomeLease {
 
     public void setGrossIncome(BigDecimal grossIncome) {
         this.grossIncome = grossIncome;
+    }
+
+    public String getAdditionalCapture() {
+        return additionalCapture;
+    }
+
+    public void setAdditionalCapture(String additionalCapture) {
+        this.additionalCapture = additionalCapture == null ? null : additionalCapture.trim();
+    }
+
+    public String getAdditionalCaptureRemark() {
+        return additionalCaptureRemark;
+    }
+
+    public void setAdditionalCaptureRemark(String additionalCaptureRemark) {
+        this.additionalCaptureRemark = additionalCaptureRemark == null ? null : additionalCaptureRemark.trim();
     }
 
     public String getCreator() {
