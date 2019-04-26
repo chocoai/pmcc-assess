@@ -47,7 +47,7 @@
                         <div class="col-sm-3">
                             <div class="input-group">
                                 <input type="text" required class="form-control x-percent" name="rewardRate"
-                                       placeholder="报酬率"
+                                       placeholder="报酬率" readonly="readonly"
                                        data-value="${mdIncome.rewardRate}" onblur="lease.computeNetProfit();">
                                 <span class="input-group-btn">
                                     <input type="hidden" name="rewardRateId" value="${mdIncome.rewardRateId}">
@@ -302,26 +302,6 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                其它交易税费率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="transactionTaxeFeeRatio" placeholder="其它交易税费率"
-                                       class="form-control x-percent" required="required">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                其它交易税费率说明<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="transactionTaxeFeeExplain" placeholder="其它交易税费率说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 土地使用税<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
@@ -338,6 +318,32 @@
                                 <input type="text" name="additionalCapture" placeholder="有效出租收缴率" class="form-control"
                                        data-rule-number="true"
                                        required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                其它相关税费率<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="transactionTaxeFeeRatio" placeholder="其它相关税费率"
+                                       onblur="lease.replaceTransactionTaxeFeeRatio();" class="form-control x-percent"
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                其它相关税费率说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-10">
+                                <textarea name="transactionTaxeFeeExplain" placeholder="其它相关税费率说明"
+                                          data-template="${transactionTaxeFeeRatioEditable}" class="form-control"
+                                          required="required"></textarea>
+                                <span id="transactionTaxeFeeRatioReadonly"
+                                      data-template="${transactionTaxeFeeRatioReadonly}"></span>
                             </div>
                         </div>
                     </div>
@@ -450,7 +456,8 @@
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="rentalGrowthRate" placeholder="租金增长率"
-                                       class="form-control x-percent" required="required">
+                                       onblur="lease.replaceRentalGrowthRate();" class="form-control x-percent"
+                                       required="required">
                             </div>
                         </div>
                     </div>
@@ -461,8 +468,9 @@
                             </label>
                             <div class="col-sm-10">
                                 <textarea name="rentalGrowthRateExplain" placeholder="租金增长率说明" class="form-control"
-                                          required></textarea>
-                                <label>${rentalGrowthRateExplainReadonly}</label>
+                                          data-template="${rentalGrowthRateExplainEditable}" required></textarea>
+                                <span id="rentalGrowthRateExplainReadonly"
+                                      data-template="${rentalGrowthRateExplainReadonly}"></span>
                             </div>
                         </div>
                     </div>
@@ -645,6 +653,11 @@
             $(this).attr('data-value', row[$(this).attr('name')]);
             AssessCommon.elementParsePercent($(this));
         })
+        lease.replaceTransactionTaxeFeeRatio();
+        var transactionTaxeFeeExplain = form.find('[name=transactionTaxeFeeExplain]');
+        if (!transactionTaxeFeeExplain.val()) {
+            transactionTaxeFeeExplain.val(transactionTaxeFeeExplain.attr('data-template'));
+        }
         //重置价格特殊处理
         var $replacementValue = form.find('[name=replacementValue]');
         if (!$replacementValue.val()) {
@@ -775,12 +788,16 @@
     //编辑参数信息
     lease.editLeaseParameter = function (index) {
         var row = $("#tb_lease_parameter_list").bootstrapTable('getData')[index];
-        $("#frm_lease_parameter").clearAll();
-        $("#frm_lease_parameter").initForm(row);
+        $("#frm_lease_parameter").clearAll().initForm(row);
         $("#frm_lease_parameter").find('.x-percent').each(function () {
             $(this).attr('data-value', row[$(this).attr('name')]);
             AssessCommon.elementParsePercent($(this));
         })
+        lease.replaceRentalGrowthRate();
+        var rentalGrowthRateExplain = $("#frm_lease_parameter").find('[name=rentalGrowthRateExplain]');
+        if (!rentalGrowthRateExplain.val()) {
+            rentalGrowthRateExplain.val(rentalGrowthRateExplain.attr('data-template'));
+        }
         $('#modal_lease_parameter').modal();
     }
 
@@ -884,7 +901,6 @@
         })
     }
 
-
     //获取表单内容
     lease.getData = function () {
         var formData = {};
@@ -909,6 +925,22 @@
             formData.dateSectionList.push(section);
         })
         return formData;
+    }
+
+    //替换租金增长率
+    lease.replaceRentalGrowthRate = function () {
+        var form = $("#frm_lease_parameter");
+        var value = form.find('[name=rentalGrowthRate]').val();
+        var span = form.find('[id=rentalGrowthRateExplainReadonly]');
+        span.text(span.attr('data-template').replace('{收益法租金增长率}', value));
+    }
+
+    //替换其它相关费率
+    lease.replaceTransactionTaxeFeeRatio = function () {
+        var form = $("#frm_lease_cost");
+        var value = form.find('[name=transactionTaxeFeeRatio]').val();
+        var span = form.find('[id=transactionTaxeFeeRatioReadonly]');
+        span.text(span.attr('data-template').replace('{收益法交易费率}', value));
     }
 </script>
 <%--测算--%>
