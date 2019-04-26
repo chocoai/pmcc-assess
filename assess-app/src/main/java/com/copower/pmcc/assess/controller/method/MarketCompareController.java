@@ -1,13 +1,19 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
+import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
+import com.copower.pmcc.assess.dto.output.method.MdCompareCaseVo;
 import com.copower.pmcc.assess.dto.output.method.MdCompareInitParamVo;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +68,7 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/getInitParam", name = "获取市场比较法初始参数", method = RequestMethod.POST)
-    public HttpResult getInitParam(Integer mcId,Integer judgeObjectId) {
+    public HttpResult getInitParam(Integer mcId, Integer judgeObjectId) {
         try {
             SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
             List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getProjectId());
@@ -92,10 +98,23 @@ public class MarketCompareController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
-    public HttpResult selectCase(Integer mcId, String planDetailsIdString,Integer judgeObjectId) {
+    @RequestMapping(value = "/getCasesAll", name = "获取所有案例", method = RequestMethod.POST)
+    public HttpResult getCasesAll(String planDetailsIds) {
         try {
-            mdMarketCompareService.selectCase(mcId, planDetailsIdString,judgeObjectId);
+            if (StringUtils.isBlank(planDetailsIds))
+                return null;
+            List<MdCompareCaseVo> caseAll = mdMarketCompareService.getCasesAll(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIds)));
+            return HttpResult.newCorrectResult(caseAll);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("保存失败");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
+    public HttpResult selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId) {
+        try {
+            mdMarketCompareService.selectCase(mcId, areaDescJson, judgeObjectId);
             MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
             mdCompareInitParamVo.setMcId(mcId);
             mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);
@@ -111,9 +130,9 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/getMarketCompareItemById", name = "获取明细项数据", method = RequestMethod.POST)
-    public HttpResult getMarketCompareItemById(Integer id){
+    public HttpResult getMarketCompareItemById(Integer id) {
         try {
-            return HttpResult.newCorrectResult( mdMarketCompareService.getMarketCompareItemById(id));
+            return HttpResult.newCorrectResult(mdMarketCompareService.getMarketCompareItemById(id));
         } catch (Exception e) {
             return HttpResult.newErrorResult("获取失败");
         }
@@ -121,7 +140,7 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/saveMarketCompareItem", name = "保存明细项数据", method = RequestMethod.POST)
-    public HttpResult saveMarketCompareItem(MdMarketCompareItem mdMarketCompareItem){
+    public HttpResult saveMarketCompareItem(MdMarketCompareItem mdMarketCompareItem) {
         try {
             mdMarketCompareService.saveMarketCompareItem(mdMarketCompareItem);
             return HttpResult.newCorrectResult();

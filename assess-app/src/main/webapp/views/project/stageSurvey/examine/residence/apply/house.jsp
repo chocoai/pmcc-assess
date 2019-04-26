@@ -107,8 +107,6 @@
                            class="form-control" value="${basicHouse.spatialDistributionDesc}">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -116,11 +114,20 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">面积<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="面积" name="area" data-rule-number="true" required
                            class="form-control" value="${basicHouse.area}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">面积描述</label>
+                <div class="col-sm-3">
+                    <input type="text" data-rule-maxlength="255" placeholder="面积描述"
+                           name="areaDesc" class="form-control" value="${basicHouse.areaDesc}">
                 </div>
             </div>
             <div class="x-valid">

@@ -1066,6 +1066,76 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andAreaDescIsNull() {
+            addCriterion("area_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescIsNotNull() {
+            addCriterion("area_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescEqualTo(String value) {
+            addCriterion("area_desc =", value, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescNotEqualTo(String value) {
+            addCriterion("area_desc <>", value, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescGreaterThan(String value) {
+            addCriterion("area_desc >", value, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescGreaterThanOrEqualTo(String value) {
+            addCriterion("area_desc >=", value, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescLessThan(String value) {
+            addCriterion("area_desc <", value, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescLessThanOrEqualTo(String value) {
+            addCriterion("area_desc <=", value, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescLike(String value) {
+            addCriterion("area_desc like", value, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescNotLike(String value) {
+            addCriterion("area_desc not like", value, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescIn(List<String> values) {
+            addCriterion("area_desc in", values, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescNotIn(List<String> values) {
+            addCriterion("area_desc not in", values, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescBetween(String value1, String value2) {
+            addCriterion("area_desc between", value1, value2, "areaDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaDescNotBetween(String value1, String value2) {
+            addCriterion("area_desc not between", value1, value2, "areaDesc");
+            return (Criteria) this;
+        }
+
         public Criteria andResearchTypeIsNull() {
             addCriterion("research_type is null");
             return (Criteria) this;
@@ -1643,6 +1713,66 @@ public class BasicHouseExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationIsNull() {
+            addCriterion("price_connotation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationIsNotNull() {
+            addCriterion("price_connotation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationEqualTo(Integer value) {
+            addCriterion("price_connotation =", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotEqualTo(Integer value) {
+            addCriterion("price_connotation <>", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationGreaterThan(Integer value) {
+            addCriterion("price_connotation >", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("price_connotation >=", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationLessThan(Integer value) {
+            addCriterion("price_connotation <", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationLessThanOrEqualTo(Integer value) {
+            addCriterion("price_connotation <=", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationIn(List<Integer> values) {
+            addCriterion("price_connotation in", values, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotIn(List<Integer> values) {
+            addCriterion("price_connotation not in", values, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationBetween(Integer value1, Integer value2) {
+            addCriterion("price_connotation between", value1, value2, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotBetween(Integer value1, Integer value2) {
+            addCriterion("price_connotation not between", value1, value2, "priceConnotation");
             return (Criteria) this;
         }
     }
