@@ -93,6 +93,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">证书信息</label>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-success" onclick="checkRealEstate()"
+                                            data-toggle="modal"> 查看
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -299,7 +309,7 @@
 </div>
 </body>
 <!--查看他项权利信息-->
-<div id="viewInventoryRightModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<%--<div id="viewInventoryRightModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -433,8 +443,9 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/project/stageSurvey/certificate.jsp" %>
 <script type="application/javascript">
     $(function () {
         loadAssetOtherRightList();
@@ -467,6 +478,29 @@
             writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
     })
+
+    //获取对应房产证信息
+    function checkRealEstate() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/getRealEstateId",
+            type: "get",
+            dataType: "json",
+            data: {declareRecordId:"${projectPlanDetails.declareRecordId}"},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    certificate.prototype.getAndInit(result.data.dataTableName, result.data.dataTableId);
+                }
+                else {
+                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
 
     //显示附件通用
     function showFileCommon(tableId) {
