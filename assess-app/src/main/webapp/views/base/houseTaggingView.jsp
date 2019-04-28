@@ -34,11 +34,10 @@
             </td>
         </tr>
     </table>
-    <img id="oImg" src="${pageContext.request.contextPath}${huxingImg}" style="display: none">
+    <img id="oImg" src="${pageContext.request.contextPath}${huxingImg}" style="display:none;">
 </div>
 <script type="text/javascript"
         src="https://webapi.amap.com/maps?v=1.4.10&key=ac9fb0371e0405ef74cb1ca003fd0eef"></script>
-
 <script type="text/javascript">
 
     var config = {};
@@ -51,20 +50,22 @@
         }
         return false;
     };
-    config.imageUrl = "${pageContext.request.contextPath}${huxingImg}";
+    //必要的变量
+    var imgMarker = null;
+    var map = null;
+    var imgIcon = null;
     var lng = config.isNotBlank('${lng}') ? '${lng}' : 100;
     var lat = config.isNotBlank('${lat}') ? '${lat}' : 30;
+    var deg = config.isNotBlank('${deg}') ? '${deg}' : 0;
+
+
+    config.imageUrl = "${pageContext.request.contextPath}${huxingImg}";
     config.position = {
         lng: lng,
         lat: lat
     };
-    var deg = config.isNotBlank('${deg}') ? '${deg}' : 0;
     config.deg = deg;
     config.attachmentId = '${attachmentId}';
-
-    var imgMarker = null;
-    var map = null;
-    var imgIcon = null;
 
 
     $(document).ready(function () {
@@ -78,7 +79,6 @@
 
             }
         });
-
         var dimensions = {};
         try {
             var oImg = $("#oImg");
@@ -116,13 +116,20 @@
      * 拖拽事件监听函数
      */
     function draggingFun(e) {
-        config.position.lng = lng;
-        config.position.lat = lat;
+        if (e.lnglat.lng) {
+            config.position.lng = e.lnglat.lng;
+        } else {
+            config.position.lng = lng;
+        }
+        if (e.lnglat.lat) {
+            config.position.lat = e.lnglat.lat;
+        } else {
+            config.position.lat = lat;
+        }
     }
 
-
+    //获取图片的宽度和高度
     function getImgNaturalDimensions(oImg) {
-
         var nWidth, nHeight;
         if (oImg.naturalWidth) { // 现代浏览器
             nWidth = oImg.naturalWidth;
@@ -146,11 +153,12 @@
     function rotateTransform(flag) {
         var angle = Number(imgMarker.getAngle());
         if (flag) {
-            imgMarker.setAngle(angle + 5);
+            angle = angle + 5;
         } else {
-            imgMarker.setAngle(angle - 5);
+            angle = angle - 5;
         }
         config.deg = angle;
+        imgMarker.setAngle(config.deg);
     }
 
 

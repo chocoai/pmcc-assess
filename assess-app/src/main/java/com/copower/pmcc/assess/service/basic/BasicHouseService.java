@@ -201,6 +201,7 @@ public class BasicHouseService {
         if (basicHouse.getPracticalUse() != null) {
             vo.setPracticalUseName(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
         }
+        vo.setSpatialDistributionName(baseDataDicService.getNameById(basicHouse.getSpatialDistribution()));
         return vo;
     }
 

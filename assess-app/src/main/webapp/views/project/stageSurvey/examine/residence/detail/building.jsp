@@ -212,7 +212,7 @@
                     物业公司
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="property">${basicBuilding.property}</label>
+                    <label class="form-control" name="property">${basicBuilding.propertyName}</label>
                 </div>
             </div>
         </div>
@@ -239,7 +239,7 @@
                     建筑公司
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="builder">${basicBuilding.builder}</label>
+                    <label class="form-control" name="builder">${basicBuilding.builderName}</label>
                 </div>
             </div>
         </div>

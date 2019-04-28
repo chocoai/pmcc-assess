@@ -48,19 +48,19 @@
             </div>
         </div>
         <div class="form-group" >
-            <c:if test="${basicHouseTrading.transactionSituationName ne '正常'}">
-                <div>
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">说明事项类型</label>
-                        <div class="col-sm-3">
-                            <label class="form-control">${basicHouseTrading.descriptionTypeName}</label>
-                        </div>
+            <c:if test="${!empty basicHouseTrading.descriptionTypeName}">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">说明事项类型</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.descriptionTypeName}</label>
                     </div>
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">说明事项内容</label>
-                        <div class="col-sm-3">
-                            <label class="form-control">${basicHouseTrading.descriptionContent}</label>
-                        </div>
+                </div>
+            </c:if>
+            <c:if test="${!empty basicHouseTrading.descriptionContent}">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">说明事项内容</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.descriptionContent}</label>
                     </div>
                 </div>
             </c:if>
@@ -89,105 +89,126 @@
         <div class="x_title">
             <div class="clearfix"></div>
         </div>
+        <c:if test="${basicHouseTrading.tradingTypeName=='出售'}">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">交易类型</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.tradingTypeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">付款方式</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.paymentMethodName}</label>
+                    </div>
+                </div>
+                <c:if test="${!empty basicHouseTrading.installmentInterestRate}">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">分期支付利率</label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${basicHouseTrading.installmentInterestRate}</label>
+                        </div>
+                    </div>
+                </c:if>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">买方额外支付的税</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.buyerExtraTax}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">买方额外支付的费</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.buyerExtraFee}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="tableTradingSell"></table>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
+
+        <c:if test="${basicHouseTrading.tradingTypeName != '出售'}">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">交易类型</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.tradingTypeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">付款方式</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.paymentMethodName}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">承租方额外支付的税</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.rentingExtraTax}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">承租方额外支付的费</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.rentingExtraFee}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">押金（元）</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.deposit}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="tableTradingLease"></table>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
+
+
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易类型<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.tradingTypeName}</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">付款方式</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.paymentMethodName}</label>
-                </div>
-            </div>
-            <div class="x-valid" style="display: none;">
-                <label class="col-sm-1 control-label">分期支付利率</label>
-                <div class="col-sm-3">
-                    <label class="form-control"
-                           name="installmentInterestRate">${basicHouseTrading.installmentInterestRate}</label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group ExamineHouseTradingSell" style="display: none">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">买方额外支付的税</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="buyerExtraTax">${basicHouseTrading.buyerExtraTax}</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">买方额外支付的费</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="buyerExtraFee">${basicHouseTrading.buyerExtraFee}</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group ExamineHouseTradingLease" style="display: none">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">承租方额外支付的税</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="rentingExtraTax">${basicHouseTrading.rentingExtraTax}</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">承租方额外支付的费</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="rentingExtraFee">${basicHouseTrading.rentingExtraFee}</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">押金（元）</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="deposit">${basicHouseTrading.deposit}</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group ExamineHouseTradingSell" style="display: none">
-            <div class="x-valid">
-                <div class="col-sm-11">
-                    <table class="table table-bordered" id="tableTradingSell"></table>
-                </div>
-            </div>
-        </div>
-        <div class="form-group ExamineHouseTradingLease" style="display: none">
-            <div class="x-valid">
-                <div class="col-sm-11">
-                    <table class="table table-bordered" id="tableTradingLease"></table>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">交易时间<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易时间</label>
                 <div class="col-sm-3">
                     <label class="form-control dbdate" name="tradingTime"><fmt:formatDate
                             value='${basicHouseTrading.tradingTime}' pattern='yyyy-MM-dd'/></label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易总价（元）<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易总价（元）</label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="tradingTotalPrice">${basicHouseTrading.tradingTotalPrice}</label>
+                    <label class="form-control">${basicHouseTrading.tradingTotalPrice}</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">单价内涵</label>
                 <div class="col-sm-3">
-                    <label class="form-control"
-                           name="priceConnotationName">${basicHouseTrading.priceConnotationName}</label>
+                    <label class="form-control">${basicHouseTrading.priceConnotationName}</label>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易单价（元）<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易单价（元）</label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="tradingUnitPrice">${basicHouseTrading.tradingUnitPrice}</label>
+                    <label class="form-control">${basicHouseTrading.tradingUnitPrice}</label>
                 </div>
             </div>
         </div>
@@ -195,22 +216,31 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">信息来源类型</label>
                 <div class="col-sm-3">
-                    <label class="form-control"
-                           name="informationTypeName">${basicHouseTrading.informationTypeName}</label>
+                    <label class="form-control">${basicHouseTrading.informationTypeName}</label>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">姓名</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="name">${basicHouseTrading.name}</label>
+            <c:if test="${basicHouseTrading.informationTypeName == '公开信息'}">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">信息来源类别</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.informationCategoryName}</label>
+                    </div>
                 </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">电话</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="phone">${basicHouseTrading.phone}</label>
+            </c:if>
+            <c:if test="${basicHouseTrading.informationTypeName != '公开信息'}">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">姓名</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.name}</label>
+                    </div>
                 </div>
-            </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">电话</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.phone}</label>
+                    </div>
+                </div>
+            </c:if>
         </div>
     </form>
 </div>

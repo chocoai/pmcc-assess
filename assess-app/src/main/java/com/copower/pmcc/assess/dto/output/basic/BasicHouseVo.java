@@ -15,6 +15,7 @@ public class BasicHouseVo extends BasicHouse {
     private String newsHuxingName;
     private String OrientationName;
     private String researchTypeName;
+    private String spatialDistributionName;
 
     public String getResearchTypeName() {
         return researchTypeName;
@@ -70,5 +71,13 @@ public class BasicHouseVo extends BasicHouse {
 
     public void setOrientationName(String orientationName) {
         OrientationName = orientationName;
+    }
+
+    public String getSpatialDistributionName() {
+        return spatialDistributionName;
+    }
+
+    public void setSpatialDistributionName(String spatialDistributionName) {
+        this.spatialDistributionName = spatialDistributionName;
     }
 }

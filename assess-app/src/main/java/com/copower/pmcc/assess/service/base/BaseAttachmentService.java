@@ -19,9 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 描述:
@@ -318,12 +321,21 @@ public class BaseAttachmentService {
     }
 
     public String getViewImageUrl(Integer id) {
+        final String basePath = "/temporary";
         try {
-            if (id != null){
-                return this.downloadFtpFileToLocal(id);
+            if (id != null) {
+                SysAttachmentDto sysAttachment = getSysAttachmentDto(id);
+                String localDirPath = servletContext.getRealPath(basePath + "/" + DateUtils.formatNowToYMD());
+                String localFileName = String.format("%s%s%s",UUID.randomUUID().toString().substring(1,8),".",sysAttachment.getFileExtension());
+                //清除今天以前的临时文件
+                FileUtils.deleteDir(servletContext.getRealPath(basePath), Lists.newArrayList(DateUtils.formatNowToYMD()));
+                FileUtils.folderMake(localDirPath);
+                ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFileName(), sysAttachment.getFilePath(), localFileName, localDirPath);
+                Stream<String> stringStream = Arrays.stream(new String[]{basePath,DateUtils.formatNowToYMD(),localFileName});
+                return StringUtils.join(stringStream.collect(Collectors.toList()), "/");
             }
         } catch (Exception e) {
-            logger.error(String.format("%s%s","附件可能被删除了",e.getMessage()), e);
+            logger.error(String.format("%s%s", "附件可能被删除了", e.getMessage()), e);
         }
         return null;
     }

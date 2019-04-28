@@ -73,8 +73,6 @@
                 <label class="col-sm-1 control-label">空间布局</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.spatialDistributionName}</label>
-                    <select class="form-control spatialDistribution" name="spatialDistribution" >
-                    </select>
                 </div>
             </div>
             <div class="x-valid">
@@ -143,18 +141,16 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋平面图</label>
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                     <div id="_house_img_plan"></div>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋装饰图</label>
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                     <div id="_house_decorate"></div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     附件

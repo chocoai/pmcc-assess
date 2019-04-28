@@ -16,7 +16,6 @@
                 <!--案例或者查勘 entity json-->
                 <input type="hidden" id="surveySceneExploreJson" value='${surveySceneExploreJson}'>
                 <input type="hidden" id="surveyCaseStudyJson" value='${surveyCaseStudyJson}'>
-
                 <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
                 <input type="hidden" name="caseBuildingId" value="${basicApply.caseBuildingId}">
                 <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
@@ -107,17 +106,14 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
-
 <!-- 从表 -->
 <script src='${pageContext.request.contextPath}/js/common.column.js'></script>
-
 <!-- 表单js -->
 <script src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
-
 <script type="text/javascript">
 
 
@@ -131,15 +127,25 @@
         });
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
-            estateCommon.fileUpload(n, AssessDBKey.BasicEstate, estateCommon.getEstateId());
             estateCommon.fileShow(n, AssessDBKey.BasicEstate,estateCommon.getEstateId());
+        });
+
+        $.each(unitCommon.unitFileControlIdArray,function (i, n) {
+            unitCommon.fileShow(n,true);
         });
 
         //初始化上传控件
         $.each(houseCommon.houseFileControlIdArray, function (i, item) {
-            houseCommon.fileUpload(item);
             houseCommon.fileShow(item);
         });
+        var tradingType = undefined;
+        if ('${basicHouseTrading.tradingTypeName}' == '出租'){
+            tradingType = AssessDicKey.examineHouseTransactionTypeLease ;
+        }
+        if ('${basicHouseTrading.tradingTypeName}' == '出售'){
+            tradingType = AssessDicKey.examineHouseTransactionTypeSell ;
+        }
+        houseCommon.loadTradingSellAndLeaseList(tradingType,true);
     });
 
     //审批提交
