@@ -9,6 +9,7 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
     <result column="seat" property="seat" jdbcType="VARCHAR" />
@@ -99,8 +100,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, data_table_name, data_table_id, province, city, district, name, ownership, 
-    seat, street_number, attached_number, building_number, unit, floor, room_number, 
+    id, project_id, data_table_name, data_table_id, province, city, district, type, name, 
+    ownership, seat, street_number, attached_number, building_number, unit, floor, room_number, 
     cert_use, practical_use, land_cert_use, land_practical_use, public_situation, floor_area, 
     practical_area, nature, land_right_type, land_right_nature, housing_structure, area_group_id, 
     house_use_end_date, land_use_end_date, inventory_content_key, price, bis_part_in, 
@@ -142,30 +143,30 @@
     </selectKey>
     insert into tb_declare_record (project_id, data_table_name, data_table_id, 
       province, city, district, 
-      name, ownership, seat, 
-      street_number, attached_number, building_number, 
-      unit, floor, room_number, 
-      cert_use, practical_use, land_cert_use, 
-      land_practical_use, public_situation, floor_area, 
-      practical_area, nature, land_right_type, 
-      land_right_nature, housing_structure, area_group_id, 
-      house_use_end_date, land_use_end_date, inventory_content_key, 
-      price, bis_part_in, bis_generate, 
-      creator, gmt_created, gmt_modified
-      )
+      type, name, ownership, 
+      seat, street_number, attached_number, 
+      building_number, unit, floor, 
+      room_number, cert_use, practical_use, 
+      land_cert_use, land_practical_use, public_situation, 
+      floor_area, practical_area, nature, 
+      land_right_type, land_right_nature, housing_structure, 
+      area_group_id, house_use_end_date, land_use_end_date, 
+      inventory_content_key, price, bis_part_in, 
+      bis_generate, creator, gmt_created, 
+      gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, #{dataTableId,jdbcType=INTEGER}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, 
-      #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, 
-      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, 
-      #{landPracticalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{practicalArea,jdbcType=DECIMAL}, #{nature,jdbcType=VARCHAR}, #{landRightType,jdbcType=VARCHAR}, 
-      #{landRightNature,jdbcType=VARCHAR}, #{housingStructure,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, 
-      #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, #{inventoryContentKey,jdbcType=VARCHAR}, 
-      #{price,jdbcType=DECIMAL}, #{bisPartIn,jdbcType=BIT}, #{bisGenerate,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
+      #{seat,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
+      #{roomNumber,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
+      #{landCertUse,jdbcType=VARCHAR}, #{landPracticalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{practicalArea,jdbcType=DECIMAL}, #{nature,jdbcType=VARCHAR}, 
+      #{landRightType,jdbcType=VARCHAR}, #{landRightNature,jdbcType=VARCHAR}, #{housingStructure,jdbcType=VARCHAR}, 
+      #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, 
+      #{inventoryContentKey,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{bisPartIn,jdbcType=BIT}, 
+      #{bisGenerate,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -190,6 +191,9 @@
       </if>
       <if test="district != null" >
         district,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="name != null" >
         name,
@@ -300,6 +304,9 @@
       </if>
       <if test="district != null" >
         #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -423,6 +430,9 @@
       <if test="record.district != null" >
         district = #{record.district,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -527,6 +537,7 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
       seat = #{record.seat,jdbcType=VARCHAR},
@@ -581,6 +592,9 @@
       </if>
       <if test="district != null" >
         district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -683,6 +697,7 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
       seat = #{seat,jdbcType=VARCHAR},

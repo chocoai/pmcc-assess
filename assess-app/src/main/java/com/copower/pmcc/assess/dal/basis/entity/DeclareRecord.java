@@ -18,6 +18,8 @@ public class DeclareRecord {
 
     private String district;
 
+    private String type;
+
     private String name;
 
     private String ownership;
@@ -132,6 +134,14 @@ public class DeclareRecord {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getName() {
