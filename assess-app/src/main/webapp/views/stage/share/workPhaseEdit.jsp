@@ -132,28 +132,24 @@
                                         <label class="col-sm-2 control-label" for="workTemplate">
                                             工作模板
                                         </label>
-                                        <div class="col-sm-10" id="workTemplate_file_co">
+                                        <div class="col-sm-4" id="workTemplate_file_co">
                                             <input id="workTemplate_file" name="workTemplate_file" type="file"
                                                    multiple="false">
                                             <div id="_workTemplate_file"></div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label" for="workProcessTemplate">
                                             流程模板
                                         </label>
-                                        <div class="col-sm-10" id="workProcessTemplate_file_co">
+                                        <div class="col-sm-4" id="workProcessTemplate_file_co">
                                             <input id="workProcessTemplate_file" name="workProcessTemplate_file"
                                                    type="file"
                                                    multiple="false">
                                             <div id="_workProcessTemplate_file"></div>
-
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -275,7 +271,10 @@
                         $('#bisUseBox').prop("checked", row.bisUseBox);
                         $('#bisCanReturn').prop("checked", row.bisCanReturn);
                         //初始化文件组件
-                        workPhaseObj.fileComponentInit(row.id);
+                        workPhaseObj.uploadFile("workTemplate_file", row.id, "workTemp");
+                        workPhaseObj.uploadFile("workProcessTemplate_file", row.id, "processTemp");
+                        workPhaseObj.fileList("workTemplate_file", row.id, "workTemp");
+                        workPhaseObj.fileList("workProcessTemplate_file", row.id, "processTemp");
                         //编辑页面回显文件
 
 
@@ -368,8 +367,13 @@
             $('#bisUseBox').prop("checked", false);
             $('#bisCanReturn').prop("checked", false);
 
-            //文件组件
-            workPhaseObj.fileComponentInit(0);
+            /**
+             * 初始化文件上传组件状态
+             **/
+            workPhaseObj.uploadFile("workTemplate_file", 0, "workTemp");
+            workPhaseObj.uploadFile("workProcessTemplate_file", 0, "processTemp");
+            workPhaseObj.fileList("workTemplate_file", 0, "workTemp");
+            workPhaseObj.fileList("workProcessTemplate_file", 0, "processTemp");
 
             $('#project_phase_modal').modal({backdrop: 'static', keyboard: false});
 
@@ -448,25 +452,39 @@
         });
     };
 
-    /**
-     * 初始化文件上传组件状态
-     **/
-    //workPhaseObj.fileList("workTemplate_file", row.id, "workTemp");
-    //workPhaseObj.fileList("workProcessTemplate_file", row.id, "processTemp");
-
-    workPhaseObj.fileComponentInit = function (id) {
-        workPhaseObj.resetWorkTemplateFile();
-        workPhaseObj.resetWorkProcessTemplateFile();
 
 
-    };
+    workPhaseObj.uploadFile = function (el, id, fieldName) {
+        FileUtils.uploadFiles({
+            target: el,
+            showFileList: false,
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_project_phase",
+                    fieldsName: fieldName,
+                    tableId: id
+                };
+                return formData;
+            },
+            onUploadComplete: function () {
+                workPhaseObj.fileList(el, id, fieldName);
+            }
+        });
+    }
+
     workPhaseObj.fileList = function (el, id, fieldName) {
-        GetFileShows(el, {
-            tableName: "tb_project_phase",
-            tableId: id,
-            fieldsName: fieldName
-        }, 1);
+        FileUtils.getFileShows({
+            target: el,
+            formData: {
+                tableName: "tb_project_phase",
+                tableId: id,
+                fieldsName: fieldName
+            },
+            deleteFlag: true
+        })
     };
+
+
     workPhaseObj.resetWorkTemplateFile = function () {
         $('#workTemplate_file_co').empty();
         var workTemplate = '<input id="workTemplate_file" name="workTemplate_file" type="file" multiple="false"><div id="_workTemplate_file"></div>';

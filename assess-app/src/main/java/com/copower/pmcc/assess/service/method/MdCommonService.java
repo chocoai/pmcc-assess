@@ -49,6 +49,13 @@ public class MdCommonService {
             if (AssessDataDicKeyConstant.MD_DEVELOPMENT.equals(baseDataDic.getFieldName())) {
                 baseMethodList.add(baseDataDic);
             }
+
+            if (AssessDataDicKeyConstant.MD_BASE_LAND_PRICE.equals(baseDataDic.getFieldName())) {
+                baseMethodList.add(baseDataDic);
+            }
+            if (AssessDataDicKeyConstant.MD_COST_APPROACH.equals(baseDataDic.getFieldName())) {
+                baseMethodList.add(baseDataDic);
+            }
         }
         return baseMethodList;
     }

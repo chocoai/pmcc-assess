@@ -424,14 +424,17 @@ public class ProjectPlanDetailsService {
     }
 
     public void deleteProjectPlanDetails(ProjectPlanDetails projectPlanDetails) {
-        if(projectPlanDetails==null) return;
-        if (ProcessStatusEnum.RUN.getValue().equals(projectPlanDetails.getStatus())) {
-            bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(),projectPlanDetails.getId());
-            if(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())&&!projectPlanDetails.getProcessInsId().equals("0")){
-                bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());
+        if (projectPlanDetails == null && projectPlanDetails.getStatus() == null) return;
+        try {
+            if (ProcessStatusEnum.RUN.getValue().equals(projectPlanDetails.getStatus())) {
+                bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(), projectPlanDetails.getId());
+                if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId()) && !projectPlanDetails.getProcessInsId().equals("0"))
+                    bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());
+            } else {
+                projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
             }
-        } else {
-            projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
+        }catch (Exception ex){
+            logger.error(ex.getMessage(),ex);
         }
     }
 
@@ -495,7 +498,7 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByIds(List<Integer> ids){
+    public List<ProjectPlanDetails> getProjectPlanDetailsByIds(List<Integer> ids) {
         return projectPlanDetailsDao.getProjectPlanDetailsByIds(ids);
     }
 
@@ -608,7 +611,7 @@ public class ProjectPlanDetailsService {
                 List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
                 if (CollectionUtils.isNotEmpty(detailsList)) return;
                 SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(copyPlanDetails.getPid());
-                surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE,null);
+                surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE, null);
                 basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
             }
         }
