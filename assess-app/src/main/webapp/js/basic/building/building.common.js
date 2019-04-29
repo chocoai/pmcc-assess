@@ -263,5 +263,20 @@
         })
     }
 
+    buildingCommon.autocompleteStart = function () {
+        buildingCommon.buildingForm.find('input[name=propertyName]').apProperty({
+            onSelect:function (id, name){
+                buildingCommon.buildingForm.find('input[name=property]').val(id);
+                buildingCommon.buildingForm.find('input[name=propertyName]').val(name);
+            }
+        });
+        buildingCommon.buildingForm.find('input[name=builderName]').apBuilder({
+            onSelect:function (id, name) {
+                buildingCommon.buildingForm.find('input[name=builder]').val(id);
+                buildingCommon.buildingForm.find('input[name=builderName]').val(name);
+            }
+        });
+    };
+
     window.buildingCommon = buildingCommon;
 })(jQuery);

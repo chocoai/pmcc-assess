@@ -18,6 +18,7 @@ public class CaseEstateVo extends CaseEstate {
     private String supplyWaterName;
     private String drainWaterName;
     private String supplyHeatingName;
+    private String developerName;
 
 
     public String getProvinceName() {
@@ -98,5 +99,13 @@ public class CaseEstateVo extends CaseEstate {
 
     public void setDrainWaterName(String drainWaterName) {
         this.drainWaterName = drainWaterName;
+    }
+
+    public String getDeveloperName() {
+        return developerName;
+    }
+
+    public void setDeveloperName(String developerName) {
+        this.developerName = developerName;
     }
 }

@@ -65,6 +65,7 @@ mapPosition.getCurrentCityByArea = function (callback) {
                 } else {
                     province = "四川";
                     city = "成都";
+                    district= "锦江区" ;
                 }
                 province = province.replace('省', '');
                 city = city.replace('市', '');
