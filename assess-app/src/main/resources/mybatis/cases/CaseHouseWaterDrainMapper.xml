@@ -10,6 +10,8 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="organization" property="organization" jdbcType="INTEGER" />
+    <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, type, drain_system, processing_mode, creator, gmt_created, gmt_modified
+    id, house_id, type, drain_system, processing_mode, creator, gmt_created, gmt_modified, 
+    organization, evaluate
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterDrainExample" >
     select
@@ -108,10 +111,12 @@
     </selectKey>
     insert into tb_case_house_water_drain (house_id, type, drain_system, 
       processing_mode, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, organization, evaluate
+      )
     values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{drainSystem,jdbcType=INTEGER}, 
       #{processingMode,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{organization,jdbcType=INTEGER}, #{evaluate,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterDrain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -140,6 +145,12 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="organization != null" >
+        organization,
+      </if>
+      <if test="evaluate != null" >
+        evaluate,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
@@ -162,6 +173,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="organization != null" >
+        #{organization,jdbcType=INTEGER},
+      </if>
+      <if test="evaluate != null" >
+        #{evaluate,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -198,6 +215,12 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.organization != null" >
+        organization = #{record.organization,jdbcType=INTEGER},
+      </if>
+      <if test="record.evaluate != null" >
+        evaluate = #{record.evaluate,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -212,7 +235,9 @@
       processing_mode = #{record.processingMode,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      organization = #{record.organization,jdbcType=INTEGER},
+      evaluate = #{record.evaluate,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -241,6 +266,12 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="organization != null" >
+        organization = #{organization,jdbcType=INTEGER},
+      </if>
+      <if test="evaluate != null" >
+        evaluate = #{evaluate,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -252,7 +283,9 @@
       processing_mode = #{processingMode,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      organization = #{organization,jdbcType=INTEGER},
+      evaluate = #{evaluate,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

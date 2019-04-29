@@ -19,6 +19,10 @@ public class CaseEstateParking {
 
     private Date gmtModified;
 
+    private String name;
+
+    private Integer parkingEstate;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +85,21 @@ public class CaseEstateParking {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getParkingEstate() {
+        return parkingEstate;
+    }
+
+    public void setParkingEstate(Integer parkingEstate) {
+        this.parkingEstate = parkingEstate;
     }
 }

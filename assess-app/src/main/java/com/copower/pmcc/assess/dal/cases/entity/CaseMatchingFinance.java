@@ -23,6 +23,8 @@ public class CaseMatchingFinance {
 
     private Date gmtModified;
 
+    private String distance;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class CaseMatchingFinance {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance == null ? null : distance.trim();
     }
 }

@@ -12,6 +12,7 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="build_number" property="buildNumber" jdbcType="VARCHAR" />
+    <result column="material_grade" property="materialGrade" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, building_id, decoration_part, decorating_material, material_price, construction_technology, 
-    creator, gmt_created, gmt_modified, build_number
+    creator, gmt_created, gmt_modified, build_number, material_grade
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingOutfitExample" >
     select
@@ -112,11 +113,11 @@
     insert into tb_case_building_outfit (building_id, decoration_part, decorating_material, 
       material_price, construction_technology, 
       creator, gmt_created, gmt_modified, 
-      build_number)
+      build_number, material_grade)
     values (#{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=VARCHAR}, #{decoratingMaterial,jdbcType=INTEGER}, 
       #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{buildNumber,jdbcType=VARCHAR})
+      #{buildNumber,jdbcType=VARCHAR}, #{materialGrade,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingOutfit" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -151,6 +152,9 @@
       <if test="buildNumber != null" >
         build_number,
       </if>
+      <if test="materialGrade != null" >
+        material_grade,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="buildingId != null" >
@@ -179,6 +183,9 @@
       </if>
       <if test="buildNumber != null" >
         #{buildNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="materialGrade != null" >
+        #{materialGrade,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -221,6 +228,9 @@
       <if test="record.buildNumber != null" >
         build_number = #{record.buildNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.materialGrade != null" >
+        material_grade = #{record.materialGrade,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -237,7 +247,8 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      build_number = #{record.buildNumber,jdbcType=VARCHAR}
+      build_number = #{record.buildNumber,jdbcType=VARCHAR},
+      material_grade = #{record.materialGrade,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -272,6 +283,9 @@
       <if test="buildNumber != null" >
         build_number = #{buildNumber,jdbcType=VARCHAR},
       </if>
+      <if test="materialGrade != null" >
+        material_grade = #{materialGrade,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -285,7 +299,8 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      build_number = #{buildNumber,jdbcType=VARCHAR}
+      build_number = #{buildNumber,jdbcType=VARCHAR},
+      material_grade = #{materialGrade,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -63,6 +63,14 @@ public class CaseEstateLandState {
 
     private Date gmtModified;
 
+    private String conclusion;
+
+    private String developmentDegreeRemark;
+
+    private String holdOn;
+
+    private Integer infrastructureCompleteness;
+
     public Integer getId() {
         return id;
     }
@@ -301,5 +309,37 @@ public class CaseEstateLandState {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getConclusion() {
+        return conclusion;
+    }
+
+    public void setConclusion(String conclusion) {
+        this.conclusion = conclusion == null ? null : conclusion.trim();
+    }
+
+    public String getDevelopmentDegreeRemark() {
+        return developmentDegreeRemark;
+    }
+
+    public void setDevelopmentDegreeRemark(String developmentDegreeRemark) {
+        this.developmentDegreeRemark = developmentDegreeRemark == null ? null : developmentDegreeRemark.trim();
+    }
+
+    public String getHoldOn() {
+        return holdOn;
+    }
+
+    public void setHoldOn(String holdOn) {
+        this.holdOn = holdOn == null ? null : holdOn.trim();
+    }
+
+    public Integer getInfrastructureCompleteness() {
+        return infrastructureCompleteness;
+    }
+
+    public void setInfrastructureCompleteness(Integer infrastructureCompleteness) {
+        this.infrastructureCompleteness = infrastructureCompleteness;
     }
 }

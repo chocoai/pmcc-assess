@@ -674,6 +674,196 @@ public class CaseHouseEquipmentExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andSupplyWeastIsNull() {
+            addCriterion("supply_weast is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastIsNotNull() {
+            addCriterion("supply_weast is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastEqualTo(String value) {
+            addCriterion("supply_weast =", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastNotEqualTo(String value) {
+            addCriterion("supply_weast <>", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastGreaterThan(String value) {
+            addCriterion("supply_weast >", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastGreaterThanOrEqualTo(String value) {
+            addCriterion("supply_weast >=", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastLessThan(String value) {
+            addCriterion("supply_weast <", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastLessThanOrEqualTo(String value) {
+            addCriterion("supply_weast <=", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastLike(String value) {
+            addCriterion("supply_weast like", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastNotLike(String value) {
+            addCriterion("supply_weast not like", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastIn(List<String> values) {
+            addCriterion("supply_weast in", values, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastNotIn(List<String> values) {
+            addCriterion("supply_weast not in", values, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastBetween(String value1, String value2) {
+            addCriterion("supply_weast between", value1, value2, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastNotBetween(String value1, String value2) {
+            addCriterion("supply_weast not between", value1, value2, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeIsNull() {
+            addCriterion("grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeIsNotNull() {
+            addCriterion("grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeEqualTo(Integer value) {
+            addCriterion("grade =", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeNotEqualTo(Integer value) {
+            addCriterion("grade <>", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeGreaterThan(Integer value) {
+            addCriterion("grade >", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("grade >=", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeLessThan(Integer value) {
+            addCriterion("grade <", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("grade <=", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeIn(List<Integer> values) {
+            addCriterion("grade in", values, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeNotIn(List<Integer> values) {
+            addCriterion("grade not in", values, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeBetween(Integer value1, Integer value2) {
+            addCriterion("grade between", value1, value2, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("grade not between", value1, value2, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeIsNull() {
+            addCriterion("supply_mode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeIsNotNull() {
+            addCriterion("supply_mode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeEqualTo(Integer value) {
+            addCriterion("supply_mode =", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeNotEqualTo(Integer value) {
+            addCriterion("supply_mode <>", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeGreaterThan(Integer value) {
+            addCriterion("supply_mode >", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("supply_mode >=", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeLessThan(Integer value) {
+            addCriterion("supply_mode <", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeLessThanOrEqualTo(Integer value) {
+            addCriterion("supply_mode <=", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeIn(List<Integer> values) {
+            addCriterion("supply_mode in", values, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeNotIn(List<Integer> values) {
+            addCriterion("supply_mode not in", values, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeBetween(Integer value1, Integer value2) {
+            addCriterion("supply_mode between", value1, value2, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeNotBetween(Integer value1, Integer value2) {
+            addCriterion("supply_mode not between", value1, value2, "supplyMode");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

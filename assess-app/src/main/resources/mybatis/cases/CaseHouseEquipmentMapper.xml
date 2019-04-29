@@ -11,6 +11,9 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="supply_weast" property="supplyWeast" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="supply_mode" property="supplyMode" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,7 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, type, category, equipment, equipment_price, creator, gmt_created, gmt_modified
+    id, house_id, type, category, equipment, equipment_price, creator, gmt_created, gmt_modified, 
+    supply_weast, grade, supply_mode
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipmentExample" >
     select
@@ -109,10 +113,12 @@
     </selectKey>
     insert into tb_case_house_equipment (house_id, type, category, 
       equipment, equipment_price, creator, 
-      gmt_created, gmt_modified)
+      gmt_created, gmt_modified, supply_weast, 
+      grade, supply_mode)
     values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
       #{equipment,jdbcType=VARCHAR}, #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{supplyWeast,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=INTEGER}, #{supplyMode,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -144,6 +150,15 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="supplyWeast != null" >
+        supply_weast,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="supplyMode != null" >
+        supply_mode,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
@@ -169,6 +184,15 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supplyWeast != null" >
+        #{supplyWeast,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="supplyMode != null" >
+        #{supplyMode,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -208,6 +232,15 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.supplyWeast != null" >
+        supply_weast = #{record.supplyWeast,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=INTEGER},
+      </if>
+      <if test="record.supplyMode != null" >
+        supply_mode = #{record.supplyMode,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -223,7 +256,10 @@
       equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      supply_weast = #{record.supplyWeast,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=INTEGER},
+      supply_mode = #{record.supplyMode,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -255,6 +291,15 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="supplyWeast != null" >
+        supply_weast = #{supplyWeast,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="supplyMode != null" >
+        supply_mode = #{supplyMode,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -267,7 +312,10 @@
       equipment_price = #{equipmentPrice,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      supply_weast = #{supplyWeast,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=INTEGER},
+      supply_mode = #{supplyMode,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

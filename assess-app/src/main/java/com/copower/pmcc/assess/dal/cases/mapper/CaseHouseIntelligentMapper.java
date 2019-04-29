@@ -16,15 +16,21 @@ public interface CaseHouseIntelligentMapper {
 
     int insertSelective(CaseHouseIntelligent record);
 
+    List<CaseHouseIntelligent> selectByExampleWithBLOBs(CaseHouseIntelligentExample example);
+
     List<CaseHouseIntelligent> selectByExample(CaseHouseIntelligentExample example);
 
     CaseHouseIntelligent selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") CaseHouseIntelligent record, @Param("example") CaseHouseIntelligentExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") CaseHouseIntelligent record, @Param("example") CaseHouseIntelligentExample example);
+
     int updateByExample(@Param("record") CaseHouseIntelligent record, @Param("example") CaseHouseIntelligentExample example);
 
     int updateByPrimaryKeySelective(CaseHouseIntelligent record);
+
+    int updateByPrimaryKeyWithBLOBs(CaseHouseIntelligent record);
 
     int updateByPrimaryKey(CaseHouseIntelligent record);
 }

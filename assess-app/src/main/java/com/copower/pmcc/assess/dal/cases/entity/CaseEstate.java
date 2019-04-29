@@ -68,6 +68,8 @@ public class CaseEstate {
 
     private Date gmtModified;
 
+    private String locationDescribe;
+
     public Integer getId() {
         return id;
     }
@@ -322,5 +324,13 @@ public class CaseEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getLocationDescribe() {
+        return locationDescribe;
+    }
+
+    public void setLocationDescribe(String locationDescribe) {
+        this.locationDescribe = locationDescribe == null ? null : locationDescribe.trim();
     }
 }

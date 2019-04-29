@@ -2185,6 +2185,76 @@ public class CaseEstateExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andLocationDescribeIsNull() {
+            addCriterion("location_describe is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeIsNotNull() {
+            addCriterion("location_describe is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeEqualTo(String value) {
+            addCriterion("location_describe =", value, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeNotEqualTo(String value) {
+            addCriterion("location_describe <>", value, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeGreaterThan(String value) {
+            addCriterion("location_describe >", value, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeGreaterThanOrEqualTo(String value) {
+            addCriterion("location_describe >=", value, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeLessThan(String value) {
+            addCriterion("location_describe <", value, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeLessThanOrEqualTo(String value) {
+            addCriterion("location_describe <=", value, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeLike(String value) {
+            addCriterion("location_describe like", value, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeNotLike(String value) {
+            addCriterion("location_describe not like", value, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeIn(List<String> values) {
+            addCriterion("location_describe in", values, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeNotIn(List<String> values) {
+            addCriterion("location_describe not in", values, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeBetween(String value1, String value2) {
+            addCriterion("location_describe between", value1, value2, "locationDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationDescribeNotBetween(String value1, String value2) {
+            addCriterion("location_describe not between", value1, value2, "locationDescribe");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

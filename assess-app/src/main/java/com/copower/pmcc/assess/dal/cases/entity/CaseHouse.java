@@ -44,6 +44,20 @@ public class CaseHouse {
 
     private Date gmtModified;
 
+    private String newDegree;
+
+    private Integer priceConnotation;
+
+    private Integer huxingId;
+
+    private String areaDesc;
+
+    private Integer researchType;
+
+    private String spatialDistributionDesc;
+
+    private Integer spatialDistribution;
+
     public Integer getId() {
         return id;
     }
@@ -202,5 +216,61 @@ public class CaseHouse {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getNewDegree() {
+        return newDegree;
+    }
+
+    public void setNewDegree(String newDegree) {
+        this.newDegree = newDegree == null ? null : newDegree.trim();
+    }
+
+    public Integer getPriceConnotation() {
+        return priceConnotation;
+    }
+
+    public void setPriceConnotation(Integer priceConnotation) {
+        this.priceConnotation = priceConnotation;
+    }
+
+    public Integer getHuxingId() {
+        return huxingId;
+    }
+
+    public void setHuxingId(Integer huxingId) {
+        this.huxingId = huxingId;
+    }
+
+    public String getAreaDesc() {
+        return areaDesc;
+    }
+
+    public void setAreaDesc(String areaDesc) {
+        this.areaDesc = areaDesc == null ? null : areaDesc.trim();
+    }
+
+    public Integer getResearchType() {
+        return researchType;
+    }
+
+    public void setResearchType(Integer researchType) {
+        this.researchType = researchType;
+    }
+
+    public String getSpatialDistributionDesc() {
+        return spatialDistributionDesc;
+    }
+
+    public void setSpatialDistributionDesc(String spatialDistributionDesc) {
+        this.spatialDistributionDesc = spatialDistributionDesc == null ? null : spatialDistributionDesc.trim();
+    }
+
+    public Integer getSpatialDistribution() {
+        return spatialDistribution;
+    }
+
+    public void setSpatialDistribution(Integer spatialDistribution) {
+        this.spatialDistribution = spatialDistribution;
     }
 }

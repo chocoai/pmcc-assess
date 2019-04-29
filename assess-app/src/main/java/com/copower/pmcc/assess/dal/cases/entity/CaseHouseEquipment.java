@@ -21,6 +21,12 @@ public class CaseHouseEquipment {
 
     private Date gmtModified;
 
+    private String supplyWeast;
+
+    private Integer grade;
+
+    private Integer supplyMode;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +97,29 @@ public class CaseHouseEquipment {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getSupplyWeast() {
+        return supplyWeast;
+    }
+
+    public void setSupplyWeast(String supplyWeast) {
+        this.supplyWeast = supplyWeast == null ? null : supplyWeast.trim();
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    public Integer getSupplyMode() {
+        return supplyMode;
+    }
+
+    public void setSupplyMode(Integer supplyMode) {
+        this.supplyMode = supplyMode;
     }
 }

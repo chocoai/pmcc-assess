@@ -22,6 +22,13 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="new_degree" property="newDegree" jdbcType="VARCHAR" />
+    <result column="price_connotation" property="priceConnotation" jdbcType="INTEGER" />
+    <result column="huxing_id" property="huxingId" jdbcType="INTEGER" />
+    <result column="area_desc" property="areaDesc" jdbcType="VARCHAR" />
+    <result column="research_type" property="researchType" jdbcType="INTEGER" />
+    <result column="spatial_distribution_desc" property="spatialDistributionDesc" jdbcType="VARCHAR" />
+    <result column="spatial_distribution" property="spatialDistribution" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -84,7 +91,9 @@
   <sql id="Base_Column_List" >
     id, unit_id, type, house_number, floor, floor_desc, huxing_name, new_huxing_name, 
     cert_use, practical_use, orientation, area, right_interests_restriction, use_environment, 
-    description, case_date, version, creator, gmt_created, gmt_modified
+    description, case_date, version, creator, gmt_created, gmt_modified, new_degree, 
+    price_connotation, huxing_id, area_desc, research_type, spatial_distribution_desc, 
+    spatial_distribution
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample" >
     select
@@ -126,14 +135,20 @@
       orientation, area, right_interests_restriction, 
       use_environment, description, case_date, 
       version, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, new_degree, price_connotation, 
+      huxing_id, area_desc, research_type, 
+      spatial_distribution_desc, spatial_distribution
+      )
     values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingName,jdbcType=VARCHAR}, 
       #{newHuxingName,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
       #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
       #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
       #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{newDegree,jdbcType=VARCHAR}, #{priceConnotation,jdbcType=INTEGER}, 
+      #{huxingId,jdbcType=INTEGER}, #{areaDesc,jdbcType=VARCHAR}, #{researchType,jdbcType=INTEGER}, 
+      #{spatialDistributionDesc,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -198,6 +213,27 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="newDegree != null" >
+        new_degree,
+      </if>
+      <if test="priceConnotation != null" >
+        price_connotation,
+      </if>
+      <if test="huxingId != null" >
+        huxing_id,
+      </if>
+      <if test="areaDesc != null" >
+        area_desc,
+      </if>
+      <if test="researchType != null" >
+        research_type,
+      </if>
+      <if test="spatialDistributionDesc != null" >
+        spatial_distribution_desc,
+      </if>
+      <if test="spatialDistribution != null" >
+        spatial_distribution,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="unitId != null" >
@@ -256,6 +292,27 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newDegree != null" >
+        #{newDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="priceConnotation != null" >
+        #{priceConnotation,jdbcType=INTEGER},
+      </if>
+      <if test="huxingId != null" >
+        #{huxingId,jdbcType=INTEGER},
+      </if>
+      <if test="areaDesc != null" >
+        #{areaDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="researchType != null" >
+        #{researchType,jdbcType=INTEGER},
+      </if>
+      <if test="spatialDistributionDesc != null" >
+        #{spatialDistributionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="spatialDistribution != null" >
+        #{spatialDistribution,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -328,6 +385,27 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.newDegree != null" >
+        new_degree = #{record.newDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priceConnotation != null" >
+        price_connotation = #{record.priceConnotation,jdbcType=INTEGER},
+      </if>
+      <if test="record.huxingId != null" >
+        huxing_id = #{record.huxingId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaDesc != null" >
+        area_desc = #{record.areaDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.researchType != null" >
+        research_type = #{record.researchType,jdbcType=INTEGER},
+      </if>
+      <if test="record.spatialDistributionDesc != null" >
+        spatial_distribution_desc = #{record.spatialDistributionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spatialDistribution != null" >
+        spatial_distribution = #{record.spatialDistribution,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -354,7 +432,14 @@
       version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      new_degree = #{record.newDegree,jdbcType=VARCHAR},
+      price_connotation = #{record.priceConnotation,jdbcType=INTEGER},
+      huxing_id = #{record.huxingId,jdbcType=INTEGER},
+      area_desc = #{record.areaDesc,jdbcType=VARCHAR},
+      research_type = #{record.researchType,jdbcType=INTEGER},
+      spatial_distribution_desc = #{record.spatialDistributionDesc,jdbcType=VARCHAR},
+      spatial_distribution = #{record.spatialDistribution,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -419,6 +504,27 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="newDegree != null" >
+        new_degree = #{newDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="priceConnotation != null" >
+        price_connotation = #{priceConnotation,jdbcType=INTEGER},
+      </if>
+      <if test="huxingId != null" >
+        huxing_id = #{huxingId,jdbcType=INTEGER},
+      </if>
+      <if test="areaDesc != null" >
+        area_desc = #{areaDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="researchType != null" >
+        research_type = #{researchType,jdbcType=INTEGER},
+      </if>
+      <if test="spatialDistributionDesc != null" >
+        spatial_distribution_desc = #{spatialDistributionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="spatialDistribution != null" >
+        spatial_distribution = #{spatialDistribution,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -442,7 +548,14 @@
       version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      new_degree = #{newDegree,jdbcType=VARCHAR},
+      price_connotation = #{priceConnotation,jdbcType=INTEGER},
+      huxing_id = #{huxingId,jdbcType=INTEGER},
+      area_desc = #{areaDesc,jdbcType=VARCHAR},
+      research_type = #{researchType,jdbcType=INTEGER},
+      spatial_distribution_desc = #{spatialDistributionDesc,jdbcType=VARCHAR},
+      spatial_distribution = #{spatialDistribution,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

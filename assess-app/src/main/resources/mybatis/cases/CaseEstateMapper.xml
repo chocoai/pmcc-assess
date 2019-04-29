@@ -34,6 +34,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="location_describe" property="locationDescribe" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -98,7 +99,7 @@
     street, number, land_level, attach_number, floor_area, cover_an_area, volumetric_rate, 
     greening_rate, building_number, position, description, average_price, price_range, 
     supply_power, supply_water, drain_water, supply_gas, supply_heating, version, creator, 
-    gmt_created, gmt_modified
+    gmt_created, gmt_modified, location_describe
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample" >
     select
@@ -144,7 +145,7 @@
       price_range, supply_power, supply_water, 
       drain_water, supply_gas, supply_heating, 
       version, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, location_describe)
     values (#{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
       #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, 
       #{developer,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, 
@@ -155,7 +156,7 @@
       #{priceRange,jdbcType=VARCHAR}, #{supplyPower,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, 
       #{drainWater,jdbcType=INTEGER}, #{supplyGas,jdbcType=INTEGER}, #{supplyHeating,jdbcType=INTEGER}, 
       #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{locationDescribe,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -256,6 +257,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="locationDescribe != null" >
+        location_describe,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="type != null" >
@@ -350,6 +354,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="locationDescribe != null" >
+        #{locationDescribe,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -458,6 +465,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.locationDescribe != null" >
+        location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -496,7 +506,8 @@
       version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      location_describe = #{record.locationDescribe,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -597,6 +608,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="locationDescribe != null" >
+        location_describe = #{locationDescribe,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -632,7 +646,8 @@
       version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      location_describe = #{locationDescribe,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
