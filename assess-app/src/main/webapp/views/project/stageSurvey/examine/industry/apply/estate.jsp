@@ -128,8 +128,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100"
-                           placeholder="容积率" name="volumetricRate" class="form-control"
+                    <input type="text"
+                           placeholder="容积率" name="volumetricRate" class="form-control x-percent"
                            value="${basicEstate.volumetricRate}">
                 </div>
             </div>
@@ -137,8 +137,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿化率</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100"
-                           placeholder="绿化率" name="greeningRate" class="form-control"
+                    <input type="text"
+                           placeholder="绿化率" name="greeningRate" class="form-control x-percent"
                            value="${basicEstate.greeningRate}">
                 </div>
             </div>
@@ -157,7 +157,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发商</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="开发商" class="form-control" name="developer"
+                    <input type="text" placeholder="开发商" class="form-control" name="developerName"
+                           value="${basicEstate.developerName}">
+                    <input type="hidden" placeholder="开发商" class="form-control" name="developer"
                            value="${basicEstate.developer}">
                 </div>
             </div>
@@ -248,52 +250,6 @@
             </div>
         </div>
     </div>
-
-    <%--<div class="x_content" id="industrySupplyInfo">
-        <div class="x_title">楼盘供应信息</div>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <div class="x-valid supplyGas">
-                    <label class="col-sm-1 control-label">供气信息</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 supplyGas" name="supplyGas">
-                        </select>
-                    </div>
-                </div>
-                <div class="x-valid supplyPower">
-                    <label class="col-sm-1 control-label">供电信息</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 supplyPower" name="supplyPower">
-                        </select>
-                    </div>
-                </div>
-
-                <div class="x-valid supplyWater">
-                    <label class="col-sm-1 control-label">供水情况</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 supplyWater" name="supplyWater">
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid drainWater">
-                    <label class="col-sm-1 control-label">排水情况</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 drainWater" name="drainWater">
-                        </select>
-                    </div>
-                </div>
-                <div class="x-valid supplyHeating">
-                    <label class="col-sm-1 control-label">供热信息</label>
-                    <div class="col-sm-3">
-                        <select class="form-control search-select select2 supplyHeating" name="supplyHeating">
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>--%>
 
 </form>
 <script type="text/javascript">

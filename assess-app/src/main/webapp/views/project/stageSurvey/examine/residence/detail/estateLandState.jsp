@@ -143,7 +143,16 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.plotRatio}</label>
+                    <c:if test="${!empty basicEstateLandState.plotRatio}">
+                        <c:choose>
+                            <c:when test="${basicEstateLandState.plotRatio.matches('[0-9.]+')}">
+                                <label class="form-control">${basicEstateLandState.plotRatio*100}%</label>
+                            </c:when>
+                            <c:otherwise>
+                                <label class="form-control">${basicEstateLandState.plotRatio}</label>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
                 </div>
             </div>
             <div class="x-valid">
@@ -155,7 +164,16 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿地率</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.greenSpaceRate}</label>
+                    <c:if test="${!empty basicEstateLandState.greenSpaceRate}">
+                        <c:choose>
+                            <c:when test="${basicEstateLandState.greenSpaceRate.matches('[0-9.]+')}">
+                                <label class="form-control">${basicEstateLandState.greenSpaceRate*100}%</label>
+                            </c:when>
+                            <c:otherwise>
+                                <label class="form-control">${basicEstateLandState.greenSpaceRate}</label>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -207,9 +225,6 @@
                     </div>
                 </div>
             </c:if>
-        </div>
-        <div class="form-group">
-
         </div>
     </form>
 

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   楼盘基础信息
 --%>
@@ -95,14 +96,32 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.volumetricRate}</label>
+                    <c:if test="${!empty basicEstate.volumetricRate}">
+                        <c:choose>
+                            <c:when test="${basicEstate.volumetricRate.matches('[0-9.]+')}">
+                                <label class="form-control">${basicEstate.volumetricRate*100}%</label>
+                            </c:when>
+                            <c:otherwise>
+                                <label class="form-control">${basicEstate.volumetricRate}</label>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿化率</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.greeningRate}</label>
+                    <c:if test="${!empty basicEstate.greeningRate}">
+                        <c:choose>
+                            <c:when test="${basicEstate.greeningRate.matches('[0-9.]+')}">
+                                <label class="form-control">${basicEstate.greeningRate*100}%</label>
+                            </c:when>
+                            <c:otherwise>
+                                <label class="form-control">${basicEstate.greeningRate}</label>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -118,7 +137,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发商</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.developer}</label>
+                    <label class="form-control">${basicEstate.developerName}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -192,49 +211,4 @@
             </div>
         </div>
     </div>
-
-  <%--  <div class="x_content">
-        <div class="x_title">楼盘供应信息</div>
-        <div class="form-horizontal">
-            <div class="x_content">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">供气信息</label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${basicEstate.supplyGasName}</label>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">供电信息</label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${basicEstate.supplyPowerName}</label>
-                            </div>
-                        </div>
-
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">供水情况</label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${basicEstate.supplyWaterName}</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">排水情况</label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${basicEstate.drainWaterName}</label>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">供热信息</label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${basicEstate.supplyHeatingName}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>--%>
 </form>

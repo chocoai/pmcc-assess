@@ -129,8 +129,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100"
-                           placeholder="容积率" name="volumetricRate" class="form-control"
+                    <input type="text"
+                           placeholder="容积率" name="volumetricRate" class="form-control x-percent"
                            value="${basicEstate.volumetricRate}">
                 </div>
             </div>
@@ -138,8 +138,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿化率</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100"
-                           placeholder="绿化率" name="greeningRate" class="form-control"
+                    <input type="text"
+                           placeholder="绿化率" name="greeningRate" class="form-control x-percent"
                            value="${basicEstate.greeningRate}">
                 </div>
             </div>
@@ -221,42 +221,6 @@
             </div>
         </div>
 
-        <%-- <div id="industry_water_supply_plan">
-             <div class="form-group">
-                 <div class="x-valid" id="">
-                     <label class="col-sm-1 control-label">供水平面图</label>
-                     <div class="col-sm-5">
-                         <input id="water_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                         <div id="_water_supply_plan"></div>
-                     </div>
-                 </div>
-
-                 <div class="x-valid">
-                     <label class="col-sm-1 control-label">供电平面图</label>
-                     <div class="col-sm-5">
-                         <input id="power_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                         <div id="_power_supply_plan"></div>
-                     </div>
-                 </div>
-             </div>
-             <div class="form-group">
-                 <div class="x-valid">
-                     <label class="col-sm-1 control-label">供气平面图</label>
-                     <div class="col-sm-5">
-                         <input id="air_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                         <div id="_air_supply_plan"></div>
-                     </div>
-                 </div>
-
-                 <div class="x-valid">
-                     <label class="col-sm-1 control-label">采暖平面图</label>
-                     <div class="col-sm-5">
-                         <input id="heating_plan" placeholder="上传附件" class="form-control" type="file">
-                         <div id="_heating_plan"></div>
-                     </div>
-                 </div>
-             </div>
-         </div>--%>
         <div class="x_content" id="industrySupplyInfo">
             <div class="x_title">楼盘供应信息</div>
             <div class="form-horizontal">
