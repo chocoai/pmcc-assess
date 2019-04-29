@@ -34,12 +34,6 @@ public class DataHousePriceIndexDao {
     public List<DataHousePriceIndex> listEndStart(Date startTime, Date endTime, String province, String city, String district) {
         DataHousePriceIndexExample example = new DataHousePriceIndexExample();
         DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
-        if (startTime != null) {
-            criteria.andYearMonthCalendarGreaterThanOrEqualTo(startTime);//大于
-        }
-        if (endTime != null) {
-            criteria.andYearMonthCalendarLessThanOrEqualTo(endTime);//小于
-        }
         if (StringUtils.isNotBlank(province)) {
             criteria.andProvinceEqualTo(province);
         }
@@ -55,12 +49,6 @@ public class DataHousePriceIndexDao {
     public List<DataHousePriceIndex> listEndStart(Date startTime, Date endTime, String province, String city) {
         DataHousePriceIndexExample example = new DataHousePriceIndexExample();
         DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
-        if (startTime != null) {
-            criteria.andYearMonthCalendarGreaterThanOrEqualTo(startTime);//大于
-        }
-        if (endTime != null) {
-            criteria.andYearMonthCalendarLessThanOrEqualTo(endTime);//小于
-        }
         if (StringUtils.isNotBlank(province)) {
             criteria.andProvinceEqualTo(province);
         }

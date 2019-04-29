@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
+import com.copower.pmcc.assess.service.data.DataHousePriceIndexService;
 import com.copower.pmcc.assess.service.data.DataMethodFormulaService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
@@ -68,6 +69,7 @@ public class GenerateMdCompareService {
     private SchemeAreaGroupService schemeAreaGroupService;
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private DataHousePriceIndexDao dataHousePriceIndexDao;
+    private DataHousePriceIndexService dataHousePriceIndexService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private GenerateCommonMethod generateCommonMethod;
 
@@ -92,6 +94,7 @@ public class GenerateMdCompareService {
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
+        this.dataHousePriceIndexService = SpringContextUtils.getBean(DataHousePriceIndexService.class);
         getEvaluationItemList();
     }
 
@@ -909,11 +912,16 @@ public class GenerateMdCompareService {
             }
             if (CollectionUtils.isNotEmpty(dataHousePriceIndexList)) {
                 for (DataHousePriceIndex index : dataHousePriceIndexList) {
-                    builder.insertCell();
-                    builder.writeln(sdf2.format(index.getYearMonthCalendar()));
-                    builder.insertCell();
-                    builder.writeln(index.getIndexCalendar());
-                    builder.endRow();
+                    List<DataHousePriceIndexDetail> dataHousePriceIndexDetails =dataHousePriceIndexService.getDataHousePriceIndexDetailList(index.getId());
+                    if (CollectionUtils.isNotEmpty(dataHousePriceIndexDetails)){
+                        for (DataHousePriceIndexDetail dataHousePriceIndexDetail:dataHousePriceIndexDetails){
+                            builder.insertCell();
+                            builder.writeln(sdf2.format(dataHousePriceIndexDetail.getStartDate()));
+                            builder.insertCell();
+                            builder.writeln(DateUtils.format(dataHousePriceIndexDetail.getEndDate()));
+                            builder.endRow();
+                        }
+                    }
                 }
             }
         }

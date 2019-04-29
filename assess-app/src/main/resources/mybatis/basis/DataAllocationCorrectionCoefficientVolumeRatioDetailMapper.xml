@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataHousePriceIndexMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataAllocationCorrectionCoefficientVolumeRatioDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="evaluation_date" property="evaluationDate" jdbcType="TIMESTAMP" />
-    <result column="release_date" property="releaseDate" jdbcType="TIMESTAMP" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="allocation_volume_ratio_id" property="allocationVolumeRatioId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -72,16 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, type, evaluation_date, release_date, province, city, district, creator, gmt_created, 
-    gmt_modified
+    id, allocation_volume_ratio_id, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetailExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_data_house_price_index
+    from tb_data_allocation_correction_coefficient_volume_ratio_detail
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,55 +86,36 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_data_house_price_index
+    from tb_data_allocation_correction_coefficient_volume_ratio_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_data_house_price_index
+    delete from tb_data_allocation_correction_coefficient_volume_ratio_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample" >
-    delete from tb_data_house_price_index
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetailExample" >
+    delete from tb_data_allocation_correction_coefficient_volume_ratio_detail
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_house_price_index (type, evaluation_date, release_date, 
-      province, city, district, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{type,jdbcType=INTEGER}, #{evaluationDate,jdbcType=TIMESTAMP}, #{releaseDate,jdbcType=TIMESTAMP}, 
-      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_data_allocation_correction_coefficient_volume_ratio_detail (allocation_volume_ratio_id, creator, 
+      gmt_created, gmt_modified)
+    values (#{allocationVolumeRatioId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_house_price_index
+    insert into tb_data_allocation_correction_coefficient_volume_ratio_detail
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="evaluationDate != null" >
-        evaluation_date,
-      </if>
-      <if test="releaseDate != null" >
-        release_date,
-      </if>
-      <if test="province != null" >
-        province,
-      </if>
-      <if test="city != null" >
-        city,
-      </if>
-      <if test="district != null" >
-        district,
+      <if test="allocationVolumeRatioId != null" >
+        allocation_volume_ratio_id,
       </if>
       <if test="creator != null" >
         creator,
@@ -153,23 +128,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="evaluationDate != null" >
-        #{evaluationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="releaseDate != null" >
-        #{releaseDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="province != null" >
-        #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null" >
-        #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="district != null" >
-        #{district,jdbcType=VARCHAR},
+      <if test="allocationVolumeRatioId != null" >
+        #{allocationVolumeRatioId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -182,35 +142,20 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample" resultType="java.lang.Integer" >
-    select count(*) from tb_data_house_price_index
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetailExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_allocation_correction_coefficient_volume_ratio_detail
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_data_house_price_index
+    update tb_data_allocation_correction_coefficient_volume_ratio_detail
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.evaluationDate != null" >
-        evaluation_date = #{record.evaluationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.releaseDate != null" >
-        release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.province != null" >
-        province = #{record.province,jdbcType=VARCHAR},
-      </if>
-      <if test="record.city != null" >
-        city = #{record.city,jdbcType=VARCHAR},
-      </if>
-      <if test="record.district != null" >
-        district = #{record.district,jdbcType=VARCHAR},
+      <if test="record.allocationVolumeRatioId != null" >
+        allocation_volume_ratio_id = #{record.allocationVolumeRatioId,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -227,14 +172,9 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_data_house_price_index
+    update tb_data_allocation_correction_coefficient_volume_ratio_detail
     set id = #{record.id,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
-      evaluation_date = #{record.evaluationDate,jdbcType=TIMESTAMP},
-      release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
-      province = #{record.province,jdbcType=VARCHAR},
-      city = #{record.city,jdbcType=VARCHAR},
-      district = #{record.district,jdbcType=VARCHAR},
+      allocation_volume_ratio_id = #{record.allocationVolumeRatioId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -242,26 +182,11 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
-    update tb_data_house_price_index
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail" >
+    update tb_data_allocation_correction_coefficient_volume_ratio_detail
     <set >
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="evaluationDate != null" >
-        evaluation_date = #{evaluationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="releaseDate != null" >
-        release_date = #{releaseDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="province != null" >
-        province = #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null" >
-        city = #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="district != null" >
-        district = #{district,jdbcType=VARCHAR},
+      <if test="allocationVolumeRatioId != null" >
+        allocation_volume_ratio_id = #{allocationVolumeRatioId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -275,14 +200,9 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
-    update tb_data_house_price_index
-    set type = #{type,jdbcType=INTEGER},
-      evaluation_date = #{evaluationDate,jdbcType=TIMESTAMP},
-      release_date = #{releaseDate,jdbcType=TIMESTAMP},
-      province = #{province,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      district = #{district,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail" >
+    update tb_data_allocation_correction_coefficient_volume_ratio_detail
+    set allocation_volume_ratio_id = #{allocationVolumeRatioId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

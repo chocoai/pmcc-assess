@@ -6,21 +6,13 @@ import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex;
  * Created by 13426 on 2018/4/23.
  */
 public class DataHousePriceIndexVo extends DataHousePriceIndex {
-    private String yearMonthCalendarName;
-
+    private String typeName;
     private String provinceName;
 
     private String districtName;
 
     private String cityName;
 
-    public String getYearMonthCalendarName() {
-        return yearMonthCalendarName;
-    }
-
-    public void setYearMonthCalendarName(String yearMonthCalendarName) {
-        this.yearMonthCalendarName = yearMonthCalendarName;
-    }
 
     public String getProvinceName() {
         return provinceName;
@@ -44,5 +36,13 @@ public class DataHousePriceIndexVo extends DataHousePriceIndex {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

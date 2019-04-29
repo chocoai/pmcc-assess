@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex;
+import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail;
 import com.copower.pmcc.assess.dto.input.data.DataHousePriceIndexDto;
 import com.copower.pmcc.assess.dto.output.data.DataHousePriceIndexVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -22,15 +22,25 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
+/**
+ * 房价指数
+ */
 @Service
 public class DataHousePriceIndexService {
-
+    @Autowired
+    private DataHousePriceIndexDetailService housePriceIndexDetailService;
     @Autowired
     private DataHousePriceIndexDao dataHousePriceIndexDao;
     @Autowired
     private CommonService commonService;
     @Autowired
     private ErpAreaService erpAreaService;
+
+    public List<DataHousePriceIndexDetail> getDataHousePriceIndexDetailList(Integer housePriceId){
+        DataHousePriceIndexDetail query = new DataHousePriceIndexDetail();
+        query.setHousePriceId(housePriceId);
+        return housePriceIndexDetailService.getDataHousePriceIndexDetailList(query);
+    }
 
     public Integer saveAndUpdateDataHousePriceIndex(DataHousePriceIndexDto dataHousePriceIndexDto) {
         DataHousePriceIndex dataHousePriceIndex = new DataHousePriceIndex();
@@ -82,17 +92,14 @@ public class DataHousePriceIndexService {
     public DataHousePriceIndexVo getDataHousePriceIndexVo(DataHousePriceIndex dataHousePriceIndex) {
         DataHousePriceIndexVo vo = new DataHousePriceIndexVo();
         BeanUtils.copyProperties(dataHousePriceIndex, vo);
-        if (dataHousePriceIndex.getYearMonthCalendar() != null) {
-            vo.setYearMonthCalendarName(DateHelp.getDateHelp().printDate(dataHousePriceIndex.getYearMonthCalendar()));
-        }
         if (StringUtils.isNotBlank(dataHousePriceIndex.getProvince())) {
-            vo.setProvinceName(erpAreaService.getSysAreaName(dataHousePriceIndex.getProvince()));//省
+            vo.setProvinceName(erpAreaService.getSysAreaName(dataHousePriceIndex.getProvince()));
         }
         if (StringUtils.isNotBlank(dataHousePriceIndex.getCity())) {
-            vo.setCityName(erpAreaService.getSysAreaName(dataHousePriceIndex.getCity()));//市或者县
+            vo.setCityName(erpAreaService.getSysAreaName(dataHousePriceIndex.getCity()));
         }
         if (StringUtils.isNotBlank(dataHousePriceIndex.getDistrict())) {
-            vo.setDistrictName(erpAreaService.getSysAreaName(dataHousePriceIndex.getDistrict()));//县
+            vo.setDistrictName(erpAreaService.getSysAreaName(dataHousePriceIndex.getDistrict()));
         }
         return vo;
     }
