@@ -70,12 +70,12 @@
             cols.push({field: 'cityName', title: '市'});
             cols.push({field: 'districtName', title: '县'});
             cols.push({
-                field: 'releaseDate', title: '发布日期', formatter: function (value, row, index) {
+                field: 'valuationDate', title: '估价期日', formatter: function (value, row, index) {
                     return formatDate(value);
                 }
             });
             cols.push({
-                field: 'valuationDate', title: '评估基准日', formatter: function (value, row, index) {
+                field: 'releaseDate', title: '发布日期', formatter: function (value, row, index) {
                     return formatDate(value);
                 }
             });
@@ -231,8 +231,9 @@
             cols.push({field: 'classify', title: '大类', width: '6%'});
             cols.push({field: 'type', title: '类型', width: '6%'});
             cols.push({field: 'category', title: '类别', width: '6%'});
-            cols.push({field: 'levelRange', title: '级别范围', width: '30%'});
-            cols.push({field: 'mainStreet', title: '主要街道', width: '40%'});
+            cols.push({field: 'levelRange', title: '级别范围', width: '70%', formatter: function (value, row, index) {
+                return '<span title="'+row.mainStreet+'">'+value+'</span>';
+            }});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -367,21 +368,21 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">发布日期</label>
+                                        <label class="col-sm-2 control-label">估价期日</label>
                                         <div class="col-sm-10">
                                             <input type="text" readonly="readonly"
                                                    class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="releaseDate" placeholder="发布日期">
+                                                   name="valuationDate" placeholder="估价期日">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">评估基准日</label>
+                                        <label class="col-sm-2 control-label">发布日期</label>
                                         <div class="col-sm-10">
                                             <input type="text" readonly="readonly"
                                                    class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="valuationDate" placeholder="发布日期">
+                                                   name="releaseDate" placeholder="发布日期">
                                         </div>
                                     </div>
                                 </div>
