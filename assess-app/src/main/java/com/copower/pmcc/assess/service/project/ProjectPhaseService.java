@@ -122,6 +122,16 @@ public class ProjectPhaseService {
         }
     }
 
+    /**
+     * 根据key和类别的引用id
+     * @param key
+     * @param categoryId
+     * @return
+     */
+    public ProjectPhase getCacheProjectPhaseByReferenceId(String key, Integer categoryId) {
+        return getCacheProjectPhaseByKey(key, baseProjectClassifyService.getReferenceId(categoryId));
+    }
+
     public ProjectPhase getCacheProjectPhaseByKey(String key, Integer categoryId) {
         if (StringUtils.isBlank(key)) return null;
         String fullKey = String.format("%s:%s", key, categoryId);

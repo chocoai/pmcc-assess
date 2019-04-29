@@ -368,7 +368,7 @@ public class GenerateEquityService {
                         break;
                 }
             }
-            if (isRightEmpty && !isTransferLimit) {
+            if ((isRightEmpty && !isTransferLimit) || (!isRightEmpty && isTransferLimit)) {
                 switch (socialPrestige) {
                     case "优":
                         msg = "对提升房产价值受到一定限制。";

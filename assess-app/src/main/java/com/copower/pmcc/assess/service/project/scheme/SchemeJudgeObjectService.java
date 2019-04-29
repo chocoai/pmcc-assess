@@ -561,9 +561,9 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
-            ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
-            ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
+            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
+            ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
+            ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
             String mortgageKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
@@ -649,7 +649,7 @@ public class SchemeJudgeObjectService {
         Map<Integer, ProjectPhase> map = Maps.newHashMap();
         List<BaseDataDic> methodList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         for (BaseDataDic method : methodList) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(method.getFieldName(), categoryId);
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(method.getFieldName(), categoryId);
             if (projectPhase != null)
                 map.put(method.getId(), projectPhase);
         }

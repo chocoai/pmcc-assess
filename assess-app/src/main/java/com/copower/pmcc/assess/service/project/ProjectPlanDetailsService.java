@@ -251,7 +251,8 @@ public class ProjectPlanDetailsService {
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
         List<Integer> phaseIds = Lists.newArrayList(sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());
         List<Integer> phaseFullIds = Lists.newArrayList(phaseIds);
-        phaseFullIds.add(sceneExplorePhase.getId());
+        if (sceneExplorePhase != null)
+            phaseFullIds.add(sceneExplorePhase.getId());
         String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
         //判断任务是否结束，如果结束只能查看详情
         for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
@@ -433,8 +434,8 @@ public class ProjectPlanDetailsService {
             } else {
                 projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
             }
-        }catch (Exception ex){
-            logger.error(ex.getMessage(),ex);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
         }
     }
 
@@ -592,8 +593,8 @@ public class ProjectPlanDetailsService {
         ProjectPlanDetails copyPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(copyPlanDetailsId);
         ProjectPlanDetails pastePlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pastePlanDetailsId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(copyPlanDetails.getProjectId());
-        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPhase sceneExploreChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
         List<Integer> commonPhaseIds = Lists.newArrayList(sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());
