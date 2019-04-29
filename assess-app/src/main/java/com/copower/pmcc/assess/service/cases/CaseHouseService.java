@@ -266,6 +266,8 @@ public class CaseHouseService {
         vo.setCertUseName(baseDataDicService.getNameById(caseHouse.getCertUse()));
         vo.setPracticalUseName(baseDataDicService.getNameById(caseHouse.getPracticalUse()));
         vo.setOrientationName(baseDataDicService.getNameById(caseHouse.getOrientation()));
+        vo.setSpatialDistributionName(baseDataDicService.getNameById(caseHouse.getSpatialDistribution()));
+        vo.setResearchTypeName(baseDataDicService.getNameById(caseHouse.getResearchType()));
         return vo;
     }
 

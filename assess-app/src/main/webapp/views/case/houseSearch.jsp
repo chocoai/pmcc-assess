@@ -145,6 +145,7 @@
 </html>
 <script type="text/javascript">
     var houseSearch = {};
+    var houseFrm = $("#frmCaseBaseHouse");
 
     houseSearch.findHouse = function (id) {
         var href = "${pageContext.request.contextPath}/caseHouse/detailView";
@@ -154,12 +155,12 @@
 
     //清空查询条件
     houseSearch.clearQuery = function () {
-        $("#frmCaseBaseHouse").find('input:text').val('');
-        $("#frmCaseBaseHouse").find('.select2').select2('val', '').trigger('change');
-    }
+        houseFrm.find('input:text').val('');
+        houseFrm.find('.select2').select2('val', '').trigger('change');
+    };
 
     houseSearch.loadDataList = function () {
-        if (!$("#frmCaseBaseHouse").valid()) {
+        if (!houseFrm.valid()) {
             return false;
         }
         var cols = [];
@@ -184,7 +185,7 @@
         });
         $("#tbCaseBaseHouseList").bootstrapTable('destroy');
         TableInit("tbCaseBaseHouseList", "${pageContext.request.contextPath}/case/getBootstrapTableCaseBaseHouseVo", cols,
-            formSerializeArray($("#frmCaseBaseHouse")), {
+            formSerializeArray(houseFrm), {
                 showColumns: false,
                 showRefresh: false,
                 search: false,
@@ -196,10 +197,10 @@
 
     houseSearch.loadData = function (data) {
         AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, data.practicalUse, function (html, data) {
-            $("#frmCaseBaseHouse").find("select[name='practicalUse']").empty().html(html).trigger('change');
+            houseFrm.find("select[name='practicalUse']").empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, data.tradingType, function (html, data) {
-            $("#frmCaseBaseHouse").find("select[name='tradingType']").empty().html(html).trigger('change');
+            houseFrm.find("select[name='tradingType']").empty().html(html).trigger('change');
         });
         var province = data.province;
         var city = data.city;
@@ -221,13 +222,12 @@
     $(function () {
         //定位成功回调方法
         try {
-            mapPosition.complete(function (data) {
-                $.extend(data, {city: data.addressComponent.city, province: data.addressComponent.province});
+            mapPosition.getCurrentCityByArea(function (data) {
                 houseSearch.loadData(data);
-            })
+            });
         } catch (e) {
             houseSearch.loadDataList();
         }
-        $("#frmCaseBaseHouse").validate();
+        houseFrm.validate();
     });
 </script>

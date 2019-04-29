@@ -97,4 +97,5 @@ public class CaseHouseTradingVo extends CaseHouseTrading {
     public void setScopePropertyName(String scopePropertyName) {
         this.scopePropertyName = scopePropertyName;
     }
+
 }

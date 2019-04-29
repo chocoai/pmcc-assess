@@ -41,8 +41,8 @@
 
                     </div>
                 </div>
-                <c:if test="${caseHouse.type eq 1}">
-                    <div class="x-valid" id="industryUseEnvironment">
+                <c:if test="${!empty caseHouse.useEnvironmentName}">
+                    <div class="x-valid">
                         <label class="col-sm-1 control-label">使用环境</label>
                         <div class="col-sm-3">
                             <label class="form-control">${caseHouse.useEnvironmentName}</label>
@@ -70,15 +70,43 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
+                    <label class="col-sm-1 control-label">空间布局</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${caseHouse.spatialDistributionName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">空间布局描述</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${caseHouse.spatialDistributionDesc}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
                     <label class="col-sm-1 control-label">朝向</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseHouse.orientationName}</label>
                     </div>
                 </div>
+            </div>
+
+            <div class="form-group">
+
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">面积</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseHouse.area}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">面积描述</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${caseHouse.areaDesc}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">调查方式</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${caseHouse.researchTypeName}</label>
                     </div>
                 </div>
             </div>
@@ -151,14 +179,28 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">财产范围说明</label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="财产范围说明" name="scopePropertyExplain" class="form-control"
-                               value="${basicHouseTrading.scopePropertyExplain}">
+                        <label class="form-control">${caseHouseTrading.scopePropertyExplain}</label>
                     </div>
                 </div>
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">税费负担</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseHouseTrading.taxBurdenName}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">范围包括</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.scopeInclude}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">范围不包括</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicHouseTrading.scopeNotInclude}</label>
                     </div>
                 </div>
             </div>
@@ -328,8 +370,6 @@
                         <label class="form-control" name="tradingUnitPrice">${caseHouseTrading.tradingUnitPrice}</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">信息来源类型</label>
                     <div class="col-sm-3">
@@ -337,31 +377,32 @@
                                name="informationTypeName">${caseHouseTrading.informationTypeName}</label>
                     </div>
                 </div>
-                <c:choose>
-                    <c:when test="${isHouseInfomationOpen eq true}">
-                        <div class="x-valid infomationTypeOpen">
-                            <label class="col-sm-1 control-label">信息来源类别</label>
-                            <div class="col-sm-3">
-                                <label class="form-control"
-                                       name="informationCategoryName">${caseHouseTrading.informationCategoryName}</label>
-                            </div>
+                <div class="x-valid infomationTypeOpen">
+                    <label class="col-sm-1 control-label">信息来源类别</label>
+                    <div class="col-sm-3">
+                        <label class="form-control"
+                               name="informationCategoryName">${caseHouseTrading.informationCategoryName}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <c:if test="${!empty caseHouseTrading.name}">
+                    <div class="x-valid infomationTypeOther">
+                        <label class="col-sm-1 control-label">姓名</label>
+                        <div class="col-sm-3">
+                            <label class="form-control" name="name">${caseHouseTrading.name}</label>
                         </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="x-valid infomationTypeOther">
-                            <label class="col-sm-1 control-label">姓名</label>
-                            <div class="col-sm-3">
-                                <label class="form-control" name="name">${caseHouseTrading.name}</label>
-                            </div>
+                    </div>
+                </c:if>
+                <c:if test="${!empty caseHouseTrading.phone}">
+                    <div class="x-valid infomationTypeOther">
+                        <label class="col-sm-1 control-label">电话</label>
+                        <div class="col-sm-3">
+                            <label class="form-control" name="phone">${caseHouseTrading.phone}</label>
                         </div>
-                        <div class="x-valid infomationTypeOther">
-                            <label class="col-sm-1 control-label">电话</label>
-                            <div class="col-sm-3">
-                                <label class="form-control" name="phone">${caseHouseTrading.phone}</label>
-                            </div>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                    </div>
+                </c:if>
             </div>
         </form>
     </div>

@@ -37,7 +37,8 @@
                         <div class="input-group">
                             <label class="form-control">${caseEstate.name}</label>
                             <span class="input-group-btn">
-                            <div onclick="caseCommon.viewMapMarker('${caseEstate.id}','estate','${caseEstate.name}');" class="btn btn-info"><i
+                            <div onclick="caseCommon.viewMapMarker('${caseEstate.id}','estate','${caseEstate.name}');"
+                                 class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
                             </span>
                         </div>
@@ -87,14 +88,32 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">容积率</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseEstate.volumetricRate}</label>
+                        <c:if test="${!empty caseEstate.volumetricRate}">
+                            <c:choose>
+                                <c:when test="${caseEstate.volumetricRate.matches('[0-9.]+')}">
+                                    <label class="form-control">${caseEstate.volumetricRate*100}%</label>
+                                </c:when>
+                                <c:otherwise>
+                                    <label class="form-control">${caseEstate.volumetricRate}</label>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
                     </div>
                 </div>
 
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">绿化率</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseEstate.greeningRate}</label>
+                        <c:if test="${!empty caseEstate.greeningRate}">
+                            <c:choose>
+                                <c:when test="${caseEstate.greeningRate.matches('[0-9.]+')}">
+                                    <label class="form-control">${caseEstate.greeningRate*100}%</label>
+                                </c:when>
+                                <c:otherwise>
+                                    <label class="form-control">${caseEstate.greeningRate}</label>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -109,7 +128,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">开发商</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseEstate.developer}</label>
+                        <label class="form-control">${caseEstate.developerName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -332,19 +351,47 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
+                    <label class="col-sm-1 control-label">基础设施完备度</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${caseEstateLandState.infrastructureCompletenessName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
                     <label class="col-sm-1 control-label">土地开发程度</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseEstateLandState.developmentDegreeName}</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer"></div>
+                <div class="x-valid">
+                    <c:if test="${caseEstateLandState.developmentDegreeName == '熟地'}">
+                        <label class="col-sm-1 control-label"></label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${caseEstateLandState.developmentDegreeContentName}</label>
+                        </div>
+                    </c:if>
+                    <c:if test="${caseEstateLandState.developmentDegreeName != '熟地'}">
+                        <label class="col-sm-1 control-label">土地开发程度备注</label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${caseEstateLandState.developmentDegreeRemark}</label>
+                        </div>
+                    </c:if>
+                </div>
             </div>
             <div class="x_title">开发限制条件</div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">容积率</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseEstateLandState.plotRatio}</label>
+                        <c:if test="${!empty caseEstateLandState.plotRatio}">
+                            <c:choose>
+                                <c:when test="${caseEstateLandState.plotRatio.matches('[0-9.]+')}">
+                                    <label class="form-control">${caseEstateLandState.plotRatio*100}%</label>
+                                </c:when>
+                                <c:otherwise>
+                                    <label class="form-control">${caseEstateLandState.plotRatio}</label>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -356,7 +403,16 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">绿地率</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseEstateLandState.greenSpaceRate}</label>
+                        <c:if test="${!empty caseEstateLandState.greenSpaceRate}">
+                            <c:choose>
+                                <c:when test="${caseEstateLandState.greenSpaceRate.matches('[0-9.]+')}">
+                                    <label class="form-control">${caseEstateLandState.greenSpaceRate*100}%</label>
+                                </c:when>
+                                <c:otherwise>
+                                    <label class="form-control">${caseEstateLandState.greenSpaceRate}</label>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -371,31 +427,43 @@
             <div class="x_title">土壤</div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">承载力</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${caseEstateLandState.bearingCapacity}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
                     <label class="col-sm-1 control-label">污染</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseEstateLandState.contaminated}</label>
+                        <label class="form-control">${caseEstateLandState.contaminatedName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">酸碱度</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseEstateLandState.ph}</label>
+                        <label class="form-control">${caseEstateLandState.phName}</label>
                     </div>
                 </div>
+                <c:if test="${not empty caseEstateLandState.fertilityName}">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">肥力</label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${caseEstateLandState.fertilityName}</label>
+                        </div>
+                    </div>
+                </c:if>
             </div>
             <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">肥力</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${caseEstateLandState.fertility}</label>
+                <c:if test="${not empty caseEstateLandState.bearingCapacityName}">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">承载力</label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${caseEstateLandState.bearingCapacityName}</label>
+                        </div>
                     </div>
-                </div>
+                </c:if>
+                <c:if test="${not empty caseEstateLandState.holdOnName}">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">稳定性</label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${caseEstateLandState.holdOnName}</label>
+                        </div>
+                    </div>
+                </c:if>
             </div>
         </form>
 
@@ -453,9 +521,6 @@
         <div class="transit" style="display: ${hasMatchingTrafficTransit?'block':'none'};">
             <%@include file="/views/case/caseEstate/caseMatchingTransit.jsp" %>
         </div>
-
-
-
 
 
         <!-- 主干道 -->
@@ -584,7 +649,7 @@
     $(function () {
         caseEstate.estateModel.init();
 
-        if ('${caseEstateLandState.developmentDegreeContent}'){
+        if ('${caseEstateLandState.developmentDegreeContent}') {
             var array = '${caseEstateLandState.developmentDegreeContent}'.split(',');
             AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
                 if (resultData) {

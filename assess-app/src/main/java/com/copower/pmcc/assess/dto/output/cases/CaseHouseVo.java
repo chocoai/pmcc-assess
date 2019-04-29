@@ -13,6 +13,8 @@ public class CaseHouseVo extends CaseHouse {
     private String practicalUseName;
     private String huxingName;
     private String orientationName;
+    private String researchTypeName;
+    private String spatialDistributionName;
 
     public String getUseEnvironmentName() {
         return useEnvironmentName;
@@ -52,5 +54,21 @@ public class CaseHouseVo extends CaseHouse {
 
     public void setOrientationName(String orientationName) {
         this.orientationName = orientationName;
+    }
+
+    public String getResearchTypeName() {
+        return researchTypeName;
+    }
+
+    public void setResearchTypeName(String researchTypeName) {
+        this.researchTypeName = researchTypeName;
+    }
+
+    public String getSpatialDistributionName() {
+        return spatialDistributionName;
+    }
+
+    public void setSpatialDistributionName(String spatialDistributionName) {
+        this.spatialDistributionName = spatialDistributionName;
     }
 }

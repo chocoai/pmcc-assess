@@ -105,12 +105,12 @@
             basicCommon.hideTab(this);
             e.preventDefault();
             return false;
-        })
+        });
 
         houseCommon.changeEvent();
-        estateCommon.estateForm.find('[name=developer]').apDeveloper();
-        buildingCommon.buildingForm.find('[name=property]').apProperty();
-        buildingCommon.buildingForm.find('[name=builder]').apBuilder();
+
+        estateCommon.autocompleteStart();
+        buildingCommon.autocompleteStart();
 
         $("#" + houseNewWind.prototype.config().frm).find("[name=equipment]").apNewWindBrand();
         $("#" + houseHeating.prototype.config().frm).find("[name=equipment]").apHeatingBrand();

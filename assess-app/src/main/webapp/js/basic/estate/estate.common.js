@@ -195,6 +195,7 @@
             //土地开发程度为熟地时选择几通几平
             estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change', function () {
                 $("#developmentDegreeContentContainer").empty();
+                estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().show();
                 var key = $(this).find("option:selected").attr('key');
                 if (key == AssessDicKey.estateDevelopment_degreePrepared_land) {
                     AssessCommon.loadDataDicByPid($(this).val(), '', function (html, resultData) {
@@ -215,6 +216,7 @@
                             $("#developmentDegreeContentContainer").html(resultHtml);
                         }
                     })
+                    estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().hide();
                 }
             });
 
@@ -232,6 +234,49 @@
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estateTopographic_terrain, data.basicEstateLandState.topographicTerrain, function (html, data) {
                 estateCommon.estateLandStateForm.find('select.topographicTerrain').empty().html(html).trigger('change');
+            });
+
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_infrastructureCompleteness, data.basicEstateLandState.infrastructureCompleteness, function (html, data) {
+                estateCommon.estateLandStateForm.find('select.infrastructureCompleteness').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateLandContaminated, data.basicEstateLandState.contaminated, function (html, data) {
+                estateCommon.estateLandStateForm.find("select[name='contaminated']").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateLandPh, data.basicEstateLandState.ph, function (html, data) {
+                estateCommon.estateLandStateForm.find("select[name='ph']").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateLandFertility, data.basicEstateLandState.fertility, function (html, data) {
+                estateCommon.estateLandStateForm.find("select[name='fertility']").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingCapacity, data.basicEstateLandState.bearingCapacity, function (html, data) {
+                estateCommon.estateLandStateForm.find("select[name='bearingCapacity']").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingHoldOn, data.basicEstateLandState.holdOn, function (html, data) {
+                estateCommon.estateLandStateForm.find("select[name='holdOn']").empty().html(html).trigger('change');
+            });
+
+            //绑定变更事件
+            estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
+                var strArr = ["林地", "园地", "水域", "耕地", "草地"];//来自于实体描述1(1).docx中的规则
+                var landUseTypeId = estateCommon.estateLandStateForm.find("select.landUseType").val();
+                if (landUseTypeId) {
+                    AssessCommon.getDataDicInfo(landUseTypeId, function (landUseTypeData) {
+                        var str = strArr.join(",");
+                        //当属于数组中的任意一项时显示
+                        if (str.indexOf(landUseTypeData.name) != -1) {
+                            estateCommon.estateLandStateForm.find("select[name='fertility']").parent().parent().show();
+                            estateCommon.estateLandStateForm.find("select[name='holdOn']").parent().parent().hide();
+                            estateCommon.estateLandStateForm.find("select[name='bearingCapacity']").parent().parent().hide();
+                        } else {
+                            estateCommon.estateLandStateForm.find("select[name='fertility']").parent().parent().hide();
+                            estateCommon.estateLandStateForm.find("select[name='holdOn']").parent().parent().show();
+                            estateCommon.estateLandStateForm.find("select[name='bearingCapacity']").parent().parent().show();
+                        }
+                    });
+                }
+                AssessCommon.loadDataDicByPid($(this).val(), data.basicEstateLandState.landUseCategory, function (html, data) {
+                    estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
+                });
             });
         })
     }
@@ -321,6 +366,19 @@
             }
         })
     }
+
+    /**
+     * 启用自动填充,需要引入
+     */
+    estateCommon.autocompleteStart = function () {
+        estateCommon.estateForm.find('[name=developerName]').apDeveloper({
+            onSelect: function (id, name) {
+                estateCommon.estateForm.find('input[name=developer]').val(id);
+                estateCommon.estateForm.find('input[name=developerName]').val(name);
+            }
+        });
+    };
+
 
 
     window.estateCommon = estateCommon;

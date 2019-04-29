@@ -123,8 +123,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100"
-                           placeholder="容积率" name="volumetricRate" class="form-control"
+                    <input type="text"
+                           placeholder="容积率" name="volumetricRate" class="form-control x-percent"
                            value="${basicEstate.volumetricRate}">
                 </div>
             </div>
@@ -132,8 +132,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿化率</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100"
-                           placeholder="绿化率" name="greeningRate" class="form-control"
+                    <input type="text"
+                           placeholder="绿化率" name="greeningRate" class="form-control x-percent"
                            value="${basicEstate.greeningRate}">
                 </div>
             </div>
@@ -152,7 +152,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发商</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="开发商" class="form-control" name="developer"
+                    <input type="text" placeholder="开发商" class="form-control" name="developerName"
+                           value="${basicEstate.developerName}">
+                    <input type="hidden" placeholder="开发商" class="form-control" name="developer"
                            value="${basicEstate.developer}">
                 </div>
             </div>
@@ -429,10 +431,27 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
+                <label class="col-sm-1 control-label">基础设施完备度<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 infrastructureCompleteness" name="infrastructureCompleteness" required>
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">土地开发程度</label>
                 <div class="col-sm-3">
                     <select class="form-control developmentDegree" name="developmentDegree">
                     </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid" style="display: none">
+                <label class="col-sm-1 control-label">土地开发程度备注</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="土地开发程度备注"
+                           name="developmentDegreeRemark" value="${basicEstateLandState.developmentDegreeRemark}">
                 </div>
             </div>
             <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer">
@@ -450,7 +469,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="容积率"
+                    <input type="text" class="form-control x-percent" placeholder="容积率"
                            name="plotRatio" value="${basicEstateLandState.plotRatio}">
                 </div>
             </div>
@@ -464,7 +483,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿地率</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="绿地率"
+                    <input type="text" class="form-control x-percent" placeholder="绿地率"
                            name="greenSpaceRate" value="${basicEstateLandState.greenSpaceRate}">
                 </div>
             </div>
@@ -481,33 +500,40 @@
         <div class="x_title">土壤</div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">承载力</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="承载力"
-                           name="bearingCapacity" value="${basicEstateLandState.bearingCapacity}">
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">污染</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="污染"
-                           name="contaminated" value="${basicEstateLandState.contaminated}">
+                    <select class="form-control search-select select2" name="contaminated">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">酸碱度</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="酸碱度"
-                           name="ph" value="${basicEstateLandState.ph}">
+                    <select class="form-control search-select select2" name="ph">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">肥力</label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2" name="fertility">
+                    </select>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">肥力</label>
+                <label class="col-sm-1 control-label">稳定性</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="肥力"
-                           name="fertility" value="${basicEstateLandState.fertility}">
+                    <select class="form-control search-select select2" name="holdOn">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">承载力</label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2" name="bearingCapacity">
+                    </select>
                 </div>
             </div>
         </div>

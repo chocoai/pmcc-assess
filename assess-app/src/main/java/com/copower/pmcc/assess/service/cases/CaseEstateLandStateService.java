@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -87,6 +89,16 @@ public class CaseEstateLandStateService {
         if (caseEstateLandState.getTopographicTerrain() != null) {
             vo.setTopographicTerrainName(baseDataDicService.getNameById(caseEstateLandState.getTopographicTerrain()));
         }
+        vo.setInfrastructureCompletenessName(baseDataDicService.getNameById(caseEstateLandState.getInfrastructureCompleteness()));
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(caseEstateLandState.getDevelopmentDegreeContent())){
+            List<String> stringList = Lists.newArrayList(caseEstateLandState.getDevelopmentDegreeContent().split(",")).stream().map(s -> baseDataDicService.getNameById(s)).collect(Collectors.toList());
+            vo.setDevelopmentDegreeContentName(org.apache.commons.lang3.StringUtils.join(stringList,"、"));
+        }
+        vo.setHoldOnName(baseDataDicService.getNameById(caseEstateLandState.getHoldOn()));
+        vo.setBearingCapacityName(baseDataDicService.getNameById(caseEstateLandState.getBearingCapacity()));
+        vo.setFertilityName(baseDataDicService.getNameById(caseEstateLandState.getFertility()));
+        vo.setPhName(baseDataDicService.getNameById(caseEstateLandState.getPh()));
+        vo.setContaminatedName(baseDataDicService.getNameById(caseEstateLandState.getContaminated()));
         return vo;
     }
 }
