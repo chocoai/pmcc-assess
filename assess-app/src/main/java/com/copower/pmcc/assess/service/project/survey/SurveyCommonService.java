@@ -242,7 +242,7 @@ public class SurveyCommonService {
         try {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
             return basicApply;
