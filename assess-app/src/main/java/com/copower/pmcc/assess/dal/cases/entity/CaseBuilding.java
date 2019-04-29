@@ -68,6 +68,26 @@ public class CaseBuilding {
 
     private Date gmtModified;
 
+    private BigDecimal useArea;
+
+    private Integer completedTimeType;
+
+    private BigDecimal inJacketArea;
+
+    private String propertyName;
+
+    private Integer appearanceNewAndOld;
+
+    private String builderName;
+
+    private Integer maxFloor;
+
+    private Integer appearanceStyle;
+
+    private Integer firstFloor;
+
+    private Integer constructionQuality;
+
     public Integer getId() {
         return id;
     }
@@ -322,5 +342,85 @@ public class CaseBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getUseArea() {
+        return useArea;
+    }
+
+    public void setUseArea(BigDecimal useArea) {
+        this.useArea = useArea;
+    }
+
+    public Integer getCompletedTimeType() {
+        return completedTimeType;
+    }
+
+    public void setCompletedTimeType(Integer completedTimeType) {
+        this.completedTimeType = completedTimeType;
+    }
+
+    public BigDecimal getInJacketArea() {
+        return inJacketArea;
+    }
+
+    public void setInJacketArea(BigDecimal inJacketArea) {
+        this.inJacketArea = inJacketArea;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName == null ? null : propertyName.trim();
+    }
+
+    public Integer getAppearanceNewAndOld() {
+        return appearanceNewAndOld;
+    }
+
+    public void setAppearanceNewAndOld(Integer appearanceNewAndOld) {
+        this.appearanceNewAndOld = appearanceNewAndOld;
+    }
+
+    public String getBuilderName() {
+        return builderName;
+    }
+
+    public void setBuilderName(String builderName) {
+        this.builderName = builderName == null ? null : builderName.trim();
+    }
+
+    public Integer getMaxFloor() {
+        return maxFloor;
+    }
+
+    public void setMaxFloor(Integer maxFloor) {
+        this.maxFloor = maxFloor;
+    }
+
+    public Integer getAppearanceStyle() {
+        return appearanceStyle;
+    }
+
+    public void setAppearanceStyle(Integer appearanceStyle) {
+        this.appearanceStyle = appearanceStyle;
+    }
+
+    public Integer getFirstFloor() {
+        return firstFloor;
+    }
+
+    public void setFirstFloor(Integer firstFloor) {
+        this.firstFloor = firstFloor;
+    }
+
+    public Integer getConstructionQuality() {
+        return constructionQuality;
+    }
+
+    public void setConstructionQuality(Integer constructionQuality) {
+        this.constructionQuality = constructionQuality;
     }
 }

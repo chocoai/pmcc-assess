@@ -415,76 +415,6 @@ public class CaseHouseIntelligentExample {
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemIsNull() {
-            addCriterion("intelligent_system is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemIsNotNull() {
-            addCriterion("intelligent_system is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemEqualTo(String value) {
-            addCriterion("intelligent_system =", value, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemNotEqualTo(String value) {
-            addCriterion("intelligent_system <>", value, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemGreaterThan(String value) {
-            addCriterion("intelligent_system >", value, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemGreaterThanOrEqualTo(String value) {
-            addCriterion("intelligent_system >=", value, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemLessThan(String value) {
-            addCriterion("intelligent_system <", value, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemLessThanOrEqualTo(String value) {
-            addCriterion("intelligent_system <=", value, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemLike(String value) {
-            addCriterion("intelligent_system like", value, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemNotLike(String value) {
-            addCriterion("intelligent_system not like", value, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemIn(List<String> values) {
-            addCriterion("intelligent_system in", values, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemNotIn(List<String> values) {
-            addCriterion("intelligent_system not in", values, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemBetween(String value1, String value2) {
-            addCriterion("intelligent_system between", value1, value2, "intelligentSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntelligentSystemNotBetween(String value1, String value2) {
-            addCriterion("intelligent_system not between", value1, value2, "intelligentSystem");
-            return (Criteria) this;
-        }
-
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;
@@ -742,6 +672,66 @@ public class CaseHouseIntelligentExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeIsNull() {
+            addCriterion("grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeIsNotNull() {
+            addCriterion("grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeEqualTo(Integer value) {
+            addCriterion("grade =", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeNotEqualTo(Integer value) {
+            addCriterion("grade <>", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeGreaterThan(Integer value) {
+            addCriterion("grade >", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("grade >=", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeLessThan(Integer value) {
+            addCriterion("grade <", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("grade <=", value, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeIn(List<Integer> values) {
+            addCriterion("grade in", values, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeNotIn(List<Integer> values) {
+            addCriterion("grade not in", values, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeBetween(Integer value1, Integer value2) {
+            addCriterion("grade between", value1, value2, "grade");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("grade not between", value1, value2, "grade");
             return (Criteria) this;
         }
     }

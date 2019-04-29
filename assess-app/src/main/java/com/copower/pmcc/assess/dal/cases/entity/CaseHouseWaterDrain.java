@@ -19,6 +19,10 @@ public class CaseHouseWaterDrain {
 
     private Date gmtModified;
 
+    private Integer organization;
+
+    private String evaluate;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +85,21 @@ public class CaseHouseWaterDrain {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Integer organization) {
+        this.organization = organization;
+    }
+
+    public String getEvaluate() {
+        return evaluate;
+    }
+
+    public void setEvaluate(String evaluate) {
+        this.evaluate = evaluate == null ? null : evaluate.trim();
     }
 }

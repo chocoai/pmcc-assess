@@ -594,6 +594,136 @@ public class CaseHouseWaterDrainExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andOrganizationIsNull() {
+            addCriterion("organization is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationIsNotNull() {
+            addCriterion("organization is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationEqualTo(Integer value) {
+            addCriterion("organization =", value, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationNotEqualTo(Integer value) {
+            addCriterion("organization <>", value, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationGreaterThan(Integer value) {
+            addCriterion("organization >", value, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("organization >=", value, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationLessThan(Integer value) {
+            addCriterion("organization <", value, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationLessThanOrEqualTo(Integer value) {
+            addCriterion("organization <=", value, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationIn(List<Integer> values) {
+            addCriterion("organization in", values, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationNotIn(List<Integer> values) {
+            addCriterion("organization not in", values, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationBetween(Integer value1, Integer value2) {
+            addCriterion("organization between", value1, value2, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationNotBetween(Integer value1, Integer value2) {
+            addCriterion("organization not between", value1, value2, "organization");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateIsNull() {
+            addCriterion("evaluate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateIsNotNull() {
+            addCriterion("evaluate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateEqualTo(String value) {
+            addCriterion("evaluate =", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateNotEqualTo(String value) {
+            addCriterion("evaluate <>", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateGreaterThan(String value) {
+            addCriterion("evaluate >", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateGreaterThanOrEqualTo(String value) {
+            addCriterion("evaluate >=", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateLessThan(String value) {
+            addCriterion("evaluate <", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateLessThanOrEqualTo(String value) {
+            addCriterion("evaluate <=", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateLike(String value) {
+            addCriterion("evaluate like", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateNotLike(String value) {
+            addCriterion("evaluate not like", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateIn(List<String> values) {
+            addCriterion("evaluate in", values, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateNotIn(List<String> values) {
+            addCriterion("evaluate not in", values, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateBetween(String value1, String value2) {
+            addCriterion("evaluate between", value1, value2, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateNotBetween(String value1, String value2) {
+            addCriterion("evaluate not between", value1, value2, "evaluate");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

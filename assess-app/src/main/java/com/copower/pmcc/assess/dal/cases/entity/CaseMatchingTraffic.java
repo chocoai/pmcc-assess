@@ -25,6 +25,20 @@ public class CaseMatchingTraffic {
 
     private Date gmtModified;
 
+    private String limitTime;
+
+    private Integer trafficFlow;
+
+    private Integer visitorsFlowrate;
+
+    private Integer position;
+
+    private String costStandard;
+
+    private String limitSpeed;
+
+    private Integer limitSpeial;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +125,61 @@ public class CaseMatchingTraffic {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(String limitTime) {
+        this.limitTime = limitTime == null ? null : limitTime.trim();
+    }
+
+    public Integer getTrafficFlow() {
+        return trafficFlow;
+    }
+
+    public void setTrafficFlow(Integer trafficFlow) {
+        this.trafficFlow = trafficFlow;
+    }
+
+    public Integer getVisitorsFlowrate() {
+        return visitorsFlowrate;
+    }
+
+    public void setVisitorsFlowrate(Integer visitorsFlowrate) {
+        this.visitorsFlowrate = visitorsFlowrate;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public String getCostStandard() {
+        return costStandard;
+    }
+
+    public void setCostStandard(String costStandard) {
+        this.costStandard = costStandard == null ? null : costStandard.trim();
+    }
+
+    public String getLimitSpeed() {
+        return limitSpeed;
+    }
+
+    public void setLimitSpeed(String limitSpeed) {
+        this.limitSpeed = limitSpeed == null ? null : limitSpeed.trim();
+    }
+
+    public Integer getLimitSpeial() {
+        return limitSpeial;
+    }
+
+    public void setLimitSpeial(Integer limitSpeial) {
+        this.limitSpeial = limitSpeial;
     }
 }

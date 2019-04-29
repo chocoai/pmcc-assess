@@ -173,7 +173,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="容积率"
+                    <input type="text" class="form-control x-percent" placeholder="容积率"
                            name="plotRatio" value="${basicEstateLandState.plotRatio}">
                 </div>
             </div>
@@ -187,7 +187,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿地率</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="绿地率"
+                    <input type="text" class="form-control x-percent" placeholder="绿地率"
                            name="greenSpaceRate" value="${basicEstateLandState.greenSpaceRate}">
                 </div>
             </div>
@@ -208,8 +208,6 @@
                 <div class="col-sm-3">
                     <select class="form-control search-select select2" name="contaminated">
                     </select>
-                    <%--<input type="text" class="form-control" placeholder="污染"--%>
-                           <%--name="contaminated" value="${basicEstateLandState.contaminated}">--%>
                 </div>
             </div>
             <div class="x-valid">
@@ -217,8 +215,6 @@
                 <div class="col-sm-3">
                     <select class="form-control search-select select2" name="ph">
                     </select>
-                    <%--<input type="text" class="form-control" placeholder="酸碱度"--%>
-                           <%--name="ph" value="${basicEstateLandState.ph}">--%>
                 </div>
             </div>
             <div class="x-valid">
@@ -226,8 +222,6 @@
                 <div class="col-sm-3">
                     <select class="form-control search-select select2" name="fertility">
                     </select>
-                    <%--<input type="text" class="form-control" placeholder="肥力"--%>
-                           <%--name="fertility" value="${basicEstateLandState.fertility}">--%>
                 </div>
             </div>
         </div>
@@ -237,8 +231,6 @@
                 <div class="col-sm-3">
                     <select class="form-control search-select select2" name="holdOn">
                     </select>
-                    <%--<input type="text" class="form-control" placeholder="稳定性"--%>
-                           <%--name="holdOn" value="${basicEstateLandState.holdOn}">--%>
                 </div>
             </div>
             <div class="x-valid">
@@ -246,8 +238,6 @@
                 <div class="col-sm-3">
                     <select class="form-control search-select select2" name="bearingCapacity">
                     </select>
-                    <%--<input type="text" class="form-control" placeholder="承载力"--%>
-                           <%--name="bearingCapacity" value="${basicEstateLandState.bearingCapacity}">--%>
                 </div>
             </div>
         </div>

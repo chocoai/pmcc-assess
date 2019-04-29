@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   楼盘基础信息
 --%>
@@ -95,14 +96,32 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.volumetricRate}</label>
+                    <c:if test="${!empty basicEstate.volumetricRate}">
+                        <c:choose>
+                            <c:when test="${basicEstate.volumetricRate.matches('[0-9.]+')}">
+                                <label class="form-control">${basicEstate.volumetricRate*100}%</label>
+                            </c:when>
+                            <c:otherwise>
+                                <label class="form-control">${basicEstate.volumetricRate}</label>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿化率</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.greeningRate}</label>
+                    <c:if test="${!empty basicEstate.greeningRate}">
+                        <c:choose>
+                            <c:when test="${basicEstate.greeningRate.matches('[0-9.]+')}">
+                                <label class="form-control">${basicEstate.greeningRate*100}%</label>
+                            </c:when>
+                            <c:otherwise>
+                                <label class="form-control">${basicEstate.greeningRate}</label>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
                 </div>
             </div>
         </div>

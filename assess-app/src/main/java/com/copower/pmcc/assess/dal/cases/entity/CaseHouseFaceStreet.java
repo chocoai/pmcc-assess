@@ -21,6 +21,8 @@ public class CaseHouseFaceStreet {
 
     private Date gmtModified;
 
+    private Integer position;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class CaseHouseFaceStreet {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 }

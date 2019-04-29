@@ -34,6 +34,16 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="use_area" property="useArea" jdbcType="DECIMAL" />
+    <result column="completed_time_type" property="completedTimeType" jdbcType="INTEGER" />
+    <result column="in_jacket_area" property="inJacketArea" jdbcType="DECIMAL" />
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="appearance_new_and_old" property="appearanceNewAndOld" jdbcType="INTEGER" />
+    <result column="builder_name" property="builderName" jdbcType="VARCHAR" />
+    <result column="max_floor" property="maxFloor" jdbcType="INTEGER" />
+    <result column="appearance_style" property="appearanceStyle" jdbcType="INTEGER" />
+    <result column="first_floor" property="firstFloor" jdbcType="INTEGER" />
+    <result column="construction_quality" property="constructionQuality" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -99,7 +109,8 @@
     building_height, building_area, cover_an_area, property_type, property_category, 
     open_time, room_time, be_completed_time, floor_height, diameter_depth, land_use_year, 
     net_height, building_structure_type, building_structure_category, version, creator, 
-    gmt_created, gmt_modified
+    gmt_created, gmt_modified, use_area, completed_time_type, in_jacket_area, property_name, 
+    appearance_new_and_old, builder_name, max_floor, appearance_style, first_floor, construction_quality
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" >
     select
@@ -145,7 +156,10 @@
       floor_height, diameter_depth, land_use_year, 
       net_height, building_structure_type, building_structure_category, 
       version, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, use_area, completed_time_type, 
+      in_jacket_area, property_name, appearance_new_and_old, 
+      builder_name, max_floor, appearance_style, 
+      first_floor, construction_quality)
     values (#{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, #{industryUseYear,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
       #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=VARCHAR}, 
@@ -156,7 +170,10 @@
       #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
       #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
       #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{useArea,jdbcType=DECIMAL}, #{completedTimeType,jdbcType=INTEGER}, 
+      #{inJacketArea,jdbcType=DECIMAL}, #{propertyName,jdbcType=VARCHAR}, #{appearanceNewAndOld,jdbcType=INTEGER}, 
+      #{builderName,jdbcType=VARCHAR}, #{maxFloor,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
+      #{firstFloor,jdbcType=INTEGER}, #{constructionQuality,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -257,6 +274,36 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="useArea != null" >
+        use_area,
+      </if>
+      <if test="completedTimeType != null" >
+        completed_time_type,
+      </if>
+      <if test="inJacketArea != null" >
+        in_jacket_area,
+      </if>
+      <if test="propertyName != null" >
+        property_name,
+      </if>
+      <if test="appearanceNewAndOld != null" >
+        appearance_new_and_old,
+      </if>
+      <if test="builderName != null" >
+        builder_name,
+      </if>
+      <if test="maxFloor != null" >
+        max_floor,
+      </if>
+      <if test="appearanceStyle != null" >
+        appearance_style,
+      </if>
+      <if test="firstFloor != null" >
+        first_floor,
+      </if>
+      <if test="constructionQuality != null" >
+        construction_quality,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="estateId != null" >
@@ -351,6 +398,36 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useArea != null" >
+        #{useArea,jdbcType=DECIMAL},
+      </if>
+      <if test="completedTimeType != null" >
+        #{completedTimeType,jdbcType=INTEGER},
+      </if>
+      <if test="inJacketArea != null" >
+        #{inJacketArea,jdbcType=DECIMAL},
+      </if>
+      <if test="propertyName != null" >
+        #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="appearanceNewAndOld != null" >
+        #{appearanceNewAndOld,jdbcType=INTEGER},
+      </if>
+      <if test="builderName != null" >
+        #{builderName,jdbcType=VARCHAR},
+      </if>
+      <if test="maxFloor != null" >
+        #{maxFloor,jdbcType=INTEGER},
+      </if>
+      <if test="appearanceStyle != null" >
+        #{appearanceStyle,jdbcType=INTEGER},
+      </if>
+      <if test="firstFloor != null" >
+        #{firstFloor,jdbcType=INTEGER},
+      </if>
+      <if test="constructionQuality != null" >
+        #{constructionQuality,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -459,6 +536,36 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.useArea != null" >
+        use_area = #{record.useArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.completedTimeType != null" >
+        completed_time_type = #{record.completedTimeType,jdbcType=INTEGER},
+      </if>
+      <if test="record.inJacketArea != null" >
+        in_jacket_area = #{record.inJacketArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.propertyName != null" >
+        property_name = #{record.propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appearanceNewAndOld != null" >
+        appearance_new_and_old = #{record.appearanceNewAndOld,jdbcType=INTEGER},
+      </if>
+      <if test="record.builderName != null" >
+        builder_name = #{record.builderName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.maxFloor != null" >
+        max_floor = #{record.maxFloor,jdbcType=INTEGER},
+      </if>
+      <if test="record.appearanceStyle != null" >
+        appearance_style = #{record.appearanceStyle,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstFloor != null" >
+        first_floor = #{record.firstFloor,jdbcType=INTEGER},
+      </if>
+      <if test="record.constructionQuality != null" >
+        construction_quality = #{record.constructionQuality,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -497,7 +604,17 @@
       version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      use_area = #{record.useArea,jdbcType=DECIMAL},
+      completed_time_type = #{record.completedTimeType,jdbcType=INTEGER},
+      in_jacket_area = #{record.inJacketArea,jdbcType=DECIMAL},
+      property_name = #{record.propertyName,jdbcType=VARCHAR},
+      appearance_new_and_old = #{record.appearanceNewAndOld,jdbcType=INTEGER},
+      builder_name = #{record.builderName,jdbcType=VARCHAR},
+      max_floor = #{record.maxFloor,jdbcType=INTEGER},
+      appearance_style = #{record.appearanceStyle,jdbcType=INTEGER},
+      first_floor = #{record.firstFloor,jdbcType=INTEGER},
+      construction_quality = #{record.constructionQuality,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -598,6 +715,36 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="useArea != null" >
+        use_area = #{useArea,jdbcType=DECIMAL},
+      </if>
+      <if test="completedTimeType != null" >
+        completed_time_type = #{completedTimeType,jdbcType=INTEGER},
+      </if>
+      <if test="inJacketArea != null" >
+        in_jacket_area = #{inJacketArea,jdbcType=DECIMAL},
+      </if>
+      <if test="propertyName != null" >
+        property_name = #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="appearanceNewAndOld != null" >
+        appearance_new_and_old = #{appearanceNewAndOld,jdbcType=INTEGER},
+      </if>
+      <if test="builderName != null" >
+        builder_name = #{builderName,jdbcType=VARCHAR},
+      </if>
+      <if test="maxFloor != null" >
+        max_floor = #{maxFloor,jdbcType=INTEGER},
+      </if>
+      <if test="appearanceStyle != null" >
+        appearance_style = #{appearanceStyle,jdbcType=INTEGER},
+      </if>
+      <if test="firstFloor != null" >
+        first_floor = #{firstFloor,jdbcType=INTEGER},
+      </if>
+      <if test="constructionQuality != null" >
+        construction_quality = #{constructionQuality,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -633,7 +780,17 @@
       version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      use_area = #{useArea,jdbcType=DECIMAL},
+      completed_time_type = #{completedTimeType,jdbcType=INTEGER},
+      in_jacket_area = #{inJacketArea,jdbcType=DECIMAL},
+      property_name = #{propertyName,jdbcType=VARCHAR},
+      appearance_new_and_old = #{appearanceNewAndOld,jdbcType=INTEGER},
+      builder_name = #{builderName,jdbcType=VARCHAR},
+      max_floor = #{maxFloor,jdbcType=INTEGER},
+      appearance_style = #{appearanceStyle,jdbcType=INTEGER},
+      first_floor = #{firstFloor,jdbcType=INTEGER},
+      construction_quality = #{constructionQuality,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

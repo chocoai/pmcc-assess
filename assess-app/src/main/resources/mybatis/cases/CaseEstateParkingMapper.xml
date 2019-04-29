@@ -10,6 +10,8 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parking_estate" property="parkingEstate" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, number, estate_id, parking_type, location, creator, gmt_created, gmt_modified
+    id, number, estate_id, parking_type, location, creator, gmt_created, gmt_modified, 
+    name, parking_estate
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateParkingExample" >
     select
@@ -108,10 +111,12 @@
     </selectKey>
     insert into tb_case_estate_parking (number, estate_id, parking_type, 
       location, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, name, parking_estate
+      )
     values (#{number,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{parkingType,jdbcType=INTEGER}, 
       #{location,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{parkingEstate,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateParking" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -140,6 +145,12 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parkingEstate != null" >
+        parking_estate,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="number != null" >
@@ -162,6 +173,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingEstate != null" >
+        #{parkingEstate,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -198,6 +215,12 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parkingEstate != null" >
+        parking_estate = #{record.parkingEstate,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -212,7 +235,9 @@
       location = #{record.location,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      name = #{record.name,jdbcType=VARCHAR},
+      parking_estate = #{record.parkingEstate,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -241,6 +266,12 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingEstate != null" >
+        parking_estate = #{parkingEstate,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -252,7 +283,9 @@
       location = #{location,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      name = #{name,jdbcType=VARCHAR},
+      parking_estate = #{parkingEstate,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -27,6 +27,8 @@ public class CaseHouseWater {
 
     private Date gmtModified;
 
+    private Integer grade;
+
     public Integer getId() {
         return id;
     }
@@ -121,5 +123,13 @@ public class CaseHouseWater {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 }

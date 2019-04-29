@@ -21,6 +21,8 @@ public class CaseUnitDecorate {
 
     private Date gmtModified;
 
+    private Integer materialGrade;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class CaseUnitDecorate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getMaterialGrade() {
+        return materialGrade;
+    }
+
+    public void setMaterialGrade(Integer materialGrade) {
+        this.materialGrade = materialGrade;
     }
 }

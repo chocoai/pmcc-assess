@@ -62,6 +62,12 @@ public class CaseHouseTrading {
 
     private Date gmtModified;
 
+    private Integer priceConnotation;
+
+    private String scopeNotInclude;
+
+    private String scopeInclude;
+
     public Integer getId() {
         return id;
     }
@@ -292,5 +298,29 @@ public class CaseHouseTrading {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getPriceConnotation() {
+        return priceConnotation;
+    }
+
+    public void setPriceConnotation(Integer priceConnotation) {
+        this.priceConnotation = priceConnotation;
+    }
+
+    public String getScopeNotInclude() {
+        return scopeNotInclude;
+    }
+
+    public void setScopeNotInclude(String scopeNotInclude) {
+        this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
+    }
+
+    public String getScopeInclude() {
+        return scopeInclude;
+    }
+
+    public void setScopeInclude(String scopeInclude) {
+        this.scopeInclude = scopeInclude == null ? null : scopeInclude.trim();
     }
 }

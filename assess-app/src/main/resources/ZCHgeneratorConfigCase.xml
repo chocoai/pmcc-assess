@@ -12,8 +12,11 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess_case"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess_case?serverTimezone=Asia/Shanghai"
                         userId="root" password="123456">
+            <property name="useInformationSchema" value="true"></property>
+            <property name="remarks" value="true"></property>
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
 
@@ -44,9 +47,9 @@
 
         <!-- 具体表 -->
 
-        <!--<table tableName="tb_case_house_intelligent" domainObjectName="CaseHouseIntelligent">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_house_intelligent" domainObjectName="CaseHouseIntelligent">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_building_main" domainObjectName="CaseBuildingMain">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -56,9 +59,9 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <!--<table tableName="tb_case_building_outfit" domainObjectName="CaseBuildingOutfit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_building_outfit" domainObjectName="CaseBuildingOutfit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_building_maintenance" domainObjectName="CaseBuildingMaintenance">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -76,9 +79,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_unit_decorate" domainObjectName="CaseUnitDecorate">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_unit_decorate" domainObjectName="CaseUnitDecorate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_unit_elevator" domainObjectName="CaseUnitElevator">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -88,21 +91,21 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_house" domainObjectName="CaseHouse">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_house" domainObjectName="CaseHouse">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_house_corollary_equipment" domainObjectName="CaseHouseCorollaryEquipment">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_house_equipment" domainObjectName="CaseHouseEquipment">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_house_equipment" domainObjectName="CaseHouseEquipment">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
-        <!--<table tableName="tb_case_house_face_street" domainObjectName="CaseHouseFaceStreet">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_house_face_street" domainObjectName="CaseHouseFaceStreet">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_house_intelligent" domainObjectName="CaseHouseIntelligent">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -116,9 +119,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_house_trading" domainObjectName="CaseHouseTrading">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_house_trading" domainObjectName="CaseHouseTrading">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_house_trading_lease" domainObjectName="CaseHouseTradingLease">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -128,25 +131,29 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_house_water" domainObjectName="CaseHouseWater">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_house_water" domainObjectName="CaseHouseWater">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
-        <!--<table tableName="tb_case_estate" domainObjectName="CaseEstate">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_house_water_drain" domainObjectName="CaseHouseWaterDrain">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
-        <!--<table tableName="tb_case_estate_land_state" domainObjectName="CaseEstateLandState">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_estate" domainObjectName="CaseEstate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_case_estate_land_state" domainObjectName="CaseEstateLandState">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_estate_network" domainObjectName="CaseEstateNetwork">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_estate_parking" domainObjectName="CaseEstateParking">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_estate_parking" domainObjectName="CaseEstateParking">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_estate_supply" domainObjectName="CaseEstateSupply">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -160,9 +167,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_matching_finance" domainObjectName="CaseMatchingFinance">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_matching_finance" domainObjectName="CaseMatchingFinance">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_matching_leisure_place" domainObjectName="CaseMatchingLeisurePlace">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -176,9 +183,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_matching_traffic" domainObjectName="CaseMatchingTraffic">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_matching_traffic" domainObjectName="CaseMatchingTraffic">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
 
     </context>

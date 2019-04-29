@@ -13,8 +13,6 @@ public class CaseHouseIntelligent {
 
     private String lampsLanterns;
 
-    private String intelligentSystem;
-
     private String remark;
 
     private String creator;
@@ -22,6 +20,10 @@ public class CaseHouseIntelligent {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer grade;
+
+    private String intelligentSystem;
 
     public Integer getId() {
         return id;
@@ -63,14 +65,6 @@ public class CaseHouseIntelligent {
         this.lampsLanterns = lampsLanterns == null ? null : lampsLanterns.trim();
     }
 
-    public String getIntelligentSystem() {
-        return intelligentSystem;
-    }
-
-    public void setIntelligentSystem(String intelligentSystem) {
-        this.intelligentSystem = intelligentSystem == null ? null : intelligentSystem.trim();
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -101,5 +95,21 @@ public class CaseHouseIntelligent {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    public String getIntelligentSystem() {
+        return intelligentSystem;
+    }
+
+    public void setIntelligentSystem(String intelligentSystem) {
+        this.intelligentSystem = intelligentSystem == null ? null : intelligentSystem.trim();
     }
 }

@@ -23,6 +23,8 @@ public class CaseBuildingOutfit {
 
     private String buildNumber;
 
+    private Integer materialGrade;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class CaseBuildingOutfit {
 
     public void setBuildNumber(String buildNumber) {
         this.buildNumber = buildNumber == null ? null : buildNumber.trim();
+    }
+
+    public Integer getMaterialGrade() {
+        return materialGrade;
+    }
+
+    public void setMaterialGrade(Integer materialGrade) {
+        this.materialGrade = materialGrade;
     }
 }
