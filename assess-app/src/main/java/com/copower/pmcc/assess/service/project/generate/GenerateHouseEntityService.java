@@ -331,8 +331,8 @@ public class GenerateHouseEntityService {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
         //类型一共其实有4个类型也就是4部分
-        List<String> typeList = Lists.newArrayList("其它", "设备部分");
-        List<String> categoryList = Lists.newArrayList("抗震设防", "消防栓", "避雷针");
+        List<String> typeList = Lists.newArrayList("其它", "设备部分", "装修部分");
+        List<String> categoryList = Lists.newArrayList("特种设备", "其他");
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -358,17 +358,9 @@ public class GenerateHouseEntityService {
                     String s = "";
                     if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                         damagedDegreeVoList.stream().forEach(oo -> {
-                            int num = 0;
-                            if (typeList.stream().anyMatch(ss -> Objects.equal(ss, oo.getTypeName()))) {
-                                num++;
-                            }
-                            if (categoryList.stream().anyMatch(ss -> StringUtils.indexOf(oo.getCategoryName(), ss) != -1)) {
-                                num++;
-                            }
-                            if (num == 2) {
+                            if (typeList.contains(oo.getTypeName()) && categoryList.contains(oo.getCategoryName())) {
                                 stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), oo.getEntityConditionName()));
-                            }
-                            if (num != 2) {
+                            } else {
                                 stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
                             }
                         });
@@ -379,7 +371,7 @@ public class GenerateHouseEntityService {
                     }
                     linkedHashSet.add(String.format("%s：%s%s", stringListEntry.getKey(), s, "。"));
                 });
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(linkedHashSet, "\r"));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getIndentHtml(StringUtils.join(linkedHashSet)));
                 linkedHashSet.clear();
             }
         }
@@ -828,7 +820,7 @@ public class GenerateHouseEntityService {
                                 stringBuilder.append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无").append("铺设");
                                 centerList.add(stringBuilder.toString());
                                 if (StringUtils.isNotBlank(oo.getLampsLanternsName())) {
-                                    centerList.add(String.format("%s%s","灯具为",oo.getLampsLanternsName()));
+                                    centerList.add(String.format("%s%s", "灯具为", oo.getLampsLanternsName()));
                                 }
                                 String s = oo.getIntelligentSystemName();
                                 s = s.replaceAll("；", "");
@@ -836,7 +828,7 @@ public class GenerateHouseEntityService {
                                 s = s.replaceAll("/", "-");
                                 centerList.add(s);
                                 if (CollectionUtils.isNotEmpty(centerList)) {
-                                    linkedHashSet.add(StringUtils.join(centerList,"，"));
+                                    linkedHashSet.add(StringUtils.join(centerList, "，"));
                                 }
                                 centerList.clear();
                                 stringBuilder.delete(0, stringBuilder.toString().length());
@@ -992,18 +984,19 @@ public class GenerateHouseEntityService {
                             return false;
                         }).count() >= 1) {
                             basicUnitElevatorList.stream().forEach(oo -> {
+
                                 String s1 = "";
                                 if (oo.getQuasiLoadNumber() != null) {
-                                    s1 = String.format("%s%s牌准载人数%s人",
-                                            baseDataDicService.getNameById(oo.getType()),
+                                    s1 = String.format("%s%s准载人数%s人，",
                                             oo.getBrand(),
+                                            baseDataDicService.getNameById(oo.getType()),
                                             oo.getQuasiLoadNumber().toString());
                                 }
                                 String s2 = "";
                                 if (StringUtils.isNotBlank(oo.getQuasiLoadWeight())) {
                                     String s = "";
                                     if (oo.getQuasiLoadNumber() == null) {
-                                        s = String.format("%s牌", oo.getBrand());
+                                        s = String.format("%s", oo.getBrand());
                                     }
                                     s2 = String.format("%s准载重量%s", s,
                                             String.format("%s%s", oo.getQuasiLoadWeight(), "kg"));
@@ -1012,9 +1005,9 @@ public class GenerateHouseEntityService {
                             });
                         }
                         if (CollectionUtils.isNotEmpty(newLinkedHashSet)) {
-                            String key = String.format("%d%s%s", number, "部电梯", StringUtils.join(newLinkedHashSet, "、"));
+                            String key = String.format("%d%s%s", number, "部电梯，", StringUtils.join(newLinkedHashSet, "、"));
                             List<Integer> integers = listMap.get(key);
-                            if (CollectionUtils.isEmpty(integers))integers = Lists.newArrayList();
+                            if (CollectionUtils.isEmpty(integers)) integers = Lists.newArrayList();
                             integers.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
                             listMap.put(key, integers);
                         }
