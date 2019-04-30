@@ -114,12 +114,12 @@ public class CaseHouseIntelligentService {
                 JSONObject intelligentSystem = JSON.parseObject(jsonObject.getString("intelligentSystem"));
                 JSONObject layingMethod = JSON.parseObject(jsonObject.getString("layingMethod"));
                 JSONObject intelligenceGrade = JSON.parseObject(jsonObject.getString("intelligenceGrade"));
-                if (intelligentSystem != null)
-                    builder.append(baseDataDicService.getNameById(intelligentSystem.getString("value"))).append("/");
-                if (layingMethod != null)
-                    builder.append(baseDataDicService.getNameById(layingMethod.getString("value"))).append("/");
                 if (intelligenceGrade != null)
                     builder.append(baseDataDicService.getNameById(intelligenceGrade.getString("value")));
+                if (intelligentSystem != null)
+                    builder.append(baseDataDicService.getNameById(intelligentSystem.getString("value")));
+                if (layingMethod != null)
+                    builder.append(baseDataDicService.getNameById(layingMethod.getString("value"))).append("铺设");
                 builder.append("；");
             }
         }

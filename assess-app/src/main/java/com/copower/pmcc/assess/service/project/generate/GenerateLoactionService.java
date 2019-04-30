@@ -887,7 +887,7 @@ public class GenerateLoactionService {
                 if ("0".equals(entry.getKey())) {
                     stringBuilder.append("附近有");
                 } else {
-                    stringBuilder.append("距离大约").append(entry.getKey()).append("米").append("有");
+                    stringBuilder.append("大约").append(entry.getKey()).append("米").append("有");
                 }
                 stringBuilder.append(StringUtils.join(entry.getValue(), "，")).append("；");
             });
@@ -897,86 +897,5 @@ public class GenerateLoactionService {
             return text;
         }
         return "";
-    }
-
-    /**
-     * 估价对象按楼栋分组
-     *
-     * @param judgeObjectList
-     * @return
-     */
-    private Map<String, List<Integer>> groupByBuilding(List<SchemeJudgeObject> judgeObjectList) {
-        Map<String, List<Integer>> map = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            BasicBuilding basicBuilding = generateBaseExamineService.getBasicBuilding();
-            String key = basicBuilding.getBuildingNumber();
-            if (map.containsKey(key)) {
-                List<Integer> list = map.get(key);
-                list.add(schemeJudgeObject.getId());
-            } else {
-                map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
-            }
-        }
-        return map;
-    }
-
-    /**
-     * 估价对象按房屋分组
-     *
-     * @param judgeObjectList
-     * @return
-     */
-    private Map<String, List<Integer>> groupByHouse(List<SchemeJudgeObject> judgeObjectList) {
-        Map<String, List<Integer>> map = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            BasicHouse oo = generateBaseExamineService.getBasicHouse();
-            if (oo == null) {
-                continue;
-            }
-            try {
-                String key = String.format("%s栋%s单元%s", generateBaseExamineService.getBasicBuilding().getBuildingNumber(), generateBaseExamineService.getBasicUnit().getUnitNumber(), oo.getHouseNumber());
-                if (map.containsKey(key)) {
-                    List<Integer> list = map.get(key);
-                    list.add(schemeJudgeObject.getId());
-                } else {
-                    map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
-                }
-            } catch (Exception e) {
-            }
-        }
-        return map;
-    }
-
-    /**
-     * 估价对象按单元分组
-     *
-     * @param judgeObjectList
-     * @return
-     */
-    private Map<String, List<Integer>> groupByUnit(List<SchemeJudgeObject> judgeObjectList) {
-        Map<String, List<Integer>> map = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            try {
-                BasicUnit oo = generateBaseExamineService.getBasicUnit();
-                if (oo == null) {
-                    continue;
-                }
-                String key = String.format("%s栋%s", generateBaseExamineService.getBasicBuilding().getBuildingNumber(), generateBaseExamineService.getBasicUnit().getUnitNumber());
-                if (map.containsKey(key)) {
-                    List<Integer> list = map.get(key);
-                    list.add(schemeJudgeObject.getId());
-                } else {
-                    map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
-                }
-            } catch (Exception e) {
-            }
-        }
-        return map;
     }
 }
