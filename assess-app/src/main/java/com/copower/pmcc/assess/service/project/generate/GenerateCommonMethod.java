@@ -195,27 +195,6 @@ public class GenerateCommonMethod {
     }
 
     /**
-     * 建筑面积及评估面积
-     *
-     * @param schemeJudgeObjectList
-     * @return
-     */
-    public String getBuildingAndAssessArea(List<SchemeJudgeObject> schemeJudgeObjectList) {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
-            return null;
-        }
-        schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getEvaluationArea() != null).collect(Collectors.toList());
-        for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-            if (schemeJudgeObjectList.get(i).getEvaluationArea() != null) {
-                this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), schemeJudgeObjectList.get(i).getEvaluationArea().toString());
-            }
-        }
-        String s = this.getSchemeJudgeObjectListShowName(stringListMap, "㎡");
-        return s;
-    }
-
-    /**
      * 实际用途
      *
      * @param schemeJudgeObjectList

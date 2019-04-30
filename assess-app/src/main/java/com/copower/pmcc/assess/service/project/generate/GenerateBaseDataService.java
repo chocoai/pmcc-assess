@@ -248,18 +248,6 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 建筑面积及评估面积
-     */
-    public String getBuildingAndAssessArea() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        String s = generateCommonMethod.getBuildingAndAssessArea(schemeJudgeObjectList);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
-    }
-
-    /**
      * 外聘专家工作概况
      *
      * @return
@@ -972,31 +960,6 @@ public class GenerateBaseDataService {
         }
     }
 
-
-    /**
-     * 注册房产估价师
-     *
-     * @param str
-     * @return
-     */
-    public String getRegisteredRealEstateValuer(String str) {
-        String[] strings = str.split(",");
-        Set<String> stringSet = Sets.newLinkedHashSet();
-        for (String id : strings) {
-            DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(Integer.parseInt(id));
-            if (dataQualificationVo != null) {
-                if (StringUtils.isNotBlank(dataQualificationVo.getUserAccountName())) {
-                    stringSet.add(dataQualificationVo.getUserAccountName());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringMerge(stringSet, " ");
-        if (StringUtils.isEmpty(s.trim())) {
-            return errorStr;
-        }
-        return s;
-    }
-
     /**
      * 注册房产估价师及注册号
      *
@@ -1291,17 +1254,6 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 权利人
-     *
-     * @return
-     */
-    public String getPowerPerson() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
-        return generateCommonMethod.getPowerPerson(schemeJudgeObjectList);
-    }
-
-
-    /**
      * 设定用途
      *
      * @return
@@ -1326,128 +1278,6 @@ public class GenerateBaseDataService {
             map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
         }
         return generateCommonMethod.judgeSummaryDesc(map, "实际用途为", false);
-    }
-
-    /**
-     * 建筑结构类别
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getBuildingStructureCategory() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        return generateCommonMethod.getBuildingStructureCategory(schemeJudgeObjectList, projectInfo);
-    }
-
-    /**
-     * 税费负担
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getTaxBurden() throws Exception {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                            if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
-                                if (generateBaseExamineService.getBasicTrading().getTaxBurden() != null) {
-                                    String key = baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getTaxBurden());
-                                    generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
-    }
-
-    /**
-     * 付款方式
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getPaymentMethod() throws Exception {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                            if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
-                                if (generateBaseExamineService.getBasicTrading().getPaymentMethod() != null) {
-                                    String key = baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getPaymentMethod());
-                                    generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
-    }
-
-
-    /**
-     * 使用权类型
-     *
-     * @return
-     */
-    public String getUseRightType() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
-        return generateCommonMethod.getUseRightType(schemeJudgeObjectList);
     }
 
     /**
@@ -1639,27 +1469,6 @@ public class GenerateBaseDataService {
             }
         }
         String s = StringUtils.join(stringSet, "、");
-        return s;
-    }
-
-    /**
-     * 担保物权设立情况
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getCollateralFound() throws Exception {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, schemeJudgeObject.getCollateralFound());
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
         return s;
     }
 
@@ -3387,23 +3196,6 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 他权信息公示
-     *
-     * @throws Exception
-     */
-    public String getHisRightInfoPublicity() throws Exception {
-        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
-        DataHisRightInfoPublicity dataHisRightInfoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
-        if (dataHisRightInfoPublicity != null) {
-            String value = dataHisRightInfoPublicity.getContent();
-            if (StringUtils.isNotBlank(value.trim())) {
-                return value;
-            }
-        }
-        return errorStr;
-    }
-
-    /**
      * 功能描述: 申报所启用表单类型
      *
      * @auther: zch
@@ -3562,64 +3354,8 @@ public class GenerateBaseDataService {
 
     //------------------------------------------------------------||待删除方法 start -------------------------------------------------------//
 
-    /**
-     * 功能描述: 估价对象的单价
-     *
-     * @param:
-     * @return:
-     * @auther: zch
-     * @date: 2019/2/26 17:15
-     */
-    @Deprecated
-    public String getUnitPriceValuator() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(24);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
-                if (CollectionUtils.isNotEmpty(schemeSurePriceItemList)) {
-                    stringBuilder.append(schemeJudgeObject.getName()).append("的单价=").append(getEvaluationExpression());
-                    for (SchemeSurePriceItem schemeSurePriceItem : schemeSurePriceItemList) {
-                        if (Objects.equal(schemeSurePriceItem.getMethodName(), CalculationMethodNameEnum.MdCompare.getName())) {
-                            if (schemeSurePriceItem.getTrialPrice() != null && schemeSurePriceItem.getWeight() != null) {
-                                stringBuilder.append(schemeSurePriceItem.getTrialPrice().toString()).append("*").append(schemeSurePriceItem.getWeight().toString());
-                                stringBuilder.append("+");
-                            }
-                        }
-                        if (Objects.equal(schemeSurePriceItem.getMethodName(), CalculationMethodNameEnum.MdIncome.getName())) {
-                            stringBuilder.append(schemeSurePriceItem.getTrialPrice().toString()).append("*").append(schemeSurePriceItem.getWeight().toString());
-                        }
-                    }
-                }
-            }
-        }
-        if (StringUtils.isEmpty(stringBuilder.toString())) {
-            stringBuilder.append(" ");
-        }
-        return stringBuilder.toString();
-    }
 
-    /**
-     * 分类评估单价
-     *
-     * @return
-     */
-    @Deprecated
-    public String getEvaluationPriceCateGoryOne() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Set<String> stringSet = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                if (schemeJudgeObjectList.get(i).getPrice() != null) {
-                    if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPrice().toString())) {
-                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeJudgeObjectList.get(i).getPrice().toString()));
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
-    }
+
 
 
     //评估面积

@@ -21,12 +21,7 @@ public enum BaseReportFieldEnum implements Serializable {
     DelegatePurpose("委托目的"),
     CertificationPurpose("证载用途"),
     ScopePropertyExplain("财产范围说明"),
-    BuildingAndAssessArea("建筑面积及评估面积"),
     PracticalUse("实际用途"),
-    LandUseRightType("土地使用权类型"),
-    PowerPerson("权利人"),
-    BuildingStructureCategory("建筑结构类别"),
-    TypesFormEnabledDeclarationOffice("申报所启用表单类型"),
     ValueTimePoint("价值时点"),
     ValueTimePointRemark("价值时点说明"),
     EvaluationMethod("评估方法"),
@@ -34,17 +29,11 @@ public enum BaseReportFieldEnum implements Serializable {
     CapitalizationAmount("房地产总价大写金额"),
     totalAmountMortgageValue("抵押价值总金额"),
     totalAmountMortgageValueCapitalization("抵押价值总金额大写"),
-    HisRightInfoPublicity("他权信息公示"),
     HisRightType("他权类别"),
     HisRightTypeAndDetail("他权类别及明细"),
-    AssetInventoryAgreement("资产清查一致说明"),
-    ActualAddressAssetInventory("资产清查实际地址"),
-    CertificateAssetInventory("资产清查证明人"),
-    AssetInventoryConfirmConsistency("资产清查确认一致"),
     ExpertWorkOverview("外聘专家工作概况"),
     BusinessScope("经营范围"),
     StatementPurposeEntrustment("委托目的描述"),
-    HisRightDeclare("他项权申报"),
     BestUseDesc("最佳利用方式"),
     DecalreFormTypeAll("申报启用表单类型"),
     Co_ownership("共有权情况"),
@@ -59,7 +48,7 @@ public enum BaseReportFieldEnum implements Serializable {
     HouseType("房产类型"),
 
     JudgeBuildResultSurveySheet("估价结果一览表"),
-    JudgeBuildResultSurveySheet2("估价结果一览表2"),
+    JudgeBuildResultSurveySheet2("估价结果一览表不含坐落"),
     EquityStatusObjectSheet("估价对象权属"),
     JudgeObjectAreaStatusSheet("估价对象区位状况"),
     JudgeObjectLandStateSheet("估价土地实体状况"),
@@ -75,7 +64,6 @@ public enum BaseReportFieldEnum implements Serializable {
     DeterminationMarketValueValuationObject("估价对象市场价值的确定"),
     HotTip("特别提示"),
 
-    RegisteredRealEstateValuer("注册房产估价师"),
     RegisteredRealEstateValuerAndNumber("注册房产估价师及注册号"),
     XIEHE_organizationInfo("房地产估价机构信息"),
     XIEHE_organizationName("机构名称"),
@@ -95,12 +83,8 @@ public enum BaseReportFieldEnum implements Serializable {
     StatutoryOptimumReimbursement("法定优先受偿款"),
     StatutoryPriorityAmountTotal("法定优先受偿款总金额"),
 
-    collateralFound("担保物权设立情况"),
     ComputationProcess("主要计算过程"),
     SelectionApplicationParameters("相关参数选取与应用"),
-    StatusBuildingRightsInterests("建筑物权益状况"),
-    TaxBurden("税费负担"),
-    PaymentMethod("付款方式"),
 
     EVALUATION_HYPOTHESIS("评估假设"),
     EVALUATION_BASIS("评估依据"),
@@ -111,7 +95,7 @@ public enum BaseReportFieldEnum implements Serializable {
     ReportArea("出具报告区域"),
 
 
-    JUDGEOBJECTPRINCIPALCOPYSHEET("估价委托书复印件"),
+    JudgeObjectPrincipalCopySheet("估价委托书复印件"),
     EstimatedObjectLocationDiagram("估价对象位置示意图"),
     Valuation_Target_Live_Photos("估价对象实况照片"),
     Copies_the_Ownership_Certificate_the_Valuation_Object("估价对象权属证明复印件"),
@@ -126,10 +110,6 @@ public enum BaseReportFieldEnum implements Serializable {
     BACKGROUND_ANALYSIS_BLOCK("同类房地产市场版块状况"),
     BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),
 
-    //------------------------||待废除--------------------------
-    UnitPriceValuator("估价对象的单价"),
-    EvaluationPriceCateGory("分类评估单价"),
-    PrincipalLegalRepresentative("委托人法定代表人"),
     ;
 
     private String key;
