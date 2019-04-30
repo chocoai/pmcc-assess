@@ -72,7 +72,7 @@ public class ProjectNumberRecordService {
                 numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectId, areaId, year, numberRule.getSameReportType());
                 if (numberRecord != null) {
                     number = numberRecord.getNumber();
-                    reportNumber = numberRecord.getNumberValue();
+                    reportNumber =  reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
                 } else {
                     reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber, false).invoke();
                     number = reportNumberService.getNumber();

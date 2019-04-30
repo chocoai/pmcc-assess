@@ -9,7 +9,6 @@ import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportTemplateItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationHypothesisDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
@@ -22,7 +21,6 @@ import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportGenerationService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -256,7 +254,7 @@ public class EvaluationHypothesisService {
                     }
                 }
 
-                for (String time:times) {
+                for (String time : times) {
                     Map<List<Integer>, String> map = Maps.newHashMap();
                     List<Integer> number = new ArrayList<>();
                     for (int k = 0; k < maps.size(); k++) {
@@ -266,7 +264,7 @@ public class EvaluationHypothesisService {
                             }
                         }
                     }
-                    map.put(number,time);
+                    map.put(number, time);
                     group.add(map);
                 }
 
@@ -279,12 +277,12 @@ public class EvaluationHypothesisService {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append("无未定事项假设。").append("</p>");
                 }
                 if (CollectionUtils.isNotEmpty(group)) {
-                    if(group.size()==1){
+                    if (group.size() == 1) {
                         for (Map.Entry<List<Integer>, String> entry : group.get(0).entrySet()) {
                             DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
                             stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", entry.getValue()).replace("#{估价对象号}", (generateCommonMethod.convertNumber(entry.getKey()) + "号"))).append("</p>");
                         }
-                    }else {
+                    } else {
                         DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
                         stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", completedTime.deleteCharAt(completedTime.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号"))).append("</p>");
                     }
@@ -309,13 +307,13 @@ public class EvaluationHypothesisService {
                             //证载地址
                             case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS:
                                 if ("不一致".equals(item.getAreConsistent())) {
-                                    if(flag == true){
+                                    if (flag == true) {
                                         stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                                         stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
                                         flag = false;
                                     }
                                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOAD_ADDRESS);
-                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", judgeObject.getNumber())
+                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))
                                             .replace("#{房产证登记地址}", item.getRegistration())
                                             .replace("#{土地证登记地址}", item.getActual())
                                             .replace("#{证明文件名称}", item.getCredential())
@@ -326,30 +324,31 @@ public class EvaluationHypothesisService {
                             //登记地址
                             case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS:
                                 if ("不一致".equals(item.getAreConsistent())) {
-                                    if(flag == true){
+                                    if (flag == true) {
                                         stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                                         stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
                                         flag = false;
                                     }
                                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTERED_ADDRESS);
-                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", judgeObject.getNumber())
-                                            .replace("#{登记地址}", item.getRegistration())
-                                            .replace("#{实际地址}", item.getActual())
-                                            .replace("#{证明文件名称}", item.getCredential())
-                                            .replace("#{证明文件说明内容}", item.getDifferenceReason())).append("</p>");
+                                    stringBuilder.append("<p style=\"text-indent:2em\">")
+                                            .append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))
+                                                    .replace("#{登记地址}", item.getRegistration())
+                                                    .replace("#{实际地址}", item.getActual())
+                                                    .replace("#{证明文件名称}", item.getCredential())
+                                                    .replace("#{证明文件说明内容}", item.getDifferenceReason())).append("</p>");
 
                                 }
                                 break;
                             //登记用途
                             case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE:
                                 if ("不一致".equals(item.getAreConsistent())) {
-                                    if(flag == true){
+                                    if (flag == true) {
                                         stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                                         stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
                                         flag = false;
                                     }
                                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTRATION_PURPOSES);
-                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", judgeObject.getNumber())
+                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))
                                             .replace("#{登记用途}", item.getRegistration())
                                             .replace("#{实际用途}", item.getActual())
                                             .replace("#{证明文件名称}", item.getCredential())
@@ -359,7 +358,7 @@ public class EvaluationHypothesisService {
                         }
                     }
                 }
-                if(flag == true){
+                if (flag == true) {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append("无不相一致假设。").append("</p>");
 
@@ -383,18 +382,18 @@ public class EvaluationHypothesisService {
                     //参考同类（不配合）
                     Integer type = basicHouse.getResearchType();
                     if (type != null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
-                        if("正常".equals(surveyAssetInventory.getPaymentStatus())){
+                        if ("正常".equals(surveyAssetInventory.getPaymentStatus())) {
                             paymentNormal.append(judgeObject.getNumber()).append(",");
-                        }else if("不正常".equals(surveyAssetInventory.getPaymentStatus())){
+                        } else if ("不正常".equals(surveyAssetInventory.getPaymentStatus())) {
                             paymentAbnormality.append(judgeObject.getNumber()).append(",");
                         }
                     }
                 }
-                if (StringUtils.isNotBlank(paymentNormal)||StringUtils.isNotBlank(paymentAbnormality)) {
+                if (StringUtils.isNotBlank(paymentNormal) || StringUtils.isNotBlank(paymentAbnormality)) {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
                 }
-                if (StringUtils.isEmpty(paymentNormal)&&StringUtils.isEmpty(paymentAbnormality)) {
+                if (StringUtils.isEmpty(paymentNormal) && StringUtils.isEmpty(paymentAbnormality)) {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append("无依据不足假设").append("</p>");
                 }

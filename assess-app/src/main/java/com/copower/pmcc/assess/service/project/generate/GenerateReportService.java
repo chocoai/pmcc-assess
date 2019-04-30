@@ -582,7 +582,7 @@ public class GenerateReportService {
                 }
                 //法定优先受偿款总金额
                 if (Objects.equal(BaseReportFieldEnum.StatutoryPriorityAmountTotal.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryPriorityAmountTotal());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeReimbursementKnowTotalPrice().toString());
                 }
                 //估价对象区位状况表
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectAreaStatusSheet.getName(), name)) {
