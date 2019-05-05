@@ -31,8 +31,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">委托目的类别<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select name="entrustAimType" class="form-control search-select select2 entrustAimType"
+                    <select name="entrustAimType" class="form-control search-select select2 entrustAimType_p"
                             required="required" onchange="getRemarkEntrustPurpose();">
+                        <option selected="selected" value=''>请先选择委托目的</option>
                     </select>
                 </div>
             </div>
@@ -91,7 +92,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">评估范围</label>
                 <div class="col-sm-3">
-                    <select name="propertyScope" class="form-control search-select select2 propertyScope" required="required">
+                    <select name="propertyScope" class="form-control search-select select2 propertyScope"
+                            required="required">
                     </select>
                 </div>
             </div>
@@ -195,32 +197,35 @@
     </form>
 </div>
 <script type="text/javascript">
-    function getValueDefinition(){
+    function getValueDefinition() {
         var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
+        getCategory(entrustPurpose, false);
+
         var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
-        if(entrustPurpose && valueType){
-            entrustPurpose = ","+entrustPurpose+",";
-            valueType = ","+valueType+",";
+        if (entrustPurpose && valueType) {
+            entrustPurpose = "," + entrustPurpose + ",";
+            valueType = "," + valueType + ",";
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
                 type: "post",
                 dataType: "json",
                 data: {
-                    entrustPurpose:entrustPurpose,
-                    valueType:valueType
+                    entrustPurpose: entrustPurpose,
+                    valueType: valueType
                 },
                 success: function (result) {
                     if (result.ret) {
-                        if(result.data){
+                        if (result.data) {
                             var s = result.data.template;
-                            var content=s.replace(/<[^>]+>/g,"");
+                            var content = s.replace(/<[^>]+>/g, "");
                             console.log(content);
                             $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
                             $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
                             $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
                             $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val(content);
-                        }else{
-                            $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");;
+                        } else {
+                            $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
+                            ;
                             $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
                             $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
                             $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val("");
@@ -237,21 +242,22 @@
             })
 
         }
+
     }
 
-    function getRemarkEntrustPurpose(){
-        var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType").find("option:selected").val();
-        if(entrustAimType){
+    function getRemarkEntrustPurpose() {
+        var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
+        if (entrustAimType) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectInfo/getRemarkEntrustPurpose",
                 type: "post",
                 dataType: "json",
                 data: {
-                    entrustAimType:entrustAimType,
+                    entrustAimType: entrustAimType,
                 },
                 success: function (result) {
                     if (result.ret) {
-                        if(result.data){
+                        if (result.data) {
                             $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']").val(result.data.remark);
                         }
                     }
@@ -265,5 +271,45 @@
             })
 
         }
+    }
+
+    //委托目的类别
+    function getCategory(pid, categoryValue) {
+        if (!categoryValue) {
+            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
+        }
+        if (!pid) {
+            return false;
+        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseDataDic/getCacheDataDicListByPid",
+            type: "get",
+            dataType: "json",
+            data: {pid: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (data.length >= 1) {
+                        var option = "";
+                        for (var i = 0; i < data.length; i++) {
+                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            console.log(option + "1");
+                        }
+                        $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
+                    }
+
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+        if (categoryValue) {
+            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val([categoryValue]).trigger('change');
+        }
+
     }
 </script>
