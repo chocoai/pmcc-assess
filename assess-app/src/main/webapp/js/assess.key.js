@@ -251,6 +251,9 @@ AssessDicKey.mdIncomeHistoryTypeIncome = "md.income.history.type.income";//收�
 AssessDicKey.mdIncomeHistoryTypeCost = "md.income.history.type.cost";//成本类(历史数据)
 AssessDicKey.workProgrammeSetUse = "work.programme.set.use";//设定用途
 AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development";//建设、住宅、商业、办公、车库、地下商业、建设周期
+AssessDicKey.programmeMarketCostapproachGrade = "programme.market.costApproach.grade";//优，良，劣
+AssessDicKey.programmeMarketCostapproachFactor = "programme.market.costApproach.factor";//土地地价因素
+AssessDicKey.dataLandApproximationMethodSetting = "data.land.approximation.method.setting";//土地逼近法补偿配置
 
 
 /**

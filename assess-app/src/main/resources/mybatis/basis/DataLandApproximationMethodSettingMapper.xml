@@ -3,6 +3,13 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataLandApproximationMethodSettingMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandApproximationMethodSetting" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="symbol" property="symbol" jdbcType="VARCHAR" />
+    <result column="amount_money" property="amountMoney" jdbcType="DECIMAL" />
+    <result column="release_time" property="releaseTime" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -66,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, creator, gmt_created, gmt_modified
+    id, province, city, district, category, symbol, amount_money, release_time, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandApproximationMethodSettingExample" >
     select
@@ -102,10 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_approximation_method_setting (creator, gmt_created, gmt_modified
-      )
-    values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_data_land_approximation_method_setting (province, city, district, 
+      category, symbol, amount_money, 
+      release_time, creator, gmt_created, 
+      gmt_modified)
+    values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+      #{category,jdbcType=INTEGER}, #{symbol,jdbcType=VARCHAR}, #{amountMoney,jdbcType=DECIMAL}, 
+      #{releaseTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandApproximationMethodSetting" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -113,6 +125,27 @@
     </selectKey>
     insert into tb_data_land_approximation_method_setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="symbol != null" >
+        symbol,
+      </if>
+      <if test="amountMoney != null" >
+        amount_money,
+      </if>
+      <if test="releaseTime != null" >
+        release_time,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -124,6 +157,27 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="symbol != null" >
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="amountMoney != null" >
+        #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="releaseTime != null" >
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -147,6 +201,27 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
+      </if>
+      <if test="record.symbol != null" >
+        symbol = #{record.symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amountMoney != null" >
+        amount_money = #{record.amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.releaseTime != null" >
+        release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -164,6 +239,13 @@
   <update id="updateByExample" parameterType="map" >
     update tb_data_land_approximation_method_setting
     set id = #{record.id,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=INTEGER},
+      symbol = #{record.symbol,jdbcType=VARCHAR},
+      amount_money = #{record.amountMoney,jdbcType=DECIMAL},
+      release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -174,6 +256,27 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandApproximationMethodSetting" >
     update tb_data_land_approximation_method_setting
     <set >
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="symbol != null" >
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="amountMoney != null" >
+        amount_money = #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="releaseTime != null" >
+        release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -188,7 +291,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandApproximationMethodSetting" >
     update tb_data_land_approximation_method_setting
-    set creator = #{creator,jdbcType=VARCHAR},
+    set province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      category = #{category,jdbcType=INTEGER},
+      symbol = #{symbol,jdbcType=VARCHAR},
+      amount_money = #{amountMoney,jdbcType=DECIMAL},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

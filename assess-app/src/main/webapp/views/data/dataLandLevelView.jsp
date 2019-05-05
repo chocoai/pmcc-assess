@@ -61,6 +61,10 @@
             data.table = "tb_FatherList";
             data.box = "divBoxFather";
             data.frm = "frmFather";
+            data.achievementTable = $("#achievementTable");
+            data.achievementBox = $("#achievementBox");
+            data.achievementBoxDetail = $("#achievementBoxDetail");
+            data.achievementFrm = $("#achievementFrm");
             return data;
         },
 
@@ -228,17 +232,21 @@
         //加载土地级别信息
         loadLandLevelDetailList: function () {
             var cols = [];
-            cols.push({field: 'classify', title: '大类', width: '6%'});
-            cols.push({field: 'type', title: '类型', width: '6%'});
-            cols.push({field: 'category', title: '类别', width: '6%'});
-            cols.push({field: 'levelRange', title: '级别范围', width: '70%', formatter: function (value, row, index) {
-                return '<span title="'+row.mainStreet+'">'+value+'</span>';
-            }});
+            cols.push({field: 'classify', title: '大类', width: '4%'});
+            cols.push({field: 'type', title: '类型', width: '4%'});
+            cols.push({field: 'price', title: '单价', width: '4%'});
+            cols.push({field: 'category', title: '类别', width: '4%'});
+            cols.push({
+                field: 'levelRange', title: '级别范围', width: '70%', formatter: function (value, row, index) {
+                    return '<span title="' + row.mainStreet + '">' + value + '</span>';
+                }
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editLandLevelDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteLandLevelDetail(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="landLevel.showDataLandDetailAchievementDetail(' + row.id + ')"><i class="fa fa-th-list fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -315,7 +323,159 @@
                 })
             })
         }
-    }
+    };
+
+    landLevel.showDataLandDetailAchievementDetail = function (id) {
+        landLevel.showLandDetailAchievementList(id);
+        landLevel.config().achievementBoxDetail.find("input[name='levelDetailId']").val(id);
+        landLevel.config().achievementBoxDetail.modal("show");
+    };
+    //显示 土地级别详情从表 box
+    landLevel.showDataLandDetailAchievement = function () {
+        var levelDetailId = landLevel.config().achievementBoxDetail.find("input[name='levelDetailId']").val();
+        landLevel.config().achievementFrm.clearAll();
+        landLevel.config().achievementFrm.find("input[name='levelDetailId']").val(levelDetailId);
+        landLevel.showLandDetailAchievementList(levelDetailId);
+        landLevel.initFormLandDetailAchievement({});
+        landLevel.config().achievementBox.modal("show");
+    };
+
+    landLevel.initFormLandDetailAchievement = function (row) {
+        landLevel.config().achievementFrm.initForm(row);
+        AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachFactor, row.type, function (html, data) {
+            landLevel.config().achievementFrm.find("select[name='type']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, row.grade, function (html, data) {
+            landLevel.config().achievementFrm.find("select[name='grade']").empty().html(html).trigger('change');
+        });
+        landLevel.config().achievementFrm.find("select[name='type']").off('change').on('change', function () {
+            AssessCommon.loadDataDicByPid($(this).val(), row.category, function (html, data) {
+                landLevel.config().achievementFrm.find("select[name='category']").empty().html(html).trigger('change');
+            });
+        });
+        landLevel.config().achievementFrm.find("select[name='grade']").off('change').on('change', function () {
+            var category = landLevel.config().achievementFrm.find("select[name='category']").val();
+            var grade = landLevel.config().achievementFrm.find("select[name='grade']").val();
+            if (category) {
+                AssessCommon.getDataDicInfo(category, function (data) {
+                    var obj = JSON.parse(data.remark);
+                    if (grade) {
+                        AssessCommon.getDataDicInfo(grade, function (item) {
+                            var value = null;
+                            if (item.name == '优') {
+                                value = obj.A;
+                            }
+                            if (item.name == '较优') {
+                                value = obj.B;
+                            }
+                            if (item.name == '一般') {
+                                value = obj.C;
+                            }
+                            if (item.name == '较劣') {
+                                value = obj.D;
+                            }
+                            if (item.name == '劣') {
+                                value = obj.E;
+                            }
+                            if (value) {
+                                landLevel.config().achievementFrm.find("input[name='achievement']").val(value);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    };
+
+    //土地级别详情从表 删除
+    landLevel.deleteDataLandDetailAchievement = function (index) {
+        var row = landLevel.config().achievementTable.bootstrapTable('getData')[index];
+        Alert('确认要删除么？', 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/dataLandDetailAchievement/delete/' + row.id,
+                type: "post",
+                data: {_method: "DELETE"},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        landLevel.showLandDetailAchievementList(row.levelDetailId);
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        })
+    };
+
+    landLevel.editDataLandDetailAchievement = function (index) {
+        landLevel.config().achievementFrm.clearAll(['levelDetailId']);
+        var row = landLevel.config().achievementTable.bootstrapTable('getData')[index];
+        landLevel.initFormLandDetailAchievement(row);
+        landLevel.config().achievementBox.modal("show");
+    };
+
+    //土地级别详情从表
+    landLevel.showLandDetailAchievementList = function (levelDetailId) {
+        var cols = [];
+        cols.push({field: 'typeName', title: '类型'});
+        cols.push({field: 'categoryName', title: '类别'});
+        cols.push({field: 'gradeName', title: '等级'});
+        cols.push({field: 'reamark', title: '说明'});
+        cols.push({field: 'achievement', title: '分值'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editDataLandDetailAchievement(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteDataLandDetailAchievement(' + index + ')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        landLevel.config().achievementTable.bootstrapTable('destroy');
+        TableInit(landLevel.config().achievementTable.prop("id"), "${pageContext.request.contextPath}/dataLandDetailAchievement/getBootstrapTableVo", cols, {
+            levelDetailId: levelDetailId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
+
+    //土地级别详情从表 保存或者更新
+    landLevel.saveDataLandDetailAchievement = function () {
+        var data = formSerializeArray(landLevel.config().achievementFrm);
+        if (!landLevel.config().achievementFrm.valid()) {
+            return false;
+        }
+        var url = '${pageContext.request.contextPath}/dataLandDetailAchievement';
+        var _method = null;
+        if (data.id) {
+            url += "/edit/" + JSON.stringify(data);
+            _method = "PUT";
+        } else {
+            _method = "POST";
+            url += "/save/" + JSON.stringify(data);
+        }
+        $.ajax({
+            url: url,
+            data: {_method: _method},
+            type: "post",
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('成功');
+                    landLevel.showLandDetailAchievementList();
+                    landLevel.config().achievementBox.modal("hide");
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    };
 </script>
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -482,6 +642,24 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
+                                        <label class="col-sm-2 control-label">单价</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" data-rule-number='true' class="form-control" name="price"
+                                                   placeholder="单价">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">征地比例</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="landAcquisitionProportion"
+                                                   placeholder="征地比例">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             级别范围
                                         </label>
@@ -511,6 +689,114 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="landLevel.saveLandLevelDetail()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="achievementBoxDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">土地级别分值列表</h3>
+                <input type="hidden" name="levelDetailId">
+            </div>
+            <div class="modal-body">
+                <div type="button" class="btn btn-success"
+                     onclick="landLevel.showDataLandDetailAchievement()"
+                     data-toggle="modal" href="#divBox"> 新增
+                </div>
+                <table class="table table-bordered" id="achievementTable">
+                    <!-- cerare document add ajax data-->
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="achievementBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">土地级别分值</h3>
+            </div>
+            <form id="achievementFrm" class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="levelDetailId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">类型<span class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <select name="type" required
+                                                    class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">类别<span class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <select name="category" required
+                                                    class="form-control search-select select2">
+                                                <option>请先选择类型</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">等级<span class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <select name="grade" required
+                                                    class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">分值<span class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <input type="text" data-rule-number='true' required class="form-control"
+                                                   name="achievement"
+                                                   placeholder="分值">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">说明</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="reamark"
+                                                      placeholder="说明"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="landLevel.saveDataLandDetailAchievement()">
                         保存
                     </button>
                 </div>

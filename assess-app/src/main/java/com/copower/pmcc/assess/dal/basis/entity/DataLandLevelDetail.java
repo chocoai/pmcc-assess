@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DataLandLevelDetail {
@@ -18,6 +19,10 @@ public class DataLandLevelDetail {
     private String mainStreet;
 
     private Boolean bisDelete;
+
+    private String landAcquisitionProportion;
+
+    private BigDecimal price;
 
     private String creator;
 
@@ -87,6 +92,22 @@ public class DataLandLevelDetail {
 
     public void setBisDelete(Boolean bisDelete) {
         this.bisDelete = bisDelete;
+    }
+
+    public String getLandAcquisitionProportion() {
+        return landAcquisitionProportion;
+    }
+
+    public void setLandAcquisitionProportion(String landAcquisitionProportion) {
+        this.landAcquisitionProportion = landAcquisitionProportion == null ? null : landAcquisitionProportion.trim();
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getCreator() {

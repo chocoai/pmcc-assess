@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataLandLevelDetailMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataLandDetailAchievementMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="land_level_id" property="landLevelId" jdbcType="INTEGER" />
-    <result column="classify" property="classify" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="category" property="category" jdbcType="VARCHAR" />
-    <result column="level_range" property="levelRange" jdbcType="VARCHAR" />
-    <result column="main_street" property="mainStreet" jdbcType="VARCHAR" />
-    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
-    <result column="land_acquisition_proportion" property="landAcquisitionProportion" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="level_detail_id" property="levelDetailId" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="achievement" property="achievement" jdbcType="DECIMAL" />
+    <result column="reamark" property="reamark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, land_level_id, classify, type, category, level_range, main_street, bis_delete, 
-    land_acquisition_proportion, price, creator, gmt_created, gmt_modified
+    id, level_detail_id, category, grade, type, achievement, reamark, creator, gmt_created, 
+    gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievementExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_data_land_level_detail
+    from tb_data_land_detail_achievement
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,66 +92,55 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_data_land_level_detail
+    from tb_data_land_detail_achievement
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_data_land_level_detail
+    delete from tb_data_land_detail_achievement
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailExample" >
-    delete from tb_data_land_level_detail
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievementExample" >
+    delete from tb_data_land_detail_achievement
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_level_detail (land_level_id, classify, type, 
-      category, level_range, main_street, 
-      bis_delete, land_acquisition_proportion, price, 
+    insert into tb_data_land_detail_achievement (level_detail_id, category, grade, 
+      type, achievement, reamark, 
       creator, gmt_created, gmt_modified
       )
-    values (#{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{category,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, #{mainStreet,jdbcType=VARCHAR}, 
-      #{bisDelete,jdbcType=BIT}, #{landAcquisitionProportion,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+    values (#{levelDetailId,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{achievement,jdbcType=DECIMAL}, #{reamark,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_level_detail
+    insert into tb_data_land_detail_achievement
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="landLevelId != null" >
-        land_level_id,
-      </if>
-      <if test="classify != null" >
-        classify,
-      </if>
-      <if test="type != null" >
-        type,
+      <if test="levelDetailId != null" >
+        level_detail_id,
       </if>
       <if test="category != null" >
         category,
       </if>
-      <if test="levelRange != null" >
-        level_range,
+      <if test="grade != null" >
+        grade,
       </if>
-      <if test="mainStreet != null" >
-        main_street,
+      <if test="type != null" >
+        type,
       </if>
-      <if test="bisDelete != null" >
-        bis_delete,
+      <if test="achievement != null" >
+        achievement,
       </if>
-      <if test="landAcquisitionProportion != null" >
-        land_acquisition_proportion,
-      </if>
-      <if test="price != null" >
-        price,
+      <if test="reamark != null" >
+        reamark,
       </if>
       <if test="creator != null" >
         creator,
@@ -167,32 +153,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="landLevelId != null" >
-        #{landLevelId,jdbcType=INTEGER},
-      </if>
-      <if test="classify != null" >
-        #{classify,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+      <if test="levelDetailId != null" >
+        #{levelDetailId,jdbcType=INTEGER},
       </if>
       <if test="category != null" >
-        #{category,jdbcType=VARCHAR},
+        #{category,jdbcType=INTEGER},
       </if>
-      <if test="levelRange != null" >
-        #{levelRange,jdbcType=VARCHAR},
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
       </if>
-      <if test="mainStreet != null" >
-        #{mainStreet,jdbcType=VARCHAR},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
-      <if test="bisDelete != null" >
-        #{bisDelete,jdbcType=BIT},
+      <if test="achievement != null" >
+        #{achievement,jdbcType=DECIMAL},
       </if>
-      <if test="landAcquisitionProportion != null" >
-        #{landAcquisitionProportion,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        #{price,jdbcType=DECIMAL},
+      <if test="reamark != null" >
+        #{reamark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -205,44 +182,35 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailExample" resultType="java.lang.Integer" >
-    select count(*) from tb_data_land_level_detail
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievementExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_land_detail_achievement
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_data_land_level_detail
+    update tb_data_land_detail_achievement
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.landLevelId != null" >
-        land_level_id = #{record.landLevelId,jdbcType=INTEGER},
-      </if>
-      <if test="record.classify != null" >
-        classify = #{record.classify,jdbcType=VARCHAR},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
+      <if test="record.levelDetailId != null" >
+        level_detail_id = #{record.levelDetailId,jdbcType=INTEGER},
       </if>
       <if test="record.category != null" >
-        category = #{record.category,jdbcType=VARCHAR},
+        category = #{record.category,jdbcType=INTEGER},
       </if>
-      <if test="record.levelRange != null" >
-        level_range = #{record.levelRange,jdbcType=VARCHAR},
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=INTEGER},
       </if>
-      <if test="record.mainStreet != null" >
-        main_street = #{record.mainStreet,jdbcType=VARCHAR},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.bisDelete != null" >
-        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      <if test="record.achievement != null" >
+        achievement = #{record.achievement,jdbcType=DECIMAL},
       </if>
-      <if test="record.landAcquisitionProportion != null" >
-        land_acquisition_proportion = #{record.landAcquisitionProportion,jdbcType=VARCHAR},
-      </if>
-      <if test="record.price != null" >
-        price = #{record.price,jdbcType=DECIMAL},
+      <if test="record.reamark != null" >
+        reamark = #{record.reamark,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -259,17 +227,14 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_data_land_level_detail
+    update tb_data_land_detail_achievement
     set id = #{record.id,jdbcType=INTEGER},
-      land_level_id = #{record.landLevelId,jdbcType=INTEGER},
-      classify = #{record.classify,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
-      category = #{record.category,jdbcType=VARCHAR},
-      level_range = #{record.levelRange,jdbcType=VARCHAR},
-      main_street = #{record.mainStreet,jdbcType=VARCHAR},
-      bis_delete = #{record.bisDelete,jdbcType=BIT},
-      land_acquisition_proportion = #{record.landAcquisitionProportion,jdbcType=VARCHAR},
-      price = #{record.price,jdbcType=DECIMAL},
+      level_detail_id = #{record.levelDetailId,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
+      grade = #{record.grade,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      achievement = #{record.achievement,jdbcType=DECIMAL},
+      reamark = #{record.reamark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -277,35 +242,26 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
-    update tb_data_land_level_detail
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement" >
+    update tb_data_land_detail_achievement
     <set >
-      <if test="landLevelId != null" >
-        land_level_id = #{landLevelId,jdbcType=INTEGER},
-      </if>
-      <if test="classify != null" >
-        classify = #{classify,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+      <if test="levelDetailId != null" >
+        level_detail_id = #{levelDetailId,jdbcType=INTEGER},
       </if>
       <if test="category != null" >
-        category = #{category,jdbcType=VARCHAR},
+        category = #{category,jdbcType=INTEGER},
       </if>
-      <if test="levelRange != null" >
-        level_range = #{levelRange,jdbcType=VARCHAR},
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
       </if>
-      <if test="mainStreet != null" >
-        main_street = #{mainStreet,jdbcType=VARCHAR},
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="bisDelete != null" >
-        bis_delete = #{bisDelete,jdbcType=BIT},
+      <if test="achievement != null" >
+        achievement = #{achievement,jdbcType=DECIMAL},
       </if>
-      <if test="landAcquisitionProportion != null" >
-        land_acquisition_proportion = #{landAcquisitionProportion,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
+      <if test="reamark != null" >
+        reamark = #{reamark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -319,17 +275,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
-    update tb_data_land_level_detail
-    set land_level_id = #{landLevelId,jdbcType=INTEGER},
-      classify = #{classify,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      category = #{category,jdbcType=VARCHAR},
-      level_range = #{levelRange,jdbcType=VARCHAR},
-      main_street = #{mainStreet,jdbcType=VARCHAR},
-      bis_delete = #{bisDelete,jdbcType=BIT},
-      land_acquisition_proportion = #{landAcquisitionProportion,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement" >
+    update tb_data_land_detail_achievement
+    set level_detail_id = #{levelDetailId,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
+      grade = #{grade,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      achievement = #{achievement,jdbcType=DECIMAL},
+      reamark = #{reamark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

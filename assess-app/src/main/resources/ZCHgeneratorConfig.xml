@@ -44,21 +44,21 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_data_allocation_correction_coefficient_volume_ratio_detail" domainObjectName="DataAllocationCorrectionCoefficientVolumeRatioDetail">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_land_detail_achievement" domainObjectName="DataLandDetailAchievement">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_data_allocation_correction_coefficient_volume_ratio" domainObjectName="DataAllocationCorrectionCoefficientVolumeRatio">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_land_level_detail" domainObjectName="DataLandLevelDetail">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_data_house_price_index" domainObjectName="DataHousePriceIndex">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_house_price_index" domainObjectName="DataHousePriceIndex">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_data_house_price_index_detail" domainObjectName="DataHousePriceIndexDetail">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_house_price_index_detail" domainObjectName="DataHousePriceIndexDetail">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <table tableName="tb_data_land_approximation_method_setting" domainObjectName="DataLandApproximationMethodSetting">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
