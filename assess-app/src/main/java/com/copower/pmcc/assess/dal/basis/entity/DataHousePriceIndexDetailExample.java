@@ -225,63 +225,63 @@ public class DataHousePriceIndexDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andIndexIsNull() {
-            addCriterion("index is null");
+        public Criteria andIndexNumberIsNull() {
+            addCriterion("index_number is null");
             return (Criteria) this;
         }
 
-        public Criteria andIndexIsNotNull() {
-            addCriterion("index is not null");
+        public Criteria andIndexNumberIsNotNull() {
+            addCriterion("index_number is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIndexEqualTo(Integer value) {
-            addCriterion("index =", value, "index");
+        public Criteria andIndexNumberEqualTo(Integer value) {
+            addCriterion("index_number =", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNotEqualTo(Integer value) {
-            addCriterion("index <>", value, "index");
+        public Criteria andIndexNumberNotEqualTo(Integer value) {
+            addCriterion("index_number <>", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexGreaterThan(Integer value) {
-            addCriterion("index >", value, "index");
+        public Criteria andIndexNumberGreaterThan(Integer value) {
+            addCriterion("index_number >", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexGreaterThanOrEqualTo(Integer value) {
-            addCriterion("index >=", value, "index");
+        public Criteria andIndexNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("index_number >=", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexLessThan(Integer value) {
-            addCriterion("index <", value, "index");
+        public Criteria andIndexNumberLessThan(Integer value) {
+            addCriterion("index_number <", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexLessThanOrEqualTo(Integer value) {
-            addCriterion("index <=", value, "index");
+        public Criteria andIndexNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("index_number <=", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexIn(List<Integer> values) {
-            addCriterion("index in", values, "index");
+        public Criteria andIndexNumberIn(List<Integer> values) {
+            addCriterion("index_number in", values, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNotIn(List<Integer> values) {
-            addCriterion("index not in", values, "index");
+        public Criteria andIndexNumberNotIn(List<Integer> values) {
+            addCriterion("index_number not in", values, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexBetween(Integer value1, Integer value2) {
-            addCriterion("index between", value1, value2, "index");
+        public Criteria andIndexNumberBetween(Integer value1, Integer value2) {
+            addCriterion("index_number between", value1, value2, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNotBetween(Integer value1, Integer value2) {
-            addCriterion("index not between", value1, value2, "index");
+        public Criteria andIndexNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("index_number not between", value1, value2, "indexNumber");
             return (Criteria) this;
         }
 

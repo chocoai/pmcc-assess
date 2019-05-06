@@ -1,11 +1,16 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DataAllocationCorrectionCoefficientVolumeRatioDetail {
     private Integer id;
 
     private Integer allocationVolumeRatioId;
+
+    private BigDecimal plotRatio;
+
+    private BigDecimal correctionFactor;
 
     private String creator;
 
@@ -27,6 +32,22 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetail {
 
     public void setAllocationVolumeRatioId(Integer allocationVolumeRatioId) {
         this.allocationVolumeRatioId = allocationVolumeRatioId;
+    }
+
+    public BigDecimal getPlotRatio() {
+        return plotRatio;
+    }
+
+    public void setPlotRatio(BigDecimal plotRatio) {
+        this.plotRatio = plotRatio;
+    }
+
+    public BigDecimal getCorrectionFactor() {
+        return correctionFactor;
+    }
+
+    public void setCorrectionFactor(BigDecimal correctionFactor) {
+        this.correctionFactor = correctionFactor;
     }
 
     public String getCreator() {

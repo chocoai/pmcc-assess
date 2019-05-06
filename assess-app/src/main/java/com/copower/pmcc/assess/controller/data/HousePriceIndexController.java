@@ -2,57 +2,40 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex;
-import com.copower.pmcc.assess.dto.input.data.DataHousePriceIndexDto;
 import com.copower.pmcc.assess.dto.output.data.DataHousePriceIndexVo;
-import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.data.DataHousePriceIndexService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-@RequestMapping(value = "/housePriceIndex", name = "房价指数")
-@Controller
+@RequestMapping(value = "/housePriceIndex", name = "指数")
+@RestController
 public class HousePriceIndexController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private ErpAreaService erpAreaService;
     @Autowired
     private DataHousePriceIndexService housePriceIndexService;
 
     @RequestMapping(value = "/view")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/housePriceIndex");
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         return modelAndView;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST}, name = "房价指数 列表")
-    public BootstrapTableVo list(String startTime, String endTime, String province, String city, String district) {
-        BootstrapTableVo vo = null;
-        try {
-            vo = housePriceIndexService.getDataHousePriceIndexListVos(DateUtils.convertDate(startTime), DateUtils.convertDate(endTime), province, city, district);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
+    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "房价指数 列表")
+    public BootstrapTableVo getBootstrapTableVo(DataHousePriceIndex dataHousePriceIndex) {
+        BootstrapTableVo vo = housePriceIndexService.getDataHousePriceIndexListVos(dataHousePriceIndex);
         return vo;
     }
 
-    @GetMapping(value = "/get")
-    @ResponseBody
-    public HttpResult get(Integer id) {
+    @GetMapping(value = "/get/{id}",name = "restful get")
+    public HttpResult get(@PathVariable Integer id) {
         DataHousePriceIndexVo dataHousePriceIndexVo = null;
         try {
             dataHousePriceIndexVo = housePriceIndexService.getDataHousePriceIndexVo(housePriceIndexService.getDataHousePriceIndexById(id));
@@ -63,12 +46,11 @@ public class HousePriceIndexController {
         return HttpResult.newCorrectResult(dataHousePriceIndexVo);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/saveAndUpdate", method = {RequestMethod.POST}, name = "房价指数 更新")
-    public HttpResult add(String formData) {
-        DataHousePriceIndexDto housePriceIndexDto = JSON.parseObject(formData, DataHousePriceIndexDto.class);
+    @PutMapping(value = "/edit/{formData}",name = "restful put")
+    public HttpResult edit(@PathVariable(name = "formData") String formData) {
         try {
-            housePriceIndexService.saveAndUpdateDataHousePriceIndex(housePriceIndexDto);
+            DataHousePriceIndex dataHousePriceIndex = JSON.parseObject(formData,DataHousePriceIndex.class);
+            housePriceIndexService.saveAndUpdateDataHousePriceIndex(dataHousePriceIndex);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -76,16 +58,25 @@ public class HousePriceIndexController {
         return HttpResult.newCorrectResult();
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/delete", method = {RequestMethod.POST}, name = "房价指数 删除")
-    public HttpResult delete(Integer id) {
+    @PostMapping(value = "/save/{formData}",name = "restful post")
+    public HttpResult save(@PathVariable(name = "formData") String formData){
         try {
-            if (id != null) {
-                if (id.intValue() != 0) {
-                    DataHousePriceIndex dataHousePriceIndex = new DataHousePriceIndex();
-                    dataHousePriceIndex.setId(id);
-                    housePriceIndexService.removeDataHousePriceIndex(dataHousePriceIndex);
-                }
+            DataHousePriceIndex dataHousePriceIndex = JSON.parseObject(formData,DataHousePriceIndex.class);
+            housePriceIndexService.saveAndUpdateDataHousePriceIndex(dataHousePriceIndex);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @DeleteMapping(value = "/delete/{id}", name = "restful delete")
+    public HttpResult delete(@PathVariable Integer id) {
+        try {
+            if (id != null && id != 0) {
+                DataHousePriceIndex dataHousePriceIndex = new DataHousePriceIndex();
+                dataHousePriceIndex.setId(id);
+                housePriceIndexService.deleteDataHousePriceIndex(id);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

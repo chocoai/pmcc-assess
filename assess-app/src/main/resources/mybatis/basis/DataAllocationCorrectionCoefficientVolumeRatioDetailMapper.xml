@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="allocation_volume_ratio_id" property="allocationVolumeRatioId" jdbcType="INTEGER" />
+    <result column="plot_ratio" property="plotRatio" jdbcType="DECIMAL" />
+    <result column="correction_factor" property="correctionFactor" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -67,7 +69,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, allocation_volume_ratio_id, creator, gmt_created, gmt_modified
+    id, allocation_volume_ratio_id, plot_ratio, correction_factor, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetailExample" >
     select
@@ -103,10 +106,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_allocation_correction_coefficient_volume_ratio_detail (allocation_volume_ratio_id, creator, 
-      gmt_created, gmt_modified)
-    values (#{allocationVolumeRatioId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_data_allocation_correction_coefficient_volume_ratio_detail (allocation_volume_ratio_id, plot_ratio, 
+      correction_factor, creator, gmt_created, 
+      gmt_modified)
+    values (#{allocationVolumeRatioId,jdbcType=INTEGER}, #{plotRatio,jdbcType=DECIMAL}, 
+      #{correctionFactor,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -116,6 +121,12 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="allocationVolumeRatioId != null" >
         allocation_volume_ratio_id,
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio,
+      </if>
+      <if test="correctionFactor != null" >
+        correction_factor,
       </if>
       <if test="creator != null" >
         creator,
@@ -130,6 +141,12 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="allocationVolumeRatioId != null" >
         #{allocationVolumeRatioId,jdbcType=INTEGER},
+      </if>
+      <if test="plotRatio != null" >
+        #{plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="correctionFactor != null" >
+        #{correctionFactor,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -157,6 +174,12 @@
       <if test="record.allocationVolumeRatioId != null" >
         allocation_volume_ratio_id = #{record.allocationVolumeRatioId,jdbcType=INTEGER},
       </if>
+      <if test="record.plotRatio != null" >
+        plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.correctionFactor != null" >
+        correction_factor = #{record.correctionFactor,jdbcType=DECIMAL},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -175,6 +198,8 @@
     update tb_data_allocation_correction_coefficient_volume_ratio_detail
     set id = #{record.id,jdbcType=INTEGER},
       allocation_volume_ratio_id = #{record.allocationVolumeRatioId,jdbcType=INTEGER},
+      plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
+      correction_factor = #{record.correctionFactor,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -187,6 +212,12 @@
     <set >
       <if test="allocationVolumeRatioId != null" >
         allocation_volume_ratio_id = #{allocationVolumeRatioId,jdbcType=INTEGER},
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio = #{plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="correctionFactor != null" >
+        correction_factor = #{correctionFactor,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -203,6 +234,8 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail" >
     update tb_data_allocation_correction_coefficient_volume_ratio_detail
     set allocation_volume_ratio_id = #{allocationVolumeRatioId,jdbcType=INTEGER},
+      plot_ratio = #{plotRatio,jdbcType=DECIMAL},
+      correction_factor = #{correctionFactor,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

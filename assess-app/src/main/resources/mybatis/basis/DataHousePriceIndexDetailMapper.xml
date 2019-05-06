@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="house_price_id" property="housePriceId" jdbcType="INTEGER" />
-    <result column="index" property="index" jdbcType="INTEGER" />
+    <result column="index_number" property="indexNumber" jdbcType="INTEGER" />
     <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
     <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_price_id, index, start_date, end_date, creator, gmt_created, gmt_modified
+    id, house_price_id, index_number, start_date, end_date, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample" >
     select
@@ -106,10 +106,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_house_price_index_detail (house_price_id, index, start_date, 
+    insert into tb_data_house_price_index_detail (house_price_id, index_number, start_date, 
       end_date, creator, gmt_created, 
       gmt_modified)
-    values (#{housePriceId,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, 
+    values (#{housePriceId,jdbcType=INTEGER}, #{indexNumber,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, 
       #{endDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -122,8 +122,8 @@
       <if test="housePriceId != null" >
         house_price_id,
       </if>
-      <if test="index != null" >
-        index,
+      <if test="indexNumber != null" >
+        index_number,
       </if>
       <if test="startDate != null" >
         start_date,
@@ -145,8 +145,8 @@
       <if test="housePriceId != null" >
         #{housePriceId,jdbcType=INTEGER},
       </if>
-      <if test="index != null" >
-        #{index,jdbcType=INTEGER},
+      <if test="indexNumber != null" >
+        #{indexNumber,jdbcType=INTEGER},
       </if>
       <if test="startDate != null" >
         #{startDate,jdbcType=TIMESTAMP},
@@ -180,8 +180,8 @@
       <if test="record.housePriceId != null" >
         house_price_id = #{record.housePriceId,jdbcType=INTEGER},
       </if>
-      <if test="record.index != null" >
-        index = #{record.index,jdbcType=INTEGER},
+      <if test="record.indexNumber != null" >
+        index_number = #{record.indexNumber,jdbcType=INTEGER},
       </if>
       <if test="record.startDate != null" >
         start_date = #{record.startDate,jdbcType=TIMESTAMP},
@@ -207,7 +207,7 @@
     update tb_data_house_price_index_detail
     set id = #{record.id,jdbcType=INTEGER},
       house_price_id = #{record.housePriceId,jdbcType=INTEGER},
-      index = #{record.index,jdbcType=INTEGER},
+      index_number = #{record.indexNumber,jdbcType=INTEGER},
       start_date = #{record.startDate,jdbcType=TIMESTAMP},
       end_date = #{record.endDate,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -223,8 +223,8 @@
       <if test="housePriceId != null" >
         house_price_id = #{housePriceId,jdbcType=INTEGER},
       </if>
-      <if test="index != null" >
-        index = #{index,jdbcType=INTEGER},
+      <if test="indexNumber != null" >
+        index_number = #{indexNumber,jdbcType=INTEGER},
       </if>
       <if test="startDate != null" >
         start_date = #{startDate,jdbcType=TIMESTAMP},
@@ -247,7 +247,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
     update tb_data_house_price_index_detail
     set house_price_id = #{housePriceId,jdbcType=INTEGER},
-      index = #{index,jdbcType=INTEGER},
+      index_number = #{indexNumber,jdbcType=INTEGER},
       start_date = #{startDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},

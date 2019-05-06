@@ -7,7 +7,7 @@ public class DataHousePriceIndexDetail {
 
     private Integer housePriceId;
 
-    private Integer index;
+    private Integer indexNumber;
 
     private Date startDate;
 
@@ -35,12 +35,12 @@ public class DataHousePriceIndexDetail {
         this.housePriceId = housePriceId;
     }
 
-    public Integer getIndex() {
-        return index;
+    public Integer getIndexNumber() {
+        return indexNumber;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setIndexNumber(Integer indexNumber) {
+        this.indexNumber = indexNumber;
     }
 
     public Date getStartDate() {

@@ -4,11 +4,9 @@ import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex;
 import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataHousePriceIndexMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -16,65 +14,41 @@ import java.util.List;
 public class DataHousePriceIndexDao {
 
     @Autowired
-    private DataHousePriceIndexMapper dataHousePriceIndexMapper;
+    private DataHousePriceIndexMapper mapper;
 
-    public Integer addDataHousePriceIndex(DataHousePriceIndex dataHousePriceIndex) {
-        dataHousePriceIndexMapper.insertSelective(dataHousePriceIndex);
-        return dataHousePriceIndex.getId();
+    public boolean saveDataHousePriceIndex(DataHousePriceIndex oo){
+        return mapper.insertSelective(oo) == 1;
     }
 
-    public DataHousePriceIndex getDataHousePriceIndexById(Integer id) {
-        return dataHousePriceIndexMapper.selectByPrimaryKey(id);
+    public boolean editDataHousePriceIndex(DataHousePriceIndex oo){
+        return mapper.updateByPrimaryKeySelective(oo)==1;
     }
 
-    public boolean updateDataHousePriceIndex(DataHousePriceIndex dataHousePriceIndex) {
-        return dataHousePriceIndexMapper.updateByPrimaryKeySelective(dataHousePriceIndex) == 1;
+    public boolean deleteDataHousePriceIndex(Integer id){
+        return mapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<DataHousePriceIndex> listEndStart(Date startTime, Date endTime, String province, String city, String district) {
+    public DataHousePriceIndex getDataHousePriceIndexById(Integer id){
+        return mapper.selectByPrimaryKey(id);
+    }
+
+    public List<DataHousePriceIndex> getDataHousePriceIndexList(DataHousePriceIndex oo){
+        DataHousePriceIndexExample example = getExample(oo);
+        return mapper.selectByExample(example);
+    }
+
+    public void deleteDataHousePriceIndexList(DataHousePriceIndex oo){
+        DataHousePriceIndexExample example = getExample(oo);
+        mapper.deleteByExample(example);
+    }
+
+
+
+    private DataHousePriceIndexExample getExample(DataHousePriceIndex oo){
         DataHousePriceIndexExample example = new DataHousePriceIndexExample();
+        MybatisUtils.convertObj2Example(oo, example);
         DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(province)) {
-            criteria.andProvinceEqualTo(province);
-        }
-        if (StringUtils.isNotBlank(city)) {
-            criteria.andCityEqualTo(city);
-        }
-        if (StringUtils.isNotBlank(district)) {
-            criteria.andDistrictEqualTo(district);
-        }
-        return dataHousePriceIndexMapper.selectByExample(example);
-    }
-
-    public List<DataHousePriceIndex> listEndStart(Date startTime, Date endTime, String province, String city) {
-        DataHousePriceIndexExample example = new DataHousePriceIndexExample();
-        DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(province)) {
-            criteria.andProvinceEqualTo(province);
-        }
-        if (StringUtils.isNotBlank(city)) {
-            criteria.andCityEqualTo(city);
-        }
-        criteria.andDistrictEqualTo("");
-        return dataHousePriceIndexMapper.selectByExample(example);
-    }
-
-    public void removeDataHousePriceIndex(DataHousePriceIndex dataHousePriceIndex) {
-        DataHousePriceIndexExample example = new DataHousePriceIndexExample();
-        MybatisUtils.convertObj2Example(dataHousePriceIndex, example);
-        try {
-            dataHousePriceIndexMapper.deleteByExample(example);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
-    }
-
-    public List<DataHousePriceIndex> getDataHousePriceIndexList(DataHousePriceIndex dataHousePriceIndex) {
-        DataHousePriceIndexExample example = new DataHousePriceIndexExample();
-        MybatisUtils.convertObj2Example(dataHousePriceIndex, example);
-        return dataHousePriceIndexMapper.selectByExample(example);
+        criteria.andIdIsNotNull();
+        return example;
     }
 }

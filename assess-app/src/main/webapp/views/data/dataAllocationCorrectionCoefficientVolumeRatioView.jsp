@@ -24,9 +24,9 @@
                     <form id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">类别</label>
+                                <label class="col-sm-1 control-label">土地用途</label>
                                 <div class="col-sm-7">
-                                    <select name="type"
+                                    <select name="purpose"
                                             class="form-control search-select select2" id="queryType">
                                     </select>
                                 </div>
@@ -65,10 +65,10 @@
         frm: "#frmFather",
         box: "#divBoxFather",
         table: "#tb_FatherList",
-        indexDetailTableBox: "#indexDetailTableBox",
-        indexDetailTable: "#indexDetailTable",
-        indexDetailBox: "#indexDetailBox",
-        indexDetailFrm: "#indexDetailFrm"
+        dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox: "#dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox",
+        dataAllocationCorrectionCoefficientVolumeRatioDetailTable: "#dataAllocationCorrectionCoefficientVolumeRatioDetailTable",
+        dataAllocationCorrectionCoefficientVolumeRatioDetailBox: "#dataAllocationCorrectionCoefficientVolumeRatioDetailBox",
+        dataAllocationCorrectionCoefficientVolumeRatioDetailFrm: "#dataAllocationCorrectionCoefficientVolumeRatioDetailFrm"
     };
 
     dataObjFun.initFormMaster = function (data) {
@@ -83,34 +83,22 @@
             cityValue: data.city,
             districtValue: data.district
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.dataTypeIndex, data.type, function (html, data) {
-            frm.find("select[name='type']").empty().html(html).trigger('change');
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, data.purpose, function (html, data) {
+            frm.find("select[name='purpose']").empty().html(html).trigger('change');
         });
     };
 
     dataObjFun.editMasterById = function (index) {
         var row = $(dataObjFun.config.table).bootstrapTable('getData')[index];
-        $.ajax({
-            url: "${pageContext.request.contextPath}/housePriceIndex/get/" + row.id,
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    dataObjFun.initFormMaster(result.data);
-                    $(dataObjFun.config.box).modal("show");
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+        dataObjFun.initFormMaster(row);
+        $(dataObjFun.config.box).modal("show");
     };
 
     dataObjFun.deleteMasterById = function (id) {
         Alert('确认要删除么？', 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: '${pageContext.request.contextPath}/housePriceIndex/delete/' + id,
+                url: '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatio/delete/' + id,
                 type: "post",
                 data: {_method: "DELETE"},
                 success: function (result) {
@@ -129,7 +117,7 @@
     dataObjFun.listMaster = function () {
         var cols = [];
         cols.push({field: 'areaName', title: '区域'});
-        cols.push({field: 'typeName', title: '类别'});
+        cols.push({field: 'purposeName', title: '土地用途'});
         cols.push({
             field: 'releaseDate', title: '发布时间', formatter: function (value, row, index) {
                 return formatDate(value);
@@ -145,14 +133,14 @@
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataObjFun.editMasterById(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.deleteMasterById(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="dataObjFun.showDataHousePriceIndexDetail(' + row.id + ')"><i class="fa fa-th-list fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="dataObjFun.showDataAllocationCorrectionCoefficientVolumeRatioDetail(' + row.id + ')"><i class="fa fa-th-list fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
         $(dataObjFun.config.table).bootstrapTable('destroy');
-        TableInit($(dataObjFun.config.table).prop("id"), "${pageContext.request.contextPath}/housePriceIndex/getBootstrapTableVo", cols, {
-            type: $("#queryType").val()
+        TableInit($(dataObjFun.config.table).prop("id"), "${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatio/getBootstrapTableVo", cols, {
+            purpose: $("#queryType").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -169,7 +157,7 @@
         if (!frm.valid()) {
             return false;
         }
-        var url = '${pageContext.request.contextPath}/housePriceIndex';
+        var url = '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatio';
         var _method = null;
         if (data.id) {
             url += "/edit/" + JSON.stringify(data);
@@ -194,31 +182,31 @@
         })
     };
 
-    dataObjFun.showDataHousePriceIndexDetail = function (id) {
-        $(dataObjFun.config.indexDetailTableBox).find("input[name='housePriceId']").val(id);
-        $(dataObjFun.config.indexDetailTableBox).modal("show");
+    dataObjFun.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function (id) {
+        $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox).find("input[name='allocationVolumeRatioId']").val(id);
+        $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox).modal("show");
         dataObjFun.showDataHousePriceIndexDetailList(id);
     };
 
-    dataObjFun.showDataHousePriceIndexDetailBox = function () {
-        $(dataObjFun.config.indexDetailFrm).clearAll();
-        var housePriceId = $(dataObjFun.config.indexDetailTableBox).find("input[name='housePriceId']").val();
-        $(dataObjFun.config.indexDetailFrm).find('input[name=housePriceId]').val(housePriceId);
+    dataObjFun.showDataAllocationCorrectionCoefficientVolumeRatioDetailBox = function () {
+        $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm).clearAll();
+        var allocationVolumeRatioId = $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox).find("input[name='allocationVolumeRatioId']").val();
+        $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm).find('input[name=allocationVolumeRatioId]').val(allocationVolumeRatioId);
     };
 
-    dataObjFun.deleteDataHousePriceIndexDetail = function (index) {
-        var row = $(dataObjFun.config.indexDetailTable).bootstrapTable('getData')[index];
+    dataObjFun.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function (index) {
+        var row = $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).bootstrapTable('getData')[index];
         Alert('确认要删除么？', 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: '${pageContext.request.contextPath}/dataHousePriceIndexDetail/delete/' + row.id,
+                url: '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/delete/' + row.id,
                 type: "post",
                 data: {_method: "DELETE"},
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        dataObjFun.showDataHousePriceIndexDetailList(row.housePriceId);
+                        dataObjFun.showDataHousePriceIndexDetailList(row.allocationVolumeRatioId);
                     } else {
                         Alert(result.errmsg);
                     }
@@ -227,21 +215,21 @@
         })
     };
 
-    dataObjFun.editDataHousePriceIndexDetail = function (index) {
-        var row = $(dataObjFun.config.indexDetailTable).bootstrapTable('getData')[index];
-        var frm = $(dataObjFun.config.indexDetailFrm);
+    dataObjFun.editDataAllocationCorrectionCoefficientVolumeRatioDetail = function (index) {
+        var row = $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).bootstrapTable('getData')[index];
+        var frm = $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm);
         frm.clearAll();
         frm.initForm(row);
-        $(dataObjFun.config.indexDetailBox).modal("show");
+        $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox).modal("show");
     };
 
-    dataObjFun.saveDataHousePriceIndexDetail = function () {
-        var frm = $(dataObjFun.config.indexDetailFrm);
+    dataObjFun.saveDataAllocationCorrectionCoefficientVolumeRatioDetail = function () {
+        var frm = $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm);
         var data = formSerializeArray(frm);
         if (!frm.valid()) {
             return false;
         }
-        var url = '${pageContext.request.contextPath}/dataHousePriceIndexDetail';
+        var url = '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail';
         var _method = null;
         if (data.id) {
             url += "/edit/" + JSON.stringify(data);
@@ -257,8 +245,8 @@
             success: function (result) {
                 if (result.ret) {
                     toastr.success('成功');
-                    dataObjFun.showDataHousePriceIndexDetailList(data.housePriceId);
-                    $(dataObjFun.config.indexDetailBox).modal("hide");
+                    dataObjFun.showDataHousePriceIndexDetailList(data.allocationVolumeRatioId);
+                    $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox).modal("hide");
                 } else {
                     Alert(result.errmsg);
                 }
@@ -266,31 +254,22 @@
         })
     };
 
-    dataObjFun.showDataHousePriceIndexDetailList = function (housePriceId) {
+    dataObjFun.showDataHousePriceIndexDetailList = function (allocationVolumeRatioId) {
         var cols = [];
-        cols.push({
-            field: 'startDate', title: '开始月份', formatter: function (value, row, index) {
-                return formatDate(value);
-            }
-        });
-        cols.push({field: 'indexNumber', title: '指数'});
-        cols.push({
-            field: 'endDate', title: '结束月份', formatter: function (value, row, index) {
-                return formatDate(value);
-            }
-        });
+        cols.push({field: 'plotRatio', title: '容积率'});
+        cols.push({field: 'correctionFactor', title: '修正系数'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataObjFun.editDataHousePriceIndexDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.deleteDataHousePriceIndexDetail(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataObjFun.editDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
-        $(dataObjFun.config.indexDetailTable).bootstrapTable('destroy');
-        TableInit($(dataObjFun.config.indexDetailTable).prop("id"), "${pageContext.request.contextPath}/dataHousePriceIndexDetail/getBootstrapTableVo", cols, {
-            housePriceId: housePriceId
+        $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).bootstrapTable('destroy');
+        TableInit($(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).prop("id"), "${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
+            allocationVolumeRatioId: allocationVolumeRatioId
         }, {
             showColumns: false,
             showRefresh: false,
@@ -303,17 +282,8 @@
 
     $(document).ready(function () {
         dataObjFun.listMaster();
-        AssessCommon.loadDataDicByKey(AssessDicKey.dataTypeIndex, null, function (html, data) {
-            $("#frmQuery").find("select[name='type']").empty().html(html).trigger('change');
-        });
-        DatepickerUtils.initDate($('.date-month'), {
-            autoclose: true,
-            todayBtn: "linked",
-            language: "zh-CN",
-            clearBtn: true,
-            format: 'yyyy-mm',
-            startView: 4,
-            minView: 3
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, null, function (html, data) {
+            $("#frmQuery").find("select[name='purpose']").empty().html(html).trigger('change');
         });
     });
 
@@ -326,7 +296,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房价指数</h3>
+                <h3 class="modal-title">容积率修正系数配置 </h3>
             </div>
             <form id="frmFather" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -369,10 +339,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">类别<span
+                                        <label class="col-sm-2 control-label">土地用途<span
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-10">
-                                            <select name="type" required="required"
+                                            <select name="purpose" required="required"
                                                     class="form-control search-select select2">
                                             </select>
                                         </div>
@@ -419,7 +389,7 @@
     </div>
 </div>
 
-<div id="indexDetailTableBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -427,33 +397,33 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">指数详情</h3>
-                <input type="hidden" name="housePriceId">
+                <h3 class="modal-title">容积率修正系数配置 详情</h3>
+                <input type="hidden" name="allocationVolumeRatioId">
             </div>
             <div class="modal-body">
                 <div type="button" class="btn btn-success"
-                     onclick="dataObjFun.showDataHousePriceIndexDetailBox()"
-                     data-toggle="modal" href="#indexDetailBox"> 新增
+                     onclick="dataObjFun.showDataAllocationCorrectionCoefficientVolumeRatioDetailBox()"
+                     data-toggle="modal" href="#dataAllocationCorrectionCoefficientVolumeRatioDetailBox"> 新增
                 </div>
-                <table class="table table-bordered" id="indexDetailTable">
+                <table class="table table-bordered" id="dataAllocationCorrectionCoefficientVolumeRatioDetailTable">
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<div id="indexDetailBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="dataAllocationCorrectionCoefficientVolumeRatioDetailBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房价指数</h3>
+                <h3 class="modal-title">容积率修正系数配置 详情</h3>
             </div>
-            <form id="indexDetailFrm" class="form-horizontal">
+            <form id="dataAllocationCorrectionCoefficientVolumeRatioDetailFrm" class="form-horizontal">
                 <input type="hidden" name="id">
-                <input type="hidden" name="housePriceId">
+                <input type="hidden" name="allocationVolumeRatioId">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -461,36 +431,24 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            开始月份<span class="symbol required"></span>
+                                            容积率<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" readonly="readonly" required
-                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="startDate" placeholder="开始月份">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            结束月份<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" readonly="readonly" required
-                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="endDate" placeholder="结束月份">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            指数<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" required
+                                            <input type="text" required data-rule-number='true'
                                                    class="form-control"
-                                                   name="indexNumber" placeholder="指数">
+                                                   name="plotRatio" placeholder="容积率">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            修正系数<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" required data-rule-number='true'
+                                                   class="form-control"
+                                                   name="correctionFactor" placeholder="修正系数">
                                         </div>
                                     </div>
                                 </div>
@@ -502,7 +460,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="dataObjFun.saveDataHousePriceIndexDetail()">
+                    <button type="button" class="btn btn-primary" onclick="dataObjFun.saveDataAllocationCorrectionCoefficientVolumeRatioDetail()">
                         保存
                     </button>
                 </div>

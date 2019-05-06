@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
+import com.copower.pmcc.assess.dto.output.data.DataHousePriceIndexVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
@@ -906,22 +907,29 @@ public class GenerateMdCompareService {
 
             SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(this.areaId);
             //获取时间区间与地区内的房价指数
-            List<DataHousePriceIndex> dataHousePriceIndexList = dataHousePriceIndexDao.listEndStart(startDate, this.valueTimePoint, schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
-            if (CollectionUtils.isEmpty(dataHousePriceIndexList)) {
-                dataHousePriceIndexList = dataHousePriceIndexDao.listEndStart(startDate, this.valueTimePoint, schemeAreaGroup.getProvince(), schemeAreaGroup.getCity());
-            }
+            DataHousePriceIndex query = new DataHousePriceIndex();
+            query.setEvaluationDate(this.valueTimePoint);
+            query.setCity(schemeAreaGroup.getCity());
+            query.setDistrict(schemeAreaGroup.getDistrict());
+            query.setProvince(schemeAreaGroup.getProvince());
+            //startDate, this.valueTimePoint
+            List<DataHousePriceIndexVo> dataHousePriceIndexList =dataHousePriceIndexService.getDataHousePriceIndexList(query);
+            List<DataHousePriceIndexDetail> dataHousePriceIndexDetails = Lists.newArrayList();
             if (CollectionUtils.isNotEmpty(dataHousePriceIndexList)) {
                 for (DataHousePriceIndex index : dataHousePriceIndexList) {
-                    List<DataHousePriceIndexDetail> dataHousePriceIndexDetails =dataHousePriceIndexService.getDataHousePriceIndexDetailList(index.getId());
-                    if (CollectionUtils.isNotEmpty(dataHousePriceIndexDetails)){
-                        for (DataHousePriceIndexDetail dataHousePriceIndexDetail:dataHousePriceIndexDetails){
-                            builder.insertCell();
-                            builder.writeln(sdf2.format(dataHousePriceIndexDetail.getStartDate()));
-                            builder.insertCell();
-                            builder.writeln(DateUtils.format(dataHousePriceIndexDetail.getEndDate()));
-                            builder.endRow();
-                        }
+                    List<DataHousePriceIndexDetail> details =dataHousePriceIndexService.getDataHousePriceIndexDetailList(index.getId());
+                    if (CollectionUtils.isNotEmpty(details)){
+                        dataHousePriceIndexDetails.addAll(details);
                     }
+                }
+            }
+            if (CollectionUtils.isNotEmpty(dataHousePriceIndexDetails)){
+                for (DataHousePriceIndexDetail dataHousePriceIndexDetail:dataHousePriceIndexDetails){
+                    builder.insertCell();
+                    builder.writeln(sdf2.format(dataHousePriceIndexDetail.getStartDate()));
+                    builder.insertCell();
+                    builder.writeln(DateUtils.format(dataHousePriceIndexDetail.getEndDate()));
+                    builder.endRow();
                 }
             }
         }

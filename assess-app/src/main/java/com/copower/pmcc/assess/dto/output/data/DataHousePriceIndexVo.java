@@ -12,6 +12,7 @@ public class DataHousePriceIndexVo extends DataHousePriceIndex {
     private String districtName;
 
     private String cityName;
+    private String areaName;
 
 
     public String getProvinceName() {
@@ -44,5 +45,13 @@ public class DataHousePriceIndexVo extends DataHousePriceIndex {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 }

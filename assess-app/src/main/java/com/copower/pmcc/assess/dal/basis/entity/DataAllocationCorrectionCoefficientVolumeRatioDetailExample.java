@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -222,6 +223,126 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailExample {
 
         public Criteria andAllocationVolumeRatioIdNotBetween(Integer value1, Integer value2) {
             addCriterion("allocation_volume_ratio_id not between", value1, value2, "allocationVolumeRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioIsNull() {
+            addCriterion("plot_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioIsNotNull() {
+            addCriterion("plot_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio =", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioNotEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio <>", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioGreaterThan(BigDecimal value) {
+            addCriterion("plot_ratio >", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio >=", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioLessThan(BigDecimal value) {
+            addCriterion("plot_ratio <", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio <=", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio in", values, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioNotIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio not in", values, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio between", value1, value2, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio not between", value1, value2, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorIsNull() {
+            addCriterion("correction_factor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorIsNotNull() {
+            addCriterion("correction_factor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorEqualTo(BigDecimal value) {
+            addCriterion("correction_factor =", value, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorNotEqualTo(BigDecimal value) {
+            addCriterion("correction_factor <>", value, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorGreaterThan(BigDecimal value) {
+            addCriterion("correction_factor >", value, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("correction_factor >=", value, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorLessThan(BigDecimal value) {
+            addCriterion("correction_factor <", value, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("correction_factor <=", value, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorIn(List<BigDecimal> values) {
+            addCriterion("correction_factor in", values, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorNotIn(List<BigDecimal> values) {
+            addCriterion("correction_factor not in", values, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("correction_factor between", value1, value2, "correctionFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionFactorNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("correction_factor not between", value1, value2, "correctionFactor");
             return (Criteria) this;
         }
 

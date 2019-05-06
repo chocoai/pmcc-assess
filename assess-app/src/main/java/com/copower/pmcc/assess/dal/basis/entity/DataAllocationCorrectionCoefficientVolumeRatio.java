@@ -5,6 +5,18 @@ import java.util.Date;
 public class DataAllocationCorrectionCoefficientVolumeRatio {
     private Integer id;
 
+    private String province;
+
+    private String city;
+
+    private String district;
+
+    private Integer purpose;
+
+    private Date evaluationDate;
+
+    private Date releaseDate;
+
     private String creator;
 
     private Date gmtCreated;
@@ -17,6 +29,54 @@ public class DataAllocationCorrectionCoefficientVolumeRatio {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district == null ? null : district.trim();
+    }
+
+    public Integer getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(Integer purpose) {
+        this.purpose = purpose;
+    }
+
+    public Date getEvaluationDate() {
+        return evaluationDate;
+    }
+
+    public void setEvaluationDate(Date evaluationDate) {
+        this.evaluationDate = evaluationDate;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getCreator() {
