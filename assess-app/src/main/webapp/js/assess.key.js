@@ -255,6 +255,7 @@ AssessDicKey.programmeMarketCostapproachGrade = "programme.market.costApproach.g
 AssessDicKey.programmeMarketCostapproachFactor = "programme.market.costApproach.factor";//土地地价因素
 AssessDicKey.dataLandApproximationMethodSetting = "data.land.approximation.method.setting";//土地逼近法补偿配置
 AssessDicKey.dataTypeIndex = "data.index.type";//指数类型
+AssessDicKey.projectDeclareCertificateIsnull = "project.declare.certificate.isNull";//权证有无
 
 
 /**

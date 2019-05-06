@@ -404,7 +404,7 @@ civilEngineering.declareRealtyRealEstateCertSaveAndUpdate = function () {
 
     }else {
         data.planDetailsId = declareCommon.getPlanDetailsId();
-        data.enable = "no";
+        data.enable = declareCommon.branchData;
     }
     $.ajax({
         type: "POST",
@@ -541,7 +541,7 @@ civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
 
     }else {
         data.planDetailsId = declareCommon.getPlanDetailsId();
-        data.enable = "no";
+        data.enable = declareCommon.branchData;
     }
     $.ajax({
         type: "POST",

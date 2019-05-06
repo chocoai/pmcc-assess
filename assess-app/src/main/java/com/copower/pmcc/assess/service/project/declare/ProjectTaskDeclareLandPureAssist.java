@@ -27,6 +27,7 @@ public class ProjectTaskDeclareLandPureAssist implements ProjectTaskInterface {
     private DeclarePublicService declarePublicService;
     @Autowired
     private ErpAreaService erpAreaService;
+
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareLandPureIndex", "", 0, "0", "");

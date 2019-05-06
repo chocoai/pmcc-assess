@@ -122,8 +122,7 @@ public class DeclareRealtyLandCertService {
                 if (!declarePoiHelp.house(houseCert, builder, row, i)) {
                     continue;
                 }
-                //不启用 (关联数据)
-                houseCert.setEnable(DeclareTypeEnum.EnableNo.getKey());
+                houseCert.setEnable(DeclareTypeEnum.BranchData.getKey());
                 houseCert.setCreator(commonService.thisUserAccount());
             } catch (Exception e) {
                 flag = false;
@@ -214,15 +213,6 @@ public class DeclareRealtyLandCertService {
      */
     public String importData(DeclareRealtyLandCert declareRealtyLandCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
-        String declareType = null;
-        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE);
-        if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
-            for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
-                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.LAND.getKey())) {
-                    declareType = String.format("%d", baseProjectClassify.getId());
-                }
-            }
-        }
         Row row = null;
         StringBuilder builder = new StringBuilder();
         //1.保存文件
@@ -251,7 +241,6 @@ public class DeclareRealtyLandCertService {
             builder.append("没有数据!");
             return builder.toString();
         }
-        List<BaseDataDic> land_uses = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_TOTAL_LAND_USE);
         for (int i = startRowNumber; i < startRowNumber + rowLength; i++) {
             //标识符
             boolean flag = true;
@@ -263,6 +252,8 @@ public class DeclareRealtyLandCertService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
+                BeanUtils.copyProperties(declareRealtyLandCert,oo);
+                oo.setId(null);
                 if (!declarePoiHelp.land(oo, builder, row, i)) {
                     continue;
                 }
@@ -271,12 +262,9 @@ public class DeclareRealtyLandCertService {
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
             }
             if (flag) {
-                oo.setDeclareType(declareType);
                 oo.setCreator(commonService.thisUserAccount());
                 oo.setPid(0);
-                oo.setPlanDetailsId(declareRealtyLandCert.getPlanDetailsId());
-                //启用 (非关联数据)
-                oo.setEnable(DeclareTypeEnum.Enable.getKey());
+                oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 declareRealtyLandCertDao.addDeclareRealtyLandCert(oo);
                 successCount++;
             }
@@ -337,7 +325,7 @@ public class DeclareRealtyLandCertService {
     public void removeDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
         if (declareRealtyLandCert.getPid() != null) {
             DeclareRealtyHouseCert declareRealtyHouseCert = declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(declareRealtyLandCert.getPid());
-            if (Objects.equal(DeclareTypeEnum.EnableNo.getKey(), declareRealtyHouseCert.getEnable())) {
+            if (Objects.equal(DeclareTypeEnum.BranchData.getKey(), declareRealtyHouseCert.getEnable())) {
                 DeclareRealtyHouseCert oo = new DeclareRealtyHouseCert();
                 oo.setId(declareRealtyLandCert.getPid());
                 declareRealtyHouseCertDao.removeDeclareRealtyHouseCert(oo);
@@ -406,7 +394,7 @@ public class DeclareRealtyLandCertService {
         }
         DeclareRealtyLandCert query = new DeclareRealtyLandCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
-        query.setEnable(DeclareTypeEnum.Enable.getKey());
+        query.setEnable(DeclareTypeEnum.MasterData.getKey());
         query.setBisRecord(false);
         List<DeclareRealtyLandCert> lists = declareRealtyLandCertDao.getDeclareRealtyLandCertList(query);
         for (DeclareRealtyLandCert oo : lists) {

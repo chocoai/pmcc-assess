@@ -6,8 +6,9 @@ package com.copower.pmcc.assess.common.enums;
  * @Description:
  */
 public enum DeclareTypeEnum {
-    Enable("yes","非关联数据"),
-    EnableNo("no","关联数据"),HOUSE("房产证","BaseProjectClassify名称匹配"),
+    MasterData("master","主数据"),
+    BranchData("branch","从表数据"),
+    HOUSE("房产证","BaseProjectClassify名称匹配"),
     DeclareBuildEquipmentInstall("设备安装","BaseProjectClassify名称匹配"),
     DeclareBuildEngineering("土建","BaseProjectClassify名称匹配"),
     LAND("土地证","BaseProjectClassify名称匹配"),

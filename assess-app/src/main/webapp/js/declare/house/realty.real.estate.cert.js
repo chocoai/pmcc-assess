@@ -224,7 +224,7 @@ declareRealtyRealEstateCert.loadList = function () {
     });
     $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('destroy');
     TableInit(declareRealtyRealEstateCert.config.table, getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
-        planDetailsId: declareCommon.getPlanDetailsId(),enable:'yes'
+        planDetailsId: declareCommon.getPlanDetailsId(),enable:declareCommon.masterData
     }, {
         showColumns: false,
         showRefresh: false,
@@ -282,8 +282,8 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
     var data = formParams(declareRealtyRealEstateCert.config.frm);
     if (!declareRealtyRealEstateCert.isNotBlank(data.id)) {
         data.planDetailsId = declareCommon.getPlanDetailsId();
-        data.declareType = declareFunObj.getDeclareType("不动产证");
-        data.enable = "yes";
+        data.declareType = declareCommon.declareRealType;
+        data.enable = declareCommon.masterData;
     }
     //当土地证填写后
     if (data.landNumber){

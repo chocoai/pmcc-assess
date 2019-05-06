@@ -109,8 +109,8 @@ assessCommonHouse.saveAndUpdateHouse = function () {
     if (!assessCommonHouse.isNotBlank(data.id)) {
         data.planDetailsId = declareCommon.getPlanDetailsId();
         data.pid = "0";
-        data.enable = "yes";
-        data.declareType = declareFunObj.getDeclareType("房产证");
+        data.enable = declareCommon.masterData;
+        data.declareType = declareCommon.declareHouseType;
     }
     //当土地证填写后
     if (data.landNumber){
@@ -367,7 +367,7 @@ assessCommonHouse.saveAndUpdateLand = function () {
     }
     var data = formParams(assessCommonHouse.config.son.declareRealtyLandCert.frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
-    data.enable = "no";
+    data.enable = declareCommon.branchData;
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
@@ -622,7 +622,7 @@ assessCommonHouse.loadList = function () {
     $("#" + assessCommonHouse.config.table).bootstrapTable('destroy');
     TableInit(assessCommonHouse.config.table, getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(),
-        enable:'yes'
+        enable:declareCommon.masterData
     }, {
         showColumns: false,
         showRefresh: false,

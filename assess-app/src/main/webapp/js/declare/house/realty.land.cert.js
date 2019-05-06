@@ -306,7 +306,7 @@ assessCommonLand.loadList = function () {
     $("#" + assessCommonLand.config.table).bootstrapTable('destroy');
     TableInit(assessCommonLand.config.table, getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(),
-        enable:'yes'
+        enable:declareCommon.masterData
     }, {
         showColumns: false,
         showRefresh: false,
@@ -346,9 +346,9 @@ assessCommonLand.saveAndUpdateLand = function () {
     var data = formParams(assessCommonLand.config.frm);
     if (!assessCommonLand.isNotBlank(data.id)) {
         data.planDetailsId = declareCommon.getPlanDetailsId();
-        data.enable = "yes";
+        data.enable = declareCommon.masterData;
         data.pid = "0";
-        data.declareType = declareFunObj.getDeclareType("土地证");
+        data.declareType = declareCommon.declareLandType;
     }
     assessCommonLand.saveLand(data , function () {
         assessCommonLand.loadList();
@@ -463,7 +463,7 @@ assessCommonLand.saveAndUpdateHouse = function () {
     }
     var data = formParams(assessCommonLand.config.HouseCert.frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
-    data.enable = "no";
+    data.enable = declareCommon.branchData;
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",

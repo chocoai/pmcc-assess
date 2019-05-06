@@ -127,8 +127,7 @@ public class DeclareRealtyHouseCertService {
                 if (!declarePoiHelp.land(landCert, builder, row, i)) {
                     continue;
                 }
-                //不启用 (说明是关联数据)
-                landCert.setEnable(DeclareTypeEnum.EnableNo.getKey());
+                landCert.setEnable(DeclareTypeEnum.BranchData.getKey());
                 landCert.setCreator(commonService.thisUserAccount());
             } catch (Exception e) {
                 flag = false;
@@ -218,15 +217,6 @@ public class DeclareRealtyHouseCertService {
      * @date: 2018/9/25 17:57
      */
     public String importData(DeclareRealtyHouseCert declareRealtyHouseCert, MultipartFile multipartFile) throws Exception {
-        String declareType = null;
-        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE);
-        if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
-            for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
-                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.HOUSE.getKey())) {
-                    declareType = String.format("%d", baseProjectClassify.getId());
-                }
-            }
-        }
         Workbook workbook = null;
         Row row = null;
         StringBuilder builder = new StringBuilder();
@@ -267,6 +257,8 @@ public class DeclareRealtyHouseCertService {
                     continue;
                 }
                 oo = new DeclareRealtyHouseCert();
+                BeanUtils.copyProperties(declareRealtyHouseCert,oo);
+                oo.setId(null);
                 //excel 处理
                 if (!declarePoiHelp.house(oo, builder, row, i)) {
                     continue;
@@ -276,11 +268,8 @@ public class DeclareRealtyHouseCertService {
                 builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
             }
             if (flag) {
-                oo.setDeclareType(declareType);
-                oo.setPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId());
                 oo.setCreator(commonService.thisUserAccount());
-                //启用 (非关联数据)
-                oo.setEnable(DeclareTypeEnum.Enable.getKey());
+                oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 declareRealtyHouseCertDao.addDeclareRealtyHouseCert(oo);
                 successCount++;
             }
@@ -330,7 +319,7 @@ public class DeclareRealtyHouseCertService {
     public void removeDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
         if (declareRealtyHouseCert.getPid() != null) {
             DeclareRealtyLandCert declareRealtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(declareRealtyHouseCert.getPid());
-            if (Objects.equal(DeclareTypeEnum.EnableNo.getKey(), declareRealtyLandCert.getEnable())) {
+            if (Objects.equal(DeclareTypeEnum.BranchData.getKey(), declareRealtyLandCert.getEnable())) {
                 DeclareRealtyLandCert oo = new DeclareRealtyLandCert();
                 oo.setId(declareRealtyHouseCert.getPid());
                 declareRealtyLandCertDao.removeDeclareRealtyLandCert(oo);
@@ -392,7 +381,7 @@ public class DeclareRealtyHouseCertService {
         }
         DeclareRealtyHouseCert query = new DeclareRealtyHouseCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
-        query.setEnable(DeclareTypeEnum.Enable.getKey());
+        query.setEnable(DeclareTypeEnum.MasterData.getKey());
         query.setBisRecord(false);
         List<DeclareRealtyHouseCert> lists = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(query);
         for (DeclareRealtyHouseCert oo : lists) {

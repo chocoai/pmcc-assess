@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail;
 import com.copower.pmcc.assess.dto.output.data.DataAllocationCorrectionCoefficientVolumeRatioDetailVo;
 import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioDetailService;
@@ -30,7 +31,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
         return vo;
     }
 
-    @GetMapping(value = "/get/{id}",name = "restful get")
+    @GetMapping(value = "/get/{id}", name = "restful get")
     public HttpResult get(@PathVariable Integer id) {
         DataAllocationCorrectionCoefficientVolumeRatioDetailVo coefficientVolumeRatioDetailVo = null;
         try {
@@ -42,11 +43,10 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
         return HttpResult.newCorrectResult(coefficientVolumeRatioDetailVo);
     }
 
-    @PutMapping(value = "/edit/{formData}",name = "restful put")
+    @PutMapping(value = "/edit/{formData}", name = "restful put")
     public HttpResult edit(@PathVariable(name = "formData") String formData) {
         try {
-            DataAllocationCorrectionCoefficientVolumeRatioDetail correctionCoefficientVolumeRatioDetail = JSON.parseObject(formData,DataAllocationCorrectionCoefficientVolumeRatioDetail.class);
-            volumeRatioDetailService.saveDataAllocationCorrectionCoefficientVolumeRatioDetail(correctionCoefficientVolumeRatioDetail);
+            saveDetail(formData);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -54,11 +54,10 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
         return HttpResult.newCorrectResult();
     }
 
-    @PostMapping(value = "/save/{formData}",name = "restful post")
-    public HttpResult save(@PathVariable(name = "formData") String formData){
+    @PostMapping(value = "/save/{formData}", name = "restful post")
+    public HttpResult save(@PathVariable(name = "formData") String formData) {
         try {
-            DataAllocationCorrectionCoefficientVolumeRatioDetail volumeRatioDetail = JSON.parseObject(formData,DataAllocationCorrectionCoefficientVolumeRatioDetail.class);
-            volumeRatioDetailService.saveDataAllocationCorrectionCoefficientVolumeRatioDetail(volumeRatioDetail);
+            saveDetail(formData);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -80,5 +79,22 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
         }
         return HttpResult.newCorrectResult();
     }
-    
+
+    /**
+     * 第一次遇到这种bug记录一下 ,原因是使用restful 的时候我直接把实体作为一个参数,当有小数点的时候com.alibaba.fastjson.JSON解析错误 解析出来的字符串没有结束符号
+     * @param formData
+     * @throws Exception
+     */
+    private void saveDetail(String formData) throws Exception {
+        DataAllocationCorrectionCoefficientVolumeRatioDetail volumeRatioDetail = null;
+        try {
+            volumeRatioDetail = JSON.parseObject(formData, DataAllocationCorrectionCoefficientVolumeRatioDetail.class);
+        } catch (Exception e) {
+            //解决bug unclosed string : 
+            formData = String.format("%s%s",formData,"\"}");
+            volumeRatioDetail = JSON.parseObject(formData, DataAllocationCorrectionCoefficientVolumeRatioDetail.class);
+        }
+        volumeRatioDetailService.saveDataAllocationCorrectionCoefficientVolumeRatioDetail(volumeRatioDetail);
+    }
+
 }

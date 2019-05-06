@@ -66,15 +66,6 @@ public class DeclareRealtyRealEstateCertService {
     private BaseProjectClassifyService baseProjectClassifyService;
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
-        String declareType = null;
-        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE);
-        if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
-            for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
-                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.RealEstate.getKey())) {
-                    declareType = String.format("%d", baseProjectClassify.getId());
-                }
-            }
-        }
         Workbook workbook = null;
         Row row = null;
         StringBuilder builder = new StringBuilder();
@@ -105,7 +96,6 @@ public class DeclareRealtyRealEstateCertService {
             return builder.toString();
         }
         //----------------------------||----------------------
-        List<BaseDataDic> land_uses = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_TOTAL_LAND_USE);
         for (int i = startRowNumber; i <= rowLength; i++) {
             //标识符
             boolean flag = true;
@@ -117,9 +107,9 @@ public class DeclareRealtyRealEstateCertService {
                     continue;
                 }
                 oo = new DeclareRealtyRealEstateCert();
-                oo.setDeclareType(declareType);
-                oo.setPlanDetailsId(declareRealtyRealEstateCert.getPlanDetailsId());
-                oo.setEnable(DeclareTypeEnum.Enable.getKey());
+                oo.setEnable(DeclareTypeEnum.MasterData.getKey());
+                BeanUtils.copyProperties(declareRealtyRealEstateCert,oo);
+                oo.setId(null);
                 //excel处理
                 if (!declarePoiHelp.realEstateCert(oo, builder, row, i)) {
                     continue;
@@ -247,7 +237,7 @@ public class DeclareRealtyRealEstateCertService {
         }
         DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
-        query.setEnable(DeclareTypeEnum.Enable.getKey());
+        query.setEnable(DeclareTypeEnum.MasterData.getKey());
         query.setBisRecord(false);
         List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
         for (DeclareRealtyRealEstateCert oo : lists) {

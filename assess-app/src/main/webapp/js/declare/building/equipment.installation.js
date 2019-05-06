@@ -805,7 +805,7 @@ equipmentInstallation.declareRealtyLandCertSaveAndUpdate = function () {
 
     }else {
         data.planDetailsId = declareCommon.getPlanDetailsId();
-        data.enable = "no";
+        data.enable = declareCommon.branchData;
     }
     $.ajax({
         type: "POST",
@@ -943,7 +943,7 @@ equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate = function () {
 
     }else {
         data.planDetailsId = declareCommon.getPlanDetailsId();
-        data.enable = "no";
+        data.enable = declareCommon.branchData;
     }
     $.ajax({
         type: "POST",
