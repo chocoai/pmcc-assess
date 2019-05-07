@@ -38,6 +38,7 @@ public class DataHousePriceIndexDetailDao {
 
     public List<DataHousePriceIndexDetail> getDataHousePriceIndexDetailList(DataHousePriceIndexDetail oo){
         DataHousePriceIndexDetailExample example = getExample(oo);
+        example.setOrderByClause("start_date");
         return mapper.selectByExample(example);
     }
 

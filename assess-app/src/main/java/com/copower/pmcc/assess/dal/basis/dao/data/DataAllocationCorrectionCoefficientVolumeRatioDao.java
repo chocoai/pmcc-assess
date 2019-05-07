@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoeffici
 import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataAllocationCorrectionCoefficientVolumeRatioMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -52,5 +53,23 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDao{
         DataAllocationCorrectionCoefficientVolumeRatioExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         return example;
+    }
+
+    public List<DataAllocationCorrectionCoefficientVolumeRatio> getDataAllocationCorrectionCoefficientVolumeRatioList(String province, String city, String district){
+        DataAllocationCorrectionCoefficientVolumeRatioExample example = new DataAllocationCorrectionCoefficientVolumeRatioExample();
+        DataAllocationCorrectionCoefficientVolumeRatioExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(province)){
+            criteria.andProvinceEqualTo(province);
+        }
+        if(!StringUtils.isEmpty(city)){
+            criteria.andCityEqualTo(city);
+        }
+        if(!StringUtils.isEmpty(district)){
+            criteria.andDistrictEqualTo(district);
+        }else {
+            criteria.andDistrictEqualTo("");
+        }
+
+        return mapper.selectByExample(example);
     }
 }

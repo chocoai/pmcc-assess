@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex;
 import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataHousePriceIndexMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -50,5 +51,25 @@ public class DataHousePriceIndexDao {
         DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         return example;
+    }
+
+    public List<DataHousePriceIndex> getDataHouseIndexList(String province, String city, String district, Integer type){
+        DataHousePriceIndexExample example = new DataHousePriceIndexExample();
+        DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(province)){
+            criteria.andProvinceEqualTo(province);
+        }
+        if(!StringUtils.isEmpty(city)){
+            criteria.andCityEqualTo(city);
+        }
+        if(!StringUtils.isEmpty(district)){
+            criteria.andDistrictEqualTo(district);
+        }else {
+            criteria.andDistrictEqualTo("");
+        }
+        if(type!=null){
+            criteria.andTypeEqualTo(type);
+        }
+        return mapper.selectByExample(example);
     }
 }

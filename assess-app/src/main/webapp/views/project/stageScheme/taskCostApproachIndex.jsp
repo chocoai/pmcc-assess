@@ -14,7 +14,52 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>土地成本价格</h3>
+                    <div class="clearfix"></div>
+                </div>
 
+                <div class="x_content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th rowspan="2" style="width:30%">收费项目</th>
+                                        <th rowspan="2" style="width:40%">收费依据</th>
+                                        <th colspan="2" style="width:30%">收费标准</th>
+                                    </tr>
+                                    <tr>
+                                        <th>元/亩</th>
+                                        <th>元/㎡</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>土地成本价格</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>土地取得费及相关税费</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <div class="x_panel">
                 <div class="x_content">
