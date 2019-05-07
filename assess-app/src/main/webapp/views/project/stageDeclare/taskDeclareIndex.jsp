@@ -103,129 +103,22 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/house/realty.house.cert.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
-    var config = {
-        declare: {
-            frm: "declareApplyForm"
-        },
-        declareRealtyHouseCert: {
-            name: "房产证",
-            view: "viewDeclareRealtyHouseCert"
-        },
-        declareRealtyLandCert: {
-            name: "土地证",
-            view: "viewDeclareRealtyLandCert"
-        },
-        declareRealtyRealEstateCert: {
-            name: "不动产证",
-            view: "viewDeclareRealtyRealEstateCert"
-        }
-    };
-
-    var declareFunObj = {};
-
-    declareFunObj.isEmpty = function (item) {
-        if (item) {
-            return true;
-        }
-        return false;
-    };
-
-    /**
-     * @author:  zch
-     * 描述:获取申报证书类型
-     * @date:2018-10-22
-     **/
-    declareFunObj.getDeclareType = function (name) {
-        var declareType = null;
-        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
-            AssessCommon.getProjectClassifyInfoAsync($(oo).val(), function (data) {
-                if (declareFunObj.isEmpty(data)) {
-                    if (data.name == name) {
-                        declareType = data.id;
-                    }
-                }
-            })
-        });
-        return declareType;
-    };
-
-
-    declareFunObj.declare = {
-        init: function () {
-            var num = 6;
-            AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateType, function (html, data) {
-                var resetHtml = "";
-                var k = 0;
-                $.each(data, function (i, n) {
-                    if (i % num == 0) {
-                        k++;
-                    }
-                });
-                for (var i = 0; i < k; i++) {
-                    resetHtml += "<div class='form-group'>";
-                    for (var j = i * num; j < i * num + num; j++) {
-                        if (j < data.length) {
-                            resetHtml += "<div class='col-sm-2'>";
-                            resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' id='classify" + data[j].id + "' name='other' required='required' value='" + data[j].id + "'" + ">";
-                            resetHtml += "<label for='classify" + data[j].id + "'>" + data[j].name + "<label>";
-                            resetHtml += "</span>";
-                            resetHtml += "</div>";
-                        }
-                    }
-                    resetHtml += "</div>";
-                }
-                //HTML
-                $("#" + config.declare.frm + "HTML").append(resetHtml);
-            });
-        }
-    };
     $(document).ready(function () {
-        declareFunObj.declare.init();
-
-        uploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
-        loadUploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
+        declareCommon.showFile(AssessUploadKey.PROJECT_PROXY,AssessDBKey.ProjectInfo,"${projectPlanDetails.projectId}",true);
+        declareCommon.fileUpload(AssessUploadKey.PROJECT_PROXY,AssessDBKey.ProjectInfo,"${projectPlanDetails.projectId}",true);
     });
-
-
 </script>
 <script type="application/javascript">
-    //初始化上传控件
-    function uploadFiles(tableName, tableId, fieldsName, target) {
-        FileUtils.uploadFiles({
-            target: target == undefined ? fieldsName : target,
-
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: tableName,
-                tableId: tableId,
-                fieldsName: fieldsName,
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            editFlag: true,
-            deleteFlag: true
-        });
-    }
-
-    //显示附件
-    function loadUploadFiles(tableName, tableId, fieldsName, target) {
-        FileUtils.getFileShows({
-            target: target == undefined ? fieldsName : target,
-            formData: {
-                tableName: tableName,
-                tableId: tableId,
-                fieldsName: fieldsName,
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            editFlag: true,
-            deleteFlag: true
-        })
-    }
-
     //提交
     function submit(mustUseBox) {
         //检查是否填写了申报数据
@@ -244,17 +137,12 @@
             submitForm(mustUseBox);
             return false;
         }
-
-
         toastr.info("请添加相关申报信息");
     }
 
     //提交表单
     function submitForm(mustUseBox) {
-        if (!$("#" +config.declare.frm).valid()) {
-            return false;
-        }
-        var formData = formParams(config.declare.frm);
+        var formData = {};
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
@@ -263,9 +151,7 @@
             submitToServer(JSON.stringify(formData), mustUseBox);
         }
     }
-
 </script>
-
 
 </html>
 

@@ -43,7 +43,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
         return HttpResult.newCorrectResult(coefficientVolumeRatioDetailVo);
     }
 
-    @PutMapping(value = "/edit/{formData}", name = "restful put")
+    @PutMapping(value = "/edit/{formData:.+}", name = "restful put")
     public HttpResult edit(@PathVariable(name = "formData") String formData) {
         try {
             saveDetail(formData);
@@ -54,7 +54,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
         return HttpResult.newCorrectResult();
     }
 
-    @PostMapping(value = "/save/{formData}", name = "restful post")
+    @PostMapping(value = "/save/{formData:.+}", name = "restful post")
     public HttpResult save(@PathVariable(name = "formData") String formData) {
         try {
             saveDetail(formData);

@@ -60,8 +60,6 @@
        onchange="assessCommonHouse.houseImportHandle();">
 <input type="file" id="sonDeclareRealtyLandCertFileId" name="file" style="display: none"
        onchange="assessCommonHouse.landImportHandle()">
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/house/realty.house.cert.js"></script>
 
 <!-- 房产证信息 -->
 <div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
