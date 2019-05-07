@@ -19,7 +19,7 @@
             <%@include file="/views/project/stageDeclare/declareLandPureModel/viewDeclareRealtyLandCert.jsp" %>
 
             <!-- 不动产证 -->
-
+            <%@include file="/views/project/stageDeclare/declareLandPureModel/viewDeclareRealtyRealEstateCert.jsp" %>
             <div class="x_panel">
                 <div class="x_content form-horizontal">
                     <form class="form-horizontal" id="declareApplyForm">
