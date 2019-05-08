@@ -51,9 +51,6 @@
 <input type="file" id="declareRealtyRealEstateCertFileId" name="declareRealtyRealEstateCertFileId"
        style="display: none;"
        onchange="declareRealtyRealEstateCert.enclosureFun();">
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js"></script>
-
 <!-- 不动产 add -->
 <div id="boxDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"

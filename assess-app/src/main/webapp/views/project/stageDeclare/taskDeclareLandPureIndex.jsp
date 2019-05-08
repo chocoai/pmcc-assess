@@ -16,10 +16,10 @@
             <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
 
             <!-- 土地证 -->
-
+            <%@include file="/views/project/stageDeclare/declareLandPureModel/viewDeclareRealtyLandCert.jsp" %>
 
             <!-- 不动产证 -->
-
+            <%@include file="/views/project/stageDeclare/declareLandPureModel/viewDeclareRealtyRealEstateCert.jsp" %>
             <div class="x_panel">
                 <div class="x_content form-horizontal">
                     <form class="form-horizontal" id="declareApplyForm">
@@ -61,6 +61,7 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/landPure/landPure.cert.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <script type="text/javascript">

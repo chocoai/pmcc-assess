@@ -10,12 +10,22 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-success" onclick="assessCommonLand.showAddModelLand()"
-                            data-toggle="modal"> 新增
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">新增
+                        <span class="caret"></span>
                     </button>
-                    <div type="button" class="btn btn-primary" onclick="assessCommonLand.editLand()"> 编辑</div>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="btn"
+                               onclick="assessLand.showAddModelLand(true)">有权证</a>
+                        </li>
+                        <li><a class="btn"
+                               onclick="assessLand.showAddModelLand(false)">无权证</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <div type="button" class="btn btn-primary" onclick="assessLand.editLand()"> 编辑</div>
                     <c:if test="${projectPlanDetails.bisRestart ne true}">
-                        <div type="button" class="btn btn-primary" onclick="assessCommonLand.deleteLand()"> 删除</div>
+                        <div type="button" class="btn btn-primary" onclick="assessLand.deleteLand()"> 删除</div>
                     </c:if>
                 </div>
                 <div class="btn-group">
@@ -55,16 +65,16 @@
         </form>
     </div>
 </div>
+
 <input type="file" id="ajaxFileUploadLand" name="file" style="display: none;"
-       onchange="assessCommonLand.inputFile();">
+       onchange="assessLand.inputFile();">
 <input type="file" id="ajaxFileUploadLandHouse" name="file" style="display: none;"
-       onchange="assessCommonLand.inputFileHouse();">
+       onchange="assessLand.inputFileHouse();">
 <input type="file" id="declareRealtyLandCertNewFileId" name="declareRealtyLandCertNewFileId" style="display: none;"
-       onchange="assessCommonLand.landImportHandle();">
+       onchange="assessLand.landImportHandle();">
 <input type="file" id="declareRealtyLandCert_declareRealtyLandCert_HouseCert_newFileId"
        name="declareRealtyLandCert_declareRealtyLandCert_HouseCert_newFileId"
-       onchange="assessCommonLand.houseImportHandle();" style="display: none">
-
+       onchange="assessLand.houseImportHandle();" style="display: none">
 
 <!-- 土地证信息 -->
 <div id="boxDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
@@ -105,7 +115,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="assessCommonLand.saveAndUpdateLand();">
+                    <button type="button" class="btn btn-primary" onclick="assessLand.saveAndUpdateLand();">
                         保存
                     </button>
                 </div>
@@ -160,7 +170,7 @@
                     取消
                 </button>
                 <button type="button" class="btn btn-primary"
-                        onclick="assessCommonLand.saveAndUpdateHouse();">
+                        onclick="assessLand.saveAndUpdateHouse();">
                     保存
                 </button>
             </div>
