@@ -32,12 +32,16 @@
         },
         land: {
             id: "declareModelLand",
+            id2: "declareModelLand2",
             handleId: "declareModelHandleLand",
+            handleId2: "declareModelHandleLand2",
             name: "土地证信息"
         },
         realEstateCert: {
             id: "declareModelRealEstateCert",
+            id2: "declareModelRealEstateCert2",
             handleId: "declareModelHandleRealEstateCert",
+            handleId2: "declareModelHandleRealEstateCert2",
             name: "不动产证"
         },
         civilEngineering: {
@@ -86,12 +90,18 @@
         getHtml: function () {
             return $("#" + commonDeclareApplyModel.config.realEstateCert.id).html();
         },
+        getHtml2: function () {
+            return $("#" + commonDeclareApplyModel.config.realEstateCert.id2).html();
+        },
         //不动产权证号
         CertNameSplicing: function (that) {
             var text = "";
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId);
+                if (engine.size() == 0){
+                    engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId2);
+                }
                 var location = engine.find("input[name='location']").val();
                 var number = engine.find("input[name='number']").val();
                 var id = engine.find("select[name='type']").val();
@@ -123,6 +133,9 @@
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId);
+                if (engine.size() == 0){
+                    engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId2);
+                }
                 var district = engine.find("select[name='district']").val();
                 var unit = engine.find("input[name='unit']").val();
                 var floor = engine.find("input[name='floor']").val();
@@ -327,6 +340,9 @@
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId);
+                if (engine.size() == 0){
+                    // engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId2);
+                }
                 var id = engine.find("select.landRightType").val();
                 var location = engine.find("input[name='location']").val();
                 var year = engine.find("input[name='year']").val();
@@ -368,6 +384,9 @@
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId);
+                if (engine.size() == 0){
+                    engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId2);
+                }
                 var district = engine.find("select[name='district']").val();
                 var unit = engine.find("input[name='unit']").val();
                 var floor = engine.find("input[name='floor']").val();
@@ -431,6 +450,9 @@
         },
         getHtml: function () {
             return $("#" + commonDeclareApplyModel.config.land.id).html();
+        },
+        getHtml2: function () {
+            return $("#" + commonDeclareApplyModel.config.land.id2).html();
         },
         getLandColumn: function () {
             var cols = [];
@@ -1915,7 +1937,412 @@
         </div>
     </div>
 </script>
+<script type="text/html" id="declareModelRealEstateCert2" data-title="不动产证(样式和上面的不动产有所差异)">
+    <div id="declareModelHandleRealEstateCert2">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    省<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select name="province"
+                            class="form-control search-select select2 province"
+                            required="required">
+                        <option value="" name="province">-请选择-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    市<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select name="city"
+                            class="form-control search-select select2"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    县(区)
+                </label>
+                <div class="col-sm-3">
+                    <select name="district"
+                            class="form-control search-select select2 district"
+                            onchange="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">不动产权证号</label>
+                <div class="col-sm-11">
+                    <input type="text" readonly="readonly"
+                           placeholder="不动产权证号" name="certName" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">所在地<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="所在地" name="location" class="form-control"
+                           required="required" onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
+                           placeholder="编号(数字)" name="number" class="form-control"
+                           required="required" onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
+                </div>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋所有权人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="房屋所有权人" name="ownership" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select required="required" name="publicSituation"
+                            class="form-control search-select select2 publicSituation">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    登记日期
+                </label>
+                <div class="col-sm-3">
+                    <input placeholder="登记日期"
+                           name="registrationTime" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
+                </div>
+            </div>
+        </div>
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋坐落</label>
+                <div class="col-sm-11">
+                    <input type="text" readonly="readonly"
+                           placeholder="房屋坐落" name="beLocated" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">街道号</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="街道号" name="streetNumber" class="form-control"
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">附号</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="附号(数字)" name="attachedNumber" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">栋号</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="栋号(数字)" name="buildingNumber" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">单元</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="单元(数字)" name="unit" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">楼层</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="楼层(数字)" name="floor" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房号</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="房号(数字)" name="roomNumber" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                </div>
+            </div>
+        </div>
+
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地用途<span
+                        class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select required="required" name="landCertUse"
+                            class="form-control search-select select2 landCertUse">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    权利性质<span
+                        class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select required="required" name="landRightNature"
+                            class="form-control search-select select2 landRightNature">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">权利类型<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="landRightType" class="form-control search-select select2 landRightType" required="required">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地使用年限起<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input placeholder="土地使用年限起"
+                           name="useStartDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地使用年限止<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input placeholder="土地使用年限止" required
+                           name="useEndDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">共用宗地面积</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="共用宗地面积(数字)" name="useRightArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">分摊面积</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">取得价格</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="取得价格" name="acquisitionPrice" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
+        </div>
+
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">不动产单元号(所有) <span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="不动产单元号(所有)" required name="realEstateUnitNumber" class="form-control">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">批文名称 <span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="批文名称" required name="approvalName" class="form-control">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">批文机关 <span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="批文机关" required name="approvalMechanism" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">批文文号 <span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="批文文号" required name="approvalReferenceNumber" class="form-control">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">批文时间 <span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="批文时间"
+                           name="approvalTime" data-date-format="yyyy-mm-dd" required
+                           class="form-control date-picker dbdate roomTime">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">批文附件 <span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="批文附件" required name="approvalFile" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">记事</label>
+                <div class="col-sm-11">
+                                            <textarea class="form-control" name="memo">
+                                            </textarea>
+                </div>
+            </div>
+        </div>
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋用途</label>
+                <div class="col-sm-3">
+                    <select name="houseCertUse"
+                            class="form-control search-select select2 houseCertUse">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋结构</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="房屋结构" name="housingStructure" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋性质</label>
+                <div class="col-sm-3">
+                    <select name="nature"
+                            class="form-control search-select select2 nature">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建筑面积</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建筑面积(数字)" name="floorArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证载面积</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="证载面积(数字)" name="evidenceArea" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">套内面积</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="套内面积(数字)" name="innerArea" class="form-control" data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">总层数</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="总层数(数字)" name="floorCount" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">登记机关</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="登记机关" name="registrationAuthority" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">其它</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="其它" name="other" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">附记其它</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="附记其它" name="otherNote" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 <script type="text/html" id="declareModelHouse" data-title="房产证信息">
     <div id="declareModelHandleHouse">
         <div class="form-group">
@@ -2509,6 +2936,299 @@
         </div>
     </div>
 </script>
+<script type="text/html" id="declareModelLand2" data-title="土地证信息2">
+    <div id="declareModelHandleLand2">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    省<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select name="province"
+                            class="form-control search-select select2 province"
+                            required="required">
+                        <option value="" name="province">-请选择-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    市<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select name="city"
+                            class="form-control search-select select2 city"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    县(区)
+                </label>
+                <div class="col-sm-3">
+                    <select name="district"
+                            class="form-control search-select select2 district"
+                            onchange="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地权证号
+                </label>
+                <div class="col-sm-11">
+                    <input type="text" name="landCertName"
+                           class="form-control" placeholder="土地权证号">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    所在地<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" name="location" required="required" class="form-control"
+                           onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
+                           placeholder="所在地">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    类型<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select required="required" name="landRightType"
+                            onchange="commonDeclareApplyModel.land.landCertNameSplicing(this)"
+                            class="form-control search-select select2 landRightType">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    年份<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" required="required" data-rule-maxlength="100"
+                           onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
+                           data-rule-number='true' name="year" class="form-control"
+                           placeholder="年份(数字如:2018)">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    编号<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" required="required" name="number" class="form-control"
+                           onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
+                           placeholder="编号">
+                </div>
+            </div>
+            <%--<div class="x-valid">--%>
+                <%--<label class="col-sm-1 control-label">--%>
+                    <%--土地使用权人<span class="symbol required"></span>--%>
+                <%--</label>--%>
+                <%--<div class="col-sm-3">--%>
+                    <%--<input type="text" name="ownership" required="required" class="form-control"--%>
+                           <%--placeholder="土地使用权人">--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">共有情况</label>
+                <div class="col-sm-3">
+                    <select required="required" name="publicSituation"
+                            class="form-control search-select select2 publicSituation">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    登记日期
+                </label>
+                <div class="col-sm-3">
+                    <input placeholder="登记日期" name="registrationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
+                </div>
+            </div>
+        </div>
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋坐落<span class="symbol required"></span></label>
+                <div class="col-sm-11">
+                    <input type="text"
+                           placeholder="房屋坐落" name="beLocated" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">街道号/村组<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="街道号/村组" name="streetNumber" class="form-control"
+                           onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">附号</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="附号(数字)" name="attachedNumber" class="form-control"
+                           onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)"
+                           data-rule-maxlength="100" data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">栋号</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="栋号(数字)" name="buildingNumber" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">单元</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="单元(数字)" name="unit" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">楼层</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="楼层(数字)" name="floor" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房号</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="房号(数字)" name="roomNumber" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                </div>
+            </div>
+        </div>
+
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">地号</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="地号" name="landNumber" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">图号</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="图号" name="graphNumber" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地用途<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select required="required" name="certUse"
+                            class="form-control search-select select2 certUse">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    权利性质<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <select required="required" name="landRightNature"
+                            class="form-control search-select select2 landRightNature">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    终止日期<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input placeholder="终止日期"
+                           name="terminationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">取得价格</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="取得价格" name="acquisitionPrice" class="form-control" data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">使用权面积<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="使用权面积(数字)" name="useRightArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">分摊面积</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">登记机关</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="登记机关" name="registrationAuthority" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">记事</label>
+                <div class="col-sm-11">
+                    <textarea class="form-control" name="memo"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
 
 <!-- 经济指标 start  -->
 <script type="text/html" id="economicIndicatorsModelCommon">

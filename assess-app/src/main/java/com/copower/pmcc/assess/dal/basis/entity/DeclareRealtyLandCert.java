@@ -10,6 +10,8 @@ public class DeclareRealtyLandCert {
 
     private Integer planDetailsId;
 
+    private Integer landCertGetQuestion;
+
     private String landCertName;
 
     private String province;
@@ -104,6 +106,14 @@ public class DeclareRealtyLandCert {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getLandCertGetQuestion() {
+        return landCertGetQuestion;
+    }
+
+    public void setLandCertGetQuestion(Integer landCertGetQuestion) {
+        this.landCertGetQuestion = landCertGetQuestion;
     }
 
     public String getLandCertName() {

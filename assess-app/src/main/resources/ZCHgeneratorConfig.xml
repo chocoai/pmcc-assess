@@ -83,9 +83,9 @@
         <!--<table tableName="tb_declare_realty_house_cert" domainObjectName="DeclareRealtyHouseCert">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
-        <!--<table tableName="tb_declare_realty_land_cert" domainObjectName="DeclareRealtyLandCert">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_declare_realty_land_cert" domainObjectName="DeclareRealtyLandCert">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_declare_realty_real_estate_cert" domainObjectName="DeclareRealtyRealEstateCert">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

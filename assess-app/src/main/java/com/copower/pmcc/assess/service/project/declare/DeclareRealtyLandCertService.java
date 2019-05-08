@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
@@ -12,6 +11,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -24,6 +24,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -41,7 +42,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -69,6 +73,8 @@ public class DeclareRealtyLandCertService {
     private DeclarePublicService declarePoiHelp;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     /**
      * 功能描述: 关联房产证
@@ -252,7 +258,7 @@ public class DeclareRealtyLandCertService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                BeanUtils.copyProperties(declareRealtyLandCert,oo);
+                BeanUtils.copyProperties(declareRealtyLandCert, oo);
                 oo.setId(null);
                 if (!declarePoiHelp.land(oo, builder, row, i)) {
                     continue;
@@ -392,6 +398,18 @@ public class DeclareRealtyLandCertService {
         if (declareApply == null) {
             return;
         }
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareApply.getProjectId());
+        List<BaseProjectClassify> baseProjectClassifyList = Lists.newArrayList();
+        Arrays.stream(new String[]{AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE, AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE}).forEach(s -> {
+            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(s);
+            if (baseProjectClassify != null) {
+                baseProjectClassifyList.add(baseProjectClassify);
+            }
+        });
+        boolean typeFlag = false;
+        if (CollectionUtils.isNotEmpty(baseProjectClassifyList)){
+            typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(),projectInfo.getProjectTypeId()));
+        }
         DeclareRealtyLandCert query = new DeclareRealtyLandCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
         query.setEnable(DeclareTypeEnum.MasterData.getKey());
@@ -422,6 +440,13 @@ public class DeclareRealtyLandCertService {
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
+            if (typeFlag){
+                if (oo.getPid() != null){
+                    declareRecord.setType(DeclareTypeEnum.HouseOrLand_Type_Enum.getKey());
+                }else {
+                    declareRecord.setType(DeclareTypeEnum.Land_Type_Enum.getKey());
+                }
+            }
             //写入房产证的证载用途
             DeclareRealtyHouseCert realtyHouseCert = declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(oo.getPid());
             if (realtyHouseCert != null) {

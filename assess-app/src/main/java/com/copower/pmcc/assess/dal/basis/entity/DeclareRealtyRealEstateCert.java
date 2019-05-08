@@ -88,6 +88,8 @@ public class DeclareRealtyRealEstateCert {
 
     private Date terminationDate;
 
+    private String realEstateUnitNumbe;
+
     private String memo;
 
     private BigDecimal apportionmentArea;
@@ -99,6 +101,16 @@ public class DeclareRealtyRealEstateCert {
     private String enable;
 
     private String declareType;
+
+    private String approvalMechanism;
+
+    private String approvalReferenceNumber;
+
+    private String approvalFile;
+
+    private Date approvalTime;
+
+    private String approvalName;
 
     private String realEstateUnitNumber;
 
@@ -446,6 +458,14 @@ public class DeclareRealtyRealEstateCert {
         this.terminationDate = terminationDate;
     }
 
+    public String getRealEstateUnitNumbe() {
+        return realEstateUnitNumbe;
+    }
+
+    public void setRealEstateUnitNumbe(String realEstateUnitNumbe) {
+        this.realEstateUnitNumbe = realEstateUnitNumbe == null ? null : realEstateUnitNumbe.trim();
+    }
+
     public String getMemo() {
         return memo;
     }
@@ -492,6 +512,46 @@ public class DeclareRealtyRealEstateCert {
 
     public void setDeclareType(String declareType) {
         this.declareType = declareType == null ? null : declareType.trim();
+    }
+
+    public String getApprovalMechanism() {
+        return approvalMechanism;
+    }
+
+    public void setApprovalMechanism(String approvalMechanism) {
+        this.approvalMechanism = approvalMechanism == null ? null : approvalMechanism.trim();
+    }
+
+    public String getApprovalReferenceNumber() {
+        return approvalReferenceNumber;
+    }
+
+    public void setApprovalReferenceNumber(String approvalReferenceNumber) {
+        this.approvalReferenceNumber = approvalReferenceNumber == null ? null : approvalReferenceNumber.trim();
+    }
+
+    public String getApprovalFile() {
+        return approvalFile;
+    }
+
+    public void setApprovalFile(String approvalFile) {
+        this.approvalFile = approvalFile == null ? null : approvalFile.trim();
+    }
+
+    public Date getApprovalTime() {
+        return approvalTime;
+    }
+
+    public void setApprovalTime(Date approvalTime) {
+        this.approvalTime = approvalTime;
+    }
+
+    public String getApprovalName() {
+        return approvalName;
+    }
+
+    public void setApprovalName(String approvalName) {
+        this.approvalName = approvalName == null ? null : approvalName.trim();
     }
 
     public String getRealEstateUnitNumber() {
