@@ -131,7 +131,6 @@
     }
 
     $(function () {
-        console.log("${flog}"+"====");
         var standardBhouPrice = getBhouPrice("${standardPremium}", 2)
         $("#bhouPrice").text(standardBhouPrice + "万元/亩");
         $("#volumetricRate").text(getSomePlaces("${volumetricRate}",2));

@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandApproximationMethodSettingDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataLandApproximationMethodSettingVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataLandApproximationMethodSettingService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
@@ -48,7 +50,11 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     @Autowired
     private SurveyCommonService surveyCommonService;
     @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
     private MdCostApproachService mdCostApproachService;
+    @Autowired
+    private DataLandLevelDetailDao dataLandLevelDetailDao;
     @Autowired
     private DataLandApproximationMethodSettingDao dataLandApproximationMethodSettingDao;
     @Autowired
@@ -166,7 +172,10 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
                 }
             }
         }
+        //代征地比例
+        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        DataLandLevelDetail dataLandLevelDetailById = dataLandLevelDetailDao.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
+        modelAndView.addObject("confiscateLandRatio", dataLandLevelDetailById.getLandAcquisitionProportion());
         //宗地个别因素修正(待确认)
-        //代征地比例(待确认)
     }
 }

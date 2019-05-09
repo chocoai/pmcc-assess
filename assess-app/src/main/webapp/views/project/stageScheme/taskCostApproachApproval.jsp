@@ -70,7 +70,7 @@
                                     </tr>
                                     <tr>
                                         <td>代征地比例</td>
-                                        <td id="confiscateLandRatio">20%</td>
+                                        <td id="confiscateLandRatio">${confiscateLandRatio}</td>
                                         <td colspan="2"></td>
                                         <td></td>
                                         <td id="confiscateLandUnit"></td>

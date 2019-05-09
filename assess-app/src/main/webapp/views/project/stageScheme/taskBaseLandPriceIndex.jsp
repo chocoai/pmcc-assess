@@ -179,7 +179,6 @@
         formData.floorPremium = $("#floorPremium").text();
         formData.correctionDifference = $("#correctionDifference").text();
 
-        console.log(formData);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
@@ -216,26 +215,19 @@
     function getParcelPrice() {
         //基准地价
         var standardPremium = parseFloat($("#standardPremium").text());
-        console.log(standardPremium + "==1");
         //期日修正系数
         var DateAmend = parseFloat($("#DateAmend").text());
-        console.log(DateAmend + "==2");
         //年期修正系数
         var periodAmend = parseFloat($("#periodAmend").text());
-        console.log(periodAmend + "==3");
         //容积率修正
         var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
-        console.log(volumeFractionAmend + "==4");
         //区域及个别修正系数
         var areaAndSeveralAmend = parseFloat($("#areaAndSeveralAmend").text());
-        console.log(areaAndSeveralAmend + "==5");
         //开发程度修正
         var developCorrect = parseFloat($("#developCorrect").val());
-        console.log(developCorrect + "=6");
 
         if (standardPremium && DateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect) {
             var money = standardPremium * DateAmend * periodAmend * volumeFractionAmend * (1 + areaAndSeveralAmend) + developCorrect;
-            console.log(money);
             if (money) {
                 //宗地单价
                 $("#parcelPrice").text(getSomePlaces(money, 2));
@@ -268,13 +260,9 @@
     function getPeriodAmend(rewardRatePercent) {
         var rewardRate = AssessCommon.percentToPoint(rewardRatePercent);
         var landSurplusYear = "${landSurplusYear}";
-        console.log(landSurplusYear + "landSurplusYear");
-        console.log(rewardRate + "rewardRate");
         if (rewardRate) {
             var temp = 1 / Math.pow(1 + parseFloat(rewardRate), landSurplusYear);
-            console.log(temp);
             var temp2 = 1 / Math.pow(1 + parseFloat(rewardRate), rewardRate);
-            console.log(temp2);
             var result = (1 - temp) / (1 - temp2);
             $("#periodAmend").text(getSomePlaces(result, 2))
         }

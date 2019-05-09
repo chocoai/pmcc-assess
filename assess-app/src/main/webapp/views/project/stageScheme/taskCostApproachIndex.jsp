@@ -81,7 +81,7 @@
                                     </tr>
                                     <tr>
                                         <td>代征地比例</td>
-                                        <td id="confiscateLandRatio">20%</td>
+                                        <td id="confiscateLandRatio">${confiscateLandRatio}</td>
                                         <td colspan="2"></td>
                                         <td></td>
                                         <td id="confiscateLandUnit"></td>
@@ -347,7 +347,7 @@
         $("#subtotalBhou").text(getSomePlaces(computationalBase + tempBhouPrice, 2));
         $("#subtotalUnit").text(getSomePlaces((computationalBase + tempBhouPrice) / 666.67, 2));
 
-        //代征地比例(待完成)
+        //代征地比例
         var confiscateLandRatio = parseFloat(AssessCommon.percentToPoint($("#confiscateLandRatio").text()));
         $("#confiscateLandUnit").text(getSomePlaces((computationalBase + tempBhouPrice) / (1 - confiscateLandRatio), 2));
 
