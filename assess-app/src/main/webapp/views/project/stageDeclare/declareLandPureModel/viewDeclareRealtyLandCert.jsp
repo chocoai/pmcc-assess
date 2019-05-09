@@ -92,6 +92,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <input type="hidden" name="id">
+                            <input type="hidden" name="landCertGetQuestion">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">

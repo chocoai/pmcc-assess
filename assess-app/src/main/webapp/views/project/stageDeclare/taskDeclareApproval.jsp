@@ -11,6 +11,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApprovalModel.jsp" %>
             <!-- 房产证 -->
@@ -206,7 +207,7 @@
         });
         $("#" + declareRealtyHouseCert.config.table).bootstrapTable('destroy');
         TableInit(declareRealtyHouseCert.config.table, "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
-            planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},enable:'yes'
+            planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},enable:declareCommon.masterData
         }, {
             showColumns: false,
             showRefresh: false,
@@ -399,7 +400,7 @@
         });
         $("#" + declareRealtyLandCert.config.table).bootstrapTable('destroy');
         TableInit(declareRealtyLandCert.config.table, "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
-            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}' , enable:'yes'
+            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}' , enable:declareCommon.masterData
         }, {
             showColumns: false,
             showRefresh: false,
@@ -490,7 +491,7 @@
         });
         $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('destroy');
         TableInit(declareRealtyRealEstateCert.config.table, "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
-            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}' , enable:'yes'
+            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}' , enable:declareCommon.masterData
         }, {
             showColumns: false,
             showRefresh: false,

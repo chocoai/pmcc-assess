@@ -137,7 +137,6 @@
             submitForm(mustUseBox);
             return false;
         }
-        toastr.info("请添加相关申报信息");
     }
 
     //提交表单

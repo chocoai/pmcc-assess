@@ -74,7 +74,6 @@
         //检查是否填写了申报数据
         submitForm(mustUseBox);
 
-        toastr.info("请添加相关申报信息");
     }
 
     //提交表单

@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -22,6 +23,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -38,6 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,6 +67,8 @@ public class DeclareRealtyRealEstateCertService {
     private DeclarePublicService declarePoiHelp;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -235,6 +240,18 @@ public class DeclareRealtyRealEstateCertService {
         if (declareApply == null) {
             return;
         }
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareApply.getProjectId());
+        List<BaseProjectClassify> baseProjectClassifyList = Lists.newArrayList();
+        Arrays.stream(new String[]{AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE, AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE}).forEach(s -> {
+            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(s);
+            if (baseProjectClassify != null) {
+                baseProjectClassifyList.add(baseProjectClassify);
+            }
+        });
+        boolean typeFlag = false;
+        if (CollectionUtils.isNotEmpty(baseProjectClassifyList)){
+            typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(),projectInfo.getProjectTypeId()));
+        }
         DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
         query.setEnable(DeclareTypeEnum.MasterData.getKey());
@@ -268,6 +285,9 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
+            if (typeFlag){
+                declareRecord.setType(DeclareTypeEnum.RealEstateCert_Type_Enum.getKey());
+            }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                 oo.setBisRecord(true);

@@ -2846,6 +2846,76 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andRealEstateUnitNumbeIsNull() {
+            addCriterion("real_estate_unit_numbe is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeIsNotNull() {
+            addCriterion("real_estate_unit_numbe is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeEqualTo(String value) {
+            addCriterion("real_estate_unit_numbe =", value, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeNotEqualTo(String value) {
+            addCriterion("real_estate_unit_numbe <>", value, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeGreaterThan(String value) {
+            addCriterion("real_estate_unit_numbe >", value, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeGreaterThanOrEqualTo(String value) {
+            addCriterion("real_estate_unit_numbe >=", value, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeLessThan(String value) {
+            addCriterion("real_estate_unit_numbe <", value, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeLessThanOrEqualTo(String value) {
+            addCriterion("real_estate_unit_numbe <=", value, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeLike(String value) {
+            addCriterion("real_estate_unit_numbe like", value, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeNotLike(String value) {
+            addCriterion("real_estate_unit_numbe not like", value, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeIn(List<String> values) {
+            addCriterion("real_estate_unit_numbe in", values, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeNotIn(List<String> values) {
+            addCriterion("real_estate_unit_numbe not in", values, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeBetween(String value1, String value2) {
+            addCriterion("real_estate_unit_numbe between", value1, value2, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateUnitNumbeNotBetween(String value1, String value2) {
+            addCriterion("real_estate_unit_numbe not between", value1, value2, "realEstateUnitNumbe");
+            return (Criteria) this;
+        }
+
         public Criteria andMemoIsNull() {
             addCriterion("memo is null");
             return (Criteria) this;
@@ -3233,6 +3303,346 @@ public class DeclareRealtyRealEstateCertExample {
 
         public Criteria andDeclareTypeNotBetween(String value1, String value2) {
             addCriterion("declare_type not between", value1, value2, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismIsNull() {
+            addCriterion("approval_mechanism is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismIsNotNull() {
+            addCriterion("approval_mechanism is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismEqualTo(String value) {
+            addCriterion("approval_mechanism =", value, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismNotEqualTo(String value) {
+            addCriterion("approval_mechanism <>", value, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismGreaterThan(String value) {
+            addCriterion("approval_mechanism >", value, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismGreaterThanOrEqualTo(String value) {
+            addCriterion("approval_mechanism >=", value, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismLessThan(String value) {
+            addCriterion("approval_mechanism <", value, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismLessThanOrEqualTo(String value) {
+            addCriterion("approval_mechanism <=", value, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismLike(String value) {
+            addCriterion("approval_mechanism like", value, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismNotLike(String value) {
+            addCriterion("approval_mechanism not like", value, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismIn(List<String> values) {
+            addCriterion("approval_mechanism in", values, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismNotIn(List<String> values) {
+            addCriterion("approval_mechanism not in", values, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismBetween(String value1, String value2) {
+            addCriterion("approval_mechanism between", value1, value2, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalMechanismNotBetween(String value1, String value2) {
+            addCriterion("approval_mechanism not between", value1, value2, "approvalMechanism");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberIsNull() {
+            addCriterion("approval_reference_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberIsNotNull() {
+            addCriterion("approval_reference_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberEqualTo(String value) {
+            addCriterion("approval_reference_number =", value, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberNotEqualTo(String value) {
+            addCriterion("approval_reference_number <>", value, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberGreaterThan(String value) {
+            addCriterion("approval_reference_number >", value, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("approval_reference_number >=", value, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberLessThan(String value) {
+            addCriterion("approval_reference_number <", value, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberLessThanOrEqualTo(String value) {
+            addCriterion("approval_reference_number <=", value, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberLike(String value) {
+            addCriterion("approval_reference_number like", value, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberNotLike(String value) {
+            addCriterion("approval_reference_number not like", value, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberIn(List<String> values) {
+            addCriterion("approval_reference_number in", values, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberNotIn(List<String> values) {
+            addCriterion("approval_reference_number not in", values, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberBetween(String value1, String value2) {
+            addCriterion("approval_reference_number between", value1, value2, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalReferenceNumberNotBetween(String value1, String value2) {
+            addCriterion("approval_reference_number not between", value1, value2, "approvalReferenceNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileIsNull() {
+            addCriterion("approval_file is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileIsNotNull() {
+            addCriterion("approval_file is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileEqualTo(String value) {
+            addCriterion("approval_file =", value, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileNotEqualTo(String value) {
+            addCriterion("approval_file <>", value, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileGreaterThan(String value) {
+            addCriterion("approval_file >", value, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileGreaterThanOrEqualTo(String value) {
+            addCriterion("approval_file >=", value, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileLessThan(String value) {
+            addCriterion("approval_file <", value, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileLessThanOrEqualTo(String value) {
+            addCriterion("approval_file <=", value, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileLike(String value) {
+            addCriterion("approval_file like", value, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileNotLike(String value) {
+            addCriterion("approval_file not like", value, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileIn(List<String> values) {
+            addCriterion("approval_file in", values, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileNotIn(List<String> values) {
+            addCriterion("approval_file not in", values, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileBetween(String value1, String value2) {
+            addCriterion("approval_file between", value1, value2, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalFileNotBetween(String value1, String value2) {
+            addCriterion("approval_file not between", value1, value2, "approvalFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeIsNull() {
+            addCriterion("approval_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeIsNotNull() {
+            addCriterion("approval_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeEqualTo(Date value) {
+            addCriterion("approval_time =", value, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeNotEqualTo(Date value) {
+            addCriterion("approval_time <>", value, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeGreaterThan(Date value) {
+            addCriterion("approval_time >", value, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("approval_time >=", value, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeLessThan(Date value) {
+            addCriterion("approval_time <", value, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeLessThanOrEqualTo(Date value) {
+            addCriterion("approval_time <=", value, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeIn(List<Date> values) {
+            addCriterion("approval_time in", values, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeNotIn(List<Date> values) {
+            addCriterion("approval_time not in", values, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeBetween(Date value1, Date value2) {
+            addCriterion("approval_time between", value1, value2, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalTimeNotBetween(Date value1, Date value2) {
+            addCriterion("approval_time not between", value1, value2, "approvalTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameIsNull() {
+            addCriterion("approval_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameIsNotNull() {
+            addCriterion("approval_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameEqualTo(String value) {
+            addCriterion("approval_name =", value, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameNotEqualTo(String value) {
+            addCriterion("approval_name <>", value, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameGreaterThan(String value) {
+            addCriterion("approval_name >", value, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameGreaterThanOrEqualTo(String value) {
+            addCriterion("approval_name >=", value, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameLessThan(String value) {
+            addCriterion("approval_name <", value, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameLessThanOrEqualTo(String value) {
+            addCriterion("approval_name <=", value, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameLike(String value) {
+            addCriterion("approval_name like", value, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameNotLike(String value) {
+            addCriterion("approval_name not like", value, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameIn(List<String> values) {
+            addCriterion("approval_name in", values, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameNotIn(List<String> values) {
+            addCriterion("approval_name not in", values, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameBetween(String value1, String value2) {
+            addCriterion("approval_name between", value1, value2, "approvalName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApprovalNameNotBetween(String value1, String value2) {
+            addCriterion("approval_name not between", value1, value2, "approvalName");
             return (Criteria) this;
         }
 
