@@ -4,17 +4,22 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.event.project.SurveyExamineTaskEvent;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -22,12 +27,14 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -82,28 +89,36 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SurveyExaminePurenessLandService surveyExaminePurenessLandService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", "", 0, "0", "");
-        setViewParam(commonService.thisUserAccount(), projectPlanDetails, modelAndView);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("", "", 0, "0", "");
+        modelAndView.setViewName(getViewUrlAndSetParam(true, projectPlanDetails, modelAndView, commonService.thisUserAccount()));
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.setViewName(getViewUrlAndSetParam(false, projectPlanDetails, modelAndView, projectPlanDetails.getExecuteUserAccount()));
         return modelAndView;
     }
 
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.setViewName(getViewUrlAndSetParam(true, projectPlanDetails, modelAndView, commonService.thisUserAccount()));
         return modelAndView;
     }
 
@@ -114,8 +129,8 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        modelAndView.setViewName(getViewUrlAndSetParam(false, projectPlanDetails, modelAndView, projectPlanDetails.getExecuteUserAccount()));
         return modelAndView;
     }
 
@@ -156,13 +171,80 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     }
 
     /**
-     * 设置视图参数
+     * 设置页面并且设置参数
+     *
+     * @param apply
+     * @param projectPlanDetails
+     * @return
+     */
+    private String getViewUrlAndSetParam(boolean apply, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, String userAccount) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectCategoryId());
+        SurveyExaminePurenessLand surveyExaminePurenessLand = null;
+        SurveyExaminePurenessLand query = new SurveyExaminePurenessLand();
+        query.setPlanDetailsId(projectPlanDetails.getId());
+        query.setProjectId(projectPlanDetails.getProjectId());
+        query.setProcessInsId(projectPlanDetails.getProcessInsId());
+        query.setDeclareId(projectPlanDetails.getDeclareRecordId());
+        List<SurveyExaminePurenessLand> surveyExaminePurenessLandList = surveyExaminePurenessLandService.getSurveyExaminePurenessLandList(query);
+        String view = apply ? "/project/stageSurvey/taskExamineInfoIndex" : "/project/stageSurvey/taskExamineInfoApproval";
+        if (projectClassify != null && StringUtils.isNotBlank(projectClassify.getFieldName())) {
+            switch (projectClassify.getFieldName()) {
+                //土地项目类型
+                case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE:
+                    if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId(), new Integer(declareRecord.getType()))) {
+                        view = apply ? "/project/stageSurvey/taskExamineLandInfoIndex" : "/project/stageSurvey/taskExamineLandInfoApproval";
+                        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(surveyExaminePurenessLandList)) {
+                            surveyExaminePurenessLand = surveyExaminePurenessLandList.stream().findFirst().get();
+                        }else {
+                            surveyExaminePurenessLand = new SurveyExaminePurenessLand();
+                        }
+                    }
+                    break;
+                //土地简单项目类型
+                case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE:
+                    if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId(), new Integer(declareRecord.getType()))) {
+                        view = apply ? "/project/stageSurvey/taskExamineLandInfoIndex" : "/project/stageSurvey/taskExamineLandInfoApproval";
+                        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(surveyExaminePurenessLandList)) {
+                            surveyExaminePurenessLand = surveyExaminePurenessLandList.stream().findFirst().get();
+                        }else {
+                            surveyExaminePurenessLand = new SurveyExaminePurenessLand();
+                        }
+                    }
+                    break;
+                //房产项目类型
+                case AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE:
+                    break;
+                //简单房产项目类型
+                case AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE:
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (surveyExaminePurenessLand != null) {
+            if (surveyExaminePurenessLand.getId() == null) {
+                BeanUtils.copyProperties(query, surveyExaminePurenessLand);
+                surveyExaminePurenessLand.setCreator(projectPlanDetails.getCreator());
+                surveyExaminePurenessLandService.saveSurveyExaminePurenessLand(surveyExaminePurenessLand);
+            }
+            modelAndView.addObject(FormatUtils.toLowerCaseFirstChar(SurveyExaminePurenessLand.class.getSimpleName()), surveyExaminePurenessLandService.getSurveyExaminePurenessLandVo(surveyExaminePurenessLand));
+            modelAndView.addObject(String.format("%s%s",FormatUtils.toLowerCaseFirstChar(SurveyExaminePurenessLand.class.getSimpleName()),"JSON"), JSON.toJSONString(surveyExaminePurenessLandService.getSurveyExaminePurenessLandVo(surveyExaminePurenessLand)));
+        }
+        setIndustryExamineParam(userAccount, projectPlanDetails, modelAndView);
+        modelAndView.addObject("projectPlanDetails", projectPlanDetails);
+        return view;
+    }
+
+    /**
+     * 设置工业和非工业视图参数
      *
      * @param userAccount
      * @param projectPlanDetails
      * @param modelAndView
      */
-    private void setViewParam(String userAccount, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+    private void setIndustryExamineParam(String userAccount, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getPid());
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
@@ -207,8 +289,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             }
         }
     }
-
-    @Transactional(rollbackFor = Exception.class)
+    //具体设置工业与非工业参数
     private void setSurveyCaseStudyOrSurveySceneExploreValue(DeclareRecord declareRecord, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
         ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
@@ -293,8 +374,9 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             basicHouseTrading = new BasicHouseTrading();
             basicHouseTrading.setHouseId(basicHouse.getId());
             basicHouseTrading.setApplyId(basicApply.getId());
-            if (surveyExamineInfo != null)
+            if (surveyExamineInfo != null) {
                 basicHouseTrading.setTradingType(surveyExamineInfo.getTransactionType());
+            }
             basicHouseTrading.setCreator(commonService.thisUserAccount());
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
             //添加完损度信息
@@ -353,6 +435,5 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicApply != null) {
             modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
         }
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
     }
 }

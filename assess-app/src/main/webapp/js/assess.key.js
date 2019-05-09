@@ -36,6 +36,7 @@ AssessDBKey.BasicUnitHuxing = "tb_basic_unit_huxing";
 AssessDBKey.BasicEstateParking = "tb_basic_estate_parking";
 AssessDBKey.BasicHouseCorollaryEquipment = "tb_basic_house_corollary_equipment";
 
+AssessDBKey.SurveyExaminePurenessLand = "tb_survey_examine_pureness_land";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";

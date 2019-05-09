@@ -408,7 +408,7 @@ public class DeclareRealtyLandCertService {
         });
         boolean typeFlag = false;
         if (CollectionUtils.isNotEmpty(baseProjectClassifyList)){
-            typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(),projectInfo.getProjectTypeId()));
+            typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(), projectInfo.getProjectCategoryId()));
         }
         DeclareRealtyLandCert query = new DeclareRealtyLandCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
@@ -442,9 +442,9 @@ public class DeclareRealtyLandCertService {
             declareRecord.setBisPartIn(true);
             if (typeFlag){
                 if (oo.getPid() != null){
-                    declareRecord.setType(DeclareTypeEnum.HouseOrLand_Type_Enum.getKey());
+                    declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_INCLUDEHOUSE).getId().toString());
                 }else {
-                    declareRecord.setType(DeclareTypeEnum.Land_Type_Enum.getKey());
+                    declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId().toString());
                 }
             }
             //写入房产证的证载用途

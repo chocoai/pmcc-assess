@@ -299,15 +299,6 @@
             }
         })
     }
-    //jquery map使用
-    var assayMethadArry = new Map;
-    var comboDatasMap = new Map;
-    for (var w = 0; w < 5; w++) {
-        assayMethadArry.set(w, new Date().getTime());
-        comboDatasMap.set(w, new Date().getTime());
-    }
-    console.log(comboDatasMap);
-    console.log(assayMethadArry);
 </script>
 </html>
 

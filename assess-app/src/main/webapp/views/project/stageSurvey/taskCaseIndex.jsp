@@ -442,7 +442,7 @@
     <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-2 control-label">
-                交易类型
+                表单类型
             </label>
             <div class="col-sm-10">
                 <input type="hidden" id="planDetailsId" name="id"/>

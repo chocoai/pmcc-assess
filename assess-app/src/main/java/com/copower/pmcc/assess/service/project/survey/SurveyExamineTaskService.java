@@ -105,6 +105,8 @@ public class SurveyExamineTaskService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ResidueRatioService residueRatioService;
+    @Autowired
+    private SurveyExaminePurenessLandService surveyExaminePurenessLandService;
 
     /**
      * 获取调查任务
@@ -643,7 +645,14 @@ public class SurveyExamineTaskService {
         BasicUnit basicUnit = null;
         BasicHouse basicHouse = null;
         BasicHouseTrading basicTrading = null;
+        SurveyExaminePurenessLand surveyExaminePurenessLand = null;
         String survey = jsonObject.getString("survey");
+        if (StringUtils.isNotBlank(jsonObject.getString("surveyExaminePurenessLand"))) {
+            surveyExaminePurenessLand = JSONObject.parseObject(jsonObject.getString("surveyExaminePurenessLand"), SurveyExaminePurenessLand.class);
+            if (surveyExaminePurenessLand != null) {
+                surveyExaminePurenessLandService.saveSurveyExaminePurenessLand(surveyExaminePurenessLand);
+            }
+        }
         if (StringUtils.isNotBlank(jsonObject.getString("basicEstate"))) {
             basicEstate = JSONObject.parseObject(jsonObject.getString("basicEstate"), BasicEstate.class);
             if (basicEstate != null) {

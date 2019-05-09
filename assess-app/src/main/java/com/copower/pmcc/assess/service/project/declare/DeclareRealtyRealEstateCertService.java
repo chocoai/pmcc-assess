@@ -250,7 +250,7 @@ public class DeclareRealtyRealEstateCertService {
         });
         boolean typeFlag = false;
         if (CollectionUtils.isNotEmpty(baseProjectClassifyList)){
-            typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(),projectInfo.getProjectTypeId()));
+            typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(), projectInfo.getProjectCategoryId()));
         }
         DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
@@ -286,7 +286,7 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
             if (typeFlag){
-                declareRecord.setType(DeclareTypeEnum.RealEstateCert_Type_Enum.getKey());
+                declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId().toString());
             }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
