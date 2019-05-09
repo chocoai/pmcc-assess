@@ -16,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class DataLandApproximationMethodSettingService {
         org.springframework.beans.BeanUtils.copyProperties(oo,vo);
         vo.setAreaName(erpAreaService.getAreaFullName(oo.getProvince(),oo.getCity(),oo.getDistrict()));
         vo.setCategoryName(baseDataDicService.getNameById(oo.getCategory()));
+        vo.setBhouPrice(oo.getAmountMoney().multiply(new BigDecimal("666.67")).setScale(2,BigDecimal.ROUND_HALF_UP));
         return vo;
     }
 

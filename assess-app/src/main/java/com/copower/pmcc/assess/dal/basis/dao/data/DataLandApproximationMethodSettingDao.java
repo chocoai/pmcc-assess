@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataLandApproximationMethodSetti
 import com.copower.pmcc.assess.dal.basis.entity.DataLandApproximationMethodSettingExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataLandApproximationMethodSettingMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -54,4 +55,20 @@ public class DataLandApproximationMethodSettingDao {
         return example;
     }
 
+    public List<DataLandApproximationMethodSetting> getDataLandApproximationMethodSettingList(String province, String city, String district){
+        DataLandApproximationMethodSettingExample example = new DataLandApproximationMethodSettingExample();
+        DataLandApproximationMethodSettingExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(province)){
+            criteria.andProvinceEqualTo(province);
+        }
+        if(!StringUtils.isEmpty(city)){
+            criteria.andCityEqualTo(city);
+        }
+        if(!StringUtils.isEmpty(district)){
+            criteria.andDistrictEqualTo(district);
+        }else {
+            criteria.andDistrictEqualTo("");
+        }
+        return mapper.selectByExample(example);
+    }
 }
