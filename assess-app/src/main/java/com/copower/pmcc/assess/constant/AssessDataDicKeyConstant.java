@@ -21,6 +21,7 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_BUILDER_QUALIFICATION_LEVEL = "data.builder.qualification_level";//建造商资质等级
     public static final String DATA_COMPANY_REPUTATION = "data.company.reputation";//公司信誉
     public static final String DATA_SERVICE_CONTENT = "data.service.content";//物业服务
+    public static final String DATA_INDEX_LAND_TYPE = "data.index.land.type";//土地指数
 
     /*
      * 报告配置

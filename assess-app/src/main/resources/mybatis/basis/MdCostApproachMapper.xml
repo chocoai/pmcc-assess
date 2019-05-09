@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdCostApproachMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="reward_rate_id" property="rewardRateId" jdbcType="INTEGER" />
+    <result column="reward_rate" property="rewardRate" jdbcType="VARCHAR" />
+    <result column="imprevision_cost" property="imprevisionCost" jdbcType="VARCHAR" />
+    <result column="circulation_expense" property="circulationExpense" jdbcType="DECIMAL" />
+    <result column="flat_expense" property="flatExpense" jdbcType="DECIMAL" />
+    <result column="machine_cycle" property="machineCycle" jdbcType="DECIMAL" />
+    <result column="calculated_interest" property="calculatedInterest" jdbcType="VARCHAR" />
+    <result column="profit_margin" property="profitMargin" jdbcType="VARCHAR" />
+    <result column="incremental_benefit" property="incrementalBenefit" jdbcType="VARCHAR" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, reward_rate_id, reward_rate, imprevision_cost, circulation_expense, flat_expense, 
+    machine_cycle, calculated_interest, profit_margin, incremental_benefit, process_ins_id, 
+    creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproachExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_md_cost_approach
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_md_cost_approach
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_md_cost_approach
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproachExample" >
+    delete from tb_md_cost_approach
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_md_cost_approach (reward_rate_id, reward_rate, imprevision_cost, 
+      circulation_expense, flat_expense, machine_cycle, 
+      calculated_interest, profit_margin, incremental_benefit, 
+      process_ins_id, creator, gmt_created, 
+      gmt_modified)
+    values (#{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, #{imprevisionCost,jdbcType=VARCHAR}, 
+      #{circulationExpense,jdbcType=DECIMAL}, #{flatExpense,jdbcType=DECIMAL}, #{machineCycle,jdbcType=DECIMAL}, 
+      #{calculatedInterest,jdbcType=VARCHAR}, #{profitMargin,jdbcType=VARCHAR}, #{incrementalBenefit,jdbcType=VARCHAR}, 
+      #{processInsId,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_md_cost_approach
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rewardRateId != null" >
+        reward_rate_id,
+      </if>
+      <if test="rewardRate != null" >
+        reward_rate,
+      </if>
+      <if test="imprevisionCost != null" >
+        imprevision_cost,
+      </if>
+      <if test="circulationExpense != null" >
+        circulation_expense,
+      </if>
+      <if test="flatExpense != null" >
+        flat_expense,
+      </if>
+      <if test="machineCycle != null" >
+        machine_cycle,
+      </if>
+      <if test="calculatedInterest != null" >
+        calculated_interest,
+      </if>
+      <if test="profitMargin != null" >
+        profit_margin,
+      </if>
+      <if test="incrementalBenefit != null" >
+        incremental_benefit,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rewardRateId != null" >
+        #{rewardRateId,jdbcType=INTEGER},
+      </if>
+      <if test="rewardRate != null" >
+        #{rewardRate,jdbcType=VARCHAR},
+      </if>
+      <if test="imprevisionCost != null" >
+        #{imprevisionCost,jdbcType=VARCHAR},
+      </if>
+      <if test="circulationExpense != null" >
+        #{circulationExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="flatExpense != null" >
+        #{flatExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="machineCycle != null" >
+        #{machineCycle,jdbcType=DECIMAL},
+      </if>
+      <if test="calculatedInterest != null" >
+        #{calculatedInterest,jdbcType=VARCHAR},
+      </if>
+      <if test="profitMargin != null" >
+        #{profitMargin,jdbcType=VARCHAR},
+      </if>
+      <if test="incrementalBenefit != null" >
+        #{incrementalBenefit,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproachExample" resultType="java.lang.Integer" >
+    select count(*) from tb_md_cost_approach
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_md_cost_approach
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.rewardRateId != null" >
+        reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.rewardRate != null" >
+        reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imprevisionCost != null" >
+        imprevision_cost = #{record.imprevisionCost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.circulationExpense != null" >
+        circulation_expense = #{record.circulationExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="record.flatExpense != null" >
+        flat_expense = #{record.flatExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="record.machineCycle != null" >
+        machine_cycle = #{record.machineCycle,jdbcType=DECIMAL},
+      </if>
+      <if test="record.calculatedInterest != null" >
+        calculated_interest = #{record.calculatedInterest,jdbcType=VARCHAR},
+      </if>
+      <if test="record.profitMargin != null" >
+        profit_margin = #{record.profitMargin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.incrementalBenefit != null" >
+        incremental_benefit = #{record.incrementalBenefit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_md_cost_approach
+    set id = #{record.id,jdbcType=INTEGER},
+      reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+      reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
+      imprevision_cost = #{record.imprevisionCost,jdbcType=VARCHAR},
+      circulation_expense = #{record.circulationExpense,jdbcType=DECIMAL},
+      flat_expense = #{record.flatExpense,jdbcType=DECIMAL},
+      machine_cycle = #{record.machineCycle,jdbcType=DECIMAL},
+      calculated_interest = #{record.calculatedInterest,jdbcType=VARCHAR},
+      profit_margin = #{record.profitMargin,jdbcType=VARCHAR},
+      incremental_benefit = #{record.incrementalBenefit,jdbcType=VARCHAR},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach" >
+    update tb_md_cost_approach
+    <set >
+      <if test="rewardRateId != null" >
+        reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
+      </if>
+      <if test="rewardRate != null" >
+        reward_rate = #{rewardRate,jdbcType=VARCHAR},
+      </if>
+      <if test="imprevisionCost != null" >
+        imprevision_cost = #{imprevisionCost,jdbcType=VARCHAR},
+      </if>
+      <if test="circulationExpense != null" >
+        circulation_expense = #{circulationExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="flatExpense != null" >
+        flat_expense = #{flatExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="machineCycle != null" >
+        machine_cycle = #{machineCycle,jdbcType=DECIMAL},
+      </if>
+      <if test="calculatedInterest != null" >
+        calculated_interest = #{calculatedInterest,jdbcType=VARCHAR},
+      </if>
+      <if test="profitMargin != null" >
+        profit_margin = #{profitMargin,jdbcType=VARCHAR},
+      </if>
+      <if test="incrementalBenefit != null" >
+        incremental_benefit = #{incrementalBenefit,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach" >
+    update tb_md_cost_approach
+    set reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
+      reward_rate = #{rewardRate,jdbcType=VARCHAR},
+      imprevision_cost = #{imprevisionCost,jdbcType=VARCHAR},
+      circulation_expense = #{circulationExpense,jdbcType=DECIMAL},
+      flat_expense = #{flatExpense,jdbcType=DECIMAL},
+      machine_cycle = #{machineCycle,jdbcType=DECIMAL},
+      calculated_interest = #{calculatedInterest,jdbcType=VARCHAR},
+      profit_margin = #{profitMargin,jdbcType=VARCHAR},
+      incremental_benefit = #{incrementalBenefit,jdbcType=VARCHAR},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

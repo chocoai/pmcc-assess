@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdBaseLandPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="reward_rate_id" property="rewardRateId" jdbcType="INTEGER" />
+    <result column="reward_rate" property="rewardRate" jdbcType="VARCHAR" />
+    <result column="develop_correct" property="developCorrect" jdbcType="DECIMAL" />
+    <result column="period_amend" property="periodAmend" jdbcType="DECIMAL" />
+    <result column="parcel_price" property="parcelPrice" jdbcType="DECIMAL" />
+    <result column="parcel_bhou_price" property="parcelBhouPrice" jdbcType="DECIMAL" />
+    <result column="parcel_total_price" property="parcelTotalPrice" jdbcType="DECIMAL" />
+    <result column="floor_premium" property="floorPremium" jdbcType="DECIMAL" />
+    <result column="correction_difference" property="correctionDifference" jdbcType="VARCHAR" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, reward_rate_id, reward_rate, develop_correct, period_amend, parcel_price, parcel_bhou_price, 
+    parcel_total_price, floor_premium, correction_difference, process_ins_id, creator, 
+    gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_md_base_land_price
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_md_base_land_price
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_md_base_land_price
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" >
+    delete from tb_md_base_land_price
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_md_base_land_price (reward_rate_id, reward_rate, develop_correct, 
+      period_amend, parcel_price, parcel_bhou_price, 
+      parcel_total_price, floor_premium, correction_difference, 
+      process_ins_id, creator, gmt_created, 
+      gmt_modified)
+    values (#{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, #{developCorrect,jdbcType=DECIMAL}, 
+      #{periodAmend,jdbcType=DECIMAL}, #{parcelPrice,jdbcType=DECIMAL}, #{parcelBhouPrice,jdbcType=DECIMAL}, 
+      #{parcelTotalPrice,jdbcType=DECIMAL}, #{floorPremium,jdbcType=DECIMAL}, #{correctionDifference,jdbcType=VARCHAR}, 
+      #{processInsId,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_md_base_land_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rewardRateId != null" >
+        reward_rate_id,
+      </if>
+      <if test="rewardRate != null" >
+        reward_rate,
+      </if>
+      <if test="developCorrect != null" >
+        develop_correct,
+      </if>
+      <if test="periodAmend != null" >
+        period_amend,
+      </if>
+      <if test="parcelPrice != null" >
+        parcel_price,
+      </if>
+      <if test="parcelBhouPrice != null" >
+        parcel_bhou_price,
+      </if>
+      <if test="parcelTotalPrice != null" >
+        parcel_total_price,
+      </if>
+      <if test="floorPremium != null" >
+        floor_premium,
+      </if>
+      <if test="correctionDifference != null" >
+        correction_difference,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rewardRateId != null" >
+        #{rewardRateId,jdbcType=INTEGER},
+      </if>
+      <if test="rewardRate != null" >
+        #{rewardRate,jdbcType=VARCHAR},
+      </if>
+      <if test="developCorrect != null" >
+        #{developCorrect,jdbcType=DECIMAL},
+      </if>
+      <if test="periodAmend != null" >
+        #{periodAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="parcelPrice != null" >
+        #{parcelPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="parcelBhouPrice != null" >
+        #{parcelBhouPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="parcelTotalPrice != null" >
+        #{parcelTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="floorPremium != null" >
+        #{floorPremium,jdbcType=DECIMAL},
+      </if>
+      <if test="correctionDifference != null" >
+        #{correctionDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" resultType="java.lang.Integer" >
+    select count(*) from tb_md_base_land_price
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_md_base_land_price
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.rewardRateId != null" >
+        reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.rewardRate != null" >
+        reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.developCorrect != null" >
+        develop_correct = #{record.developCorrect,jdbcType=DECIMAL},
+      </if>
+      <if test="record.periodAmend != null" >
+        period_amend = #{record.periodAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="record.parcelPrice != null" >
+        parcel_price = #{record.parcelPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.parcelBhouPrice != null" >
+        parcel_bhou_price = #{record.parcelBhouPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.parcelTotalPrice != null" >
+        parcel_total_price = #{record.parcelTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.floorPremium != null" >
+        floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
+      </if>
+      <if test="record.correctionDifference != null" >
+        correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_md_base_land_price
+    set id = #{record.id,jdbcType=INTEGER},
+      reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+      reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
+      develop_correct = #{record.developCorrect,jdbcType=DECIMAL},
+      period_amend = #{record.periodAmend,jdbcType=DECIMAL},
+      parcel_price = #{record.parcelPrice,jdbcType=DECIMAL},
+      parcel_bhou_price = #{record.parcelBhouPrice,jdbcType=DECIMAL},
+      parcel_total_price = #{record.parcelTotalPrice,jdbcType=DECIMAL},
+      floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
+      correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
+    update tb_md_base_land_price
+    <set >
+      <if test="rewardRateId != null" >
+        reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
+      </if>
+      <if test="rewardRate != null" >
+        reward_rate = #{rewardRate,jdbcType=VARCHAR},
+      </if>
+      <if test="developCorrect != null" >
+        develop_correct = #{developCorrect,jdbcType=DECIMAL},
+      </if>
+      <if test="periodAmend != null" >
+        period_amend = #{periodAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="parcelPrice != null" >
+        parcel_price = #{parcelPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="parcelBhouPrice != null" >
+        parcel_bhou_price = #{parcelBhouPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="parcelTotalPrice != null" >
+        parcel_total_price = #{parcelTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="floorPremium != null" >
+        floor_premium = #{floorPremium,jdbcType=DECIMAL},
+      </if>
+      <if test="correctionDifference != null" >
+        correction_difference = #{correctionDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
+    update tb_md_base_land_price
+    set reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
+      reward_rate = #{rewardRate,jdbcType=VARCHAR},
+      develop_correct = #{developCorrect,jdbcType=DECIMAL},
+      period_amend = #{periodAmend,jdbcType=DECIMAL},
+      parcel_price = #{parcelPrice,jdbcType=DECIMAL},
+      parcel_bhou_price = #{parcelBhouPrice,jdbcType=DECIMAL},
+      parcel_total_price = #{parcelTotalPrice,jdbcType=DECIMAL},
+      floor_premium = #{floorPremium,jdbcType=DECIMAL},
+      correction_difference = #{correctionDifference,jdbcType=VARCHAR},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
