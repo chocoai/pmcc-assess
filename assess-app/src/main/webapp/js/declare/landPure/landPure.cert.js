@@ -89,6 +89,7 @@ assessLand.editLand = function () {
     }
 };
 
+//删除土地
 assessLand.deleteLand = function () {
     var data = $(assessLand.config.table).bootstrapTable('getSelections');
     if (data.length >= 1) {
@@ -109,7 +110,7 @@ assessLand.deleteLand = function () {
     }
 };
 
-
+//显示关联的房产证
 assessLand.showAddModelHouse = function (id) {
     $(assessLand.config.HouseCert.box).find("#" + commonDeclareApplyModel.config.house.handleId).remove();
     $(assessLand.config.HouseCert.box).find(".panel-body").append(commonDeclareApplyModel.house.getHtml());
@@ -345,29 +346,60 @@ declareRealtyRealEstateCert.config = {
     fileView: declareCommon.config.declareRealty.fileView
 };
 
-declareRealtyRealEstateCert.init = function (item) {
-    declareCommon.initDeclareRealty(item, $("#" + declareRealtyRealEstateCert.config.frm), [declareRealtyRealEstateCert.config.newFileId], null);
-};
-
-declareRealtyRealEstateCert.showAddModel = function () {
+//显示不动产模型（分有证和无证情况）
+declareRealtyRealEstateCert.showAddModelFun = function (flag,item) {
     $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId2).remove();
-    $('#' + declareRealtyRealEstateCert.config.box).find(".panel-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml2());
+    $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
+    var landCertGetQuestion = null;
+    if (flag) {
+        landCertGetQuestion = "有权证";
+        $('#' + declareRealtyRealEstateCert.config.box).find(".panel-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
+    } else {
+        landCertGetQuestion = "无权证";
+        $('#' + declareRealtyRealEstateCert.config.box).find(".panel-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml2());
+    }
+    $('#' + declareRealtyRealEstateCert.config.box).modal("show");
     declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.frm), function (area) {
-        declareRealtyRealEstateCert.init(area);
-        $('#' + declareRealtyRealEstateCert.config.box).modal("show");
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCertificateIsnull, null, function (html, data) {
+            var id = null;
+            $.each(data, function (i, n) {
+                if (n.name == landCertGetQuestion) {
+                    id = n.id;
+                }
+            });
+            area.landCertGetQuestion = id;
+            if (jQuery.isEmptyObject(item)) {
+                declareCommon.initDeclareRealty(area, $("#" + declareRealtyRealEstateCert.config.frm), [declareRealtyRealEstateCert.config.newFileId], null);
+            } else {
+                declareCommon.initDeclareRealty(item, $("#" + declareRealtyRealEstateCert.config.frm), [declareRealtyRealEstateCert.config.newFileId], null);
+            }
+        });
     });
 };
 
+//显示不动产添加模型
+declareRealtyRealEstateCert.showAddModel = function (flag) {
+   this.showAddModelFun(flag,{});
+};
 
+//编辑不动产
 declareRealtyRealEstateCert.editData = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要编辑的数据");
     } else if (rows.length == 1) {
-        declareRealtyRealEstateCert.showAddModel();
-        declareRealtyRealEstateCert.init(rows[0]);
-        $('#' + declareRealtyRealEstateCert.config.box).modal("show");
-        $("#" + declareRealtyRealEstateCert.config.frm).validate();
+        var landCertGetQuestion = rows[0].landCertGetQuestion;
+        if (landCertGetQuestion) {
+            AssessCommon.getDataDicInfo(landCertGetQuestion, function (data) {
+                if (data.name == "有权证") {
+                    declareRealtyRealEstateCert.showAddModelFun(true,rows[0]);
+                } else {
+                    declareRealtyRealEstateCert.showAddModelFun(false,rows[0]);
+                }
+            });
+        }else {
+            declareRealtyRealEstateCert.showAddModelFun(true,rows[0]);
+        }
     } else {
         toastr.info("只能选择一行数据进行编辑");
     }

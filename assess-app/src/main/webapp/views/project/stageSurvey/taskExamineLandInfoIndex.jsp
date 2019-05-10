@@ -21,14 +21,14 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
             <div class="x_panel">
-                <div class="x_title collapse-link">
+                <div class="x_title">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
                     <h3>${empty declareRecord?projectPlanDetails.projectPhaseName: declareRecord.name} 土地的查勘表</h3>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content collapse">
+                <div class="x_content">
                     <form class="form-horizontal" id="surveyExaminePurenessLandFrm">
                         <input type="hidden" name="id" value="${surveyExaminePurenessLand.id}">
                         <div class="form-group">
@@ -441,12 +441,11 @@
         if (!frm.valid()) {
             return false;
         }
-        var formData = formSerializeArray(frm);
+        var data = {"surveyExaminePurenessLand":formSerializeArray(frm)};
         if ("${processInsId}" != "0") {
-            submitEditToServer(JSON.stringify(formData));
-        }
-        else {
-            submitToServer(JSON.stringify(formData), mustUseBox);
+            submitEditToServer(JSON.stringify(data));
+        } else {
+            submitToServer(JSON.stringify(data), mustUseBox);
         }
     }
 

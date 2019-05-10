@@ -115,8 +115,13 @@ public class ErpAreaService {
      * @return
      */
     public String getSysAreaName(String areaId) {
+        if (StringUtils.isEmpty(areaId)){
+            return "";
+        }
         SysAreaDto sysAreaDto = getSysAreaDto(areaId);
-        if (sysAreaDto == null) return "";
+        if (sysAreaDto == null){
+            return "";
+        }
         return sysAreaDto.getName();
     }
 

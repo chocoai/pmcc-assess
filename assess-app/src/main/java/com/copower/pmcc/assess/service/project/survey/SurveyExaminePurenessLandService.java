@@ -82,13 +82,10 @@ public class SurveyExaminePurenessLandService {
         }
         SurveyExaminePurenessLandVo vo = new SurveyExaminePurenessLandVo();
         org.springframework.beans.BeanUtils.copyProperties(oo,vo);
-        try {
-            vo.setAreaName(erpAreaService.getAreaFullName(oo.getProvince(),oo.getCity(),oo.getDistrict()));
-            vo.setProvinceName(erpAreaService.getSysAreaName(oo.getProvince()));
-            vo.setCityName(erpAreaService.getSysAreaName(oo.getCity()));
-            vo.setDistrictName(erpAreaService.getSysAreaName(oo.getDistrict()));
-        } catch (Exception e) {
-        }
+        vo.setAreaName(erpAreaService.getAreaFullName(oo.getProvince(),oo.getCity(),oo.getDistrict()));
+        vo.setProvinceName(erpAreaService.getSysAreaName(oo.getProvince()));
+        vo.setCityName(erpAreaService.getSysAreaName(oo.getCity()));
+        vo.setDistrictName(erpAreaService.getSysAreaName(oo.getDistrict()));
         vo.setLandUseTypeName(baseDataDicService.getNameById(oo.getLandUseType()));
         vo.setLandUseCategoryName(baseDataDicService.getNameById(oo.getLandUseCategory()));
         if (oo.getLandLevel() != null) {
@@ -111,6 +108,11 @@ public class SurveyExaminePurenessLandService {
         vo.setInformationTypeName(baseDataDicService.getNameById(oo.getInformationType()));
         vo.setInformationCategoryName(baseDataDicService.getNameById(oo.getInformationCategory()));
         vo.setPriceConnotationName(baseDataDicService.getNameById(oo.getPriceConnotation()));
+        vo.setSupplyGasName(baseDataDicService.getNameById(oo.getSupplyGas()));
+        vo.setSupplyPowerName(baseDataDicService.getNameById(oo.getSupplyPower()));
+        vo.setSupplyWaterName(baseDataDicService.getNameById(oo.getSupplyWater()));
+        vo.setDrainWaterName(baseDataDicService.getNameById(oo.getDrainWater()));
+        vo.setSupplyHeatingName(baseDataDicService.getNameById(oo.getSupplyHeating()));
         return vo;
     }
     

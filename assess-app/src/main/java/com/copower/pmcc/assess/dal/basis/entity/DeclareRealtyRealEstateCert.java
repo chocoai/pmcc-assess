@@ -16,6 +16,8 @@ public class DeclareRealtyRealEstateCert {
 
     private String district;
 
+    private Integer landCertGetQuestion;
+
     private String certName;
 
     private String location;
@@ -168,6 +170,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public Integer getLandCertGetQuestion() {
+        return landCertGetQuestion;
+    }
+
+    public void setLandCertGetQuestion(Integer landCertGetQuestion) {
+        this.landCertGetQuestion = landCertGetQuestion;
     }
 
     public String getCertName() {

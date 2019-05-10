@@ -18,9 +18,9 @@ import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -399,7 +399,7 @@ public class SurveyExamineTaskService {
      * @throws BusinessException
      */
     @Transactional(rollbackFor = Exception.class)
-    public void examineTaskAssignment(Integer planDetailsId, String examineFormType, ExamineTypeEnum examineTypeEnum,Integer transactionType) throws BusinessException {
+    public void examineTaskAssignment(Integer planDetailsId, String examineFormType, ExamineTypeEnum examineTypeEnum, Integer transactionType) throws BusinessException {
         if (this.checkAssignmentTask(planDetailsId)) {
             throw new BusinessException("请不要重复添加");
         }
@@ -646,7 +646,6 @@ public class SurveyExamineTaskService {
         BasicHouse basicHouse = null;
         BasicHouseTrading basicTrading = null;
         SurveyExaminePurenessLand surveyExaminePurenessLand = null;
-        String survey = jsonObject.getString("survey");
         if (StringUtils.isNotBlank(jsonObject.getString("surveyExaminePurenessLand"))) {
             surveyExaminePurenessLand = JSONObject.parseObject(jsonObject.getString("surveyExaminePurenessLand"), SurveyExaminePurenessLand.class);
             if (surveyExaminePurenessLand != null) {
@@ -683,6 +682,12 @@ public class SurveyExamineTaskService {
                 basicHouseService.saveAndUpdateBasicHouse(basicHouse);
             }
         }
+        if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
+            basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
+            if (basicTrading != null) {
+                basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
+            }
+        }
         if (StringUtils.isNotBlank(jsonObject.getString("basicDamagedDegree"))) {
             List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonObject.getString("basicDamagedDegree"), BasicHouseDamagedDegree.class);
             if (!org.springframework.util.CollectionUtils.isEmpty(damagedDegreeList)) {
@@ -695,33 +700,30 @@ public class SurveyExamineTaskService {
             basicHouse.setNewDegree(newDegree);
             basicHouseService.saveAndUpdateBasicHouse(basicHouse);
         }
-
-        //案例
-        if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
-            surveyCaseStudy = JSONObject.parseObject(survey, SurveyCaseStudy.class);
-            surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
-            surveyCaseStudy.setJsonContent(formData);
-            surveyCaseStudyService.updateSurveyCaseStudy(surveyCaseStudy);
-
-            if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
-                basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
-                if (basicTrading != null) {
-                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
-                }
+        String survey = jsonObject.getString("survey");
+        if (StringUtils.isNotBlank(survey)) {
+            //案例
+            if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
+                surveyCaseStudy = JSONObject.parseObject(survey, SurveyCaseStudy.class);
+                surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
+                surveyCaseStudy.setJsonContent(formData);
+                surveyCaseStudyService.updateSurveyCaseStudy(surveyCaseStudy);
+            }
+            //查勘
+            if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
+                surveySceneExplore = JSONObject.parseObject(survey, SurveySceneExplore.class);
+                surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
+                surveySceneExplore.setJsonContent(formData);
+                surveySceneExploreService.updateSurveySceneExplore(surveySceneExplore);
             }
         }
-
-        //查勘
-        if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
-            surveySceneExplore = JSONObject.parseObject(survey, SurveySceneExplore.class);
-            surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
-            surveySceneExplore.setJsonContent(formData);
-            surveySceneExploreService.updateSurveySceneExplore(surveySceneExplore);
-            //需将土地实际用途、房屋证载用途、实际用途、楼层、房号反写到申报记录表中
+        //需将土地实际用途、房屋证载用途、实际用途、楼层、房号反写到申报记录表中
+        if (projectPlanDetails.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
             if (declareRecord != null) {
-                if (basicEstateLandState != null)
+                if (basicEstateLandState != null) {
                     declareRecord.setLandPracticalUse(baseDataDicService.getNameById(basicEstateLandState.getLandUseType()));
+                }
                 if (basicHouse != null) {
                     declareRecord.setCertUse(baseDataDicService.getNameById(basicHouse.getCertUse()));
                     declareRecord.setPracticalUse(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
@@ -729,13 +731,6 @@ public class SurveyExamineTaskService {
                     declareRecord.setRoomNumber(basicHouse.getHouseNumber());
                 }
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-            }
-
-            if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
-                basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
-                if (basicTrading != null) {
-                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
-                }
             }
         }
     }

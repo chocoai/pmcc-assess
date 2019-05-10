@@ -30,6 +30,12 @@ public class SurveyExaminePurenessLandVo extends SurveyExaminePurenessLand imple
     private String holdOnName;
     private String developmentDegreeContentName;
 
+    private String supplyGasName;
+    private String supplyPowerName;
+    private String supplyWaterName;
+    private String drainWaterName;
+    private String supplyHeatingName;
+
     private String informationTypeName;
     private String informationCategoryName;
     private String priceConnotationName;
@@ -200,5 +206,45 @@ public class SurveyExaminePurenessLandVo extends SurveyExaminePurenessLand imple
 
     public void setPriceConnotationName(String priceConnotationName) {
         this.priceConnotationName = priceConnotationName;
+    }
+
+    public String getSupplyGasName() {
+        return supplyGasName;
+    }
+
+    public void setSupplyGasName(String supplyGasName) {
+        this.supplyGasName = supplyGasName;
+    }
+
+    public String getSupplyPowerName() {
+        return supplyPowerName;
+    }
+
+    public void setSupplyPowerName(String supplyPowerName) {
+        this.supplyPowerName = supplyPowerName;
+    }
+
+    public String getSupplyWaterName() {
+        return supplyWaterName;
+    }
+
+    public void setSupplyWaterName(String supplyWaterName) {
+        this.supplyWaterName = supplyWaterName;
+    }
+
+    public String getDrainWaterName() {
+        return drainWaterName;
+    }
+
+    public void setDrainWaterName(String drainWaterName) {
+        this.drainWaterName = drainWaterName;
+    }
+
+    public String getSupplyHeatingName() {
+        return supplyHeatingName;
+    }
+
+    public void setSupplyHeatingName(String supplyHeatingName) {
+        this.supplyHeatingName = supplyHeatingName;
     }
 }

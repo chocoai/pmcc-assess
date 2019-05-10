@@ -496,6 +496,66 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandCertGetQuestionIsNull() {
+            addCriterion("land_cert_get_question is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionIsNotNull() {
+            addCriterion("land_cert_get_question is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionEqualTo(Integer value) {
+            addCriterion("land_cert_get_question =", value, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionNotEqualTo(Integer value) {
+            addCriterion("land_cert_get_question <>", value, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionGreaterThan(Integer value) {
+            addCriterion("land_cert_get_question >", value, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("land_cert_get_question >=", value, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionLessThan(Integer value) {
+            addCriterion("land_cert_get_question <", value, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionLessThanOrEqualTo(Integer value) {
+            addCriterion("land_cert_get_question <=", value, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionIn(List<Integer> values) {
+            addCriterion("land_cert_get_question in", values, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionNotIn(List<Integer> values) {
+            addCriterion("land_cert_get_question not in", values, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionBetween(Integer value1, Integer value2) {
+            addCriterion("land_cert_get_question between", value1, value2, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertGetQuestionNotBetween(Integer value1, Integer value2) {
+            addCriterion("land_cert_get_question not between", value1, value2, "landCertGetQuestion");
+            return (Criteria) this;
+        }
+
         public Criteria andCertNameIsNull() {
             addCriterion("cert_name is null");
             return (Criteria) this;

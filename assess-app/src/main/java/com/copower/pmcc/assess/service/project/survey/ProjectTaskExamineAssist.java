@@ -14,7 +14,6 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.basic.*;
-import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.event.project.SurveyExamineTaskEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -32,10 +31,8 @@ import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -69,8 +66,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private DataExamineTaskService dataExamineTaskService;
     @Autowired
     private SurveyCaseStudyService surveyCaseStudyService;
     @Autowired
@@ -142,7 +137,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
         }
-
         if (StringUtils.isBlank(processInsId)) {
             //更新各项表单任务状态
             surveyCommonService.updateExamineTaskStatus(projectPlanDetails.getPid(), commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
@@ -182,115 +176,138 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectCategoryId());
         SurveyExaminePurenessLand surveyExaminePurenessLand = null;
-        SurveyExaminePurenessLand query = new SurveyExaminePurenessLand();
-        query.setPlanDetailsId(projectPlanDetails.getId());
-        query.setProjectId(projectPlanDetails.getProjectId());
-        query.setProcessInsId(projectPlanDetails.getProcessInsId());
-        query.setDeclareId(projectPlanDetails.getDeclareRecordId());
-        List<SurveyExaminePurenessLand> surveyExaminePurenessLandList = surveyExaminePurenessLandService.getSurveyExaminePurenessLandList(query);
-        String view = apply ? "/project/stageSurvey/taskExamineInfoIndex" : "/project/stageSurvey/taskExamineInfoApproval";
+        String view = null;
+        final String landView = apply ? "/project/stageSurvey/taskExamineLandInfoIndex" : "/project/stageSurvey/taskExamineLandInfoApproval";
+        final String houseView = apply ? "/project/stageSurvey/taskExamineInfoIndex" : "/project/stageSurvey/taskExamineInfoApproval";
+        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getPid());
         if (projectClassify != null && StringUtils.isNotBlank(projectClassify.getFieldName())) {
             switch (projectClassify.getFieldName()) {
-                //土地项目类型
+                //土地 项目类型
                 case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE:
-                    if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId(), new Integer(declareRecord.getType()))) {
-                        view = apply ? "/project/stageSurvey/taskExamineLandInfoIndex" : "/project/stageSurvey/taskExamineLandInfoApproval";
-                        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(surveyExaminePurenessLandList)) {
-                            surveyExaminePurenessLand = surveyExaminePurenessLandList.stream().findFirst().get();
-                        }else {
-                            surveyExaminePurenessLand = new SurveyExaminePurenessLand();
-                        }
+                    surveyExaminePurenessLand = this.setLandExamineParam(projectPlanDetails, declareRecord, surveyExamineInfo);
+                    if (surveyExaminePurenessLand != null) {
+                        view = landView;
+                    } else {
+                        //处理为默认房产
+                        view = houseView;
                     }
                     break;
-                //土地简单项目类型
+                //土地简单 项目类型
                 case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE:
-                    if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId(), new Integer(declareRecord.getType()))) {
-                        view = apply ? "/project/stageSurvey/taskExamineLandInfoIndex" : "/project/stageSurvey/taskExamineLandInfoApproval";
-                        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(surveyExaminePurenessLandList)) {
-                            surveyExaminePurenessLand = surveyExaminePurenessLandList.stream().findFirst().get();
-                        }else {
-                            surveyExaminePurenessLand = new SurveyExaminePurenessLand();
-                        }
+                    surveyExaminePurenessLand = this.setLandExamineParam(projectPlanDetails, declareRecord, surveyExamineInfo);
+                    if (surveyExaminePurenessLand != null) {
+                        view = landView;
+                    } else {
+                        //处理为默认房产
+                        view = houseView;
                     }
                     break;
                 //房产项目类型
                 case AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE:
+                    view = houseView;
                     break;
                 //简单房产项目类型
                 case AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE:
+                    view = houseView;
                     break;
                 default:
                     break;
             }
         }
-        if (surveyExaminePurenessLand != null) {
-            if (surveyExaminePurenessLand.getId() == null) {
-                BeanUtils.copyProperties(query, surveyExaminePurenessLand);
-                surveyExaminePurenessLand.setCreator(projectPlanDetails.getCreator());
-                surveyExaminePurenessLandService.saveSurveyExaminePurenessLand(surveyExaminePurenessLand);
-            }
-            modelAndView.addObject(FormatUtils.toLowerCaseFirstChar(SurveyExaminePurenessLand.class.getSimpleName()), surveyExaminePurenessLandService.getSurveyExaminePurenessLandVo(surveyExaminePurenessLand));
-            modelAndView.addObject(String.format("%s%s",FormatUtils.toLowerCaseFirstChar(SurveyExaminePurenessLand.class.getSimpleName()),"JSON"), JSON.toJSONString(surveyExaminePurenessLandService.getSurveyExaminePurenessLandVo(surveyExaminePurenessLand)));
-        }
-        setIndustryExamineParam(userAccount, projectPlanDetails, modelAndView);
+        //公共需要添加的参数
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
+        modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
+        modelAndView.addObject("declareRecord", declareRecord);
+        //纯土地情况需要添加的参数
+        if (Objects.equal(landView, view)) {
+            if (surveyExaminePurenessLand != null) {
+                if (surveyExaminePurenessLand.getId() == null) {
+                    surveyExaminePurenessLand.setCreator(projectPlanDetails.getCreator());
+                    surveyExaminePurenessLand.setProcessInsId(projectPlanDetails.getProcessInsId());
+                    surveyExaminePurenessLand.setPlanDetailsId(projectPlanDetails.getId());
+                    surveyExaminePurenessLand.setProjectId(projectPlanDetails.getProjectId());
+                    surveyExaminePurenessLand.setDeclareId(projectPlanDetails.getDeclareRecordId());
+                    surveyExaminePurenessLandService.saveSurveyExaminePurenessLand(surveyExaminePurenessLand);
+                }
+                modelAndView.addObject(FormatUtils.toLowerCaseFirstChar(SurveyExaminePurenessLand.class.getSimpleName()), surveyExaminePurenessLandService.getSurveyExaminePurenessLandVo(surveyExaminePurenessLand));
+                modelAndView.addObject(String.format("%s%s", FormatUtils.toLowerCaseFirstChar(SurveyExaminePurenessLand.class.getSimpleName()), "JSON"), JSON.toJSONString(surveyExaminePurenessLandService.getSurveyExaminePurenessLandVo(surveyExaminePurenessLand)));
+            }
+        }
+        if (Objects.equal(houseView,view)){
+            //房产需要添加的参数情况
+            setIndustryExamineView(userAccount, projectPlanDetails, modelAndView);
+            try {
+                setIndustryExamineParam(declareRecord, surveyExamineInfo, projectPlanDetails, modelAndView);
+            } catch (Exception e) {
+                logger.error("参数设置异常!", e);
+            }
+        }
         return view;
     }
 
     /**
-     * 设置工业和非工业视图参数
+     * 处理是否为纯土地问题
+     *
+     * @param projectPlanDetails
+     * @param declareRecord
+     * @param surveyExamineInfo
+     * @return
+     */
+    private SurveyExaminePurenessLand setLandExamineParam(ProjectPlanDetails projectPlanDetails, DeclareRecord declareRecord, SurveyExamineInfo surveyExamineInfo) {
+        SurveyExaminePurenessLand query = new SurveyExaminePurenessLand();
+        query.setPlanDetailsId(projectPlanDetails.getId());
+        query.setProjectId(projectPlanDetails.getProjectId());
+        query.setDeclareId(projectPlanDetails.getDeclareRecordId());
+        List<SurveyExaminePurenessLand> surveyExaminePurenessLandList = surveyExaminePurenessLandService.getSurveyExaminePurenessLandList(query);
+        //现场查勘的情况
+        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getType())) {
+            if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId(), new Integer(declareRecord.getType()))) {
+                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(surveyExaminePurenessLandList)) {
+                    return surveyExaminePurenessLandList.stream().findFirst().get();
+                } else {
+                    return new SurveyExaminePurenessLand();
+                }
+            }
+        } else {
+            //可以添加多个案例的情况
+            //交易案例 这个时候才没有申报id需要从case案例这获取用户选择的类型,如果是纯土地那就使用SurveyExaminePurenessLand来处理，否则的话还是使用房产案例与查勘
+            if (surveyExamineInfo != null) {
+                if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId(), surveyExamineInfo.getTransactionType())) {
+                    if (org.apache.commons.collections.CollectionUtils.isNotEmpty(surveyExaminePurenessLandList)) {
+                        return surveyExaminePurenessLandList.stream().findFirst().get();
+                    } else {
+                        return new SurveyExaminePurenessLand();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 设置工业和非工业视图 view
      *
      * @param userAccount
      * @param projectPlanDetails
      * @param modelAndView
      */
-    private void setIndustryExamineParam(String userAccount, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getPid());
-        modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-        modelAndView.addObject("declareRecord", declareRecord);
-        try {
-            setSurveyCaseStudyOrSurveySceneExploreValue(declareRecord, projectPlanDetails, modelAndView);
-        } catch (Exception e1) {
-            logger.error("设置数据异常!", e1);
-        }
+    private void setIndustryExamineView(String userAccount, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         Map<String, List<SurveyExamineTaskVo>> mapTaskList = surveyCommonService.getExamineTaskByUserAccount(projectPlanDetails.getPid(), userAccount);
         modelAndView.addObject("estateTaskList", mapTaskList.get(AssessExamineTaskConstant.ESTATE));
         modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
         modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
         modelAndView.addObject("houseTaskList", mapTaskList.get(AssessExamineTaskConstant.HOUSE));
-        this.industry(projectPlanDetails, modelAndView);
     }
 
     /**
-     * 区分是否是非工业
+     * 具体设置工业与非工业 具体要使用的参数
      *
+     * @param declareRecord
      * @param projectPlanDetails
      * @param modelAndView
+     * @throws Exception
      */
-    private void industry(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        if (projectPlanDetails == null) {
-            return;
-        }
-        SurveyExamineTask query = new SurveyExamineTask();
-        query.setPlanDetailsId(projectPlanDetails.getPid());
-        //工业与非工业楼盘是不同的因此查询出楼盘的DataExamineTask可以区分是否是工业与非工业
-        query.setName("楼盘");
-        List<SurveyExamineTask> surveyExamineTaskList = surveyExamineTaskService.getSurveyExamineTaskList(query);
-        if (!ObjectUtils.isEmpty(surveyExamineTaskList)) {
-            SurveyExamineTask surveyExamineTask = surveyExamineTaskList.get(0);
-            Integer id = surveyExamineTask.getDataTaskId();
-            DataExamineTask dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskById(id);
-            if (dataExamineTask != null) {
-                DataExamineTask examineTask = dataExamineTaskService.getCacheDataExamineTaskById(dataExamineTask.getPid());
-                if (examineTask != null) {
-                    modelAndView.addObject("dataExamineTask", examineTask);
-                }
-            }
-        }
-    }
-    //具体设置工业与非工业参数
-    private void setSurveyCaseStudyOrSurveySceneExploreValue(DeclareRecord declareRecord, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
+    private void setIndustryExamineParam(DeclareRecord declareRecord, SurveyExamineInfo surveyExamineInfo, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
         ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE)) {
@@ -330,7 +347,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         }
         if (basicApply == null) {
             basicApply = new BasicApply();
-            SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getPid());
             if (surveyExamineInfo != null) {
                 basicApply.setType(BasicApplyTypeEnum.getEnumByKey(surveyExamineInfo.getExamineFormType()).getId());
             }
@@ -370,7 +386,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             basicHouse.setApplyId(basicApply.getId());
             basicHouseService.saveAndUpdateBasicHouse(basicHouse);
             //添加交易信息
-            SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getPid());
             basicHouseTrading = new BasicHouseTrading();
             basicHouseTrading.setHouseId(basicHouse.getId());
             basicHouseTrading.setApplyId(basicApply.getId());
