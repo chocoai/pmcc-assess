@@ -349,7 +349,9 @@
 
         //代征地比例
         var confiscateLandRatio = parseFloat(AssessCommon.percentToPoint($("#confiscateLandRatio").text()));
-        $("#confiscateLandUnit").text(getSomePlaces((computationalBase + tempBhouPrice) / (1 - confiscateLandRatio), 2));
+        if(confiscateLandRatio) {
+            $("#confiscateLandUnit").text(getSomePlaces((computationalBase + tempBhouPrice) / (1 - confiscateLandRatio), 2));
+        }
 
         //利润基数
         getProfitBase();
