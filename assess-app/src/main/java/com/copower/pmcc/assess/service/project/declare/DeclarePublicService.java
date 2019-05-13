@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +56,8 @@ public class DeclarePublicService {
     private final String FLOOR = "层";
     private final String ATTACHED = "附";
     private final String BUILDING = "栋";
-    private final String STREET = "街道";
-    private final String HOUSE = "房";
+    private final String STREET = "STREET";
+    private final String RoomNumber = "RoomNumber";
     private final String NUMBER = "号";
 
     /**
@@ -69,19 +68,38 @@ public class DeclarePublicService {
      */
     private Map<String, String> beLocatedSplicing(String text) {
         Map<String, String> stringMap = Maps.newHashMap();
-        if (StringUtils.isEmpty(text)){
+        if (StringUtils.isEmpty(text)) {
             return stringMap;
         }
-        String streetName = StringUtils.substringBefore(text,NUMBER);
-        stringMap.put(STREET,streetName) ;
-        text = StringUtils.removeStart(text,streetName);
-        List<String> stringList = generateCommonMethod.convertNumberHelp(text);
+        String streetName = org.apache.commons.lang3.StringUtils.substringBetween(text,"",NUMBER);
+        stringMap.put(STREET, streetName);
+        final String value = StringUtils.removeStart(text, streetName);
+        List<String> stringList = generateCommonMethod.convertNumberHelp(value);
         if (CollectionUtils.isNotEmpty(stringList)) {
             stringList = stringList.stream().filter(s -> NumberUtils.isNumber(s)).collect(Collectors.toList());
         }
         if (CollectionUtils.isNotEmpty(stringList)) {
             stringList.stream().forEachOrdered(s -> {
-                List<String> targets = Arrays.asList(ATTACHED,UNIT);
+                //附
+                if (StringUtils.contains(value, String.format("%s%d%s", ATTACHED, Integer.parseInt(s), NUMBER))) {
+                    stringMap.put(ATTACHED, s);
+                }
+                //栋
+                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), BUILDING))) {
+                    stringMap.put(BUILDING, s);
+                }
+                //单元
+                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), UNIT))) {
+                    stringMap.put(UNIT, s);
+                }
+                //层
+                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), FLOOR))) {
+                    stringMap.put(FLOOR, s);
+                }
+                //房
+                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), NUMBER))) {
+                    stringMap.put(RoomNumber, s);
+                }
 
             });
         }
@@ -139,14 +157,11 @@ public class DeclarePublicService {
             oo.setDistrict(map.get("district"));
         }
         //权证号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(3)))) {
-            oo.setCertName(PoiUtils.getCellValue(row.getCell(3)));
-        }
-
         String cerName = PoiUtils.getCellValue(row.getCell(3));
         if (StringUtils.isNotBlank(cerName)) {
+            oo.setCertName(cerName);
             oo.setNumber(generateCommonMethod.getNumber(cerName));
-            oo.setLandNumber(StringUtils.substringBeforeLast(cerName, "不动产"));
+            oo.setLocation(StringUtils.substringBeforeLast(cerName, "不动产"));
         }
 
         //房屋所有权人
@@ -176,48 +191,27 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
             oo.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
         }
-        String located = PoiUtils.getCellValue(row.getCell(7));
-        if (StringUtils.isNotBlank(located)) {
-            String reg = "^.*?号";//街道号
-            Pattern p = Pattern.compile(reg);
-            Matcher m = p.matcher(located);
-            while (m.find()) {
-                oo.setStreetNumber(m.group());
-            }
-
-            reg = "(?<=附)(\\d+)";//匹配附后面的数字
-            p = Pattern.compile(reg);
-            m = p.matcher(located);
-            while (m.find()) {
-                oo.setAttachedNumber(m.group());
-            }
-
-            reg = "(\\d+)(?=栋)";//匹配栋前面的数字
-            p = Pattern.compile(reg);
-            m = p.matcher(located);
-            while (m.find()) {
-                oo.setBuildingNumber(m.group());
-            }
-
-            reg = "(\\d+)(?=单元)";//匹配单元前面的数字
-            p = Pattern.compile(reg);
-            m = p.matcher(located);
-            while (m.find()) {
-                oo.setUnit(m.group());
-            }
-
-            reg = "(\\d+)(?=层)";//匹配层前面的数字
-            p = Pattern.compile(reg);
-            m = p.matcher(located);
-            while (m.find()) {
-                oo.setFloor(m.group());
-            }
-
-            reg = "(\\d+)(?=号)";//匹配号前面的数字
-            p = Pattern.compile(reg);
-            m = p.matcher(located);
-            while (m.find()) {
-                oo.setRoomNumber(m.group(m.groupCount()));
+        if (StringUtils.isNotBlank(oo.getBeLocated())) {
+            Map<String, String> locatedMap = beLocatedSplicing(oo.getBeLocated());
+            if (!locatedMap.isEmpty()) {
+                if (locatedMap.containsKey(STREET)){
+                    oo.setStreetNumber(locatedMap.get(STREET));
+                }
+                if (locatedMap.containsKey(UNIT)){
+                    oo.setUnit(locatedMap.get(UNIT));
+                }
+                if (locatedMap.containsKey(FLOOR)){
+                    oo.setFloor(locatedMap.get(FLOOR));
+                }
+                if (locatedMap.containsKey(ATTACHED)){
+                    oo.setAttachedNumber(locatedMap.get(ATTACHED));
+                }
+                if (locatedMap.containsKey(BUILDING)){
+                    oo.setBuildingNumber(locatedMap.get(BUILDING));
+                }
+                if (locatedMap.containsKey(RoomNumber)){
+                    oo.setRoomNumber(locatedMap.get(RoomNumber));
+                }
             }
         }
         BaseDataDic typeDic = null;
@@ -249,10 +243,12 @@ public class DeclarePublicService {
             } else {
                 nature = String.valueOf(typeDic.getId());
             }
+            if (NumberUtils.isNumber(nature)){
+                //房屋性质
+                oo.setNature(Integer.valueOf(nature));
+            }
         }
 
-        //房屋性质
-        oo.setNature(Integer.valueOf(nature));
         //建筑面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
             oo.setFloorArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(11))));
