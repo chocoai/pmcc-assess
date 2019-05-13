@@ -13,6 +13,15 @@ public class DataLandApproximationMethodSettingVo extends DataLandApproximationM
     private String areaName;
     private String categoryName;
     private BigDecimal bhouPrice;
+    private BigDecimal squareMoney;
+
+    public BigDecimal getSquareMoney() {
+        return squareMoney;
+    }
+
+    public void setSquareMoney(BigDecimal squareMoney) {
+        this.squareMoney = squareMoney;
+    }
 
     public String getAreaName() {
         return areaName;

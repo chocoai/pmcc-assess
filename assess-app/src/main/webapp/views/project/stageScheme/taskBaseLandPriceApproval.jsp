@@ -133,7 +133,7 @@
     $(function () {
         var standardBhouPrice = getBhouPrice("${standardPremium}", 2)
         $("#bhouPrice").text(standardBhouPrice + "万元/亩");
-        $("#volumetricRate").text(getSomePlaces("${volumetricRate}",2));
+        $("#volumetricRate").text(getSomePlaces("${volumetricRate}", 2));
     });
 
     //获取一亩的价

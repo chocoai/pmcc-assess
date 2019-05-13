@@ -57,7 +57,7 @@
                                             <td colspan="2">${item.categoryName}</td>
                                             <td colspan="2">${item.symbol}</td>
                                             <td>${item.bhouPrice}</td>
-                                            <td>${item.amountMoney}</td>
+                                            <td>${item.squareMoney}</td>
                                         </tr>
                                     </c:forEach>
                                     <tr>
@@ -338,18 +338,19 @@
         var tempBhouPrice = imprevisionCost * computationalBase;
         $("#tempBhouPrice").text(getSomePlaces(tempBhouPrice, 2));
         $("#tempUnitPrice").text(getSomePlaces(tempBhouPrice / 666.67, 2));
-        //土地取得费亩价
-        var landAcquisitionBhou = (computationalBase + tempBhouPrice) / (1 - imprevisionCost);
-        $("#landAcquisitionBhou").text(getSomePlaces(landAcquisitionBhou, 2));
-        $("#landAcquisitionUnit").text(getSomePlaces(landAcquisitionBhou / 666.67, 2));
         //小计
         $("#subtotalBhou").text(getSomePlaces(computationalBase + tempBhouPrice, 2));
         $("#subtotalUnit").text(getSomePlaces((computationalBase + tempBhouPrice) / 666.67, 2));
 
-        //代征地比例
         var confiscateLandRatio = parseFloat(AssessCommon.percentToPoint($("#confiscateLandRatio").text()));
+        var subtotalUnit = $("#subtotalUnit").text();
         if(confiscateLandRatio) {
-            $("#confiscateLandUnit").text(getSomePlaces((computationalBase + tempBhouPrice) / (1 - confiscateLandRatio), 2));
+            //代征地比例
+            $("#confiscateLandUnit").text(getSomePlaces(subtotalUnit / (1 - confiscateLandRatio), 2));
+            //土地取得费亩价
+            var landAcquisitionUnit = (subtotalUnit) / (1 - confiscateLandRatio);
+            $("#landAcquisitionUnit").text(getSomePlaces(landAcquisitionUnit, 2));
+            $("#landAcquisitionBhou").text(getSomePlaces(landAcquisitionUnit *666.67, 2));
         }
 
         //利润基数
@@ -358,6 +359,7 @@
         getLandProductionInterest();
         //无限年期土地使用权价格
         getLandAppreciation();
+
 
     }
 
@@ -496,26 +498,28 @@
             //无限年期土地使用权价格H27
             var landUseUnit = parseFloat($("#landUseUnit").text());
             //宗地个别因素修正E30
-            var parcelIndividualFactor = AssessCommon.percentToPoint($("#parcelIndividualFactor").text());
+            var parcelIndividualFactor = parseFloat(AssessCommon.percentToPoint($("#parcelIndividualFactor").text()));
             if (landUseUnit && parcelIndividualFactor) {
                 //价格修正与确定
                 var priceCorrectionUnit = yearFixed * landUseUnit * (1 + parcelIndividualFactor);
                 $("#priceCorrectionUnit").text(getSomePlaces(priceCorrectionUnit, 2));
-                $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionUnit * 666.67, 2));
+                $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionUnit * 666.67/10000, 2));
             }
             //E31
-            var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
+            var volumeFractionAmend = parseFloat("${volumeFractionAmend}");
             if(yearFixed&&landUseUnit && parcelIndividualFactor&&volumeFractionAmend){
-                //单价E32
+                //单价H32
                 var unitPrice = yearFixed*landUseUnit*parcelIndividualFactor*volumeFractionAmend;
                 $("#unitPrice").text(getSomePlaces(unitPrice, 2));
                 $("#bhouPrice").text(getSomePlaces(unitPrice*666.67, 2));
-                //容积率E33
-                var volumetricRate = parseFloat($("#volumetricRate").text());
+                //容积率H33
+                var volumetricRate = parseFloat("${volumetricRate}");
                 //估价对象楼面地价
                 $("#floorPrice").text(getSomePlaces(unitPrice/volumetricRate, 2));
+                //E33
+                var evaluationArea = "${evaluationArea}";
                 //委估宗地总价
-                $("#parcelTotal").text(getSomePlaces(unitPrice*volumetricRate, 2));
+                $("#parcelTotal").text(getSomePlaces(unitPrice*evaluationArea/10000, 2));
             }
 
         }

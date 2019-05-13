@@ -215,26 +215,19 @@
     function getParcelPrice() {
         //基准地价E4
         var standardPremium = parseFloat($("#standardPremium").text());
-        console.log(standardPremium+"===E4")
         //期日修正系数E5
         var DateAmend = parseFloat($("#DateAmend").text());
-        console.log(DateAmend+"===E5")
         //年期修正系数E6
         var periodAmend = parseFloat($("#periodAmend").text());
-        console.log(periodAmend+"===E6")
         //容积率修正E10
         var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
-        console.log(volumeFractionAmend+"===E10")
         //区域及个别修正系数E11
         var areaAndSeveralAmend = parseFloat($("#areaAndSeveralAmend").text());
-        console.log(areaAndSeveralAmend+"===E11")
         //开发程度修正E12
         var developCorrect = parseFloat($("#developCorrect").val());
-        console.log(developCorrect+"===E12")
 
         if (standardPremium && DateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect) {
             var money = standardPremium * DateAmend * periodAmend * volumeFractionAmend * (1 + areaAndSeveralAmend) + developCorrect;
-            console.log(money+"===money")
             if (money) {
                 //宗地单价
                 $("#parcelPrice").text(getSomePlaces(money, 2));
