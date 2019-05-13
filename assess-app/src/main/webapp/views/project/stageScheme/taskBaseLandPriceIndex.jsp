@@ -113,7 +113,7 @@
                                     </tr>
                                     <tr>
                                         <td>委估宗地面积（㎡）</td>
-                                        <td>${floorArea}</td>
+                                        <td>${evaluationArea}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
@@ -234,7 +234,7 @@
                 //宗地亩价
                 $("#parcelBhouPrice").text(getBhouPrice(money, 2));
                 //宗地总价
-                var area = "${floorArea}";
+                var area = "${evaluationArea}";
                 $("#parcelTotalPrice").text(getSomePlaces(area * money / 10000, 2));
                 //楼面地价
                 var volumetricRate = "${volumetricRate}";

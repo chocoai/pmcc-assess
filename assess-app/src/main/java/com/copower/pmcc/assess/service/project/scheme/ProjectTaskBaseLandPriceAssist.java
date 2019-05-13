@@ -186,7 +186,7 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
             modelAndView.addObject("legalAge", matcher.group());
         }
 
-        //剩余使用年限（待确认）
+        //剩余使用年限
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
         if (declareRecord.getLandUseEndDate() != null && areaGroup.getValueTimePoint() != null) {
             BigDecimal landSurplusYear = new BigDecimal(DateUtils.diffDate(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
@@ -216,9 +216,9 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
             }
         }
 
-        //宗地面积(取证载面积，待确认)
-        BigDecimal floorArea = schemeJudgeObject.getFloorArea();
-        modelAndView.addObject("floorArea", floorArea);
+        //宗地面积
+        BigDecimal evaluationArea = schemeJudgeObject.getEvaluationArea();
+        modelAndView.addObject("evaluationArea", evaluationArea);
 
         //区域及个别修正系数(待确认)
     }

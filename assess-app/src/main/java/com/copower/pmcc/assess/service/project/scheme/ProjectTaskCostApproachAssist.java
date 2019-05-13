@@ -148,9 +148,9 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         //土地剩余年限
         BigDecimal landRemainingYear = schemeJudgeObject.getLandRemainingYear();
         modelAndView.addObject("landRemainingYear", landRemainingYear);
-        //宗地面积(取证载面积，待确认)
-        BigDecimal floorArea = schemeJudgeObject.getFloorArea();
-        modelAndView.addObject("floorArea", floorArea);
+        //宗地面积
+        BigDecimal evaluationArea = schemeJudgeObject.getEvaluationArea();
+        modelAndView.addObject("evaluationArea", evaluationArea);
         //容积率
         String volumetricRate = basicEstate.getVolumetricRate();
         modelAndView.addObject("volumetricRate", volumetricRate);
