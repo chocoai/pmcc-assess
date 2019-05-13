@@ -112,8 +112,8 @@ public class DeclareRealtyRealEstateCertService {
                     continue;
                 }
                 oo = new DeclareRealtyRealEstateCert();
-                oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 BeanUtils.copyProperties(declareRealtyRealEstateCert,oo);
+                oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 oo.setId(null);
                 //excel处理
                 if (!declarePoiHelp.realEstateCert(oo, builder, row, i)) {
