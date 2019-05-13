@@ -164,7 +164,7 @@
                                     </tr>
                                     <tr>
                                         <td>六、委估宗地面积（㎡）</td>
-                                        <td>${floorArea}</td>
+                                        <td>${evaluationArea}</td>
                                         <td>容积率</td>
                                         <td>${volumetricRate}</td>
                                         <td></td>
