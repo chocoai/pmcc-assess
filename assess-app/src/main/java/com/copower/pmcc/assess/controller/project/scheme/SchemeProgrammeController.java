@@ -89,8 +89,8 @@ public class SchemeProgrammeController {
         modelAndView.addObject("valueTypes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
         modelAndView.addObject("entrustmentPurposes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE));//委托目的
         modelAndView.addObject("valueConnotations", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROGRAMME_VALUE_CONNOTATION));//价值内涵
-        modelAndView.addObject("baseMethodList", mdCommonService.getBaseMethodList());//基本方法
-        modelAndView.addObject("otherMethodList", mdCommonService.getOtherMethodList());//其它方法
+        modelAndView.addObject("baseMethodList", mdCommonService.getBaseMethodList(projectInfoVo.getProjectCategoryId()));//基本方法
+        modelAndView.addObject("otherMethodList", mdCommonService.getOtherMethodList(projectInfoVo.getProjectCategoryId()));//其它方法
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
         modelAndView.addObject("inventoryRightTypeList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE));

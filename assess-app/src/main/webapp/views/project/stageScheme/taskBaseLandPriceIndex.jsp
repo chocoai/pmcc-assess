@@ -113,7 +113,7 @@
                                     </tr>
                                     <tr>
                                         <td>委估宗地面积（㎡）</td>
-                                        <td>${floorArea}</td>
+                                        <td>${evaluationArea}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
@@ -205,7 +205,7 @@
                 var element = group.find(':text');
                 element.val(data.resultValue);
                 AssessCommon.elementParsePoint(group.find('[name=rewardRate]').val(data.resultValue));
-
+                //获取年期修正系数
                 getPeriodAmend(data.resultValue);
             }
         })
@@ -213,17 +213,17 @@
 
     //获取委估宗地单价（元/㎡）
     function getParcelPrice() {
-        //基准地价
+        //基准地价E4
         var standardPremium = parseFloat($("#standardPremium").text());
-        //期日修正系数
+        //期日修正系数E5
         var DateAmend = parseFloat($("#DateAmend").text());
-        //年期修正系数
+        //年期修正系数E6
         var periodAmend = parseFloat($("#periodAmend").text());
-        //容积率修正
+        //容积率修正E10
         var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
-        //区域及个别修正系数
+        //区域及个别修正系数E11
         var areaAndSeveralAmend = parseFloat($("#areaAndSeveralAmend").text());
-        //开发程度修正
+        //开发程度修正E12
         var developCorrect = parseFloat($("#developCorrect").val());
 
         if (standardPremium && DateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect) {
@@ -234,7 +234,7 @@
                 //宗地亩价
                 $("#parcelBhouPrice").text(getBhouPrice(money, 2));
                 //宗地总价
-                var area = "${floorArea}";
+                var area = "${evaluationArea}";
                 $("#parcelTotalPrice").text(getSomePlaces(area * money / 10000, 2));
                 //楼面地价
                 var volumetricRate = "${volumetricRate}";
@@ -258,14 +258,22 @@
 
     //获取年期修正系数
     function getPeriodAmend(rewardRatePercent) {
+        //E7
         var rewardRate = AssessCommon.percentToPoint(rewardRatePercent);
+        //E9
         var landSurplusYear = "${landSurplusYear}";
+        //E8
+        var legalAge = "${legalAge}";
         if (rewardRate) {
             var temp = 1 / Math.pow(1 + parseFloat(rewardRate), landSurplusYear);
-            var temp2 = 1 / Math.pow(1 + parseFloat(rewardRate), rewardRate);
+
+            var temp2 = 1 / Math.pow(1 + parseFloat(rewardRate), legalAge);
             var result = (1 - temp) / (1 - temp2);
-            $("#periodAmend").text(getSomePlaces(result, 2))
+
+            $("#periodAmend").text(getSomePlaces(result, 4))
         }
+        //获取委估宗地单价（元/㎡）
+        getParcelPrice();
     }
 </script>
 

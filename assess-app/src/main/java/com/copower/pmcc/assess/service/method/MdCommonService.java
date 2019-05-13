@@ -1,10 +1,14 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,8 @@ import java.util.List;
 public class MdCommonService {
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 获取所有方法
@@ -32,10 +38,12 @@ public class MdCommonService {
      *
      * @return
      */
-    public List<BaseDataDic> getBaseMethodList() {
+    public List<BaseDataDic> getBaseMethodList(Integer projectCategory) {
         List<BaseDataDic> baseMethodList = Lists.newArrayList();
         List<BaseDataDic> allMethodList = getAllMethodList();
         if (CollectionUtils.isEmpty(allMethodList)) return null;
+        BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectCategory);
+        String classifyFieldName = projectClassify.getFieldName();
         for (BaseDataDic baseDataDic : allMethodList) {
             if (AssessDataDicKeyConstant.MD_MARKET_COMPARE.equals(baseDataDic.getFieldName())) {
                 baseMethodList.add(baseDataDic);
@@ -43,18 +51,21 @@ public class MdCommonService {
             if (AssessDataDicKeyConstant.MD_INCOME.equals(baseDataDic.getFieldName())) {
                 baseMethodList.add(baseDataDic);
             }
-            if (AssessDataDicKeyConstant.MD_COST.equals(baseDataDic.getFieldName())) {
-                baseMethodList.add(baseDataDic);
+            if (StringUtils.isNotBlank(classifyFieldName) && classifyFieldName.contains(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE)) {
+                if (AssessDataDicKeyConstant.MD_COST.equals(baseDataDic.getFieldName())) {
+                    baseMethodList.add(baseDataDic);
+                }
+                if (AssessDataDicKeyConstant.MD_DEVELOPMENT.equals(baseDataDic.getFieldName())) {
+                    baseMethodList.add(baseDataDic);
+                }
             }
-            if (AssessDataDicKeyConstant.MD_DEVELOPMENT.equals(baseDataDic.getFieldName())) {
-                baseMethodList.add(baseDataDic);
-            }
-
-            if (AssessDataDicKeyConstant.MD_BASE_LAND_PRICE.equals(baseDataDic.getFieldName())) {
-                baseMethodList.add(baseDataDic);
-            }
-            if (AssessDataDicKeyConstant.MD_COST_APPROACH.equals(baseDataDic.getFieldName())) {
-                baseMethodList.add(baseDataDic);
+            if (StringUtils.isNotBlank(classifyFieldName) && classifyFieldName.contains(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE)) {
+                if (AssessDataDicKeyConstant.MD_BASE_LAND_PRICE.equals(baseDataDic.getFieldName())) {
+                    baseMethodList.add(baseDataDic);
+                }
+                if (AssessDataDicKeyConstant.MD_COST_APPROACH.equals(baseDataDic.getFieldName())) {
+                    baseMethodList.add(baseDataDic);
+                }
             }
         }
         return baseMethodList;
@@ -65,24 +76,14 @@ public class MdCommonService {
      *
      * @return
      */
-    public List<BaseDataDic> getOtherMethodList() {
+    public List<BaseDataDic> getOtherMethodList(Integer projectCategory) {
         List<BaseDataDic> otherMethodList = Lists.newArrayList();
         List<BaseDataDic> allMethodList = getAllMethodList();
         if (CollectionUtils.isEmpty(allMethodList)) return otherMethodList;
         for (BaseDataDic baseDataDic : allMethodList) {
-            if (AssessDataDicKeyConstant.MD_MARKET_COMPARE.equals(baseDataDic.getFieldName())) {
-                continue;
+            if(!isBaseMethod(projectCategory,baseDataDic.getId())){
+                otherMethodList.add(baseDataDic);
             }
-            if (AssessDataDicKeyConstant.MD_INCOME.equals(baseDataDic.getFieldName())) {
-                continue;
-            }
-            if (AssessDataDicKeyConstant.MD_COST.equals(baseDataDic.getFieldName())) {
-                continue;
-            }
-            if (AssessDataDicKeyConstant.MD_DEVELOPMENT.equals(baseDataDic.getFieldName())) {
-                continue;
-            }
-            otherMethodList.add(baseDataDic);
         }
         return otherMethodList;
     }
@@ -93,8 +94,8 @@ public class MdCommonService {
      * @param method
      * @return
      */
-    public Boolean isBaseMethod(Integer method) {
-        List<BaseDataDic> methodList = getBaseMethodList();
+    public Boolean isBaseMethod(Integer projectCategory,Integer method) {
+        List<BaseDataDic> methodList = getBaseMethodList(projectCategory);
         for (BaseDataDic baseDataDic : methodList) {
             if (method.equals(baseDataDic.getId()))
                 return true;
@@ -108,8 +109,8 @@ public class MdCommonService {
      * @param method
      * @return
      */
-    public Boolean isOtherMethod(Integer method) {
-        List<BaseDataDic> methodList = getOtherMethodList();
+    public Boolean isOtherMethod(Integer projectCategory,Integer method) {
+        List<BaseDataDic> methodList = getOtherMethodList(projectCategory);
         for (BaseDataDic baseDataDic : methodList) {
             if (method.equals(baseDataDic.getId()))
                 return true;

@@ -91,7 +91,7 @@
                                     </tr>
                                     <tr>
                                         <td>委估宗地面积（㎡）</td>
-                                        <td>${floorArea}</td>
+                                        <td>${evaluationArea}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
@@ -133,7 +133,7 @@
     $(function () {
         var standardBhouPrice = getBhouPrice("${standardPremium}", 2)
         $("#bhouPrice").text(standardBhouPrice + "万元/亩");
-        $("#volumetricRate").text(getSomePlaces("${volumetricRate}",2));
+        $("#volumetricRate").text(getSomePlaces("${volumetricRate}", 2));
     });
 
     //获取一亩的价

@@ -54,6 +54,12 @@ public class SchemeJudgeObject {
 
     private BigDecimal originalPrice;
 
+    private BigDecimal setPlotRatio;
+
+    private BigDecimal planPlotRatio;
+
+    private BigDecimal actualPlotRatio;
+
     private String rentalPossessionDesc;
 
     private String collateralFound;
@@ -282,6 +288,30 @@ public class SchemeJudgeObject {
 
     public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
+    }
+
+    public BigDecimal getSetPlotRatio() {
+        return setPlotRatio;
+    }
+
+    public void setSetPlotRatio(BigDecimal setPlotRatio) {
+        this.setPlotRatio = setPlotRatio;
+    }
+
+    public BigDecimal getPlanPlotRatio() {
+        return planPlotRatio;
+    }
+
+    public void setPlanPlotRatio(BigDecimal planPlotRatio) {
+        this.planPlotRatio = planPlotRatio;
+    }
+
+    public BigDecimal getActualPlotRatio() {
+        return actualPlotRatio;
+    }
+
+    public void setActualPlotRatio(BigDecimal actualPlotRatio) {
+        this.actualPlotRatio = actualPlotRatio;
     }
 
     public String getRentalPossessionDesc() {

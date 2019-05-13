@@ -80,6 +80,9 @@ public class DataLandApproximationMethodSettingService {
         org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         vo.setAreaName(erpAreaService.getAreaFullName(oo.getProvince(), oo.getCity(), oo.getDistrict()));
         vo.setCategoryName(baseDataDicService.getNameById(oo.getCategory()));
+        if (oo.getAmountMoney() != null)
+            vo.setBhouPrice(oo.getAmountMoney().multiply(new BigDecimal("666.67")).multiply(new BigDecimal("0.91")).setScale(2,BigDecimal.ROUND_HALF_UP));
+            vo.setSquareMoney(oo.getAmountMoney().multiply(new BigDecimal("0.91")).setScale(2,BigDecimal.ROUND_HALF_UP));
         if (oo.getAmountMoney() != null) {
             vo.setBhouPrice(oo.getAmountMoney().multiply(new BigDecimal("666.67")).setScale(2, BigDecimal.ROUND_HALF_UP));
         }

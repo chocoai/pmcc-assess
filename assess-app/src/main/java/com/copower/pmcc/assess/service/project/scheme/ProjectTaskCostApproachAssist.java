@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
-import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandApproximationMethodSettingDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -9,6 +7,7 @@ import com.copower.pmcc.assess.dto.output.data.DataLandApproximationMethodSettin
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioService;
 import com.copower.pmcc.assess.service.data.DataLandApproximationMethodSettingService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -60,9 +59,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     @Autowired
     private DataLandApproximationMethodSettingService dataLandApproximationMethodSettingService;
     @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioDao dataAllocationCorrectionCoefficientVolumeRatioDao;
-    @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioDetailDao dataAllocationCorrectionCoefficientVolumeRatioDetailDao;
+    private DataAllocationCorrectionCoefficientVolumeRatioService dataAllocationCorrectionCoefficientVolumeRatioService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -148,30 +145,15 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         //土地剩余年限
         BigDecimal landRemainingYear = schemeJudgeObject.getLandRemainingYear();
         modelAndView.addObject("landRemainingYear", landRemainingYear);
-        //宗地面积(取证载面积，待确认)
-        BigDecimal floorArea = schemeJudgeObject.getFloorArea();
-        modelAndView.addObject("floorArea", floorArea);
+        //宗地面积
+        BigDecimal evaluationArea = schemeJudgeObject.getEvaluationArea();
+        modelAndView.addObject("evaluationArea", evaluationArea);
         //容积率
         String volumetricRate = basicEstate.getVolumetricRate();
         modelAndView.addObject("volumetricRate", volumetricRate);
         //根据容积率找到配置中对应的容积率修正
-        List<DataAllocationCorrectionCoefficientVolumeRatio> coefficientVolumeRatioList = Lists.newArrayList();
-        coefficientVolumeRatioList = dataAllocationCorrectionCoefficientVolumeRatioDao.getDataAllocationCorrectionCoefficientVolumeRatioList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict());
-        if (CollectionUtils.isEmpty(coefficientVolumeRatioList)) {
-            coefficientVolumeRatioList = dataAllocationCorrectionCoefficientVolumeRatioDao.getDataAllocationCorrectionCoefficientVolumeRatioList(declareRecord.getProvince(), declareRecord.getCity(), null);
-        }
-        if (CollectionUtils.isNotEmpty(coefficientVolumeRatioList)) {
-            Integer masterId = coefficientVolumeRatioList.get(0).getId();
-            DataAllocationCorrectionCoefficientVolumeRatioDetail coefficientVolumeRatioDetail = new DataAllocationCorrectionCoefficientVolumeRatioDetail();
-            coefficientVolumeRatioDetail.setAllocationVolumeRatioId(masterId);
-            List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList = dataAllocationCorrectionCoefficientVolumeRatioDetailDao.getDataAllocationCorrectionCoefficientVolumeRatioDetailList(coefficientVolumeRatioDetail);
-            for (DataAllocationCorrectionCoefficientVolumeRatioDetail detailItem : detailList) {
-                if (detailItem.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 0) {
-                    modelAndView.addObject("volumeFractionAmend", detailItem.getCorrectionFactor());
-                    break;
-                }
-            }
-        }
+        BigDecimal volumeFractionAmend = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), volumetricRate);
+        modelAndView.addObject("volumeFractionAmend", volumeFractionAmend == null ? "无" : volumeFractionAmend);
         //代征地比例
         BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         DataLandLevelDetail dataLandLevelDetailById = dataLandLevelDetailDao.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
