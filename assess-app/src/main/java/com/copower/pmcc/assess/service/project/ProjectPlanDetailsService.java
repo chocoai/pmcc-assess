@@ -246,7 +246,7 @@ public class ProjectPlanDetailsService {
             logger.error("计划任务获取流程任务异常", e);
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPhase sceneExploreChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
         List<Integer> phaseIds = Lists.newArrayList(sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());

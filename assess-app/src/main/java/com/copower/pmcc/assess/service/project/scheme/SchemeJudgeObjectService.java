@@ -456,7 +456,7 @@ public class SchemeJudgeObjectService {
         mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString(), ","));
         mergeJudgeObject.setName(String.format("%s%s", mergeJudgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
         mergeJudgeObject.setOwnership(publicService.districtString(ownershipList));
-        mergeJudgeObject.setSeat(publicService.fusinString(seatList,false));
+        mergeJudgeObject.setSeat(publicService.fusinString(seatList, false));
         mergeJudgeObject.setFloorArea(floorAreaTotal);
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
         mergeJudgeObject.setRentalPossessionDesc(rpdBuilder.toString());
@@ -674,6 +674,7 @@ public class SchemeJudgeObjectService {
             baseAttachmentService.deleteAttachmentByDto(delExample);
 
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+            if (basicApply == null) continue;
             List<BasicEstateTagging> taggingList = basicEstateTaggingService.getEstateTaggingList(basicApply.getId(), EstateTaggingTypeEnum.UNIT.getKey());
             if (CollectionUtils.isNotEmpty(taggingList)) {
                 BasicEstateTagging tagging = taggingList.get(0);
@@ -697,9 +698,9 @@ public class SchemeJudgeObjectService {
     public List<Integer> getJudgeNumberByDeclareIds(List<Integer> declareRecordIds) {
         List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getListByDeclareIds(declareRecordIds);
         if (CollectionUtils.isEmpty(judgeObjects)) return null;
-        List<Integer> list=Lists.newArrayList();
+        List<Integer> list = Lists.newArrayList();
         for (SchemeJudgeObject judgeObject : judgeObjects) {
-            if(NumberUtils.isNumber(judgeObject.getNumber())){
+            if (NumberUtils.isNumber(judgeObject.getNumber())) {
                 list.add(NumberUtils.createInteger(judgeObject.getNumber()));
             }
         }
@@ -708,10 +709,11 @@ public class SchemeJudgeObjectService {
 
     /**
      * 根据申报信息获取对应估价对象
+     *
      * @param declareRecordIds
      * @return
      */
-    public List<SchemeJudgeObject> getListByDeclareIds(List<Integer> declareRecordIds){
+    public List<SchemeJudgeObject> getListByDeclareIds(List<Integer> declareRecordIds) {
         return schemeJudgeObjectDao.getListByDeclareIds(declareRecordIds);
     }
 
@@ -723,7 +725,7 @@ public class SchemeJudgeObjectService {
      */
     public BasicHouse getBasicHouseByDeclareId(Integer declareId, Integer categoryId) {
         try {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, categoryId);
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, categoryId);
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());

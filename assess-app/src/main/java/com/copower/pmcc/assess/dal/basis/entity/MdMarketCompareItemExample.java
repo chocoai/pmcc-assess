@@ -976,6 +976,126 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andAnnualCoefficientIsNull() {
+            addCriterion("annual_coefficient is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientIsNotNull() {
+            addCriterion("annual_coefficient is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientEqualTo(BigDecimal value) {
+            addCriterion("annual_coefficient =", value, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientNotEqualTo(BigDecimal value) {
+            addCriterion("annual_coefficient <>", value, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientGreaterThan(BigDecimal value) {
+            addCriterion("annual_coefficient >", value, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("annual_coefficient >=", value, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientLessThan(BigDecimal value) {
+            addCriterion("annual_coefficient <", value, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("annual_coefficient <=", value, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientIn(List<BigDecimal> values) {
+            addCriterion("annual_coefficient in", values, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientNotIn(List<BigDecimal> values) {
+            addCriterion("annual_coefficient not in", values, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("annual_coefficient between", value1, value2, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnnualCoefficientNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("annual_coefficient not between", value1, value2, "annualCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientIsNull() {
+            addCriterion("volume_ratio_coefficient is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientIsNotNull() {
+            addCriterion("volume_ratio_coefficient is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientEqualTo(BigDecimal value) {
+            addCriterion("volume_ratio_coefficient =", value, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientNotEqualTo(BigDecimal value) {
+            addCriterion("volume_ratio_coefficient <>", value, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientGreaterThan(BigDecimal value) {
+            addCriterion("volume_ratio_coefficient >", value, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("volume_ratio_coefficient >=", value, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientLessThan(BigDecimal value) {
+            addCriterion("volume_ratio_coefficient <", value, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("volume_ratio_coefficient <=", value, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientIn(List<BigDecimal> values) {
+            addCriterion("volume_ratio_coefficient in", values, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientNotIn(List<BigDecimal> values) {
+            addCriterion("volume_ratio_coefficient not in", values, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("volume_ratio_coefficient between", value1, value2, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRatioCoefficientNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("volume_ratio_coefficient not between", value1, value2, "volumeRatioCoefficient");
+            return (Criteria) this;
+        }
+
         public Criteria andSpecificPriceIsNull() {
             addCriterion("specific_price is null");
             return (Criteria) this;
@@ -1383,6 +1503,126 @@ public class MdMarketCompareItemExample {
 
         public Criteria andAveragePriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("average_price not between", value1, value2, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeIsNull() {
+            addCriterion("deve_degree is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeIsNotNull() {
+            addCriterion("deve_degree is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeEqualTo(BigDecimal value) {
+            addCriterion("deve_degree =", value, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeNotEqualTo(BigDecimal value) {
+            addCriterion("deve_degree <>", value, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeGreaterThan(BigDecimal value) {
+            addCriterion("deve_degree >", value, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("deve_degree >=", value, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeLessThan(BigDecimal value) {
+            addCriterion("deve_degree <", value, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("deve_degree <=", value, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeIn(List<BigDecimal> values) {
+            addCriterion("deve_degree in", values, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeNotIn(List<BigDecimal> values) {
+            addCriterion("deve_degree not in", values, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("deve_degree between", value1, value2, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveDegreeNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("deve_degree not between", value1, value2, "deveDegree");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceIsNull() {
+            addCriterion("evaluate_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceIsNotNull() {
+            addCriterion("evaluate_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceEqualTo(BigDecimal value) {
+            addCriterion("evaluate_price =", value, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceNotEqualTo(BigDecimal value) {
+            addCriterion("evaluate_price <>", value, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceGreaterThan(BigDecimal value) {
+            addCriterion("evaluate_price >", value, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("evaluate_price >=", value, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceLessThan(BigDecimal value) {
+            addCriterion("evaluate_price <", value, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("evaluate_price <=", value, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceIn(List<BigDecimal> values) {
+            addCriterion("evaluate_price in", values, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceNotIn(List<BigDecimal> values) {
+            addCriterion("evaluate_price not in", values, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("evaluate_price between", value1, value2, "evaluatePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluatePriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("evaluate_price not between", value1, value2, "evaluatePrice");
             return (Criteria) this;
         }
 

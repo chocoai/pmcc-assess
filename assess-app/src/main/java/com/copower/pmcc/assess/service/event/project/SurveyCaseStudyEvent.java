@@ -75,7 +75,7 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
         if (CollectionUtils.isEmpty(planDetailsList)) return;
         ProjectPlanDetails projectPlanDetails = null;//找到该证下的任务，为案例调查的任务
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY,projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.CASE_STUDY,projectInfo.getProjectCategoryId());
         for (ProjectPlanDetails details : planDetailsList) {
             if (details.getProjectPhaseId() != null && details.getProjectPhaseId().equals(projectPhase.getId())) {
                 projectPlanDetails = details;

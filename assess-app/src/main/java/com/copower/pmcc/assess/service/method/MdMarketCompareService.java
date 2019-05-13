@@ -148,13 +148,12 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
         mdMarketCompareItem.setCreator(commonService.thisUserAccount());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
         mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, judgeObject, planDetails.getId(), setUseFieldList, false));
         //获取成新率相关参数
         setResidueRatioParam(mdMarketCompareItem, planDetails.getId(), mdMarketCompare.getValueTimePoint());
         mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
-
         return mdMarketCompare;
     }
 
@@ -244,11 +243,11 @@ public class MdMarketCompareService {
                 setResidueRatioParam(mdMarketCompareItem, mdCompareCaseVo.getPlanDetailsId(), marketCompare.getValueTimePoint());
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
 
-                if(StringUtils.isNotBlank(mdCompareCaseVo.getAreaDesc())){
+                if (StringUtils.isNotBlank(mdCompareCaseVo.getAreaDesc())) {
                     BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(mdCompareCaseVo.getPlanDetailsId());
-                    if(basicApply!=null){
+                    if (basicApply != null) {
                         BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-                        if(basicHouse!=null){
+                        if (basicHouse != null) {
                             basicHouse.setAreaDesc(mdCompareCaseVo.getAreaDesc());
                             basicHouseService.saveAndUpdateBasicHouse(basicHouse);
                         }
@@ -343,7 +342,7 @@ public class MdMarketCompareService {
      */
     public List<ProjectPlanDetails> getCaseAll(Integer projectId) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.CASE_STUDY, projectInfo.getProjectCategoryId());
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setProjectId(projectId);
         projectPlanDetails.setProjectPhaseId(projectPhase.getId());
