@@ -7,6 +7,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -51,6 +52,31 @@ public class MdBaseLandPriceService {
 
     public MdBaseLandPrice getSingleObject(Integer id) {
         return schemeReimbursementDao.getMdBaseLandPrice(id);
+    }
+
+
+    /**
+     * 获取年期修正系数
+     *
+     * @param rewardRate  报酬率
+     * @param legalAge    法定年限
+     * @param surplusYear 剩余年限
+     * @return
+     */
+    public Double getPeriodAmend(String rewardRate, String legalAge, String surplusYear) {
+        Double legalAgeValue = Double.valueOf(legalAge);
+        Double surplusYearValue = Double.valueOf(surplusYear);
+        Double rewardRateValue;
+        //rewardRate是否是百分数
+        if (rewardRate.substring(rewardRate.length() - 1, rewardRate.length()).equals("%")) {
+            Double rewardRateTemp = Double.valueOf(rewardRate.substring(0, rewardRate.length() - 1));
+            rewardRateValue = rewardRateTemp / 100;
+        } else {
+            rewardRateValue = Double.valueOf(rewardRate);
+        }
+        double temp1 = 1 / Math.pow(1 + rewardRateValue, surplusYearValue);
+        double temp2 = 1 / Math.pow(1 + rewardRateValue, legalAgeValue);
+        return 1 - temp1 / 1 - temp2;
     }
 
 }
