@@ -355,8 +355,11 @@
         //初始测算结果
         marketCompare.initResult = function (defaluts) {
             var resultHtml = getTempHtml("resultTemp", defaluts.readonly);
-            var caseSpecificPrice, caseCorrectionDifference, caseCaseDifference, caseWeight, caseWeightDescription;
+            var caseAnnualCoefficient,caseVolumeRatioCoefficient, caseSpecificPrice,
+                caseCorrectionDifference, caseCaseDifference, caseWeight, caseWeightDescription;
             for (var j = 0; j < defaluts.cases.length; j++) {
+                caseAnnualCoefficient += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].annualCoefficient) + '</td>';
+                caseVolumeRatioCoefficient += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].volumeRatioCoefficient) + '</td>';
                 caseSpecificPrice += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].specificPrice) + '</td>';
                 caseCorrectionDifference += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].correctionDifference) + '</td>';
                 caseCaseDifference += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].caseDifference) + '</td>';
@@ -369,10 +372,12 @@
                 weightDescHtml = weightDescHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{value}/g, toString(defaluts.cases[j].weightDescription));
                 caseWeightDescription += weightDescHtml;
             }
+            resultHtml = resultHtml.replace(/{caseAnnualCoefficient}/g, toString(caseAnnualCoefficient)).replace(/{caseVolumeRatioCoefficient}/g, toString(caseVolumeRatioCoefficient));
             resultHtml = resultHtml.replace(/{caseSpecificPrice}/g, toString(caseSpecificPrice)).replace(/{caseCorrectionDifference}/g, toString(caseCorrectionDifference));
             resultHtml = resultHtml.replace(/{caseCaseDifference}/g, toString(caseCaseDifference)).replace(/{caseWeight}/g, toString(caseWeight));
             resultHtml = resultHtml.replace(/{colspan}/g, toString(2 + defaluts.cases.length)).replace(/{evaluationId}/g, toString(defaluts.evaluation.id));
             resultHtml = resultHtml.replace(/{averagePrice}/g, toString(defaluts.evaluation.averagePrice)).replace(/{caseWeightDescription}/g, toString(caseWeightDescription));
+            resultHtml = resultHtml.replace(/{deveDegree}/g, toString(defaluts.evaluation.deveDegree)).replace(/{evaluatePrice}/g, toString(defaluts.evaluation.evaluatePrice));
             $("#tb_md_mc_item_list").append(resultHtml);
         }
 
@@ -736,7 +741,7 @@
                 var area = tr.find('[data-name=area]').text();
                 var areaDesc = tr.find('[name=areaDesc]').val();
                 if (AssessCommon.isNumber(area) && AssessCommon.isNumber(evaluationArea)) {
-                    if (parseFloat(evaluationArea)* 3 < parseFloat(area)  && areaDesc.length<=0) {
+                    if (parseFloat(evaluationArea) * 3 < parseFloat(area) && areaDesc.length <= 0) {
                         errmsg += name + "必须填写面积说明";
                         return false;
                     }
@@ -872,6 +877,18 @@
 <%--测算结果模板--%>
 <script type="text/html" id="resultTemp">
     <tbody id="tbody_mc_result">
+    <c:if test="${projectInfo.projectCategoryName eq '土地'}">
+        <tr data-name="specificPrice">
+            <td>使用年期修正系数</td>
+            <td></td>
+            {caseAnnualCoefficient}
+        </tr>
+        <tr data-name="specificPrice">
+            <td>容积率修正系数</td>
+            <td></td>
+            {caseVolumeRatioCoefficient}
+        </tr>
+    </c:if>
     <tr>
         <td colspan="{colspan}"><span style="font-weight: bold;font-size: 16px;">测算结果 </span>
             <span class="red" id="resultMsg"></span>
@@ -908,6 +925,20 @@
         <td></td>
         <td></td>
     </tr>
+    <c:if test="${projectInfo.projectCategoryName eq '土地'}">
+        <tr data-name="deveDegree">
+            <td>开发程度</td>
+            <td data-item-id="{evaluationId}">{deveDegree}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr data-name="evaluatePrice">
+            <td>评估价格</td>
+            <td data-item-id="{evaluationId}">{evaluatePrice}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </c:if>
     </tbody>
 </script>
 

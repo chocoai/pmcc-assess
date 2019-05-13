@@ -32,6 +32,10 @@ public class MdMarketCompareItem {
 
     private Boolean mustAdjustPrice;
 
+    private BigDecimal annualCoefficient;
+
+    private BigDecimal volumeRatioCoefficient;
+
     private String specificPrice;
 
     private String correctionDifference;
@@ -43,6 +47,10 @@ public class MdMarketCompareItem {
     private String weightDescription;
 
     private BigDecimal averagePrice;
+
+    private BigDecimal deveDegree;
+
+    private BigDecimal evaluatePrice;
 
     private String creator;
 
@@ -162,6 +170,22 @@ public class MdMarketCompareItem {
         this.mustAdjustPrice = mustAdjustPrice;
     }
 
+    public BigDecimal getAnnualCoefficient() {
+        return annualCoefficient;
+    }
+
+    public void setAnnualCoefficient(BigDecimal annualCoefficient) {
+        this.annualCoefficient = annualCoefficient;
+    }
+
+    public BigDecimal getVolumeRatioCoefficient() {
+        return volumeRatioCoefficient;
+    }
+
+    public void setVolumeRatioCoefficient(BigDecimal volumeRatioCoefficient) {
+        this.volumeRatioCoefficient = volumeRatioCoefficient;
+    }
+
     public String getSpecificPrice() {
         return specificPrice;
     }
@@ -208,6 +232,22 @@ public class MdMarketCompareItem {
 
     public void setAveragePrice(BigDecimal averagePrice) {
         this.averagePrice = averagePrice;
+    }
+
+    public BigDecimal getDeveDegree() {
+        return deveDegree;
+    }
+
+    public void setDeveDegree(BigDecimal deveDegree) {
+        this.deveDegree = deveDegree;
+    }
+
+    public BigDecimal getEvaluatePrice() {
+        return evaluatePrice;
+    }
+
+    public void setEvaluatePrice(BigDecimal evaluatePrice) {
+        this.evaluatePrice = evaluatePrice;
     }
 
     public String getCreator() {

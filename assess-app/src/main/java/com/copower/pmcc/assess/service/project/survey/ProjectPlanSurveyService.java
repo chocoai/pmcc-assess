@@ -125,9 +125,9 @@ public class ProjectPlanSurveyService {
     public void appendPlanDetails(Integer projectId, Integer currStageSort) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         List<ProjectPhase> projectPhases = Lists.newArrayList();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         if (projectPhase != null) projectPhases.add(projectPhase);
-        projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         if (projectPhase != null) projectPhases.add(projectPhase);
 
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);

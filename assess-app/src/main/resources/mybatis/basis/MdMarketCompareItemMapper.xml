@@ -16,12 +16,16 @@
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="initial_price" property="initialPrice" jdbcType="DECIMAL" />
     <result column="must_adjust_price" property="mustAdjustPrice" jdbcType="BIT" />
+    <result column="annual_coefficient" property="annualCoefficient" jdbcType="DECIMAL" />
+    <result column="volume_ratio_coefficient" property="volumeRatioCoefficient" jdbcType="DECIMAL" />
     <result column="specific_price" property="specificPrice" jdbcType="VARCHAR" />
     <result column="correction_difference" property="correctionDifference" jdbcType="VARCHAR" />
     <result column="case_difference" property="caseDifference" jdbcType="VARCHAR" />
     <result column="weight" property="weight" jdbcType="VARCHAR" />
     <result column="weight_description" property="weightDescription" jdbcType="VARCHAR" />
     <result column="average_price" property="averagePrice" jdbcType="DECIMAL" />
+    <result column="deve_degree" property="deveDegree" jdbcType="DECIMAL" />
+    <result column="evaluate_price" property="evaluatePrice" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -86,9 +90,10 @@
   </sql>
   <sql id="Base_Column_List" >
     id, mc_id, name, type, plan_details_id, json_content, trading_time_explain, residue_ratio_id, 
-    used_year, usable_year, house_id, area, initial_price, must_adjust_price, specific_price, 
-    correction_difference, case_difference, weight, weight_description, average_price, 
-    creator, gmt_created, gmt_modified
+    used_year, usable_year, house_id, area, initial_price, must_adjust_price, annual_coefficient, 
+    volume_ratio_coefficient, specific_price, correction_difference, case_difference, 
+    weight, weight_description, average_price, deve_degree, evaluate_price, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
     select
@@ -128,18 +133,20 @@
       plan_details_id, json_content, trading_time_explain, 
       residue_ratio_id, used_year, usable_year, 
       house_id, area, initial_price, 
-      must_adjust_price, specific_price, correction_difference, 
-      case_difference, weight, weight_description, 
-      average_price, creator, gmt_created, 
-      gmt_modified)
+      must_adjust_price, annual_coefficient, volume_ratio_coefficient, 
+      specific_price, correction_difference, case_difference, 
+      weight, weight_description, average_price, 
+      deve_degree, evaluate_price, creator, 
+      gmt_created, gmt_modified)
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{planDetailsId,jdbcType=INTEGER}, #{jsonContent,jdbcType=VARCHAR}, #{tradingTimeExplain,jdbcType=VARCHAR}, 
       #{residueRatioId,jdbcType=INTEGER}, #{usedYear,jdbcType=INTEGER}, #{usableYear,jdbcType=INTEGER}, 
       #{houseId,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{initialPrice,jdbcType=DECIMAL}, 
-      #{mustAdjustPrice,jdbcType=BIT}, #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, 
-      #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, #{weightDescription,jdbcType=VARCHAR}, 
-      #{averagePrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{mustAdjustPrice,jdbcType=BIT}, #{annualCoefficient,jdbcType=DECIMAL}, #{volumeRatioCoefficient,jdbcType=DECIMAL}, 
+      #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, #{caseDifference,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=VARCHAR}, #{weightDescription,jdbcType=VARCHAR}, #{averagePrice,jdbcType=DECIMAL}, 
+      #{deveDegree,jdbcType=DECIMAL}, #{evaluatePrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -186,6 +193,12 @@
       <if test="mustAdjustPrice != null" >
         must_adjust_price,
       </if>
+      <if test="annualCoefficient != null" >
+        annual_coefficient,
+      </if>
+      <if test="volumeRatioCoefficient != null" >
+        volume_ratio_coefficient,
+      </if>
       <if test="specificPrice != null" >
         specific_price,
       </if>
@@ -203,6 +216,12 @@
       </if>
       <if test="averagePrice != null" >
         average_price,
+      </if>
+      <if test="deveDegree != null" >
+        deve_degree,
+      </if>
+      <if test="evaluatePrice != null" >
+        evaluate_price,
       </if>
       <if test="creator != null" >
         creator,
@@ -254,6 +273,12 @@
       <if test="mustAdjustPrice != null" >
         #{mustAdjustPrice,jdbcType=BIT},
       </if>
+      <if test="annualCoefficient != null" >
+        #{annualCoefficient,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeRatioCoefficient != null" >
+        #{volumeRatioCoefficient,jdbcType=DECIMAL},
+      </if>
       <if test="specificPrice != null" >
         #{specificPrice,jdbcType=VARCHAR},
       </if>
@@ -271,6 +296,12 @@
       </if>
       <if test="averagePrice != null" >
         #{averagePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deveDegree != null" >
+        #{deveDegree,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluatePrice != null" >
+        #{evaluatePrice,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -334,6 +365,12 @@
       <if test="record.mustAdjustPrice != null" >
         must_adjust_price = #{record.mustAdjustPrice,jdbcType=BIT},
       </if>
+      <if test="record.annualCoefficient != null" >
+        annual_coefficient = #{record.annualCoefficient,jdbcType=DECIMAL},
+      </if>
+      <if test="record.volumeRatioCoefficient != null" >
+        volume_ratio_coefficient = #{record.volumeRatioCoefficient,jdbcType=DECIMAL},
+      </if>
       <if test="record.specificPrice != null" >
         specific_price = #{record.specificPrice,jdbcType=VARCHAR},
       </if>
@@ -351,6 +388,12 @@
       </if>
       <if test="record.averagePrice != null" >
         average_price = #{record.averagePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deveDegree != null" >
+        deve_degree = #{record.deveDegree,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evaluatePrice != null" >
+        evaluate_price = #{record.evaluatePrice,jdbcType=DECIMAL},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -382,12 +425,16 @@
       area = #{record.area,jdbcType=DECIMAL},
       initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       must_adjust_price = #{record.mustAdjustPrice,jdbcType=BIT},
+      annual_coefficient = #{record.annualCoefficient,jdbcType=DECIMAL},
+      volume_ratio_coefficient = #{record.volumeRatioCoefficient,jdbcType=DECIMAL},
       specific_price = #{record.specificPrice,jdbcType=VARCHAR},
       correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
       case_difference = #{record.caseDifference,jdbcType=VARCHAR},
       weight = #{record.weight,jdbcType=VARCHAR},
       weight_description = #{record.weightDescription,jdbcType=VARCHAR},
       average_price = #{record.averagePrice,jdbcType=DECIMAL},
+      deve_degree = #{record.deveDegree,jdbcType=DECIMAL},
+      evaluate_price = #{record.evaluatePrice,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -437,6 +484,12 @@
       <if test="mustAdjustPrice != null" >
         must_adjust_price = #{mustAdjustPrice,jdbcType=BIT},
       </if>
+      <if test="annualCoefficient != null" >
+        annual_coefficient = #{annualCoefficient,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeRatioCoefficient != null" >
+        volume_ratio_coefficient = #{volumeRatioCoefficient,jdbcType=DECIMAL},
+      </if>
       <if test="specificPrice != null" >
         specific_price = #{specificPrice,jdbcType=VARCHAR},
       </if>
@@ -454,6 +507,12 @@
       </if>
       <if test="averagePrice != null" >
         average_price = #{averagePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deveDegree != null" >
+        deve_degree = #{deveDegree,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluatePrice != null" >
+        evaluate_price = #{evaluatePrice,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -482,12 +541,16 @@
       area = #{area,jdbcType=DECIMAL},
       initial_price = #{initialPrice,jdbcType=DECIMAL},
       must_adjust_price = #{mustAdjustPrice,jdbcType=BIT},
+      annual_coefficient = #{annualCoefficient,jdbcType=DECIMAL},
+      volume_ratio_coefficient = #{volumeRatioCoefficient,jdbcType=DECIMAL},
       specific_price = #{specificPrice,jdbcType=VARCHAR},
       correction_difference = #{correctionDifference,jdbcType=VARCHAR},
       case_difference = #{caseDifference,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=VARCHAR},
       weight_description = #{weightDescription,jdbcType=VARCHAR},
       average_price = #{averagePrice,jdbcType=DECIMAL},
+      deve_degree = #{deveDegree,jdbcType=DECIMAL},
+      evaluate_price = #{evaluatePrice,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

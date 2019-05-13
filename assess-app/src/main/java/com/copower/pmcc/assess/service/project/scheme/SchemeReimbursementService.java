@@ -189,7 +189,7 @@ public class SchemeReimbursementService {
      */
     public void init(SchemeReimbursement schemeReimbursement, ProjectPlanDetails projectPlanDetails, SchemeAreaGroup schemeAreaGroup) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(schemeAreaGroup.getId());
         if (projectPlanDetails == null || CollectionUtils.isEmpty(schemeJudgeObjectList) || projectPhase == null || schemeReimbursement == null){
             return;

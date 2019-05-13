@@ -55,7 +55,7 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
         int i = 0;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         SysUserDto projectManager = erpRpcUserService.getSysUser(projectMemberService.getProjectManager(projectInfo.getId()));
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET, projectInfo.getProjectCategoryId());
         for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
             ProjectPlanDetails rootPlanDetails = new ProjectPlanDetails();
             rootPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());

@@ -1431,7 +1431,7 @@ public class GenerateBaseDataService {
     private String getAssetInventoryCommon(String fieldName) throws Exception {
         StringBuilder stringBuilder = new StringBuilder(16);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -2003,7 +2003,7 @@ public class GenerateBaseDataService {
                 schemeJudgeObjectList.add(oo);
             }
         }
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         ProjectPlanDetails query = new ProjectPlanDetails();
         query.setProjectId(projectId);
         query.setProjectPhaseId(projectPhase.getId());
@@ -2255,7 +2255,7 @@ public class GenerateBaseDataService {
     private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(schemeJudgeObjectList, true);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         Map<String, String> stringMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && projectPhase != null) {

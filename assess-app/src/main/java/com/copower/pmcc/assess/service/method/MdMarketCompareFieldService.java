@@ -5,9 +5,6 @@ import com.copower.pmcc.assess.common.enums.EnvironmentalScienceEnum;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingOutfitVo;
@@ -19,8 +16,6 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateEquityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateHouseEntityService;
@@ -48,14 +43,6 @@ public class MdMarketCompareFieldService extends BaseService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private SurveyAssetInventoryRightDao surveyAssetInventoryRightDao;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private ProjectPhaseService projectPhaseService;
-    @Autowired
-    private SurveyAssetInventoryDao surveyAssetInventoryDao;
-    @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
     private BasicEstateService basicEstateService;
@@ -65,10 +52,6 @@ public class MdMarketCompareFieldService extends BaseService {
     private BasicHouseService basicHouseService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
-    @Autowired
-    private BasicMatchingTrafficService basicMatchingTrafficService;
-    @Autowired
-    private BasicMatchingEnvironmentService basicMatchingEnvironmentService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
@@ -83,16 +66,6 @@ public class MdMarketCompareFieldService extends BaseService {
     private BasicHouseIntelligentService basicHouseIntelligentService;
     @Autowired
     private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
-    @Autowired
-    private BasicEstateNetworkService basicEstateNetworkService;
-    @Autowired
-    private BasicMatchingEducationService basicMatchingEducationService;
-    @Autowired
-    private BasicMatchingLeisurePlaceService basicMatchingLeisurePlaceService;
-    @Autowired
-    private BasicMatchingMedicalService basicMatchingMedicalService;
-    @Autowired
-    private BasicMatchingFinanceService basicMatchingFinanceService;
     @Autowired
     private BasicBuildingOutfitService basicBuildingOutfitService;
     @Autowired
@@ -137,21 +110,13 @@ public class MdMarketCompareFieldService extends BaseService {
             //取得房屋信息
             BasicHouse examineHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
             examineHouse = examineHouse == null ? new BasicHouse() : examineHouse;
-            //取得版块信息
-            DataBlock block = dataBlockService.getDataBlockById(examineEstate.getBlockId());
-            block = block == null ? new DataBlock() : block;
             //取得交易信息
             BasicHouseTrading houseTrading = null;
-            // if (isCase == Boolean.TRUE)//为案例时才取交易信息
             houseTrading = basicHouseTradingService.getTradingByHouseId(examineHouse.getId());
             houseTrading = houseTrading == null ? new BasicHouseTrading() : houseTrading;
             //取得申报记录信息
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
             declareRecord = declareRecord == null ? new DeclareRecord() : declareRecord;
-            //取得他项权利
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
-            ProjectPlanDetails inventoryPlanDetails = projectPlanDetailsService.getProjectPlanDetails(judgeObject.getDeclareRecordId(), projectPhase.getId());
-            List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightDao.getListByPlanDetailsId(inventoryPlanDetails.getId());
             //取得土地实体情况
             BasicEstateLandState landState = basicEstateLandStateService.getLandStateByEstateId(examineEstate.getId());
             landState = landState == null ? new BasicEstateLandState() : landState;
