@@ -90,8 +90,6 @@ public class DeclareRealtyRealEstateCert {
 
     private Date terminationDate;
 
-    private String realEstateUnitNumbe;
-
     private String memo;
 
     private BigDecimal apportionmentArea;
@@ -466,14 +464,6 @@ public class DeclareRealtyRealEstateCert {
 
     public void setTerminationDate(Date terminationDate) {
         this.terminationDate = terminationDate;
-    }
-
-    public String getRealEstateUnitNumbe() {
-        return realEstateUnitNumbe;
-    }
-
-    public void setRealEstateUnitNumbe(String realEstateUnitNumbe) {
-        this.realEstateUnitNumbe = realEstateUnitNumbe == null ? null : realEstateUnitNumbe.trim();
     }
 
     public String getMemo() {

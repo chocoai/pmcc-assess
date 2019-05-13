@@ -29,15 +29,28 @@
                     </c:if>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">土地证 下载模板
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a class="btn"
-                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板</a>
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板 有权证</a>
+                        </li>
+                        <li><a class="btn"
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板 无权证</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="btn btn-default"
+                               onclick="$('#ajaxFileUploadLand').val('').trigger('click')">导入 有权证</a>
                         </li>
                         <li><a class="btn btn-default"
-                               onclick="$('#ajaxFileUploadLand').val('').trigger('click')">导入</a>
+                               onclick="$('#ajaxFileUploadLandA').val('').trigger('click')">导入 无权证</a>
                         </li>
                     </ul>
                 </div>
@@ -67,7 +80,9 @@
 </div>
 
 <input type="file" id="ajaxFileUploadLand" name="file" style="display: none;"
-       onchange="assessLand.inputFile();">
+       onchange="assessLand.inputFile(true);">
+<input type="file" id="ajaxFileUploadLandA" name="file" style="display: none;"
+       onchange="assessLand.inputFile(false);">
 <input type="file" id="ajaxFileUploadLandHouse" name="file" style="display: none;"
        onchange="assessLand.inputFileHouse();">
 <input type="file" id="declareRealtyLandCertNewFileId" name="declareRealtyLandCertNewFileId" style="display: none;"

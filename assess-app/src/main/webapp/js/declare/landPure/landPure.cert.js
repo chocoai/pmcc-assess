@@ -46,7 +46,7 @@ assessLand.showAddModelLandFun = function (flag, item) {
 };
 //分为有权证和无权证的情况
 assessLand.showAddModelLand = function (flag) {
-   this.showAddModelLandFun(flag,{});
+    this.showAddModelLandFun(flag, {});
 };
 
 assessLand.saveAndUpdateLand = function () {
@@ -76,13 +76,13 @@ assessLand.editLand = function () {
         if (landCertGetQuestion) {
             AssessCommon.getDataDicInfo(landCertGetQuestion, function (data) {
                 if (data.name == "有权证") {
-                    assessLand.showAddModelLandFun(true,rows[0]);
+                    assessLand.showAddModelLandFun(true, rows[0]);
                 } else {
-                    assessLand.showAddModelLandFun(false,rows[0]);
+                    assessLand.showAddModelLandFun(false, rows[0]);
                 }
             });
-        }else {
-            assessLand.showAddModelLandFun(true,rows[0]);
+        } else {
+            assessLand.showAddModelLandFun(true, rows[0]);
         }
     } else {
         toastr.info("只能选择一行数据进行编辑");
@@ -175,7 +175,7 @@ assessLand.landImportEvent = function (id) {
 assessLand.houseImportEvent = function (landId) {
     var data = $(assessLand.config.table).bootstrapTable('getRowByUniqueId', landId);
     if (declareCommon.isNotBlank(data.pid)) {
-        declareCommon.getHouseData(data.pid , function (item) {
+        declareCommon.getHouseData(data.pid, function (item) {
             if (declareCommon.isNotBlank(item)) {
                 $(assessLand.config.newHouseFileId).attr("data-id", item.id);
                 $(assessLand.config.newHouseFileId).trigger('click');
@@ -277,27 +277,42 @@ assessLand.inputFileHouse = function () {
  * 描述:土地证excel 批量导入
  * @date:2018-09-21
  **/
-assessLand.inputFile = function () {
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyLandCert/importData",
-        data: {
-            planDetailsId: declareCommon.getPlanDetailsId()
-        },//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: 'ajaxFileUploadLand',//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                assessLand.loadLandList();
-                Alert(result.data);
+assessLand.inputFile = function (flag) {
+    var landCertGetQuestion = null;
+    if (flag) {
+        landCertGetQuestion = "有权证";
+    } else {
+        landCertGetQuestion = "无权证";
+    }
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCertificateIsnull, null, function (html, data) {
+        var id = null;
+        $.each(data, function (i, n) {
+            if (n.name == landCertGetQuestion) {
+                id = n.id;
             }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
-        }
+        });
+        $.ajaxFileUpload({
+            type: "POST",
+            url: getContextPath() + "/declareRealtyLandCert/importData",
+            data: {
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                landCertGetQuestion: id
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: flag ? 'ajaxFileUploadLand' : 'ajaxFileUploadLandA',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    assessLand.loadLandList();
+                    Alert(result.data);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     });
 };
 assessLand.loadLandList = function () {
@@ -343,11 +358,12 @@ declareRealtyRealEstateCert.config = {
     box: declareCommon.config.declareRealty.box,
     fileId: declareCommon.config.declareRealty.fileId,
     newFileId: declareCommon.config.declareRealty.newFileId,
-    fileView: declareCommon.config.declareRealty.fileView
+    fileView: declareCommon.config.declareRealty.fileView,
+    approvalFile: declareCommon.config.declareRealty.approvalFile
 };
 
 //显示不动产模型（分有证和无证情况）
-declareRealtyRealEstateCert.showAddModelFun = function (flag,item) {
+declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
     $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId2).remove();
     $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
     var landCertGetQuestion = null;
@@ -369,9 +385,9 @@ declareRealtyRealEstateCert.showAddModelFun = function (flag,item) {
             });
             area.landCertGetQuestion = id;
             if (jQuery.isEmptyObject(item)) {
-                declareCommon.initDeclareRealty(area, $("#" + declareRealtyRealEstateCert.config.frm), [declareRealtyRealEstateCert.config.newFileId], null);
+                declareCommon.initDeclareRealty(area, $("#" + declareRealtyRealEstateCert.config.frm), [declareRealtyRealEstateCert.config.newFileId, declareRealtyRealEstateCert.config.approvalFile], null);
             } else {
-                declareCommon.initDeclareRealty(item, $("#" + declareRealtyRealEstateCert.config.frm), [declareRealtyRealEstateCert.config.newFileId], null);
+                declareCommon.initDeclareRealty(item, $("#" + declareRealtyRealEstateCert.config.frm), [declareRealtyRealEstateCert.config.newFileId, declareRealtyRealEstateCert.config.approvalFile], null);
             }
         });
     });
@@ -379,7 +395,7 @@ declareRealtyRealEstateCert.showAddModelFun = function (flag,item) {
 
 //显示不动产添加模型
 declareRealtyRealEstateCert.showAddModel = function (flag) {
-   this.showAddModelFun(flag,{});
+    this.showAddModelFun(flag, {});
 };
 
 //编辑不动产
@@ -392,13 +408,13 @@ declareRealtyRealEstateCert.editData = function () {
         if (landCertGetQuestion) {
             AssessCommon.getDataDicInfo(landCertGetQuestion, function (data) {
                 if (data.name == "有权证") {
-                    declareRealtyRealEstateCert.showAddModelFun(true,rows[0]);
+                    declareRealtyRealEstateCert.showAddModelFun(true, rows[0]);
                 } else {
-                    declareRealtyRealEstateCert.showAddModelFun(false,rows[0]);
+                    declareRealtyRealEstateCert.showAddModelFun(false, rows[0]);
                 }
             });
-        }else {
-            declareRealtyRealEstateCert.showAddModelFun(true,rows[0]);
+        } else {
+            declareRealtyRealEstateCert.showAddModelFun(true, rows[0]);
         }
     } else {
         toastr.info("只能选择一行数据进行编辑");
@@ -446,27 +462,42 @@ declareRealtyRealEstateCert.enclosure = function (id) {
  * 描述:excel 批量导入
  * @date:2018-09-21
  **/
-declareRealtyRealEstateCert.inputFile = function () {
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyRealEstateCert/importData",
-        data: {
-            planDetailsId: declareCommon.getPlanDetailsId()
-        },//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: 'ajaxFileUploadRealEstate',//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                declareRealtyRealEstateCert.loadList();
-                Alert(result.data);
+declareRealtyRealEstateCert.inputFile = function (flag) {
+    var landCertGetQuestion = null;
+    if (flag) {
+        landCertGetQuestion = "有权证";
+    } else {
+        landCertGetQuestion = "无权证";
+    }
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCertificateIsnull, null, function (html, data) {
+        var id = null;
+        $.each(data, function (i, n) {
+            if (n.name == landCertGetQuestion) {
+                id = n.id;
             }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
-        }
+        });
+        $.ajaxFileUpload({
+            type: "POST",
+            url: getContextPath() + "/declareRealtyRealEstateCert/importData",
+            data: {
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                landCertGetQuestion: id
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: flag ? 'ajaxFileUploadRealEstate' : 'ajaxFileUploadRealEstateA',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    declareRealtyRealEstateCert.loadList();
+                    Alert(result.data);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     });
 };
 

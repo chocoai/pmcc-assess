@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DataHousePriceIndexDetail {
@@ -7,7 +8,7 @@ public class DataHousePriceIndexDetail {
 
     private Integer housePriceId;
 
-    private Integer indexNumber;
+    private BigDecimal indexNumber;
 
     private Date startDate;
 
@@ -35,11 +36,11 @@ public class DataHousePriceIndexDetail {
         this.housePriceId = housePriceId;
     }
 
-    public Integer getIndexNumber() {
+    public BigDecimal getIndexNumber() {
         return indexNumber;
     }
 
-    public void setIndexNumber(Integer indexNumber) {
+    public void setIndexNumber(BigDecimal indexNumber) {
         this.indexNumber = indexNumber;
     }
 

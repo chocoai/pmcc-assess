@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="house_price_id" property="housePriceId" jdbcType="INTEGER" />
-    <result column="index_number" property="indexNumber" jdbcType="INTEGER" />
+    <result column="index_number" property="indexNumber" jdbcType="DECIMAL" />
     <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
     <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -109,7 +109,7 @@
     insert into tb_data_house_price_index_detail (house_price_id, index_number, start_date, 
       end_date, creator, gmt_created, 
       gmt_modified)
-    values (#{housePriceId,jdbcType=INTEGER}, #{indexNumber,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, 
+    values (#{housePriceId,jdbcType=INTEGER}, #{indexNumber,jdbcType=DECIMAL}, #{startDate,jdbcType=TIMESTAMP}, 
       #{endDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -146,7 +146,7 @@
         #{housePriceId,jdbcType=INTEGER},
       </if>
       <if test="indexNumber != null" >
-        #{indexNumber,jdbcType=INTEGER},
+        #{indexNumber,jdbcType=DECIMAL},
       </if>
       <if test="startDate != null" >
         #{startDate,jdbcType=TIMESTAMP},
@@ -181,7 +181,7 @@
         house_price_id = #{record.housePriceId,jdbcType=INTEGER},
       </if>
       <if test="record.indexNumber != null" >
-        index_number = #{record.indexNumber,jdbcType=INTEGER},
+        index_number = #{record.indexNumber,jdbcType=DECIMAL},
       </if>
       <if test="record.startDate != null" >
         start_date = #{record.startDate,jdbcType=TIMESTAMP},
@@ -207,7 +207,7 @@
     update tb_data_house_price_index_detail
     set id = #{record.id,jdbcType=INTEGER},
       house_price_id = #{record.housePriceId,jdbcType=INTEGER},
-      index_number = #{record.indexNumber,jdbcType=INTEGER},
+      index_number = #{record.indexNumber,jdbcType=DECIMAL},
       start_date = #{record.startDate,jdbcType=TIMESTAMP},
       end_date = #{record.endDate,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -224,7 +224,7 @@
         house_price_id = #{housePriceId,jdbcType=INTEGER},
       </if>
       <if test="indexNumber != null" >
-        index_number = #{indexNumber,jdbcType=INTEGER},
+        index_number = #{indexNumber,jdbcType=DECIMAL},
       </if>
       <if test="startDate != null" >
         start_date = #{startDate,jdbcType=TIMESTAMP},
@@ -247,7 +247,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
     update tb_data_house_price_index_detail
     set house_price_id = #{housePriceId,jdbcType=INTEGER},
-      index_number = #{indexNumber,jdbcType=INTEGER},
+      index_number = #{indexNumber,jdbcType=DECIMAL},
       start_date = #{startDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},

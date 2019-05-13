@@ -45,8 +45,8 @@ public class DataHousePriceIndexDetailController {
         }
     }
 
-    @PostMapping(value = "/save/{formData}",name = "restful post")
-    public HttpResult save(@PathVariable(name = "formData") String formData){
+    @PostMapping(value = "/save",name = "restful post")
+    public HttpResult save( String formData){
         try {
             this.saveDataHousePriceIndexDetail(formData);
             return HttpResult.newCorrectResult();
@@ -55,15 +55,6 @@ public class DataHousePriceIndexDetailController {
         }
     }
 
-    @PutMapping(value = "/edit/{formData}",name = "restful put")
-    public HttpResult edit(@PathVariable(name = "formData") String formData){
-        try {
-            this.saveDataHousePriceIndexDetail(formData);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            return HttpResult.newErrorResult(500, e);
-        }
-    }
 
     private void saveDataHousePriceIndexDetail(String formData)throws Exception{
         DataHousePriceIndexDetail oo = JSON.parseObject(formData,DataHousePriceIndexDetail.class);

@@ -333,25 +333,25 @@
     //显示 土地级别详情从表 box
     landLevel.showDataLandDetailAchievement = function () {
         var levelDetailId = landLevel.config().achievementBoxDetail.find("input[name='levelDetailId']").val();
-        landLevel.config().achievementFrm.clearAll();
-        landLevel.config().achievementFrm.find("input[name='levelDetailId']").val(levelDetailId);
         landLevel.showLandDetailAchievementList(levelDetailId);
-        landLevel.initFormLandDetailAchievement({});
+        landLevel.initFormLandDetailAchievement({levelDetailId:levelDetailId});
         landLevel.config().achievementBox.modal("show");
     };
 
     landLevel.initFormLandDetailAchievement = function (row) {
+        landLevel.config().achievementFrm.clearAll();
         landLevel.config().achievementFrm.initForm(row);
         AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachFactor, row.type, function (html, data) {
             landLevel.config().achievementFrm.find("select[name='type']").empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, row.grade, function (html, data) {
-            landLevel.config().achievementFrm.find("select[name='grade']").empty().html(html).trigger('change');
-        });
         landLevel.config().achievementFrm.find("select[name='type']").off('change').on('change', function () {
             AssessCommon.loadDataDicByPid($(this).val(), row.category, function (html, data) {
                 landLevel.config().achievementFrm.find("select[name='category']").empty().html(html).trigger('change');
+                landLevel.config().achievementFrm.find("select.category").empty().html(html).trigger('change');
             });
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, row.grade, function (html, data) {
+            landLevel.config().achievementFrm.find("select[name='grade']").empty().html(html).trigger('change');
         });
         landLevel.config().achievementFrm.find("select[name='grade']").off('change').on('change', function () {
             var category = landLevel.config().achievementFrm.find("select[name='category']").val();
@@ -452,18 +452,9 @@
         if (!landLevel.config().achievementFrm.valid()) {
             return false;
         }
-        var url = '${pageContext.request.contextPath}/dataLandDetailAchievement';
-        var _method = null;
-        if (data.id) {
-            url += "/edit/" + JSON.stringify(data);
-            _method = "PUT";
-        } else {
-            _method = "POST";
-            url += "/save/" + JSON.stringify(data);
-        }
         $.ajax({
-            url: url,
-            data: {_method: _method},
+            url: '${pageContext.request.contextPath}/dataLandDetailAchievement/save',
+            data: {formData: JSON.stringify(data)},
             type: "post",
             success: function (result) {
                 if (result.ret) {
@@ -743,7 +734,7 @@
                                         <label class="col-sm-2 control-label">类型<span class="symbol required"></span></label>
                                         <div class="col-sm-10">
                                             <select name="type" required
-                                                    class="form-control search-select select2">
+                                                    class="form-control search-select select2 type">
                                             </select>
                                         </div>
                                     </div>
@@ -753,7 +744,7 @@
                                         <label class="col-sm-2 control-label">类别<span class="symbol required"></span></label>
                                         <div class="col-sm-10">
                                             <select name="category" required
-                                                    class="form-control search-select select2">
+                                                    class="form-control search-select select2 category">
                                                 <option>请先选择类型</option>
                                             </select>
                                         </div>
@@ -764,7 +755,7 @@
                                         <label class="col-sm-2 control-label">等级<span class="symbol required"></span></label>
                                         <div class="col-sm-10">
                                             <select name="grade" required
-                                                    class="form-control search-select select2">
+                                                    class="form-control search-select select2 grade">
                                             </select>
                                         </div>
                                     </div>

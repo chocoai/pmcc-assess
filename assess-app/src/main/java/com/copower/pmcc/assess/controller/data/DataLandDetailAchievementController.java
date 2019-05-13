@@ -44,8 +44,8 @@ public class DataLandDetailAchievementController {
         }
     }
 
-    @PostMapping(value = "/save/{formData}",name = "restful post")
-    public HttpResult save(@PathVariable(name = "formData") String formData){
+    @PostMapping(value = "/save",name = "restful post")
+    public HttpResult save( String formData){
         try {
             DataLandDetailAchievement oo = JSON.parseObject(formData,DataLandDetailAchievement.class);
             return HttpResult.newCorrectResult(landDetailAchievementService.saveDataLandDetailAchievement(oo));
@@ -54,14 +54,5 @@ public class DataLandDetailAchievementController {
         }
     }
 
-    @PutMapping(value = "/edit/{formData}",name = "restful put")
-    public HttpResult edit(@PathVariable(name = "formData") String formData){
-        try {
-            DataLandDetailAchievement oo = JSON.parseObject(formData,DataLandDetailAchievement.class);
-            return HttpResult.newCorrectResult(landDetailAchievementService.saveDataLandDetailAchievement(oo));
-        } catch (Exception e) {
-            return HttpResult.newErrorResult(500, e);
-        }
-    }
 
 }

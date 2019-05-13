@@ -100,7 +100,7 @@
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId);
                 if (engine.size() == 0){
-                    engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId2);
+                    // engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId2);
                 }
                 var location = engine.find("input[name='location']").val();
                 var number = engine.find("input[name='number']").val();
@@ -1640,6 +1640,13 @@
                            required="required" onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">不动产单元号(所有) </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="不动产单元号(所有)"  name="realEstateUnitNumber" class="form-control">
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -1977,42 +1984,44 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">不动产权证号</label>
+                <label class="col-sm-1 control-label">不动产权证号<span
+                        class="symbol required"></span></label>
                 <div class="col-sm-11">
-                    <input type="text" readonly="readonly"
-                           placeholder="不动产权证号" name="certName" class="form-control">
+                    <input type="text"
+                           placeholder="不动产权证号" required name="certName" class="form-control">
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">所在地<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">所在地</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="所在地" name="location" class="form-control"
-                           required="required" onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
+                           placeholder="所在地" name="location" class="form-control" onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">编号<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">编号</label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="编号(数字)" name="number" class="form-control"
-                           required="required" onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
+                           placeholder="编号(数字)" name="number" class="form-control" onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">不动产单元号(所有) </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="不动产单元号(所有)"  name="realEstateUnitNumber" class="form-control">
                 </div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋所有权人<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">房屋所有权人</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="房屋所有权人" name="ownership" class="form-control"
-                           required="required">
+                           placeholder="房屋所有权人" name="ownership" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -2191,55 +2200,52 @@
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
         <div class="form-group">
+
             <div class="x-valid">
-                <label class="col-sm-1 control-label">不动产单元号(所有) <span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">批文名称 </label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="不动产单元号(所有)" required name="realEstateUnitNumber" class="form-control">
+                           placeholder="批文名称"  name="approvalName" class="form-control">
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">批文名称 <span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">批文机关 </label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="批文名称" required name="approvalName" class="form-control">
+                           placeholder="批文机关"  name="approvalMechanism" class="form-control">
                 </div>
             </div>
-
             <div class="x-valid">
-                <label class="col-sm-1 control-label">批文机关 <span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">批文时间 </label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="批文机关" required name="approvalMechanism" class="form-control">
+                    <input placeholder="批文时间"
+                           name="approvalTime" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">批文文号 <span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">批文文号 </label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="批文文号" required name="approvalReferenceNumber" class="form-control">
+                           placeholder="批文文号"  name="approvalReferenceNumber" class="form-control">
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">批文时间 <span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <input placeholder="批文时间"
-                           name="approvalTime" data-date-format="yyyy-mm-dd" required
-                           class="form-control date-picker dbdate roomTime">
+                <label class="col-sm-1 control-label">
+                    批文附件
+                </label>
+                <div class="col-sm-5">
+                    <input id="declareRealtyApprovalFile"
+                           name="declareRealtyApprovalFile" placeholder="批文附件" class="form-control"
+                           type="file">
+                    <div id="_declareRealtyApprovalFile"></div>
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">批文附件 <span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="批文附件" required name="approvalFile" class="form-control">
-                </div>
-            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">

@@ -11,23 +11,27 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.google.common.base.Objects;
+import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2018-5-9.
@@ -46,6 +50,43 @@ public class DeclarePublicService {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private DeclareApplyDao declareApplyDao;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
+
+    private final String UNIT = "单元";
+    private final String FLOOR = "层";
+    private final String ATTACHED = "附";
+    private final String BUILDING = "栋";
+    private final String STREET = "街道";
+    private final String HOUSE = "房";
+    private final String NUMBER = "号";
+
+    /**
+     * 专门处理坐落问题
+     *
+     * @param text
+     * @return
+     */
+    private Map<String, String> beLocatedSplicing(String text) {
+        Map<String, String> stringMap = Maps.newHashMap();
+        if (StringUtils.isEmpty(text)){
+            return stringMap;
+        }
+        String streetName = StringUtils.substringBefore(text,NUMBER);
+        stringMap.put(STREET,streetName) ;
+        text = StringUtils.removeStart(text,streetName);
+        List<String> stringList = generateCommonMethod.convertNumberHelp(text);
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            stringList = stringList.stream().filter(s -> NumberUtils.isNumber(s)).collect(Collectors.toList());
+        }
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            stringList.stream().forEachOrdered(s -> {
+                List<String> targets = Arrays.asList(ATTACHED,UNIT);
+
+            });
+        }
+        return stringMap;
+    }
 
     /**
      * 不动产
@@ -104,9 +145,8 @@ public class DeclarePublicService {
 
         String cerName = PoiUtils.getCellValue(row.getCell(3));
         if (StringUtils.isNotBlank(cerName)) {
-            String[] strings = cerName.replace("不动产权第", ",").replace("号", ",").split(",");
-            oo.setLocation(strings[0]);
-            oo.setNumber(strings[1]);
+            oo.setNumber(generateCommonMethod.getNumber(cerName));
+            oo.setLandNumber(StringUtils.substringBeforeLast(cerName, "不动产"));
         }
 
         //房屋所有权人
@@ -307,7 +347,26 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(26)))) {
             oo.setMemo(PoiUtils.getCellValue(row.getCell(26)));
         }
-
+        //不动产单元号
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(27)))) {
+            oo.setRealEstateUnitNumber(PoiUtils.getCellValue(row.getCell(27)));
+        }
+        //批文文号
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(28)))) {
+            oo.setApprovalReferenceNumber(PoiUtils.getCellValue(row.getCell(28)));
+        }
+        //批文时间
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(29)))) {
+            oo.setApprovalTime(DateUtils.parse(PoiUtils.getCellValue(row.getCell(29))));
+        }
+        //批文名称
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(30)))) {
+            oo.setApprovalName(PoiUtils.getCellValue(row.getCell(30)));
+        }
+        //批文机关
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(31)))) {
+            oo.setApprovalMechanism(PoiUtils.getCellValue(row.getCell(31)));
+        }
         return true;
     }
 

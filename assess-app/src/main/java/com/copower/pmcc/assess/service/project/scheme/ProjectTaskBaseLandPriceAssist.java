@@ -171,7 +171,7 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
                 for (DataHousePriceIndexDetail item : detailList) {
                     if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
                         DecimalFormat df = new DecimalFormat("0.00");
-                        modelAndView.addObject("DateAmend", df.format((float) item.getIndexNumber() / firstIndex.getIndexNumber()));
+                        modelAndView.addObject("DateAmend", df.format((float) Float.parseFloat(item.getIndexNumber().toString()) / (float) Float.parseFloat(firstIndex.getIndexNumber().toString())));
                         break;
                     }
                 }

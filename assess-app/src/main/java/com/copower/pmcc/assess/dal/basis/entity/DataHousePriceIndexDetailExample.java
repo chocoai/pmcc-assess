@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -235,52 +236,52 @@ public class DataHousePriceIndexDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberEqualTo(Integer value) {
+        public Criteria andIndexNumberEqualTo(BigDecimal value) {
             addCriterion("index_number =", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberNotEqualTo(Integer value) {
+        public Criteria andIndexNumberNotEqualTo(BigDecimal value) {
             addCriterion("index_number <>", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberGreaterThan(Integer value) {
+        public Criteria andIndexNumberGreaterThan(BigDecimal value) {
             addCriterion("index_number >", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andIndexNumberGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("index_number >=", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberLessThan(Integer value) {
+        public Criteria andIndexNumberLessThan(BigDecimal value) {
             addCriterion("index_number <", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andIndexNumberLessThanOrEqualTo(BigDecimal value) {
             addCriterion("index_number <=", value, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberIn(List<Integer> values) {
+        public Criteria andIndexNumberIn(List<BigDecimal> values) {
             addCriterion("index_number in", values, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberNotIn(List<Integer> values) {
+        public Criteria andIndexNumberNotIn(List<BigDecimal> values) {
             addCriterion("index_number not in", values, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberBetween(Integer value1, Integer value2) {
+        public Criteria andIndexNumberBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("index_number between", value1, value2, "indexNumber");
             return (Criteria) this;
         }
 
-        public Criteria andIndexNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andIndexNumberNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("index_number not between", value1, value2, "indexNumber");
             return (Criteria) this;
         }

@@ -157,18 +157,9 @@
         if (!frm.valid()) {
             return false;
         }
-        var url = '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatio';
-        var _method = null;
-        if (data.id) {
-            url += "/edit/" + JSON.stringify(data);
-            _method = "PUT";
-        } else {
-            _method = "POST";
-            url += "/save/" + JSON.stringify(data);
-        }
         $.ajax({
-            url: url,
-            data: {_method: _method},
+            url:  '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatio'+"/save",
+            data: {formData:JSON.stringify(data)},
             type: "post",
             success: function (result) {
                 if (result.ret) {
@@ -229,18 +220,9 @@
         if (!frm.valid()) {
             return false;
         }
-        var url = '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail';
-        var _method = null;
-        if (data.id) {
-            url += "/edit/" + JSON.stringify(data);
-            _method = "PUT";
-        } else {
-            _method = "POST";
-            url += "/save/" + JSON.stringify(data);
-        }
         $.ajax({
-            url: url,
-            data: {_method: _method},
+            url: '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail' +"/save",
+            data: data,
             type: "post",
             success: function (result) {
                 if (result.ret) {

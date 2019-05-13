@@ -46,25 +46,25 @@ public class DataLandApproximationMethodSettingService {
         }
     }
 
-    public boolean deleteDataLandApproximationMethodSetting(Integer id){
+    public boolean deleteDataLandApproximationMethodSetting(Integer id) {
         return dataLandDetailAchievementDao.deleteDataLandApproximationMethodSetting(id);
     }
 
-    public DataLandApproximationMethodSetting getDataLandApproximationMethodSettingById(Integer id){
+    public DataLandApproximationMethodSetting getDataLandApproximationMethodSettingById(Integer id) {
         return dataLandDetailAchievementDao.getDataLandApproximationMethodSettingById(id);
     }
 
-    public List<DataLandApproximationMethodSetting> getDataLandApproximationMethodSettingList(DataLandApproximationMethodSetting oo){
+    public List<DataLandApproximationMethodSetting> getDataLandApproximationMethodSettingList(DataLandApproximationMethodSetting oo) {
         return dataLandDetailAchievementDao.getDataLandApproximationMethodSettingList(oo);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(DataLandApproximationMethodSetting oo){
+    public BootstrapTableVo getBootstrapTableVo(DataLandApproximationMethodSetting oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataLandApproximationMethodSetting> list = getDataLandApproximationMethodSettingList(oo);
         List<DataLandApproximationMethodSettingVo> voList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(list)){
+        if (CollectionUtils.isNotEmpty(list)) {
             list.stream().forEach(po -> voList.add(getDataLandApproximationMethodSettingVo(po)));
         }
         vo.setTotal(page.getTotal());
@@ -72,15 +72,17 @@ public class DataLandApproximationMethodSettingService {
         return vo;
     }
 
-    public DataLandApproximationMethodSettingVo getDataLandApproximationMethodSettingVo(DataLandApproximationMethodSetting oo){
-        if (oo==null){
+    public DataLandApproximationMethodSettingVo getDataLandApproximationMethodSettingVo(DataLandApproximationMethodSetting oo) {
+        if (oo == null) {
             return null;
         }
         DataLandApproximationMethodSettingVo vo = new DataLandApproximationMethodSettingVo();
-        org.springframework.beans.BeanUtils.copyProperties(oo,vo);
-        vo.setAreaName(erpAreaService.getAreaFullName(oo.getProvince(),oo.getCity(),oo.getDistrict()));
+        org.springframework.beans.BeanUtils.copyProperties(oo, vo);
+        vo.setAreaName(erpAreaService.getAreaFullName(oo.getProvince(), oo.getCity(), oo.getDistrict()));
         vo.setCategoryName(baseDataDicService.getNameById(oo.getCategory()));
-        vo.setBhouPrice(oo.getAmountMoney().multiply(new BigDecimal("666.67")).setScale(2,BigDecimal.ROUND_HALF_UP));
+        if (oo.getAmountMoney() != null) {
+            vo.setBhouPrice(oo.getAmountMoney().multiply(new BigDecimal("666.67")).setScale(2, BigDecimal.ROUND_HALF_UP));
+        }
         return vo;
     }
 

@@ -40,12 +40,13 @@ declareCommon.config = {
     },
     declareRealty:{
         frm: "frmDeclareRealtyRealEstateCert",
-        name: "房产证",
+        name: "不动产证",
         table: "tableDeclareRealtyRealEstateCert",
         box: "boxDeclareRealtyRealEstateCert",
         fileId: "declareRealtyRealEstateCertFileId",
         newFileId: "declareRealtyRealEstateCertNewFileId",
-        fileView: "declareRealtyRealEstateCertFileView"
+        fileView: "declareRealtyRealEstateCertFileView",
+        approvalFile:"declareRealtyApprovalFile"
     }
 };
 declareCommon.declareApplyForm = $('#declareApplyForm');

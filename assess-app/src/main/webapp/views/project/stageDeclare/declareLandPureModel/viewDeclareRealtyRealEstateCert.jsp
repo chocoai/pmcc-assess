@@ -33,15 +33,28 @@
                 </div>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">批量导入数据
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">下载模板
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a class="btn"
-                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftRealEstateOwnershipCertificate)">下载模板</a>
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftRealEstateOwnershipCertificate)">下载模板 有权证</a>
                         </li>
+                        <li><a class="btn"
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftRealEstateOwnershipCertificate2)">下载模板 无权证</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">批量导入数据
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
                         <li><a class="btn btn-default"
-                               onclick="$('#ajaxFileUploadRealEstate').val('').trigger('click')">导入</a></li>
+                               onclick="$('#ajaxFileUploadRealEstate').val('').trigger('click')">有权证 导入</a></li>
+                        <li><a class="btn btn-default"
+                               onclick="$('#ajaxFileUploadRealEstateA').val('').trigger('click')">无权证 导入</a></li>
                     </ul>
                 </div>
             </div>
@@ -56,7 +69,9 @@
     </div>
 </div>
 <input type="file" id="ajaxFileUploadRealEstate" name="file" style="display: none;"
-       onchange="declareRealtyRealEstateCert.inputFile();">
+       onchange="declareRealtyRealEstateCert.inputFile(true);">
+<input type="file" id="ajaxFileUploadRealEstateA" name="file" style="display: none;"
+       onchange="declareRealtyRealEstateCert.inputFile(false);">
 
 <input type="file" id="declareRealtyRealEstateCertFileId" name="declareRealtyRealEstateCertFileId"
        style="display: none;"
