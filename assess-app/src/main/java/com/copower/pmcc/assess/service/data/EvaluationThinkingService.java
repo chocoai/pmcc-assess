@@ -186,9 +186,9 @@ public class EvaluationThinkingService {
         List<Integer> baseMethodList = Lists.newArrayList();
         List<Integer> baseOtherList = Lists.newArrayList();
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
-            if (mdCommonService.isBaseMethod(entry.getKey()))
+            if (mdCommonService.isBaseMethod(projectInfo.getProjectCategoryId(),entry.getKey()))
                 baseMethodList.add(entry.getKey());
-            if (mdCommonService.isOtherMethod(entry.getKey()))
+            if (mdCommonService.isOtherMethod(projectInfo.getProjectCategoryId(),entry.getKey()))
                 baseOtherList.add(entry.getKey());
         }
 

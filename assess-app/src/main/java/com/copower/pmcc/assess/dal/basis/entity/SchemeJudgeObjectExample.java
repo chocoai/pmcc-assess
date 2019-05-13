@@ -1706,6 +1706,186 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andSetPlotRatioIsNull() {
+            addCriterion("set_plot_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioIsNotNull() {
+            addCriterion("set_plot_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioEqualTo(BigDecimal value) {
+            addCriterion("set_plot_ratio =", value, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioNotEqualTo(BigDecimal value) {
+            addCriterion("set_plot_ratio <>", value, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioGreaterThan(BigDecimal value) {
+            addCriterion("set_plot_ratio >", value, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("set_plot_ratio >=", value, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioLessThan(BigDecimal value) {
+            addCriterion("set_plot_ratio <", value, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("set_plot_ratio <=", value, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioIn(List<BigDecimal> values) {
+            addCriterion("set_plot_ratio in", values, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioNotIn(List<BigDecimal> values) {
+            addCriterion("set_plot_ratio not in", values, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("set_plot_ratio between", value1, value2, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("set_plot_ratio not between", value1, value2, "setPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioIsNull() {
+            addCriterion("plan_plot_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioIsNotNull() {
+            addCriterion("plan_plot_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioEqualTo(BigDecimal value) {
+            addCriterion("plan_plot_ratio =", value, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioNotEqualTo(BigDecimal value) {
+            addCriterion("plan_plot_ratio <>", value, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioGreaterThan(BigDecimal value) {
+            addCriterion("plan_plot_ratio >", value, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("plan_plot_ratio >=", value, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioLessThan(BigDecimal value) {
+            addCriterion("plan_plot_ratio <", value, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("plan_plot_ratio <=", value, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioIn(List<BigDecimal> values) {
+            addCriterion("plan_plot_ratio in", values, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioNotIn(List<BigDecimal> values) {
+            addCriterion("plan_plot_ratio not in", values, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plan_plot_ratio between", value1, value2, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plan_plot_ratio not between", value1, value2, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioIsNull() {
+            addCriterion("actual_plot_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioIsNotNull() {
+            addCriterion("actual_plot_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioEqualTo(BigDecimal value) {
+            addCriterion("actual_plot_ratio =", value, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioNotEqualTo(BigDecimal value) {
+            addCriterion("actual_plot_ratio <>", value, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioGreaterThan(BigDecimal value) {
+            addCriterion("actual_plot_ratio >", value, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("actual_plot_ratio >=", value, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioLessThan(BigDecimal value) {
+            addCriterion("actual_plot_ratio <", value, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("actual_plot_ratio <=", value, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioIn(List<BigDecimal> values) {
+            addCriterion("actual_plot_ratio in", values, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioNotIn(List<BigDecimal> values) {
+            addCriterion("actual_plot_ratio not in", values, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("actual_plot_ratio between", value1, value2, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("actual_plot_ratio not between", value1, value2, "actualPlotRatio");
+            return (Criteria) this;
+        }
+
         public Criteria andRentalPossessionDescIsNull() {
             addCriterion("rental_possession_desc is null");
             return (Criteria) this;

@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdCommonService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -57,6 +58,8 @@ public class SchemeSurePriceService {
     private MdCommonService mdCommonService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     /**
      * 保存确定单价信息
@@ -107,6 +110,8 @@ public class SchemeSurePriceService {
         SchemeSurePriceItem where = new SchemeSurePriceItem();
         where.setJudgeObjectId(judgeObjectId);
         List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
+        SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(judgeObjectId);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
         if (CollectionUtils.isNotEmpty(surePriceItemList)) {//更新试算价格
             if (isUpdatePrice) {
                 for (SchemeSurePriceItem schemeSurePriceItem : surePriceItemList) {
@@ -116,14 +121,13 @@ public class SchemeSurePriceService {
             } else {
                 return surePriceItemList;
             }
-
         } else {//初始化数据
             SchemeJudgeFunction functionWhere = new SchemeJudgeFunction();
             functionWhere.setBisApplicable(true);
             functionWhere.setJudgeObjectId(judgeObjectId);
             List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionDao.getSchemeJudgeFunction(functionWhere);
             if (CollectionUtils.isNotEmpty(judgeFunctions)) {
-                List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList();
+                List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList(projectInfo.getProjectCategoryId());
                 List<Integer> methodTypeList = LangUtils.transform(baseMethodList, o -> o.getId());
                 List<SchemeJudgeFunction> filter = LangUtils.filter(judgeFunctions, o -> methodTypeList.contains(o.getMethodType()));
                 for (SchemeJudgeFunction judgeFunction : filter) {

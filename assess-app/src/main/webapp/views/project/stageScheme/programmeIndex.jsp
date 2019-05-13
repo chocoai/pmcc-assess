@@ -238,8 +238,15 @@
                                     <th style="width: 6%">剩余年限</th>
                                     <th style="width: 6%">证载用途</th>
                                     <th style="width: 6%">实际用途</th>
-                                    <th style="width: 6%">设定用途</th>
-                                    <th style="width: 10%">最佳利用方式</th>
+                                    <c:if test="${projectInfo.projectCategoryName eq '房产'}">
+                                        <th style="width: 6%">设定用途</th>
+                                        <th style="width: 10%">最佳利用方式</th>
+                                    </c:if>
+                                    <c:if test="${projectInfo.projectCategoryName eq '土地'}">
+                                        <th style="width: 6%">设定容积率</th>
+                                        <th style="width: 6%">规划容积率</th>
+                                        <th style="width: 6%">实际容积率</th>
+                                    </c:if>
                                     <th style="width: 5%">证载面积</th>
                                     <th style="width: 5%">评估面积</th>
                                     <th style="width: 10%">操作</th>
@@ -260,20 +267,6 @@
                     </div>
                 </div>
             </c:forEach>
-            <%--<div class="x_panel">--%>
-            <%--<div class="x_title collapse-link">--%>
-            <%--<ul class="nav navbar-right panel_toolbox">--%>
-            <%--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>--%>
-            <%--</ul>--%>
-            <%--<h3>他项权利</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-            <%--</div>--%>
-            <%--<div class="x_content collapse">--%>
-            <%--<table class="table table-bordered" id="tb_inventory_right_list">--%>
-            <%--<!-- cerare document add ajax data-->--%>
-            <%--</table>--%>
-            <%--</div>--%>
-            <%--</div>--%>
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -382,73 +375,6 @@
                     取消
                 </button>
                 <button type="button" class="btn btn-primary" onclick=" programmeMethod.saveJudgeFunction();">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="modal_other_info" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">其它信息</h3>
-            </div>
-            <div class="modal-body">
-                <form id="frm_other_info" class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                变现比率
-                            </label>
-                            <div class="col-sm-10">
-                                <input type="text" placeholder="变现比率" name="liquidRatio" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                变现比率说明
-                            </label>
-                            <div class="col-sm-10">
-                                <textarea name="liquidRatioExplain" class="form-control"
-                                          placeholder="变现比率说明"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                担保物设立情况
-                            </label>
-                            <div class="col-sm-10">
-                                <textarea name="collateralFound" class="form-control" placeholder="担保物设立情况"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                出租占用情况
-                            </label>
-                            <div class="col-sm-10">
-                                <textarea name="rentalPossessionDesc" class="form-control"
-                                          placeholder="出租占用情况"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-                <button type="button" class="btn btn-primary" onclick="programme.saveOtherInfo();">
                     保存
                 </button>
             </div>
@@ -642,6 +568,95 @@
 </script>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
+    <tr>
+        <td>
+            <input type="hidden" data-name="id" value="{id}">
+            <input type="hidden" data-name="bisSplit" value="{bisSplit}">
+            <input type="hidden" data-name="bisMerge" value="{bisMerge}">
+            <input type="hidden" data-name="number" value="{number}">
+            <input type="hidden" data-name="splitNumber" value="{splitNumber}">
+            <input type="hidden" data-name="declareId" value="{declareId}">
+            <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
+            <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
+        </td>
+        <td>
+            <label class="form-control" data-name="ownership">{ownership}
+                <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
+                   class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
+            </label></td>
+        <td><label class="form-control" data-name="seat"><span>{seat}</span></label></td>
+        <td><label class="form-control" data-name="landUseEndDate"><span>{landUseEndDate}</span></label></td>
+        <td><label class="form-control" data-name="landRemainingYear"><span>{landRemainingYear}</span></label></td>
+        <td><label class="form-control" data-name="certUse">{certUse}</label></td>
+        <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>
+        <c:if test="${projectInfo.projectCategoryName eq '房产'}">
+            <td>
+                <div class="x-valid">
+                    <select class="form-control" required data-name="setUse" name="setUse{id}">
+                        <option value="">--请选择--</option>
+                        <c:forEach items="${setUseList}" var="setUse">
+                            <option value="${setUse.id}">${setUse.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div class="x-valid">
+                    <select class="form-control" required data-name="bestUse" name="bestUse{id}">
+                        <c:forEach items="${bestUseList}" var="bestUse">
+                            <option value="${bestUse.id}">${bestUse.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </td>
+        </c:if>
+        <c:if test="${projectInfo.projectCategoryName eq '土地'}">
+            <td>
+                <div class="x-valid">
+                    <input class="form-control" type="text" required data-rule-number="true"
+                           name="setPlotRatio{id}" data-name="setPlotRatio"
+                           placeholder="设定容积率" value="{setPlotRatio}">
+                </div>
+            </td>
+            <td>
+                <div class="x-valid">
+                    <input class="form-control" type="text" required data-rule-number="true"
+                           name="planPlotRatio{id}" data-name="planPlotRatio"
+                           placeholder="规划容积率" value="{planPlotRatio}">
+                </div>
+            </td>
+            <td>
+                <div class="x-valid">
+                    <input class="form-control" type="text" required data-rule-number="true"
+                           name="actualPlotRatio{id}" data-name="actualPlotRatio"
+                           placeholder="实际容积率" value="{actualPlotRatio}">
+                </div>
+            </td>
+        </c:if>
+        <td><label class="form-control">{floorArea}</label></td>
+        <td>
+            <div class="x-valid">
+                <input class="form-control" type="text" required data-rule-number="true"
+                       data-rule-range="[1,{floorArea}]"
+                       name="evaluationArea{id}" data-name="evaluationArea"
+                       placeholder="评估面积" value="{evaluationArea}">
+            </div>
+        </td>
+        <td>
+            <a href="javascript://" onclick="programme.splitJudge(this);"
+               class="btn btn-xs btn-success judge-split tooltips">拆分</a>
+            <a href="javascript://" onclick="programme.delSplitJudge(this);"
+               class="btn btn-xs btn-warning judge-remove tooltips">移除</a>
+            <a href="javascript://" onclick="programme.mergeJudge(this);"
+               class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
+            <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
+               class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
+            <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
+               class="btn btn-xs btn-success judge-method tooltips">方法</a>
+        </td>
+    </tr>
+</script>
+<script type="text/html" id="judgeObjectLandHtml">
     <tr>
         <td>
             <input type="hidden" data-name="id" value="{id}">
@@ -968,6 +983,9 @@
                         html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
                         html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
+                        html = html.replace(/{setPlotRatio}/g, item.setPlotRatio == undefined ? "" : item.setPlotRatio);
+                        html = html.replace(/{planPlotRatio}/g, item.planPlotRatio == undefined ? "" : item.planPlotRatio);
+                        html = html.replace(/{actualPlotRatio}/g, item.actualPlotRatio == undefined ? "" : item.actualPlotRatio);
                         tbody.append(html);
                         //设值
                         var lastTr = tbody.find("tr:last");
@@ -1287,6 +1305,9 @@
                 schemeJudgeObject.id = $(tr).find('[data-name="id"]').val();
                 schemeJudgeObject.setUse = $(tr).find('[data-name="setUse"]').val();
                 schemeJudgeObject.bestUse = $(tr).find('[data-name="bestUse"]').val();
+                schemeJudgeObject.setPlotRatio = $(tr).find('[data-name="setPlotRatio"]').val();
+                schemeJudgeObject.planPlotRatio = $(tr).find('[data-name="planPlotRatio"]').val();
+                schemeJudgeObject.actualPlotRatio = $(tr).find('[data-name="actualPlotRatio"]').val();
                 schemeJudgeObject.evaluationArea = $(tr).find('[data-name="evaluationArea"]').val();
                 data.schemeJudgeObjects.push(schemeJudgeObject);
             })

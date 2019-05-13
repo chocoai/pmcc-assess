@@ -805,7 +805,7 @@ public class GenerateBaseDataService {
         List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctionsByAreaId(areaId);
         if (CollectionUtils.isEmpty(judgeFunctions)) return "";
         List<Integer> methodTypeList = LangUtils.transform(judgeFunctions, o -> o.getMethodType());
-        List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList();
+        List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList(projectInfo.getProjectCategoryId());
         List<BaseDataDic> resultList = LangUtils.filter(baseMethodList, o -> methodTypeList.contains(o.getId()));
         if (CollectionUtils.isEmpty(resultList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
