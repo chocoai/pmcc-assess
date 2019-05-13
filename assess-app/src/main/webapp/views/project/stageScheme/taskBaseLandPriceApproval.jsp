@@ -91,7 +91,7 @@
                                     </tr>
                                     <tr>
                                         <td>委估宗地面积（㎡）</td>
-                                        <td>${floorArea}</td>
+                                        <td>${evaluationArea}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
