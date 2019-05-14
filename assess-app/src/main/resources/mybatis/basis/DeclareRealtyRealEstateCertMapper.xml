@@ -52,8 +52,6 @@
     <result column="enable" property="enable" jdbcType="VARCHAR" />
     <result column="declare_type" property="declareType" jdbcType="VARCHAR" />
     <result column="approval_mechanism" property="approvalMechanism" jdbcType="VARCHAR" />
-    <result column="approval_reference_number" property="approvalReferenceNumber" jdbcType="VARCHAR" />
-    <result column="approval_file" property="approvalFile" jdbcType="VARCHAR" />
     <result column="approval_time" property="approvalTime" jdbcType="TIMESTAMP" />
     <result column="approval_name" property="approvalName" jdbcType="VARCHAR" />
     <result column="real_estate_unit_number" property="realEstateUnitNumber" jdbcType="VARCHAR" />
@@ -128,9 +126,8 @@
     graph_number, land_acquisition, use_start_date, use_end_date, public_area, other_note, 
     registration_authority, registration_date, land_right_nature, land_right_type, acquisition_price, 
     land_cert_use, termination_date, memo, apportionment_area, acreage, use_right_area, 
-    enable, declare_type, approval_mechanism, approval_reference_number, approval_file, 
-    approval_time, approval_name, real_estate_unit_number, bis_record, creator, gmt_created, 
-    gmt_modified
+    enable, declare_type, approval_mechanism, approval_time, approval_name, real_estate_unit_number, 
+    bis_record, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample" >
     select
@@ -182,8 +179,7 @@
       acquisition_price, land_cert_use, termination_date, 
       memo, apportionment_area, acreage, 
       use_right_area, enable, declare_type, 
-      approval_mechanism, approval_reference_number, 
-      approval_file, approval_time, approval_name, 
+      approval_mechanism, approval_time, approval_name, 
       real_estate_unit_number, bis_record, creator, 
       gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
@@ -202,8 +198,7 @@
       #{acquisitionPrice,jdbcType=DECIMAL}, #{landCertUse,jdbcType=INTEGER}, #{terminationDate,jdbcType=TIMESTAMP}, 
       #{memo,jdbcType=VARCHAR}, #{apportionmentArea,jdbcType=DECIMAL}, #{acreage,jdbcType=DECIMAL}, 
       #{useRightArea,jdbcType=DECIMAL}, #{enable,jdbcType=VARCHAR}, #{declareType,jdbcType=VARCHAR}, 
-      #{approvalMechanism,jdbcType=VARCHAR}, #{approvalReferenceNumber,jdbcType=VARCHAR}, 
-      #{approvalFile,jdbcType=VARCHAR}, #{approvalTime,jdbcType=TIMESTAMP}, #{approvalName,jdbcType=VARCHAR}, 
+      #{approvalMechanism,jdbcType=VARCHAR}, #{approvalTime,jdbcType=TIMESTAMP}, #{approvalName,jdbcType=VARCHAR}, 
       #{realEstateUnitNumber,jdbcType=VARCHAR}, #{bisRecord,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -359,12 +354,6 @@
       </if>
       <if test="approvalMechanism != null" >
         approval_mechanism,
-      </if>
-      <if test="approvalReferenceNumber != null" >
-        approval_reference_number,
-      </if>
-      <if test="approvalFile != null" >
-        approval_file,
       </if>
       <if test="approvalTime != null" >
         approval_time,
@@ -535,12 +524,6 @@
       </if>
       <if test="approvalMechanism != null" >
         #{approvalMechanism,jdbcType=VARCHAR},
-      </if>
-      <if test="approvalReferenceNumber != null" >
-        #{approvalReferenceNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="approvalFile != null" >
-        #{approvalFile,jdbcType=VARCHAR},
       </if>
       <if test="approvalTime != null" >
         #{approvalTime,jdbcType=TIMESTAMP},
@@ -724,12 +707,6 @@
       <if test="record.approvalMechanism != null" >
         approval_mechanism = #{record.approvalMechanism,jdbcType=VARCHAR},
       </if>
-      <if test="record.approvalReferenceNumber != null" >
-        approval_reference_number = #{record.approvalReferenceNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.approvalFile != null" >
-        approval_file = #{record.approvalFile,jdbcType=VARCHAR},
-      </if>
       <if test="record.approvalTime != null" >
         approval_time = #{record.approvalTime,jdbcType=TIMESTAMP},
       </if>
@@ -808,8 +785,6 @@
       enable = #{record.enable,jdbcType=VARCHAR},
       declare_type = #{record.declareType,jdbcType=VARCHAR},
       approval_mechanism = #{record.approvalMechanism,jdbcType=VARCHAR},
-      approval_reference_number = #{record.approvalReferenceNumber,jdbcType=VARCHAR},
-      approval_file = #{record.approvalFile,jdbcType=VARCHAR},
       approval_time = #{record.approvalTime,jdbcType=TIMESTAMP},
       approval_name = #{record.approvalName,jdbcType=VARCHAR},
       real_estate_unit_number = #{record.realEstateUnitNumber,jdbcType=VARCHAR},
@@ -971,12 +946,6 @@
       <if test="approvalMechanism != null" >
         approval_mechanism = #{approvalMechanism,jdbcType=VARCHAR},
       </if>
-      <if test="approvalReferenceNumber != null" >
-        approval_reference_number = #{approvalReferenceNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="approvalFile != null" >
-        approval_file = #{approvalFile,jdbcType=VARCHAR},
-      </if>
       <if test="approvalTime != null" >
         approval_time = #{approvalTime,jdbcType=TIMESTAMP},
       </if>
@@ -1052,8 +1021,6 @@
       enable = #{enable,jdbcType=VARCHAR},
       declare_type = #{declareType,jdbcType=VARCHAR},
       approval_mechanism = #{approvalMechanism,jdbcType=VARCHAR},
-      approval_reference_number = #{approvalReferenceNumber,jdbcType=VARCHAR},
-      approval_file = #{approvalFile,jdbcType=VARCHAR},
       approval_time = #{approvalTime,jdbcType=TIMESTAMP},
       approval_name = #{approvalName,jdbcType=VARCHAR},
       real_estate_unit_number = #{realEstateUnitNumber,jdbcType=VARCHAR},

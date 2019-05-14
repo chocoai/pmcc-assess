@@ -27,7 +27,7 @@ assessCommonHouse.config = {
  * @date:2018-09-19
  **/
 assessCommonHouse.init = function (item) {
-    declareCommon.initHouse(item,$("#" + assessCommonHouse.config.frm),[assessCommonHouse.config.fileId],null);
+    declareCommon.initHouse(item, $("#" + assessCommonHouse.config.frm), [assessCommonHouse.config.fileId], null);
 };
 
 /**
@@ -47,30 +47,30 @@ assessCommonHouse.saveAndUpdateHouse = function () {
         data.declareType = declareCommon.declareHouseType;
     }
     //当土地证填写后
-    if (data.landNumber){
-        var html = "<span class='help-block' for='for'>" +"该字段为必填项(土地证号需要的基本数据)"+"</span>" ;
-        if (!data.landAcquisition){
-            $("#" + assessCommonHouse.config.frm).find("input[name='landAcquisition']").after(html.replace(/for/g,"landAcquisition"));
+    if (data.landNumber) {
+        var html = "<span class='help-block' for='for'>" + "该字段为必填项(土地证号需要的基本数据)" + "</span>";
+        if (!data.landAcquisition) {
+            $("#" + assessCommonHouse.config.frm).find("input[name='landAcquisition']").after(html.replace(/for/g, "landAcquisition"));
             return false;
         }
-        if (!data.registrationAuthority){
-            $("#" + assessCommonHouse.config.frm).find("input[name='registrationAuthority']").after(html.replace(/for/g,"registrationAuthority"));
+        if (!data.registrationAuthority) {
+            $("#" + assessCommonHouse.config.frm).find("input[name='registrationAuthority']").after(html.replace(/for/g, "registrationAuthority"));
             return false;
         }
-        if (!data.useStartDate){
-            $("#" + assessCommonHouse.config.frm).find("input[name='useStartDate']").after(html.replace(/for/g,"useStartDate"));
+        if (!data.useStartDate) {
+            $("#" + assessCommonHouse.config.frm).find("input[name='useStartDate']").after(html.replace(/for/g, "useStartDate"));
             return false;
         }
-        if (!data.useEndDate){
-            $("#" + assessCommonHouse.config.frm).find("input[name='useEndDate']").after(html.replace(/for/g,"useEndDate"));
+        if (!data.useEndDate) {
+            $("#" + assessCommonHouse.config.frm).find("input[name='useEndDate']").after(html.replace(/for/g, "useEndDate"));
             return false;
         }
-        if (!data.publicArea){
-            $("#" + assessCommonHouse.config.frm).find("input[name='publicArea']").after(html.replace(/for/g,"publicArea"));
+        if (!data.publicArea) {
+            $("#" + assessCommonHouse.config.frm).find("input[name='publicArea']").after(html.replace(/for/g, "publicArea"));
             return false;
         }
     }
-    declareCommon.saveHouseData(data,function () {
+    declareCommon.saveHouseData(data, function () {
         assessCommonHouse.loadList();
         toastr.success('成功!');
         $('#' + assessCommonHouse.config.box).modal("hide");
@@ -92,7 +92,7 @@ assessCommonHouse.deleteHouse = function () {
             $.each(rows, function (i, item) {
                 idArray.push(item.id);
             });
-            declareCommon.deleteHouseData(idArray.join(","),function () {
+            declareCommon.deleteHouseData(idArray.join(","), function () {
                 toastr.success('删除成功');
                 assessCommonHouse.loadList();
             });
@@ -110,12 +110,7 @@ assessCommonHouse.editHouse = function () {
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要编辑的数据");
     } else if (rows.length == 1) {
-        declareCommon.getHouseData(rows[0].id , function (data) {
-            assessCommonHouse.init(data);
-            //使校验生效
-            $("#" + assessCommonHouse.config.frm).validate();
-            $('#' + assessCommonHouse.config.box).modal("show");
-        });
+        assessCommonHouse.showAddModelHouse(rows[0]);
     } else {
         toastr.info("只能选择一行数据进行编辑");
     }
@@ -126,12 +121,16 @@ assessCommonHouse.editHouse = function () {
  * 描述:房产证 显示
  * @date:2018-09-19
  **/
-assessCommonHouse.showAddModelHouse = function () {
+assessCommonHouse.showAddModelHouse = function (data) {
     //使校验生效
     $('#' + assessCommonHouse.config.box).find("#" + commonDeclareApplyModel.config.house.handleId).remove();
     $('#' + assessCommonHouse.config.box).find(".panel-body").prepend(commonDeclareApplyModel.house.getHtml());
-    declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.frm) , function (area) {
-        assessCommonHouse.init(area);
+    declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.frm), function (area) {
+        if (jQuery.isEmptyObject(data)) {
+            assessCommonHouse.init(area);
+        }else {
+            assessCommonHouse.init(data);
+        }
     });
     $('#' + assessCommonHouse.config.box).modal("show");
 };
@@ -141,7 +140,7 @@ assessCommonHouse.showAddModelHouse = function () {
  * @param item
  */
 assessCommonHouse.initLand = function (item) {
-    declareCommon.initLand(item,$("#" + assessCommonHouse.config.son.declareRealtyLandCert.frm),[assessCommonHouse.config.landFileId],null);
+    declareCommon.initLand(item, $("#" + assessCommonHouse.config.son.declareRealtyLandCert.frm), [assessCommonHouse.config.landFileId], null);
 };
 
 /**
@@ -151,11 +150,11 @@ assessCommonHouse.initLand = function (item) {
 assessCommonHouse.showAddModelLand = function (id) {
     $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).find("#" + commonDeclareApplyModel.config.land.handleId).remove();
     $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApplyModel.land.getHtml());
-    declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.son.declareRealtyLandCert.frm) , function (area) {
+    declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.son.declareRealtyLandCert.frm), function (area) {
         $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("show");
         var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
         if (declareCommon.isNotBlank(item.pid)) {//关联情况
-            declareCommon.getLandData(item.pid , function (data) {
+            declareCommon.getLandData(item.pid, function (data) {
                 if (declareCommon.isNotBlank(data)) {
                     assessCommonHouse.initLand(data);
                 } else {
@@ -193,10 +192,10 @@ assessCommonHouse.saveAndUpdateLand = function () {
     var data = formParams(assessCommonHouse.config.son.declareRealtyLandCert.frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
     data.enable = declareCommon.branchData;
-    declareCommon.saveLandData(data , function (landId) {
-        if (landId){
-            var houseId = data.pid ;
-            declareCommon.saveHouseData({id:houseId,pid:landId} , function () {
+    declareCommon.saveLandData(data, function (landId) {
+        if (landId) {
+            var houseId = data.pid;
+            declareCommon.saveHouseData({id: houseId, pid: landId}, function () {
                 assessCommonHouse.loadList();
                 $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("hide");
             });
@@ -237,7 +236,7 @@ assessCommonHouse.distinguish = function () {
                                 number: dataJson.number,
                                 registrationDate: dataJson.registration
                             };
-                            declareCommon.initHouse(item , $("#" + assessCommonHouse.config.frm),[],null);
+                            declareCommon.initHouse(item, $("#" + assessCommonHouse.config.frm), [], null);
                         });
                     } else {
                         Alert("不是图片");
@@ -312,7 +311,7 @@ assessCommonHouse.inputFile = function () {
 assessCommonHouse.landImportEvent = function (id) {
     var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
     if (declareCommon.isNotBlank(item.pid)) {
-        declareCommon.getLandData(item.pid,function (data) {
+        declareCommon.getLandData(item.pid, function (data) {
             if (declareCommon.isNotBlank(data)) {
                 $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId).attr("data-id", data.id);
                 $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId).trigger('click');
@@ -416,7 +415,7 @@ assessCommonHouse.loadList = function () {
     $("#" + assessCommonHouse.config.table).bootstrapTable('destroy');
     TableInit(assessCommonHouse.config.table, getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(),
-        enable:declareCommon.masterData
+        enable: declareCommon.masterData
     }, {
         showColumns: false,
         showRefresh: false,

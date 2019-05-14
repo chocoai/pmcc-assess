@@ -21,9 +21,12 @@ public class ErpAreaService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ErpRpcToolsService erpRpcToolsService;
+    public  final String PROVINCE = "province" ;
+    public  final String CITY = "city" ;
+    public  final String DISTRICT = "district" ;
 
     /**
-     * 功能描述: 验证区域名称是否存在
+     * 功能描述: 验证区域名称是否存在 并且收集数据
      *
      * @param:
      * @return:
@@ -45,12 +48,12 @@ public class ErpAreaService {
                 if (Objects.equal(provinceName, sysAreaDto.getName())) {//省匹配
                     String areaId = sysAreaDto.getAreaId();//获取省级别的区域id
                     SysAreaDto province = erpRpcToolsService.getSysAreaDto(areaId);//省级别
-                    map.put("province",province.getAreaId());
+                    map.put(PROVINCE,province.getAreaId());
                     List<SysAreaDto> citys = erpRpcToolsService.getSysAreaDtoList(province.getAreaId());
                     if (!ObjectUtils.isEmpty(citys)) {
                         for (SysAreaDto city : citys) {
                             if (Objects.equal(cityName, city.getName())) {//市 匹配
-                                map.put("city",city.getAreaId());
+                                map.put(CITY,city.getAreaId());
                                 if (org.springframework.util.StringUtils.isEmpty(districtName)) {//县级可以为null
                                     return true;
                                 }
@@ -59,7 +62,7 @@ public class ErpAreaService {
                                     if (!ObjectUtils.isEmpty(sysAreaDtoList)) {//县
                                         for (SysAreaDto district : sysAreaDtoList) {
                                             if (Objects.equal(districtName, district.getName())) {//只需要匹配到一个即可
-                                                map.put("district",district.getAreaId());
+                                                map.put(DISTRICT,district.getAreaId());
                                                 return true;
                                             }
                                         }
@@ -134,23 +137,16 @@ public class ErpAreaService {
      * @return
      */
     public String getAreaFullName(String province, String city, String district) {
-        String areaName = new String();
-        SysAreaDto sysAreaDto = null;
+        StringBuilder stringBuilder = new StringBuilder(8);
         if (StringUtils.isNotBlank(province)) {
-            sysAreaDto = getSysAreaDto(province);
-            if (sysAreaDto != null)
-                areaName += sysAreaDto.getName();
+            stringBuilder.append(getSysAreaDto(province).getName());
         }
         if (StringUtils.isNotBlank(city)) {
-            sysAreaDto = getSysAreaDto(city);
-            if (sysAreaDto != null)
-                areaName += sysAreaDto.getName();
+            stringBuilder.append(getSysAreaDto(city).getName());
         }
         if (StringUtils.isNotBlank(district)) {
-            sysAreaDto = getSysAreaDto(district);
-            if (sysAreaDto != null)
-                areaName += sysAreaDto.getName();
+            stringBuilder.append(getSysAreaDto(district).getName());
         }
-        return areaName;
+        return stringBuilder.toString();
     }
 }

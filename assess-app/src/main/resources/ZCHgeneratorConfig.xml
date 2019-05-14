@@ -47,9 +47,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_data_house_price_index_detail" domainObjectName="DataHousePriceIndexDetail">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_declare_record" domainObjectName="DeclareRecord">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_data_land_detail_achievement" domainObjectName="DataLandDetailAchievement">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -91,9 +91,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_declare_realty_land_cert" domainObjectName="DeclareRealtyLandCert">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_declare_realty_land_cert" domainObjectName="DeclareRealtyLandCert">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <table tableName="tb_declare_realty_real_estate_cert" domainObjectName="DeclareRealtyRealEstateCert">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>

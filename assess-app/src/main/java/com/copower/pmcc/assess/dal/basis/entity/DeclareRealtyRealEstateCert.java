@@ -104,10 +104,6 @@ public class DeclareRealtyRealEstateCert {
 
     private String approvalMechanism;
 
-    private String approvalReferenceNumber;
-
-    private String approvalFile;
-
     private Date approvalTime;
 
     private String approvalName;
@@ -520,22 +516,6 @@ public class DeclareRealtyRealEstateCert {
 
     public void setApprovalMechanism(String approvalMechanism) {
         this.approvalMechanism = approvalMechanism == null ? null : approvalMechanism.trim();
-    }
-
-    public String getApprovalReferenceNumber() {
-        return approvalReferenceNumber;
-    }
-
-    public void setApprovalReferenceNumber(String approvalReferenceNumber) {
-        this.approvalReferenceNumber = approvalReferenceNumber == null ? null : approvalReferenceNumber.trim();
-    }
-
-    public String getApprovalFile() {
-        return approvalFile;
-    }
-
-    public void setApprovalFile(String approvalFile) {
-        this.approvalFile = approvalFile == null ? null : approvalFile.trim();
     }
 
     public Date getApprovalTime() {

@@ -36,6 +36,9 @@
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="registration_authority" property="registrationAuthority" jdbcType="VARCHAR" />
     <result column="registration_date" property="registrationDate" jdbcType="TIMESTAMP" />
+    <result column="approval_name" property="approvalName" jdbcType="VARCHAR" />
+    <result column="approval_time" property="approvalTime" jdbcType="TIMESTAMP" />
+    <result column="approval_mechanism" property="approvalMechanism" jdbcType="VARCHAR" />
     <result column="declare_type" property="declareType" jdbcType="VARCHAR" />
     <result column="enable" property="enable" jdbcType="VARCHAR" />
     <result column="bis_record" property="bisRecord" jdbcType="BIT" />
@@ -107,7 +110,8 @@
     street_number, attached_number, building_number, unit, floor, room_number, land_number, 
     cert_use, housing_structure, graph_number, land_right_nature, acquisition_price, 
     termination_date, use_right_area, acreage, apportionment_area, memo, registration_authority, 
-    registration_date, declare_type, enable, bis_record, creator, gmt_created, gmt_modified
+    registration_date, approval_name, approval_time, approval_mechanism, declare_type, 
+    enable, bis_record, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCertExample" >
     select
@@ -154,6 +158,7 @@
       land_right_nature, acquisition_price, termination_date, 
       use_right_area, acreage, apportionment_area, 
       memo, registration_authority, registration_date, 
+      approval_name, approval_time, approval_mechanism, 
       declare_type, enable, bis_record, 
       creator, gmt_created, gmt_modified
       )
@@ -168,6 +173,7 @@
       #{landRightNature,jdbcType=INTEGER}, #{acquisitionPrice,jdbcType=DECIMAL}, #{terminationDate,jdbcType=TIMESTAMP}, 
       #{useRightArea,jdbcType=DECIMAL}, #{acreage,jdbcType=DECIMAL}, #{apportionmentArea,jdbcType=DECIMAL}, 
       #{memo,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, #{registrationDate,jdbcType=TIMESTAMP}, 
+      #{approvalName,jdbcType=VARCHAR}, #{approvalTime,jdbcType=TIMESTAMP}, #{approvalMechanism,jdbcType=VARCHAR}, 
       #{declareType,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, #{bisRecord,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -276,6 +282,15 @@
       </if>
       <if test="registrationDate != null" >
         registration_date,
+      </if>
+      <if test="approvalName != null" >
+        approval_name,
+      </if>
+      <if test="approvalTime != null" >
+        approval_time,
+      </if>
+      <if test="approvalMechanism != null" >
+        approval_mechanism,
       </if>
       <if test="declareType != null" >
         declare_type,
@@ -395,6 +410,15 @@
       </if>
       <if test="registrationDate != null" >
         #{registrationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalName != null" >
+        #{approvalName,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalTime != null" >
+        #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalMechanism != null" >
+        #{approvalMechanism,jdbcType=VARCHAR},
       </if>
       <if test="declareType != null" >
         #{declareType,jdbcType=VARCHAR},
@@ -527,6 +551,15 @@
       <if test="record.registrationDate != null" >
         registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.approvalName != null" >
+        approval_name = #{record.approvalName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approvalTime != null" >
+        approval_time = #{record.approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.approvalMechanism != null" >
+        approval_mechanism = #{record.approvalMechanism,jdbcType=VARCHAR},
+      </if>
       <if test="record.declareType != null" >
         declare_type = #{record.declareType,jdbcType=VARCHAR},
       </if>
@@ -586,6 +619,9 @@
       memo = #{record.memo,jdbcType=VARCHAR},
       registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
       registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
+      approval_name = #{record.approvalName,jdbcType=VARCHAR},
+      approval_time = #{record.approvalTime,jdbcType=TIMESTAMP},
+      approval_mechanism = #{record.approvalMechanism,jdbcType=VARCHAR},
       declare_type = #{record.declareType,jdbcType=VARCHAR},
       enable = #{record.enable,jdbcType=VARCHAR},
       bis_record = #{record.bisRecord,jdbcType=BIT},
@@ -698,6 +734,15 @@
       <if test="registrationDate != null" >
         registration_date = #{registrationDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="approvalName != null" >
+        approval_name = #{approvalName,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalTime != null" >
+        approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalMechanism != null" >
+        approval_mechanism = #{approvalMechanism,jdbcType=VARCHAR},
+      </if>
       <if test="declareType != null" >
         declare_type = #{declareType,jdbcType=VARCHAR},
       </if>
@@ -754,6 +799,9 @@
       memo = #{memo,jdbcType=VARCHAR},
       registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
       registration_date = #{registrationDate,jdbcType=TIMESTAMP},
+      approval_name = #{approvalName,jdbcType=VARCHAR},
+      approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      approval_mechanism = #{approvalMechanism,jdbcType=VARCHAR},
       declare_type = #{declareType,jdbcType=VARCHAR},
       enable = #{enable,jdbcType=VARCHAR},
       bis_record = #{bisRecord,jdbcType=BIT},
