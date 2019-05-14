@@ -55,6 +55,8 @@ public class SurveyAssetInventory {
 
     private Date gmtModified;
 
+    private String otherProject;
+
     private String location;
 
     public Integer getId() {
@@ -263,6 +265,14 @@ public class SurveyAssetInventory {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getOtherProject() {
+        return otherProject;
+    }
+
+    public void setOtherProject(String otherProject) {
+        this.otherProject = otherProject == null ? null : otherProject.trim();
     }
 
     public String getLocation() {

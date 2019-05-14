@@ -20,6 +20,8 @@ public class DeclareRecord {
 
     private String type;
 
+    private Boolean hasCert;
+
     private String name;
 
     private String ownership;
@@ -142,6 +144,14 @@ public class DeclareRecord {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Boolean getHasCert() {
+        return hasCert;
+    }
+
+    public void setHasCert(Boolean hasCert) {
+        this.hasCert = hasCert;
     }
 
     public String getName() {

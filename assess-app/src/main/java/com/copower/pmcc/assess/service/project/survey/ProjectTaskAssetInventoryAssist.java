@@ -2,11 +2,13 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.event.project.SurveyAssetInventoryEvent;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -41,6 +43,8 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     private DeclareRecordService declareRecordService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -62,6 +66,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         //是否办证
         List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE);
         modelAndView.addObject("certificateTypes", certificateTypes);
+        //土地类型
+        BaseProjectClassify houseLand = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
+        modelAndView.addObject("houseLand",houseLand.getId());
         return modelAndView;
     }
 
@@ -113,6 +120,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
         List<BaseDataDic> inventoryRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
         modelAndView.addObject("inventoryRightTypeList", inventoryRightTypeList);
+        //土地类型
+        BaseProjectClassify houseLand = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
+        modelAndView.addObject("houseLand",houseLand.getId());
     }
 
     @Override
