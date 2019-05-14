@@ -712,6 +712,8 @@ $(function () {
     };
 
     window.AssessCommon = assessCommon;
+    //一亩=666.67
+    window.AssessCommon.BHOU = 666.67;
 })(jQuery);
 
 //数字运算-避免精度问题
