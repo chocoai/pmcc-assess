@@ -25,9 +25,36 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
+                                    省
+                                </label>
+                                <div class="col-sm-1">
+                                    <select name="province" class="form-control search-select select2" >
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    市
+                                </label>
+                                <div class="col-sm-1">
+                                    <select name="city" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    区
+                                </label>
+                                <div class="col-sm-1">
+                                    <select name="district" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
                                     类别
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <select name="category"
                                             class="form-control search-select select2" id="queryName">
                                     </select>
@@ -130,6 +157,9 @@
         });
         dataObjFun.config.table.bootstrapTable('destroy');
         TableInit(dataObjFun.config.table.prop("id"), "${pageContext.request.contextPath}/landApproximationMethodSetting/getBootstrapTableVo", cols, {
+            province:$("#frmQuery").find("select[name='province']").val(),
+            city:$("#frmQuery").find("select[name='city']").val(),
+            district:$("#frmQuery").find("select[name='district']").val(),
             category: $("#queryName").val()
         }, {
             showColumns: false,
@@ -167,6 +197,11 @@
         dataObjFun.listMaster();
         AssessCommon.loadDataDicByKey(AssessDicKey.dataLandApproximationMethodSetting, null, function (html, data) {
             $("#frmQuery").find("select[name='category']").empty().html(html).trigger('change');
+        });
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#frmQuery").find("select[name='province']"),
+            cityTarget: $("#frmQuery").find("select[name='city']"),
+            districtTarget: $("#frmQuery").find("select[name='district']")
         });
     });
 

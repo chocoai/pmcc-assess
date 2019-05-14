@@ -40,6 +40,8 @@ public class SchemeJudgeObject {
 
     private Date landUseEndDate;
 
+    private BigDecimal landLegalYear;
+
     private BigDecimal landRemainingYear;
 
     private Integer setUse;
@@ -232,6 +234,14 @@ public class SchemeJudgeObject {
 
     public void setLandUseEndDate(Date landUseEndDate) {
         this.landUseEndDate = landUseEndDate;
+    }
+
+    public BigDecimal getLandLegalYear() {
+        return landLegalYear;
+    }
+
+    public void setLandLegalYear(BigDecimal landLegalYear) {
+        this.landLegalYear = landLegalYear;
     }
 
     public BigDecimal getLandRemainingYear() {

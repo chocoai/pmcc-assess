@@ -7,7 +7,6 @@ import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApply
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -27,8 +26,8 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "市场比较法成果")
-public class ProjectTaskCompareAssist implements ProjectTaskInterface {
+@WorkFlowAnnotation(desc = "土地比较法成果")
+public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -36,16 +35,11 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Autowired
     private MdMarketCompareService mdMarketCompareService;
     @Autowired
-    private SchemeSupportInfoService schemeSupportInfoService;
-    @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
     private SchemeInfoService schemeInfoService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private BaseDataDicService baseDataDicService;
-
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -53,13 +47,13 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         if (info == null) {
-            MdMarketCompare marketCompare = mdMarketCompareService.initExplore(judgeObject,false);
+            MdMarketCompare marketCompare = mdMarketCompareService.initExplore(judgeObject,true);
             if (marketCompare != null) {
                 SchemeInfo schemeInfo = new SchemeInfo();
                 schemeInfo.setProjectId(projectPlanDetails.getProjectId());
                 schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
                 schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-                schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE).getId());
+                schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_LAND_COMPARE).getId());
                 schemeInfo.setMethodDataId(marketCompare.getId());
                 try {
                     schemeInfoService.saveSchemeInfo(schemeInfo);
@@ -111,7 +105,6 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info,SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
-        //市场比较法相关
         List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(projectPlanDetails.getProjectId());
         modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
         MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
@@ -125,15 +118,14 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
         modelAndView.addObject("mcId", marketCompare.getId());
         modelAndView.addObject("setUse", judgeObject.getSetUse());
         modelAndView.addObject("judgeObject", judgeObject);
-        modelAndView.addObject("isLand", false);
+        modelAndView.addObject("isLand", true);
     }
 
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
         SchemeMarketCompareApplyDto schemeMarketCompareApplyDto = JSON.parseObject(formData, SchemeMarketCompareApplyDto.class);
-        MdMarketCompare mdMarketCompare = mdMarketCompareService.saveResult(schemeMarketCompareApplyDto.getMarketCompare());
+        mdMarketCompareService.saveResult(schemeMarketCompareApplyDto.getMarketCompare());
         SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
         schemeInfoService.saveSchemeInfo(schemeInfo);

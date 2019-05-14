@@ -1286,6 +1286,66 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandLegalYearIsNull() {
+            addCriterion("land_legal_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearIsNotNull() {
+            addCriterion("land_legal_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearEqualTo(BigDecimal value) {
+            addCriterion("land_legal_year =", value, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearNotEqualTo(BigDecimal value) {
+            addCriterion("land_legal_year <>", value, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearGreaterThan(BigDecimal value) {
+            addCriterion("land_legal_year >", value, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_legal_year >=", value, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearLessThan(BigDecimal value) {
+            addCriterion("land_legal_year <", value, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_legal_year <=", value, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearIn(List<BigDecimal> values) {
+            addCriterion("land_legal_year in", values, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearNotIn(List<BigDecimal> values) {
+            addCriterion("land_legal_year not in", values, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_legal_year between", value1, value2, "landLegalYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLegalYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_legal_year not between", value1, value2, "landLegalYear");
+            return (Criteria) this;
+        }
+
         public Criteria andLandRemainingYearIsNull() {
             addCriterion("land_remaining_year is null");
             return (Criteria) this;

@@ -68,7 +68,10 @@ public enum MethodCompareFieldEnum {
     NEW_DEGREE("new.degree", "成新度"),//ps:成新度
     Other("other", "其它"),//ps:其它
     BUILDING_YEAR("building.year", "建造年份"),//ps:建造年份
-    CONSTRUCTION_QUALITY("construction.quality", "工程质量");//ps:工程质量
+    CONSTRUCTION_QUALITY("construction.quality", "工程质量"),//ps:工程质量
+
+    Annual_Coefficient("annual.coefficient", "年期修正系数"),//ps:年期修正系数
+    VolumeRatio_Coefficient("volumeratio.coefficient", "容积率修正系数");//ps:容积率修正系数
 
     private String key;
 

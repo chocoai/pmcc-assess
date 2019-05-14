@@ -45,7 +45,7 @@ public class MarketCompareController {
             marketCompare = mdMarketCompareService.getMdMarketCompare(mcId);
         }
         if (marketCompare == null) {
-            marketCompare = mdMarketCompareService.initExplore(judgeObject);
+            marketCompare = mdMarketCompareService.initExplore(judgeObject,false);
         }
         List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getProjectId());
         modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
@@ -112,9 +112,9 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
-    public HttpResult selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId) {
+    public HttpResult selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId, Boolean isLand) {
         try {
-            mdMarketCompareService.selectCase(mcId, areaDescJson, judgeObjectId);
+            mdMarketCompareService.selectCase(mcId, areaDescJson, judgeObjectId, isLand);
             MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
             mdCompareInitParamVo.setMcId(mcId);
             mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);

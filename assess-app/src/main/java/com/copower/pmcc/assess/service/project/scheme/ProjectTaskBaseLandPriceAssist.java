@@ -197,10 +197,10 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         }
 
         //容积率
-        String volumetricRate = basicEstate.getVolumetricRate();
-        modelAndView.addObject("volumetricRate", volumetricRate);
+        String plotRatio = landStateByEstateId.getPlotRatio();
+        modelAndView.addObject("volumetricRate", plotRatio);
         //根据容积率找到配置中对应的容积率修正
-        BigDecimal volumeFractionAmend = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), volumetricRate);
+        BigDecimal volumeFractionAmend = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), plotRatio);
         modelAndView.addObject("volumeFractionAmend", volumeFractionAmend == null ? "无" : volumeFractionAmend);
 
         //宗地面积

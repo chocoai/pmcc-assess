@@ -203,6 +203,7 @@
         var marketCompare = {};
         //初始化 1.初始化表格的标题 2.初始化表格内容
         marketCompare.isPass = true;
+        marketCompare.isLand = false;
         marketCompare.fields = [];
         marketCompare.mcId = 0;
         marketCompare.price = 0;
@@ -218,6 +219,7 @@
                 casesAll: undefined,//所有案例
                 mcId: undefined,
                 judgeObjectId: undefined,
+                isLand: false,//是否为土地比较法
                 readonly: false//
             };
             defaluts = $.extend({}, defaluts, options);
@@ -355,7 +357,7 @@
         //初始测算结果
         marketCompare.initResult = function (defaluts) {
             var resultHtml = getTempHtml("resultTemp", defaluts.readonly);
-            var caseAnnualCoefficient,caseVolumeRatioCoefficient, caseSpecificPrice,
+            var caseAnnualCoefficient, caseVolumeRatioCoefficient, caseSpecificPrice,
                 caseCorrectionDifference, caseCaseDifference, caseWeight, caseWeightDescription;
             for (var j = 0; j < defaluts.cases.length; j++) {
                 caseAnnualCoefficient += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].annualCoefficient) + '</td>';
@@ -379,6 +381,9 @@
             resultHtml = resultHtml.replace(/{averagePrice}/g, toString(defaluts.evaluation.averagePrice)).replace(/{caseWeightDescription}/g, toString(caseWeightDescription));
             resultHtml = resultHtml.replace(/{deveDegree}/g, toString(defaluts.evaluation.deveDegree)).replace(/{evaluatePrice}/g, toString(defaluts.evaluation.evaluatePrice));
             $("#tb_md_mc_item_list").append(resultHtml);
+            if(marketCompare.isLand){
+                $("#tb_md_mc_item_list").find('.forLand').show();
+            }
         }
 
         //测算
@@ -877,18 +882,16 @@
 <%--测算结果模板--%>
 <script type="text/html" id="resultTemp">
     <tbody id="tbody_mc_result">
-    <c:if test="${projectInfo.projectCategoryName eq '土地'}">
-        <tr data-name="specificPrice">
-            <td>使用年期修正系数</td>
-            <td></td>
-            {caseAnnualCoefficient}
-        </tr>
-        <tr data-name="specificPrice">
-            <td>容积率修正系数</td>
-            <td></td>
-            {caseVolumeRatioCoefficient}
-        </tr>
-    </c:if>
+    <tr data-name="annualCoefficient" class="forLand" style="display: none;">
+        <td>使用年期修正系数</td>
+        <td></td>
+        {caseAnnualCoefficient}
+    </tr>
+    <tr data-name="volumeRatioCoefficient" class="forLand" style="display: none;">
+        <td>容积率修正系数</td>
+        <td></td>
+        {caseVolumeRatioCoefficient}
+    </tr>
     <tr>
         <td colspan="{colspan}"><span style="font-weight: bold;font-size: 16px;">测算结果 </span>
             <span class="red" id="resultMsg"></span>
@@ -925,20 +928,18 @@
         <td></td>
         <td></td>
     </tr>
-    <c:if test="${projectInfo.projectCategoryName eq '土地'}">
-        <tr data-name="deveDegree">
-            <td>开发程度</td>
-            <td data-item-id="{evaluationId}">{deveDegree}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr data-name="evaluatePrice">
-            <td>评估价格</td>
-            <td data-item-id="{evaluationId}">{evaluatePrice}</td>
-            <td></td>
-            <td></td>
-        </tr>
-    </c:if>
+    <tr data-name="deveDegree" class="forLand" style="display: none;">
+        <td>开发程度</td>
+        <td data-item-id="{evaluationId}">{deveDegree}</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr data-name="evaluatePrice" class="forLand" style="display: none;">
+        <td>评估价格</td>
+        <td data-item-id="{evaluationId}">{evaluatePrice}</td>
+        <td></td>
+        <td></td>
+    </tr>
     </tbody>
 </script>
 

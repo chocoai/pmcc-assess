@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.dto.output.basic.BasicUnitDecorateVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -84,6 +85,8 @@ public class MdMarketCompareFieldService extends BaseService {
     private GenerateEquityService generateEquityService;
     @Autowired
     private DataPropertyService dataPropertyService;
+    @Autowired
+    private DataAllocationCorrectionCoefficientVolumeRatioService volumeRatioService;
 
     /**
      * 获取市场比较法各个字段对应值
@@ -93,7 +96,7 @@ public class MdMarketCompareFieldService extends BaseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public String getCompareInfo(ProjectInfo projectInfo, SchemeJudgeObject judgeObject, Integer planDetailsId, List<DataSetUseField> setUseFieldList, Boolean isCase) {
+    public String getCompareInfo( SchemeJudgeObject judgeObject, Integer planDetailsId, List<DataSetUseField> setUseFieldList,boolean isLand, Boolean isCase) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
@@ -503,6 +506,13 @@ public class MdMarketCompareFieldService extends BaseService {
                     log.error(String.format("比较法字段获取数据异常：%s-%s", compareFieldEnum.getName(), e.getMessage()), e);
                 }
             }
+            //如果是土地比较法 则需额外处理 年期修正系数与容积率修正系数
+            if(isLand){
+                //在估价对象中获取法定年限与剩余年限，如果未获取到则无年期修正系数
+
+                BigDecimal volumetricRate = volumeRatioService.getAmendByVolumetricRate(examineEstate.getProvince(), examineEstate.getCity(), examineEstate.getDistrict(), landState.getPlotRatio());
+                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.VolumeRatio_Coefficient.getKey(), volumetricRate.toString(), isCase));
+            }
             return JSON.toJSONString(list);
         } catch (Exception e) {
             log.error("市场比较法生成比较数据异常", e);
@@ -565,6 +575,5 @@ public class MdMarketCompareFieldService extends BaseService {
         }
         return stringBuilder.toString();
     }
-
 
 }

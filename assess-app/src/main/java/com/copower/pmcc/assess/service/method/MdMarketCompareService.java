@@ -128,7 +128,7 @@ public class MdMarketCompareService {
     /**
      * 初始化查勘字段数据信息
      */
-    public MdMarketCompare initExplore(SchemeJudgeObject judgeObject) {
+    public MdMarketCompare initExplore(SchemeJudgeObject judgeObject,boolean isLand) {
         if (judgeObject == null) return null;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObject.getId());
         if (schemeJudgeObject == null) return null;
@@ -150,7 +150,7 @@ public class MdMarketCompareService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
-        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, judgeObject, planDetails.getId(), setUseFieldList, false));
+        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(judgeObject, planDetails.getId(), setUseFieldList,isLand, false));
         //获取成新率相关参数
         setResidueRatioParam(mdMarketCompareItem, planDetails.getId(), mdMarketCompare.getValueTimePoint());
         mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
@@ -207,7 +207,7 @@ public class MdMarketCompareService {
      *
      * @param areaDescJson
      */
-    public void selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId) throws Exception {
+    public void selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId,boolean isLand) throws Exception {
         //清除原案例信息
         MdMarketCompareItem where = new MdMarketCompareItem();
         where.setMcId(mcId);
@@ -238,7 +238,7 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setMustAdjustPrice(false);
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, judgeObject, projectPlanDetails.getId(), setUseFieldList, true));
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(judgeObject, projectPlanDetails.getId(), setUseFieldList,isLand, true));
                 //获取成新率相关参数
                 setResidueRatioParam(mdMarketCompareItem, mdCompareCaseVo.getPlanDetailsId(), marketCompare.getValueTimePoint());
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);

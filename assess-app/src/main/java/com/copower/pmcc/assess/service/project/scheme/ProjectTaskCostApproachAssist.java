@@ -132,6 +132,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         } catch (Exception e) {
             logger.error(String.format("没有获取到数据 ==> %s", e.getMessage()));
         }
+        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         List<DataLandApproximationMethodSetting> dataLandApproximationMethodSettingList = Lists.newArrayList();
         List<DataLandApproximationMethodSettingVo> vosList = Lists.newArrayList();
         dataLandApproximationMethodSettingList = dataLandApproximationMethodSettingDao.getDataLandApproximationMethodSettingList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict());
@@ -149,13 +150,13 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         BigDecimal evaluationArea = schemeJudgeObject.getEvaluationArea();
         modelAndView.addObject("evaluationArea", evaluationArea);
         //容积率
-        String volumetricRate = basicEstate.getVolumetricRate();
-        modelAndView.addObject("volumetricRate", volumetricRate);
+        String plotRatio = landStateByEstateId.getPlotRatio();
+        modelAndView.addObject("volumetricRate", plotRatio);
         //根据容积率找到配置中对应的容积率修正
-        BigDecimal volumeFractionAmend = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), volumetricRate);
+        BigDecimal volumeFractionAmend = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), plotRatio);
         modelAndView.addObject("volumeFractionAmend", volumeFractionAmend == null ? "无" : volumeFractionAmend);
         //代征地比例
-        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+
         DataLandLevelDetail dataLandLevelDetailById = dataLandLevelDetailDao.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
         modelAndView.addObject("confiscateLandRatio", dataLandLevelDetailById.getLandAcquisitionProportion());
         //宗地个别因素修正(待确认)
