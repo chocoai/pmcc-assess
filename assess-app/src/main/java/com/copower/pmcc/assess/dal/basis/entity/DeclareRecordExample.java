@@ -636,6 +636,66 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andHasCertIsNull() {
+            addCriterion("has_cert is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertIsNotNull() {
+            addCriterion("has_cert is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertEqualTo(Boolean value) {
+            addCriterion("has_cert =", value, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertNotEqualTo(Boolean value) {
+            addCriterion("has_cert <>", value, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertGreaterThan(Boolean value) {
+            addCriterion("has_cert >", value, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("has_cert >=", value, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertLessThan(Boolean value) {
+            addCriterion("has_cert <", value, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertLessThanOrEqualTo(Boolean value) {
+            addCriterion("has_cert <=", value, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertIn(List<Boolean> values) {
+            addCriterion("has_cert in", values, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertNotIn(List<Boolean> values) {
+            addCriterion("has_cert not in", values, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertBetween(Boolean value1, Boolean value2) {
+            addCriterion("has_cert between", value1, value2, "hasCert");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCertNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("has_cert not between", value1, value2, "hasCert");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;

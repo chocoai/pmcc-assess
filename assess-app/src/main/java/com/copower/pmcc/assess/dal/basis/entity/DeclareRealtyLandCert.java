@@ -72,6 +72,12 @@ public class DeclareRealtyLandCert {
 
     private Date registrationDate;
 
+    private String approvalName;
+
+    private Date approvalTime;
+
+    private String approvalMechanism;
+
     private String declareType;
 
     private String enable;
@@ -354,6 +360,30 @@ public class DeclareRealtyLandCert {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getApprovalName() {
+        return approvalName;
+    }
+
+    public void setApprovalName(String approvalName) {
+        this.approvalName = approvalName == null ? null : approvalName.trim();
+    }
+
+    public Date getApprovalTime() {
+        return approvalTime;
+    }
+
+    public void setApprovalTime(Date approvalTime) {
+        this.approvalTime = approvalTime;
+    }
+
+    public String getApprovalMechanism() {
+        return approvalMechanism;
+    }
+
+    public void setApprovalMechanism(String approvalMechanism) {
+        this.approvalMechanism = approvalMechanism == null ? null : approvalMechanism.trim();
     }
 
     public String getDeclareType() {
