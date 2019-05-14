@@ -278,6 +278,8 @@
         </div>
     </div>
 </div>
+
+<%@include file="/views/base/dataKeyValue.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
@@ -451,6 +453,7 @@
                 str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" ><i class="fa fa-edit">查看子项</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editSubDataDic(' + row.id + ');" ><i class="fa fa-edit">编辑</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:addKeyValue(' + row.id + ');" ><i class="fa fa-edit">keyValue</i></a>';
                 str += '</div>';
                 return str;
             }
@@ -555,6 +558,11 @@
             getDataDicLevelRecursion(keyValueDto.keyValueDto);
             strLevelHtml += '<a href="javascript:setSubDataDic(' + keyValueDto.key + ')">' + keyValueDto.value + '</a>' + ">";
         }
+    }
+
+
+    function addKeyValue(id) {
+        keyValueManage.editDataDic(id);
     }
 </script>
 

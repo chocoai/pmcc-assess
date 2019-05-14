@@ -247,7 +247,7 @@
 
     //获取一亩的价
     function getBhouPrice(num, v) {
-        return getSomePlaces(num * 666.67 / 10000, v);
+        return getSomePlaces(num * AssessCommon.BHOU / 10000, v);
     }
 
     //v取几位小数

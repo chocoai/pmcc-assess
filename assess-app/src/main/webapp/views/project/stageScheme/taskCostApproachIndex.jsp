@@ -337,10 +337,10 @@
         var computationalBase = parseFloat($("#computationalBase").text());
         var tempBhouPrice = imprevisionCost * computationalBase;
         $("#tempBhouPrice").text(getSomePlaces(tempBhouPrice, 2));
-        $("#tempUnitPrice").text(getSomePlaces(tempBhouPrice / 666.67, 2));
+        $("#tempUnitPrice").text(getSomePlaces(tempBhouPrice / AssessCommon.BHOU, 2));
         //小计
         $("#subtotalBhou").text(getSomePlaces(computationalBase + tempBhouPrice, 2));
-        $("#subtotalUnit").text(getSomePlaces((computationalBase + tempBhouPrice) / 666.67, 2));
+        $("#subtotalUnit").text(getSomePlaces((computationalBase + tempBhouPrice) / AssessCommon.BHOU, 2));
 
         var confiscateLandRatio = parseFloat(AssessCommon.percentToPoint($("#confiscateLandRatio").text()));
         var subtotalUnit = $("#subtotalUnit").text();
@@ -350,7 +350,7 @@
             //土地取得费亩价
             var landAcquisitionUnit = (subtotalUnit) / (1 - confiscateLandRatio);
             $("#landAcquisitionUnit").text(getSomePlaces(landAcquisitionUnit, 2));
-            $("#landAcquisitionBhou").text(getSomePlaces(landAcquisitionUnit *666.67, 2));
+            $("#landAcquisitionBhou").text(getSomePlaces(landAcquisitionUnit *AssessCommon.BHOU, 2));
         }
 
         //利润基数
@@ -373,7 +373,7 @@
         }
         if (circulationExpense && flatExpense) {
             $("#landProductionUnit").text(getSomePlaces(circulationExpense + flatExpense, 2));
-            $("#landProductionBhou").text(getSomePlaces((circulationExpense + flatExpense) * 666.67, 2));
+            $("#landProductionBhou").text(getSomePlaces((circulationExpense + flatExpense) * AssessCommon.BHOU, 2));
         }
 
         //利润基数
@@ -400,7 +400,7 @@
             var temp2 = Math.pow((1 + calculatedInterest), machineCycle / 2) - 1;
             var landProductionInterestUnit = landAcquisitionUnit * temp + landProductionUnit * temp2;
             $("#landProductionInterestUnit").text(getSomePlaces(landProductionInterestUnit, 2));
-            $("#landProductionInterestBhou").text(getSomePlaces(landProductionInterestUnit * 666.67, 2));
+            $("#landProductionInterestBhou").text(getSomePlaces(landProductionInterestUnit * AssessCommon.BHOU, 2));
         }
         //土地开发利润
         getLandProductionProfit();
@@ -431,7 +431,7 @@
         if (profitBase && profitMargin) {
             var landProductionProfitUnit = profitBase * profitMargin;
             $("#landProductionProfitUnit").text(getSomePlaces(landProductionProfitUnit, 2));
-            $("#landProductionProfitBhou").text(getSomePlaces(landProductionProfitUnit * 666.67, 2));
+            $("#landProductionProfitBhou").text(getSomePlaces(landProductionProfitUnit * AssessCommon.BHOU, 2));
             //土地取得费H6
             var landAcquisitionUnit = parseFloat($("#landAcquisitionUnit").text());
             //土地开发费H19
@@ -441,7 +441,7 @@
             //土地成本价格
             var landCostPriceUnit = landAcquisitionUnit + landProductionUnit + landProductionInterestUnit + landProductionProfitUnit;
             $("#landCostPriceUnit").text(getSomePlaces(landCostPriceUnit, 2));
-            $("#landCostPriceBhou").text(getSomePlaces(landCostPriceUnit * 666.67, 2));
+            $("#landCostPriceBhou").text(getSomePlaces(landCostPriceUnit * AssessCommon.BHOU, 2));
         }
     }
 
@@ -503,7 +503,7 @@
                 //价格修正与确定
                 var priceCorrectionUnit = yearFixed * landUseUnit * (1 + parcelIndividualFactor);
                 $("#priceCorrectionUnit").text(getSomePlaces(priceCorrectionUnit, 2));
-                $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionUnit * 666.67/10000, 2));
+                $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionUnit * AssessCommon.BHOU/10000, 2));
             }
             //E31
             var volumeFractionAmend = parseFloat("${volumeFractionAmend}");
@@ -511,7 +511,7 @@
                 //单价H32
                 var unitPrice = yearFixed*landUseUnit*parcelIndividualFactor*volumeFractionAmend;
                 $("#unitPrice").text(getSomePlaces(unitPrice, 2));
-                $("#bhouPrice").text(getSomePlaces(unitPrice*666.67, 2));
+                $("#bhouPrice").text(getSomePlaces(unitPrice*AssessCommon.BHOU, 2));
                 //容积率H33
                 var volumetricRate = parseFloat("${volumetricRate}");
                 //估价对象楼面地价
