@@ -1641,10 +1641,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">不动产单元号(所有) </label>
+                <label class="col-sm-1 control-label">不动产单元号</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="不动产单元号(所有)"  name="realEstateUnitNumber" class="form-control">
+                           placeholder="不动产单元号"  name="realEstateUnitNumber" class="form-control">
                 </div>
             </div>
         </div>
@@ -1792,11 +1792,11 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">证载面积<span
+                <label class="col-sm-1 control-label">证载面积(建筑)<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="证载面积(数字)" name="evidenceArea" class="form-control"
+                           placeholder="证载面积(建筑)(数字)" name="evidenceArea" class="form-control"
                            data-rule-maxlength="100" required
                            data-rule-number='true'>
                 </div>
@@ -1813,12 +1813,11 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">总层数</label>
+                <label class="col-sm-1 control-label">分摊面积</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="总层数(数字)" name="floorCount" class="form-control"
-                           data-rule-maxlength="100"
-                           data-rule-number='true'>
+                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
             <div class="x-valid">
@@ -1842,6 +1841,23 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="附记其它" name="otherNote" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">总层数</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="总层数(数字)" name="floorCount" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">取得价格</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="取得价格" name="acquisitionPrice" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
                 </div>
             </div>
         </div>
@@ -1915,22 +1931,8 @@
         </div>
 
         <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">分摊面积</label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">取得价格</label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="取得价格" name="acquisitionPrice" class="form-control"
-                           data-rule-maxlength="100"
-                           data-rule-number='true'>
-                </div>
-            </div>
+
+
         </div>
 
         <div class="form-group">
@@ -1984,11 +1986,11 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">不动产权证号<span
+                <label class="col-sm-1 control-label">批文文号<span
                         class="symbol required"></span></label>
                 <div class="col-sm-11">
                     <input type="text"
-                           placeholder="不动产权证号" required name="certName" class="form-control">
+                           placeholder="批文文号" required name="certName" class="form-control">
                 </div>
             </div>
         </div>
@@ -2008,10 +2010,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">不动产单元号(所有) </label>
+                <label class="col-sm-1 control-label">不动产单元号</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="不动产单元号(所有)"  name="realEstateUnitNumber" class="form-control">
+                           placeholder="不动产单元号"  name="realEstateUnitNumber" class="form-control">
                 </div>
             </div>
         </div>
@@ -2180,14 +2182,6 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">分摊面积</label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'>
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">取得价格</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="取得价格" name="acquisitionPrice" class="form-control"
@@ -2224,28 +2218,6 @@
                            class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">批文文号 </label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="批文文号"  name="approvalReferenceNumber" class="form-control">
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    批文附件
-                </label>
-                <div class="col-sm-5">
-                    <input id="declareRealtyApprovalFile"
-                           name="declareRealtyApprovalFile" placeholder="批文附件" class="form-control"
-                           type="file">
-                    <div id="_declareRealtyApprovalFile"></div>
-                </div>
-            </div>
-
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -2315,12 +2287,11 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">总层数</label>
+                <label class="col-sm-1 control-label">分摊面积</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="总层数(数字)" name="floorCount" class="form-control"
-                           data-rule-maxlength="100"
-                           data-rule-number='true'>
+                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
             <div class="x-valid">
@@ -2344,6 +2315,15 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="附记其它" name="otherNote" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">总层数</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="总层数(数字)" name="floorCount" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
                 </div>
             </div>
         </div>
@@ -2583,10 +2563,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">总层数</label>
+                <label class="col-sm-1 control-label">公摊面积</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="总层数(数字)" name="floorCount" class="form-control" data-rule-maxlength="100"
+                           placeholder="公摊面积(数字)" name="publicArea" class="form-control" data-rule-maxlength="100"
                            data-rule-number='true'>
                 </div>
             </div>
@@ -2615,10 +2595,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">公摊面积</label>
+                <label class="col-sm-1 control-label">总层数</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="公摊面积(数字)" name="publicArea" class="form-control" data-rule-maxlength="100"
+                           placeholder="总层数(数字)" name="floorCount" class="form-control" data-rule-maxlength="100"
                            data-rule-number='true'>
                 </div>
             </div>
@@ -2627,8 +2607,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地取得方式</label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="土地取得方式" name="landAcquisition" class="form-control">
+                    <select required="required" name="landAcquisition"
+                            class="form-control search-select select2">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">
@@ -2994,20 +2975,20 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    所在地<span class="symbol required"></span>
+                    所在地
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" name="location" required="required" class="form-control"
+                    <input type="text" name="location"  class="form-control"
                            onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                            placeholder="所在地">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    类型<span class="symbol required"></span>
+                    类型
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="landRightType"
+                    <select  name="landRightType"
                             onchange="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                             class="form-control search-select select2 landRightType">
                     </select>
@@ -3015,10 +2996,10 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    年份<span class="symbol required"></span>
+                    年份
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" required="required" data-rule-maxlength="100"
+                    <input type="text"  data-rule-maxlength="100"
                            onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                            data-rule-number='true' name="year" class="form-control"
                            placeholder="年份(数字如:2018)">
@@ -3029,10 +3010,10 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    编号<span class="symbol required"></span>
+                    编号
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" required="required" name="number" class="form-control"
+                    <input type="text"  name="number" class="form-control"
                            onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                            placeholder="编号">
                 </div>
@@ -3138,7 +3119,32 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
 
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">批文名称 </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="批文名称"  name="approvalName" class="form-control">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">批文机关 </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="批文机关"  name="approvalMechanism" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">批文时间 </label>
+                <div class="col-sm-3">
+                    <input placeholder="批文时间"
+                           name="approvalTime" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
+                </div>
+            </div>
+        </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 

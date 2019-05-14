@@ -395,88 +395,54 @@
                         <div class="entity">
 
                         </div>
+                        <c:if test="${projectInfo.projectCategoryId == houseLand}">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        影响评估的其他事项
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <div class="btn btn-xs btn-success"
+                                             onclick="appendHTML('otherProjectName','otherProjectItem','otherProject',this)">
+                                            <i class="fa fa-plus"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="otherProject">
+
+                            </div>
+                        </c:if>
                     </form>
                 </div>
             </div>
-            <div class="x_panel">
-                <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>转让限制</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    转让限制
-                                </label>
-                                <div class="col-sm-11">
+            <c:if test="${projectInfo.projectCategoryId != houseLand}">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h3>转让限制</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        转让限制
+                                    </label>
+                                    <div class="col-sm-11">
                                     <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
                                               class="form-control"
                                               value="${surveyAssetInventory.transferLimit}"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <%--<div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>他项权利</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success" onclick="addData()"
-                                data-toggle="modal" href="#divBox"> 新增
-                        </button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">导入数据
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="javascript://"
-                                   onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>
-                            </li>
-                            <li><a href="javascript://;"
-                                   onclick="$('#ajaxFileUpload').val('').trigger('click')">导入数据</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <table class="table table-bordered" id="tb_List">
-                        <!-- cerare document add ajax data-->
-                    </table>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">特殊情况</label>
-                                <div class="col-sm-11">
-                                    <textarea placeholder="特殊情况" class="form-control"
-                                              id="specialCase"
-                                              name="specialCase">${surveyAssetInventory.specialCase}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">特殊情况附件</label>
-                                <div class="col-sm-3">
-                                    <input id="specialCaseFile" type="file" multiple="false">
-                                    <div id="_specialCaseFile"></div>
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </div>--%>
+            </c:if>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -507,172 +473,7 @@
 </div>
 </body>
 
-<%--<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">他项权利</h3>
-            </div>
-            <div class="modal-body">
-                <form id="frm_inventory_right" class="form-horizontal">
-                    <input type="hidden" name="id" value="0">
 
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                类型<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <select class="form-control" required id="type" name="type"
-                                        onchange="typeChange(this);">
-                                    <option value="">-请选择-</option>
-                                    <c:forEach var="items" items="${inventoryRightTypeList}">
-                                        <option value="${items.id}">${items.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                类别<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <select class="form-control" required id="category" name="category">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                他权证编号
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="他权证编号" id="number" name="number" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">登记日期</label>
-                            <div class="col-sm-4">
-                                <input placeholder="登记日期" id="registerDate" name="registerDate"
-                                       data-date-format="yyyy-mm-dd"
-                                       class="form-control date-picker dbdate" readonly="readonly">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                义务人
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="义务人" id="obligor" name="obligor" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                权利人
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="权利人" id="obligee" name="obligee" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                登记金额
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="登记金额"
-                                       id="registerAmount" name="registerAmount" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                行权金额
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="行权金额"
-                                       id="actualAmount" name="actualAmount" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                登记面积
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="登记面积"
-                                       id="registerArea" name="registerArea" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                他权级次
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="他权级次"
-                                       id="rightRank" name="rightRank" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">开始日期</label>
-                            <div class="col-sm-4">
-                                <input placeholder="开始日期" id="beginDate"
-                                       name="beginDate" data-date-format="yyyy-mm-dd"
-                                       class="form-control date-picker dbdate" readonly="readonly">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">结束日期</label>
-                            <div class="col-sm-4">
-                                <input placeholder="结束日期" id="endDate"
-                                       name="endDate" data-date-format="yyyy-mm-dd"
-                                       class="form-control date-picker dbdate" readonly="readonly">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">备注</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" name="remark"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                附件
-                            </label>
-                            <div class="col-sm-10">
-                                <input id="inventoryRightFile" type="file" multiple="false">
-                                <div id="_inventoryRightFile"></div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-                <button type="button" class="btn btn-primary" onclick="saveData()">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>--%>
-<%--<input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="importRightData();">--%>
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/project/stageSurvey/certificate.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
@@ -753,6 +554,7 @@
             }
             writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
             writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
+            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', ${surveyAssetInventory.otherProject});
             if ("${surveyAssetInventory.paymentStatus}") {
                 $("#paymentStatus").val("${surveyAssetInventory.paymentStatus}");
             }
@@ -898,6 +700,7 @@
 
         data.surveyAssetInventory.zoneDamage = [];
         data.surveyAssetInventory.entityDamage = [];
+        data.surveyAssetInventory.otherProject = [];
         $("#damageSurvey").find('.form-group').each(function () {
             var zoneBit = {};
             var zoneProjectName = $(this).find('[name^=zoneProjectName]').val();
@@ -915,6 +718,15 @@
                 entity.entityProjectName = entityProjectName;
                 entity.entityProjectItem = entityProjectItem;
                 data.surveyAssetInventory.entityDamage.push(entity);
+            }
+
+            var otherProject = {};
+            var otherProjectName = $(this).find('[name^=otherProjectName]').val();
+            var otherProjectItem = $(this).find('[name^=otherProjectItem]').val();
+            if (otherProjectName && otherProjectItem) {
+                otherProject.otherProjectName = otherProjectName;
+                otherProject.otherProjectItem = otherProjectItem;
+                data.surveyAssetInventory.otherProject.push(otherProject);
             }
         });
 
@@ -1004,7 +816,7 @@
             url: "${pageContext.request.contextPath}/declareRecord/getCertificateId",
             type: "get",
             dataType: "json",
-            data: {declareRecordId:"${projectPlanDetails.declareRecordId}"},
+            data: {declareRecordId: "${projectPlanDetails.declareRecordId}"},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
@@ -1092,9 +904,9 @@
         html += "<label class='col-sm-1 control-label'>" + "类型" + "</label>";
         html += "<div class='col-sm-3'>";
         html += "<select  class='form-control' name='remark " + num + "'>";
-        html += "<option value='应缴' selected>"+"应缴"+"</option>";
-        html += "<option value='未缴'>"+"未缴"+"</option>";
-        html += "<option value='欠缴'>"+"欠缴"+"</option>";
+        html += "<option value='应缴' selected>" + "应缴" + "</option>";
+        html += "<option value='未缴'>" + "未缴" + "</option>";
+        html += "<option value='欠缴'>" + "欠缴" + "</option>";
         html += "</select>";
         html += "</div>";
 
@@ -1126,15 +938,15 @@
 
             html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
             html += "<div class='col-sm-3'>";
-            html += "<input type='text' required class='form-control' name='projectName "+ i + "' value='" + n["projectName"] + "'>";
+            html += "<input type='text' required class='form-control' name='projectName " + i + "' value='" + n["projectName"] + "'>";
             html += "</div>";
 
             html += "<label class='col-sm-1 control-label'>" + "类型" + "</label>";
             html += "<div class='col-sm-3'>";
             html += "<select id='select" + i + "' required class='form-control' name='remark" + i + "' >";
-            html += "<option value='应缴'>"+"应缴"+"</option>";
-            html += "<option value='未缴'>"+"未缴"+"</option>";
-            html += "<option value='欠缴'>"+"欠缴"+"</option>";
+            html += "<option value='应缴'>" + "应缴" + "</option>";
+            html += "<option value='未缴'>" + "未缴" + "</option>";
+            html += "<option value='欠缴'>" + "欠缴" + "</option>";
             html += "</select>";
             html += "</div>";
 
@@ -1153,8 +965,8 @@
             html += "</div>";
             html += "</div>";
             $(".paymentItem").append(html);
-            var selectId = "select"+i;
-           $("#"+selectId).val(n["remark"]);
+            var selectId = "select" + i;
+            $("#" + selectId).val(n["remark"]);
         })
     }
 

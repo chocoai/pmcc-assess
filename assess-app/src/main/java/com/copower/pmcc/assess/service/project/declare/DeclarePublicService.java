@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -28,8 +26,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -37,8 +33,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DeclarePublicService {
-    @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
@@ -71,7 +65,7 @@ public class DeclarePublicService {
         if (StringUtils.isEmpty(text)) {
             return stringMap;
         }
-        String streetName = org.apache.commons.lang3.StringUtils.substringBetween(text,"",NUMBER);
+        String streetName = org.apache.commons.lang3.StringUtils.substringBetween(text, "", NUMBER);
         stringMap.put(STREET, streetName);
         final String value = StringUtils.removeStart(text, streetName);
         List<String> stringList = generateCommonMethod.convertNumberHelp(value);
@@ -117,8 +111,6 @@ public class DeclarePublicService {
      * @throws Exception
      */
     public boolean realEstateCert(DeclareRealtyRealEstateCert oo, StringBuilder builder, Row row, int i) throws Exception {
-        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_HOUSE_CATEGORY);
-
         //共有情况
         List<BaseDataDic> publicSituations = baseDataDicService.getCacheDataDicList("project.declare.common.situation");
         //房屋用途
@@ -131,30 +123,21 @@ public class DeclarePublicService {
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type");
         //房屋性质
         List<BaseDataDic> natures = baseDataDicService.getCacheDataDicList("project.declare.room.type");
-
-        //省
-        String provinceName = PoiUtils.getCellValue(row.getCell(0));
-        //市
-        String cityName = PoiUtils.getCellValue(row.getCell(1));
-        //县或者区
-        String districtName = PoiUtils.getCellValue(row.getCell(2));
-        oo.setProvince(provinceName);
-        oo.setCity(cityName);
-        oo.setDistrict(districtName);
         Map<String, String> map = new HashMap<>();
-        //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
+        //验证(区域) 省市区
+        if (erpAreaService.checkArea(PoiUtils.getCellValue(row.getCell(0)), PoiUtils.getCellValue(row.getCell(1)), PoiUtils.getCellValue(row.getCell(2)), builder, map)) {
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.PROVINCE))) {
+                oo.setProvince(map.get(erpAreaService.PROVINCE));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.CITY))) {
+                oo.setCity(map.get(erpAreaService.CITY));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.DISTRICT))) {
+                oo.setDistrict(map.get(erpAreaService.DISTRICT));
+            }
+        } else {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
-            oo.setProvince(map.get("province"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
-            oo.setCity(map.get("city"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
-            oo.setDistrict(map.get("district"));
         }
         //权证号
         String cerName = PoiUtils.getCellValue(row.getCell(3));
@@ -190,26 +173,24 @@ public class DeclarePublicService {
         //房屋坐落
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
             oo.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
-        }
-        if (StringUtils.isNotBlank(oo.getBeLocated())) {
             Map<String, String> locatedMap = beLocatedSplicing(oo.getBeLocated());
             if (!locatedMap.isEmpty()) {
-                if (locatedMap.containsKey(STREET)){
+                if (locatedMap.containsKey(STREET)) {
                     oo.setStreetNumber(locatedMap.get(STREET));
                 }
-                if (locatedMap.containsKey(UNIT)){
+                if (locatedMap.containsKey(UNIT)) {
                     oo.setUnit(locatedMap.get(UNIT));
                 }
-                if (locatedMap.containsKey(FLOOR)){
+                if (locatedMap.containsKey(FLOOR)) {
                     oo.setFloor(locatedMap.get(FLOOR));
                 }
-                if (locatedMap.containsKey(ATTACHED)){
+                if (locatedMap.containsKey(ATTACHED)) {
                     oo.setAttachedNumber(locatedMap.get(ATTACHED));
                 }
-                if (locatedMap.containsKey(BUILDING)){
+                if (locatedMap.containsKey(BUILDING)) {
                     oo.setBuildingNumber(locatedMap.get(BUILDING));
                 }
-                if (locatedMap.containsKey(RoomNumber)){
+                if (locatedMap.containsKey(RoomNumber)) {
                     oo.setRoomNumber(locatedMap.get(RoomNumber));
                 }
             }
@@ -243,7 +224,7 @@ public class DeclarePublicService {
             } else {
                 nature = String.valueOf(typeDic.getId());
             }
-            if (NumberUtils.isNumber(nature)){
+            if (NumberUtils.isNumber(nature)) {
                 //房屋性质
                 oo.setNature(Integer.valueOf(nature));
             }
@@ -349,7 +330,8 @@ public class DeclarePublicService {
         }
         //批文文号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(28)))) {
-            oo.setApprovalReferenceNumber(PoiUtils.getCellValue(row.getCell(28)));
+//            oo.setApprovalReferenceNumber(PoiUtils.getCellValue(row.getCell(28)));
+            oo.setCertName(PoiUtils.getCellValue(row.getCell(28)));
         }
         //批文时间
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(29)))) {
@@ -377,76 +359,62 @@ public class DeclarePublicService {
      * @throws Exception
      */
     public boolean land(DeclareRealtyLandCert declareRealtyLandCert, StringBuilder builder, Row row, int i) throws Exception {
-        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_LAND_PROPERTY_CERTIFICATE_TYPE_LAND_CATEGORY);
-
         //土地用途
         List<BaseDataDic> purposes = baseDataDicService.getCacheDataDicList("estate.land_use");
         //使用权类型
         List<BaseDataDic> useRightTypes = baseDataDicService.getCacheDataDicList("project.declare.use.right.type");
-        //类型
+        //土地证类型
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type");
         //共有情况
         List<BaseDataDic> publicSituations = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_COMMON_SITUATION);
-
-        //省
-        String provinceName = PoiUtils.getCellValue(row.getCell(0));
-        //市
-        String cityName = PoiUtils.getCellValue(row.getCell(1));
-        //县或者区
-        String districtName = PoiUtils.getCellValue(row.getCell(2));
-        declareRealtyLandCert.setProvince(provinceName);
-        declareRealtyLandCert.setCity(cityName);
-        declareRealtyLandCert.setDistrict(districtName);
         Map<String, String> map = new HashMap<>();
-        //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
+        //验证(区域) 省市区(县)
+        if (erpAreaService.checkArea(PoiUtils.getCellValue(row.getCell(0)), PoiUtils.getCellValue(row.getCell(1)), PoiUtils.getCellValue(row.getCell(2)), builder, map)) {
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.PROVINCE))) {
+                declareRealtyLandCert.setProvince(map.get(erpAreaService.PROVINCE));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.CITY))) {
+                declareRealtyLandCert.setCity(map.get(erpAreaService.CITY));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.DISTRICT))) {
+                declareRealtyLandCert.setDistrict(map.get(erpAreaService.DISTRICT));
+            }
+        } else {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
         }
-        //验证基础字典中数据
-
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
-            declareRealtyLandCert.setProvince(map.get("province"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
-            declareRealtyLandCert.setCity(map.get("city"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
-            declareRealtyLandCert.setDistrict(map.get("district"));
-        }
         //土地权证号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(3)))) {
-            String landCertName = PoiUtils.getCellValue(row.getCell(3));
-            declareRealtyLandCert.setLandCertName(landCertName);
+        String landCertName = PoiUtils.getCellValue(row.getCell(3));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(landCertName)) {
+            final String frequency = "第";
             String typeName = "";
+            declareRealtyLandCert.setLandCertName(landCertName);
+            List<String> stringList = generateCommonMethod.convertNumberHelp(declareRealtyLandCert.getLandCertName());
             //设置类型
             for (BaseDataDic type : types) {
-                if (landCertName.contains(type.getName())) {
+                if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), type.getName())) {
+                    declareRealtyLandCert.setLandRightType(type.getId());
                     typeName = type.getName();
-                    BaseDataDic dataDicByName = baseDataDicService.getDataDicByName(types, type.getName());
-                    declareRealtyLandCert.setLandRightType(dataDicByName.getId());
                 }
             }
-            //编号
-            String reg = "(\\d+)(?=号)";
-            Pattern p = Pattern.compile(reg);
-            Matcher m = p.matcher(landCertName);
-            while (m.find()) {
-                declareRealtyLandCert.setNumber(m.group(m.groupCount()));
-            }
-            //年份
-            reg = "\\d{4}(?=\\）)|\\d{4}(?=第)|\\d{4}(?=\\))";//匹配第前面的数字
-            p = Pattern.compile(reg);
-            m = p.matcher(landCertName);
-            while (m.find()) {
-                declareRealtyLandCert.setYear(m.group());
-            }
-            //所在地
-            reg = "(\\S+)(?=" + typeName + ")";//匹配类型前的内容
-            p = Pattern.compile(reg);
-            m = p.matcher(landCertName);
-            while (m.find()) {
-                declareRealtyLandCert.setLocation(m.group());
+            if (CollectionUtils.isNotEmpty(stringList)) {
+                stringList.stream().forEachOrdered(s -> {
+                    if (NumberUtils.isNumber(s)) {
+                        if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), String.format("%d%s", Integer.parseInt(s), frequency))) {
+                            declareRealtyLandCert.setYear(s);
+                        }
+                        if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), String.format("%d%s", Integer.parseInt(s), NUMBER))) {
+                            declareRealtyLandCert.setNumber(s);
+                        }
+                    }
+                });
+                String str = StringUtils.join(stringList, "");
+                str = StringUtils.remove(str, typeName);
+                str = StringUtils.remove(str, declareRealtyLandCert.getNumber());
+                str = StringUtils.remove(str, declareRealtyLandCert.getYear());
+                str = StringUtils.remove(str, NUMBER);
+                str = StringUtils.remove(str, frequency);
+                declareRealtyLandCert.setLocation(str);
             }
         } else {
             builder.append(String.format("\n第%s行异常：土地权证号必须填写", i));
@@ -456,9 +424,6 @@ public class DeclarePublicService {
         //土地使用权人
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(4)))) {
             declareRealtyLandCert.setOwnership(PoiUtils.getCellValue(row.getCell(4)));
-        } else {
-            builder.append(String.format("\n第%s行异常：土地使用权人必须填写", i));
-            return false;
         }
 
         String publicSituation = PoiUtils.getCellValue(row.getCell(5));
@@ -481,48 +446,25 @@ public class DeclarePublicService {
         //房屋坐落
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
             declareRealtyLandCert.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
-            String located = PoiUtils.getCellValue(row.getCell(7));
-            if (StringUtils.isNotBlank(located)) {
-                String reg = "^.*?号";//街道号
-                Pattern p = Pattern.compile(reg);
-                Matcher m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyLandCert.setStreetNumber(m.group());
+            Map<String, String> locatedMap = beLocatedSplicing(declareRealtyLandCert.getBeLocated());
+            if (!locatedMap.isEmpty()) {
+                if (locatedMap.containsKey(STREET)) {
+                    declareRealtyLandCert.setStreetNumber(locatedMap.get(STREET));
                 }
-
-                reg = "(?<=附)(\\d+)";//匹配附后面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyLandCert.setAttachedNumber(m.group());
+                if (locatedMap.containsKey(UNIT)) {
+                    declareRealtyLandCert.setUnit(locatedMap.get(UNIT));
                 }
-
-                reg = "(\\d+)(?=栋)";//匹配栋前面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyLandCert.setBuildingNumber(m.group());
+                if (locatedMap.containsKey(FLOOR)) {
+                    declareRealtyLandCert.setFloor(locatedMap.get(FLOOR));
                 }
-
-                reg = "(\\d+)(?=单元)";//匹配单元前面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyLandCert.setUnit(m.group());
+                if (locatedMap.containsKey(ATTACHED)) {
+                    declareRealtyLandCert.setAttachedNumber(locatedMap.get(ATTACHED));
                 }
-
-                reg = "(\\d+)(?=层)";//匹配层前面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyLandCert.setFloor(m.group());
+                if (locatedMap.containsKey(BUILDING)) {
+                    declareRealtyLandCert.setBuildingNumber(locatedMap.get(BUILDING));
                 }
-
-                reg = "(\\d+)(?=号)";//匹配号前面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyLandCert.setRoomNumber(m.group(m.groupCount()));
+                if (locatedMap.containsKey(RoomNumber)) {
+                    declareRealtyLandCert.setRoomNumber(locatedMap.get(RoomNumber));
                 }
             }
         } else {
@@ -605,7 +547,6 @@ public class DeclarePublicService {
      * @param row
      */
     public boolean house(DeclareRealtyHouseCert declareRealtyHouseCert, StringBuilder builder, Row row, int i) throws Exception {
-        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_HOUSE_CATEGORY);
         //规划用途
         List<BaseDataDic> planningUses = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_LOAD_UTILITY);
         //房产证类型
@@ -614,57 +555,33 @@ public class DeclarePublicService {
         List<BaseDataDic> publicSituations = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_COMMON_SITUATION);
         //房屋性质
         List<BaseDataDic> natures = baseDataDicService.getCacheDataDicList("project.declare.room.type");
-
-        //省
-        String provinceName = PoiUtils.getCellValue(row.getCell(0));
-        //市
-        String cityName = PoiUtils.getCellValue(row.getCell(1));
-        //区 县
-        String districtName = PoiUtils.getCellValue(row.getCell(2));
-        declareRealtyHouseCert.setProvince(provinceName);
-        declareRealtyHouseCert.setCity(cityName);
-        declareRealtyHouseCert.setDistrict(districtName);
         Map<String, String> map = new HashMap<>();
         //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
+        if (erpAreaService.checkArea(PoiUtils.getCellValue(row.getCell(0)), PoiUtils.getCellValue(row.getCell(1)), PoiUtils.getCellValue(row.getCell(2)), builder, map)) {
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.PROVINCE))) {
+                declareRealtyHouseCert.setProvince(map.get(erpAreaService.PROVINCE));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.CITY))) {
+                declareRealtyHouseCert.setCity(map.get(erpAreaService.CITY));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.DISTRICT))) {
+                declareRealtyHouseCert.setDistrict(map.get(erpAreaService.DISTRICT));
+            }
+        } else {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
-            declareRealtyHouseCert.setProvince(map.get("province"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
-            declareRealtyHouseCert.setCity(map.get("city"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
-            declareRealtyHouseCert.setDistrict(map.get("district"));
         }
         //房产权证号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(3)))) {
             String certName = PoiUtils.getCellValue(row.getCell(3));
             declareRealtyHouseCert.setCertName(certName);
-            String typeName = "";
-            //设置类型
+            //编号
+            declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(declareRealtyHouseCert.getCertName()));
             for (BaseDataDic type : types) {
                 if (certName.contains(type.getName())) {
-                    typeName = type.getName();
-                    BaseDataDic dataDicByName = baseDataDicService.getDataDicByName(types, type.getName());
-                    declareRealtyHouseCert.setType(String.valueOf(dataDicByName.getId()));
+                    declareRealtyHouseCert.setType(type.getId().toString());
+                    declareRealtyHouseCert.setLocation(StringUtils.substringBetween(declareRealtyHouseCert.getCertName(), "", type.getName()));
                 }
-            }
-            //编号
-            String reg = "(\\d+)(?=号)";
-            Pattern p = Pattern.compile(reg);
-            Matcher m = p.matcher(certName);
-            while (m.find()) {
-                declareRealtyHouseCert.setNumber(m.group(m.groupCount()));
-            }
-            //所在地
-            reg = "(\\S+)(?=" + typeName + ")";//匹配类型前的内容
-            p = Pattern.compile(reg);
-            m = p.matcher(certName);
-            while (m.find()) {
-                declareRealtyHouseCert.setLocation(m.group());
             }
         } else {
             builder.append(String.format("\n第%s行异常：房产权证号必须填写", i));
@@ -705,48 +622,25 @@ public class DeclarePublicService {
         //房屋坐落
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))) {
             declareRealtyHouseCert.setBeLocated(PoiUtils.getCellValue(row.getCell(8)));
-            String located = PoiUtils.getCellValue(row.getCell(8));
-            if (StringUtils.isNotBlank(located)) {
-                String reg = "^.*?号";//街道号
-                Pattern p = Pattern.compile(reg);
-                Matcher m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyHouseCert.setStreetNumber(m.group());
+            Map<String, String> locatedMap = beLocatedSplicing(declareRealtyHouseCert.getBeLocated());
+            if (!locatedMap.isEmpty()) {
+                if (locatedMap.containsKey(STREET)) {
+                    declareRealtyHouseCert.setStreetNumber(locatedMap.get(STREET));
                 }
-
-                reg = "(?<=附)(\\d+)";//匹配附后面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyHouseCert.setAttachedNumber(m.group());
+                if (locatedMap.containsKey(UNIT)) {
+                    declareRealtyHouseCert.setUnit(locatedMap.get(UNIT));
                 }
-
-                reg = "(\\d+)(?=栋)";//匹配栋前面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyHouseCert.setBuildingNumber(m.group());
+                if (locatedMap.containsKey(FLOOR)) {
+                    declareRealtyHouseCert.setFloor(locatedMap.get(FLOOR));
                 }
-
-                reg = "(\\d+)(?=单元)";//匹配单元前面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyHouseCert.setUnit(m.group());
+                if (locatedMap.containsKey(ATTACHED)) {
+                    declareRealtyHouseCert.setAttachedNumber(locatedMap.get(ATTACHED));
                 }
-
-                reg = "(\\d+)(?=层)";//匹配层前面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyHouseCert.setFloor(m.group());
+                if (locatedMap.containsKey(BUILDING)) {
+                    declareRealtyHouseCert.setBuildingNumber(locatedMap.get(BUILDING));
                 }
-
-                reg = "(\\d+)(?=号)";//匹配号前面的数字
-                p = Pattern.compile(reg);
-                m = p.matcher(located);
-                while (m.find()) {
-                    declareRealtyHouseCert.setRoomNumber(m.group(m.groupCount()));
+                if (locatedMap.containsKey(RoomNumber)) {
+                    declareRealtyHouseCert.setRoomNumber(locatedMap.get(RoomNumber));
                 }
             }
         } else {
@@ -838,29 +732,21 @@ public class DeclarePublicService {
      * @throws Exception
      */
     public boolean buildEngineering(DeclareBuildEngineering oo, StringBuilder builder, Row row, int i) throws Exception {
-        //省
-        String provinceName = PoiUtils.getCellValue(row.getCell(14));
-        //市或者区
-        String cityName = PoiUtils.getCellValue(row.getCell(15));
-        //县
-        String districtName = PoiUtils.getCellValue(row.getCell(16));
-        oo.setProvince(provinceName);
-        oo.setCity(cityName);
-        oo.setDistrict(districtName);
         Map<String, String> map = new HashMap<>();
         //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
+        if (erpAreaService.checkArea(PoiUtils.getCellValue(row.getCell(14)), PoiUtils.getCellValue(row.getCell(15)), PoiUtils.getCellValue(row.getCell(16)), builder, map)) {
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.PROVINCE))) {
+                oo.setProvince(map.get(erpAreaService.PROVINCE));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.CITY))) {
+                oo.setCity(map.get(erpAreaService.CITY));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.DISTRICT))) {
+                oo.setDistrict(map.get(erpAreaService.DISTRICT));
+            }
+        } else {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
-            oo.setProvince(map.get("province"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
-            oo.setCity(map.get("city"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
-            oo.setDistrict(map.get("district"));
         }
         //占有单位
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(0)))) {
@@ -932,29 +818,21 @@ public class DeclarePublicService {
      * @throws Exception
      */
     public boolean buildEquipmentInstall(DeclareBuildEquipmentInstall oo, StringBuilder builder, Row row, int i) throws Exception {
-        //省
-        String provinceName = PoiUtils.getCellValue(row.getCell(16));
-        //市
-        String cityName = PoiUtils.getCellValue(row.getCell(17));
-        //县或者区
-        String districtName = PoiUtils.getCellValue(row.getCell(18));
-        oo.setProvince(provinceName);
-        oo.setCity(cityName);
-        oo.setDistrict(districtName);
         Map<String, String> map = new HashMap<>();
         //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
+        if (erpAreaService.checkArea(PoiUtils.getCellValue(row.getCell(16)), PoiUtils.getCellValue(row.getCell(17)), PoiUtils.getCellValue(row.getCell(18)), builder, map)) {
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.PROVINCE))) {
+                oo.setProvince(map.get(erpAreaService.PROVINCE));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.CITY))) {
+                oo.setCity(map.get(erpAreaService.CITY));
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.DISTRICT))) {
+                oo.setDistrict(map.get(erpAreaService.DISTRICT));
+            }
+        } else {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
-            oo.setProvince(map.get("province"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
-            oo.setCity(map.get("city"));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
-            oo.setDistrict(map.get("district"));
         }
         //占有单位
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(0)))) {

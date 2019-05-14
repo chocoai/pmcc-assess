@@ -1,9 +1,11 @@
 package com.copower.pmcc.assess.controller.base;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -224,4 +226,41 @@ public class BaseDataDicController {
         return baseDataDicService.getBaseDicByKey(key);
     }
 
+    /**
+     * 获取key-value
+     *
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getKeyValue")
+    public HttpResult getKeyValueDto(Integer id) {
+        try {
+            BaseDataDic dicById = baseDataDicService.getDataDicById(id);
+            String keyValueData = dicById.getKeyValue();
+            KeyValueDto dto = JSON.parseObject(keyValueData, KeyValueDto.class);
+            return HttpResult.newCorrectResult(dto);
+        } catch (Exception e) {
+            LOGGER.error("获取字典层级异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    /**
+     * 保存keyValue
+     *
+     * @param formData
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/saveKeyValue", method = RequestMethod.POST)
+    public HttpResult saveKeyValue(String formData) {
+        try {
+            BaseDataDic sysDataDic = JSON.parseObject(formData, BaseDataDic.class);
+            baseDataDicService.saveDataDic(sysDataDic);
+        } catch (Exception e) {
+            LOGGER.error("保存数据字典异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }

@@ -1834,6 +1834,76 @@ public class SurveyAssetInventoryExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andOtherProjectIsNull() {
+            addCriterion("other_project is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectIsNotNull() {
+            addCriterion("other_project is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectEqualTo(String value) {
+            addCriterion("other_project =", value, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectNotEqualTo(String value) {
+            addCriterion("other_project <>", value, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectGreaterThan(String value) {
+            addCriterion("other_project >", value, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectGreaterThanOrEqualTo(String value) {
+            addCriterion("other_project >=", value, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectLessThan(String value) {
+            addCriterion("other_project <", value, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectLessThanOrEqualTo(String value) {
+            addCriterion("other_project <=", value, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectLike(String value) {
+            addCriterion("other_project like", value, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectNotLike(String value) {
+            addCriterion("other_project not like", value, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectIn(List<String> values) {
+            addCriterion("other_project in", values, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectNotIn(List<String> values) {
+            addCriterion("other_project not in", values, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectBetween(String value1, String value2) {
+            addCriterion("other_project between", value1, value2, "otherProject");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherProjectNotBetween(String value1, String value2) {
+            addCriterion("other_project not between", value1, value2, "otherProject");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

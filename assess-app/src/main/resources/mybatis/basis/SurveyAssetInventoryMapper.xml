@@ -28,6 +28,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="other_project" property="otherProject" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" extends="BaseResultMap" >
     <result column="location" property="location" jdbcType="LONGVARCHAR" />
@@ -95,7 +96,7 @@
     bis_check_original, remark, special_case, segmentation_limit, can_use, application, 
     certificate, rim_is_normal, zone_damage, abnormality, entity_is_damage, entity_damage, 
     damage_remark, payment_status, payment_content, transfer_limit, creator, gmt_created, 
-    gmt_modified
+    gmt_modified, other_project
   </sql>
   <sql id="Blob_Column_List" >
     location
@@ -160,7 +161,8 @@
       abnormality, entity_is_damage, entity_damage, 
       damage_remark, payment_status, payment_content, 
       transfer_limit, creator, gmt_created, 
-      gmt_modified, location)
+      gmt_modified, other_project, location
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{declareRecordId,jdbcType=INTEGER}, #{evaluator,jdbcType=VARCHAR}, #{checkDate,jdbcType=TIMESTAMP}, 
       #{bisCheckOriginal,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{specialCase,jdbcType=VARCHAR}, 
@@ -169,7 +171,8 @@
       #{abnormality,jdbcType=VARCHAR}, #{entityIsDamage,jdbcType=VARCHAR}, #{entityDamage,jdbcType=VARCHAR}, 
       #{damageRemark,jdbcType=VARCHAR}, #{paymentStatus,jdbcType=VARCHAR}, #{paymentContent,jdbcType=VARCHAR}, 
       #{transferLimit,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{location,jdbcType=LONGVARCHAR})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{otherProject,jdbcType=VARCHAR}, #{location,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -252,6 +255,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="otherProject != null" >
+        other_project,
+      </if>
       <if test="location != null" >
         location,
       </if>
@@ -331,6 +337,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="otherProject != null" >
+        #{otherProject,jdbcType=VARCHAR},
       </if>
       <if test="location != null" >
         #{location,jdbcType=LONGVARCHAR},
@@ -424,6 +433,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.otherProject != null" >
+        other_project = #{record.otherProject,jdbcType=VARCHAR},
+      </if>
       <if test="record.location != null" >
         location = #{record.location,jdbcType=LONGVARCHAR},
       </if>
@@ -460,6 +472,7 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      other_project = #{record.otherProject,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -492,7 +505,8 @@
       transfer_limit = #{record.transferLimit,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      other_project = #{record.otherProject,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -575,6 +589,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="otherProject != null" >
+        other_project = #{otherProject,jdbcType=VARCHAR},
+      </if>
       <if test="location != null" >
         location = #{location,jdbcType=LONGVARCHAR},
       </if>
@@ -608,6 +625,7 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      other_project = #{otherProject,jdbcType=VARCHAR},
       location = #{location,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -637,7 +655,8 @@
       transfer_limit = #{transferLimit,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      other_project = #{otherProject,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

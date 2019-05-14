@@ -17,6 +17,8 @@ public class BaseDataDic {
 
     private String remark;
 
+    private String keyValue;
+
     private Integer sorting;
 
     private Date created;
@@ -79,6 +81,14 @@ public class BaseDataDic {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getKeyValue() {
+        return keyValue;
+    }
+
+    public void setKeyValue(String keyValue) {
+        this.keyValue = keyValue == null ? null : keyValue.trim();
     }
 
     public Integer getSorting() {

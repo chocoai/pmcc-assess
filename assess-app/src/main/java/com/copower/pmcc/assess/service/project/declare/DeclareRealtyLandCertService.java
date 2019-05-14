@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.declare;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -407,7 +408,7 @@ public class DeclareRealtyLandCertService {
             }
         });
         boolean typeFlag = false;
-        if (CollectionUtils.isNotEmpty(baseProjectClassifyList)){
+        if (CollectionUtils.isNotEmpty(baseProjectClassifyList)) {
             typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(), projectInfo.getProjectCategoryId()));
         }
         DeclareRealtyLandCert query = new DeclareRealtyLandCert();
@@ -440,10 +441,19 @@ public class DeclareRealtyLandCertService {
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
-            if (typeFlag){
-                if (oo.getPid() != null){
+            if (oo.getLandCertGetQuestion() != null) {
+                String name = baseDataDicService.getNameById(oo.getLandCertGetQuestion());
+                if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_YES_NAME)){
+                    declareRecord.setHasCert(true);
+                }
+                if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_NO_NAME)){
+                    declareRecord.setHasCert(false);
+                }
+            }
+            if (typeFlag) {
+                if (oo.getPid() != null) {
                     declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_INCLUDEHOUSE).getId().toString());
-                }else {
+                } else {
                     declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId().toString());
                 }
             }

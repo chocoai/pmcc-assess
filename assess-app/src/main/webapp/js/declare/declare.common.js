@@ -45,8 +45,7 @@ declareCommon.config = {
         box: "boxDeclareRealtyRealEstateCert",
         fileId: "declareRealtyRealEstateCertFileId",
         newFileId: "declareRealtyRealEstateCertNewFileId",
-        fileView: "declareRealtyRealEstateCertFileView",
-        approvalFile:"declareRealtyApprovalFile"
+        fileView: "declareRealtyRealEstateCertFileView"
     }
 };
 declareCommon.declareApplyForm = $('#declareApplyForm');
@@ -318,6 +317,9 @@ declareCommon.initHouse = function (item,form,fileArr,callback) {
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         frm.find("select[name='nature']").empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landAcquisition, function (html, data) {
+        frm.find("select[name='landAcquisition']").empty().html(html).trigger('change');
     });
     frm.find("input[name='registrationTime']").val(formatDate(item.registrationTime));
     frm.find("input[name='useEndDate']").val(formatDate(item.useEndDate));

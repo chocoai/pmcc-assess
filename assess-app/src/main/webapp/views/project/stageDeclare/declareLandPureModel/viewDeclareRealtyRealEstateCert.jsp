@@ -97,12 +97,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            上传不动产证
+                                            批文附件
                                         </label>
                                         <div class="col-sm-5">
                                             <input id="declareRealtyRealEstateCertNewFileId"
-                                                   name="declareRealtyRealEstateCertNewFileId"
-                                                   required="required" placeholder="上传不动产证" class="form-control"
+                                                   name="declareRealtyRealEstateCertNewFileId" placeholder="批文附件" class="form-control"
                                                    type="file">
                                             <div id="_declareRealtyRealEstateCertNewFileId"></div>
                                         </div>

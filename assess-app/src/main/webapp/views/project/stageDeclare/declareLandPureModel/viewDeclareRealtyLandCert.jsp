@@ -34,10 +34,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a class="btn"
-                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板 有权证</a>
-                        </li>
-                        <li><a class="btn"
-                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板 无权证</a>
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板 有权证与无权证一致</a>
                         </li>
                     </ul>
                 </div>
@@ -112,12 +109,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            上传土地证附件
+                                            批文附件
                                         </label>
                                         <div class="col-sm-5">
                                             <input id="declareRealtyLandCertFileId"
-                                                   name="declareRealtyLandCertFileId"
-                                                   required="required" placeholder="上传土地证附件" class="form-control"
+                                                   name="declareRealtyLandCertFileId" placeholder="上传批文附件" class="form-control"
                                                    type="file">
                                             <div id="_declareRealtyLandCertFileId"></div>
                                         </div>
