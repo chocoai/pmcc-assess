@@ -9,6 +9,7 @@
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="key_value" property="keyValue" jdbcType="VARCHAR" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="mdified" property="mdified" jdbcType="TIMESTAMP" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, name, field_name, bis_enable, bis_delete, remark, sorting, created, mdified, 
-    creator
+    id, pid, name, field_name, bis_enable, bis_delete, remark, key_value, sorting, created, 
+    mdified, creator
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseDataDicExample" >
     select
@@ -112,12 +113,12 @@
     </selectKey>
     insert into tb_base_data_dic (pid, name, field_name, 
       bis_enable, bis_delete, remark, 
-      sorting, created, mdified, 
-      creator)
+      key_value, sorting, created, 
+      mdified, creator)
     values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, 
       #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, 
-      #{sorting,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{mdified,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR})
+      #{keyValue,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, 
+      #{mdified,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseDataDic" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -142,6 +143,9 @@
       </if>
       <if test="remark != null" >
         remark,
+      </if>
+      <if test="keyValue != null" >
+        key_value,
       </if>
       <if test="sorting != null" >
         sorting,
@@ -174,6 +178,9 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="keyValue != null" >
+        #{keyValue,jdbcType=VARCHAR},
       </if>
       <if test="sorting != null" >
         #{sorting,jdbcType=INTEGER},
@@ -219,6 +226,9 @@
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.keyValue != null" >
+        key_value = #{record.keyValue,jdbcType=VARCHAR},
+      </if>
       <if test="record.sorting != null" >
         sorting = #{record.sorting,jdbcType=INTEGER},
       </if>
@@ -245,6 +255,7 @@
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       remark = #{record.remark,jdbcType=VARCHAR},
+      key_value = #{record.keyValue,jdbcType=VARCHAR},
       sorting = #{record.sorting,jdbcType=INTEGER},
       created = #{record.created,jdbcType=TIMESTAMP},
       mdified = #{record.mdified,jdbcType=TIMESTAMP},
@@ -274,6 +285,9 @@
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="keyValue != null" >
+        key_value = #{keyValue,jdbcType=VARCHAR},
+      </if>
       <if test="sorting != null" >
         sorting = #{sorting,jdbcType=INTEGER},
       </if>
@@ -297,6 +311,7 @@
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       remark = #{remark,jdbcType=VARCHAR},
+      key_value = #{keyValue,jdbcType=VARCHAR},
       sorting = #{sorting,jdbcType=INTEGER},
       created = #{created,jdbcType=TIMESTAMP},
       mdified = #{mdified,jdbcType=TIMESTAMP},

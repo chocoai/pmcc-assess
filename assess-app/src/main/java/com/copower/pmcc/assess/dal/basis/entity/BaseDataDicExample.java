@@ -555,6 +555,76 @@ public class BaseDataDicExample {
             return (Criteria) this;
         }
 
+        public Criteria andKeyValueIsNull() {
+            addCriterion("key_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueIsNotNull() {
+            addCriterion("key_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueEqualTo(String value) {
+            addCriterion("key_value =", value, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueNotEqualTo(String value) {
+            addCriterion("key_value <>", value, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueGreaterThan(String value) {
+            addCriterion("key_value >", value, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueGreaterThanOrEqualTo(String value) {
+            addCriterion("key_value >=", value, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueLessThan(String value) {
+            addCriterion("key_value <", value, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueLessThanOrEqualTo(String value) {
+            addCriterion("key_value <=", value, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueLike(String value) {
+            addCriterion("key_value like", value, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueNotLike(String value) {
+            addCriterion("key_value not like", value, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueIn(List<String> values) {
+            addCriterion("key_value in", values, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueNotIn(List<String> values) {
+            addCriterion("key_value not in", values, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueBetween(String value1, String value2) {
+            addCriterion("key_value between", value1, value2, "keyValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeyValueNotBetween(String value1, String value2) {
+            addCriterion("key_value not between", value1, value2, "keyValue");
+            return (Criteria) this;
+        }
+
         public Criteria andSortingIsNull() {
             addCriterion("sorting is null");
             return (Criteria) this;

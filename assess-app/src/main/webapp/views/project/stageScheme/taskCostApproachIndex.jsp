@@ -299,7 +299,6 @@
     }
 
     $(function () {
-        console.log(AssessCommon.BHOU+"========");
         //计算基数
         var totalPrice = 0;
         <c:forEach items="${vosList}" var="item" varStatus="i">
