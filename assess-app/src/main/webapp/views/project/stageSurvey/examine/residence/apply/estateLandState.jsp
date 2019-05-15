@@ -39,6 +39,30 @@
 
         <div class="form-group">
             <div class="x-valid">
+                <label class="col-sm-1 control-label">东至</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="东至"
+                           name="eastTo" value="${basicEstateLandState.eastTo}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">南至</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="南至"
+                           name="southTo" value="${basicEstateLandState.southTo}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">西至</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="西至"
+                           name="westTo" value="${basicEstateLandState.westTo}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">土地级别</label>
                 <div class="col-sm-3">
                     <div class="input-group">
@@ -63,28 +87,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">东至</label>
+                <label class="col-sm-1 control-label">土地形状</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="东至"
-                           name="eastTo" value="${basicEstateLandState.eastTo}">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">南至</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="南至"
-                           name="southTo" value="${basicEstateLandState.southTo}">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">西至</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="西至"
-                           name="westTo" value="${basicEstateLandState.westTo}">
+                    <select class="form-control shapeState" name="shapeState">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">
@@ -94,14 +100,9 @@
                            name="northTo" value="${basicEstateLandState.northTo}">
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">土地形状</label>
-                <div class="col-sm-3">
-                    <select class="form-control shapeState" name="shapeState">
-                    </select>
-                </div>
-            </div>
         </div>
+
+
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地形状备注</label>
@@ -138,7 +139,8 @@
                 <label class="col-sm-1 control-label">基础设施完备度<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 infrastructureCompleteness" name="infrastructureCompleteness" required>
+                    <select class="form-control search-select select2 infrastructureCompleteness"
+                            name="infrastructureCompleteness" required>
                     </select>
                 </div>
             </div>
@@ -241,6 +243,53 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="col-sm-12">
+                <table class="table table-striped table-bordered" style="display: none">
+                    <thead>
+                    <tr>
+                        <th width="10%">土地级别类别</th>
+                        <th width="10%">土地级别类型</th>
+                        <th width="10%">土地级别等级</th>
+                        <th width="20%">说明</th>
+                        <th width="10%">分值</th>
+                        <th width="5%"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="landLevelTabContent">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </form>
 
 </div>
+
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td colspan="2" class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {landLevelCategoryName}
+        </td>
+        <td>
+            <select class="form-control" name="landLevelGrade" onchange="estateCommon.landLevelHandle(this,'{landLevelCategory}');">
+                {landLevelGrade}
+            </select>
+        </td>
+        <td>
+            {reamark}
+        </td>
+        <td>
+            <input type="text" class="form-control" name="landLevelAchievement" value="{achievement}">
+        </td>
+        <td>
+            <input class="btn btn-warning" type="button" value="X"
+                   onclick="estateCommon.landLevelEmpty(this)">
+        </td>
+    </tr>
+</script>
+

@@ -101,7 +101,7 @@
         estateCommon.estateForm.clearAll();
         estateCommon.estateLandStateForm.clearAll();
         estateCommon.estateForm.initForm(data.estate);
-       // estateCommon.getLocationDescribe(data.estate.blockId);
+        // estateCommon.getLocationDescribe(data.estate.blockId);
         estateCommon.estateLandStateForm.initForm(data.land);
         AssessCommon.initAreaInfo({
             provinceTarget: estateCommon.estateForm.find("select[name='province']"),
@@ -178,10 +178,6 @@
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
                     if (str.indexOf(landUseTypeData.name) != -1) {
-                        // estateCommon.estateLandStateForm.find("input[name='fertility']").parent().parent().show();
-                        // estateCommon.estateLandStateForm.find("input[name='holdOn']").parent().parent().hide();
-                        // estateCommon.estateLandStateForm.find("input[name='bearingCapacity']").parent().parent().hide();
-
                         estateCommon.estateLandStateForm.find("select[name='fertility']").parent().parent().show();
                         estateCommon.estateLandStateForm.find("select[name='holdOn']").parent().parent().hide();
                         estateCommon.estateLandStateForm.find("select[name='bearingCapacity']").parent().parent().hide();
@@ -354,6 +350,71 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
-    }
+    };
+
+    //土地级别详情 填充并且赋值
+    estateCommon.landLevelLoadHtml = function (data) {
+        if (jQuery.isEmptyObject(data)) {
+            return false;
+        }
+        var target = $("#landLevelTabContent");
+        target.empty();
+        target.parent().show();
+        $.each(data, function (i, n) {
+            var landLevelBodyHtml = $("#landLevelTabContentBody").html();
+            landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, n.reamark);
+            landLevelBodyHtml = landLevelBodyHtml.replace(/{achievement}/g, n.achievement);
+            landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelChange}/g, n.id);
+            AssessCommon.getDataDicInfo(n.type , function (typeData) {
+                AssessCommon.getDataDicInfo(n.category , function (categoryData) {
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, n.grade, function (html, data) {
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, categoryData.name);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategory}/g, categoryData.id);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, typeData.name);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGrade}/g, html);
+                        target.append(landLevelBodyHtml);
+                    }, true);
+                });
+            });
+        });
+    };
+
+    estateCommon.landLevelEmpty = function (that) {
+        $(that).parent().parent().remove();
+    };
+
+    estateCommon.landLevelHandle = function (that,category) {
+        var group = $(that).closest('.group');
+        var grade = $(that).val() ;
+        if (category) {
+            AssessCommon.getDataDicInfo(category, function (data) {
+                var obj = JSON.parse(data.remark);
+                if (grade) {
+                    AssessCommon.getDataDicInfo(grade, function (item) {
+                        var value = null;
+                        if (item.name == '优') {
+                            value = obj.A;
+                        }
+                        if (item.name == '较优') {
+                            value = obj.B;
+                        }
+                        if (item.name == '一般') {
+                            value = obj.C;
+                        }
+                        if (item.name == '较劣') {
+                            value = obj.D;
+                        }
+                        if (item.name == '劣') {
+                            value = obj.E;
+                        }
+                        if (value) {
+                            group.find("input[name='landLevelAchievement']").val(value);
+                        }
+                    });
+                }
+            });
+        }
+    };
+
     window.estateCommon = estateCommon;
 })(jQuery);

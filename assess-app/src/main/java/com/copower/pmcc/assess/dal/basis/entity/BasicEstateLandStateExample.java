@@ -475,6 +475,146 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandLevelAchievementIsNull() {
+            addCriterion("land_level_achievement is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementIsNotNull() {
+            addCriterion("land_level_achievement is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementEqualTo(String value) {
+            addCriterion("land_level_achievement =", value, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementNotEqualTo(String value) {
+            addCriterion("land_level_achievement <>", value, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementGreaterThan(String value) {
+            addCriterion("land_level_achievement >", value, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementGreaterThanOrEqualTo(String value) {
+            addCriterion("land_level_achievement >=", value, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementLessThan(String value) {
+            addCriterion("land_level_achievement <", value, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementLessThanOrEqualTo(String value) {
+            addCriterion("land_level_achievement <=", value, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementLike(String value) {
+            addCriterion("land_level_achievement like", value, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementNotLike(String value) {
+            addCriterion("land_level_achievement not like", value, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementIn(List<String> values) {
+            addCriterion("land_level_achievement in", values, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementNotIn(List<String> values) {
+            addCriterion("land_level_achievement not in", values, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementBetween(String value1, String value2) {
+            addCriterion("land_level_achievement between", value1, value2, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelAchievementNotBetween(String value1, String value2) {
+            addCriterion("land_level_achievement not between", value1, value2, "landLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeIsNull() {
+            addCriterion("land_level_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeIsNotNull() {
+            addCriterion("land_level_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeEqualTo(String value) {
+            addCriterion("land_level_grade =", value, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeNotEqualTo(String value) {
+            addCriterion("land_level_grade <>", value, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeGreaterThan(String value) {
+            addCriterion("land_level_grade >", value, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeGreaterThanOrEqualTo(String value) {
+            addCriterion("land_level_grade >=", value, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeLessThan(String value) {
+            addCriterion("land_level_grade <", value, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeLessThanOrEqualTo(String value) {
+            addCriterion("land_level_grade <=", value, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeLike(String value) {
+            addCriterion("land_level_grade like", value, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeNotLike(String value) {
+            addCriterion("land_level_grade not like", value, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeIn(List<String> values) {
+            addCriterion("land_level_grade in", values, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeNotIn(List<String> values) {
+            addCriterion("land_level_grade not in", values, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeBetween(String value1, String value2) {
+            addCriterion("land_level_grade between", value1, value2, "landLevelGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelGradeNotBetween(String value1, String value2) {
+            addCriterion("land_level_grade not between", value1, value2, "landLevelGrade");
+            return (Criteria) this;
+        }
+
         public Criteria andLandLevelIsNull() {
             addCriterion("land_level is null");
             return (Criteria) this;

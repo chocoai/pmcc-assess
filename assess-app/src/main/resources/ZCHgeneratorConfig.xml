@@ -47,6 +47,10 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
+        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
         <!--<table tableName="tb_declare_record" domainObjectName="DeclareRecord">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->

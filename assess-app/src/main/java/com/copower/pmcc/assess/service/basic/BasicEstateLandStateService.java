@@ -25,8 +25,10 @@ import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Auther: zch
@@ -166,6 +168,11 @@ public class BasicEstateLandStateService {
         if (org.apache.commons.lang3.StringUtils.isNotEmpty(basicEstateLandState.getDevelopmentDegreeContent())){
             List<String> stringList = Lists.newArrayList(basicEstateLandState.getDevelopmentDegreeContent().split(",")).stream().map(s -> baseDataDicService.getNameById(s)).collect(Collectors.toList());
             vo.setDevelopmentDegreeContentName(org.apache.commons.lang3.StringUtils.join(stringList,"、"));
+        }
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(basicEstateLandState.getLandLevelGrade())){
+            vo.setLandLevelGradeName(org.apache.commons.lang3.StringUtils.join(
+                    Arrays.asList(basicEstateLandState.getLandLevelGrade().split(",")).stream().map(s -> baseDataDicService.getNameById(s) ).collect(Collectors.toList())
+                    ,","));
         }
         return vo;
     }
