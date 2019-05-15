@@ -226,24 +226,7 @@ public class BaseDataDicController {
         return baseDataDicService.getBaseDicByKey(key);
     }
 
-    /**
-     * 获取key-value
-     *
-     * @return
-     */
-    @ResponseBody
-    @GetMapping("/getKeyValue")
-    public HttpResult getKeyValueDto(Integer id) {
-        try {
-            BaseDataDic dicById = baseDataDicService.getDataDicById(id);
-            String keyValueData = dicById.getKeyValue();
-            KeyValueDto dto = JSON.parseObject(keyValueData, KeyValueDto.class);
-            return HttpResult.newCorrectResult(dto);
-        } catch (Exception e) {
-            LOGGER.error("获取字典层级异常", e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
+
 
     /**
      * 保存keyValue
