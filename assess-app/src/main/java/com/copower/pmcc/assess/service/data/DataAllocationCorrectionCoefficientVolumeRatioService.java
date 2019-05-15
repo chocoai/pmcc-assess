@@ -119,7 +119,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
                     return detailItem.getCorrectionFactor();
                 }
             }
-            //在区间中
+            //不能直接匹配
             return getAmend(detailList, volumetricRate);
         }
         return null;
@@ -132,14 +132,31 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
                 return (o1.getPlotRatio().compareTo(o2.getPlotRatio()));
             });
             detailList.sort(ordering);
+            //如果在两个值间
+            for (int i = 0; i < detailList.size() - 1; i++) {
+                if (detailList.get(i).getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == -1 &&
+                        new BigDecimal(volumetricRate).compareTo(detailList.get(i + 1).getPlotRatio()) == -1) {
+                    BigDecimal cardinalNumber = detailList.get(i + 1).getCorrectionFactor().subtract(detailList.get(i).getCorrectionFactor()).divide(detailList.get(i + 1).getPlotRatio().subtract(detailList.get(i).getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal amend = detailList.get(i).getCorrectionFactor().add(cardinalNumber.multiply(new BigDecimal(volumetricRate).subtract(detailList.get(i).getPlotRatio())));
+                    return amend;
+                }
+            }
             //最小值
             DataAllocationCorrectionCoefficientVolumeRatioDetail minValue = detailList.get(0);
             //最大值
             DataAllocationCorrectionCoefficientVolumeRatioDetail maxValue = detailList.get(detailList.size() - 1);
-            //如果在区间
-            if (minValue.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == -1 && new BigDecimal(volumetricRate).compareTo(maxValue.getPlotRatio()) == -1) {
-                BigDecimal cardinalNumber = maxValue.getCorrectionFactor().subtract(minValue.getCorrectionFactor()).divide(maxValue.getPlotRatio().subtract(minValue.getPlotRatio()),2,BigDecimal.ROUND_HALF_UP);
-                BigDecimal amend = minValue.getCorrectionFactor().add(cardinalNumber.multiply(new BigDecimal(volumetricRate).subtract(minValue.getPlotRatio())));
+            //小于最小值
+            if (minValue.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 1){
+                DataAllocationCorrectionCoefficientVolumeRatioDetail tempValue = detailList.get(1);
+                BigDecimal cardinalNumber = tempValue.getCorrectionFactor().subtract(minValue.getCorrectionFactor()).divide(tempValue.getPlotRatio().subtract(minValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal amend = minValue.getCorrectionFactor().subtract(cardinalNumber.multiply(minValue.getPlotRatio().subtract(new BigDecimal(volumetricRate))));
+                return amend;
+            }
+            //大于最大值
+            if (new BigDecimal(volumetricRate).compareTo(maxValue.getPlotRatio()) == 1){
+                DataAllocationCorrectionCoefficientVolumeRatioDetail tempValue = detailList.get(detailList.size() - 2);
+                BigDecimal cardinalNumber = maxValue.getCorrectionFactor().subtract(tempValue.getCorrectionFactor()).divide(maxValue.getPlotRatio().subtract(tempValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal amend = maxValue.getCorrectionFactor().add(cardinalNumber.multiply(new BigDecimal(volumetricRate).subtract(maxValue.getPlotRatio())));
                 return amend;
             }
         }
