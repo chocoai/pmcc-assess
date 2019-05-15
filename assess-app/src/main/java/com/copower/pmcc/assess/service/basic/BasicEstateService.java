@@ -292,7 +292,7 @@ public class BasicEstateService {
         return objectMap;
     }
 
-    public BasicEstate getBasicEstateByApplyId(Integer applyId) throws Exception {
+    public BasicEstate getBasicEstateByApplyId(Integer applyId) {
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
         if (applyId == null || applyId == 0)

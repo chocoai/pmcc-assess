@@ -63,20 +63,16 @@ public class MdBaseLandPriceService {
      * @param surplusYear 剩余年限
      * @return
      */
-    public Double getPeriodAmend(String rewardRate, String legalAge, String surplusYear) {
-        Double legalAgeValue = Double.valueOf(legalAge);
-        Double surplusYearValue = Double.valueOf(surplusYear);
-        Double rewardRateValue;
-        //rewardRate是否是百分数
-        if (rewardRate.substring(rewardRate.length() - 1, rewardRate.length()).equals("%")) {
-            Double rewardRateTemp = Double.valueOf(rewardRate.substring(0, rewardRate.length() - 1));
-            rewardRateValue = rewardRateTemp / 100;
-        } else {
-            rewardRateValue = Double.valueOf(rewardRate);
-        }
-        double temp1 = 1 / Math.pow(1 + rewardRateValue, surplusYearValue);
-        double temp2 = 1 / Math.pow(1 + rewardRateValue, legalAgeValue);
-        return 1 - temp1 / 1 - temp2;
+    public BigDecimal getPeriodAmend(BigDecimal rewardRate, BigDecimal legalAge, BigDecimal surplusYear) {
+        if (rewardRate == null || legalAge == null || surplusYear == null) return null;
+
+        BigDecimal pow1 = new BigDecimal(Math.pow(rewardRate.add(new BigDecimal("1")).doubleValue(), surplusYear.doubleValue()));
+        BigDecimal temp1 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow1,4,BigDecimal.ROUND_HALF_UP));
+
+        BigDecimal pow2 = new BigDecimal(Math.pow(rewardRate.add(new BigDecimal("1")).doubleValue(), legalAge.doubleValue()));
+        BigDecimal temp2 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow2,4,BigDecimal.ROUND_HALF_UP));
+
+        return temp1.divide(temp2,4,BigDecimal.ROUND_HALF_UP);
     }
 
 }

@@ -162,19 +162,14 @@ public class GenerateLoactionService {
 
     private void environmentalScience(EnvironmentalScienceEnum scienceEnum, String a, String b, String c, String d, String key, LinkedHashSet<String> hashSet, List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList) {
         BasicMatchingEnvironmentVo matchingEnvironmentVo = null;
-        try {
-            matchingEnvironmentVo = basicMatchingEnvironmentVoList.stream().filter(basicMatchingEnvironmentVo -> {
-                if (basicMatchingEnvironmentVo.getCategory() != null && StringUtils.isNotBlank(basicMatchingEnvironmentVo.getCategoryName())) {
-                    if (basicMatchingEnvironmentVo.getCategoryName().indexOf(key) != -1) {
-                        return true;
-                    }
-                }
-                return false;
-            }).findFirst().get();
-        } catch (Exception e) {
-            //经常出现null parsent value 异常
-            logger.error(String.format("异常 com.copower.pmcc.assess.service.project.generate.GenerateLoactionService.environmentalScience %s", e.getMessage()), e);
+        if (CollectionUtils.isEmpty(basicMatchingEnvironmentVoList)) return;
+        for (BasicMatchingEnvironmentVo basicMatchingEnvironmentVo : basicMatchingEnvironmentVoList) {
+            if (basicMatchingEnvironmentVo.getCategoryName().contains(key)) {
+                matchingEnvironmentVo = basicMatchingEnvironmentVo;
+                break;
+            }
         }
+        if (matchingEnvironmentVo == null) return;
         if (!Objects.equal(EnvironmentalScienceEnum.SCENERY.getKey(), scienceEnum.getKey())) {
             if (matchingEnvironmentVo != null) {
                 if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), a)) {
@@ -191,8 +186,7 @@ public class GenerateLoactionService {
                 }
             }
         }
-        if (matchingEnvironmentVo == null) {
-        } else {
+        if (matchingEnvironmentVo != null) {
             hashSet.add(String.format("%s%s", key, matchingEnvironmentVo.getRemark()));
         }
     }
@@ -352,11 +346,11 @@ public class GenerateLoactionService {
                     if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getVisitorsFlowrateName())) {
                         linkedHashSet.add(String.format("人流量%s", basicHouseFaceStreetVo.getVisitorsFlowrateName()));
                     }
-                    hashSet.add(StringUtils.join(linkedHashSet,""));
+                    hashSet.add(StringUtils.join(linkedHashSet, ""));
                     linkedHashSet.clear();
                 }
             }
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(hashSet,"；"));
+            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(hashSet, "；"));
             hashSet.clear();
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", "。", false);
@@ -673,7 +667,7 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    String s = this.getDistanceDec(String.format("%s%s",ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(),":"), listMap);
+                    String s = this.getDistanceDec(String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":"), listMap);
                     stringArrayList.add(s);
                 }
                 integerStringMap.clear();
@@ -693,7 +687,7 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    String s = this.getDistanceDec(String.format("%s%s",ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(),":"), listMap);
+                    String s = this.getDistanceDec(String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":"), listMap);
                     stringArrayList.add(s);
                 }
                 integerStringMap.clear();
@@ -713,7 +707,7 @@ public class GenerateLoactionService {
                     });
                 }
                 if (!listMap.isEmpty()) {
-                    String s = this.getDistanceDec(String.format("%s%s",ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(),":"), listMap);
+                    String s = this.getDistanceDec(String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":"), listMap);
                     stringArrayList.add(s);
                 }
                 integerStringMap.clear();
@@ -734,8 +728,9 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                String s = this.getDistanceDec(String.format("%s%s","金融服务",":"), listMap);
-                stringArrayList.add(s);;
+                String s = this.getDistanceDec(String.format("%s%s", "金融服务", ":"), listMap);
+                stringArrayList.add(s);
+                ;
             }
             integerStringMap.clear();
             entryMap.clear();
@@ -753,8 +748,9 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                String s = this.getDistanceDec(String.format("%s%s","医疗",":"), listMap);
-                stringArrayList.add(s);;
+                String s = this.getDistanceDec(String.format("%s%s", "医疗", ":"), listMap);
+                stringArrayList.add(s);
+                ;
             }
             integerStringMap.clear();
             entryMap.clear();
@@ -775,8 +771,9 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                String s = this.getDistanceDec(String.format("%s%s","教育",":"), listMap);
-                stringArrayList.add(s);;
+                String s = this.getDistanceDec(String.format("%s%s", "教育", ":"), listMap);
+                stringArrayList.add(s);
+                ;
             }
             integerStringMap.clear();
             entryMap.clear();

@@ -39,7 +39,7 @@ public class BasicEstateDao {
     }
 
 
-    public List<BasicEstate> basicEstateList(BasicEstate basicEstate) throws SQLException {
+    public List<BasicEstate> basicEstateList(BasicEstate basicEstate) {
         BasicEstateExample example = new BasicEstateExample();
         MybatisUtils.convertObj2Example(basicEstate, example);
         return basicEstateMapper.selectByExample(example);
