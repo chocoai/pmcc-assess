@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -129,6 +130,16 @@ public class MarketCompareController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getMarketCompareById", name = "获取数据", method = RequestMethod.POST)
+    public HttpResult getMarketCompareById(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(mdMarketCompareService.getMdMarketCompare(id));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("获取失败");
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getMarketCompareItemById", name = "获取明细项数据", method = RequestMethod.POST)
     public HttpResult getMarketCompareItemById(Integer id) {
         try {
@@ -146,6 +157,16 @@ public class MarketCompareController {
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             return HttpResult.newErrorResult("保存失败");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateAnnualCoefficient", name = "更新年期修正系数", method = RequestMethod.POST)
+    public HttpResult updateAnnualCoefficient(Integer mcId, Integer rewardRateId, BigDecimal rewardRate) {
+        try {
+            return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(mcId,rewardRateId,rewardRate));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("更新失败");
         }
     }
 }

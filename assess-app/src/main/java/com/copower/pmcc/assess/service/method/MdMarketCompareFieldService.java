@@ -14,7 +14,6 @@ import com.copower.pmcc.assess.dto.output.basic.BasicUnitDecorateVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
-import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -85,8 +84,6 @@ public class MdMarketCompareFieldService extends BaseService {
     private GenerateEquityService generateEquityService;
     @Autowired
     private DataPropertyService dataPropertyService;
-    @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioService volumeRatioService;
 
     /**
      * 获取市场比较法各个字段对应值
@@ -96,10 +93,9 @@ public class MdMarketCompareFieldService extends BaseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public String getCompareInfo( SchemeJudgeObject judgeObject, Integer planDetailsId, List<DataSetUseField> setUseFieldList,boolean isLand, Boolean isCase) {
+    public String getCompareInfo(SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
-            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
             if (basicApply == null) return null;
             //取得楼盘信息
             BasicEstate examineEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
@@ -120,15 +116,10 @@ public class MdMarketCompareFieldService extends BaseService {
             //取得申报记录信息
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
             declareRecord = declareRecord == null ? new DeclareRecord() : declareRecord;
-            //取得土地实体情况
-            BasicEstateLandState landState = basicEstateLandStateService.getLandStateByEstateId(examineEstate.getId());
-            landState = landState == null ? new BasicEstateLandState() : landState;
             //取得房间信息
             List<BasicHouseRoom> roomList = basicHouseRoomService.getBasicHouseRoomList(examineHouse.getId());
             //取得建筑功能
             List<BasicBuildingFunction> buildingFunctions = basicBuildingFunctionService.getBasicBuildingFunctionList(examineBuilding.getId());
-            //取得楼盘供应信息（供水；供电；供热；供气）
-            List<BasicEstateSupply> estateSupplyList = basicEstateSupplyService.getBasicEstateSupplyList(examineEstate.getId());
             //取得房间供应信息(供暖；空调；新风)
             List<BasicHouseEquipment> equipmentList = basicHouseEquipmentService.getBasicHouseEquipmentList(examineHouse.getId());
 
@@ -193,12 +184,12 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case FLOOR://楼栋楼层
                             stringBuilder = new StringBuilder();
-                            if(StringUtils.isNotBlank(examineBuilding.getBuildingNumber()))
-                                stringBuilder.append(String.format("%s栋",examineBuilding.getBuildingNumber()));
-                            if(examineBuilding.getFloorCount()!=null)
-                                stringBuilder.append(String.format("%s层建筑",examineBuilding.getFloorCount()));
-                            if(StringUtils.isNotBlank(examineHouse.getFloor()))
-                                stringBuilder.append(String.format("第%s层",examineHouse.getFloor()));
+                            if (StringUtils.isNotBlank(examineBuilding.getBuildingNumber()))
+                                stringBuilder.append(String.format("%s栋", examineBuilding.getBuildingNumber()));
+                            if (examineBuilding.getFloorCount() != null)
+                                stringBuilder.append(String.format("%s层建筑", examineBuilding.getFloorCount()));
+                            if (StringUtils.isNotBlank(examineHouse.getFloor()))
+                                stringBuilder.append(String.format("第%s层", examineHouse.getFloor()));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), stringBuilder.toString()));
                             break;
                         case ORIENTATION://朝向
@@ -280,15 +271,15 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PROPERTY_MANAGEMENT.getKey(), stringBuilder.toString()));
                             break;
                         case OTHER_SPECIAL_SITUATIONS://其它特殊情况
-                            String specialCase = generateEquityService.getTransferLimit(Lists.newArrayList(judgeObject),null);
+                            String specialCase = generateEquityService.getTransferLimit(Lists.newArrayList(judgeObject), null);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OTHER_SPECIAL_SITUATIONS.getKey(), specialCase));
                             break;
                         case BUILDING_AREA://建筑面积（㎡）
                             String buildingArea = null;
                             if (isCase) {
-                                buildingArea = examineHouse.getArea() == null ? "" : String.format("%平方米", examineHouse.getArea());
+                                buildingArea = examineHouse.getArea() == null ? "" : String.format("%s平方米", examineHouse.getArea());
                             } else {
-                                buildingArea = judgeObject.getEvaluationArea() == null ? "" : String.format("%平方米", judgeObject.getEvaluationArea());
+                                buildingArea = judgeObject.getEvaluationArea() == null ? "" : String.format("%s平方米", judgeObject.getEvaluationArea());
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_AREA.getKey(), buildingArea));
                             break;
@@ -505,13 +496,6 @@ public class MdMarketCompareFieldService extends BaseService {
                 } catch (Exception e) {
                     log.error(String.format("比较法字段获取数据异常：%s-%s", compareFieldEnum.getName(), e.getMessage()), e);
                 }
-            }
-            //如果是土地比较法 则需额外处理 年期修正系数与容积率修正系数
-            if(isLand){
-                //在估价对象中获取法定年限与剩余年限，如果未获取到则无年期修正系数
-
-                BigDecimal volumetricRate = volumeRatioService.getAmendByVolumetricRate(examineEstate.getProvince(), examineEstate.getCity(), examineEstate.getDistrict(), landState.getPlotRatio());
-                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.VolumeRatio_Coefficient.getKey(), volumetricRate.toString(), isCase));
             }
             return JSON.toJSONString(list);
         } catch (Exception e) {

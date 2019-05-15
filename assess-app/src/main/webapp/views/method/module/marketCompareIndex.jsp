@@ -41,6 +41,7 @@
     </div>
 </div>
 <%@include file="/views/project/tool/residueRatio.jsp" %>
+<jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
 <div id="modal_select_case" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -239,6 +240,7 @@
                 return;
             }
             marketCompare.mcId = defaluts.mcId;
+            marketCompare.isLand = defaluts.isLand;
             marketCompare.evaluation = defaluts.evaluation;
             marketCompare.casesAll = defaluts.casesAll;
             marketCompare.judgeObjectId = defaluts.judgeObjectId;
@@ -246,27 +248,47 @@
             marketCompare.initHead(defaluts);
             marketCompare.initBody(defaluts);
             marketCompare.initResult(defaluts);
-            if (!defaluts.readonly) {
-                setElementEditable();
-            } else {
-                $("#small_select_case").hide();
-            }
+
             $("#cbxScore,#cbxRatio").each(function () {
                 if ($(this).prop('checked')) {
                     $(this).trigger('click');
                 }
             })
-            $('#tb_md_mc_item_list').find('tr[data-group="trading.time"][data-name="text"]').each(function () {
-                $(this).find('td').each(function () {
-                    $(this).append('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.tradingTimeExplain(this,' + defaluts.readonly + ');" value="修正说明">');
+            if (!defaluts.readonly) {
+                setElementEditable();
+                $('#tb_md_mc_item_list').find('tr[data-group="trading.time"][data-name="text"]').each(function () {
+                    $(this).find('td').each(function () {
+                        $(this).append('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.tradingTimeExplain(this,' + defaluts.readonly + ');" value="修正说明">');
+                    })
                 })
-            })
-            $('#tb_md_mc_item_list').find('tr[data-group="new.degree"][data-name="text"]').each(function () {
-                $(this).find('td').each(function () {
-                    $(this).find('a').after('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.callResidueRatio(this,' + defaluts.readonly + ');" value="成新率">');
+                $('#tb_md_mc_item_list').find('tr[data-group="new.degree"][data-name="text"]').each(function () {
+                    $(this).find('td').each(function () {
+                        $(this).find('a').after('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.callResidueRatio(this,' + defaluts.readonly + ');" value="成新率">');
+                    })
                 })
-            })
-            marketCompare.calculation();//初始化后默认测算一次
+                if (marketCompare.isLand) {
+                    var eleAnnualCoefficient = $('#tb_md_mc_item_list').find('tr[data-name="annualCoefficient"]').find('td:eq(1)');
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/marketCompare/getMarketCompareById',
+                        data: {
+                            id: marketCompare.mcId
+                        },
+                        async: false,
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.ret && result.data.rewardRateId) {
+                                eleAnnualCoefficient.append('<input type="button" data-id="' + result.data.rewardRateId + '" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.setRewardRate(this);" value="报酬率' + AssessCommon.pointToPercent(result.data.rewardRate) + '">');
+                            } else {
+                                eleAnnualCoefficient.append('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.setRewardRate(this);" value="报酬率">');
+                            }
+                        }
+                    })
+                }
+                marketCompare.calculation();//初始化后默认测算一次
+            } else {
+                $("#small_select_case").hide();
+            }
         }
 
         //初始头部
@@ -374,6 +396,7 @@
                 weightDescHtml = weightDescHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{value}/g, toString(defaluts.cases[j].weightDescription));
                 caseWeightDescription += weightDescHtml;
             }
+            resultHtml = resultHtml.replace(/{annualCoefficient}/g, toString(defaluts.evaluation.annualCoefficient)).replace(/{volumeRatioCoefficient}/g, toString(defaluts.evaluation.volumeRatioCoefficient));
             resultHtml = resultHtml.replace(/{caseAnnualCoefficient}/g, toString(caseAnnualCoefficient)).replace(/{caseVolumeRatioCoefficient}/g, toString(caseVolumeRatioCoefficient));
             resultHtml = resultHtml.replace(/{caseSpecificPrice}/g, toString(caseSpecificPrice)).replace(/{caseCorrectionDifference}/g, toString(caseCorrectionDifference));
             resultHtml = resultHtml.replace(/{caseCaseDifference}/g, toString(caseCaseDifference)).replace(/{caseWeight}/g, toString(caseWeight));
@@ -381,7 +404,7 @@
             resultHtml = resultHtml.replace(/{averagePrice}/g, toString(defaluts.evaluation.averagePrice)).replace(/{caseWeightDescription}/g, toString(caseWeightDescription));
             resultHtml = resultHtml.replace(/{deveDegree}/g, toString(defaluts.evaluation.deveDegree)).replace(/{evaluatePrice}/g, toString(defaluts.evaluation.evaluatePrice));
             $("#tb_md_mc_item_list").append(resultHtml);
-            if(marketCompare.isLand){
+            if (marketCompare.isLand) {
                 $("#tb_md_mc_item_list").find('.forLand').show();
             }
         }
@@ -404,7 +427,6 @@
                 }
             })
 
-
             //计算比准价格
             $.each(caseItemIdArray, function (i, item) {
                 //先找到该案例的成交价，再将成交价与测算值依次相乘，最后将结果保留两位小数
@@ -417,6 +439,21 @@
                             specificPrice = specificPrice * parseFloat(ratio);
                         }
                     })
+                    if (marketCompare.isLand) {
+                        var annualTr = table.find('tr[data-name="annualCoefficient"]');
+                        var evaluationAnnual = annualTr.find('td[data-item-id=' + evaluationItemId + ']').find('span').text();
+                        var caseAnnual = annualTr.find('td[data-item-id=' + item + ']').text();
+                        if (AssessCommon.isNumber(evaluationAnnual) && AssessCommon.isNumber(caseAnnual)) {
+                            specificPrice = parseFloat(caseAnnual) / parseFloat(evaluationAnnual) * specificPrice;
+                        }
+                        var volumeRatioTr = table.find('tr[data-name="volumeRatioCoefficient"]');
+                        var evaluationVolumeRatio = volumeRatioTr.find('td[data-item-id=' + evaluationItemId + ']').text();
+                        var caseVolumeRatio = volumeRatioTr.find('td[data-item-id=' + item + ']').text();
+                        if (AssessCommon.isNumber(evaluationVolumeRatio) && AssessCommon.isNumber(caseVolumeRatio)) {
+                            specificPrice = parseFloat(caseVolumeRatio) / parseFloat(evaluationVolumeRatio) * specificPrice;
+                        }
+                    }
+
                     specificPrice = iTofixed(specificPrice, 2);
                     table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text(specificPrice);
 
@@ -489,13 +526,22 @@
                 $.each(caseItemIdArray, function (i, item) {
                     currSpecificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
                     currSpecificPrice = parseFloat(currSpecificPrice);
-                    //
                     totalPrice += currSpecificPrice;
                 })
                 averagePrice = iTofixed(totalPrice / caseItemIdArray.length, 2);
             }
             table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text(averagePrice);
-            marketCompare.price = averagePrice;
+            if (marketCompare.isLand) {
+                var evaluatePrice = parseFloat(averagePrice);
+                var deveDegree = table.find('tr[data-name="deveDegree"]').find('td[data-item-id=' + evaluationItemId + ']').find(':text').val();
+                if (AssessCommon.isNumber(deveDegree)) {
+                    evaluatePrice += parseFloat(deveDegree);
+                }
+                table.find('tr[data-name="evaluatePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text(evaluatePrice);
+                marketCompare.price = evaluatePrice;
+            } else {
+                marketCompare.price = averagePrice;
+            }
         }
 
         //切换
@@ -586,6 +632,8 @@
                 }
             })
             var averagePrice = table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text();
+            var deveDegree = table.find('tr[data-name="deveDegree"]').find('td[data-item-id=' + evaluationItemId + ']').find(':text').val();
+            var evaluatePrice = table.find('tr[data-name="evaluatePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text();
 
             var data = {
                 id: $("#marketCompareId").val(),
@@ -595,6 +643,8 @@
             data.evaluationItem.jsonContent = [];
             data.evaluationItem.id = evaluationItemId;
             data.evaluationItem.averagePrice = averagePrice;
+            data.evaluationItem.deveDegree = deveDegree;
+            data.evaluationItem.evaluatePrice = evaluatePrice;
             $.each(marketCompare.fields, function (j, field) {
                 if (field.fieldName) {
                     var fieldContent = {};
@@ -677,7 +727,6 @@
         //保存
         marketCompare.save = function (callback) {
             var data = marketCompare.getData();
-
             $.ajax({
                 url: '${pageContext.request.contextPath}/marketCompare/saveResult',
                 data: {
@@ -766,6 +815,7 @@
                 url: '${pageContext.request.contextPath}/marketCompare/selectCase',
                 data: {
                     mcId: marketCompare.mcId,
+                    isLand: marketCompare.isLand,
                     judgeObjectId: marketCompare.judgeObjectId,
                     areaDescJson: JSON.stringify(areaDescArray)
                 },
@@ -783,6 +833,7 @@
                             fields: result.data.fields,
                             evaluation: result.data.evaluation,
                             casesAll: marketCompare.casesAll,
+                            isLand: marketCompare.isLand,
                             cases: result.data.cases
                         });
                     } else {
@@ -873,8 +924,46 @@
                     }
                 }
             })
-
         }
+
+        //设置报酬率
+        marketCompare.setRewardRate = function (_this) {
+            rewardRateFunc.calculation($(_this).attr('data-id'), function (data) {
+                if (data) {
+                    //更新对应数据
+                    $(_this).attr('data-id', data.id);
+                    $(_this).val("报酬率" + data.resultValue);
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/marketCompare/updateAnnualCoefficient',
+                        data: {
+                            mcId: marketCompare.mcId,
+                            rewardRateId: data.id,
+                            rewardRate: AssessCommon.percentToPoint(data.resultValue)
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                //更新页面相关数据 重新测算一次
+                                if (result.data && result.data.length > 0) {
+                                    var annualTr = $("#tb_md_mc_item_list").find('tr[data-name="annualCoefficient"]');
+                                    $.each(result.data, function (i, item) {
+                                        var annualTd = annualTr.find('td[data-item-id=' + item.key + ']');
+                                        if (annualTd.find('span').length > 0) {
+                                            annualTd.find('span').text(item.value);
+                                        } else {
+                                            annualTd.text(item.value);
+                                        }
+                                    })
+                                }
+                                marketCompare.calculation();
+                            } else {
+                                toastr.error(result.errmsg);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
         window.marketCompare = marketCompare;
     })(jQuery)
 </script>
@@ -884,12 +973,12 @@
     <tbody id="tbody_mc_result">
     <tr data-name="annualCoefficient" class="forLand" style="display: none;">
         <td>使用年期修正系数</td>
-        <td></td>
+        <td data-item-id="{evaluationId}"><span>{annualCoefficient}</span></td>
         {caseAnnualCoefficient}
     </tr>
     <tr data-name="volumeRatioCoefficient" class="forLand" style="display: none;">
         <td>容积率修正系数</td>
-        <td></td>
+        <td data-item-id="{evaluationId}">{volumeRatioCoefficient}</td>
         {caseVolumeRatioCoefficient}
     </tr>
     <tr>
@@ -930,7 +1019,10 @@
     </tr>
     <tr data-name="deveDegree" class="forLand" style="display: none;">
         <td>开发程度</td>
-        <td data-item-id="{evaluationId}">{deveDegree}</td>
+        <td data-item-id="{evaluationId}">
+            <input type="text" data-rule-number="true" class="form-control" value="{deveDegree}" style="width: 50%;"
+                   onblur="marketCompare.calculation();">
+        </td>
         <td></td>
         <td></td>
     </tr>
@@ -946,6 +1038,16 @@
 <%--测算结果模板只读--%>
 <script type="text/html" id="resultTempView">
     <tbody>
+    <tr data-name="annualCoefficient" class="forLand" style="display: none;">
+        <td>使用年期修正系数</td>
+        <td data-item-id="{evaluationId}"><span>{annualCoefficient}</span></td>
+        {caseAnnualCoefficient}
+    </tr>
+    <tr data-name="volumeRatioCoefficient" class="forLand" style="display: none;">
+        <td>容积率修正系数</td>
+        <td data-item-id="{evaluationId}">{volumeRatioCoefficient}</td>
+        {caseVolumeRatioCoefficient}
+    </tr>
     <tr>
         <td colspan="{colspan}"><span style="font-weight: bold;font-size: 16px;">测算结果 </span>
 
@@ -979,6 +1081,20 @@
     <tr>
         <td>加权平均价</td>
         <td>{averagePrice}</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr data-name="deveDegree" class="forLand" style="display: none;">
+        <td>开发程度</td>
+        <td data-item-id="{evaluationId}">
+            {deveDegree}
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr data-name="evaluatePrice" class="forLand" style="display: none;">
+        <td>评估价格</td>
+        <td data-item-id="{evaluationId}">{evaluatePrice}</td>
         <td></td>
         <td></td>
     </tr>
