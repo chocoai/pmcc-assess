@@ -160,34 +160,36 @@
 
     function writeHTMLData(json) {
         $(".keyValue").empty();
-        var jsonarray = eval(json);
-        $.each(jsonarray, function (i, n) {
-            var html = "<div class='form-group' >";
-            html += "<div class='x-valid'>";
+        if(json) {
+            var jsonarray = eval(json);
+            $.each(jsonarray, function (i, n) {
+                var html = "<div class='form-group' >";
+                html += "<div class='x-valid'>";
 
-            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
-            html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='projectName'+'"+ i + "' value='" + n['projectName'] + "'>";
-            html += "</div>";
+                html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+                html += "<div class='col-sm-2'>";
+                html += "<input type='text' required class='form-control' name='projectName'+'" + i + "' value='" + n['projectName'] + "'>";
+                html += "</div>";
 
-            html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
-            html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='projectItem'+'" + i + "' value='" + n['projectItem'] + "'>";
-            html += "</div>";
+                html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
+                html += "<div class='col-sm-2'>";
+                html += "<input type='text' required class='form-control' name='projectItem'+'" + i + "' value='" + n['projectItem'] + "'>";
+                html += "</div>";
 
-            html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
-            html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='explain'+ '" + i + "' value='" + n['explain'] + "'>";
-            html += "</div>";
+                html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
+                html += "<div class='col-sm-2'>";
+                html += "<input type='text' required class='form-control' name='explain'+ '" + i + "' value='" + n['explain'] + "'>";
+                html += "</div>";
 
-            html += " <div class='col-sm-2'>";
-            html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
-            html += "</div>";
+                html += " <div class='col-sm-2'>";
+                html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
 
-            html += "</div>";
-            html += "</div>";
-            $(".keyValue").append(html);
-        })
+                html += "</div>";
+                html += "</div>";
+                $(".keyValue").append(html);
+            })
+        }
     }
 </script>
 
