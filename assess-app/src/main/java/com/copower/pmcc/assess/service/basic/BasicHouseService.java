@@ -138,7 +138,7 @@ public class BasicHouseService {
      * @throws Exception
      */
     public Integer saveAndUpdateBasicHouse(BasicHouse basicHouse) throws Exception {
-        if (basicHouse.getId() == null || basicHouse.getId().intValue() == 0) {
+        if (basicHouse.getId() == null || basicHouse.getId() == 0) {
             basicHouse.setCreator(commonService.thisUserAccount());
             return basicHouseDao.addBasicHouse(basicHouse);
         } else {

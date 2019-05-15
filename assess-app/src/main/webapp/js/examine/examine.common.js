@@ -122,40 +122,126 @@ basicCommon.blockSelect = function (this_) {
 
 basicCommon.valid = function () {
     $('.task_examine_item_tab a[data-name=estate]').tab('show');
-    if (!estateCommon.estateForm.valid('楼盘数据不完整')) {
-        return false;
+
+    if (estateCommon){
+        if (estateCommon.estateForm.size() >= 1) {
+            if (!estateCommon.estateForm.valid('楼盘数据不完整')) {
+                return false;
+            }
+        }
     }
-    if (!estateCommon.estateLandStateForm.valid('楼盘数据不完整')) {
-        return false;
+
+    if (estateCommon){
+        if (estateCommon.estateLandStateForm.size() >= 1) {
+            if (!estateCommon.estateLandStateForm.valid('楼盘数据不完整')) {
+                return false;
+            }
+        }
     }
+
     $('.task_examine_item_tab a[data-name=building]').tab('show');
-    if (!buildingCommon.buildingForm.valid('楼栋数据不完整')) {
-        return false;
+
+    try {
+        if (buildingCommon) {
+            if (buildingCommon.buildingForm.size() >= 1) {
+                if (!buildingCommon.buildingForm.valid('楼栋数据不完整')) {
+                    return false;
+                }
+            }
+        }
+    } catch (e) {
     }
     $('.task_examine_item_tab a[data-name=unit]').tab('show');
-    if (!unitCommon.unitForm.valid('单元数据不完整')) {
-        return false;
+
+    try {
+        if (unitCommon) {
+            if (unitCommon.unitForm.size() >= 1) {
+                if (!unitCommon.unitForm.valid('单元数据不完整')) {
+                    return false;
+                }
+            }
+        }
+    } catch (e) {
     }
+
     $('.task_examine_item_tab a[data-name=house]').tab('show');
-    if (!houseCommon.houseForm.valid('房屋数据不完整')) {
-        return false;
+    if (houseCommon){
+        if (houseCommon.houseForm.size() >= 1) {
+            if (!houseCommon.houseForm.valid('房屋数据不完整')) {
+                return false;
+            }
+        }
     }
-    if (houseCommon.houseTradingForm.length > 0 && !houseCommon.houseTradingForm.valid('房屋数据不完整')) {
-        return false;
+
+    if (houseCommon){
+        if (houseCommon.houseTradingForm.size() >= 1) {
+            if (houseCommon.houseTradingForm.length > 0 && !houseCommon.houseTradingForm.valid('房屋数据不完整')) {
+                return false;
+            }
+        }
     }
     return true;
 };
 
 basicCommon.getFormData = function () {
     var item = {};
-    item.basicApply = formSerializeArray(basicCommon.basicApplyForm);
-    item.basicEstate = formSerializeArray(estateCommon.estateForm);
-    item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
-    item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
-    item.basicUnit = formSerializeArray(unitCommon.unitForm);
-    item.basicHouse = formSerializeArray(houseCommon.houseForm);
-    item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
-    item.basicDamagedDegree = damagedDegree.getFormData();
+    if (basicCommon.basicApplyForm.size() >= 1) {
+        item.basicApply = formSerializeArray(basicCommon.basicApplyForm);
+    }
+
+    if (estateCommon){
+        if (estateCommon.estateForm.size() >= 1) {
+            item.basicEstate = formSerializeArray(estateCommon.estateForm);
+        }
+
+        if (estateCommon.estateLandStateForm.size() >= 1) {
+            item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
+        }
+    }
+
+    try {
+        if (buildingCommon) {
+            if (buildingCommon.buildingForm.size() >= 1) {
+                item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
+            }
+        }
+    } catch (e) {
+    }
+
+    try {
+        if (unitCommon) {
+            if (unitCommon.unitForm.size() >= 1) {
+                item.basicUnit = formSerializeArray(unitCommon.unitForm);
+            }
+        }
+    } catch (e) {
+    }
+
+    if (houseCommon){
+        if (houseCommon.houseForm.size() >= 1) {
+            item.basicHouse = formSerializeArray(houseCommon.houseForm);
+        }
+
+    }
+
+    if (houseCommon){
+        if (houseCommon.houseTradingForm.size() >= 1) {
+            var data = formSerializeArray(houseCommon.houseTradingForm);
+            try {
+                var str = data.id.split(",");
+                if (str.length > 1){
+                    data.id = str[0];
+                }
+            } catch (e) {
+            }
+            item.basicTrading = data;
+        }
+    }
+
+    if (damagedDegree){
+        item.basicDamagedDegree = damagedDegree.getFormData();
+    }
+
     item.survey = basicCommon.getSurveyJson();
     return item;
 };

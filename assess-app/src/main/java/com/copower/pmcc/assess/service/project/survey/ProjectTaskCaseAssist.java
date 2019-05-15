@@ -107,12 +107,10 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
                 //土地项目类型
                 case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE:
                     transactionTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND);
-                    transactionTypeList.addAll(baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE));
                     break;
                 //土地简单项目类型
                 case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE:
                     transactionTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND);
-                    transactionTypeList.addAll(baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE));
                     break;
                 default:
                     break;

@@ -452,9 +452,9 @@ public class DeclareRealtyLandCertService {
             }
             if (typeFlag) {
                 if (oo.getPid() != null) {
-                    declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_INCLUDEHOUSE).getId().toString());
+                    declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_INCLUDE_HOUSE_TRANSACTION).getId().toString());
                 } else {
-                    declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId().toString());
+                    declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_TRANSACTION).getId().toString());
                 }
             }
             //写入房产证的证载用途
