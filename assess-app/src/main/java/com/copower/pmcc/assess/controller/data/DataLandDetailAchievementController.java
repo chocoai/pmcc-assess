@@ -54,5 +54,14 @@ public class DataLandDetailAchievementController {
         }
     }
 
+    @GetMapping(value = "/list",name = "list get")
+    public HttpResult list(DataLandDetailAchievement oo){
+        try {
+            return HttpResult.newCorrectResult(landDetailAchievementService.getDataLandDetailAchievementList(oo));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
 
 }

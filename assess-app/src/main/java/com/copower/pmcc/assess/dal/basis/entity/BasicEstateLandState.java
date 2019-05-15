@@ -15,6 +15,10 @@ public class BasicEstateLandState {
 
     private Integer landUseCategory;
 
+    private String landLevelAchievement;
+
+    private String landLevelGrade;
+
     private Integer landLevel;
 
     private String landArea;
@@ -115,6 +119,22 @@ public class BasicEstateLandState {
 
     public void setLandUseCategory(Integer landUseCategory) {
         this.landUseCategory = landUseCategory;
+    }
+
+    public String getLandLevelAchievement() {
+        return landLevelAchievement;
+    }
+
+    public void setLandLevelAchievement(String landLevelAchievement) {
+        this.landLevelAchievement = landLevelAchievement == null ? null : landLevelAchievement.trim();
+    }
+
+    public String getLandLevelGrade() {
+        return landLevelGrade;
+    }
+
+    public void setLandLevelGrade(String landLevelGrade) {
+        this.landLevelGrade = landLevelGrade == null ? null : landLevelGrade.trim();
     }
 
     public Integer getLandLevel() {
