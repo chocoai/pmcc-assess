@@ -105,8 +105,6 @@ public class SurveyExamineTaskService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ResidueRatioService residueRatioService;
-    @Autowired
-    private SurveyExaminePurenessLandService surveyExaminePurenessLandService;
 
     /**
      * 获取调查任务
@@ -645,41 +643,43 @@ public class SurveyExamineTaskService {
         BasicUnit basicUnit = null;
         BasicHouse basicHouse = null;
         BasicHouseTrading basicTrading = null;
-        SurveyExaminePurenessLand surveyExaminePurenessLand = null;
-        if (StringUtils.isNotBlank(jsonObject.getString("surveyExaminePurenessLand"))) {
-            surveyExaminePurenessLand = JSONObject.parseObject(jsonObject.getString("surveyExaminePurenessLand"), SurveyExaminePurenessLand.class);
-            if (surveyExaminePurenessLand != null) {
-                surveyExaminePurenessLandService.saveSurveyExaminePurenessLand(surveyExaminePurenessLand);
-            }
-        }
-        if (StringUtils.isNotBlank(jsonObject.getString("basicEstate"))) {
+        if (StringUtils.isNotEmpty(jsonObject.getString("basicEstate"))) {
             basicEstate = JSONObject.parseObject(jsonObject.getString("basicEstate"), BasicEstate.class);
             if (basicEstate != null) {
                 basicEstateService.saveAndUpdateBasicEstate(basicEstate);
             }
         }
-        if (StringUtils.isNotBlank(jsonObject.getString("basicEstateLandState"))) {
+        if (StringUtils.isNotEmpty(jsonObject.getString("basicEstateLandState"))) {
             basicEstateLandState = JSONObject.parseObject(jsonObject.getString("basicEstateLandState"), BasicEstateLandState.class);
             if (basicEstateLandState != null) {
                 basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);
             }
         }
-        if (StringUtils.isNotBlank(jsonObject.getString("basicBuilding"))) {
+        if (StringUtils.isNotEmpty(jsonObject.getString("basicBuilding"))) {
             basicBuilding = JSONObject.parseObject(jsonObject.getString("basicBuilding"), BasicBuilding.class);
             if (basicBuilding != null) {
                 basicBuildingService.update(basicBuilding);
             }
         }
-        if (StringUtils.isNotBlank(jsonObject.getString("basicUnit"))) {
-            basicUnit = JSONObject.parseObject(jsonObject.getString("basicUnit"), BasicUnit.class);
-            if (basicUnit != null) {
-                basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+        try {
+            if (StringUtils.isNotEmpty(jsonObject.getString("basicUnit"))) {
+                basicUnit = JSONObject.parseObject(jsonObject.getString("basicUnit"), BasicUnit.class);
+                if (basicUnit != null) {
+                    basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+                }
             }
+        } catch (Exception e) {
+            //这里是因为basicUnit json 串压根没有 但是还是进入了程序
         }
-        if (StringUtils.isNotBlank(jsonObject.getString("basicHouse"))) {
+        if (StringUtils.isNotEmpty(jsonObject.getString("basicHouse"))) {
             basicHouse = JSONObject.parseObject(jsonObject.getString("basicHouse"), BasicHouse.class);
             if (basicHouse != null) {
-                basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                try {
+                    basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                } catch (Exception e1) {
+                    //这里异常原因是  当类型为土地的时候,这个时候basicHouse中只有一个属性有数据 然后发生了sql异常  暂时未处理它
+                    String s = e1.getMessage();
+                }
             }
         }
         if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {

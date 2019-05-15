@@ -20,6 +20,8 @@ public class BasicEstateVo extends BasicEstate {
     private String supplyWaterName;
     private String drainWaterName;
     private String supplyHeatingName;
+    private String supplyCommunicationName;
+    private String supplyRoadName;
 
     private String developerName;
     private DataDeveloperVo dataDeveloper;
@@ -118,5 +120,21 @@ public class BasicEstateVo extends BasicEstate {
 
     public void setDataDeveloper(DataDeveloperVo dataDeveloper) {
         this.dataDeveloper = dataDeveloper;
+    }
+
+    public String getSupplyCommunicationName() {
+        return supplyCommunicationName;
+    }
+
+    public void setSupplyCommunicationName(String supplyCommunicationName) {
+        this.supplyCommunicationName = supplyCommunicationName;
+    }
+
+    public String getSupplyRoadName() {
+        return supplyRoadName;
+    }
+
+    public void setSupplyRoadName(String supplyRoadName) {
+        this.supplyRoadName = supplyRoadName;
     }
 }
