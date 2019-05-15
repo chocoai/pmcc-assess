@@ -57,12 +57,12 @@
             data.keyValue=[];
             $("#keyValueFrm").find('.form-group').each(function () {
                 var item = {};
-                var projectName = $(this).find('[name^=projectName]').val();
-                var projectItem = $(this).find('[name^=projectItem]').val();
+                var keyName = $(this).find('[name^=keyName]').val();
+                var valueName = $(this).find('[name^=valueName]').val();
                 var explain = $(this).find('[name^=explain]').val();
-                if (projectName && projectItem) {
-                    item.projectName = projectName;
-                    item.projectItem = projectItem;
+                if (keyName && valueName) {
+                    item.keyName = keyName;
+                    item.valueName = valueName;
                     item.explain = explain;
                     data.keyValue.push(item);
                 }
@@ -127,14 +127,14 @@
         var html = "<div class='form-group' >";
         html += "<div class='x-valid'>";
 
-        html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+        html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='projectName'+ '" + num + "'>";
+        html += "<input type='text' required class='form-control' name='keyName'+ '" + num + "'>";
         html += "</div>";
 
-        html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
+        html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='projectItem'+ '" + num + "'>";
+        html += "<input type='text' required class='form-control' name='valueName'+ '" + num + "'>";
         html += "</div>";
 
         html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
@@ -166,14 +166,14 @@
                 var html = "<div class='form-group' >";
                 html += "<div class='x-valid'>";
 
-                html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+                html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
                 html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='projectName'+'" + i + "' value='" + n['projectName'] + "'>";
+                html += "<input type='text' required class='form-control' name='keyName'+'" + i + "' value='" + n['keyName'] + "'>";
                 html += "</div>";
 
-                html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
+                html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
                 html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='projectItem'+'" + i + "' value='" + n['projectItem'] + "'>";
+                html += "<input type='text' required class='form-control' name='valueName'+'" + i + "' value='" + n['valueName'] + "'>";
                 html += "</div>";
 
                 html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
