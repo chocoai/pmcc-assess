@@ -161,6 +161,10 @@
     function writeHTMLData(json) {
         $(".keyValue").empty();
         if(json) {
+            var str = json.substr(0,1);
+            if(str=="{"){
+                json = "["+json+"]";
+            }
             var jsonarray = eval(json);
             $.each(jsonarray, function (i, n) {
                 var html = "<div class='form-group' >";
@@ -168,17 +172,17 @@
 
                 html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
                 html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='keyName'+'" + i + "' value='" + n['keyName'] + "'>";
+                html += "<input type='text' required class='form-control' name='keyName" + i + "' value='" + n['keyName'] + "'>";
                 html += "</div>";
 
                 html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
                 html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='valueName'+'" + i + "' value='" + n['valueName'] + "'>";
+                html += "<input type='text' required class='form-control' name='valueName" + i + "' value='" + n['valueName'] + "'>";
                 html += "</div>";
 
                 html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
                 html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='explain'+ '" + i + "' value='" + n['explain'] + "'>";
+                html += "<input type='text' required class='form-control' name='explain" + i + "' value='" + n['explain'] + "'>";
                 html += "</div>";
 
                 html += " <div class='col-sm-2'>";
