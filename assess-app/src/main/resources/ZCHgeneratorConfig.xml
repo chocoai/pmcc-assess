@@ -43,8 +43,9 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_basic_house" domainObjectName="BasicHouse">
+        <table tableName="tb_basic_estate_tagging" domainObjectName="BasicEstateTagging">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="path_array" jdbcType="VARCHAR"></columnOverride>
         </table>
 
         <!--<table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">-->

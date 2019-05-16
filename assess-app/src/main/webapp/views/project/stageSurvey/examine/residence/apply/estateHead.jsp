@@ -38,9 +38,16 @@
                 <input type="text" id="txt_estate_search" data-rule-maxlength="100" placeholder="楼盘名称"
                        required="required"
                        name="name" class="form-control" value="${basicEstate.name}">
-                <span class="input-group-btn">
-                            <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
+                        <span class="input-group-btn">
+
+                            <div onclick="estateCommon.mapMarker()" class="btn btn-info">
+                                <i class="fa fa-map-marker"></i> 标注
+                            </div>
+
+                             <div style="display: none" onclick="estateCommon.mapLandMarker()" class="btn btn-info">
+                                <i class="fa fa-map-marker"></i> 标注
+                            </div>
+
                         </span>
             </div>
         </div>

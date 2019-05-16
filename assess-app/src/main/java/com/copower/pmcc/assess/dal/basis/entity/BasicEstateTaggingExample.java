@@ -505,6 +505,76 @@ public class BasicEstateTaggingExample {
             return (Criteria) this;
         }
 
+        public Criteria andPathArrayIsNull() {
+            addCriterion("path_array is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayIsNotNull() {
+            addCriterion("path_array is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayEqualTo(String value) {
+            addCriterion("path_array =", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayNotEqualTo(String value) {
+            addCriterion("path_array <>", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayGreaterThan(String value) {
+            addCriterion("path_array >", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayGreaterThanOrEqualTo(String value) {
+            addCriterion("path_array >=", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayLessThan(String value) {
+            addCriterion("path_array <", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayLessThanOrEqualTo(String value) {
+            addCriterion("path_array <=", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayLike(String value) {
+            addCriterion("path_array like", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayNotLike(String value) {
+            addCriterion("path_array not like", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayIn(List<String> values) {
+            addCriterion("path_array in", values, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayNotIn(List<String> values) {
+            addCriterion("path_array not in", values, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayBetween(String value1, String value2) {
+            addCriterion("path_array between", value1, value2, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayNotBetween(String value1, String value2) {
+            addCriterion("path_array not between", value1, value2, "pathArray");
+            return (Criteria) this;
+        }
+
         public Criteria andAttachmentIdIsNull() {
             addCriterion("attachment_id is null");
             return (Criteria) this;
