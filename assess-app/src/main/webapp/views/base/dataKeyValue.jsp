@@ -7,7 +7,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">key-value管理</h4>
+                <h3 class="modal-title">key-value管理</h3>
             </div>
             <form id="keyValueFrm" class="form-horizontal">
                 <input type="hidden" id="id" name="id">
@@ -57,12 +57,12 @@
             data.keyValue=[];
             $("#keyValueFrm").find('.form-group').each(function () {
                 var item = {};
-                var keyName = $(this).find('[name^=keyName]').val();
-                var valueName = $(this).find('[name^=valueName]').val();
+                var key = $(this).find('[name^=key]').val();
+                var value = $(this).find('[name^=value]').val();
                 var explain = $(this).find('[name^=explain]').val();
-                if (keyName && valueName) {
-                    item.keyName = keyName;
-                    item.valueName = valueName;
+                if (key && value) {
+                    item.key = key;
+                    item.value = value;
                     item.explain = explain;
                     data.keyValue.push(item);
                 }
@@ -129,12 +129,12 @@
 
         html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='keyName'+ '" + num + "'>";
+        html += "<input type='text' required class='form-control' name='key'+ '" + num + "'>";
         html += "</div>";
 
         html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='valueName'+ '" + num + "'>";
+        html += "<input type='text' required class='form-control' name='value'+ '" + num + "'>";
         html += "</div>";
 
         html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
@@ -168,12 +168,12 @@
 
                 html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
                 html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='keyName'+'" + i + "' value='" + n['keyName'] + "'>";
+                html += "<input type='text' required class='form-control' name='key'+'" + i + "' value='" + n['key'] + "'>";
                 html += "</div>";
 
                 html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
                 html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='valueName'+'" + i + "' value='" + n['valueName'] + "'>";
+                html += "<input type='text' required class='form-control' name='value'+'" + i + "' value='" + n['value'] + "'>";
                 html += "</div>";
 
                 html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
