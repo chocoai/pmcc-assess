@@ -199,6 +199,7 @@
             $("#frmQuery").find("select[name='category']").empty().html(html).trigger('change');
         });
         AssessCommon.initAreaInfo({
+            useDefaultText: false,
             provinceTarget: $("#frmQuery").find("select[name='province']"),
             cityTarget: $("#frmQuery").find("select[name='city']"),
             districtTarget: $("#frmQuery").find("select[name='district']")
