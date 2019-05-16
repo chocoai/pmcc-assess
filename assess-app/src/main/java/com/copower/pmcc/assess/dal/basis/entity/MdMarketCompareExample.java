@@ -296,6 +296,126 @@ public class MdMarketCompareExample {
             return (Criteria) this;
         }
 
+        public Criteria andRewardRateIsNull() {
+            addCriterion("reward_rate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIsNotNull() {
+            addCriterion("reward_rate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateEqualTo(BigDecimal value) {
+            addCriterion("reward_rate =", value, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateNotEqualTo(BigDecimal value) {
+            addCriterion("reward_rate <>", value, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateGreaterThan(BigDecimal value) {
+            addCriterion("reward_rate >", value, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("reward_rate >=", value, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateLessThan(BigDecimal value) {
+            addCriterion("reward_rate <", value, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("reward_rate <=", value, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIn(List<BigDecimal> values) {
+            addCriterion("reward_rate in", values, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateNotIn(List<BigDecimal> values) {
+            addCriterion("reward_rate not in", values, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("reward_rate between", value1, value2, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("reward_rate not between", value1, value2, "rewardRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdIsNull() {
+            addCriterion("reward_rate_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdIsNotNull() {
+            addCriterion("reward_rate_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdEqualTo(Integer value) {
+            addCriterion("reward_rate_id =", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdNotEqualTo(Integer value) {
+            addCriterion("reward_rate_id <>", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdGreaterThan(Integer value) {
+            addCriterion("reward_rate_id >", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("reward_rate_id >=", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdLessThan(Integer value) {
+            addCriterion("reward_rate_id <", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("reward_rate_id <=", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdIn(List<Integer> values) {
+            addCriterion("reward_rate_id in", values, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdNotIn(List<Integer> values) {
+            addCriterion("reward_rate_id not in", values, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdBetween(Integer value1, Integer value2) {
+            addCriterion("reward_rate_id between", value1, value2, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("reward_rate_id not between", value1, value2, "rewardRateId");
+            return (Criteria) this;
+        }
+
         public Criteria andPriceIsNull() {
             addCriterion("price is null");
             return (Criteria) this;

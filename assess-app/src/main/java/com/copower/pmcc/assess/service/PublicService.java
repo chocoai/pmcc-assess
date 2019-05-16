@@ -1,15 +1,16 @@
 package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
-import com.copower.pmcc.assess.dto.input.project.declare.DeclareSeatDto;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -347,5 +348,27 @@ public class PublicService {
         return maxDecimal.divide(minDecimal,2,BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
     }
 
-
+    /**
+     * 获取value值 form kevaluedto的json字符串数组中
+     * @param kevValueJson
+     * @param key
+     * @return
+     */
+    public String getValueFromJSON(String kevValueJson,String key){
+        if(StringUtils.isBlank(kevValueJson)) return null;
+        try {
+            List<KeyValueDto> valueDtoList = JSONObject.parseArray(kevValueJson, KeyValueDto.class);
+            if(CollectionUtils.isEmpty(valueDtoList)) return null;
+            if (CollectionUtils.isNotEmpty(valueDtoList)) {
+                for (KeyValueDto keyValueDto : valueDtoList) {
+                    if (key.equals(keyValueDto.getKey())){
+                        return keyValueDto.getValue();
+                    }
+                }
+            }
+            return null;
+        }catch (Exception e){
+            return null;
+        }
+    }
 }

@@ -3,6 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 
 <body class="nav-md footer_fixed">
@@ -12,77 +13,6 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>
-                        房价指数
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content collapse">
-                    <form id="frm_query_house_price_index" class="form-horizontal">
-                        <div class="form-group ">
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    开始时间
-                                </label>
-                                <div class="col-sm-1">
-                                    <input type="text" data-date-format="yyyy-mm-dd"
-                                           placeholder="开始日期" name="startTime"
-                                           class="form-control date-picker dbdate">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    结束时间
-                                </label>
-                                <div class="col-sm-1">
-                                    <input type="text" data-date-format="yyyy-mm-dd"
-                                           placeholder="结束日期" name="endTime"
-                                           class="form-control date-picker dbdate">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    省
-                                </label>
-                                <div class="col-sm-1">
-                                    <select name="province" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    市
-                                </label>
-                                <div class="col-sm-1">
-                                    <select name="city" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    区县
-                                </label>
-                                <div class="col-sm-1">
-                                    <select name="district" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <button type="button" class="btn btn-primary" onclick="loadHousePriceIndexList();">
-                                    查询
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <table class="table table-bordered" id="tb_house_price_index_list">
-                    </table>
-                </div>
-            </div>
             <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
             <div class="x_panel">
                 <div class="x_content">
@@ -107,6 +37,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
 <input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
@@ -121,48 +52,12 @@
             fields: JSON.parse($("#fieldsJSON").val()),
             evaluation: JSON.parse($("#evaluationJSON").val()),
             casesAll: JSON.parse($("#casesAllJSON").val()),
-            mcId: '${mcId}',
-            judgeObjectId:'${judgeObject.id}',
+            mcId: ${mcId},
+            isLand: ${isLand},
+            judgeObjectId: '${judgeObject.id}',
             cases: JSON.parse($("#casesJSON").val())
         });
-
-
-        loadHousePriceIndexList();
-        AssessCommon.initAreaInfo({
-            useDefaultText: false,
-            provinceTarget: $("#frm_query_house_price_index").find("[name='province']"),
-            cityTarget: $("#frm_query_house_price_index").find("[name='city']"),
-            districtTarget: $("#frm_query_house_price_index").find("[name='district']"),
-            provinceValue: "",
-            cityValue: "",
-            districtValue: ""
-        });
     })
-
-    //加载房价指数列表
-    function loadHousePriceIndexList() {
-        var cols = [];
-        cols.push({field: 'yearMonthCalendarName', title: '日期'});
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
-        cols.push({field: 'indexCalendar', title: '指数'});
-        $("#tb_house_price_index_list").bootstrapTable('destroy');
-        TableInit("tb_house_price_index_list", "${pageContext.request.contextPath}/housePriceIndex/list", cols, {
-            startTime: $("#frm_query_house_price_index").find("[name='startTime']").val(),
-            endTime: $("#frm_query_house_price_index").find("[name='endTime']").val(),
-            province: $("#frm_query_house_price_index").find("[name='province']").val(),
-            city: $("#frm_query_house_price_index").find("[name='city']").val(),
-            district: $("#frm_query_house_price_index").find("[name='district']").val()
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
-    }
 </script>
 <script type="application/javascript">
     //提交

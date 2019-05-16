@@ -31,6 +31,7 @@ import org.junit.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
@@ -47,10 +48,22 @@ public class PoiTest {
     @org.junit.Test
     public void readExcel() {
         try {
-            String path = "C:\\Users\\kings\\Desktop\\测试数据.xls";
+           System.out.print(getPeriodAmend(new BigDecimal("0.07"),new BigDecimal("70"),new BigDecimal("29.36")));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static BigDecimal getPeriodAmend(BigDecimal rewardRate, BigDecimal legalAge, BigDecimal surplusYear) {
+        if (rewardRate == null || legalAge == null || surplusYear == null) return null;
+
+        BigDecimal pow1 = new BigDecimal(Math.pow(rewardRate.add(new BigDecimal("1")).doubleValue(), surplusYear.doubleValue()));
+        BigDecimal temp1 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow1,4,BigDecimal.ROUND_HALF_UP));
+
+        BigDecimal pow2 = new BigDecimal(Math.pow(rewardRate.add(new BigDecimal("1")).doubleValue(), legalAge.doubleValue()));
+        BigDecimal temp2 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow2,4,BigDecimal.ROUND_HALF_UP));
+
+        return temp1.divide(temp2,4,BigDecimal.ROUND_HALF_UP);
     }
 
     @Test

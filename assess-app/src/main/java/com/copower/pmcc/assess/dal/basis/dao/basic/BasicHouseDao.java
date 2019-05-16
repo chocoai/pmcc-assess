@@ -21,20 +21,20 @@ public class BasicHouseDao {
     @Autowired
     private BasicHouseMapper basicHouseMapper;
 
-    public BasicHouse getBasicHouseById(Integer id)throws SQLException{
+    public BasicHouse getBasicHouseById(Integer id){
         return basicHouseMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicHouse(BasicHouse basicHouse)throws SQLException{
+    public Integer addBasicHouse(BasicHouse basicHouse){
         basicHouseMapper.insertSelective(basicHouse);
         return basicHouse.getId();
     }
 
-    public boolean updateBasicHouse(BasicHouse basicHouse)throws SQLException{
+    public boolean updateBasicHouse(BasicHouse basicHouse){
         return basicHouseMapper.updateByPrimaryKeySelective(basicHouse)==1;
     }
 
-    public boolean deleteBasicHouse(Integer id)throws SQLException{
+    public boolean deleteBasicHouse(Integer id){
         return  basicHouseMapper.deleteByPrimaryKey(id)==1;
     }
 

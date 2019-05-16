@@ -222,6 +222,8 @@ public class BasicEstateService {
         vo.setSupplyWaterName(baseDataDicService.getNameById(basicEstate.getSupplyWater()));
         vo.setDrainWaterName(baseDataDicService.getNameById(basicEstate.getDrainWater()));
         vo.setSupplyHeatingName(baseDataDicService.getNameById(basicEstate.getSupplyHeating()));
+        vo.setSupplyCommunicationName(baseDataDicService.getNameById(basicEstate.getSupplyCommunication()));
+        vo.setSupplyRoadName(baseDataDicService.getNameById(basicEstate.getSupplyRoad()));
         if (NumberUtils.isNumber(basicEstate.getDeveloper())){
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(Integer.parseInt(basicEstate.getDeveloper()));
             if (dataDeveloper != null){
@@ -290,7 +292,7 @@ public class BasicEstateService {
         return objectMap;
     }
 
-    public BasicEstate getBasicEstateByApplyId(Integer applyId) throws Exception {
+    public BasicEstate getBasicEstateByApplyId(Integer applyId) {
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
         if (applyId == null || applyId == 0)

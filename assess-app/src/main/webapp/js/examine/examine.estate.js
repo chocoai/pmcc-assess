@@ -129,6 +129,12 @@
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.supplyHeating, function (html, data) {
             estateCommon.estateForm.find('select.supplyHeating').empty().html(html).trigger('change');
         }, true);
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.supplyCommunication, function (html, data) {
+            estateCommon.estateForm.find('select.supplyCommunication').empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.supplyRoad, function (html, data) {
+            estateCommon.estateForm.find('select.supplyRoad').empty().html(html).trigger('change');
+        }, true);
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
             estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
@@ -256,17 +262,21 @@
      * 启用自动填充,需要引入
      */
     estateCommon.autocompleteStart = function () {
-        $("#txt_estate_search").apEstate({
-            onSelect: function (id, name) {
-                estateCommon.onSelect(id);
-            }
-        });
-        estateCommon.estateForm.find('[name=developerName]').apDeveloper({
-            onSelect: function (id, name) {
-                estateCommon.estateForm.find('input[name=developer]').val(id);
-                estateCommon.estateForm.find('input[name=developerName]').val(name);
-            }
-        });
+        if ($("#txt_estate_search").size() >= 1){
+            $("#txt_estate_search").apEstate({
+                onSelect: function (id, name) {
+                    estateCommon.onSelect(id);
+                }
+            });
+        }
+        if (estateCommon.estateForm.find('[name=developerName]').size() >= 1){
+            estateCommon.estateForm.find('[name=developerName]').apDeveloper({
+                onSelect: function (id, name) {
+                    estateCommon.estateForm.find('input[name=developer]').val(id);
+                    estateCommon.estateForm.find('input[name=developerName]').val(name);
+                }
+            });
+        }
     };
 
     //楼盘标注

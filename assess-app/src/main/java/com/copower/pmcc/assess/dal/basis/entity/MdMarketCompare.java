@@ -10,6 +10,10 @@ public class MdMarketCompare {
 
     private Date valueTimePoint;
 
+    private BigDecimal rewardRate;
+
+    private Integer rewardRateId;
+
     private BigDecimal price;
 
     private String creator;
@@ -40,6 +44,22 @@ public class MdMarketCompare {
 
     public void setValueTimePoint(Date valueTimePoint) {
         this.valueTimePoint = valueTimePoint;
+    }
+
+    public BigDecimal getRewardRate() {
+        return rewardRate;
+    }
+
+    public void setRewardRate(BigDecimal rewardRate) {
+        this.rewardRate = rewardRate;
+    }
+
+    public Integer getRewardRateId() {
+        return rewardRateId;
+    }
+
+    public void setRewardRateId(Integer rewardRateId) {
+        this.rewardRateId = rewardRateId;
     }
 
     public BigDecimal getPrice() {

@@ -56,6 +56,10 @@ public class BasicEstate {
 
     private Integer supplyPower;
 
+    private Integer supplyCommunication;
+
+    private Integer supplyRoad;
+
     private Integer supplyWater;
 
     private Integer drainWater;
@@ -276,6 +280,22 @@ public class BasicEstate {
 
     public void setSupplyPower(Integer supplyPower) {
         this.supplyPower = supplyPower;
+    }
+
+    public Integer getSupplyCommunication() {
+        return supplyCommunication;
+    }
+
+    public void setSupplyCommunication(Integer supplyCommunication) {
+        this.supplyCommunication = supplyCommunication;
+    }
+
+    public Integer getSupplyRoad() {
+        return supplyRoad;
+    }
+
+    public void setSupplyRoad(Integer supplyRoad) {
+        this.supplyRoad = supplyRoad;
     }
 
     public Integer getSupplyWater() {

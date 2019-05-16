@@ -26,7 +26,6 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -90,8 +89,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BaseDataDicService baseDataDicService;
-    @Autowired
-    private SurveyExaminePurenessLandService surveyExaminePurenessLandService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -175,7 +172,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectCategoryId());
-        SurveyExaminePurenessLand surveyExaminePurenessLand = null;
         String view = null;
         final String landView = apply ? "/project/stageSurvey/taskExamineLandInfoIndex" : "/project/stageSurvey/taskExamineLandInfoApproval";
         final String houseView = apply ? "/project/stageSurvey/taskExamineInfoIndex" : "/project/stageSurvey/taskExamineInfoApproval";
@@ -184,20 +180,16 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             switch (projectClassify.getFieldName()) {
                 //土地 项目类型
                 case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE:
-                    surveyExaminePurenessLand = this.setLandExamineParam(projectPlanDetails, declareRecord, surveyExamineInfo);
-                    if (surveyExaminePurenessLand != null) {
-                        view = landView;
-                    } else {
+                    view = getLandExamineView(declareRecord, surveyExamineInfo, landView);
+                    if (StringUtils.isEmpty(view)) {
                         //处理为默认房产
                         view = houseView;
                     }
                     break;
                 //土地简单 项目类型
                 case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE:
-                    surveyExaminePurenessLand = this.setLandExamineParam(projectPlanDetails, declareRecord, surveyExamineInfo);
-                    if (surveyExaminePurenessLand != null) {
-                        view = landView;
-                    } else {
+                    view = getLandExamineView(declareRecord, surveyExamineInfo, landView);
+                    if (StringUtils.isEmpty(view)) {
                         //处理为默认房产
                         view = houseView;
                     }
@@ -218,29 +210,12 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         modelAndView.addObject("declareRecord", declareRecord);
-        //纯土地情况需要添加的参数
-        if (Objects.equal(landView, view)) {
-            if (surveyExaminePurenessLand != null) {
-                if (surveyExaminePurenessLand.getId() == null) {
-                    surveyExaminePurenessLand.setCreator(projectPlanDetails.getCreator());
-                    surveyExaminePurenessLand.setProcessInsId(projectPlanDetails.getProcessInsId());
-                    surveyExaminePurenessLand.setPlanDetailsId(projectPlanDetails.getId());
-                    surveyExaminePurenessLand.setProjectId(projectPlanDetails.getProjectId());
-                    surveyExaminePurenessLand.setDeclareId(projectPlanDetails.getDeclareRecordId());
-                    surveyExaminePurenessLandService.saveSurveyExaminePurenessLand(surveyExaminePurenessLand);
-                }
-                modelAndView.addObject(FormatUtils.toLowerCaseFirstChar(SurveyExaminePurenessLand.class.getSimpleName()), surveyExaminePurenessLandService.getSurveyExaminePurenessLandVo(surveyExaminePurenessLand));
-                modelAndView.addObject(String.format("%s%s", FormatUtils.toLowerCaseFirstChar(SurveyExaminePurenessLand.class.getSimpleName()), "JSON"), JSON.toJSONString(surveyExaminePurenessLandService.getSurveyExaminePurenessLandVo(surveyExaminePurenessLand)));
-            }
-        }
-        if (Objects.equal(houseView,view)){
-            //房产需要添加的参数情况
-            setIndustryExamineView(userAccount, projectPlanDetails, modelAndView);
-            try {
-                setIndustryExamineParam(declareRecord, surveyExamineInfo, projectPlanDetails, modelAndView);
-            } catch (Exception e) {
-                logger.error("参数设置异常!", e);
-            }
+
+        setIndustryExamineView(userAccount, projectPlanDetails, modelAndView);
+        try {
+            setIndustryExamineParam(declareRecord, surveyExamineInfo, projectPlanDetails, modelAndView);
+        } catch (Exception e) {
+            logger.error("参数设置异常!", e);
         }
         return view;
     }
@@ -248,37 +223,26 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     /**
      * 处理是否为纯土地问题
      *
-     * @param projectPlanDetails
      * @param declareRecord
      * @param surveyExamineInfo
      * @return
      */
-    private SurveyExaminePurenessLand setLandExamineParam(ProjectPlanDetails projectPlanDetails, DeclareRecord declareRecord, SurveyExamineInfo surveyExamineInfo) {
-        SurveyExaminePurenessLand query = new SurveyExaminePurenessLand();
-        query.setPlanDetailsId(projectPlanDetails.getId());
-        query.setProjectId(projectPlanDetails.getProjectId());
-        query.setDeclareId(projectPlanDetails.getDeclareRecordId());
-        List<SurveyExaminePurenessLand> surveyExaminePurenessLandList = surveyExaminePurenessLandService.getSurveyExaminePurenessLandList(query);
-        //现场查勘的情况
-        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getType())) {
-            if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId(), new Integer(declareRecord.getType()))) {
-                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(surveyExaminePurenessLandList)) {
-                    return surveyExaminePurenessLandList.stream().findFirst().get();
-                } else {
-                    return new SurveyExaminePurenessLand();
-                }
+    private String getLandExamineView(final DeclareRecord declareRecord, final SurveyExamineInfo surveyExamineInfo, final String landView) {
+        //查勘
+        if (declareRecord != null && StringUtils.isNotEmpty(declareRecord.getType())) {
+            if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_TRANSACTION).getId(), new Integer(declareRecord.getType()))) {
+                return landView;
+            }
+            if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_LEASE).getId(), new Integer(declareRecord.getType()))) {
+                return landView;
             }
         } else {
-            //可以添加多个案例的情况
-            //交易案例 这个时候才没有申报id需要从case案例这获取用户选择的类型,如果是纯土地那就使用SurveyExaminePurenessLand来处理，否则的话还是使用房产案例与查勘
-            if (surveyExamineInfo != null) {
-                if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE).getId(), surveyExamineInfo.getTransactionType())) {
-                    if (org.apache.commons.collections.CollectionUtils.isNotEmpty(surveyExaminePurenessLandList)) {
-                        return surveyExaminePurenessLandList.stream().findFirst().get();
-                    } else {
-                        return new SurveyExaminePurenessLand();
-                    }
-                }
+            //交易案例
+            if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_TRANSACTION).getId(), surveyExamineInfo.getTransactionType())) {
+                return landView;
+            }
+            if (Objects.equal(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_LEASE).getId(), surveyExamineInfo.getTransactionType())) {
+                return landView;
             }
         }
         return null;

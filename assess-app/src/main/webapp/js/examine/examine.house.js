@@ -549,14 +549,16 @@
     };
 
     houseCommon.autocompleteStart = function () {
-        $("#txt_House_search").apHouse({
-            caseUnitId: function () {
-                return basicCommon.getCaseUnitId();
-            },
-            onSelect: function (id, name) {
-                houseCommon.onSelect(id);
-            }
-        });
+        if ($("#txt_House_search").size() >= 1){
+            $("#txt_House_search").apHouse({
+                caseUnitId: function () {
+                    return basicCommon.getCaseUnitId();
+                },
+                onSelect: function (id, name) {
+                    houseCommon.onSelect(id);
+                }
+            });
+        }
     };
 
 
