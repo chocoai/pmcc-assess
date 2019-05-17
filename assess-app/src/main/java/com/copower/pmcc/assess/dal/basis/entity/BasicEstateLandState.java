@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class BasicEstateLandState {
@@ -15,9 +16,7 @@ public class BasicEstateLandState {
 
     private Integer landUseCategory;
 
-    private String landLevelAchievement;
-
-    private String landLevelGrade;
+    private String landLevelContent;
 
     private Integer landLevel;
 
@@ -64,6 +63,12 @@ public class BasicEstateLandState {
     private String conclusion;
 
     private String holdOn;
+
+    private BigDecimal buildingHeightLimit;
+
+    private BigDecimal investmentIntensity;
+
+    private String specialRestrictions;
 
     private Integer infrastructureCompleteness;
 
@@ -121,20 +126,12 @@ public class BasicEstateLandState {
         this.landUseCategory = landUseCategory;
     }
 
-    public String getLandLevelAchievement() {
-        return landLevelAchievement;
+    public String getLandLevelContent() {
+        return landLevelContent;
     }
 
-    public void setLandLevelAchievement(String landLevelAchievement) {
-        this.landLevelAchievement = landLevelAchievement == null ? null : landLevelAchievement.trim();
-    }
-
-    public String getLandLevelGrade() {
-        return landLevelGrade;
-    }
-
-    public void setLandLevelGrade(String landLevelGrade) {
-        this.landLevelGrade = landLevelGrade == null ? null : landLevelGrade.trim();
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 
     public Integer getLandLevel() {
@@ -319,6 +316,30 @@ public class BasicEstateLandState {
 
     public void setHoldOn(String holdOn) {
         this.holdOn = holdOn == null ? null : holdOn.trim();
+    }
+
+    public BigDecimal getBuildingHeightLimit() {
+        return buildingHeightLimit;
+    }
+
+    public void setBuildingHeightLimit(BigDecimal buildingHeightLimit) {
+        this.buildingHeightLimit = buildingHeightLimit;
+    }
+
+    public BigDecimal getInvestmentIntensity() {
+        return investmentIntensity;
+    }
+
+    public void setInvestmentIntensity(BigDecimal investmentIntensity) {
+        this.investmentIntensity = investmentIntensity;
+    }
+
+    public String getSpecialRestrictions() {
+        return specialRestrictions;
+    }
+
+    public void setSpecialRestrictions(String specialRestrictions) {
+        this.specialRestrictions = specialRestrictions == null ? null : specialRestrictions.trim();
     }
 
     public Integer getInfrastructureCompleteness() {

@@ -141,6 +141,9 @@
         //必要的准备
         estateCommon.estateForm.find("select[name='supplyCommunication']").parent().parent().show();
         estateCommon.estateForm.find("select[name='supplyRoad']").parent().parent().show();
+        estateCommon.estateLandStateForm.find("input[name='buildingHeightLimit']").parent().parent().show();
+        estateCommon.estateLandStateForm.find("input[name='investmentIntensity']").parent().parent().show();
+        estateCommon.estateLandStateForm.find("textarea[name='specialRestrictions']").parent().parent().show();
         estateCommon.estateForm.find("div[onclick]").each(function (i,n) {
             var fName = $(n).attr("onclick");
             if (fName == 'estateCommon.mapMarker()'){

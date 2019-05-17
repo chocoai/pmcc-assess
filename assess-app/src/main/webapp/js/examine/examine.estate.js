@@ -423,6 +423,7 @@
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategory}/g, categoryData.id);
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, typeData.name);
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGrade}/g, html);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(n));
                         target.append(landLevelBodyHtml);
                     }, true);
                 });
