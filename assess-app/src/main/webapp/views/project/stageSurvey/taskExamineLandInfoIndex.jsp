@@ -138,8 +138,18 @@
         //房屋自动填充插件
         houseCommon.autocompleteStart();
 
+        //必要的准备
         estateCommon.estateForm.find("select[name='supplyCommunication']").parent().parent().show();
         estateCommon.estateForm.find("select[name='supplyRoad']").parent().parent().show();
+        estateCommon.estateForm.find("div[onclick]").each(function (i,n) {
+            var fName = $(n).attr("onclick");
+            if (fName == 'estateCommon.mapMarker()'){
+                $(n).hide();
+            }
+            if (fName == 'estateCommon.mapLandMarker()'){
+                $(n).show();
+            }
+        });
     });
 </script>
 <script type="text/javascript">

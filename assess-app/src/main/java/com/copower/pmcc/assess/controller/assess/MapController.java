@@ -1,6 +1,12 @@
 package com.copower.pmcc.assess.controller.assess;
 
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
+import com.google.common.base.Objects;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by kings on 2018-5-17.
@@ -18,6 +27,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class MapController {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/positionPicker", name = "当前位置定位")
@@ -29,6 +40,23 @@ public class MapController {
     @RequestMapping(value = "/estateTagging", name = "楼盘标注")
     public ModelAndView estateTagging() {
         ModelAndView modelAndView = new ModelAndView("base/estateTaggingView");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/landTagging", name = "土地标注画区块", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView landTagging(String readonly, Integer applyId) {
+        ModelAndView modelAndView = new ModelAndView("base/landTaggingView");
+        List<BasicEstateTaggingVo> taggingVoList = basicEstateTaggingService.getEstateTaggingList(applyId, EstateTaggingTypeEnum.ESTATE.getKey());
+        if (CollectionUtils.isNotEmpty(taggingVoList)) {
+            if (StringUtils.isNotEmpty(taggingVoList.stream().findFirst().get().getPathArray())) {
+                modelAndView.addObject("pathArray", taggingVoList.stream().findFirst().get().getPathArray());
+            }
+        }
+        if (StringUtils.isBlank(readonly) || Objects.equal(readonly, "undefined")) {
+            modelAndView.addObject("readonly", true);
+        } else {
+            modelAndView.addObject("readonly", false);
+        }
         return modelAndView;
     }
 

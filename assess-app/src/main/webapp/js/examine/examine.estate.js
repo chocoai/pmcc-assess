@@ -262,14 +262,14 @@
      * 启用自动填充,需要引入
      */
     estateCommon.autocompleteStart = function () {
-        if ($("#txt_estate_search").size() >= 1){
+        if ($("#txt_estate_search").size() >= 1) {
             $("#txt_estate_search").apEstate({
                 onSelect: function (id, name) {
                     estateCommon.onSelect(id);
                 }
             });
         }
-        if (estateCommon.estateForm.find('[name=developerName]').size() >= 1){
+        if (estateCommon.estateForm.find('[name=developerName]').size() >= 1) {
             estateCommon.estateForm.find('[name=developerName]').apDeveloper({
                 onSelect: function (id, name) {
                     estateCommon.estateForm.find('input[name=developer]').val(id);
@@ -300,8 +300,49 @@
         });
     };
 
+    //土地标注画区块
+    estateCommon.mapLandMarker = function (readonly) {
+        var contentUrl = getContextPath() + '/map/landTagging?applyId='+basicCommon.getApplyId()+"&readonly="+readonly;
+        layer.open({
+            type: 2,
+            title: '土地标注画区块',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: contentUrl,
+            success: function (layero) {
+                estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
+            },
+            cancel: function () {
+                if (!readonly) {
+                    //到iframe中获取数据
+                    if (estateCommon.estateMapiframe.pathArrayJson){
+                        $.ajax({
+                            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+                            data: {
+                                applyId: basicCommon.getApplyId(),
+                                type: 'estate',
+                                pathArray: estateCommon.estateMapiframe.pathArrayJson,
+                                name: estateCommon.getEstateName()
+                            },
+                            success: function (result) {
+                                if (result.ret) {
+                                    console.log(JSON.parse(estateCommon.estateMapiframe.pathArrayJson));
+                                    toastr.success('标记成功');
+                                } else {
+                                    Alert(result.errmsg);
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        });
+    };
+
     //添加标注
-    estateCommon.addMarker = function (lng, lat) {
+    estateCommon.addMarker = function (lng, lat, pathArray) {
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
             data: {
@@ -309,6 +350,7 @@
                 type: 'estate',
                 lng: lng,
                 lat: lat,
+                pathArray: pathArray,
                 name: estateCommon.getEstateName()
             },
             success: function (result) {
@@ -375,8 +417,8 @@
             landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, n.reamark);
             landLevelBodyHtml = landLevelBodyHtml.replace(/{achievement}/g, n.achievement);
             landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelChange}/g, n.id);
-            AssessCommon.getDataDicInfo(n.type , function (typeData) {
-                AssessCommon.getDataDicInfo(n.category , function (categoryData) {
+            AssessCommon.getDataDicInfo(n.type, function (typeData) {
+                AssessCommon.getDataDicInfo(n.category, function (categoryData) {
                     AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, n.grade, function (html, data) {
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, categoryData.name);
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategory}/g, categoryData.id);
@@ -393,9 +435,9 @@
         $(that).parent().parent().remove();
     };
 
-    estateCommon.landLevelHandle = function (that,category) {
+    estateCommon.landLevelHandle = function (that, category) {
         var group = $(that).closest('.group');
-        var grade = $(that).val() ;
+        var grade = $(that).val();
         if (category) {
             AssessCommon.getDataDicInfo(category, function (data) {
                 var obj = JSON.parse(data.remark);

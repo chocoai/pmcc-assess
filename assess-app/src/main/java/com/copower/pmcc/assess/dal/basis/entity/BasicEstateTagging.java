@@ -15,6 +15,8 @@ public class BasicEstateTagging {
 
     private String name;
 
+    private String pathArray;
+
     private Integer attachmentId;
 
     private Integer deg;
@@ -73,6 +75,14 @@ public class BasicEstateTagging {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getPathArray() {
+        return pathArray;
+    }
+
+    public void setPathArray(String pathArray) {
+        this.pathArray = pathArray == null ? null : pathArray.trim();
     }
 
     public Integer getAttachmentId() {

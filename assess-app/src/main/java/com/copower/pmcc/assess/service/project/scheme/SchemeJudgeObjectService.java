@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFactorDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -675,7 +676,7 @@ public class SchemeJudgeObjectService {
 
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             if (basicApply == null) continue;
-            List<BasicEstateTagging> taggingList = basicEstateTaggingService.getEstateTaggingList(basicApply.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+            List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getEstateTaggingList(basicApply.getId(), EstateTaggingTypeEnum.UNIT.getKey());
             if (CollectionUtils.isNotEmpty(taggingList)) {
                 BasicEstateTagging tagging = taggingList.get(0);
                 SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();

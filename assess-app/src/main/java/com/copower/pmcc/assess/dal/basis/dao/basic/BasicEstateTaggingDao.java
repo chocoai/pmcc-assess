@@ -21,7 +21,7 @@ public class BasicEstateTaggingDao {
     @Autowired
     private BasicEstateTaggingMapper basicEstateTaggingMapper;
 
-    public BasicEstateTagging getBasicEstateTaggingById(Integer id) throws SQLException {
+    public BasicEstateTagging getBasicEstateTaggingById(Integer id)  {
         return basicEstateTaggingMapper.selectByPrimaryKey(id);
     }
 

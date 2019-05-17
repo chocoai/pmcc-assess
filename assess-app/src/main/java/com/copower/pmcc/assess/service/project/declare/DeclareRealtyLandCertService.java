@@ -443,15 +443,15 @@ public class DeclareRealtyLandCertService {
             declareRecord.setBisPartIn(true);
             if (oo.getLandCertGetQuestion() != null) {
                 String name = baseDataDicService.getNameById(oo.getLandCertGetQuestion());
-                if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_YES_NAME)){
+                if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_YES_NAME)) {
                     declareRecord.setHasCert(true);
                 }
-                if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_NO_NAME)){
+                if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_NO_NAME)) {
                     declareRecord.setHasCert(false);
                 }
             }
             if (typeFlag) {
-                if (oo.getPid() != null) {
+                if (oo.getPid() != null && oo.getPid().intValue() != 0) {
                     declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_INCLUDE_HOUSE_TRANSACTION).getId().toString());
                 } else {
                     declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_TRANSACTION).getId().toString());

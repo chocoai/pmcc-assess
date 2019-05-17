@@ -1,9 +1,13 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingGaoDe;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -50,7 +55,7 @@ public class BasicEstateTaggingService {
      * @return
      * @throws Exception
      */
-    public BasicEstateTagging getBasicEstateTaggingById(Integer id) throws Exception {
+    public BasicEstateTagging getBasicEstateTaggingById(Integer id) {
         return basicEstateTaggingDao.getBasicEstateTaggingById(id);
     }
 
@@ -95,13 +100,13 @@ public class BasicEstateTaggingService {
         return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging);
     }
 
-    public List<BasicEstateTagging> getEstateTaggingList(Integer applyId, String type) {
+    public List<BasicEstateTaggingVo> getEstateTaggingList(Integer applyId, String type) {
         BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
         if (applyId == null || applyId == 0)
             basicEstateTagging.setCreator(commonService.thisUserAccount());
         basicEstateTagging.setApplyId(applyId);
         basicEstateTagging.setType(type);
-        return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging);
+        return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging).stream().map(oo -> getBasicEstateTaggingVo(oo)).collect(Collectors.toList());
     }
 
     public void removeBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws Exception {
@@ -146,6 +151,7 @@ public class BasicEstateTaggingService {
 
     /**
      * 删除房屋下标注信息
+     *
      * @param applyId
      */
     public void deleteHouseTagging(Integer applyId) throws SQLException {
@@ -155,7 +161,29 @@ public class BasicEstateTaggingService {
         if (applyId == null || applyId == 0)
             where.setCreator(commonService.thisUserAccount());
         List<BasicEstateTagging> taggingList = basicEstateTaggingDao.getBasicEstateTaggingList(where);
-        if(CollectionUtils.isEmpty(taggingList)) return;
-        taggingList.forEach(o->basicEstateTaggingDao.deleteBasicEstateTagging(o.getId()));
+        if (CollectionUtils.isEmpty(taggingList)) return;
+        taggingList.forEach(o -> basicEstateTaggingDao.deleteBasicEstateTagging(o.getId()));
+    }
+
+    public BasicEstateTaggingVo getBasicEstateTaggingVo(BasicEstateTagging oo) {
+        if (oo == null) {
+            return null;
+        }
+        BasicEstateTaggingVo vo = new BasicEstateTaggingVo();
+        BeanUtils.copyProperties(oo, vo);
+        if (StringUtils.isNotEmpty(oo.getPathArray())) {
+            try {
+                JSONObject jsonObject = JSON.parseObject(oo.getPathArray());
+                if (jsonObject != null) {
+
+                }
+                List<BasicEstateTaggingGaoDe> gaoDeList = JSON.parseArray(oo.getPathArray(), BasicEstateTaggingGaoDe.class);
+                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(gaoDeList)) {
+                    vo.getGaoDeList().addAll(gaoDeList);
+                }
+            } catch (Exception e) {
+            }
+        }
+        return vo;
     }
 }
