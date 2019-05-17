@@ -68,6 +68,7 @@
             </div>
 
 
+
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -163,6 +164,37 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">地块位置</label>
+                <div class="col-sm-3">
+                    <input type="text" data-rule-maxlength="255" placeholder="地块位置"
+                           name="landLocation"
+                           class="form-control" value="${basicHouse.landLocation}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">使用年限</label>
+                <div class="col-sm-3">
+                    <input type="text" data-rule-maxlength="255" data-role-number="true" placeholder="使用年限"
+                           name="useYear"
+                           class="form-control" value="${basicHouse.useYear}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">楼面地价</label>
+                <div class="col-sm-3">
+                    <input type="text" data-rule-maxlength="255" data-role-number="true" placeholder="楼面地价"
+                           name="floorPrice"
+                           class="form-control" value="${basicHouse.floorPrice}">
+                </div>
+            </div>
+        </div>
+
+
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋出租占用情况描述</label>

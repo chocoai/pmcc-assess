@@ -51,6 +51,19 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
+
+    var ue = UE.getEditor('landDefinition', {
+        toolbars: [
+            ['source','autotypeset','bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 120,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
+
     $(function () {
         landLevel.loadLandLevelList();
     });
@@ -171,6 +184,7 @@
                 return false;
             }
             var data = formParams(landLevel.config().frm);
+            data.landDefinition = ue.getContent();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataLandLevel/saveAndUpdateDataLandLevel",
                 type: "post",
@@ -209,6 +223,9 @@
                             cityValue: result.data.city,
                             districtValue: result.data.district
                         });
+                        setTimeout(function () {
+                            ue.setContent(result.data.landDefinition, false);
+                        }, 500);
                         FileUtils.uploadFiles({
                             target: "uploadFile",
                             onUpload: function (file) {
@@ -534,6 +551,24 @@
                                             <input type="text" readonly="readonly"
                                                    class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
                                                    name="releaseDate" placeholder="发布日期">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">文号</label>
+                                        <div class="col-sm-10">
+                                            <input placeholder="文号" class="form-control" name="wordSymbol" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            基准地价定义
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div style="width:99%;height:200px;" id="landDefinition"></div>
                                         </div>
                                     </div>
                                 </div>

@@ -23,6 +23,9 @@
     <result column="use_environment" property="useEnvironment" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="case_date" property="caseDate" jdbcType="TIMESTAMP" />
+    <result column="use_year" property="useYear" jdbcType="INTEGER" />
+    <result column="floor_price" property="floorPrice" jdbcType="DECIMAL" />
+    <result column="land_location" property="landLocation" jdbcType="VARCHAR" />
     <result column="new_degree" property="newDegree" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -91,7 +94,8 @@
     id, apply_id, unit_id, house_number, floor, floor_desc, huxing_id, huxing_name, new_huxing_name, 
     spatial_distribution, spatial_distribution_desc, cert_use, practical_use, orientation, 
     area, area_desc, research_type, right_interests_restriction, use_environment, description, 
-    case_date, new_degree, creator, gmt_created, gmt_modified, price_connotation
+    case_date, use_year, floor_price, land_location, new_degree, creator, gmt_created, 
+    gmt_modified, price_connotation
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample" >
     select
@@ -134,6 +138,7 @@
       orientation, area, area_desc, 
       research_type, right_interests_restriction, 
       use_environment, description, case_date, 
+      use_year, floor_price, land_location, 
       new_degree, creator, gmt_created, 
       gmt_modified, price_connotation)
     values (#{applyId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
@@ -143,6 +148,7 @@
       #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{areaDesc,jdbcType=VARCHAR}, 
       #{researchType,jdbcType=INTEGER}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
       #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
+      #{useYear,jdbcType=INTEGER}, #{floorPrice,jdbcType=DECIMAL}, #{landLocation,jdbcType=VARCHAR}, 
       #{newDegree,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{priceConnotation,jdbcType=INTEGER})
   </insert>
@@ -211,6 +217,15 @@
       </if>
       <if test="caseDate != null" >
         case_date,
+      </if>
+      <if test="useYear != null" >
+        use_year,
+      </if>
+      <if test="floorPrice != null" >
+        floor_price,
+      </if>
+      <if test="landLocation != null" >
+        land_location,
       </if>
       <if test="newDegree != null" >
         new_degree,
@@ -288,6 +303,15 @@
       </if>
       <if test="caseDate != null" >
         #{caseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useYear != null" >
+        #{useYear,jdbcType=INTEGER},
+      </if>
+      <if test="floorPrice != null" >
+        #{floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="landLocation != null" >
+        #{landLocation,jdbcType=VARCHAR},
       </if>
       <if test="newDegree != null" >
         #{newDegree,jdbcType=VARCHAR},
@@ -378,6 +402,15 @@
       <if test="record.caseDate != null" >
         case_date = #{record.caseDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.useYear != null" >
+        use_year = #{record.useYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.floorPrice != null" >
+        floor_price = #{record.floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landLocation != null" >
+        land_location = #{record.landLocation,jdbcType=VARCHAR},
+      </if>
       <if test="record.newDegree != null" >
         new_degree = #{record.newDegree,jdbcType=VARCHAR},
       </if>
@@ -421,6 +454,9 @@
       use_environment = #{record.useEnvironment,jdbcType=INTEGER},
       description = #{record.description,jdbcType=VARCHAR},
       case_date = #{record.caseDate,jdbcType=TIMESTAMP},
+      use_year = #{record.useYear,jdbcType=INTEGER},
+      floor_price = #{record.floorPrice,jdbcType=DECIMAL},
+      land_location = #{record.landLocation,jdbcType=VARCHAR},
       new_degree = #{record.newDegree,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -493,6 +529,15 @@
       <if test="caseDate != null" >
         case_date = #{caseDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="useYear != null" >
+        use_year = #{useYear,jdbcType=INTEGER},
+      </if>
+      <if test="floorPrice != null" >
+        floor_price = #{floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="landLocation != null" >
+        land_location = #{landLocation,jdbcType=VARCHAR},
+      </if>
       <if test="newDegree != null" >
         new_degree = #{newDegree,jdbcType=VARCHAR},
       </if>
@@ -533,6 +578,9 @@
       use_environment = #{useEnvironment,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},
       case_date = #{caseDate,jdbcType=TIMESTAMP},
+      use_year = #{useYear,jdbcType=INTEGER},
+      floor_price = #{floorPrice,jdbcType=DECIMAL},
+      land_location = #{landLocation,jdbcType=VARCHAR},
       new_degree = #{newDegree,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

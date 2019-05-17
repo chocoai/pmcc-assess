@@ -109,11 +109,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            批文附件
+                                            附件
                                         </label>
                                         <div class="col-sm-5">
                                             <input id="declareRealtyLandCertFileId"
-                                                   name="declareRealtyLandCertFileId" placeholder="上传批文附件" class="form-control"
+                                                   name="declareRealtyLandCertFileId" placeholder="上传附件" class="form-control"
                                                    type="file">
                                             <div id="_declareRealtyLandCertFileId"></div>
                                         </div>

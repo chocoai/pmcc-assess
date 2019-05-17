@@ -495,6 +495,146 @@ public class DataLandLevelExample {
             return (Criteria) this;
         }
 
+        public Criteria andWordSymbolIsNull() {
+            addCriterion("word_symbol is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolIsNotNull() {
+            addCriterion("word_symbol is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolEqualTo(String value) {
+            addCriterion("word_symbol =", value, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolNotEqualTo(String value) {
+            addCriterion("word_symbol <>", value, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolGreaterThan(String value) {
+            addCriterion("word_symbol >", value, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolGreaterThanOrEqualTo(String value) {
+            addCriterion("word_symbol >=", value, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolLessThan(String value) {
+            addCriterion("word_symbol <", value, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolLessThanOrEqualTo(String value) {
+            addCriterion("word_symbol <=", value, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolLike(String value) {
+            addCriterion("word_symbol like", value, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolNotLike(String value) {
+            addCriterion("word_symbol not like", value, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolIn(List<String> values) {
+            addCriterion("word_symbol in", values, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolNotIn(List<String> values) {
+            addCriterion("word_symbol not in", values, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolBetween(String value1, String value2) {
+            addCriterion("word_symbol between", value1, value2, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordSymbolNotBetween(String value1, String value2) {
+            addCriterion("word_symbol not between", value1, value2, "wordSymbol");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionIsNull() {
+            addCriterion("land_definition is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionIsNotNull() {
+            addCriterion("land_definition is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionEqualTo(String value) {
+            addCriterion("land_definition =", value, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionNotEqualTo(String value) {
+            addCriterion("land_definition <>", value, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionGreaterThan(String value) {
+            addCriterion("land_definition >", value, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionGreaterThanOrEqualTo(String value) {
+            addCriterion("land_definition >=", value, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionLessThan(String value) {
+            addCriterion("land_definition <", value, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionLessThanOrEqualTo(String value) {
+            addCriterion("land_definition <=", value, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionLike(String value) {
+            addCriterion("land_definition like", value, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionNotLike(String value) {
+            addCriterion("land_definition not like", value, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionIn(List<String> values) {
+            addCriterion("land_definition in", values, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionNotIn(List<String> values) {
+            addCriterion("land_definition not in", values, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionBetween(String value1, String value2) {
+            addCriterion("land_definition between", value1, value2, "landDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandDefinitionNotBetween(String value1, String value2) {
+            addCriterion("land_definition not between", value1, value2, "landDefinition");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

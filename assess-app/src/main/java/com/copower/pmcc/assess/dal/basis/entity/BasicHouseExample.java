@@ -1456,6 +1456,196 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andUseYearIsNull() {
+            addCriterion("use_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearIsNotNull() {
+            addCriterion("use_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearEqualTo(Integer value) {
+            addCriterion("use_year =", value, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearNotEqualTo(Integer value) {
+            addCriterion("use_year <>", value, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearGreaterThan(Integer value) {
+            addCriterion("use_year >", value, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("use_year >=", value, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearLessThan(Integer value) {
+            addCriterion("use_year <", value, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearLessThanOrEqualTo(Integer value) {
+            addCriterion("use_year <=", value, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearIn(List<Integer> values) {
+            addCriterion("use_year in", values, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearNotIn(List<Integer> values) {
+            addCriterion("use_year not in", values, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearBetween(Integer value1, Integer value2) {
+            addCriterion("use_year between", value1, value2, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("use_year not between", value1, value2, "useYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceIsNull() {
+            addCriterion("floor_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceIsNotNull() {
+            addCriterion("floor_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceEqualTo(BigDecimal value) {
+            addCriterion("floor_price =", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceNotEqualTo(BigDecimal value) {
+            addCriterion("floor_price <>", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceGreaterThan(BigDecimal value) {
+            addCriterion("floor_price >", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_price >=", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceLessThan(BigDecimal value) {
+            addCriterion("floor_price <", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_price <=", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceIn(List<BigDecimal> values) {
+            addCriterion("floor_price in", values, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceNotIn(List<BigDecimal> values) {
+            addCriterion("floor_price not in", values, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_price between", value1, value2, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_price not between", value1, value2, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationIsNull() {
+            addCriterion("land_location is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationIsNotNull() {
+            addCriterion("land_location is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationEqualTo(String value) {
+            addCriterion("land_location =", value, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationNotEqualTo(String value) {
+            addCriterion("land_location <>", value, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationGreaterThan(String value) {
+            addCriterion("land_location >", value, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationGreaterThanOrEqualTo(String value) {
+            addCriterion("land_location >=", value, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationLessThan(String value) {
+            addCriterion("land_location <", value, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationLessThanOrEqualTo(String value) {
+            addCriterion("land_location <=", value, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationLike(String value) {
+            addCriterion("land_location like", value, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationNotLike(String value) {
+            addCriterion("land_location not like", value, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationIn(List<String> values) {
+            addCriterion("land_location in", values, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationNotIn(List<String> values) {
+            addCriterion("land_location not in", values, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationBetween(String value1, String value2) {
+            addCriterion("land_location between", value1, value2, "landLocation");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLocationNotBetween(String value1, String value2) {
+            addCriterion("land_location not between", value1, value2, "landLocation");
+            return (Criteria) this;
+        }
+
         public Criteria andNewDegreeIsNull() {
             addCriterion("new_degree is null");
             return (Criteria) this;

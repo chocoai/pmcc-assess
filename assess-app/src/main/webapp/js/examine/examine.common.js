@@ -196,7 +196,15 @@ basicCommon.getFormData = function () {
 
         if (estateCommon.estateLandStateForm.size() >= 1) {
             var data = formSerializeArray(estateCommon.estateLandStateForm) ;
-            console.log(data) ;
+            var landLevelContent = [] ;
+            estateCommon.estateLandStateForm.find("input[name='landLevelContent']").each(function (i,n) {
+                var group = $(n).closest(".group") ;
+                var obj = JSON.parse($(n).val()) ;
+                obj.grade =  group.find("select[name='landLevelGrade']").val() ;
+                obj.achievement =  group.find("input[name='landLevelAchievement']").val() ;
+                landLevelContent.push(obj) ;
+            });
+            data.landLevelContent = JSON.stringify(landLevelContent);
             item.basicEstateLandState = data;
         }
     }

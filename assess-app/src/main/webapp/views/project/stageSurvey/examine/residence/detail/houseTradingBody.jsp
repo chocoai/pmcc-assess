@@ -199,6 +199,13 @@
             <label class="form-control">${basicHouseTrading.tradingUnitPrice}</label>
         </div>
     </div>
+
+    <div class="x-valid">
+        <label class="col-sm-1 control-label">土地买售人</label>
+        <div class="col-sm-3">
+            <label class="form-control">${basicHouseTrading.landBuyerSeller}</label>
+        </div>
+    </div>
 </div>
 <div class="form-group">
     <div class="x-valid">
