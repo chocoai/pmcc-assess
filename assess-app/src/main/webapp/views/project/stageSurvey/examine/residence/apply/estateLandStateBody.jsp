@@ -193,6 +193,20 @@
                    name="compatibleRatio" value="${basicEstateLandState.compatibleRatio}">
         </div>
     </div>
+    <div class="x-valid" style="display: none">
+        <label class="col-sm-1 control-label">投资强度（万元/亩）</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" data-rule-number='true'
+                   placeholder="投资强度（万元/亩） 数字" name="investmentIntensity" value="${basicEstateLandState.investmentIntensity}">
+        </div>
+    </div>
+    <div class="x-valid" style="display: none">
+        <label class="col-sm-1 control-label">建筑限高 m²</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" data-rule-number='true'
+                   placeholder="建筑限高 m² (数字)" name="buildingHeightLimit" value="${basicEstateLandState.buildingHeightLimit}">
+        </div>
+    </div>
 </div>
 <div class="x_title">土壤</div>
 <div class="form-group">
@@ -236,6 +250,15 @@
 </div>
 
 <div class="form-group">
+    <div class="x-valid" style="display: none">
+        <label class="col-sm-1 control-label">投资强度（万元/亩）</label>
+        <div class="col-sm-11">
+           <textarea class="form-control" name="specialRestrictions">${basicEstateLandState.specialRestrictions}</textarea>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
     <div class="col-sm-12">
         <table class="table table-striped table-bordered" style="display: none">
             <thead>
@@ -273,6 +296,7 @@
         </td>
         <td>
             <input type="text" class="form-control" name="landLevelAchievement" value="{achievement}">
+            <input type="hidden" name="landLevelContent" value="{landLevelContent}">
         </td>
         <td>
             <input class="btn btn-warning" type="button" value="X"

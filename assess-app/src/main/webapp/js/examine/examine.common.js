@@ -195,7 +195,9 @@ basicCommon.getFormData = function () {
         }
 
         if (estateCommon.estateLandStateForm.size() >= 1) {
-            item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
+            var data = formSerializeArray(estateCommon.estateLandStateForm) ;
+            console.log(data) ;
+            item.basicEstateLandState = data;
         }
     }
 

@@ -175,6 +175,22 @@
             <label class="form-control">${basicEstateLandState.compatibleRatio}</label>
         </div>
     </div>
+    <c:if test="${!empty basicEstateLandState.investmentIntensity}">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">投资强度（万元/亩）</label>
+            <div class="col-sm-3">
+                <label class="form-control">${basicEstateLandState.investmentIntensity}</label>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${!empty basicEstateLandState.buildingHeightLimit}">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">建筑限高 m²</label>
+            <div class="col-sm-3">
+                <label class="form-control">${basicEstateLandState.buildingHeightLimit}</label>
+            </div>
+        </div>
+    </c:if>
 </div>
 <div class="x_title">土壤</div>
 <div class="form-group">
@@ -219,16 +235,12 @@
 </div>
 
 <div class="form-group">
-    <div class="x-valid">
-        <label class="col-sm-1 control-label">土地级别详情分值</label>
-        <div class="col-sm-3">
-            <label class="form-control">${basicEstateLandState.landLevelAchievement}</label>
+    <c:if test="${not empty basicEstateLandState.specialRestrictions}">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">投资强度（万元/亩）</label>
+            <div class="col-sm-11">
+                <label class="form-control">${basicEstateLandState.specialRestrictions}</label>
+            </div>
         </div>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-1 control-label">土地级别详情等级</label>
-        <div class="col-sm-3">
-            <label class="form-control">${basicEstateLandState.landLevelGradeName}</label>
-        </div>
-    </div>
+    </c:if>
 </div>
