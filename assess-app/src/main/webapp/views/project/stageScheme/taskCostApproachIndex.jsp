@@ -305,19 +305,20 @@
         totalPrice += ${item.bhouPrice};
         </c:forEach>
         $("#computationalBase").text(getSomePlaces(totalPrice, 2));
+        if ("${master}") {
+            getTempPrice("${master.imprevisionCost}");
 
-        getTempPrice("${master.imprevisionCost}");
+            getLandProductionUnit("${master.circulationExpense}", "${master.flatExpense}");
 
-        getLandProductionUnit("${master.circulationExpense}", "${master.flatExpense}");
+            getLandProductionInterest("${master.machineCycle}", "${master.calculatedInterest}");
 
-        getLandProductionInterest("${master.machineCycle}", "${master.calculatedInterest}");
+            getProfitBase();
 
-        getProfitBase();
+            getLandAppreciation("${master.incrementalBenefit}");
 
-        getLandAppreciation("${master.incrementalBenefit}");
-
-        if ("${master.rewardRate}") {
-            getYearFixed("${master.rewardRate}");
+            if ("${master.rewardRate}") {
+                getYearFixed("${master.rewardRate}");
+            }
         }
     })
 
@@ -344,13 +345,13 @@
 
         var confiscateLandRatio = parseFloat(AssessCommon.percentToPoint($("#confiscateLandRatio").text()));
         var subtotalUnit = $("#subtotalUnit").text();
-        if(confiscateLandRatio) {
+        if (confiscateLandRatio) {
             //代征地比例
             $("#confiscateLandUnit").text(getSomePlaces(subtotalUnit / (1 - confiscateLandRatio), 2));
             //土地取得费亩价
             var landAcquisitionUnit = (subtotalUnit) / (1 - confiscateLandRatio);
             $("#landAcquisitionUnit").text(getSomePlaces(landAcquisitionUnit, 2));
-            $("#landAcquisitionBhou").text(getSomePlaces(landAcquisitionUnit *AssessCommon.BHOU, 2));
+            $("#landAcquisitionBhou").text(getSomePlaces(landAcquisitionUnit * AssessCommon.BHOU, 2));
         }
 
         //利润基数
@@ -503,23 +504,23 @@
                 //价格修正与确定
                 var priceCorrectionUnit = yearFixed * landUseUnit * (1 + parcelIndividualFactor);
                 $("#priceCorrectionUnit").text(getSomePlaces(priceCorrectionUnit, 2));
-                $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionUnit * AssessCommon.BHOU/10000, 2));
+                $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionUnit * AssessCommon.BHOU / 10000, 2));
             }
             //E31
             var volumeFractionAmend = parseFloat("${volumeFractionAmend}");
-            if(yearFixed&&landUseUnit && parcelIndividualFactor&&volumeFractionAmend){
+            if (yearFixed && landUseUnit && parcelIndividualFactor && volumeFractionAmend) {
                 //单价H32
-                var unitPrice = yearFixed*landUseUnit*parcelIndividualFactor*volumeFractionAmend;
+                var unitPrice = yearFixed * landUseUnit * parcelIndividualFactor * volumeFractionAmend;
                 $("#unitPrice").text(getSomePlaces(unitPrice, 2));
-                $("#bhouPrice").text(getSomePlaces(unitPrice*AssessCommon.BHOU, 2));
+                $("#bhouPrice").text(getSomePlaces(unitPrice * AssessCommon.BHOU, 2));
                 //容积率H33
                 var volumetricRate = parseFloat("${volumetricRate}");
                 //估价对象楼面地价
-                $("#floorPrice").text(getSomePlaces(unitPrice/volumetricRate, 2));
+                $("#floorPrice").text(getSomePlaces(unitPrice / volumetricRate, 2));
                 //E33
                 var evaluationArea = "${evaluationArea}";
                 //委估宗地总价
-                $("#parcelTotal").text(getSomePlaces(unitPrice*evaluationArea/10000, 2));
+                $("#parcelTotal").text(getSomePlaces(unitPrice * evaluationArea / 10000, 2));
             }
 
         }

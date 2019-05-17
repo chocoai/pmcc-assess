@@ -338,7 +338,7 @@
         var developCorrect = parseFloat($("#developCorrect").val());
         console.log(developCorrect + "developCorrect")
 
-        if (standardPremium && dateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect >= 0) {
+        if (standardPremium && dateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect !=null) {
             var money = standardPremium * dateAmend * periodAmend * volumeFractionAmend * (1 + areaAndSeveralAmend) + developCorrect;
             if (money) {
                 //宗地单价
