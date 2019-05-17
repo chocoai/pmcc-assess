@@ -268,7 +268,7 @@
         formData.volumetricRate = $("#volumetricRate").text();
         formData.hasFractionAmend = $('#hasFractionAmend').is(':checked');
         formData.hasDevelopCorrect = $('#hasDevelopCorrect').is(':checked');
-        console.log(formData);
+
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
@@ -322,21 +322,16 @@
     function getParcelPrice() {
         //基准地价E4
         var standardPremium = parseFloat($("#standardPremium").text());
-        console.log(standardPremium + "standardPremium")
         //期日修正系数E5
         var dateAmend = parseFloat($("#dateAmend").text());
-        console.log(dateAmend + "dateAmend")
         //年期修正系数E6
         var periodAmend = parseFloat($("#periodAmend").text());
-        console.log(periodAmend + "periodAmend")
         //容积率修正E10
         var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
-        console.log(volumeFractionAmend + "volumeFractionAmend")
         //区域及个别修正系数E11
         var areaAndSeveralAmend = parseFloat($("#areaAndSeveralAmend").text());
         //开发程度修正E12
         var developCorrect = parseFloat($("#developCorrect").val());
-        console.log(developCorrect + "developCorrect")
 
         if (standardPremium && dateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect !=null) {
             var money = standardPremium * dateAmend * periodAmend * volumeFractionAmend * (1 + areaAndSeveralAmend) + developCorrect;
@@ -412,7 +407,6 @@
         if ($('#hasDevelopCorrect').is(':checked')) {
             $("#showDevelopCorrect").show();
         } else {
-            console.log(2);
             $("#showDevelopCorrect").hide();
             $("#developCorrect").val(0);
         }
