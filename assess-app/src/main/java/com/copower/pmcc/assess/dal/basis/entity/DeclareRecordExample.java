@@ -356,6 +356,76 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andDataFromTypeIsNull() {
+            addCriterion("data_from_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeIsNotNull() {
+            addCriterion("data_from_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeEqualTo(String value) {
+            addCriterion("data_from_type =", value, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeNotEqualTo(String value) {
+            addCriterion("data_from_type <>", value, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeGreaterThan(String value) {
+            addCriterion("data_from_type >", value, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("data_from_type >=", value, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeLessThan(String value) {
+            addCriterion("data_from_type <", value, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeLessThanOrEqualTo(String value) {
+            addCriterion("data_from_type <=", value, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeLike(String value) {
+            addCriterion("data_from_type like", value, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeNotLike(String value) {
+            addCriterion("data_from_type not like", value, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeIn(List<String> values) {
+            addCriterion("data_from_type in", values, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeNotIn(List<String> values) {
+            addCriterion("data_from_type not in", values, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeBetween(String value1, String value2) {
+            addCriterion("data_from_type between", value1, value2, "dataFromType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataFromTypeNotBetween(String value1, String value2) {
+            addCriterion("data_from_type not between", value1, value2, "dataFromType");
+            return (Criteria) this;
+        }
+
         public Criteria andProvinceIsNull() {
             addCriterion("province is null");
             return (Criteria) this;

@@ -46,13 +46,13 @@ public class MarketCompareController {
             marketCompare = mdMarketCompareService.getMdMarketCompare(mcId);
         }
         if (marketCompare == null) {
-            marketCompare = mdMarketCompareService.initExplore(judgeObject,false);
+            marketCompare = mdMarketCompareService.initExplore(judgeObject, false);
         }
         List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getProjectId());
         modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationListByMcId(marketCompare.getId());
         modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
-        modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getSetUseFieldList()));
+        modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getSetUseFieldList(judgeObject.getSetUse())));
         modelAndView.addObject("evaluationJSON", JSON.toJSONString(evaluationObject));
         modelAndView.addObject("casesJSON", JSON.toJSONString(mdMarketCompareService.getCaseListByMcId(marketCompare.getId())));
         modelAndView.addObject("mcId", marketCompare.getId());
@@ -77,7 +77,7 @@ public class MarketCompareController {
             mdCompareInitParamVo.setMcId(mcId);
             mdCompareInitParamVo.setMarketCompare(mdMarketCompareService.getMdMarketCompare(mcId));
             mdCompareInitParamVo.setCasesAll(caseAll);
-            mdCompareInitParamVo.setFields(mdMarketCompareService.getSetUseFieldList());
+            mdCompareInitParamVo.setFields(mdMarketCompareService.getSetUseFieldList(judgeObject.getSetUse()));
             mdCompareInitParamVo.setEvaluation(mdMarketCompareService.getEvaluationListByMcId(mcId));
             mdCompareInitParamVo.setCases(mdMarketCompareService.getCaseListByMcId(mcId));
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
@@ -115,14 +115,7 @@ public class MarketCompareController {
     @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
     public HttpResult selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId, Boolean isLand) {
         try {
-            mdMarketCompareService.selectCase(mcId, areaDescJson, judgeObjectId, isLand);
-            MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
-            mdCompareInitParamVo.setMcId(mcId);
-            mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);
-            mdCompareInitParamVo.setMarketCompare(mdMarketCompareService.getMdMarketCompare(mcId));
-            mdCompareInitParamVo.setFields(mdMarketCompareService.getSetUseFieldList());
-            mdCompareInitParamVo.setEvaluation(mdMarketCompareService.getEvaluationListByMcId(mcId));
-            mdCompareInitParamVo.setCases(mdMarketCompareService.getCaseListByMcId(mcId));
+            MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectCase(mcId, areaDescJson, judgeObjectId, isLand);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
             return HttpResult.newErrorResult("保存失败");
@@ -164,7 +157,7 @@ public class MarketCompareController {
     @RequestMapping(value = "/updateAnnualCoefficient", name = "更新年期修正系数", method = RequestMethod.POST)
     public HttpResult updateAnnualCoefficient(Integer mcId, Integer rewardRateId, BigDecimal rewardRate) {
         try {
-            return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(mcId,rewardRateId,rewardRate));
+            return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(mcId, rewardRateId, rewardRate));
         } catch (Exception e) {
             return HttpResult.newErrorResult("更新失败");
         }

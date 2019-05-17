@@ -213,7 +213,7 @@ public class GenerateLandEntityService {
     public String getLandArea(BasicEstateLandStateVo landStateVo) throws Exception {
         String value = landStateVo.getLandArea();
         if (StringUtils.isNotBlank(value)) {
-            return String.format("%s ㎡", value);
+            return String.format("%s㎡", value);
         } else {
             return error;
         }

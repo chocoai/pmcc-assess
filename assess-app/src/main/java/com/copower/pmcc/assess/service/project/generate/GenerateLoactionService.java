@@ -876,7 +876,7 @@ public class GenerateLoactionService {
      * @param map
      * @return 餐饮:附近有串串A,串串B;距离大约500米有火锅小郡肝串串,xx火锅;
      */
-    private String getDistanceDec(String title, Map<String, List<String>> map) {
+    public String getDistanceDec(String title, Map<String, List<String>> map) {
         StringBuilder stringBuilder = new StringBuilder(8);
         if (!map.isEmpty()) {
             stringBuilder.append(title);

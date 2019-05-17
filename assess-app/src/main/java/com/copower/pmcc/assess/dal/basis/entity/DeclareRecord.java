@@ -12,6 +12,8 @@ public class DeclareRecord {
 
     private Integer dataTableId;
 
+    private String dataFromType;
+
     private String province;
 
     private String city;
@@ -112,6 +114,14 @@ public class DeclareRecord {
 
     public void setDataTableId(Integer dataTableId) {
         this.dataTableId = dataTableId;
+    }
+
+    public String getDataFromType() {
+        return dataFromType;
+    }
+
+    public void setDataFromType(String dataFromType) {
+        this.dataFromType = dataFromType == null ? null : dataFromType.trim();
     }
 
     public String getProvince() {

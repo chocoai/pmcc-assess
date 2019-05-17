@@ -88,7 +88,6 @@ public class BaseDataDicService {
             if (sysDataDicTemp != null)//如果没有找到相应信息，则表示没有相应的数据，不进行更新处
             {
                 BeanUtils.copyProperties(sysDataDic, sysDataDicTemp);
-                sysDataDicTemp.setBisEnable(sysDataDic.getBisEnable() == null ? false : sysDataDic.getBisEnable());
                 if (!cmsBaseDataDicDao.updateObject(sysDataDicTemp)) {
                     throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
                 }

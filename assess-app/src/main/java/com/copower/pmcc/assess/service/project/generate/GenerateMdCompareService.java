@@ -1,7 +1,8 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
-import com.aspose.words.*;
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldCompareEnum;
 import com.copower.pmcc.assess.common.enums.MethodCompareFieldEnum;
@@ -29,11 +30,8 @@ import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import net.sf.jsqlparser.expression.StringValue;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.helper.DataUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +39,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by kings on 2019-1-31.
@@ -97,18 +94,6 @@ public class GenerateMdCompareService {
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.dataHousePriceIndexService = SpringContextUtils.getBean(DataHousePriceIndexService.class);
         getEvaluationItemList();
-    }
-
-    /**
-     * 获取设定用途字段
-     *
-     * @return
-     */
-    public List<DataSetUseField> getSetUseFieldList() {
-        if (CollectionUtils.isNotEmpty(setUseFieldList)) return setUseFieldList;
-        List<DataSetUseField> fields = mdMarketCompareService.getSetUseFieldList();
-        this.setUseFieldList = fields;
-        return fields;
     }
 
     /**
