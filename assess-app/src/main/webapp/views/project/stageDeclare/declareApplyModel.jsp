@@ -1651,11 +1651,11 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋所有权人<span
+                <label class="col-sm-1 control-label">权利人<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="房屋所有权人" name="ownership" class="form-control"
+                           placeholder="权利人" name="ownership" class="form-control"
                            required="required">
                 </div>
             </div>
@@ -2020,10 +2020,10 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋所有权人</label>
+                <label class="col-sm-1 control-label">权利人</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="房屋所有权人" name="ownership" class="form-control">
+                           placeholder="权利人" name="ownership" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -2571,6 +2571,16 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">总层数</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="总层数(数字)" name="floorCount" class="form-control" data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
+        </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
         <div class="form-group">
@@ -2592,14 +2602,6 @@
                     <input placeholder="土地使用年限止" required
                            name="useEndDate" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate roomTime">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">总层数</label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="总层数(数字)" name="floorCount" class="form-control" data-rule-maxlength="100"
-                           data-rule-number='true'>
                 </div>
             </div>
         </div>
@@ -2964,11 +2966,11 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地权证号
+                    批文文号
                 </label>
                 <div class="col-sm-11">
                     <input type="text" name="landCertName"
-                           class="form-control" placeholder="土地权证号">
+                           class="form-control" placeholder="批文文号">
                 </div>
             </div>
         </div>

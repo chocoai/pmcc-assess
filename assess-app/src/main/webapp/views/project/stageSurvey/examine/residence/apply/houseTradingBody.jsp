@@ -127,6 +127,13 @@
             ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.tradingUnitPrice}">
         </div>
     </div>
+
+    <div class="x-valid">
+        <label class="col-sm-1 control-label">土地买售人</label>
+        <div class="col-sm-3">
+            <input type="text" placeholder="土地买售人" class="form-control" name="landBuyerSeller" value="${basicHouseTrading.landBuyerSeller}">
+        </div>
+    </div>
 </div>
 <div class="form-group">
     <div class="x-valid">

@@ -62,6 +62,8 @@ public class BasicHouseTrading {
 
     private String phone;
 
+    private String landBuyerSeller;
+
     private String creator;
 
     private Date gmtCreated;
@@ -300,6 +302,14 @@ public class BasicHouseTrading {
 
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    public String getLandBuyerSeller() {
+        return landBuyerSeller;
+    }
+
+    public void setLandBuyerSeller(String landBuyerSeller) {
+        this.landBuyerSeller = landBuyerSeller == null ? null : landBuyerSeller.trim();
     }
 
     public String getCreator() {

@@ -46,6 +46,12 @@ public class BasicHouse {
 
     private Date caseDate;
 
+    private Integer useYear;
+
+    private BigDecimal floorPrice;
+
+    private String landLocation;
+
     private String newDegree;
 
     private String creator;
@@ -222,6 +228,30 @@ public class BasicHouse {
 
     public void setCaseDate(Date caseDate) {
         this.caseDate = caseDate;
+    }
+
+    public Integer getUseYear() {
+        return useYear;
+    }
+
+    public void setUseYear(Integer useYear) {
+        this.useYear = useYear;
+    }
+
+    public BigDecimal getFloorPrice() {
+        return floorPrice;
+    }
+
+    public void setFloorPrice(BigDecimal floorPrice) {
+        this.floorPrice = floorPrice;
+    }
+
+    public String getLandLocation() {
+        return landLocation;
+    }
+
+    public void setLandLocation(String landLocation) {
+        this.landLocation = landLocation == null ? null : landLocation.trim();
     }
 
     public String getNewDegree() {

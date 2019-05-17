@@ -175,6 +175,16 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingHoldOn, data.land.holdOn, function (html, data) {
             estateCommon.estateLandStateForm.find("select[name='holdOn']").empty().html(html).trigger('change');
         });
+        if (estateCommon.isNotBlank(data.land.landLevelContent)){
+            var obj = {};
+            try {
+                obj = JSON.parse(data.land.landLevelContent);
+            } catch (e) {
+            }
+            if (estateCommon.isNotBlankObject(obj)){
+                estateCommon.landLevelLoadHtml(obj) ;
+            }
+        }
         //绑定变更事件
         estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
             var strArr = ["林地", "园地", "水域", "耕地", "草地"];//来自于实体描述1(1).docx中的规则
@@ -414,7 +424,7 @@
         $.each(data, function (i, n) {
             var landLevelBodyHtml = $("#landLevelTabContentBody").html();
             landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, n.reamark);
-            landLevelBodyHtml = landLevelBodyHtml.replace(/{achievement}/g, n.achievement);
+            landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelAchievement}/g, n.achievement);
             landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelChange}/g, n.id);
             AssessCommon.getDataDicInfo(n.type, function (typeData) {
                 AssessCommon.getDataDicInfo(n.category, function (categoryData) {
@@ -422,7 +432,7 @@
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, categoryData.name);
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategory}/g, categoryData.id);
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, typeData.name);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGrade}/g, html);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
                         landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(n));
                         target.append(landLevelBodyHtml);
                     }, true);

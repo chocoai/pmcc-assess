@@ -15,6 +15,10 @@ public class DataLandLevel {
 
     private Date valuationDate;
 
+    private String wordSymbol;
+
+    private String landDefinition;
+
     private String creator;
 
     private Date gmtCreated;
@@ -67,6 +71,22 @@ public class DataLandLevel {
 
     public void setValuationDate(Date valuationDate) {
         this.valuationDate = valuationDate;
+    }
+
+    public String getWordSymbol() {
+        return wordSymbol;
+    }
+
+    public void setWordSymbol(String wordSymbol) {
+        this.wordSymbol = wordSymbol == null ? null : wordSymbol.trim();
+    }
+
+    public String getLandDefinition() {
+        return landDefinition;
+    }
+
+    public void setLandDefinition(String landDefinition) {
+        this.landDefinition = landDefinition == null ? null : landDefinition.trim();
     }
 
     public String getCreator() {

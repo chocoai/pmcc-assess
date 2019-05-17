@@ -45,11 +45,13 @@ assessLand.showAddModelLandFun = function (flag, item) {
         });
         if (landCertGetQuestion == '无权证') {
             $.each(fileArr, function (i, n) {
-                $("#" + n).parent().parent().parent().hide();
+                var parent = $("#" + n).parent().parent().parent() ;
+                parent.find(".col-sm-1").text("批文附件") ;
             });
-        } else {
+        }else {
             $.each(fileArr, function (i, n) {
-                $("#" + n).parent().parent().parent().show();
+                var parent = $("#" + n).parent().parent().parent() ;
+                parent.find(".col-sm-1").text("土地证附件") ;
             });
         }
         $(assessLand.config.box).find("input[name='unit']").parent().parent().hide();
@@ -418,9 +420,11 @@ declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
         });
         $.each(fileArr, function (i, n) {
             if (landCertGetQuestion == '有权证') {
-                $("#" + n).parent().parent().parent().show();
+                var parent = $("#" + n).parent().parent().parent() ;
+                parent.find(".col-sm-1").text("权证附件") ;
             }else {
-                $("#" + n).parent().parent().parent().hide();
+                var parent = $("#" + n).parent().parent().parent() ;
+                parent.find(".col-sm-1").text("批文附件") ;
             }
         });
         $('#' + declareRealtyRealEstateCert.config.box).find("input[name='unit']").parent().parent().hide();
