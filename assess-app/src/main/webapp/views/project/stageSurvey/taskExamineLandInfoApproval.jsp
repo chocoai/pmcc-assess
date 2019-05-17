@@ -60,7 +60,15 @@
 <script src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 <script type="text/javascript">
 
-
+    estateCommon.estateForm.find("div[onclick]").each(function (i,n) {
+        var fName = $(n).attr("onclick");
+        if (fName == 'estateCommon.mapMarker(true)'){
+            $(n).parent().hide();
+        }
+        if (fName == 'estateCommon.mapLandMarker(true)'){
+            $(n).parent().show();
+        }
+    });
     //审批提交
     function saveform() {
         saveApprovalform("");

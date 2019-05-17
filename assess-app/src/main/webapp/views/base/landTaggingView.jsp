@@ -23,7 +23,7 @@
                 <input id="tipinput"/>
             </td>
         </tr>
-        <c:if test="${!empty readonly && readonly==true}">
+        <c:if test="${!empty readonly && readonly==false}">
             <tr>
                 <td>
                     <button class="btn btn-default" onclick="handleEvent(true)">清除标注的区块</button>
@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <td>
-                    <button class="btn btn-default" onclick="handleEvent(false)">确定标注的区块</button>
+                    <button class="btn btn-default" onclick="handleEvent(false)">关闭标注</button>
                 </td>
             </tr>
         </c:if>
@@ -76,7 +76,7 @@
                 searchByName(e.poi.name);
             });
 
-            //只读
+            //加载
             if (${!empty pathArray}) {
                 readyPath($("#pathArrayJSON").val());
             }
@@ -84,14 +84,23 @@
             mouseTool = new AMap.MouseTool(map);
 
             //开启标记
-            if ("${!empty readonly && readonly == true}") {
+            if ("${readonly}" == 'false') {
                 draw('polyline');
             }
             //标记事件
             mouseTool.on('draw', function (e) {
-                overlays.push(e.obj);
-                pathArray.push(e.obj.Qi.path);
-                pathArrayJson = JSON.stringify(pathArray);
+                //删除目前画的这种折线
+                map.remove(e.obj);
+                var path = [];
+                var storagePath = [];
+                e.obj.Qi.path.forEach(function (c) {
+                    var obj = {lng: c.lng, lat: c.lat};
+                    path.push(new AMap.LngLat(obj.lng, obj.lat));
+                    storagePath.push(obj);
+                });
+                //转成另一种折现
+                showPolyline(path);
+                setPathArrayJson(storagePath);
             });
         });
     });
@@ -101,18 +110,10 @@
         if (flag) {
             map.remove(overlays);
             overlays = [];
+            pathArray = [];
+            pathArrayJson = null;
         } else {
-            // alert("确定标注的区块,确定之后就不能够再标记了");
-            //把已经画好的折线图展示出来
-            overlays.forEach(function (obj) {
-                var path = obj.Qi.path;
-                showPolyline(path);
-                pathArray.push(path);
-            });
-            mouseTool.close(true);//关闭，并清除覆盖物
-            //去重复
-            pathArray = uniquel(pathArray);
-            pathArrayJson = JSON.stringify(pathArray);
+            mouseTool.close(true);//关闭
         }
     }
 
@@ -130,17 +131,19 @@
         try {
             JSON.parse(obj)
         } catch (e) {
-            console.log(obj);
             return false;
         }
         var arrPath = JSON.parse(obj);
         if (arrPath == null || arrPath == 'null') {
             return false;
         }
-        console.log(arrPath);
-        arrPath.forEach(function (path) {
+        arrPath.forEach(function (o) {
+            var path = [] ;
+            o.forEach(function (obj) {
+                path.push(new AMap.LngLat(obj.lng, obj.lat));
+            });
             showPolyline(path);
-            pathArray.push(path);
+            setPathArrayJson(o);
         });
     }
 
@@ -199,14 +202,18 @@
             strokeColor: 'red', // 线条颜色
             lineJoin: 'round' // 折线拐点连接处样式
         });
+        polyline.setMap(map) ;
+        // 缩放地图到合适的视野级别
+        map.setFitView([ polyline ]) ;
         // 将折线添加至地图实例
         map.add(polyline);
+        overlays.push(polyline);
         //包裹一下
-        new AMap.Polygon({
-            map: map,
-            fillOpacity: 0.4,
-            path: path
-        });
+        // new AMap.Polygon({
+        //     map: map,
+        //     fillOpacity: 0.4,
+        //     path: path
+        // });
     }
 
     //根据名称查询
@@ -219,6 +226,17 @@
                 }
             }
         })
+    }
+
+    function setPathArrayJson(path) {
+        pathArray.push(path);
+        //去重复
+        // pathArray = uniquel(pathArray);
+        pathArrayJson = JSON.stringify(pathArray);
+        console.log(pathArray) ;
+        if ("${readonly}" == 'true') {
+            pathArrayJson = null;
+        }
     }
 
     //数组去重复

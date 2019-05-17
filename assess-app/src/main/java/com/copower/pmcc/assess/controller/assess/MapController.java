@@ -53,9 +53,9 @@ public class MapController {
             }
         }
         if (StringUtils.isBlank(readonly) || Objects.equal(readonly, "undefined")) {
-            modelAndView.addObject("readonly", true);
-        } else {
             modelAndView.addObject("readonly", false);
+        } else {
+            modelAndView.addObject("readonly", readonly);
         }
         return modelAndView;
     }

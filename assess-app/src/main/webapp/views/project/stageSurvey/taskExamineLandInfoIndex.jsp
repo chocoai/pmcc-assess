@@ -146,7 +146,7 @@
             if (fName == 'estateCommon.mapMarker()'){
                 $(n).hide();
             }
-            if (fName == 'estateCommon.mapLandMarker()'){
+            if (fName == 'estateCommon.mapLandMarker(false)'){
                 $(n).show();
             }
         });

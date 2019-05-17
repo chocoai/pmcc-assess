@@ -44,7 +44,7 @@
                                 <i class="fa fa-map-marker"></i> 标注
                             </div>
 
-                             <div style="display: none" onclick="estateCommon.mapLandMarker()" class="btn btn-info">
+                             <div style="display: none" onclick="estateCommon.mapLandMarker(false)" class="btn btn-info">
                                 <i class="fa fa-map-marker"></i> 标注
                             </div>
 
