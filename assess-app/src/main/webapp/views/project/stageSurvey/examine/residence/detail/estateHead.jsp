@@ -33,7 +33,12 @@
             <div class="input-group">
                 <label class="form-control">${basicEstate.name}</label>
                 <span class="input-group-btn">
-                            <div onclick="estateCommon.mapMarker(true);" class="btn btn-info"><i
+                            <div onclick="estateCommon.mapMarker(true)" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+
+                <span class="input-group-btn" style="display: none">
+                            <div onclick="estateCommon.mapLandMarker(true)" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
                         </span>
             </div>

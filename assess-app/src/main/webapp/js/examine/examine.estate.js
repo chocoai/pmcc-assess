@@ -302,7 +302,7 @@
 
     //土地标注画区块
     estateCommon.mapLandMarker = function (readonly) {
-        var contentUrl = getContextPath() + '/map/landTagging?applyId='+basicCommon.getApplyId()+"&readonly="+readonly;
+        var contentUrl = getContextPath() + '/map/landTagging?applyId=' + basicCommon.getApplyId() + "&readonly=" + readonly;
         layer.open({
             type: 2,
             title: '土地标注画区块',
@@ -317,7 +317,7 @@
             cancel: function () {
                 if (!readonly) {
                     //到iframe中获取数据
-                    if (estateCommon.estateMapiframe.pathArrayJson){
+                    if (estateCommon.estateMapiframe.pathArrayJson) {
                         $.ajax({
                             url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
                             data: {
@@ -328,7 +328,6 @@
                             },
                             success: function (result) {
                                 if (result.ret) {
-                                    console.log(JSON.parse(estateCommon.estateMapiframe.pathArrayJson));
                                     toastr.success('标记成功');
                                 } else {
                                     Alert(result.errmsg);
