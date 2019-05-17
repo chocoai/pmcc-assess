@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="reward_rate_id" property="rewardRateId" jdbcType="INTEGER" />
     <result column="reward_rate" property="rewardRate" jdbcType="VARCHAR" />
+    <result column="has_develop_correct" property="hasDevelopCorrect" jdbcType="BIT" />
     <result column="develop_correct" property="developCorrect" jdbcType="DECIMAL" />
     <result column="period_amend" property="periodAmend" jdbcType="DECIMAL" />
     <result column="parcel_price" property="parcelPrice" jdbcType="DECIMAL" />
@@ -12,6 +13,15 @@
     <result column="parcel_total_price" property="parcelTotalPrice" jdbcType="DECIMAL" />
     <result column="floor_premium" property="floorPremium" jdbcType="DECIMAL" />
     <result column="correction_difference" property="correctionDifference" jdbcType="VARCHAR" />
+    <result column="standard_premium" property="standardPremium" jdbcType="DECIMAL" />
+    <result column="date_amend" property="dateAmend" jdbcType="DECIMAL" />
+    <result column="legal_age" property="legalAge" jdbcType="DECIMAL" />
+    <result column="land_surplus_year" property="landSurplusYear" jdbcType="DECIMAL" />
+    <result column="has_fraction_amend" property="hasFractionAmend" jdbcType="BIT" />
+    <result column="volume_fraction_amend" property="volumeFractionAmend" jdbcType="DECIMAL" />
+    <result column="area_and_several_amend" property="areaAndSeveralAmend" jdbcType="DECIMAL" />
+    <result column="evaluation_area" property="evaluationArea" jdbcType="DECIMAL" />
+    <result column="volumetric_rate" property="volumetricRate" jdbcType="DECIMAL" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -76,8 +86,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, reward_rate_id, reward_rate, develop_correct, period_amend, parcel_price, parcel_bhou_price, 
-    parcel_total_price, floor_premium, correction_difference, process_ins_id, creator, 
+    id, reward_rate_id, reward_rate, has_develop_correct, develop_correct, period_amend, 
+    parcel_price, parcel_bhou_price, parcel_total_price, floor_premium, correction_difference, 
+    standard_premium, date_amend, legal_age, land_surplus_year, has_fraction_amend, volume_fraction_amend, 
+    area_and_several_amend, evaluation_area, volumetric_rate, process_ins_id, creator, 
     gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" >
@@ -114,16 +126,24 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_base_land_price (reward_rate_id, reward_rate, develop_correct, 
-      period_amend, parcel_price, parcel_bhou_price, 
-      parcel_total_price, floor_premium, correction_difference, 
-      process_ins_id, creator, gmt_created, 
-      gmt_modified)
-    values (#{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, #{developCorrect,jdbcType=DECIMAL}, 
-      #{periodAmend,jdbcType=DECIMAL}, #{parcelPrice,jdbcType=DECIMAL}, #{parcelBhouPrice,jdbcType=DECIMAL}, 
-      #{parcelTotalPrice,jdbcType=DECIMAL}, #{floorPremium,jdbcType=DECIMAL}, #{correctionDifference,jdbcType=VARCHAR}, 
-      #{processInsId,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_base_land_price (reward_rate_id, reward_rate, has_develop_correct, 
+      develop_correct, period_amend, parcel_price, 
+      parcel_bhou_price, parcel_total_price, floor_premium, 
+      correction_difference, standard_premium, 
+      date_amend, legal_age, land_surplus_year, 
+      has_fraction_amend, volume_fraction_amend, area_and_several_amend, 
+      evaluation_area, volumetric_rate, process_ins_id, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, #{hasDevelopCorrect,jdbcType=BIT}, 
+      #{developCorrect,jdbcType=DECIMAL}, #{periodAmend,jdbcType=DECIMAL}, #{parcelPrice,jdbcType=DECIMAL}, 
+      #{parcelBhouPrice,jdbcType=DECIMAL}, #{parcelTotalPrice,jdbcType=DECIMAL}, #{floorPremium,jdbcType=DECIMAL}, 
+      #{correctionDifference,jdbcType=VARCHAR}, #{standardPremium,jdbcType=DECIMAL}, 
+      #{dateAmend,jdbcType=DECIMAL}, #{legalAge,jdbcType=DECIMAL}, #{landSurplusYear,jdbcType=DECIMAL}, 
+      #{hasFractionAmend,jdbcType=BIT}, #{volumeFractionAmend,jdbcType=DECIMAL}, #{areaAndSeveralAmend,jdbcType=DECIMAL}, 
+      #{evaluationArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=DECIMAL}, #{processInsId,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,6 +156,9 @@
       </if>
       <if test="rewardRate != null" >
         reward_rate,
+      </if>
+      <if test="hasDevelopCorrect != null" >
+        has_develop_correct,
       </if>
       <if test="developCorrect != null" >
         develop_correct,
@@ -158,6 +181,33 @@
       <if test="correctionDifference != null" >
         correction_difference,
       </if>
+      <if test="standardPremium != null" >
+        standard_premium,
+      </if>
+      <if test="dateAmend != null" >
+        date_amend,
+      </if>
+      <if test="legalAge != null" >
+        legal_age,
+      </if>
+      <if test="landSurplusYear != null" >
+        land_surplus_year,
+      </if>
+      <if test="hasFractionAmend != null" >
+        has_fraction_amend,
+      </if>
+      <if test="volumeFractionAmend != null" >
+        volume_fraction_amend,
+      </if>
+      <if test="areaAndSeveralAmend != null" >
+        area_and_several_amend,
+      </if>
+      <if test="evaluationArea != null" >
+        evaluation_area,
+      </if>
+      <if test="volumetricRate != null" >
+        volumetric_rate,
+      </if>
       <if test="processInsId != null" >
         process_ins_id,
       </if>
@@ -177,6 +227,9 @@
       </if>
       <if test="rewardRate != null" >
         #{rewardRate,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDevelopCorrect != null" >
+        #{hasDevelopCorrect,jdbcType=BIT},
       </if>
       <if test="developCorrect != null" >
         #{developCorrect,jdbcType=DECIMAL},
@@ -198,6 +251,33 @@
       </if>
       <if test="correctionDifference != null" >
         #{correctionDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="standardPremium != null" >
+        #{standardPremium,jdbcType=DECIMAL},
+      </if>
+      <if test="dateAmend != null" >
+        #{dateAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="legalAge != null" >
+        #{legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="landSurplusYear != null" >
+        #{landSurplusYear,jdbcType=DECIMAL},
+      </if>
+      <if test="hasFractionAmend != null" >
+        #{hasFractionAmend,jdbcType=BIT},
+      </if>
+      <if test="volumeFractionAmend != null" >
+        #{volumeFractionAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="areaAndSeveralAmend != null" >
+        #{areaAndSeveralAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationArea != null" >
+        #{evaluationArea,jdbcType=DECIMAL},
+      </if>
+      <if test="volumetricRate != null" >
+        #{volumetricRate,jdbcType=DECIMAL},
       </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
@@ -231,6 +311,9 @@
       <if test="record.rewardRate != null" >
         reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
       </if>
+      <if test="record.hasDevelopCorrect != null" >
+        has_develop_correct = #{record.hasDevelopCorrect,jdbcType=BIT},
+      </if>
       <if test="record.developCorrect != null" >
         develop_correct = #{record.developCorrect,jdbcType=DECIMAL},
       </if>
@@ -251,6 +334,33 @@
       </if>
       <if test="record.correctionDifference != null" >
         correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standardPremium != null" >
+        standard_premium = #{record.standardPremium,jdbcType=DECIMAL},
+      </if>
+      <if test="record.dateAmend != null" >
+        date_amend = #{record.dateAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="record.legalAge != null" >
+        legal_age = #{record.legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landSurplusYear != null" >
+        land_surplus_year = #{record.landSurplusYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.hasFractionAmend != null" >
+        has_fraction_amend = #{record.hasFractionAmend,jdbcType=BIT},
+      </if>
+      <if test="record.volumeFractionAmend != null" >
+        volume_fraction_amend = #{record.volumeFractionAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="record.areaAndSeveralAmend != null" >
+        area_and_several_amend = #{record.areaAndSeveralAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evaluationArea != null" >
+        evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.volumetricRate != null" >
+        volumetric_rate = #{record.volumetricRate,jdbcType=DECIMAL},
       </if>
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
@@ -274,6 +384,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
       reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
+      has_develop_correct = #{record.hasDevelopCorrect,jdbcType=BIT},
       develop_correct = #{record.developCorrect,jdbcType=DECIMAL},
       period_amend = #{record.periodAmend,jdbcType=DECIMAL},
       parcel_price = #{record.parcelPrice,jdbcType=DECIMAL},
@@ -281,6 +392,15 @@
       parcel_total_price = #{record.parcelTotalPrice,jdbcType=DECIMAL},
       floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
       correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+      standard_premium = #{record.standardPremium,jdbcType=DECIMAL},
+      date_amend = #{record.dateAmend,jdbcType=DECIMAL},
+      legal_age = #{record.legalAge,jdbcType=DECIMAL},
+      land_surplus_year = #{record.landSurplusYear,jdbcType=DECIMAL},
+      has_fraction_amend = #{record.hasFractionAmend,jdbcType=BIT},
+      volume_fraction_amend = #{record.volumeFractionAmend,jdbcType=DECIMAL},
+      area_and_several_amend = #{record.areaAndSeveralAmend,jdbcType=DECIMAL},
+      evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
+      volumetric_rate = #{record.volumetricRate,jdbcType=DECIMAL},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -297,6 +417,9 @@
       </if>
       <if test="rewardRate != null" >
         reward_rate = #{rewardRate,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDevelopCorrect != null" >
+        has_develop_correct = #{hasDevelopCorrect,jdbcType=BIT},
       </if>
       <if test="developCorrect != null" >
         develop_correct = #{developCorrect,jdbcType=DECIMAL},
@@ -319,6 +442,33 @@
       <if test="correctionDifference != null" >
         correction_difference = #{correctionDifference,jdbcType=VARCHAR},
       </if>
+      <if test="standardPremium != null" >
+        standard_premium = #{standardPremium,jdbcType=DECIMAL},
+      </if>
+      <if test="dateAmend != null" >
+        date_amend = #{dateAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="legalAge != null" >
+        legal_age = #{legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="landSurplusYear != null" >
+        land_surplus_year = #{landSurplusYear,jdbcType=DECIMAL},
+      </if>
+      <if test="hasFractionAmend != null" >
+        has_fraction_amend = #{hasFractionAmend,jdbcType=BIT},
+      </if>
+      <if test="volumeFractionAmend != null" >
+        volume_fraction_amend = #{volumeFractionAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="areaAndSeveralAmend != null" >
+        area_and_several_amend = #{areaAndSeveralAmend,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationArea != null" >
+        evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
+      </if>
+      <if test="volumetricRate != null" >
+        volumetric_rate = #{volumetricRate,jdbcType=DECIMAL},
+      </if>
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
@@ -338,6 +488,7 @@
     update tb_md_base_land_price
     set reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
       reward_rate = #{rewardRate,jdbcType=VARCHAR},
+      has_develop_correct = #{hasDevelopCorrect,jdbcType=BIT},
       develop_correct = #{developCorrect,jdbcType=DECIMAL},
       period_amend = #{periodAmend,jdbcType=DECIMAL},
       parcel_price = #{parcelPrice,jdbcType=DECIMAL},
@@ -345,6 +496,15 @@
       parcel_total_price = #{parcelTotalPrice,jdbcType=DECIMAL},
       floor_premium = #{floorPremium,jdbcType=DECIMAL},
       correction_difference = #{correctionDifference,jdbcType=VARCHAR},
+      standard_premium = #{standardPremium,jdbcType=DECIMAL},
+      date_amend = #{dateAmend,jdbcType=DECIMAL},
+      legal_age = #{legalAge,jdbcType=DECIMAL},
+      land_surplus_year = #{landSurplusYear,jdbcType=DECIMAL},
+      has_fraction_amend = #{hasFractionAmend,jdbcType=BIT},
+      volume_fraction_amend = #{volumeFractionAmend,jdbcType=DECIMAL},
+      area_and_several_amend = #{areaAndSeveralAmend,jdbcType=DECIMAL},
+      evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
+      volumetric_rate = #{volumetricRate,jdbcType=DECIMAL},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

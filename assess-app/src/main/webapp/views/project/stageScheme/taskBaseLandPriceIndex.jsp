@@ -40,17 +40,38 @@
                                     <tbody>
                                     <tr>
                                         <td>基准地价（元/㎡）</td>
-                                        <td id="standardPremium">${standardPremium}</td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.standardPremium}">
+                                                <td id="standardPremium">${master.standardPremium}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="standardPremium">${standardPremium}</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2" id="bhouPrice"></td>
                                     </tr>
                                     <tr>
                                         <td>期日修正系数</td>
-                                        <td id="DateAmend">${DateAmend}</td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.dateAmend}">
+                                                <td id="dateAmend">${master.dateAmend}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="dateAmend">${dateAmend}</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td>年期修正系数</td>
-                                        <td id="periodAmend"></td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.periodAmend}">
+                                                <td id="periodAmend">${master.periodAmend}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="periodAmend"></td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
@@ -71,25 +92,69 @@
                                     </tr>
                                     <tr>
                                         <td>法定年限</td>
-                                        <td>${legalAge}</td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.legalAge}">
+                                                <td id="legalAge">${master.legalAge}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="legalAge">${legalAge}</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td>剩余使用年限</td>
-                                        <td>${landSurplusYear}</td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.landSurplusYear}">
+                                                <td id="landSurplusYear">${master.landSurplusYear}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="landSurplusYear">${landSurplusYear}</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
+                                        <td>容积率是否修正</td>
+                                        <td>
+                                            <input type="checkbox" id="hasFractionAmend" name="hasFractionAmend"
+                                                   value="true" checked="checked" onclick="volumeFractionChange()">
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr id="showFractionAmend">
                                         <td>容积率修正</td>
-                                        <td id="volumeFractionAmend">${volumeFractionAmend}</td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.volumeFractionAmend}">
+                                                <td id="volumeFractionAmend">${master.volumeFractionAmend}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="volumeFractionAmend">${volumeFractionAmend}</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td>区域及个别修正系数</td>
-                                        <td id="areaAndSeveralAmend">0.05</td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.areaAndSeveralAmend}">
+                                                <td id="areaAndSeveralAmend">${master.areaAndSeveralAmend}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="areaAndSeveralAmend">0.05</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
+                                        <td>开发程度是否修正</td>
+                                        <td>
+                                            <input type="checkbox" id="hasDevelopCorrect" name="hasDevelopCorrect"
+                                                   value="true" checked="checked" onclick="developCorrectChange()">
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr id="showDevelopCorrect">
                                         <td>开发程度修正</td>
                                         <td>
                                             <div class="x-valid">
@@ -113,12 +178,26 @@
                                     </tr>
                                     <tr>
                                         <td>委估宗地面积（㎡）</td>
-                                        <td>${evaluationArea}</td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.evaluationArea}">
+                                                <td id="evaluationArea">${master.evaluationArea}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="evaluationArea">${evaluationArea}</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td>委估宗地总价（万元）</td>
-                                        <td id="parcelTotalPrice">${master.parcelTotalPrice}</td>
+                                        <c:choose>
+                                            <c:when test="${!empty master.parcelTotalPrice}">
+                                                <td id="parcelTotalPrice">${master.parcelTotalPrice}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td id="parcelTotalPrice">${parcelTotalPrice}</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
@@ -179,6 +258,17 @@
         formData.floorPremium = $("#floorPremium").text();
         formData.correctionDifference = $("#correctionDifference").text();
 
+        formData.standardPremium = $("#standardPremium").text();
+        formData.dateAmend = $("#dateAmend").text();
+        formData.legalAge = $("#legalAge").text();
+        formData.landSurplusYear = $("#landSurplusYear").text();
+        formData.volumeFractionAmend = $("#volumeFractionAmend").text();
+        formData.areaAndSeveralAmend = $("#areaAndSeveralAmend").text();
+        formData.evaluationArea = $("#evaluationArea").text();
+        formData.volumetricRate = $("#volumetricRate").text();
+        formData.hasFractionAmend = $('#hasFractionAmend').is(':checked');
+        formData.hasDevelopCorrect = $('#hasDevelopCorrect').is(':checked');
+        console.log(formData);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
@@ -188,11 +278,28 @@
     }
 
     $(function () {
-        var standardBhouPrice = getBhouPrice("${standardPremium}", 2)
-        $("#bhouPrice").text(standardBhouPrice + "万元/亩");
-        $("#volumetricRate").text(getSomePlaces("${volumetricRate}", 2));
-        if ("${master.rewardRate}") {
-            getPeriodAmend("${master.rewardRate}");
+        if ("${master}") {
+            var standardBhouPrice = getBhouPrice("${master.standardPremium}", 2);
+            $("#bhouPrice").text(standardBhouPrice + "万元/亩");
+            $("#volumetricRate").text(getSomePlaces("${master.volumetricRate}", 2));
+            //容积率是否修正
+            if (${master.hasFractionAmend}) {
+                $("#hasFractionAmend").attr("checked", "checked");
+            } else {
+                $("#hasFractionAmend").removeAttr("checked");
+                $("#showVolumeFractionAmend").hide();
+            }
+            //开发程度是否修正
+            if (${master.hasDevelopCorrect}) {
+                $("#hasDevelopCorrect").attr("checked", "checked");
+            } else {
+                $("#hasDevelopCorrect").removeAttr("checked");
+                $("#showDevelopCorrect").hide();
+            }
+        } else {
+            var standardBhouPrice = getBhouPrice("${standardPremium}", 2);
+            $("#bhouPrice").text(standardBhouPrice + "万元/亩");
+            $("#volumetricRate").text(getSomePlaces("${volumetricRate}", 2));
         }
     });
 
@@ -215,19 +322,24 @@
     function getParcelPrice() {
         //基准地价E4
         var standardPremium = parseFloat($("#standardPremium").text());
+        console.log(standardPremium + "standardPremium")
         //期日修正系数E5
-        var DateAmend = parseFloat($("#DateAmend").text());
+        var dateAmend = parseFloat($("#dateAmend").text());
+        console.log(dateAmend + "dateAmend")
         //年期修正系数E6
         var periodAmend = parseFloat($("#periodAmend").text());
+        console.log(periodAmend + "periodAmend")
         //容积率修正E10
         var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
+        console.log(volumeFractionAmend + "volumeFractionAmend")
         //区域及个别修正系数E11
         var areaAndSeveralAmend = parseFloat($("#areaAndSeveralAmend").text());
         //开发程度修正E12
         var developCorrect = parseFloat($("#developCorrect").val());
+        console.log(developCorrect + "developCorrect")
 
-        if (standardPremium && DateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect) {
-            var money = standardPremium * DateAmend * periodAmend * volumeFractionAmend * (1 + areaAndSeveralAmend) + developCorrect;
+        if (standardPremium && dateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect >= 0) {
+            var money = standardPremium * dateAmend * periodAmend * volumeFractionAmend * (1 + areaAndSeveralAmend) + developCorrect;
             if (money) {
                 //宗地单价
                 $("#parcelPrice").text(getSomePlaces(money, 2));
@@ -235,9 +347,15 @@
                 $("#parcelBhouPrice").text(getBhouPrice(money, 2));
                 //宗地总价
                 var area = "${evaluationArea}";
+                if ("${master.evaluationArea}") {
+                    area = "${master.evaluationArea}";
+                }
                 $("#parcelTotalPrice").text(getSomePlaces(area * money / 10000, 2));
                 //楼面地价
                 var volumetricRate = "${volumetricRate}";
+                if ("${master.volumetricRate}") {
+                    volumetricRate = "${master.volumetricRate}";
+                }
                 $("#floorPremium").text(getSomePlaces(money / volumetricRate, 2));
                 //修正差额
                 $("#correctionDifference").text(getSomePlaces((money / standardPremium - 1) * 100, 2) + "%");
@@ -273,6 +391,31 @@
             $("#periodAmend").text(getSomePlaces(result, 4))
         }
         //获取委估宗地单价（元/㎡）
+        getParcelPrice();
+    }
+
+    function volumeFractionChange() {
+        if ($('#hasFractionAmend').is(':checked')) {
+            $("#showFractionAmend").show();
+            $("#volumeFractionAmend").text("${volumeFractionAmend}");
+            if ("${master.volumeFractionAmend}") {
+                $("#volumeFractionAmend").text("${master.volumeFractionAmend}");
+            }
+        } else {
+            $("#showFractionAmend").hide();
+            $("#volumeFractionAmend").text("1");
+        }
+        getParcelPrice();
+    }
+
+    function developCorrectChange() {
+        if ($('#hasDevelopCorrect').is(':checked')) {
+            $("#showDevelopCorrect").show();
+        } else {
+            console.log(2);
+            $("#showDevelopCorrect").hide();
+            $("#developCorrect").val(0);
+        }
         getParcelPrice();
     }
 </script>

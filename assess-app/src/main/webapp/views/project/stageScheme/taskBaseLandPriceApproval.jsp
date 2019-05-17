@@ -36,12 +36,12 @@
                                     <tbody>
                                     <tr>
                                         <td>基准地价（元/㎡）</td>
-                                        <td>${standardPremium}</td>
+                                        <td>${master.standardPremium}</td>
                                         <td colspan="2" id="bhouPrice"></td>
                                     </tr>
                                     <tr>
                                         <td>期日修正系数</td>
-                                        <td>${DateAmend}</td>
+                                        <td>${master.dateAmend}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
@@ -56,25 +56,41 @@
                                     </tr>
                                     <tr>
                                         <td>法定年限</td>
-                                        <td>${legalAge}</td>
+                                        <td>${master.legalAge}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td>剩余使用年限</td>
-                                        <td>${landSurplusYear}</td>
+                                        <td>${master.landSurplusYear}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
+                                        <td>容积率是否修正</td>
+                                        <td>
+                                            <input type="checkbox" id="hasFractionAmend" name="hasFractionAmend"
+                                                   value="true" disabled="disabled">
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr id="showVolumeFractionAmend">
                                         <td>容积率修正</td>
-                                        <td>${volumeFractionAmend}</td>
+                                        <td>${master.volumeFractionAmend}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
                                         <td>区域及个别修正系数</td>
-                                        <td id="areaAndSeveralAmend">0.05</td>
+                                        <td id="areaAndSeveralAmend">${master.areaAndSeveralAmend}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
+                                        <td>开发程度是否修正</td>
+                                        <td>
+                                            <input type="checkbox" id="hasDevelopCorrect" name="hasDevelopCorrect"
+                                                   value="true" disabled="disabled">
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr id="showDevelopCorrect">
                                         <td>开发程度修正</td>
                                         <td>${master.developCorrect}</td>
                                         <td colspan="2">与基准地价的开发程度一致</td>
@@ -91,7 +107,7 @@
                                     </tr>
                                     <tr>
                                         <td>委估宗地面积（㎡）</td>
-                                        <td>${evaluationArea}</td>
+                                        <td>${master.evaluationArea}</td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
@@ -103,7 +119,7 @@
                                         <td>${number}号估价对象楼面地价</td>
                                         <td>${master.floorPremium}</td>
                                         <td>委估对象容积率</td>
-                                        <td id="volumetricRate"></td>
+                                        <td>${master.volumetricRate}</td>
                                     </tr>
                                     <tr>
                                         <td>验证参数合理性</td>
@@ -131,9 +147,20 @@
     }
 
     $(function () {
-        var standardBhouPrice = getBhouPrice("${standardPremium}", 2)
+        var standardBhouPrice = getBhouPrice("${master.standardPremium}", 2)
         $("#bhouPrice").text(standardBhouPrice + "万元/亩");
-        $("#volumetricRate").text(getSomePlaces("${volumetricRate}", 2));
+        //容积率是否修正
+        if(${master.hasFractionAmend}){
+            $("#hasFractionAmend").attr("checked","checked");
+        }else {
+            $("#showVolumeFractionAmend").hide();
+        }
+        //开发程度是否修正
+        if(${master.hasDevelopCorrect}){
+            $("#hasDevelopCorrect").attr("checked","checked");
+        }else {
+            $("#showDevelopCorrect").hide();
+        }
     });
 
     //获取一亩的价

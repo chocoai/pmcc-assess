@@ -10,6 +10,8 @@ public class MdBaseLandPrice {
 
     private String rewardRate;
 
+    private Boolean hasDevelopCorrect;
+
     private BigDecimal developCorrect;
 
     private BigDecimal periodAmend;
@@ -23,6 +25,24 @@ public class MdBaseLandPrice {
     private BigDecimal floorPremium;
 
     private String correctionDifference;
+
+    private BigDecimal standardPremium;
+
+    private BigDecimal dateAmend;
+
+    private BigDecimal legalAge;
+
+    private BigDecimal landSurplusYear;
+
+    private Boolean hasFractionAmend;
+
+    private BigDecimal volumeFractionAmend;
+
+    private BigDecimal areaAndSeveralAmend;
+
+    private BigDecimal evaluationArea;
+
+    private BigDecimal volumetricRate;
 
     private String processInsId;
 
@@ -54,6 +74,14 @@ public class MdBaseLandPrice {
 
     public void setRewardRate(String rewardRate) {
         this.rewardRate = rewardRate == null ? null : rewardRate.trim();
+    }
+
+    public Boolean getHasDevelopCorrect() {
+        return hasDevelopCorrect;
+    }
+
+    public void setHasDevelopCorrect(Boolean hasDevelopCorrect) {
+        this.hasDevelopCorrect = hasDevelopCorrect;
     }
 
     public BigDecimal getDevelopCorrect() {
@@ -110,6 +138,78 @@ public class MdBaseLandPrice {
 
     public void setCorrectionDifference(String correctionDifference) {
         this.correctionDifference = correctionDifference == null ? null : correctionDifference.trim();
+    }
+
+    public BigDecimal getStandardPremium() {
+        return standardPremium;
+    }
+
+    public void setStandardPremium(BigDecimal standardPremium) {
+        this.standardPremium = standardPremium;
+    }
+
+    public BigDecimal getDateAmend() {
+        return dateAmend;
+    }
+
+    public void setDateAmend(BigDecimal dateAmend) {
+        this.dateAmend = dateAmend;
+    }
+
+    public BigDecimal getLegalAge() {
+        return legalAge;
+    }
+
+    public void setLegalAge(BigDecimal legalAge) {
+        this.legalAge = legalAge;
+    }
+
+    public BigDecimal getLandSurplusYear() {
+        return landSurplusYear;
+    }
+
+    public void setLandSurplusYear(BigDecimal landSurplusYear) {
+        this.landSurplusYear = landSurplusYear;
+    }
+
+    public Boolean getHasFractionAmend() {
+        return hasFractionAmend;
+    }
+
+    public void setHasFractionAmend(Boolean hasFractionAmend) {
+        this.hasFractionAmend = hasFractionAmend;
+    }
+
+    public BigDecimal getVolumeFractionAmend() {
+        return volumeFractionAmend;
+    }
+
+    public void setVolumeFractionAmend(BigDecimal volumeFractionAmend) {
+        this.volumeFractionAmend = volumeFractionAmend;
+    }
+
+    public BigDecimal getAreaAndSeveralAmend() {
+        return areaAndSeveralAmend;
+    }
+
+    public void setAreaAndSeveralAmend(BigDecimal areaAndSeveralAmend) {
+        this.areaAndSeveralAmend = areaAndSeveralAmend;
+    }
+
+    public BigDecimal getEvaluationArea() {
+        return evaluationArea;
+    }
+
+    public void setEvaluationArea(BigDecimal evaluationArea) {
+        this.evaluationArea = evaluationArea;
+    }
+
+    public BigDecimal getVolumetricRate() {
+        return volumetricRate;
+    }
+
+    public void setVolumetricRate(BigDecimal volumetricRate) {
+        this.volumetricRate = volumetricRate;
     }
 
     public String getProcessInsId() {

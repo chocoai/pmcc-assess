@@ -87,7 +87,9 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskBaseLandPriceApproval", processInsId, boxId, taskId, agentUserAccount);
         MdBaseLandPrice data = mdBaseLandPriceService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("master", data);
-        setViewParam(projectPlanDetails, modelAndView);
+        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        modelAndView.addObject("number", schemeJudgeObject.getNumber());
         return modelAndView;
     }
 
@@ -96,7 +98,9 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskBaseLandPriceIndex", processInsId, boxId, taskId, agentUserAccount);
         MdBaseLandPrice data = mdBaseLandPriceService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("master", data);
-        setViewParam(projectPlanDetails, modelAndView);
+        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        modelAndView.addObject("number", schemeJudgeObject.getNumber());
         return modelAndView;
     }
 
@@ -173,7 +177,7 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
                 for (DataHousePriceIndexDetail item : detailList) {
                     if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
                         DecimalFormat df = new DecimalFormat("0.00");
-                        modelAndView.addObject("DateAmend", df.format((float) Float.parseFloat(item.getIndexNumber().toString()) / (float) Float.parseFloat(firstIndex.getIndexNumber().toString())));
+                        modelAndView.addObject("dateAmend", df.format((float) Float.parseFloat(item.getIndexNumber().toString()) / (float) Float.parseFloat(firstIndex.getIndexNumber().toString())));
                         break;
                     }
                 }
@@ -200,7 +204,8 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         String plotRatio = landStateByEstateId.getPlotRatio();
         modelAndView.addObject("volumetricRate", plotRatio);
         //根据容积率找到配置中对应的容积率修正
-        BigDecimal volumeFractionAmend = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), plotRatio);
+        BigDecimal amendValue = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), plotRatio);
+        String volumeFractionAmend = String.format("%.4f", amendValue);
         modelAndView.addObject("volumeFractionAmend", volumeFractionAmend == null ? "无" : volumeFractionAmend);
 
         //宗地面积
