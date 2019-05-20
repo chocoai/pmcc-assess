@@ -195,18 +195,6 @@
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                 engine.find("input[name='beLocated']").val(text);
             }
-        },
-        getRealEstateColumn: function () {
-            var cols = [];
-            cols.push({
-                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
-                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-                }
-            });
-            cols.push({field: 'evidenceArea', title: '证载面积'});
-            cols.push({field: 'certName', title: '不动产权证号'});
-            cols.push({field: 'beLocated', title: '房屋坐落'});
-            return cols;
         }
     };
 
@@ -313,20 +301,6 @@
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                 engine.find("input[name='beLocated']").val(text);
             }
-        },
-        getHouseColumn: function () {
-            var cols = [];
-            cols.push({
-                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
-                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-                }
-            });
-            cols.push({field: 'certName', title: '房屋权证号'});
-            cols.push({field: 'beLocated', title: '房屋坐落'});
-            cols.push({field: 'ownership', title: '房屋所有权人'});
-            cols.push({field: 'floorArea', title: '建筑面积'});
-            cols.push({field: 'planningUseName', title: '规划用途'});
-            return cols;
         }
     };
 
@@ -453,22 +427,7 @@
         },
         getHtml2: function () {
             return $("#" + commonDeclareApplyModel.config.land.id2).html();
-        },
-        getLandColumn: function () {
-            var cols = [];
-            cols.push({
-                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
-                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-                }
-            });
-            cols.push({field: 'landCertName', title: '土地权证号'});
-            cols.push({field: 'beLocated', title: '房屋坐落'});
-            cols.push({field: 'landNumber', title: '地号'});
-            cols.push({field: 'graphNumber', title: '图号'});
-            cols.push({field: 'useRightArea', title: '使用权面积'});
-            return cols;
         }
-
     };
 
     /**

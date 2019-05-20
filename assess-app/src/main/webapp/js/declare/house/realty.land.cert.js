@@ -170,7 +170,7 @@ assessCommonLand.editLand = function () {
  * 土地证列表
  */
 assessCommonLand.loadList = function () {
-    var cols = commonDeclareApplyModel.land.getLandColumn() ;
+    var cols = declareCommon.getLandColumn();
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
