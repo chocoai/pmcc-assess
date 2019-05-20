@@ -249,15 +249,13 @@
         //加载土地级别信息
         loadLandLevelDetailList: function () {
             var cols = [];
-            cols.push({field: 'classify', title: '大类', width: '4%'});
-            cols.push({field: 'type', title: '类型', width: '4%'});
-            cols.push({field: 'price', title: '单价', width: '4%'});
-            cols.push({field: 'category', title: '类别', width: '4%'});
-            cols.push({
-                field: 'levelRange', title: '级别范围', width: '70%', formatter: function (value, row, index) {
-                    return '<span title="' + row.mainStreet + '">' + value + '</span>';
-                }
-            });
+            cols.push({field: 'classify', title: '大类', formatter: function (value, row, index) {
+                return '<span title="' + row.levelRange + '">' + value + '</span>';
+            }});
+            cols.push({field: 'type', title: '类型'});
+            cols.push({field: 'category', title: '类别'});
+            cols.push({field: 'price', title: '单价'});
+            cols.push({field: 'landAcquisitionProportion', title: '征地比例'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

@@ -115,6 +115,7 @@ public class SurveyAssetInventoryContentService {
         //房产
         if (houseProperty.getId().equals(projectCategoryId)) {
             inventoryContentList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
+            inventoryContentList.remove(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_FOUR_TO_LAND));
         }
         //土地
         if (houseLand.getId().equals(projectCategoryId)) {
