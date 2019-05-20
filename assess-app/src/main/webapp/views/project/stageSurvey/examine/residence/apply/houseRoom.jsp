@@ -33,23 +33,23 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             房间类型<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="房间类型" class="form-control" name="roomType">
                                             <input type="hidden" placeholder="房间类型" class="form-control" name="roomTypeId">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             面积<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="面积" name="area" data-rule-number='true'
                                                    class="form-control" required="required">
                                         </div>
@@ -57,40 +57,40 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label"
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
                                                title="层高通常指下层地板面或楼板面到上层楼板面之间的距离。层高减去楼板的厚度或结构层的高度的差,叫做净高。出于降低成本、节约建材和节约土地等考虑,一般住宅层高都在28米左右">
                                             层高(m)<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number="true" placeholder="层高(m)"
                                                    name="layerHeight" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label"
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
                                                title="层高通常指下层地板面或楼板面到上层楼板面之间的距离。层高减去楼板的厚度或结构层的高度的差,叫做净高。出于降低成本、节约建材和节约土地等考虑,一般住宅层高都在28米左右">
                                             净高(m)<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number="true" placeholder="净高(m)" name="clearHeight" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             开间/宽(m)<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number="true" placeholder="开间/宽(m)"
                                                    name="opening" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             进深/长(m)<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number="true" placeholder="进深/长(m)"
                                                    name="depth" class="form-control" required>
                                         </div>
@@ -98,36 +98,36 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             通风
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="通风" name="aeration" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             日照
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="日照" name="sunshine" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             采光
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="采光" name="lighting" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             隔音
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="隔音" name="soundInsulation" class="form-control">
                                         </div>
                                     </div>
@@ -190,14 +190,14 @@
                 <input type="hidden" name="roomId" class="roomId">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             装修部位<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
                                             <select required="required" name="part" class="form-control  part">
                                             </select>
                                         </div>
@@ -205,20 +205,20 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             部位描述
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
                                             <textarea name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             装修材料<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
                                             <select required="required" name="material" class="form-control  material">
                                             </select>
                                         </div>
@@ -226,10 +226,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             施工工艺<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
                                             <select required="required" name="constructionTechnology"
                                                     class="form-control constructionTechnology">
                                             </select>
@@ -238,10 +238,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             装修材料价格区间<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
                                             <select required="required" name="materialPrice"
                                                     class="form-control materialPrice">
                                             </select>

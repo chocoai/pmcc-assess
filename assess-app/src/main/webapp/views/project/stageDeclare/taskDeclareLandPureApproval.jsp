@@ -238,10 +238,10 @@
                 <input type="hidden" name="pid">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <div class="col-sm-5">
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                         <div id="_declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId"></div>
                                     </div>
                                 </div>
@@ -273,10 +273,10 @@
             <form id="frmDeclareRealtyLandCert" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <div class="col-sm-5">
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                         <div id="_declareRealtyLandCertFileId"></div>
                                     </div>
                                 </div>
@@ -308,10 +308,10 @@
             <form id="frmDeclareRealtyRealEstateCert" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <div class="col-sm-5">
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                         <div id="_declareRealtyRealEstateCertFileId"></div>
                                     </div>
                                 </div>

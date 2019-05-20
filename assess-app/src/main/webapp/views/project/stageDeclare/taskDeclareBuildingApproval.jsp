@@ -29,7 +29,7 @@
                     </div>
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
 
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                     </div>
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
 
                             </div>
                         </div>
@@ -1217,14 +1217,14 @@
             <form id="declareBuildingPermitFrm" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareBuildingPermitFileId"></div>
                                         </div>
                                     </div>
@@ -1259,14 +1259,14 @@
             <form id="declareLandUsePermitFrm" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareLandUsePermitFileId"></div>
                                         </div>
                                     </div>
@@ -1301,14 +1301,14 @@
             <form id="declarePreSalePermitFrm" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declarePreSalePermitFileId"></div>
                                         </div>
                                     </div>
@@ -1343,14 +1343,14 @@
             <form id="declareBuildingConstructionPermitFrm" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareBuildingConstructionPermitFileId"></div>
                                         </div>
                                     </div>
@@ -1385,14 +1385,14 @@
             <form id="civilEngineeringFrm" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_civilEngineeringFileId"></div>
                                         </div>
                                     </div>
@@ -1427,14 +1427,14 @@
             <form id="declareRealtyLandCertFrm" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             上传附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareRealtyLandCertFileId"></div>
                                         </div>
                                     </div>
@@ -1468,14 +1468,14 @@
             <form id="declareRealtyRealEstateCertFrm" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareRealtyRealEstateCertFileId"></div>
                                         </div>
                                     </div>
@@ -1511,14 +1511,14 @@
             <form id="declareBuildingPermitFrmE" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareBuildingPermitFileIdE"></div>
                                         </div>
                                     </div>
@@ -1553,14 +1553,14 @@
             <form id="declareLandUsePermitFrmE" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareLandUsePermitFileIdE"></div>
                                         </div>
                                     </div>
@@ -1597,14 +1597,14 @@
                 <input type="hidden" name="pid">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declarePreSalePermitFileIdE"></div>
                                         </div>
                                     </div>
@@ -1639,14 +1639,14 @@
             <form id="declareBuildingConstructionPermitFrmE" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareBuildingConstructionPermitFileIdE"></div>
                                         </div>
                                     </div>
@@ -1679,14 +1679,14 @@
             <form id="equipmentInstallationFrm" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_equipmentInstallationFileId"></div>
                                         </div>
                                     </div>
@@ -1719,14 +1719,14 @@
             <form id="declareRealtyLandCertFrmE" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             上传附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareRealtyLandCertFileIdE"></div>
                                         </div>
                                     </div>
@@ -1759,14 +1759,14 @@
             <form id="declareRealtyRealEstateCertFrmE" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <div id="_declareRealtyRealEstateCertFileIdE"></div>
                                         </div>
                                     </div>

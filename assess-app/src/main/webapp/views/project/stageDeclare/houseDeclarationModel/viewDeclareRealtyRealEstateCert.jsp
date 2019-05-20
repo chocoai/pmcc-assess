@@ -66,14 +66,14 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             上传不动产证
                                         </label>
-                                        <div class="col-sm-5">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                             <input id="declareRealtyRealEstateCertNewFileId"
                                                    name="declareRealtyRealEstateCertNewFileId"
                                                    required="required" placeholder="上传不动产证" class="form-control"

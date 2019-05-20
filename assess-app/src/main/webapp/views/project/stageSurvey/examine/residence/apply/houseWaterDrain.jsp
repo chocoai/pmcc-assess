@@ -35,14 +35,14 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             排水系统<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
                                             <select required name="drainSystem"
                                                     class="form-control search-select select2 drainSystem">
                                             </select>
@@ -51,10 +51,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             类别<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
                                             <select required name="type"
                                                     class="form-control search-select select2 type">
                                             </select>
@@ -63,10 +63,10 @@
                                 </div>
                                 <%--<div class="form-group">--%>
                                     <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
+                                        <%--<label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">--%>
                                             <%--体系<span class="symbol required"></span>--%>
                                         <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
+                                        <%--<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">--%>
                                             <%--<select required name="organization"--%>
                                                     <%--class="form-control search-select select2 organization">--%>
                                             <%--</select>--%>
@@ -75,10 +75,10 @@
                                 <%--</div>--%>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             排水处理方式<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
                                             <select required="required" name="processingMode"
                                                     class="form-control search-select select2 processingMode">
                                             </select>
@@ -87,10 +87,10 @@
                                 </div>
                                 <%--<div class="form-group">--%>
                                     <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
+                                        <%--<label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">--%>
                                             <%--排水系统评价--%>
                                         <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
+                                        <%--<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">--%>
                                             <%--<input type="text" class="form-control" name="evaluate">--%>
                                         <%--</div>--%>
                                     <%--</div>--%>
