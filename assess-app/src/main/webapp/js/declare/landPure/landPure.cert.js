@@ -344,7 +344,7 @@ assessLand.inputFile = function (flag) {
     });
 };
 assessLand.loadLandList = function () {
-    var cols = commonDeclareApplyModel.land.getLandColumn();
+    var cols = declareCommon.getLandColumn() ;
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -552,7 +552,7 @@ declareRealtyRealEstateCert.inputFile = function (flag) {
 
 
 declareRealtyRealEstateCert.loadList = function () {
-    var cols = commonDeclareApplyModel.realEstateCert.getRealEstateColumn();
+    var cols = declareCommon.getRealEstateColumn();
     cols.push({field: 'fileViewName', title: '不动产附件'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -578,20 +578,16 @@ declareRealtyRealEstateCert.loadList = function () {
 declareRealtyRealEstateCert.deleteData = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (rows.length >= 1) {
+        var arr = [];
+        $.each(rows, function (i, n) {
+            arr.push(n.id);
+        });
         Alert("是否删除", 2, null,
             function () {
-                var arr = [];
-                $.each(rows, function (i, n) {
-                    arr.push(n.id);
+                declareCommon.deleteDeclareRealtyData(arr.join(","), function () {
+                    declareRealtyRealEstateCert.loadList();
+                    toastr.success('成功!');
                 });
-                Alert("是否删除", 2, null,
-                    function () {
-                        declareCommon.deleteDeclareRealtyData(arr.join(","), function () {
-                            declareRealtyRealEstateCert.loadList();
-                            toastr.success('成功!');
-                        });
-                    }
-                );
             }
         );
     } else {

@@ -445,9 +445,11 @@ public class DeclareRealtyLandCertService {
                 String name = baseDataDicService.getNameById(oo.getLandCertGetQuestion());
                 if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_YES_NAME)) {
                     declareRecord.setHasCert(true);
+                    declareRecord.setDataFromType("土地证");
                 }
                 if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_NO_NAME)) {
                     declareRecord.setHasCert(false);
+                    declareRecord.setDataFromType(oo.getLandCertName());
                 }
             }
             if (typeFlag) {

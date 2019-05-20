@@ -71,8 +71,25 @@ public enum MethodCompareFieldEnum {
     CONSTRUCTION_QUALITY("construction.quality", "工程质量"),//ps:工程质量
 
     Annual_Coefficient("annual.coefficient", "年期修正系数"),//ps:年期修正系数
-    VolumeRatio_Coefficient("volumeratio.coefficient", "容积率修正系数");//ps:容积率修正系数
+    VolumeRatio_Coefficient("volumeratio.coefficient", "容积率修正系数"),//ps:容积率修正系数
 
+    LAND_NAME("land.name", "地块名称"),//ps:地块名称
+    LAND_AREA_LOCATION("land.area.location", "区域位置"),//ps:区域位置
+    LAND_AGGLOMERATION_DEGREE("land.agglomeration.degree", "产业聚集度"),//ps:产业聚集度
+    LAND_TRAFFIC_CONDITIONS("land.traffic.conditions", "交通条件"),//ps:交通条件
+    LAND_UPPORTING_FACILITY("land.upporting.facility", "配套设施条件"),//ps:配套设施条件
+    LAND_ENVIRONMENT_CONDITION("land.environment.condition", "环境条件"),//ps:环境条件
+    LAND_PLANNING_CONDITION("land.planning.condition", "规划条件"),//ps:规划条件
+    LAND_AREA("land.area", "面积"),//ps:面积
+    LAND_USE("land.use", "用途"),//ps:用途
+    LAND_TEMPORARY_ROAD_CONDITION("land.temporary.road.condition", "临街（路）状况"),//ps:临街（路）状况
+    LAND_TOPOGRAPHY("land.topography", "形状、地质、地形、地势"),//ps:形状、地质、地形、地势
+    LAND_PLOT_RATIO("land.plot.ratio", "容积率"),//ps:容积率
+    LAND_DEVELOPMENT_LEVEL("land.development.level", "宗地开发程度"),//ps:宗地开发程度
+    LAND_USEFUL_LIFE("land.useful.life", "使用年限"),//ps:使用年限
+    LAND_RIGHT_CONDITION("land.right.condition", "土地权利状况"),//ps:土地权利状况
+    LAND_OTHER("land.other", "土地其它")//ps:土地其它
+    ;
     private String key;
 
     private String name;

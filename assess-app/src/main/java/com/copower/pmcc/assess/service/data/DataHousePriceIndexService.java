@@ -97,6 +97,7 @@ public class DataHousePriceIndexService {
         if (StringUtils.isNotBlank(dataHousePriceIndex.getCity())) {
             vo.setCityName(erpAreaService.getSysAreaName(dataHousePriceIndex.getCity()));
         }
+        vo.setPurposeName(baseDataDicService.getNameById(dataHousePriceIndex.getPurpose()));
         if (StringUtils.isNotBlank(dataHousePriceIndex.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(dataHousePriceIndex.getDistrict()));
         }

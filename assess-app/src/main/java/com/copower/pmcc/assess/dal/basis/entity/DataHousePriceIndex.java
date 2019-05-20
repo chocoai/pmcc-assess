@@ -5,6 +5,8 @@ import java.util.Date;
 public class DataHousePriceIndex {
     private Integer id;
 
+    private Integer purpose;
+
     private Integer type;
 
     private Date evaluationDate;
@@ -29,6 +31,14 @@ public class DataHousePriceIndex {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(Integer purpose) {
+        this.purpose = purpose;
     }
 
     public Integer getType() {

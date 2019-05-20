@@ -124,7 +124,97 @@ declareCommon.showHtmlMastInit = function (target,callback) {
             callback(area);
         });
     } catch (e) {
+        //由于是填充的hmtl所以需要手动初始化select2
+        DatepickerUtils.parse();
+        target.find(".select2").each(function () {
+            $(this).select2();
+        });
+        target.clearAll();
+        target.validate();
+        callback({});
     }
+};
+
+//土地
+declareCommon.getLandColumn = function () {
+    var cols = [];
+    cols.push({
+        field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+            return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+        }
+    });
+    cols.push({field: 'landCertName', title: '土地权证号'});
+    cols.push({field: 'beLocated', title: '房屋坐落'});
+    cols.push({field: 'landNumber', title: '地号'});
+    cols.push({field: 'graphNumber', title: '图号'});
+    cols.push({field: 'useRightArea', title: '使用权面积'});
+    return cols;
+};
+
+//房产
+declareCommon.getHouseColumn = function () {
+    var cols = [];
+    cols.push({
+        field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+            return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+        }
+    });
+    cols.push({field: 'certName', title: '房屋权证号'});
+    cols.push({field: 'beLocated', title: '房屋坐落'});
+    cols.push({field: 'ownership', title: '房屋所有权人'});
+    cols.push({field: 'floorArea', title: '建筑面积'});
+    cols.push({field: 'planningUseName', title: '规划用途'});
+    return cols;
+};
+
+//不动产
+declareCommon.getRealEstateColumn = function () {
+    var cols = [];
+    cols.push({
+        field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+            return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+        }
+    });
+    cols.push({field: 'evidenceArea', title: '证载面积'});
+    cols.push({field: 'certName', title: '不动产权证号'});
+    cols.push({field: 'beLocated', title: '房屋坐落'});
+    return cols;
+};
+
+//土建
+declareCommon.getCivilEngineeringColumn = function () {
+    var cols = [];
+    cols.push({
+        field: 'area', title: '区域', formatter: function (value, row, index) {
+            return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+        }
+    });
+    cols.push({field: 'name', title: '项目名称', visible: true});
+    cols.push({field: 'bookNetValue', title: '帐面净值', visible: true});
+    cols.push({field: 'bookValue', title: '帐面价值', visible: true});
+    cols.push({field: 'declarer', title: '申报人'});
+    cols.push({field: 'beLocated', title: '坐落'});
+    cols.push({field: 'centerId', title: '中间表id', visible: false});
+    cols.push({field: 'fileViewName', title: '附件'});
+    return cols;
+};
+
+//设备安装
+declareCommon.getEquipmentInstallationColumn = function () {
+    var cols = [];
+    cols.push({
+        field: 'area', title: '区域', formatter: function (value, row, index) {
+            return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+        }
+    });
+    cols.push({field: 'bookEquipmentFee', title: '账面设备费', visible: false});
+    cols.push({field: 'bookCapitalCost', title: '账面资金成本', visible: false});
+    cols.push({field: 'bookInstallationFee', title: '账面安装费'});
+    cols.push({field: 'declarer', title: '申报人'});
+    cols.push({field: 'beLocated', title: '坐落'});
+    cols.push({field: 'centerId', title: '中间表id', visible: true});
+    cols.push({field: 'fileViewName', title: '附件'});
+    return cols;
 };
 
 declareCommon.saveLandData = function (data,callback) {
@@ -321,10 +411,29 @@ declareCommon.initHouse = function (item,form,fileArr,callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landAcquisition, function (html, data) {
         frm.find("select[name='landAcquisition']").empty().html(html).trigger('change');
     });
-    frm.find("input[name='registrationTime']").val(formatDate(item.registrationTime));
-    frm.find("input[name='useEndDate']").val(formatDate(item.useEndDate));
-    frm.find("input[name='useStartDate']").val(formatDate(item.useStartDate));
-    frm.find("input[name='registrationDate']").val(formatDate(item.registrationDate));
+
+
+    try {
+        //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
+        frm.find("input[name='registrationTime']").val(formatDate(item.registrationTime));
+        frm.find("input[name='useEndDate']").val(formatDate(item.useEndDate));
+        frm.find("input[name='useStartDate']").val(formatDate(item.useStartDate));
+        frm.find("input[name='registrationDate']").val(formatDate(item.registrationDate));
+        frm.find("input[name='landRegistrationDate']").val(formatDate(item.landRegistrationDate));
+    } catch (e) {
+    }
+
+
+    try {
+        frm.find("label[name='registrationTime']").html(formatDate(item.registrationTime));
+        frm.find("label[name='useEndDate']").html(formatDate(item.useEndDate));
+        frm.find("label[name='useStartDate']").html(formatDate(item.useStartDate));
+        frm.find("label[name='registrationDate']").html(formatDate(item.registrationDate));
+        frm.find("label[name='landRegistrationDate']").html(formatDate(item.landRegistrationDate));
+    } catch (e) {
+    }
+
+
     if (fileArr){
         $.each(fileArr,function (i,n) {
             declareCommon.showFile(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
@@ -361,8 +470,18 @@ declareCommon.initLand = function (item,form,fileArr,callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
     });
-    frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));
-    frm.find("input[name='registrationDate']").val(formatDate(item.registrationDate));
+    try {
+        //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
+        frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));
+        frm.find("input[name='registrationDate']").val(formatDate(item.registrationDate));
+    } catch (e) {
+    }
+
+    try {
+        frm.find("label[name='terminationDate']").html(formatDate(item.terminationDate));
+        frm.find("label[name='registrationDate']").html(formatDate(item.registrationDate));
+    } catch (e) {
+    }
     if (fileArr){
         $.each(fileArr,function (i,n) {
             declareCommon.showFile(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
@@ -406,11 +525,25 @@ declareCommon.initDeclareRealty = function (item,form,fileArr,callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         frm.find("select[name='nature']").empty().html(html).trigger('change');
     });
-    frm.find("input[name='registrationTime']").val(formatDate(item.registrationTime));
-    frm.find("input[name='useEndDate']").val(formatDate(item.useEndDate));
-    frm.find("input[name='useStartDate']").val(formatDate(item.useStartDate));
-    frm.find("input[name='registrationDate']").val(formatDate(item.registrationDate));
-    frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));
+    try {
+        //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
+        frm.find("input[name='registrationTime']").val(formatDate(item.registrationTime));
+        frm.find("input[name='useEndDate']").val(formatDate(item.useEndDate));
+        frm.find("input[name='useStartDate']").val(formatDate(item.useStartDate));
+        frm.find("input[name='registrationDate']").val(formatDate(item.registrationDate));
+        frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));
+    } catch (e) {
+    }
+
+
+    try {
+        frm.find("label[name='registrationTime']").html(formatDate(item.registrationTime));
+        frm.find("label[name='useEndDate']").html(formatDate(item.useEndDate));
+        frm.find("label[name='useStartDate']").html(formatDate(item.useStartDate));
+        frm.find("label[name='registrationDate']").html(formatDate(item.registrationDate));
+        frm.find("label[name='terminationDate']").html(formatDate(item.terminationDate));
+    } catch (e) {
+    }
     if (fileArr){
         $.each(fileArr,function (i,n) {
             declareCommon.showFile(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
