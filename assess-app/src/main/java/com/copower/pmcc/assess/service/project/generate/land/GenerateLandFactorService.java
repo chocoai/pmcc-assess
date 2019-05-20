@@ -12,11 +12,13 @@ import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateLandEntityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateLoactionService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 /**
  * Created by kings on 2019-5-17.
  */
+@Service
 public class GenerateLandFactorService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -279,7 +282,7 @@ public class GenerateLandFactorService {
             StringBuilder stringBuilder = new StringBuilder();
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             stringBuilder.append(String.format("根据委托方提供的%s原件或复印件记载，", declareRecord.getDataFromType()));
-            stringBuilder.append(String.format("土地使用权终止日期为%s，", schemeJudgeObject.getLandUseEndDate()));
+            stringBuilder.append(String.format("土地使用权终止日期为%s，", DateUtils.formatDate(schemeJudgeObject.getLandUseEndDate())));
             stringBuilder.append(String.format("自估价基准日起剩余使用年期为%s年，", schemeJudgeObject.getLandRemainingYear()));
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
         }
