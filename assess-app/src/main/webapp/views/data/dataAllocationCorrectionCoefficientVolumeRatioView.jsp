@@ -23,15 +23,42 @@
                 <div class="x_content">
                     <form id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    省
+                                </label>
+                                <div class="col-sm-1">
+                                    <select name="province" class="form-control search-select select2" >
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    市
+                                </label>
+                                <div class="col-sm-1">
+                                    <select name="city" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    区
+                                </label>
+                                <div class="col-sm-1">
+                                    <select name="district" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土地用途</label>
-                                <div class="col-sm-7">
+                                <div class="col-sm-2">
                                     <select name="purpose"
                                             class="form-control search-select select2" id="queryType">
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <button type="button" class="btn btn-primary"
                                         onclick="dataObjFun.listMaster()">
                                     查询
@@ -83,7 +110,7 @@
             cityValue: data.city,
             districtValue: data.district
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, data.purpose, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, data.purpose, function (html, data) {
             frm.find("select[name='purpose']").empty().html(html).trigger('change');
         });
     };
@@ -251,6 +278,9 @@
         });
         $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).bootstrapTable('destroy');
         TableInit($(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).prop("id"), "${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
+            province:$("#frmQuery").find("select[name='province']").val(),
+            city:$("#frmQuery").find("select[name='city']").val(),
+            district:$("#frmQuery").find("select[name='district']").val(),
             allocationVolumeRatioId: allocationVolumeRatioId
         }, {
             showColumns: false,
@@ -264,8 +294,14 @@
 
     $(document).ready(function () {
         dataObjFun.listMaster();
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, null, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, null, function (html, data) {
             $("#frmQuery").find("select[name='purpose']").empty().html(html).trigger('change');
+        });
+        AssessCommon.initAreaInfo({
+            useDefaultText: false,
+            provinceTarget: $("#frmQuery").find("select[name='province']"),
+            cityTarget: $("#frmQuery").find("select[name='city']"),
+            districtTarget: $("#frmQuery").find("select[name='district']")
         });
     });
 

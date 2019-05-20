@@ -74,6 +74,7 @@ public enum MethodCompareFieldEnum {
     VolumeRatio_Coefficient("volumeratio.coefficient", "容积率修正系数"),//ps:容积率修正系数
 
     LAND_NAME("land.name", "地块名称"),//ps:地块名称
+    LAND_TRADING_PRICE("land.trading.price", "交易价格"),//ps:土地-交易情况-交易价格
     LAND_AREA_LOCATION("land.area.location", "区域位置"),//ps:区域位置
     LAND_AGGLOMERATION_DEGREE("land.agglomeration.degree", "产业聚集度"),//ps:产业聚集度
     LAND_TRAFFIC_CONDITIONS("land.traffic.conditions", "交通条件"),//ps:交通条件

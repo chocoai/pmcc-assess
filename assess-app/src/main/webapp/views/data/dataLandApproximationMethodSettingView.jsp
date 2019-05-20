@@ -54,7 +54,7 @@
                                 <label class="col-sm-1 control-label">
                                     类别
                                 </label>
-                                <div class="col-sm-1">
+                                <div class="col-sm-2">
                                     <select name="category"
                                             class="form-control search-select select2" id="queryName">
                                     </select>

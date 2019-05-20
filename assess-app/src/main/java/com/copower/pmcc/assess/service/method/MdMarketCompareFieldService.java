@@ -499,12 +499,23 @@ public class MdMarketCompareFieldService extends BaseService {
                         case LAND_NAME://地块名称
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_NAME.getKey(), examineEstate.getName()));
                             break;
+                        case LAND_TRADING_PRICE:
+                            if (houseTrading.getTradingUnitPrice() != null && isCase)
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_PRICE.getKey(), String.valueOf(houseTrading.getTradingUnitPrice())));
+                            else
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_PRICE.getKey(), null));
+                            break;
                         case LAND_AREA_LOCATION://区域位置
                             String areaLocation = generateLandFactorService.getAreaLocation(Lists.newArrayList(judgeObject));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AREA_LOCATION.getKey(), areaLocation));
                             break;
                         case LAND_AGGLOMERATION_DEGREE://产业聚集度
-                            String agglomerationDegree = generateLandFactorService.getAgglomerationDegree(Lists.newArrayList(judgeObject));
+                            String agglomerationDegree = null;
+                            try {
+                                agglomerationDegree = generateLandFactorService.getAgglomerationDegree(Lists.newArrayList(judgeObject));
+                            } catch (Exception ex) {
+                                agglomerationDegree = null;
+                            }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AGGLOMERATION_DEGREE.getKey(), agglomerationDegree));
                             break;
                         case LAND_TRAFFIC_CONDITIONS://交通条件
@@ -589,8 +600,9 @@ public class MdMarketCompareFieldService extends BaseService {
         marketCompareItemDto.setName(name);
         marketCompareItemDto.setScore(100);
         marketCompareItemDto.setRatio(new BigDecimal("1"));
+        value = StringUtils.isBlank(value) ? (isCase ? "无" : "") : value;
         value = value.replaceAll("^[,，.。;；、]+[,，.。;；、]+$", "");
-        marketCompareItemDto.setValue(StringUtils.isBlank(value) ? (isCase ? "无" : "") : value);
+        marketCompareItemDto.setValue(value);
         return marketCompareItemDto;
     }
 

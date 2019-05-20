@@ -14,17 +14,15 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
-import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author: zch
@@ -70,6 +68,12 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
     public BootstrapTableVo getBootstrapTableVo(DataAllocationCorrectionCoefficientVolumeRatio oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        if(StringUtils.isBlank(oo.getProvince()))
+            oo.setProvince(null);
+        if(StringUtils.isBlank(oo.getCity()))
+            oo.setCity(null);
+        if(StringUtils.isBlank(oo.getDistrict()))
+            oo.setDistrict(null);
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataAllocationCorrectionCoefficientVolumeRatio> list = getDataAllocationCorrectionCoefficientVolumeRatioList(oo);
         List<DataAllocationCorrectionCoefficientVolumeRatioVo> voList = new ArrayList<>();

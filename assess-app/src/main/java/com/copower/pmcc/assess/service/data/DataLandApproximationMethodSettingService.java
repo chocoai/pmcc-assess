@@ -13,6 +13,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,12 @@ public class DataLandApproximationMethodSettingService {
     public BootstrapTableVo getBootstrapTableVo(DataLandApproximationMethodSetting oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        if(StringUtils.isBlank(oo.getProvince()))
+            oo.setProvince(null);
+        if(StringUtils.isBlank(oo.getCity()))
+            oo.setCity(null);
+        if(StringUtils.isBlank(oo.getDistrict()))
+            oo.setDistrict(null);
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataLandApproximationMethodSetting> list = getDataLandApproximationMethodSettingList(oo);
         List<DataLandApproximationMethodSettingVo> voList = new ArrayList<>();
