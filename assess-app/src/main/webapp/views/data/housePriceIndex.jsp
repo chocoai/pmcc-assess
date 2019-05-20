@@ -86,6 +86,25 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.dataTypeIndex, data.type, function (html, data) {
             frm.find("select[name='type']").empty().html(html).trigger('change');
         });
+        frm.find("select[name='type']").change(function () {
+            AssessCommon.getDataDicInfo( frm.find("select[name='type']").val() ,function (item) {
+                var name = item.name ;
+                var key = null;
+                if (name){
+                    if (name.indexOf('土地') != -1){
+                        key = AssessDicKey.estate_total_land_use ;
+                    }
+                    if (name.indexOf('房价') != -1){
+                        key = AssessDicKey.examineHouseLoadUtility ;
+                    }
+                }
+                if (key){
+                    AssessCommon.loadDataDicByKey(key, data.purpose, function (html, data) {
+                        frm.find("select[name='purpose']").empty().html(html).trigger('change');
+                    });
+                }
+            });
+        });
     };
 
     dataObjFun.editMasterById = function (index) {
@@ -130,6 +149,7 @@
         var cols = [];
         cols.push({field: 'areaName', title: '区域'});
         cols.push({field: 'typeName', title: '类别'});
+        cols.push({field: 'purposeName', title: '用途'});
         cols.push({
             field: 'releaseDate', title: '发布时间', formatter: function (value, row, index) {
                 return formatDate(value);
@@ -317,7 +337,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房价指数</h3>
+                <h3 class="modal-title">指数</h3>
             </div>
             <form id="frmFather" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -364,6 +384,16 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-10">
                                             <select name="type" required="required"
+                                                    class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">用途</label>
+                                        <div class="col-sm-10">
+                                            <select name="purpose"
                                                     class="form-control search-select select2">
                                             </select>
                                         </div>

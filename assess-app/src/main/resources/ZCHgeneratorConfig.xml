@@ -48,7 +48,7 @@
             <!--<columnOverride column="path_array" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_data_land_level" domainObjectName="DataLandLevel">
+        <table tableName="tb_data_house_price_index" domainObjectName="DataHousePriceIndex">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
