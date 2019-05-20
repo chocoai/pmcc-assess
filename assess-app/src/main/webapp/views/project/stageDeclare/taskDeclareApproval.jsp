@@ -11,7 +11,8 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
+            <script type="text/javascript"
+                    src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApprovalModel.jsp" %>
             <!-- 房产证 -->
@@ -77,31 +78,38 @@
             </div>
             <div class="x_panel">
                 <div class="x_content form-horizontal">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">委托单位</label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${declare.client}</label>
+                    <form class="form-horizontal" id="declareApplyForm">
+
+                        <input type="hidden" name="id" value="${declare.id}">
+                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">委托单位</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${declare.client}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">完成时限</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control"><fmt:formatDate value='${declare.dateLimit}'
+                                                                                pattern='yyyy-MM-dd'/></label>
+                                </div>
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">完成时限</label>
-                            <div class="col-sm-3">
-                                <label class="form-control"><fmt:formatDate value='${declare.dateLimit}'
-                                                                            pattern='yyyy-MM-dd'/></label>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                    估价委托书
+                                </label>
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                    <div id="_project_proxy"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                估价委托书
-                            </label>
-                            <div class="col-md-5 col-sm-5 col-xs-12">
-                                <div id="_project_proxy"></div>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
@@ -113,101 +121,101 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script>
-    var declareRealtyHouseCert = {};
 
-    declareRealtyHouseCert.config = {
-        frm: "frmDeclareRealtyHouseCert",
-        name: "房产证",
-        table: "tableDeclareRealtyHouseCert",
-        box: "boxDeclareRealtyHouseCert",
-        fileId: "declareRealtyHouseCertFileId",
+    var declareApprovalFun = {};
+
+    declareApprovalFun.houseConfig = {
+        frm: declareCommon.config.house.frm,
+        name: declareCommon.config.house.name,
+        table: declareCommon.config.house.table,
+        box: declareCommon.config.house.box,
+        fileId: declareCommon.config.house.fileId,
+        fileIdNew: declareCommon.config.house.fileIdNew,
+        fileViewNew: declareCommon.config.house.fileViewNew,
+        landFileId: declareCommon.config.house.landFileId,
         son: {
             declareRealtyLandCert: {
-                frm: "frmSonDeclareRealtyLandCert",
-                box: "boxSonDeclareRealtyLandCert",
-                view: "viewSonDeclareRealtyLandCertCert",
-                fileId: "sonDeclareRealtyLandCertFileId",
-                name: "土地",
-                table: "tableSonDeclareRealtyLandCert"
+                frm: declareCommon.config.house.son.declareRealtyLandCert.frm,
+                box: declareCommon.config.house.son.declareRealtyLandCert.box,
+                view: declareCommon.config.house.son.declareRealtyLandCert.view,
+                fileId: declareCommon.config.house.son.declareRealtyLandCert.fileId,
+                name: declareCommon.config.house.son.declareRealtyLandCert.name,
+                table: declareCommon.config.house.son.declareRealtyLandCert.table
             }
         }
     };
 
-    declareRealtyHouseCert.isNotBlank = function (item) {
-        if (item) {
-            return true;
+    declareApprovalFun.declareRealtyRealEstateCertConfig = {
+        frm: declareCommon.config.declareRealty.frm,
+        name: declareCommon.config.declareRealty.name,
+        table: declareCommon.config.declareRealty.table,
+        box: declareCommon.config.declareRealty.box,
+        fileId: declareCommon.config.declareRealty.fileId,
+        newFileId: declareCommon.config.declareRealty.newFileId,
+        fileView: declareCommon.config.declareRealty.fileView
+    };
+
+    declareApprovalFun.landConfig = {
+        frm: declareCommon.config.land.frm,
+        name: declareCommon.config.land.name,
+        table: declareCommon.config.land.table,
+        box: declareCommon.config.land.box,
+        fileId: declareCommon.config.land.fileId,
+        newFileId: declareCommon.config.land.newFileId,
+        houseFileId: declareCommon.config.land.houseFileId,
+        newHouseFileId: declareCommon.config.land.newHouseFileId,
+        HouseCert:{
+            frm:declareCommon.config.land.HouseCert.frm,
+            box:declareCommon.config.land.HouseCert.box
         }
-        return false;
     };
 
-    declareRealtyHouseCert.showFile = function (target, tableName, id) {
-        FileUtils.getFileShows({
-            target: target,
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                projectId: 0
-            },
-            deleteFlag: true
-        })
+    //房产证显示
+    declareApprovalFun.houseFindData = function (id) {
+        var item = $("#" + declareApprovalFun.houseConfig.table).bootstrapTable('getRowByUniqueId', id);
+        $('#' + declareApprovalFun.houseConfig.box).find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
+        $('#' + declareApprovalFun.houseConfig.box).find(".panel-body").append(commonDeclareApprovalModel.house.getHtml());
+        declareCommon.showHtmlMastInit($("#" + declareApprovalFun.houseConfig.frm), function (area) {
+            declareCommon.initHouse(item, $("#" + declareApprovalFun.houseConfig.frm), [declareApprovalFun.houseConfig.fileId], null);
+            $('#' + declareApprovalFun.houseConfig.box).modal("show");
+        });
     };
 
-    /**
-     * @author:  zch
-     * 描述:房产证 编辑
-     * @date:2018-09-19
-     **/
-    declareRealtyHouseCert.findData = function (id) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
-            type: "get",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    $('#' + declareRealtyHouseCert.config.box).find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
-                    $('#' + declareRealtyHouseCert.config.box).find(".panel-body").append(commonDeclareApprovalModel.house.getHtml());
-                    $("#" + declareRealtyHouseCert.config.frm).clearAll();
-                    if (result.data) {
-                        $("#" + declareRealtyHouseCert.config.frm).initForm(result.data);
-                        declareRealtyHouseCert.showFile(declareRealtyHouseCert.config.fileId,AssessDBKey.DeclareRealtyHouseCert,id);
-                        $("#" + declareRealtyHouseCert.config.frm).find("label[name='registrationTime']").html(formatDate(result.data.registrationTime));
-                        $("#" + declareRealtyHouseCert.config.frm).find("label[name='useEndDate']").html(formatDate(result.data.useEndDate));
-                        $("#" + declareRealtyHouseCert.config.frm).find("label[name='useStartDate']").html(formatDate(result.data.useStartDate));
-                        $("#" + declareRealtyHouseCert.config.frm).find("label[name='registrationDate']").html(formatDate(result.data.registrationDate));
-                        $("#" + declareRealtyHouseCert.config.frm).find("label[name='landRegistrationDate']").html(formatDate(result.data.landRegistrationDate));
-                    }
-                    $('#' + declareRealtyHouseCert.config.box).modal("show");
+    //房产证关联的土地证
+    declareApprovalFun.houseRelationLandData = function (id) {
+        var item = $("#" + declareApprovalFun.houseConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (declareCommon.isNotBlank(item.pid)) {//关联情况
+            declareCommon.getLandData(item.pid, function (data) {
+                if (declareCommon.isNotBlank(data)) {
+                    $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
+                    $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
+                    declareCommon.initLand(item, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareApprovalFun.houseConfig.landFileId], null);
+                    $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
+                } else {
+                    toastr.success('关联的土地证数据已经被删除!');
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+            });
+        }
     };
 
-    /**
-     * @author:  zch
-     * 描述:房产证 列表加载
-     * @date:2018-09-19
-     **/
-    declareRealtyHouseCert.loadList = function () {
-        var cols = commonDeclareApprovalModel.house.getHouseColumn();
+    //房产 table list
+    declareApprovalFun.houseLoadList = function () {
+        var cols = declareCommon.getHouseColumn();
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 if (row.pid) {
-                    str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyHouseCert.sonDeclareRealtyLandCert.showViewModel(' + row.id + ');" ><i class="fa fa-check">土地证</i></a>';
+                    str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.houseRelationLandData(' + row.id + ');" ><i class="fa fa-check">土地证</i></a>';
                 }
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="declareRealtyHouseCert.findData(' + row.id + ',\'tb_List\')">房产证<i class="fa fa-search fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="declareApprovalFun.houseFindData(' + row.id + ',\'tb_List\')">房产证<i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
-        $("#" + declareRealtyHouseCert.config.table).bootstrapTable('destroy');
-        TableInit(declareRealtyHouseCert.config.table, "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
-            planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},enable:declareCommon.masterData
+        $("#" + declareApprovalFun.houseConfig.table).bootstrapTable('destroy');
+        TableInit(declareApprovalFun.houseConfig.table, "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
+            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}', enable: declareCommon.masterData
         }, {
             showColumns: false,
             showRefresh: false,
@@ -218,189 +226,52 @@
         });
     };
 
-    /**
-     * @author:  zch
-     * 描述:房产证 挂的土地证证(属子类)
-     * @date:2018-09-19
-     **/
-    declareRealtyHouseCert.sonDeclareRealtyLandCert = {
-        showViewModel: function (id) {
-            var item = $("#" + declareRealtyHouseCert.config.table).bootstrapTable('getRowByUniqueId', id);
-            if (declareRealtyHouseCert.isNotBlank(item.pid)) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertById",
-                    type: "get",
-                    dataType: "json",
-                    data: {id: item.pid, planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
-                    success: function (result) {
-                        if (result.ret) {
-                            if (declareRealtyHouseCert.isNotBlank(result.data)) {
-                                $('#' + declareRealtyHouseCert.config.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
-                                $('#' + declareRealtyHouseCert.config.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
-                                $("#" + declareRealtyHouseCert.config.son.declareRealtyLandCert.frm).clearAll();
-                                $("#" + declareRealtyHouseCert.config.son.declareRealtyLandCert.frm).initForm(result.data);
-                                declareRealtyHouseCert.showFile(declareRealtyHouseCert.config.son.declareRealtyLandCert.fileId,AssessDBKey.DeclareRealtyLandCert,result.data.id);
-                                $("#" + declareRealtyHouseCert.config.son.declareRealtyLandCert.frm).find("label[name='terminationDate']").html(formatDate(result.data.terminationDate));
-                                $("#" + declareRealtyHouseCert.config.son.declareRealtyLandCert.frm).find("label[name='registrationDate']").html(formatDate(result.data.registrationDate));
-                                $('#' + declareRealtyHouseCert.config.son.declareRealtyLandCert.box).modal("show");
-                            } else {
-                                toastr.success('关联的土地证数据已经被删除!');
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            } else {
-                Alert("无关联数据");
-            }
-        }
-    };
-
-    $(function () {
-        declareRealtyHouseCert.loadList();
-        loadUploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
-    });
-</script>
-<script type="text/javascript">
-    //显示附件
-    function loadUploadFiles(tableName, tableId, fieldsName, target) {
-        FileUtils.getFileShows({
-            target: target == undefined ? fieldsName : target,
-            formData: {
-                tableName: tableName,
-                tableId: tableId,
-                fieldsName: fieldsName,
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            editFlag: false,
-            deleteFlag: false
-        })
-    }
-
-    var declareRealtyLandCert = {} ;
-    declareRealtyLandCert.config = {
-        frm: "frmDeclareRealtyLandCert",
-        name: "土地证",
-        table: "tableDeclareRealtyLandCert",
-        box: "boxDeclareRealtyLandCert",
-        fileId: "declareRealtyLandCertFileId",
-        fileView: "declareRealtyLandCertFileView",
-        houseFileId: "declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId",
-        houseView: "declareRealtyLandCert_declareRealtyLandCert_HouseCert_View",
-        HouseCert: {
-            frm: "declareRealtyLandCert_HouseCert_frm",
-            box: "declareRealtyLandCert_HouseCert_box"
-        }
-    } ;
-
-
-    declareRealtyLandCert.isNotBlank = function (item) {
-        if (item) {
-            return true;
-        }
-        return false;
-    };
-
-    declareRealtyLandCert.showFile = function (target, tableName, id) {
-        FileUtils.getFileShows({
-            target: target,
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                projectId: 0
-            },
-            deleteFlag: true
-        })
-    };
-
-
-
-    declareRealtyLandCert.findData = function (id) {
-        $('#' + declareRealtyLandCert.config.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
-        $('#' + declareRealtyLandCert.config.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
-        $("#" + declareRealtyLandCert.config.frm).clearAll();
-        $('#' + declareRealtyLandCert.config.box).modal("show");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertById",
-            type: "get",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    if (declareRealtyLandCert.isNotBlank(data)) {
-                        $("#" + declareRealtyLandCert.config.frm).initForm(result.data);
-                        declareRealtyLandCert.showFile(declareRealtyLandCert.config.fileId,AssessDBKey.DeclareRealtyLandCert,id) ;
-                        $("#" + declareRealtyLandCert.config.frm).find("label[name='terminationDate']").html(formatDate(result.data.terminationDate));
-                        $("#" + declareRealtyLandCert.config.frm).find("label[name='registrationDate']").html(formatDate(result.data.registrationDate));
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
+    //土地证
+    declareApprovalFun.landFindData = function (id) {
+        var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
+        $('#' + declareApprovalFun.landConfig.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
+        $('#' + declareApprovalFun.landConfig.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
+        declareCommon.showHtmlMastInit($("#" + declareApprovalFun.landConfig.frm), function (area) {
+            declareCommon.initLand(item, $("#" + declareApprovalFun.landConfig.frm), [declareApprovalFun.landConfig.fileId], null);
+            $('#' + declareApprovalFun.landConfig.box).modal("show");
         });
     };
 
-    /**
-     * @author:  zch
-     * 描述:房产证数据
-     * @date:2018-09-21
-     **/
-    declareRealtyLandCert.houseCard = function (id) {
-        $('#' + declareRealtyLandCert.config.HouseCert.box).find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
-        $('#' + declareRealtyLandCert.config.HouseCert.box).find(".panel-body").append(commonDeclareApprovalModel.house.getHtml());
-        $("#" + declareRealtyLandCert.config.HouseCert.frm).clearAll();
-        var item = $("#" + declareRealtyLandCert.config.table).bootstrapTable('getRowByUniqueId', id);
-        if (declareRealtyLandCert.isNotBlank(item.pid)) {
-            $('#' + declareRealtyLandCert.config.HouseCert.box).modal("show");
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
-                type: "get",
-                dataType: "json",
-                data: {id: item.pid, planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
-                success: function (result) {
-                    if (result.ret) {
-                        if (declareRealtyLandCert.isNotBlank(result.data)) {
-                            $("#" + declareRealtyLandCert.config.HouseCert.frm).initForm(result.data);
-                            declareRealtyLandCert.showFile(declareRealtyLandCert.config.houseFileId,AssessDBKey.DeclareRealtyHouseCert,result.data.id) ;
-                            $("#" + declareRealtyLandCert.config.HouseCert.frm).find("label[name='registrationTime']").html(formatDate(result.data.registrationTime));
-                            $("#" + declareRealtyLandCert.config.HouseCert.frm).find("label[name='useEndDate']").html(formatDate(result.data.useEndDate));
-                            $("#" + declareRealtyLandCert.config.HouseCert.frm).find("label[name='useStartDate']").html(formatDate(result.data.useStartDate));
-                            $("#" + declareRealtyLandCert.config.HouseCert.frm).find("label[name='registrationDate']").html(formatDate(result.data.registrationDate));
-                            $("#" + declareRealtyLandCert.config.HouseCert.frm).find("label[name='landRegistrationDate']").html(formatDate(result.data.landRegistrationDate));
-                        } else {
-                            toastr.success('关联数据已经被删除了!');
-                            toastr.success('请重新填写');
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+    //土地证关联的房产证
+    declareApprovalFun.landRelationHouseData = function (id) {
+        var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
+        $('#' + declareApprovalFun.landConfig.HouseCert.box).find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
+        $('#' + declareApprovalFun.landConfig.HouseCert.box).find(".panel-body").append(commonDeclareApprovalModel.house.getHtml());
+        if (declareCommon.isNotBlank(item.pid)) {
+            declareCommon.getHouseData(item.pid,function (data) {
+                if (declareCommon.isNotBlank(data)) {
+                    declareCommon.initHouse(data,$("#" + declareApprovalFun.landConfig.HouseCert.frm),[declareApprovalFun.landConfig.houseFileId],null);
+                    $('#' + declareApprovalFun.landConfig.HouseCert.box).modal("show");
+                } else {
+                    toastr.success('关联数据已经被删除了!');
                 }
-            })
+            });
         }
     };
 
-    declareRealtyLandCert.loadList = function () {
-        var cols = commonDeclareApprovalModel.land.getLandColumn();
+    //土地 table list
+    declareApprovalFun.landLoadList = function () {
+        var cols = declareCommon.getLandColumn();
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 if (row.pid) {
-                    str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyLandCert.houseCard(' + row.id + ');" ><i class="fa fa-check">房产证关联数据查看详情</i></a>';
+                    str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.landRelationHouseData(' + row.id + ');" ><i class="fa fa-check">房产证关联数据查看详情</i></a>';
                 }
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="土地证查看详情" onclick="declareRealtyLandCert.findData(' + row.id + ',\'tb_List\')">土地证<i class="fa fa-search fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="土地证查看详情" onclick="declareApprovalFun.landFindData(' + row.id + ',\'tb_List\')">土地证<i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
-        $("#" + declareRealtyLandCert.config.table).bootstrapTable('destroy');
-        TableInit(declareRealtyLandCert.config.table, "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
-            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}' , enable:declareCommon.masterData
+        $("#" + declareApprovalFun.landConfig.table).bootstrapTable('destroy');
+        TableInit(declareApprovalFun.landConfig.table, "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
+            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}', enable: declareCommon.masterData
         }, {
             showColumns: false,
             showRefresh: false,
@@ -411,87 +282,32 @@
         });
     };
 
-    $(function () {
-        declareRealtyLandCert.loadList();
-    });
-</script>
-<script>
-
-    var declareRealtyRealEstateCert = {} ;
-
-    declareRealtyRealEstateCert.config = {
-        frm: "frmDeclareRealtyRealEstateCert",
-        name: "不动产证",
-        table: "tableDeclareRealtyRealEstateCert",
-        box: "boxDeclareRealtyRealEstateCert",
-        fileId: "declareRealtyRealEstateCertFileId",
-        newFileId: "declareRealtyRealEstateCertNewFileId",
-        fileView: "declareRealtyRealEstateCertFileView"
-    } ;
-
-    declareRealtyRealEstateCert.showFile = function (target, tableName, id) {
-        FileUtils.getFileShows({
-            target: target,
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                projectId: 0
-            },
-            deleteFlag: true
-        })
-    };
-
-    declareRealtyRealEstateCert.isNotBlank = function (item) {
-        if (item) {
-            return true;
-        }
-        return false;
-    };
-
-    declareRealtyRealEstateCert.findData = function (id) {
-        $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
-        $('#' + declareRealtyRealEstateCert.config.box).find(".panel-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
-        $("#" + declareRealtyRealEstateCert.config.frm).clearAll();
-        $('#' + declareRealtyRealEstateCert.config.box).modal("show");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
-            type: "get",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    if (declareRealtyRealEstateCert.isNotBlank(data)) {
-                        $("#" + declareRealtyRealEstateCert.config.frm).initForm(result.data);
-                        declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCert.config.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
-                        $("#" + declareRealtyRealEstateCert.config.frm).find("label[name='registrationTime']").html(formatDate(result.data.registrationTime));
-                        $("#" + declareRealtyRealEstateCert.config.frm).find("label[name='useEndDate']").html(formatDate(result.data.useEndDate));
-                        $("#" + declareRealtyRealEstateCert.config.frm).find("label[name='useStartDate']").html(formatDate(result.data.useStartDate));
-                        $("#" + declareRealtyRealEstateCert.config.frm).find("label[name='registrationDate']").html(formatDate(result.data.registrationDate));
-                        $("#" + declareRealtyRealEstateCert.config.frm).find("label[name='terminationDate']").html(formatDate(result.data.terminationDate));
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
+    //不动产
+    declareApprovalFun.realtyRealEstatefindData = function (id) {
+        var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
+        $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
+        $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".panel-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
+        declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),function (area) {
+            declareCommon.initDeclareRealty(item,$("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),[declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId],null);
+            $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
         });
     };
 
-    declareRealtyRealEstateCert.loadList = function () {
-        var cols = commonDeclareApprovalModel.realEstateCert.getRealEstateColumn() ;
+    //不动产
+    declareApprovalFun.realEstateloadList  = function () {
+        var cols = declareCommon.getRealEstateColumn();
         cols.push({field: 'fileViewName', title: '不动产附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看详情" onclick="declareRealtyRealEstateCert.findData(' + row.id + ',\'exampleList\')"><i class="fa fa-search fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看详情" onclick="declareApprovalFun.realtyRealEstatefindData(' + row.id + ',\'exampleList\')"><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
-        $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('destroy');
-        TableInit(declareRealtyRealEstateCert.config.table, "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
-            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}' , enable:declareCommon.masterData
+        $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('destroy');
+        TableInit(declareApprovalFun.declareRealtyRealEstateCertConfig.table, "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
+            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}', enable: declareCommon.masterData
         }, {
             showColumns: false,
             showRefresh: false,
@@ -503,13 +319,14 @@
     };
 
     $(function () {
-        declareRealtyRealEstateCert.loadList();
+        declareApprovalFun.realEstateloadList();
+        declareApprovalFun.houseLoadList();
+        declareApprovalFun.landLoadList();
+        declareCommon.showFile(AssessUploadKey.PROJECT_PROXY, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false);
     });
 </script>
 
 <script type="application/javascript">
-
-
     //提交审批
     function saveform() {
         saveApprovalform("");
@@ -518,7 +335,42 @@
 </script>
 </body>
 
-<!-- 土地证 房产证模块 -->
+<!--  房产证模块 房产证信息 -->
+<div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">房产证信息</h3>
+            </div>
+            <form id="frmDeclareRealtyHouseCert" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                               <div class="form-group">
+                                     <div class="col-sm-5">
+                                         <div id="_declareRealtyHouseCertFileId"></div>
+                                     </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  房产证模块  土地证 -->
 <div id="boxSonDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -527,7 +379,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地证信息</h3>
+                <h3 class="modal-title">关联土地证信息</h3>
             </div>
             <form id="frmSonDeclareRealtyLandCert" class="form-horizontal">
                 <div class="modal-body">
@@ -553,43 +405,7 @@
     </div>
 </div>
 
-
-<!-- 房产证信息 房产证模块 -->
-<div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width:1000px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房产证信息</h3>
-            </div>
-            <form id="frmDeclareRealtyHouseCert" class="form-horizontal">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                               <%-- <div class="form-group">
-                                    <div class="col-sm-5">
-                                        <div id="_declareRealtyHouseCertFileId"></div>
-                                    </div>
-                                </div>--%>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 房产证信息 土地证模块-->
+<!--  土地证模块  房产证信息-->
 <div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
      role="dialog"
@@ -627,7 +443,7 @@
     </div>
 </div>
 
-<!-- 土地证信息 土地证模块-->
+<!--  土地证模块  土地证信息-->
 <div id="boxDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -636,18 +452,18 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地证信息12</h3>
+                <h3 class="modal-title">土地证信息</h3>
             </div>
             <form id="frmDeclareRealtyLandCert" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <%--<div class="form-group">
+                                <div class="form-group">
                                     <div class="col-sm-5">
                                         <div id="_declareRealtyLandCertFileId"></div>
                                     </div>
-                                </div>--%>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -671,18 +487,18 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">不动产证信息12</h3>
+                <h3 class="modal-title">不动产证信息</h3>
             </div>
             <form id="frmDeclareRealtyRealEstateCert" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <%--<div class="form-group">
+                                <div class="form-group">
                                     <div class="col-sm-5">
                                         <div id="_declareRealtyRealEstateCertFileId"></div>
                                     </div>
-                                </div>--%>
+                                </div>
                             </div>
                         </div>
                     </div>

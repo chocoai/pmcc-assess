@@ -396,7 +396,7 @@ assessCommonHouse.houseImportHandle = function () {
  * 房产证列表
  */
 assessCommonHouse.loadList = function () {
-    var cols = commonDeclareApplyModel.house.getHouseColumn();
+    var cols = declareCommon.getHouseColumn();
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
