@@ -24,23 +24,24 @@ import java.util.regex.Pattern;
  */
 public class RegexBootstrapDemo {
 
-    private final String projectPath ="D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\project\\" ;
-    private final String share ="D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\share\\project\\" ;
-    private final String examine ="D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\project\\stageSurvey\\examine" ;
+    private final String projectPath = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\project\\";
+    private final String share = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\share\\project\\";
+    private final String examine = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\project\\stageSurvey\\examine";
 
     /**
      * 用于替换bootstrap 的栅格未处理好的 ， 此方法只能调用一次,一行一行替换的
+     *
      * @throws IOException
      */
     @Test
     public void testA() throws IOException {
-final String path = String.format("%s%s",examine,"") ;
-        File file = new File(path) ;
+        final String path = String.format("%s%s", examine, "");
+        File file = new File("D:\\temp\\declareApplyModel - 副本.jsp");
         replaceFirst(file);
     }
 
-    private void replaceFirst(File file)throws IOException{
-        if (file.isFile()){
+    private void replaceFirst(File file) throws IOException {
+        if (file.isFile()) {
             List<String> strings = FileUtils.readLines(file, CharEncoding.UTF_8);
             LinkedList<String> stringLinkedList = Lists.newLinkedList();
             Multimap multimap = getMultimap();
@@ -57,14 +58,14 @@ final String path = String.format("%s%s",examine,"") ;
                         String value = String.format(" %s%s ", str, number);
                         stringBuilder.append(value);
                     });
-                    a = s.replaceFirst("col-sm-offset-[0-9]", stringBuilder.toString());
+                    a = s.replaceFirst("col-[a-z][a-z]-offset-[0-9][0-9]?", stringBuilder.toString());
                     stringBuilder.delete(0, stringBuilder.toString().length());
 
                     collectionB.stream().forEachOrdered(str -> {
                         String value = String.format(" %s%s ", str, number);
                         stringBuilder.append(value);
                     });
-                    b = s.replaceFirst("col-sm-[0-9]", stringBuilder.toString());
+                    b = s.replaceFirst("col-[a-z][a-z]-[0-9][0-9]?", stringBuilder.toString());
                     stringBuilder.delete(0, stringBuilder.toString().length());
                     if (!Objects.equal(a, s)) {
                         integer = 1;
@@ -89,10 +90,10 @@ final String path = String.format("%s%s",examine,"") ;
             }
             System.out.println(StringUtils.join(stringLinkedList, " "));
             FileUtils.writeLines(file, stringLinkedList);
-        }else {
-            if (file.isDirectory()){
+        } else {
+            if (file.isDirectory()) {
                 File[] files = file.listFiles();
-                for (File f:files){
+                for (File f : files) {
                     replaceFirst(f);
                 }
             }
