@@ -18,6 +18,8 @@ public class BasicEstateLandState {
 
     private String landLevelContent;
 
+    private BigDecimal landFactorTotalScore;
+
     private Integer landLevel;
 
     private String landArea;
@@ -132,6 +134,14 @@ public class BasicEstateLandState {
 
     public void setLandLevelContent(String landLevelContent) {
         this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
+    }
+
+    public BigDecimal getLandFactorTotalScore() {
+        return landFactorTotalScore;
+    }
+
+    public void setLandFactorTotalScore(BigDecimal landFactorTotalScore) {
+        this.landFactorTotalScore = landFactorTotalScore;
     }
 
     public Integer getLandLevel() {

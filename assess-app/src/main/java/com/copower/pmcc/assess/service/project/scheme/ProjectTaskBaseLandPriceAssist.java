@@ -1,29 +1,20 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
-import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioService;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +22,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 描述:
@@ -63,15 +51,9 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
+    private BasicHouseService basicHouseService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
-    @Autowired
-    private DataHousePriceIndexDao dataHousePriceIndexDao;
-    @Autowired
-    private DataHousePriceIndexDetailDao dataHousePriceIndexDetailDao;
     @Autowired
     private DataAllocationCorrectionCoefficientVolumeRatioService dataAllocationCorrectionCoefficientVolumeRatioService;
 
@@ -158,47 +140,12 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         modelAndView.addObject("standardPremium", dataLandLevelDetailById.getPrice());
 
         //期日修正系数
-        ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        //评估基准日
-        Date valuationDate = projectInfoById.getValuationDate();
-        //找到评估基准日对应的土地因素
-        BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
-        List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
-        if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
-        }
-        if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
-            Integer masterId = dataHouseIndexList.get(0).getId();
-            DataHousePriceIndexDetail dataHousePriceIndexDetail = new DataHousePriceIndexDetail();
-            dataHousePriceIndexDetail.setHousePriceId(masterId);
-            List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(dataHousePriceIndexDetail);
-            //最早月份的指数
-            DataHousePriceIndexDetail firstIndex = detailList.get(0);
-            if (CollectionUtils.isNotEmpty(detailList)) {
-                for (DataHousePriceIndexDetail item : detailList) {
-                    if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
-                        DecimalFormat df = new DecimalFormat("0.00");
-                        modelAndView.addObject("dateAmend", df.format((float) Float.parseFloat(item.getIndexNumber().toString()) / (float) Float.parseFloat(firstIndex.getIndexNumber().toString())));
-                        break;
-                    }
-                }
-            }
-        }
+        modelAndView.addObject("dateAmend", landStateByEstateId.getLandFactorTotalScore());
 
         //法定年限
-        List<BaseDataDic> purposes = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_TOTAL_LAND_USE);
-        String landCertUseName = declareRecord.getLandCertUse();
-        BaseDataDic purposesType = baseDataDicService.getDataDicByName(purposes, landCertUseName);
-        List<KeyValueDto> keyValueDtos = JSON.parseArray(purposesType.getKeyValue(), KeyValueDto.class);
-        if (CollectionUtils.isNotEmpty(keyValueDtos)) {
-            for (KeyValueDto item : keyValueDtos) {
-                if ("year".equals(item.getKey())) {
-                    modelAndView.addObject("legalAge", item.getValue());
-                    break;
-                }
-            }
-        }
+        BasicHouse houseByApplyId = basicHouseService.getHouseByApplyId(basicApply.getId());
+        modelAndView.addObject("legalAge", houseByApplyId.getUseYear());
+
         //剩余使用年限
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
         if (declareRecord.getLandUseEndDate() != null && areaGroup.getValueTimePoint() != null) {

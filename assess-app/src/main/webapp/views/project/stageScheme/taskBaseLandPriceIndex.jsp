@@ -283,14 +283,14 @@
             $("#bhouPrice").text(standardBhouPrice + "万元/亩");
             $("#volumetricRate").text(getSomePlaces("${master.volumetricRate}", 2));
             //容积率是否修正
-            if (${master.hasFractionAmend}) {
+            if ("${master.hasFractionAmend}") {
                 $("#hasFractionAmend").attr("checked", "checked");
             } else {
                 $("#hasFractionAmend").removeAttr("checked");
                 $("#showVolumeFractionAmend").hide();
             }
             //开发程度是否修正
-            if (${master.hasDevelopCorrect}) {
+            if ("${master.hasDevelopCorrect}") {
                 $("#hasDevelopCorrect").attr("checked", "checked");
             } else {
                 $("#hasDevelopCorrect").removeAttr("checked");

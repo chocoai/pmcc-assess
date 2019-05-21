@@ -150,13 +150,13 @@
         var standardBhouPrice = getBhouPrice("${master.standardPremium}", 2)
         $("#bhouPrice").text(standardBhouPrice + "万元/亩");
         //容积率是否修正
-        if(${master.hasFractionAmend}){
+        if("${master.hasFractionAmend}"){
             $("#hasFractionAmend").attr("checked","checked");
         }else {
             $("#showVolumeFractionAmend").hide();
         }
         //开发程度是否修正
-        if(${master.hasDevelopCorrect}){
+        if("${master.hasDevelopCorrect}"){
             $("#hasDevelopCorrect").attr("checked","checked");
         }else {
             $("#showDevelopCorrect").hide();
