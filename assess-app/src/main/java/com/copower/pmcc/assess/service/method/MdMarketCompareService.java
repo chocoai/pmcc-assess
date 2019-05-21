@@ -180,7 +180,7 @@ public class MdMarketCompareService {
         BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
         mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(schemeJudgeObject, basicApply, setUseFieldList, false));
         if (isLand) {//如果是土地比较法 则需额外处理 年期修正系数与容积率修正系数
-            setCoefficient(areaGroup, mdMarketCompareItem, basicApply);
+            setCoefficient(areaGroup,schemeJudgeObject, mdMarketCompareItem, basicApply,false);
         }
         //获取成新率相关参数
         setResidueRatioParam(mdMarketCompareItem, planDetails.getId(), mdMarketCompare.getValueTimePoint());
@@ -312,7 +312,7 @@ public class MdMarketCompareService {
                 BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
                 mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(schemeJudgeObject, basicApply, setUseFieldList, true));
                 if (isLand) {//在估价对象中获取法定年限与剩余年限，如果未获取到则无年期修正系数
-                    setCoefficient(areaGroup, mdMarketCompareItem, basicApply);
+                    setCoefficient(areaGroup,schemeJudgeObject, mdMarketCompareItem, basicApply,true);
                 }
                 setResidueRatioParam(mdMarketCompareItem, mdCompareCaseVo.getPlanDetailsId(), areaGroup.getValueTimePoint());//获取成新率相关参数
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
