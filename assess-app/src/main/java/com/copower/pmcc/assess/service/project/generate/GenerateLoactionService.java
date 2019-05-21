@@ -531,107 +531,23 @@ public class GenerateLoactionService {
         List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
         List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
         List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
-        Map<Integer, String> integerStringMap = Maps.newHashMap();
-        Map<String, List<Integer>> entryMap = Maps.newHashMap();
-        Map<String, List<String>> listMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
             //交通枢纽
-            if (basicMatchingTrafficList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName())).count() >= 1) {
-                basicMatchingTrafficList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName())).forEach(oo -> {
-                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-                });
-                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-                if (!entryMap.isEmpty()) {
-                    entryMap.entrySet().stream().forEach(entry -> {
-                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingTrafficList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                        listMap.put(entry.getKey(), stringList);
-                    });
-                }
-                if (!listMap.isEmpty()) {
-                    stringBuilder.append(this.getDistanceDec("", listMap));
-                }
-                integerStringMap.clear();
-                entryMap.clear();
-                listMap.clear();
-            }
+            stringBuilder.append(this.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "", false));
             //主要转换
-            if (basicMatchingTrafficList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName())).count() >= 1) {
-                basicMatchingTrafficList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName())).forEach(oo -> {
-                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-                });
-                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-                if (!entryMap.isEmpty()) {
-                    entryMap.entrySet().stream().forEach(entry -> {
-                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingTrafficList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                        listMap.put(entry.getKey(), stringList);
-                    });
-                }
-                if (!listMap.isEmpty()) {
-                    stringBuilder.append(this.getDistanceDec("", listMap));
-                }
-                integerStringMap.clear();
-                entryMap.clear();
-                listMap.clear();
-            }
+            stringBuilder.append(this.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainConversion, "", false));
         }
         //购物商场
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-            if (basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).count() >= 1) {
-                basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).forEach(oo -> {
-                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-                });
-                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-                if (!entryMap.isEmpty()) {
-                    entryMap.entrySet().stream().forEach(entry -> {
-                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                        listMap.put(entry.getKey(), stringList);
-                    });
-                }
-                if (!listMap.isEmpty()) {
-                    stringBuilder.append(this.getDistanceDec("", listMap));
-                }
-                integerStringMap.clear();
-                entryMap.clear();
-                listMap.clear();
-            }
+            stringBuilder.append(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "", false));
         }
         //金融服务
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            basicMatchingFinanceVoList.stream().forEach(oo -> {
-                integerStringMap.put(oo.getId(), StringUtils.isNotBlank(oo.getDistance()) ? oo.getDistance() : "0");
-            });
-            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-            if (!entryMap.isEmpty()) {
-                entryMap.entrySet().stream().forEach(entry -> {
-                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingFinanceVoList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                    listMap.put(entry.getKey(), stringList);
-                });
-            }
-            if (!listMap.isEmpty()) {
-                stringBuilder.append(this.getDistanceDec("", listMap));
-            }
-            integerStringMap.clear();
-            entryMap.clear();
-            listMap.clear();
+            stringBuilder.append(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null, null, ""));
         }
         //医疗
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            basicMatchingMedicalList.stream().forEach(oo -> {
-                integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-            });
-            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-            if (!entryMap.isEmpty()) {
-                entryMap.entrySet().stream().forEach(entry -> {
-                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingMedicalList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getOrganizationName()).collect(Collectors.toList());
-                    listMap.put(entry.getKey(), stringList);
-                });
-            }
-            if (!listMap.isEmpty()) {
-                stringBuilder.append(this.getDistanceDec("", listMap));
-            }
-            integerStringMap.clear();
-            entryMap.clear();
-            listMap.clear();
+            stringBuilder.append(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList, null, ""));
         }
         return stringBuilder.toString();
     }
@@ -650,134 +566,25 @@ public class GenerateLoactionService {
         List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
         List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
         List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
-        Map<Integer, String> integerStringMap = Maps.newHashMap();
-        Map<String, List<Integer>> entryMap = Maps.newHashMap();
-        Map<String, List<String>> listMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
             //购物商场
-            if (basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).count() >= 1) {
-                basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).forEach(oo -> {
-                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-                });
-                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-                if (!entryMap.isEmpty()) {
-                    entryMap.entrySet().stream().forEach(entry -> {
-                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                        listMap.put(entry.getKey(), stringList);
-                    });
-                }
-                if (!listMap.isEmpty()) {
-                    String s = this.getDistanceDec(String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":"), listMap);
-                    stringArrayList.add(s);
-                }
-                integerStringMap.clear();
-                entryMap.clear();
-                listMap.clear();
-            }
+            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":"), false));
             //餐饮
-            if (basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())).count() >= 1) {
-                basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())).forEach(oo -> {
-                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-                });
-                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-                if (!entryMap.isEmpty()) {
-                    entryMap.entrySet().stream().forEach(entry -> {
-                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                        listMap.put(entry.getKey(), stringList);
-                    });
-                }
-                if (!listMap.isEmpty()) {
-                    String s = this.getDistanceDec(String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":"), listMap);
-                    stringArrayList.add(s);
-                }
-                integerStringMap.clear();
-                entryMap.clear();
-                listMap.clear();
-            }
+            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT, String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":"), false));
             //休闲娱乐
-            if (basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())).count() >= 1) {
-                basicMatchingLeisurePlaceList.stream().filter(oo -> Objects.equal(oo.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())).forEach(oo -> {
-                    integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-                });
-                entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-                if (!entryMap.isEmpty()) {
-                    entryMap.entrySet().stream().forEach(entry -> {
-                        List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                        listMap.put(entry.getKey(), stringList);
-                    });
-                }
-                if (!listMap.isEmpty()) {
-                    String s = this.getDistanceDec(String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":"), listMap);
-                    stringArrayList.add(s);
-                }
-                integerStringMap.clear();
-                entryMap.clear();
-                listMap.clear();
-            }
+            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION, String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":"), false));
         }
         //金融服务
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            basicMatchingFinanceVoList.stream().forEach(oo -> {
-                integerStringMap.put(oo.getId(), StringUtils.isNotBlank(oo.getDistance()) ? oo.getDistance() : "0");
-            });
-            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-            if (!entryMap.isEmpty()) {
-                entryMap.entrySet().stream().forEach(entry -> {
-                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingFinanceVoList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                    listMap.put(entry.getKey(), stringList);
-                });
-            }
-            if (!listMap.isEmpty()) {
-                String s = this.getDistanceDec(String.format("%s%s", "金融服务", ":"), listMap);
-                stringArrayList.add(s);
-                ;
-            }
-            integerStringMap.clear();
-            entryMap.clear();
-            listMap.clear();
+            stringArrayList.add(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null, null, String.format("%s%s", "金融服务", ":")));
         }
+        //医疗
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            basicMatchingMedicalList.stream().forEach(oo -> {
-                integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-            });
-            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-            if (!entryMap.isEmpty()) {
-                entryMap.entrySet().stream().forEach(entry -> {
-                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingMedicalList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getOrganizationName()).collect(Collectors.toList());
-                    listMap.put(entry.getKey(), stringList);
-                });
-            }
-            if (!listMap.isEmpty()) {
-                String s = this.getDistanceDec(String.format("%s%s", "医疗", ":"), listMap);
-                stringArrayList.add(s);
-                ;
-            }
-            integerStringMap.clear();
-            entryMap.clear();
-            listMap.clear();
+            stringArrayList.add(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList, null, String.format("%s%s", "医疗", ":")));
         }
+        //教育
         if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
-            basicMatchingEducationList.stream().forEach(oo -> {
-                integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
-            });
-            entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-            if (!entryMap.isEmpty()) {
-                entryMap.entrySet().stream().forEach(entry -> {
-                    List<String> stringList = entry.getValue().stream().map(po -> {
-                        BasicMatchingEducation basicMatchingEducation = basicMatchingEducationList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get();
-                        return String.format("%s%s", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName());
-                    }).collect(Collectors.toList());
-                    listMap.put(entry.getKey(), stringList);
-                });
-            }
-            if (!listMap.isEmpty()) {
-                String s = this.getDistanceDec(String.format("%s%s", "教育", ":"), listMap);
-                stringArrayList.add(s);
-                ;
-            }
-            integerStringMap.clear();
-            entryMap.clear();
-            listMap.clear();
+            stringArrayList.add(getFinanceAndMedicalAndEducation(null, null, basicMatchingEducationList, String.format("%s%s", "教育", ":")));
         }
         return stringArrayList;
     }
@@ -879,7 +686,9 @@ public class GenerateLoactionService {
     public String getDistanceDec(String title, Map<String, List<String>> map) {
         StringBuilder stringBuilder = new StringBuilder(8);
         if (!map.isEmpty()) {
-            stringBuilder.append(title);
+            if (StringUtils.isNotEmpty(title)) {
+                stringBuilder.append(title);
+            }
             map.entrySet().stream().forEach(entry -> {
                 if ("0".equals(entry.getKey())) {
                     stringBuilder.append("附近有");
@@ -894,5 +703,131 @@ public class GenerateLoactionService {
             return text;
         }
         return "";
+    }
+
+    /**
+     * 教育 医疗 金融 距离信息
+     *
+     * @param basicMatchingFinanceVoList
+     * @param basicMatchingMedicalList
+     * @param basicMatchingEducationList
+     * @return
+     */
+    public String getFinanceAndMedicalAndEducation(List<BasicMatchingFinanceVo> basicMatchingFinanceVoList, List<BasicMatchingMedical> basicMatchingMedicalList, List<BasicMatchingEducation> basicMatchingEducationList, String title) {
+        Map<Integer, String> integerStringMap = Maps.newHashMap();
+        Map<String, List<String>> listMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
+            basicMatchingFinanceVoList.forEach(oo -> {
+                integerStringMap.put(oo.getId(), StringUtils.isNotBlank(oo.getDistance()) ? oo.getDistance() : "0");
+            });
+            Map<String, List<Integer>> entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!entryMap.isEmpty()) {
+                entryMap.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingFinanceVoList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
+            }
+            if (!listMap.isEmpty()) {
+                return this.getDistanceDec(title, listMap);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
+            basicMatchingEducationList.forEach(oo -> {
+                integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+            });
+            Map<String, List<Integer>> entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!entryMap.isEmpty()) {
+                entryMap.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> {
+                        BasicMatchingEducation basicMatchingEducation = basicMatchingEducationList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get();
+                        return String.format("%s%s", baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()), basicMatchingEducation.getSchoolName());
+                    }).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
+            }
+            if (!listMap.isEmpty()) {
+                return this.getDistanceDec(title, listMap);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
+            basicMatchingMedicalList.forEach(oo -> {
+                integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+            });
+            Map<String, List<Integer>> entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!entryMap.isEmpty()) {
+                entryMap.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> basicMatchingMedicalList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getOrganizationName()).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
+            }
+            if (!listMap.isEmpty()) {
+                return this.getDistanceDec(title, listMap);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 休闲场所 包含-购物、娱乐、餐饮距离
+     *
+     * @param notFilter                     是否过滤
+     * @param basicMatchingLeisurePlaceList
+     * @param matchingLeisurePlaceTypeEnum
+     * @return
+     */
+    public String getMatchingLeisurePlacePrivate(List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum matchingLeisurePlaceTypeEnum, String title, boolean notFilter) {
+        Map<Integer, String> integerStringMap = Maps.newHashMap();
+        Map<String, List<String>> listMap = Maps.newHashMap();
+        basicMatchingLeisurePlaceList.stream().filter(oo -> {
+            if (notFilter) {
+                return notFilter;
+            }
+            return Objects.equal(oo.getType(), matchingLeisurePlaceTypeEnum.getKey());
+        }).forEachOrdered(oo -> {
+            integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+        });
+        Map<String, List<Integer>> entryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+        if (!entryMap.isEmpty()) {
+            entryMap.entrySet().stream().forEach(entry -> {
+                List<String> stringList = entry.getValue().stream().map(po -> basicMatchingLeisurePlaceList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                listMap.put(entry.getKey(), stringList);
+            });
+        }
+        if (!listMap.isEmpty()) {
+            return this.getDistanceDec(title, listMap);
+        }
+        return null;
+    }
+
+    /**
+     * 交通条件距离
+     *
+     * @param basicMatchingTrafficList
+     * @param examineMatchingTrafficTypeEnum
+     * @param notFilter                      是否过滤
+     * @return
+     */
+    public String getTrafficConditionsPrivate(List<BasicMatchingTrafficVo> basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum examineMatchingTrafficTypeEnum, String title, boolean notFilter) {
+        Map<Integer, String> integerStringMap = Maps.newHashMap();
+        Map<String, List<String>> listMap = Maps.newHashMap();
+        basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
+            if (notFilter) {
+                return notFilter;
+            }
+            return Objects.equal(basicMatchingTrafficVo.getType(), examineMatchingTrafficTypeEnum.getName());
+        }).forEachOrdered(oo -> {
+            integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+        });
+        Map<String, List<Integer>> useEntryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
+        if (!useEntryMap.isEmpty()) {
+            useEntryMap.entrySet().stream().forEach(entry -> {
+                List<String> stringList = entry.getValue().stream().map(po -> basicMatchingTrafficList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                listMap.put(entry.getKey(), stringList);
+            });
+        }
+        if (!listMap.isEmpty()) {
+            return this.getDistanceDec(title, listMap);
+        }
+        return null;
     }
 }

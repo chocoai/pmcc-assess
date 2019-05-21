@@ -69,59 +69,7 @@ public class GenerateCommonMethod {
     public final String SchemeJudgeObjectName = "委估对象";
     public final String errorStr = "无";
 
-    /**
-     * 建筑结构类别
-     *
-     * @param schemeJudgeObjectList
-     * @param projectInfo
-     * @return
-     * @throws Exception
-     */
-    public String getBuildingStructureCategory(List<SchemeJudgeObject> schemeJudgeObjectList, ProjectInfo projectInfo) throws Exception {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
-            return null;
-        }
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        for (ProjectPhase projectPhase : projectPhases) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(projectInfo.getId());
-                query.setProjectPhaseId(projectPhase.getId());
-                query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(projectPlanDetails.getId());
-                        if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
-                            if (generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory() != null) {
-                                String key = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory());
-                                if (StringUtils.isNotBlank(key)) {
-                                    this.putStringListMap(stringListMap, schemeJudgeObject, key);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        String s = this.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
-    }
+
 
     //房地产总价
     public BigDecimal getTotalRealEstate(Integer areId) {
@@ -140,59 +88,8 @@ public class GenerateCommonMethod {
         return temp;
     }
 
-    /**
-     * 权利人
-     *
-     * @param schemeJudgeObjectList
-     * @return
-     */
-    public String getPowerPerson(List<SchemeJudgeObject> schemeJudgeObjectList) {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
-            return null;
-        }
-        schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getCertUse())).collect(Collectors.toList());
-        for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObjectList.get(i).getDeclareRecordId());
-            if (declareRecord != null) {
-                if (StringUtils.isNotBlank(declareRecord.getOwnership())) {
-                    this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), declareRecord.getOwnership());
-                }
-            }
-        }
-        String s = this.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
-    }
 
-    /**
-     * 使用权类型
-     *
-     * @param schemeJudgeObjectList
-     * @return
-     */
-    public String getUseRightType(List<SchemeJudgeObject> schemeJudgeObjectList) {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
-            return null;
-        }
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord != null) {
-                String key = declareRecord.getLandRightNature();
-                if (StringUtils.isNotBlank(key)) {
-                    this.putStringListMap(stringListMap, schemeJudgeObject, key);
-                }
-            }
-        }
-        String s = this.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
-    }
+
 
     /**
      * 实际用途
@@ -221,29 +118,6 @@ public class GenerateCommonMethod {
         return s;
     }
 
-    /**
-     * 设定用途
-     *
-     * @param schemeJudgeObjectList
-     * @return
-     */
-    public String getSetUses(List<SchemeJudgeObject> schemeJudgeObjectList) {
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
-            return null;
-        }
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getSetUse() != null).collect(Collectors.toList());
-        for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-            if (schemeJudgeObjectList.get(i).getSetUse() != null) {
-                DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObjectList.get(i).getSetUse());
-                if (dataSetUseField != null) {
-                    this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), dataSetUseField.getName());
-                }
-            }
-        }
-        String s = this.getSchemeJudgeObjectListShowName(stringListMap, null);
-        return s;
-    }
 
     /**
      * 获取区域下楼盘的分组
@@ -990,11 +864,6 @@ public class GenerateCommonMethod {
         return i;
     }
 
-    public List<Integer> getJudgeNumberByIds(List<Integer> judgeObjectIds) {
-        if (CollectionUtils.isEmpty(judgeObjectIds)) return null;
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getListByIds(judgeObjectIds);
-        return LangUtils.transform(judgeObjectList, o -> parseIntJudgeNumber(o.getNumber()));
-    }
 
     public List<String> changeMapToList(Map<String, String> map, boolean flag, String suffix) {
         List<String> stringList = Lists.newArrayList();
