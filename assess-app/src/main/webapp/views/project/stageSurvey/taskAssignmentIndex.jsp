@@ -36,11 +36,11 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class="col-sm-12">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <c:choose>
                             <c:when test="${empty surveyExamineInfo}">
                                 <c:forEach var="item" items="${examineFormTypeList}">
-                                    <span class="col-sm-2">
+                                    <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                         <input type="radio" id="examineFormType_${item.key}"
                                                onclick="taskAssignment.initExamineTask(this);" name="examineFormType"
                                                value="${item.key}"><label
@@ -51,7 +51,7 @@
                             <c:otherwise>
                                 <c:forEach var="item" items="${examineFormTypeList}">
                                     <c:if test="${item.key eq surveyExamineInfo.examineFormType}">
-                                        <span class="col-sm-2"><label>${item.value}</label> </span>
+                                        <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 "><label>${item.value}</label> </span>
                                     </c:if>
                                 </c:forEach>
                             </c:otherwise>
@@ -65,7 +65,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-sm-12" style="text-align: center;">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 " style="text-align: center;">
                         <button class="btn btn-default" onclick="window.close();">
                             取 消
                         </button>
@@ -86,7 +86,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                                             <div class="panel-body">
                                                 <form id="frm_fastset" class="form-horizontal">
                                                     <table class="table table-striped table-bordered table-hover table-bordered"
@@ -162,7 +162,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                                             <div class="panel-body">
                                                 <form class="form-horizontal">
                                                     <input type="hidden" name="pid">
@@ -215,7 +215,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                                             <div class="panel-body">
                                                 <form class="form-horizontal">
                                                     <input type="hidden" name="id">

@@ -34,10 +34,10 @@
                         <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     说明
                                 </label>
-                                <div class="col-sm-11">
+                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                         <textarea placeholder="说明" name="planRemarks"
                                                   class="form-control">${projectPlan.planRemarks}</textarea>
                                 </div>
@@ -68,7 +68,7 @@
             </div>
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
@@ -93,7 +93,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="panel-body">
 
                             <form id="frm_planDetails" class="form-horizontal">
@@ -104,10 +104,10 @@
                                        value="${projectPhases.get(0).id}"/>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             工作内容<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="text" placeholder="工作内容" required maxlength="50"
                                                    name="projectPhaseName"
                                                    class="form-control">
@@ -116,10 +116,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             申报表
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <div class="input-group">
                                                 <input type="hidden" id="declareFormId" name="declareFormId"/>
                                                 <input type="text" id="declareFormName" name="declareFormName"
@@ -145,20 +145,20 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             开始时间
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
                                                    id="planStartDate" name="planStartDate"
                                                    class="form-control dbdate">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             结束时间
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
                                                    id="planEndDate" name="planEndDate"
                                                    class="form-control dbdate">
@@ -166,10 +166,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         责任人
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="hidden" placeholder="责任人" maxlength="50"
                                                id="executeUserAccount"
                                                name="executeUserAccount" class="form-control">
@@ -177,10 +177,10 @@
                                                name="executeUserName" class="form-control" readonly="readonly"
                                                onclick="selEmployee()">
                                     </div>
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         责任部门
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="hidden" placeholder="责任部门" maxlength="50"
                                                id="executeDepartmentId"
                                                name="executeDepartmentId" class="form-control">
@@ -192,10 +192,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             计划工时
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="计划工时" data-rule-number='true'
                                                    maxlength="5"
                                                    id="planHours" name="planHours"
@@ -203,10 +203,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             权重占比
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="权重占比" data-rule-number='true'
                                                    maxlength="5"
                                                    id="proportion" name="proportion"
@@ -215,10 +215,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         说明
                                     </label>
-                                    <div class="col-sm-10">
+                                    <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                         <input type="text" placeholder="说明" maxlength="50" id="planRemarks"
                                                name="planRemarks"
                                                class="form-control">
@@ -277,7 +277,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="panel-body">
                             <form id="frm_fastset" class="form-horizontal">
                                 <table class="table table-striped table-bordered table-hover table-bordered"

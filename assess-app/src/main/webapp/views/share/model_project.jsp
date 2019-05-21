@@ -12,7 +12,7 @@
                 <input id="model_project_tags" type="text" class="tags">
                 <input id="model_project_single" type="hidden">
                 <div class="x_content">
-                    <div class="col-md-12">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <table id="model_project_table">
                         </table>
                     </div>

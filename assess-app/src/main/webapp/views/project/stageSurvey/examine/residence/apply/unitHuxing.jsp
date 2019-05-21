@@ -37,10 +37,10 @@
                 <div class="modal-body">
                     <div class="form-group" id="huxingType" style="display: none">
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 类型<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <select name="type" class="form-control type">
                                 </select>
                             </div>
@@ -49,52 +49,52 @@
                     <div >
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     卧室
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" placeholder="个数" name="house" data-rule-number='true' class="form-control">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     客厅
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" placeholder="个数" name="saloon" data-rule-number='true' class="form-control">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     厨房
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" placeholder="个数" name="kitchen" data-rule-number='true' class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     卫生间
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" placeholder="个数" name="toilet" data-rule-number='true' class="form-control">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     花园
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" placeholder="个数" name="garden" data-rule-number='true' class="form-control">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     阳台
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" placeholder="个数" name="balcony" data-rule-number='true' class="form-control">
                                 </div>
                             </div>
@@ -102,28 +102,28 @@
                     </div>
                     <div class="form-group" id="huxingTypeProduction" style="display: none">
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 跨长<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <input type="text" placeholder="跨长(m)" data-rule-number='true'
                                        name="spanLength" class="form-control" required="required">
                             </div>
                         </div>
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 跨宽<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <input type="text" placeholder="跨宽(m)" data-rule-number='true'
                                        name="spanWidth" class="form-control" required="required">
                             </div>
                         </div>
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 跨数<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <input type="text" placeholder="跨数(m)" data-rule-number='true'
                                        name="spanNumber" class="form-control" required="required">
                             </div>
@@ -131,19 +131,19 @@
                     </div>
                     <div class="form-group" id="huxingTypeOffice" style="display: none">
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 开间<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <input type="text" placeholder="开间(m)" data-rule-number='true'
                                        name="bay" class="form-control" required="required">
                             </div>
                         </div>
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 进深<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <input type="text" placeholder="进深(m)" data-rule-number='true'
                                        name="deep" class="form-control" required="required">
                             </div>
@@ -154,19 +154,19 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 面积<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area"
                                        class="form-control" required="required">
                             </div>
                         </div>
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 朝向<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <select name="orientation" class="form-control search-select select2 orientation">
                                 </select>
                             </div>
@@ -174,10 +174,10 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 户型描述
                             </label>
-                            <div class="col-sm-11">
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                             <textarea placeholder="户型描述" name="description" class="form-control" >
                                             </textarea>
                             </div>
@@ -185,10 +185,10 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 户型图<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-11">
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                 <input id="house_latest_family_planV"  placeholder="上传附件" class="form-control"
                                        type="file">
                                 <div id="_house_latest_family_planV"></div>

@@ -6,10 +6,10 @@
         <div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         单位<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <div class="input-group">
                             <input type="hidden" name="uUseUnit"
                                    value="${projectInfo.unitInformationVo.uUseUnit}">
@@ -35,10 +35,10 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         法定代表人<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="uLegalRepresentative"
                                value="${projectInfo.unitInformationVo.uLegalRepresentative}"
                                class="form-control" required="required">
@@ -46,10 +46,10 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         证照号<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="uCertificateNumber"
                                value="${projectInfo.unitInformationVo.uCertificateNumber}"
                                class="form-control" required="required">
@@ -59,10 +59,10 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         单位性质<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <select name="uUnitProperties" class="form-control"
                                 required>
                             <c:forEach items="${ProjectAFFILIATED}" var="item">
@@ -81,10 +81,10 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         经营范围<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="uScopeOperation"
                                value="${projectInfo.unitInformationVo.uScopeOperation}"
                                class="form-control" required="required">
@@ -92,10 +92,10 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         地址<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="uAddress"
                                value="${projectInfo.unitInformationVo.uAddress}"
                                class="form-control" required="required">
@@ -105,10 +105,10 @@
 
             <div class="form-group">
                 <div class="x-valid" id="businessType" style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         业务类型<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <select name="businessType" required="required" class="form-control businessType">
                             <c:if test="${projectInfo.unitInformationVo.businessType != null}">
                                 <option value="${projectInfo.unitInformationVo.businessType}" selected="selected">${projectInfo.unitInformationVo.businessType}</option>
@@ -118,10 +118,10 @@
                 </div>
 
                 <div class="x-valid" id="assessType" style="display: ${empty projectInfo.unitInformationVo.assessType?'none':'block'}">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         评估类型<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <select name="assessType" required="required" class="form-control  assessType">
                             <c:if test="${projectInfo.unitInformationVo.assessType != null}">
                                 <option value="${projectInfo.unitInformationVo.assessType}" selected="selected">${projectInfo.unitInformationVo.assessType}</option>

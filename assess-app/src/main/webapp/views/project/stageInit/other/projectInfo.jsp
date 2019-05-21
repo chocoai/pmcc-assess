@@ -5,15 +5,15 @@
         <input type="hidden" name="id" value="${projectInfo.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">项目名称<span class="symbol required"></span></label>
-                <div class="col-sm-7">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目名称<span class="symbol required"></span></label>
+                <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
                     <input required placeholder="项目名称" name="projectName"
                            value="${projectInfo.projectName}" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">紧急程度<span class="symbol required"></span></label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">紧急程度<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="urgency" class="form-control search-select select2 urgency" required="required">
                     </select>
                 </div>
@@ -21,16 +21,16 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="entrustPurpose" class="form-control search-select select2 entrustPurpose"
                             required="required" onchange="getValueDefinition();">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">委托目的类别<span class="symbol required"></span></label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的类别<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="entrustAimType" class="form-control search-select select2 entrustAimType_p"
                             required="required" onchange="getRemarkEntrustPurpose();">
                         <option selected="selected" value=''>请先选择委托目的</option>
@@ -38,8 +38,8 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">委托目的描述</label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的描述</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input name="remarkEntrustPurpose"
                            class="form-control"
                            placeholder="委托目的描述" value="${projectInfo.remarkEntrustPurpose}"/>
@@ -48,23 +48,23 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价值类型<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="valueType" class="form-control search-select select2 valueType" required="required"
                             onchange="getValueDefinition();">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">价值定义</label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价值定义</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input name="remarkValueType" class="form-control"
                            placeholder="价值定义" value="${projectInfo.remarkValueType}"/>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="departmentId"
                                value="${projectInfo.departmentId}">
@@ -90,24 +90,24 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">评估范围</label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估范围</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="propertyScope" class="form-control search-select select2 propertyScope"
                             required="required">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">评估包括</label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估包括</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input name="scopeInclude"
                            class="form-control"
                            placeholder="评估包括" value="${projectInfo.scopeInclude}"/>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">评估不包括</label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估不包括</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input name="scopeNotInclude"
                            class="form-control"
                            placeholder="评估不包括" value="${projectInfo.scopeNotInclude}"/>
@@ -116,8 +116,8 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目经理<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="userAccountManager"
                                value="${projectInfo.projectMemberVo.userAccountManager}">
@@ -141,8 +141,8 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">项目成员</label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目成员</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="userAccountMember"
                                value="${projectInfo.projectMemberVo.userAccountMember}">
@@ -166,8 +166,8 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input required="required" placeholder="评估基准日"
                            name="valuationDate" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate" readonly="readonly"
@@ -177,8 +177,8 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">项目说明</label>
-                <div class="col-sm-11">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目说明</label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <textarea name="remarks"
                                               class="form-control" placeholder="项目说明">${projectInfo.remarks}</textarea>
                 </div>
@@ -186,8 +186,8 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">附件</label>
-                <div class="col-sm-3">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附件</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input id="attachmentProjectInfoId" name="attachmentProjectInfoId"
                            required="required" placeholder="上传附件" class="form-control" type="file">
                     <div id="_attachmentProjectInfoId"></div>

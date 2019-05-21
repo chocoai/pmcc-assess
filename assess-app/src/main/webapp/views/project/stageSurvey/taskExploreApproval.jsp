@@ -34,7 +34,7 @@
                         <fieldset>
                             <legend>同步数据到其它权证</legend>
                             <div class="form-group">
-                                <div class="col-sm-10" id="declareCertContent">
+                                <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 " id="declareCertContent">
 
                                 </div>
                             </div>

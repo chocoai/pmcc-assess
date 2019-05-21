@@ -21,8 +21,8 @@
             <input type="hidden" id="projectId" name="id" value="${csrProjectInfo.id}">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目名称</label>
-                    <div class="col-sm-11">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目名称</label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <label class="form-control">${csrProjectInfo.name}</label>
                     </div>
                 </div>
@@ -30,10 +30,10 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         委托单位
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <div class="input-group">
                             <input type="text" value="${csrProjectInfo.entrustmentUnitName}"
                                    class="form-control" required="required" readonly="readonly">
@@ -42,16 +42,16 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目类型</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目类型</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" value="${csrProjectInfo.projectTypeName}"
                                class="form-control" required="required" readonly="readonly">
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">客户类型</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">客户类型</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" value="${csrProjectInfo.customerTypeName}"
                                class="form-control" required="required" readonly="readonly">
                     </div>
@@ -60,24 +60,24 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" value="${csrProjectInfo.entrustPurposeName}"
                                class="form-control" required="required" readonly="readonly">
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">取行序号</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">取行序号</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" value="${csrProjectInfo.startRowNumber}"
                                class="form-control" required="required" readonly="readonly">
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">评估基准日</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" value="<fmt:formatDate value='${csrProjectInfo.valuationDate}'/>"
                                class="form-control" readonly="readonly">
                     </div>
@@ -86,14 +86,14 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目分配人</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目分配人</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${csrProjectInfo.distributionUserName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目类别</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目类别</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${csrProjectInfo.projectCategoryName}</label>
                     </div>
                 </div>
@@ -101,8 +101,8 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目说明</label>
-                    <div class="col-sm-11">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目说明</label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <label class="form-control">${csrProjectInfo.remark}</label>
                     </div>
                 </div>
@@ -110,8 +110,8 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">客户附件</label>
-                    <div class="col-sm-11">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">客户附件</label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <div id="_upload_file"></div>
                     </div>
                 </div>

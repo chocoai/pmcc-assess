@@ -35,15 +35,15 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             街道（道路）名称
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <button class="btn btn-xs btn-success"
                                                     onclick="houseFaceStreet.prototype.appendHTML('streetName',this)"><i
                                                     class="fa fa-plus"></i></button>
@@ -53,8 +53,8 @@
 
                                 <div style="margin-bottom: 8px;" class="name">
                                     <div class="form-group" style=" margin-top: 8px;">
-                                        <label class="col-md-2 col-sm-2 col-xs-12 control-label">街道（道路）名称</label>
-                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                        <label class=" col-xs-2212  col-sm-2212  col-md-2212  col-lg-2212  col-sm-2 col-xs-12 control-label">街道（道路）名称</label>
+                                        <div class=" col-xs-101012  col-sm-101012  col-md-101012  col-lg-101012  col-sm-10 col-xs-12 input-group">
                                             <input class="form-control" name="streetName" required="required"
                                                    type="text">
                                             <span class="input-group-btn"><input type="button" class="btn btn-warning"
@@ -65,10 +65,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             街道级别<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="streetLevel"
                                                     class="form-control search-select select2 streetLevel">
                                             </select>
@@ -77,10 +77,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             人流量<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="visitorsFlowrate"
                                                     class="form-control search-select select2 visitorsFlowrate">
                                             </select>
@@ -89,10 +89,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             方位<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="position"
                                                     class="form-control search-select select2 position">
                                             </select>
@@ -102,10 +102,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             交通流量<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="trafficFlow"
                                                     class="form-control search-select select2 trafficFlow">
                                             </select>

@@ -5,7 +5,7 @@
         <input type="hidden" name="id" value="${projectInfo.possessorVo.id}">
         <div class="form-group">
             <div class="x-valid">
-                <div class="col-sm-3 col-sm-offset-1">
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                                 <span class="radio-inline">
                                     <input type="radio" required name="pType" id="pType1"
                                            value="1" ${projectInfo.possessorVo.pType == 1?'checked="checked"':''}  >
@@ -20,10 +20,10 @@
         <div id="possessor_tab_unit">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         单位<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pEntrustmentUnit"
                                class="form-control" required="required" placeholder="单位"
                                value="${projectInfo.possessorVo.pEntrustmentUnitName}">
@@ -31,20 +31,20 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         法定代表<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pLegalRepresentative"
                                value="${projectInfo.possessorVo.pLegalRepresentative}" class="form-control" required="required">
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         社会统一信用代码<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pSociologyCode"
                                value="${projectInfo.possessorVo.pSociologyCode}"
                                class="form-control" data-rule-number='true' name="number" required="required">
@@ -54,10 +54,10 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         经营范围<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pScopeOperation"
                                value="${projectInfo.possessorVo.pScopeOperation}"
                                class="form-control" required="required">
@@ -65,10 +65,10 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         单位地址<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pAddress"
                                value="${projectInfo.possessorVo.pAddress}" class="form-control"
                                required="required">
@@ -76,10 +76,10 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         单位性质<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <select class="form-control" name="pUnitProperties"
                                 required>
                             <option value="">请选择</option>
@@ -103,10 +103,10 @@
         <div id="possessor_tab" style="display: none;">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         姓名<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pName"
                                value="${projectInfo.possessorVo.pName}" class="form-control"
                                required="required">
@@ -114,10 +114,10 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         身份证号<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pIdcard"
                                value="${projectInfo.possessorVo.pIdcard}" class="form-control"
                                required="required">
@@ -127,10 +127,10 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         住址
                     </label>
-                    <div class="col-sm-3">
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pAddress"
                                value="${projectInfo.possessorVo.pAddress}" class="form-control">
                     </div>
@@ -139,10 +139,10 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     附件
                 </label>
-                <div class="col-sm-3">
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="file" name="pAttachmentProjectEnclosureId"
                            id="pAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control"
                            required="required">

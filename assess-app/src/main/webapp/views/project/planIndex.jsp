@@ -31,10 +31,10 @@
                         <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     说明
                                 </label>
-                                <div class="col-sm-11">
+                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                         <textarea placeholder="说明" name="planRemarks"
                                                   class="form-control">${projectPlan.planRemarks}</textarea>
                                 </div>
@@ -44,10 +44,10 @@
                             <input type="hidden" id="detailsPlan" name="detailsPlan" value="${detailsPlan}">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         细分计划
                                     </label>
-                                    <div class="col-sm-5">
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                         <label class="checkbox-inline">
                                             <input type="checkbox" id="chk_isNext" name="chk_isNext">
                                             细分计划
@@ -55,10 +55,10 @@
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         责任人
                                     </label>
-                                    <div class="col-sm-5">
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                         <input type="hidden" id="nextApproval" name="nextApproval">
                                         <input type="text" required id="nextApprovalName" name="nextApprovalName"
                                                onclick="nextEmployee()"
@@ -83,7 +83,7 @@
             </div>
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
@@ -108,15 +108,15 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="panel-body">
                             <form id="frm_planDetails" class="form-horizontal">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             所属工作内容
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select name="projectPhaseId" id="projectPhaseId" class="form-control search-select select2">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${projectPhases}">
@@ -128,10 +128,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             工作内容
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="hidden" id="planDetailsId" name="id"/>
                                             <input type="hidden" id="pid" name="pid"/>
                                             <input type="hidden" id="firstPid" name="firstPid"/>
@@ -142,37 +142,37 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             开始时间
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd' id="planStartDate" name="planStartDate"
                                                    class="form-control dbdate">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             结束时间
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd' id="planEndDate" name="planEndDate"
                                                    class="form-control dbdate">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         责任人
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="hidden" placeholder="责任人" maxlength="50" id="executeUserAccount" name="executeUserAccount" class="form-control">
                                         <input type="text" placeholder="责任人" maxlength="50" id="executeUserName" name="executeUserName" class="form-control" readonly="readonly"
                                                onclick="selEmployee()">
                                     </div>
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         责任部门
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="hidden" placeholder="责任部门" maxlength="50" id="executeDepartmentId" name="executeDepartmentId" class="form-control">
                                         <input type="text" placeholder="责任部门" maxlength="50" id="executeDepartmentName" name="executeDepartmentName" class="form-control" onclick="selDept()"
                                                readonly="readonly">
@@ -180,29 +180,29 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             计划工时
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="计划工时" data-rule-number='true' maxlength="5" id="planHours" name="planHours"
                                                    class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             权重占比
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" placeholder="权重占比" data-rule-number='true' maxlength="5" id="proportion" name="proportion"
                                                    class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         说明
                                     </label>
-                                    <div class="col-sm-10">
+                                    <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                         <textarea id="planRemarks" name="planRemarks" class="form-control" placeholder="说明" maxlength="200"></textarea>
                                     </div>
                                 </div>

@@ -19,34 +19,34 @@
         <div class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         姓名
                     </label>
-                    <div class="col-sm-2">
+                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <label class="form-control">${currUserInfo.userNickname}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         部门
                     </label>
-                    <div class="col-sm-2">
+                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <label class="form-control">${currUserInfo.departmentIdName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         电话
                     </label>
-                    <div class="col-sm-2">
+                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <label class="form-control">${currUserInfo.mobile}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         邮箱
                     </label>
-                    <div class="col-sm-2">
+                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <label class="form-control">${currUserInfo.companyEmail}</label>
                     </div>
                 </div>

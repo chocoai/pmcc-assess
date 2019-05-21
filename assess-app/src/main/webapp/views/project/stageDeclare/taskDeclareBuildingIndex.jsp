@@ -33,7 +33,7 @@
 
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
@@ -104,7 +104,7 @@
                     resetHtml += "<div class='form-group'>";
                     for (var j = i * num; j < i * num + num; j++) {
                         if (j < data.length) {
-                            resetHtml += "<div class='col-sm-2'>";
+                            resetHtml += "<div class=' col-xs-2  col-sm-2  col-md-2  col-lg-2 '>";
                             resetHtml += "<span class='checkbox-inline'>";
                             resetHtml += "<input type='checkbox' id='other" + data[j].id + "' name='other' required='required' value='" + data[j].id + "'" + ">";
                             resetHtml += "<label for='other" + data[j].id + "'>" + data[j].name + "</label>";

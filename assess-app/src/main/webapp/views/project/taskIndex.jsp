@@ -25,11 +25,11 @@
                 <div class="x_content">
                     <form id="frm_task" class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 实际工时
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" required
                                            placeholder="实际工时" data-rule-number='true'
                                            id="actualHours" name="actualHours" class="form-control" maxlength="3">
@@ -37,21 +37,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 成果描述
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-11">
+                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                         <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
                                                   class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 成果文件
                             </label>
-                            <div class="col-sm-11">
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                 <input id="apply_file" name="apply_file" type="file" multiple="false">
                                 <div id="_apply_file">
                                 </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>

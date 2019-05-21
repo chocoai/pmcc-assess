@@ -27,21 +27,21 @@
                     <form id="frm_assess" class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">评估人员</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估人员</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${thisUserInfo.userName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">核对日期</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">核对日期</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control"><fmt:formatDate
                                             value="${surveyAssetInventory.checkDate}" pattern="yyyy-MM-dd"/></label>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">是否查看原件</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">是否查看原件</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control"> ${surveyAssetInventory.bisCheckOriginal eq true? '是':'否'}</label>
                                 </div>
                             </div>
@@ -49,21 +49,21 @@
 
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">分割限制</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分割限制</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${surveyAssetInventory.segmentationLimit}</label>
                                 </div>
                             </div>
                             <div id="showUse" style="display: none">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">能否使用</label>
-                                    <div class="col-sm-3">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">能否使用</label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <label class="form-control">${surveyAssetInventory.canUse}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">证载用途</label>
-                                    <div class="col-sm-3">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证载用途</label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <label class="form-control">${surveyAssetInventory.applicationName}</label>
                                     </div>
                                 </div>
@@ -71,32 +71,32 @@
                         </div>
                         <div class="form-group" id="showCertificate" style="display: none;">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">是否办证</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">是否办证</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${surveyAssetInventory.certificateName}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">证明文件</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证明文件</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <div id="_checkOriginalFile"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">说明</label>
-                                <div class="col-sm-11">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">说明</label>
+                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <label class="form-control">${surveyAssetInventory.remark}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">证书信息</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证书信息</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <button type="button" class="btn btn-success" onclick="checkRealEstate()"
                                             data-toggle="modal"> 查看
                                     </button>
@@ -190,10 +190,10 @@
                     <form id="taxesPaymentSurvey" class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     缴纳情况
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${surveyAssetInventory.paymentStatus}
                                     </label>
                                 </div>
@@ -217,10 +217,10 @@
                     <form id="damageSurvey" class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     区位是否损坏
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${surveyAssetInventory.rimIsNormal}
                                     </label>
                                 </div>
@@ -231,10 +231,10 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     实物状况是否损坏
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${surveyAssetInventory.entityIsDamage}
                                     </label>
                                 </div>
@@ -246,10 +246,10 @@
                         <c:if test="${projectInfo.projectCategoryId == houseLand}">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         影响评估的其他事项
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     </div>
                                 </div>
                             </div>
@@ -273,10 +273,10 @@
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         转让限制
                                     </label>
-                                    <div class="col-sm-11">
+                                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                         <label class="form-control">${surveyAssetInventory.transferLimit}
                                         </label>
                                     </div>
@@ -439,14 +439,14 @@
             var html = "<div class='form-group' >";
             html += "<div class='x-valid'>";
 
-            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
-            html += "<div class='col-sm-3'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "项目" + "</label>";
+            html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<label class='form-control'>" + n[projectName];
             html += "</label>";
             html += "</div>";
 
-            html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
-            html += "<div class='col-sm-3'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "明细" + "</label>";
+            html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<label class='form-control'>" + n[projectItem];
             html += "</label>";
             html += "</div>";
@@ -464,20 +464,20 @@
             var html = "<div class='form-group' >";
             html += "<div class='x-valid'>";
 
-            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
-            html += "<div class='col-sm-3'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "项目" + "</label>";
+            html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<label class='form-control'>" + n["projectName"];
             html += "</label>";
             html += "</div>";
 
-            html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
-            html += "<div class='col-sm-3'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "说明" + "</label>";
+            html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<label class='form-control'>" + n["remark"];
             html += "</label>";
             html += "</div>";
 
-            html += "<label class='col-sm-1 control-label'>" + "金额" + "</label>";
-            html += "<div class='col-sm-2'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "金额" + "</label>";
+            html += "<div class=' col-xs-2  col-sm-2  col-md-2  col-lg-2 '>";
             html += "<label class='form-control'>" + n["money"];
             html += "</label>";
             html += "</div>";

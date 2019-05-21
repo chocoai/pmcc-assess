@@ -29,16 +29,16 @@
                         <form class="form-horizontal" id="surveyAssetInventoryRightRecordForm${item.id}">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         权证信息
                                     </label>
-                                    <div class="col-sm-5">
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                         <label class="form-control">${item.recordNames}</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-offset-1 col-sm-11">
+                                <div class="col-sm-offset-1  col-xs-111  col-sm-111  col-md-111  col-lg-111 ">
                                     <table class="table table-bordered" id="tbList${item.id}">
                                         <!-- cerare document add ajax data-->
                                     </table>

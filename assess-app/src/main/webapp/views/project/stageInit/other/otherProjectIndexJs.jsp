@@ -870,18 +870,18 @@
             <form class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <div class="col-sm-6">
+                                        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                                             <input type="text" name="name" placeholder="联系人名字、电话"
                                                    class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <div class="col-sm-6">
+                                        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                                             <input type="button"
                                                    onclick="objProject.commonContacts.findCRMContacts(this)"
                                                    class="btn btn-success" value="查询">
@@ -911,14 +911,14 @@
     <div class="modal-body">
         <input type="hidden" name="id">
         <div class="row">
-            <div class="col-md-12">
+            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
+                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                 姓名<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-10">
+                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                 <input type="text" name="cName" placeholder="姓名"
                                        class="form-control" required="required">
                             </div>
@@ -926,10 +926,10 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
+                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                 部门<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-10">
+                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                 <input type="text" name="cDept" placeholder="部门"
                                        class="form-control" required="required">
                             </div>
@@ -937,10 +937,10 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
+                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                 电话号码<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-10">
+                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                 <input type="text" name="cPhone" data-rule-number='true' name="number"
                                        placeholder="号码（请输入数字）"
                                        class="form-control" required="required">
@@ -949,10 +949,10 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
+                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                 邮箱
                             </label>
-                            <div class="col-sm-10">
+                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                 <input type="text" name="cEmail" placeholder="邮箱"
                                        class="form-control">
                             </div>

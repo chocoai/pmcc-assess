@@ -25,7 +25,8 @@ import java.util.regex.Pattern;
 public class RegexBootstrapDemo {
 
     private final String projectPath = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\project\\";
-    private final String share = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\share\\project\\";
+    private final String share = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\share\\";
+    private final String stage = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\stage";
     private final String examine = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\project\\stageSurvey\\examine";
 
     /**
@@ -35,9 +36,27 @@ public class RegexBootstrapDemo {
      */
     @Test
     public void testA() throws IOException {
-        final String path = String.format("%s%s", examine, "");
-        File file = new File("D:\\temp\\declareApplyModel - 副本.jsp");
-        replaceFirst(file);
+        List<String> stringList = Lists.newArrayList();
+
+        stringList.add("projectList.jsp");
+        stringList.add("projectNew.jsp");
+        stringList.add("projectProgress.jsp");
+        stringList.add("projectReportFileIndex.jsp");
+        stringList.add("planApproval.jsp");
+        stringList.add("planIndex.jsp");
+        stringList.add("myParticipation.jsp");
+        stringList.add("myProject.jsp");
+        stringList.add("tool");
+        stringList.add("taskApproval.jsp");
+        stringList.add("taskIndex.jsp");
+
+        final String path = String.format("%s%s", projectPath, "");
+        for (String ss : stringList) {
+            File file = new File(String.format("%s%s", path, ss));
+            replaceFirst(file);
+        }
+//        File file = new File(stage);
+//        replaceFirst(file);
     }
 
     private void replaceFirst(File file) throws IOException {
@@ -72,6 +91,12 @@ public class RegexBootstrapDemo {
                     }
                     if (!Objects.equal(b, s)) {
                         integer = 2;
+                    }
+                    //当出现这类是不替换的
+                    Pattern pattern = Pattern.compile("col-[a-z][a-z]-[0-9][0-9]? col-[a-z][a-z]-offset-[0-9][0-9]?");
+                    Matcher matcher = pattern.matcher(s);
+                    if (matcher.find()) {
+                        integer = 0;
                     }
                 }
                 if (integer.intValue() == 0) {

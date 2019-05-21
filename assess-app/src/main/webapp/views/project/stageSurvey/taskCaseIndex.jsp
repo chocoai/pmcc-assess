@@ -33,7 +33,7 @@
             </div>
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
@@ -75,7 +75,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="panel-body">
                             <form id="frm_planDetails" class="form-horizontal">
 
@@ -441,10 +441,10 @@
 <script type="text/html" id="plan_details_modal_html">
     <div class="form-group">
         <div class="x-valid">
-            <label class="col-sm-2 control-label">
+            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                 表单类型
             </label>
-            <div class="col-sm-10">
+            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                 <input type="hidden" id="planDetailsId" name="id"/>
                 <input type="hidden" id="pid" name="pid"/>
                 <select class="form-control" name="transactionType" required>
@@ -458,10 +458,10 @@
     </div>
     <div class="form-group" id="examineFormTypeList" style="display: none">
         <div class="x-valid">
-            <label class="col-sm-2 control-label"></label>
-            <div class="col-sm-10">
+            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"></label>
+            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                 <c:forEach var="item" items="${examineFormTypeList}">
-                <span class="col-sm-4">
+                <span class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                 <input type="radio" id="examineFormType_${item.key}" name="examineFormType" value='${item.key}' required>
                 <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
                 </span>
@@ -474,20 +474,20 @@
     <div style="display:none;">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-2 control-label">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                     开始时间
                 </label>
-                <div class="col-sm-4">
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                     <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
                            id="planStartDate" name="planStartDate"
                            class="form-control dbdate">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-2 control-label">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                     结束时间
                 </label>
-                <div class="col-sm-4">
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                     <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
                            id="planEndDate" name="planEndDate"
                            class="form-control dbdate">
@@ -495,10 +495,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">
+            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                 责任人
             </label>
-            <div class="col-sm-4">
+            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                 <input type="hidden" placeholder="责任人" maxlength="50"
                        id="executeUserAccount"
                        name="executeUserAccount" class="form-control">
@@ -506,10 +506,10 @@
                        name="executeUserName" class="form-control" readonly="readonly"
                        onclick="taskCaseIndex.selectEmployee()">
             </div>
-            <label class="col-sm-2 control-label">
+            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                 责任部门
             </label>
-            <div class="col-sm-4">
+            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                 <input type="hidden" placeholder="责任部门" maxlength="50"
                        id="executeDepartmentId"
                        name="executeDepartmentId" class="form-control">
@@ -522,10 +522,10 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-2 control-label">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                     计划工时
                 </label>
-                <div class="col-sm-4">
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                     <input type="text" placeholder="计划工时" data-rule-number='true'
                            maxlength="5"
                            id="planHours" name="planHours"
@@ -533,10 +533,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-2 control-label">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                     权重占比
                 </label>
-                <div class="col-sm-4">
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                     <input type="text" placeholder="权重占比" data-rule-number='true'
                            maxlength="5"
                            id="proportion" name="proportion"

@@ -18,11 +18,11 @@
         <div class="x_content">
             <form id="frm_approval" class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         审批结论
                     </label>
                     <div class="x-valid">
-                        <div class="col-sm-5">
+                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                             <label class="radio-inline">
                                 <input type="radio" value="Approval" required name="conclusion" checked="checked"
                                        class="grey"
@@ -43,7 +43,7 @@
                     </div>
                     <c:if test="${bisSelectUser!='1'}">
                         <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
-                            <div class="col-sm-5" id="div_bisNext">
+                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 " id="div_bisNext">
                                 <label class="checkbox-inline">
                                     <input type="checkbox" id="chk_bisNext" name="chk_bisNext" checked="checked"
                                            value=""
@@ -58,10 +58,10 @@
                 </div>
                 <c:if test="${bisSelectUser=='1'}">
                     <div class="form-group">
-                        <label class="col-sm-1 control-label">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             下级审批人
                         </label>
-                        <div class="col-sm-11">
+                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                             <input type="hidden" id="nextApproval" name="nextApproval"
                                    value="${selectNextUser}">
                             <input type="text" required value="${selectNextUserName}"
@@ -73,19 +73,19 @@
                     </div>
                 </c:if>
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         审批意见
                     </label>
-                    <div class="col-sm-11">
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
 
                         <c:if test="${approvalReview==1}">
                             <c:forEach var="item" items="${boxReviewTemplate}">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-11" for="op_${item.id}">
+                                        <label class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 " for="op_${item.id}">
                                                 ${item.content}(${item.standard})
                                         </label>
-                                        <div class="col-sm-11">
+                                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                         <textarea required placeholder="${item.content}" name="op_${item.id}"
                                                   class="form-control approvalFlog"></textarea>
                                         </div>
@@ -102,10 +102,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         审批文件
                     </label>
-                    <div class="col-sm-11">
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <input id="file_upload" name="file_upload" type="file" multiple="false">
                         <div id="_file_upload">
                         </div>

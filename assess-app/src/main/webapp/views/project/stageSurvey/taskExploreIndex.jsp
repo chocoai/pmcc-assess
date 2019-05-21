@@ -326,14 +326,14 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="panel-body">
                             <form id="frm_planDetails" class="form-horizontal">
                                 <input type="hidden" id="pid" name="pid"/>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <c:forEach var="item" items="${examineFormTypeList}">
-                                            <span class="col-sm-4">
+                                            <span class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="radio" id="examineFormType_${item.key}" name="examineFormType"
                                                    value='${item.key}'>
                                             <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>

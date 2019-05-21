@@ -247,14 +247,14 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             面积
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area"
                                                    class="form-control" required="required">
                                         </div>
@@ -262,10 +262,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             跨长
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="text" placeholder="跨长(数字)" data-rule-number='true'
                                                    name="spanLength" class="form-control" required="required">
                                         </div>
@@ -273,10 +273,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             跨宽
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="text" placeholder="跨宽(数字)" data-rule-number='true'
                                                    name="spanWidth" class="form-control" required="required">
                                         </div>
@@ -284,10 +284,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             跨数
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="text" placeholder="跨数(数字)" data-rule-number='true'
                                                    name="spanNumber" class="form-control" required="required">
                                         </div>
@@ -295,10 +295,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             户型描述
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="text" placeholder="户型描述" name="description"
                                                    class="form-control" required="required">
                                         </div>
@@ -306,10 +306,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             户型内容
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="houseLayout"
                                                     class="form-control search-select select2 houseLayout">
                                             </select>
@@ -319,10 +319,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             户型图
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input id="house_latest_family_planV" name="house_latest_family_planV"
                                                    required="required" placeholder="上传附件" class="form-control" type="file">
                                             <div id="_house_latest_family_planV"></div>

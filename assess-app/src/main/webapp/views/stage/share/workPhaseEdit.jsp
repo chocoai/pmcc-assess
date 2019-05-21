@@ -28,24 +28,24 @@
                 <input id="workProcessTemplate" name="workProcessTemplate" type="hidden">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="projectPhaseName">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="projectPhaseName">
                                             工作事项<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input class="form-control" id="projectPhaseName" name="projectPhaseName"
                                                    required
                                                    data-rule-maxlength="255" placeholder="工作事项名称">
                                         </div>
                                         <div class="x-valid">
-                                            <label class="col-sm-2 control-label" for="phaseForm">
+                                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseForm">
                                                 自定义服务
                                             </label>
-                                            <div class="col-sm-4">
+                                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                                 <select id="phaseForm" name="phaseForm"
                                                         class="form-control search-select select2">
                                                     <option value="">-选择-</option>
@@ -60,18 +60,18 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="workStageId">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workStageId">
                                             所属阶段<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4 ">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4  ">
                                             <select class="form-control" id="workStageId" name="workStageId" required>
                                                 <option value="">-选择-</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             模型
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input class="form-control" name="boxName"
                                                    data-rule-maxlength="255" placeholder="模型">
                                         </div>
@@ -79,10 +79,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="phaseTime">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseTime">
                                             计划工时<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <div class="input-group">
                                                 <input class="form-control" id="phaseTime" name="phaseTime" required
                                                        data-rule-number placeholder="计划耗费的工时">
@@ -91,10 +91,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="phaseSort">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
                                             序号<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <div class="input-group">
                                                 <input class="form-control" id="phaseSort" name="phaseSort" required
                                                        data-rule-digits="true" placeholder="用于显示排序">
@@ -105,20 +105,20 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="phaseTime">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseTime">
                                             默认使用流程
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" id="bisUseBox" name="bisUseBox" value="true">
                                             </label>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="phaseSort">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
                                             允许退回
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" id="bisCanReturn" name="bisCanReturn"
                                                        value="true">
@@ -129,20 +129,20 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="workTemplate">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workTemplate">
                                             工作模板
                                         </label>
-                                        <div class="col-sm-4" id="workTemplate_file_co">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 " id="workTemplate_file_co">
                                             <input id="workTemplate_file" name="workTemplate_file" type="file"
                                                    multiple="false">
                                             <div id="_workTemplate_file"></div>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="workProcessTemplate">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workProcessTemplate">
                                             流程模板
                                         </label>
-                                        <div class="col-sm-4" id="workProcessTemplate_file_co">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 " id="workProcessTemplate_file_co">
                                             <input id="workProcessTemplate_file" name="workProcessTemplate_file"
                                                    type="file"
                                                    multiple="false">

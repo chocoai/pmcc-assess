@@ -26,15 +26,15 @@
 
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="workStageName">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workStageName">
                                             阶段名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input class="form-control" id="workStageName" name="workStageName" required
                                                    data-rule-maxlength="255" placeholder="项目阶段名称">
                                         </div>
@@ -42,10 +42,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             自定义服务
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select id="stageForm" name="stageForm"
                                                     class="form-control">
                                                 <option value="">-选择-</option>
@@ -63,10 +63,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             计划模型
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input class="form-control" name="boxName"
                                                    data-rule-maxlength="255" placeholder="模型">
                                         </div>
@@ -76,10 +76,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             复核模型
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input class="form-control" name="reviewBoxName"
                                                    data-rule-maxlength="255" placeholder="复核模型">
                                         </div>
@@ -88,10 +88,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             角色类型
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <select name="boxRoleType" id="boxRoleType" class="form-control">
                                                 <option value="">-选择-</option>
                                                 <option value="1">部门角色</option>
@@ -100,10 +100,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid" id="div_roleId" style="display: none">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             部门角色
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="hidden" id="boxRoleId" name="boxRoleId">
                                             <input data-rule-maxlength="200" placeholder="选择公用角色则部门可不填"
                                                    onfocus="workStageObj.selApprovalRole()" id="boxRoleName"
@@ -112,10 +112,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid" id="div_roleKey" style="display: none">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             公有角色
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <select name="boxRoleKey" id="boxRoleKey"
                                                     class="form-control search-select select2">
                                                 <option value="">-选择-</option>
@@ -129,10 +129,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="workStageSort">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workStageSort">
                                             执行顺序<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <div class="input-group">
                                                 <input class="form-control" id="workStageSort" name="stageSort" required
                                                        data-rule-digits="true" placeholder="用于显示排序">
@@ -142,10 +142,10 @@
                                     </div>
 
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="specificGravity">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="specificGravity">
                                             比重<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input class="form-control" id="specificGravity" name="specificGravity"
                                                    required
                                                    data-rule-number="true" placeholder="比重、权重">
@@ -156,10 +156,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="workStagebisEnable">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workStagebisEnable">
                                             允许下发
                                         </label>
-                                        <div class="col-sm-2">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" id="workStageAllowIssued" name="allowIssued">
                                             </label>
@@ -167,10 +167,10 @@
                                     </div>
 
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="workStagebisEnable">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workStagebisEnable">
                                             是否可用
                                         </label>
-                                        <div class="col-sm-2">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" id="workStagebisEnable" name="bisEnable"
                                                        value="true"
@@ -179,10 +179,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label" for="workStagebisLoadDefalut">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workStagebisLoadDefalut">
                                             是否加载默认项
                                         </label>
-                                        <div class="col-sm-2">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" id="workStagebisLoadDefalut"
                                                        name="bisLoadDefalut" value="true"

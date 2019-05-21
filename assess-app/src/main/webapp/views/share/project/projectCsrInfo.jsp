@@ -21,30 +21,30 @@
             <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目名称</label>
-                    <div class="col-sm-11">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目名称</label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <label class="form-control">${projectInfo.projectName}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
-                    <div class="col-sm-11">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目说明<span class="symbol required"></span></label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <label class="form-control">${projectInfo.remarks}</label></div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${projectInfo.entrustPurposeName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日<span class="symbol required"></span></label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input placeholder="评估基准日" id="valuationDate"
                                name="valuationDate" data-date-format="yyyy-mm-dd"
                                class="form-control date-picker dbdate" readonly="readonly"
@@ -53,8 +53,8 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目类别</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目类别</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${projectInfo.projectTypeName}</label>
                     </div>
                 </div>

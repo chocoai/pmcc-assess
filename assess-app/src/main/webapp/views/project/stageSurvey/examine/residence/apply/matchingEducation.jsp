@@ -14,7 +14,7 @@
     </div>
     <div class="x_content collapse">
         <form class="form-horizontal">
-            <div class="col-sm-3">
+            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <div type="button" class="btn btn-success"
                      onclick="matchingEducation.prototype.showModel()"
                      data-toggle="modal" href="#divBox"> 新增
@@ -24,19 +24,19 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     学校级次
                 </label>
-                <div class="col-sm-2">
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                     <select required="required" name="schoolGradation"
                             class="form-control  schoolGradation">
                     </select>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <input type="text" placeholder="距离(单位/m)" class="form-control" name="distance" value="3000">
             </div>
-            <div class="col-sm-1">
+            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
                 <div type="button" class="btn btn-default docs-tooltip"
                      onclick="assessMatchingEducation.select(this)">
                     <i class="fa fa-search"></i>搜索
@@ -63,14 +63,14 @@
                 <input type="hidden" name="type" class="type">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             学校名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="text" class="form-control" name="schoolName"
                                                    placeholder="学校名称" required="required">
                                         </div>
@@ -78,10 +78,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             学校性质<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="schoolNature"
                                                     class="form-control search-select select2 schoolNature">
                                             </select>
@@ -90,10 +90,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             学校级次<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="schoolGradation"
                                                     class="form-control search-select select2 schoolGradation">
                                             </select>
@@ -102,10 +102,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             学校等级<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="schoolLevel"
                                                     class="form-control search-select select2 schoolLevel">
                                             </select>
@@ -114,10 +114,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             距离<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="distance"
                                                     class="form-control search-select select2 distance">
                                             </select>

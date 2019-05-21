@@ -17,32 +17,32 @@
     <div class="x_content">
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="col-sm-1 control-label">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     开始时间
                 </label>
-                <div class="col-sm-3">
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control"><fmt:formatDate value="${projectPlanDetails.planStartDate}"
                                                                 pattern="yyyy-MM-dd"/></label>
                 </div>
-                <label class="col-sm-1 control-label">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     结束时间
                 </label>
-                <div class="col-sm-3">
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control"><fmt:formatDate value="${projectPlanDetails.planEndDate}"
                                                                 pattern="yyyy-MM-dd"/> </label>
                 </div>
-                <label class="col-sm-1 control-label">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     计划工时(小时)
                 </label>
-                <div class="col-sm-3">
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control">${projectPlanDetails.planHours}</label>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-1 control-label">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     工作程序模板
                 </label>
-                <div class="col-sm-5">
+                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                     <c:forEach var="item" items="${projectPhaseProcessTemplate}">
                         <div class='alert alert-success'
                              style='width: 18%;float: left;padding: 5px;margin-bottom: 10px;margin-left: 10px;'>
@@ -55,10 +55,10 @@
             </div>
             <c:if test="${not empty projectPlanDetails.returnDetailsReason}">
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         重启原因
                     </label>
-                    <div class="col-sm-11">
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <label class="form-control">${projectPlanDetails.returnDetailsReason}</label>
                     </div>
                 </div>

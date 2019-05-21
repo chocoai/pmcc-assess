@@ -25,7 +25,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-4">
+                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                         <input id="project_proxy" name="project_proxy" type="file" multiple="false">
                         <div id="_project_proxy"></div>
                     </div>
@@ -40,7 +40,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-6">
+                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                         <table class="table table-hover">
                             <thead>
                             <tr>
@@ -82,7 +82,7 @@
                     <c:forEach items="${judgeObjectList}" var="judgeObject">
                         <div class="row">
                             <input type="hidden" name="judgeObjectId" value="${judgeObject.id}">
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title"><h4><strong>${judgeObject.name}-全部</strong></h4></div>
                                     <div class="">
@@ -101,7 +101,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title"><h4><strong>${judgeObject.name}-已选</strong></h4></div>
                                     <div class="">
@@ -141,7 +141,7 @@
                 <div class="x_content collapse">
                     <c:forEach items="${judgeObjectList}" var="judgeObject">
                         <div class="row">
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title"><h4><strong>${judgeObject.name}</strong></h4></div>
                                     <table class="table table-hover">
@@ -188,7 +188,7 @@
                     <div class="row">
                         <c:forEach items="${judgeObjectList}" var="judgeObject">
                             <c:if test="${not empty inventoryAddressFileList.get(judgeObject.id)}">
-                                <div class="col-sm-6">
+                                <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                                     <div class="x_panel">
                                         <div class="x_title"><h4><strong>${judgeObject.name}</strong></h4></div>
                                         <div class="x_panel">
@@ -228,7 +228,7 @@
                     </div>
                     <c:if test="${not empty reimbursementFileList}">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                                 <div class="x_panel">
                                     <div class="x_title"><h4><strong>法定优先受偿款附件</strong></h4></div>
                                     <div>
@@ -270,7 +270,7 @@
             </div>
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
@@ -287,7 +287,7 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/html" id="reportFileCustomHtml">
-    <div class="col-sm-6">
+    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
         <div class="x_panel">
             <div class="x_title">
                 <label>{name}</label>
@@ -295,7 +295,7 @@
                        onclick="deleteReportFileCustom(this,'{id}');"
                        style="margin-left: 5px;">
             </div>
-            <div class="col-sm-6">
+            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                 <input id="reportFileCustom{id}" name="reportFileCustom" type="file" multiple="false">
                 <div id="_reportFileCustom{id}"></div>
             </div>

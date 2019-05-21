@@ -31,8 +31,8 @@
                         <div class="form-group">
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">评估人员<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估人员<span class="symbol required"></span></label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <div class="input-group">
                                         <input type="hidden" id="evaluatorID">
                                         <input type="text" class="form-control" readonly="readonly"
@@ -55,8 +55,8 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">核对日期<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">核对日期<span class="symbol required"></span></label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" required placeholder="核对日期" id="checkDate" name="checkDate"
                                            data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
                                            readonly="readonly"
@@ -65,9 +65,9 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">是否查看原件<span
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">是否查看原件<span
                                         class="symbol required"></span></label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <span class="radio-inline">
                                         <input type="radio" required name="bisCheckOriginal" id="bisCheckOriginal0"
                                         ${surveyAssetInventory.bisCheckOriginal eq true?'checked="checked"':''}
@@ -84,8 +84,8 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">分割限制<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分割限制<span class="symbol required"></span></label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <select class="form-control" id="segmentationLimit" name="segmentationLimit"
                                             required onchange="showOther()">
                                         <option value="可分">可分</option>
@@ -95,8 +95,8 @@
                             </div>
                             <div id="showUse" style="display: none">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">能否使用</label>
-                                    <div class="col-sm-3">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">能否使用</label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <select class="form-control" id="canUse" name="canUse">
                                             <option value="" selected>请选择</option>
                                             <option value="正常使用">正常使用</option>
@@ -105,8 +105,8 @@
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">证载用途</label>
-                                    <div class="col-sm-3">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证载用途</label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <select class="form-control" id="application" name="application">
                                             <option value="">-请选择-</option>
                                             <c:forEach var="items" items="${types}">
@@ -119,8 +119,8 @@
                         </div>
                         <div class="form-group" style="display: none" id="showCertificate">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">是否办证</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">是否办证</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <select class="form-control" id="certificate" name="certificate">
                                         <option value="">-请选择-</option>
                                         <c:forEach var="items" items="${certificateTypes}">
@@ -132,8 +132,8 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">证明文件</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证明文件</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input id="checkOriginalFile" type="file" multiple="false">
                                     <div id="_checkOriginalFile"></div>
                                 </div>
@@ -141,8 +141,8 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">说明</label>
-                                <div class="col-sm-11">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">说明</label>
+                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <textarea placeholder="说明" class="form-control"
                                               name="remark">${surveyAssetInventory.remark}</textarea>
                                 </div>
@@ -150,8 +150,8 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">证书信息</label>
-                                <div class="col-sm-3">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证书信息</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <button type="button" class="btn btn-success" onclick="checkRealEstate()"
                                             data-toggle="modal"> 查看
                                     </button>
@@ -294,10 +294,10 @@
                     <form id="taxesPaymentSurvey" class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     缴纳情况
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <select class="form-control" id="paymentStatus" name="paymentStatus" required
                                             onchange="showButton()">
                                         <option value="">请选择</option>
@@ -308,10 +308,10 @@
                             </div>
                             <div class="x-valid">
                                 <div style="display:none" id="showPaymentAdd">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         明细新增
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <div class="btn btn-xs btn-success" onclick="appendPaymentHTML(this)"><i
                                                 class="fa fa-plus"></i></div>
                                     </div>
@@ -337,10 +337,10 @@
                     <form id="damageSurvey" class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     区位是否损坏
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <select class="form-control" id="rimIsNormal" name="rimIsNormal" required
                                             onchange="showButton()">
                                         <option value="">请选择</option>
@@ -351,10 +351,10 @@
                             </div>
                             <div class="x-valid">
                                 <div style="display:none" id="showZoneAdd">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         区位损坏新增
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <div class="btn btn-xs btn-success"
                                              onclick="appendHTML('zoneProjectName','zoneProjectItem','zoneBit',this)"><i
                                                 class="fa fa-plus"></i></div>
@@ -367,10 +367,10 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     实物状况是否损坏
                                 </label>
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <select class="form-control" id="entityIsDamage" name="entityIsDamage" required
                                             onchange="showButton()">
                                         <option value="">请选择</option>
@@ -381,10 +381,10 @@
                             </div>
                             <div class="x-valid">
                                 <div style="display:none" id="showEntityAdd">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         实物损坏新增
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <div class="btn btn-xs btn-success"
                                              onclick="appendHTML('entityProjectName','entityProjectItem','entity',this)">
                                             <i class="fa fa-plus"></i></div>
@@ -398,10 +398,10 @@
                         <c:if test="${projectInfo.projectCategoryId == houseLand}">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         影响评估的其他事项
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <div class="btn btn-xs btn-success"
                                              onclick="appendHTML('otherProjectName','otherProjectItem','otherProject',this)">
                                             <i class="fa fa-plus"></i></div>
@@ -428,10 +428,10 @@
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         转让限制
                                     </label>
-                                    <div class="col-sm-11">
+                                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
                                               class="form-control"
                                               value="${surveyAssetInventory.transferLimit}"></textarea>
@@ -445,7 +445,7 @@
 
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
@@ -839,17 +839,17 @@
         var html = "<div class='form-group' >";
         html += "<div class='x-valid'>";
 
-        html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
-        html += "<div class='col-sm-3'>";
+        html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "项目" + "</label>";
+        html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
         html += "<input type='text' required class='form-control' name='" + projectName + num + "'>";
         html += "</div>";
 
-        html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
-        html += "<div class='col-sm-3'>";
+        html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "明细" + "</label>";
+        html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
         html += "<input type='text' required class='form-control' name='" + projectItem + num + "'>";
         html += "</div>";
 
-        html += " <div class='col-sm-2'>";
+        html += " <div class=' col-xs-2  col-sm-2  col-md-2  col-lg-2 '>";
         html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
         html += "</div>";
 
@@ -872,17 +872,17 @@
             var html = "<div class='form-group' >";
             html += "<div class='x-valid'>";
 
-            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
-            html += "<div class='col-sm-3'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "项目" + "</label>";
+            html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<input type='text' required class='form-control' name='" + projectName + i + "' value='" + n[projectName] + "'>";
             html += "</div>";
 
-            html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
-            html += "<div class='col-sm-3'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "明细" + "</label>";
+            html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<input type='text' required class='form-control' name='" + projectItem + i + "' value='" + n[projectItem] + "'>";
             html += "</div>";
 
-            html += " <div class='col-sm-2'>";
+            html += " <div class=' col-xs-2  col-sm-2  col-md-2  col-lg-2 '>";
             html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
             html += "</div>";
 
@@ -896,13 +896,13 @@
         var html = "<div class='form-group' >";
         html += "<div class='x-valid'>";
 
-        html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
-        html += "<div class='col-sm-3'>";
+        html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "项目" + "</label>";
+        html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
         html += "<input type='text' required class='form-control' name='projectName" + num + "'>";
         html += "</div>";
 
-        html += "<label class='col-sm-1 control-label'>" + "类型" + "</label>";
-        html += "<div class='col-sm-3'>";
+        html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "类型" + "</label>";
+        html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
         html += "<select  class='form-control' name='remark " + num + "'>";
         html += "<option value='应缴' selected>" + "应缴" + "</option>";
         html += "<option value='未缴'>" + "未缴" + "</option>";
@@ -912,13 +912,13 @@
 
 
         html += "<div class='x-valid'>";
-        html += "<label class='col-sm-1 control-label'>" + "金额" + "</label>";
-        html += "<div class='col-sm-2'>";
+        html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "金额" + "</label>";
+        html += "<div class=' col-xs-2  col-sm-2  col-md-2  col-lg-2 '>";
         html += "<input type='text' required class='form-control' name='money " + num + "' data-rule-number='true'>";
         html += "</div>";
         html += "</div>";
 
-        html += " <div class='col-sm-1'>";
+        html += " <div class=' col-xs-1  col-sm-1  col-md-1  col-lg-1 '>";
         html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
         html += "</div>";
 
@@ -936,13 +936,13 @@
             var html = "<div class='form-group' >";
             html += "<div class='x-valid'>";
 
-            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
-            html += "<div class='col-sm-3'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "项目" + "</label>";
+            html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<input type='text' required class='form-control' name='projectName " + i + "' value='" + n["projectName"] + "'>";
             html += "</div>";
 
-            html += "<label class='col-sm-1 control-label'>" + "类型" + "</label>";
-            html += "<div class='col-sm-3'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "类型" + "</label>";
+            html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<select id='select" + i + "' required class='form-control' name='remark" + i + "' >";
             html += "<option value='应缴'>" + "应缴" + "</option>";
             html += "<option value='未缴'>" + "未缴" + "</option>";
@@ -952,13 +952,13 @@
 
 
             html += "<div class='x-valid'>";
-            html += "<label class='col-sm-1 control-label'>" + "金额" + "</label>";
-            html += "<div class='col-sm-2'>";
+            html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "金额" + "</label>";
+            html += "<div class=' col-xs-2  col-sm-2  col-md-2  col-lg-2 '>";
             html += "<input type='text' required class='form-control' name='money" + i + "' value='" + n["money"] + "'>";
             html += "</div>";
             html += "</div>";
 
-            html += " <div class='col-sm-1'>";
+            html += " <div class=' col-xs-1  col-sm-1  col-md-1  col-lg-1 '>";
             html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
             html += "</div>";
 

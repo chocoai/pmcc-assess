@@ -27,26 +27,26 @@
                 <div class="x_content">
                     <div id="frm_plan" class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 开始日期
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <label class="form-control"><fmt:formatDate value="${projectPlan.projectPlanStart}"
                                                                             pattern="yyyy-MM-dd"/></label>
                             </div>
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 结束日期
                             </label>
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <label class="form-control"><fmt:formatDate value="${projectPlan.projectPlanEnd}"
                                                                             pattern="yyyy-MM-dd"/></label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 说明
                             </label>
-                            <div class="col-sm-11">
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                 <label class="form-control">${projectPlan.planRemarks}</label>
                             </div>
                         </div>

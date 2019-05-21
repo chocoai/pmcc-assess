@@ -23,11 +23,11 @@
                 <div class="x_content">
                     <form id="frm_approval" class="form-horizontal">
                         <div class="form-group" style="display: none">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 审批结论
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-4">
+                                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                     <label class="radio-inline">
                                         <input type="radio" value="Approval" required name="conclusion"
                                                checked="checked"
@@ -39,11 +39,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 项目经理<span class="symbol required"></span>
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-3">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="hidden" id="appointUserAccount" name="appointUserAccount">
                                     <input type="text" required
                                            placeholder="项目经理"
@@ -52,17 +52,17 @@
                                            maxlength="200" onclick="selectUserAccountManager()">
                                 </div>
                             </div>
-                            <div class="col-sm-5" id="div_bisNext">
+                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 " id="div_bisNext">
                                 <label class="checkbox-inline">
                                     <input type="checkbox" id="chk_bisNext"><label for="chk_bisNext">继续分派</label>
                                 </label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 说明
                             </label>
-                            <div class="col-sm-11">
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                 <div class="x-valid">
                                     <textarea placeholder="说明" id="opinionsTemp" name="opinionsTemp"
                                               class="form-control"></textarea>
@@ -80,7 +80,7 @@
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-5">
+                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4   col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                             <button class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>

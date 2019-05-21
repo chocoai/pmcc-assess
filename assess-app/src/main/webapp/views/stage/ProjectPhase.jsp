@@ -12,7 +12,7 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="row">
-                <div class="col-xs-12">
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                     <div class="x_panel">
                         <div class="x_title collapse-link">
                             <ul class="nav navbar-right panel_toolbox">
@@ -28,10 +28,10 @@
                             <form id="frm" class="form-horizontal">
                                 <div class="form-group ">
                                     <div>
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             项目大类:
                                         </label>
-                                        <div class="col-sm-2">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <select name="classId" id="classId" class="form-control">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach var="item" items="${projectClassList}">
@@ -41,20 +41,20 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             项目类型:
                                         </label>
-                                        <div class="col-sm-2">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <select name="typeId" id="typeId" class="form-control">
                                                 <option value="" selected="selected">-请选择-</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="col-sm-1 control-label">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             项目类别:
                                         </label>
-                                        <div class="col-sm-2">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <select name="categoryId" id="categoryId" class="form-control">
                                                 <option value="" selected="selected">-请选择-</option>
                                             </select>

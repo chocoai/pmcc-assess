@@ -13,7 +13,7 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="row">
-                <div class="col-xs-12">
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                     <div class="x_panel">
                         <div class="x_title collapse-link">
                             <ul class="nav navbar-right panel_toolbox">

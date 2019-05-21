@@ -19,9 +19,9 @@
                 <input type="hidden" name="id">
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">权证信息<span
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
                                 class="symbol required"></span></label>
-                        <div class="col-sm-5" style="overflow:auto;height:60px;">
+                        <div class=" col-xs-560  col-sm-560  col-md-560  col-lg-560 " style="overflow:auto;height:60px;">
                             <select class="form-control search-select select2" multiple="multiple" required="required"
                                     name="recordIds">
                                 <c:forEach var="items" items="${declareRecordList}">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-11">
+                    <div class="col-sm-offset-1  col-xs-111  col-sm-111  col-md-111  col-lg-111 ">
                         <div class="btn-group">
                             <button type="button" class="btn btn-success" onclick="addData(this,'_number')"
                                     data-toggle="modal" data-target="#divBox_number"> 新增
@@ -68,9 +68,9 @@
                 </div>
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">他权明细<span
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">他权明细<span
                                 class="symbol required"></span></label>
-                        <div class="col-sm-11">
+                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                             <table class="table table-bordered" id="tb_List_number">
                                 <!-- cerare document add ajax data-->
                             </table>
@@ -98,10 +98,10 @@
                             <input type="hidden" name="id" value="0">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         类别<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-10">
+                                    <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                         <select class="form-control" required  name="category" onchange="changeRemark(this,'_number')">
                                             <c:forEach var="item" items="${inventoryRightTypeList}">
                                                 <option value="${item.id}">${item.name}</option>
@@ -112,9 +112,9 @@
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">他项权力描述<span
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">他项权力描述<span
                                             class="symbol required"></span></label>
-                                    <div class="col-sm-10">
+                                    <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                         <textarea class="form-control" required="required" name="remark"></textarea>
                                     </div>
                                 </div>
@@ -122,9 +122,9 @@
                             <c:if test="${projectInfo.entrustPurpose == pledgeId}">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">对变现能力的影响<span
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">对变现能力的影响<span
                                                 class="symbol required"></span></label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <textarea class="form-control" required="required"
                                                       name="influence"></textarea>
                                         </div>
@@ -133,16 +133,16 @@
                             </c:if>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         他权证编号
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="text" placeholder="他权证编号" name="number" class="form-control">
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">登记日期</label>
-                                    <div class="col-sm-4">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">登记日期</label>
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input placeholder="登记日期" name="registerDate"
                                                data-date-format="yyyy-mm-dd"
                                                class="form-control date-picker dbdate" readonly="readonly">
@@ -152,37 +152,37 @@
 
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         义务人
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="text" placeholder="义务人" name="obligor" class="form-control">
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         权利人
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="text" placeholder="权利人" name="obligee" class="form-control">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         登记金额
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="text" placeholder="登记金额"
                                                name="registerAmount" class="form-control">
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         行权金额
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="text" placeholder="行权金额"
                                                name="actualAmount" class="form-control">
                                     </div>
@@ -190,19 +190,19 @@
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         登记面积
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="text" placeholder="登记面积"
                                                name="registerArea" class="form-control">
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         他权级次
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input type="text" placeholder="他权级次"
                                                name="rightRank" class="form-control">
                                     </div>
@@ -210,16 +210,16 @@
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">开始日期</label>
-                                    <div class="col-sm-4">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">开始日期</label>
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input placeholder="开始日期"
                                                name="beginDate" data-date-format="yyyy-mm-dd"
                                                class="form-control date-picker dbdate" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">结束日期</label>
-                                    <div class="col-sm-4">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">结束日期</label>
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                         <input placeholder="结束日期"
                                                name="endDate" data-date-format="yyyy-mm-dd"
                                                class="form-control date-picker dbdate" readonly="readonly">
@@ -228,10 +228,10 @@
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         附件
                                     </label>
-                                    <div class="col-sm-10">
+                                    <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                         <input id="inventoryRightFile_number" type="file" multiple="false">
                                         <div id="_inventoryRightFile_number"></div>
                                     </div>
