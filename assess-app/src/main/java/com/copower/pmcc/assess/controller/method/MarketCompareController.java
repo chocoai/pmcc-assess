@@ -155,9 +155,9 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/updateAnnualCoefficient", name = "更新年期修正系数", method = RequestMethod.POST)
-    public HttpResult updateAnnualCoefficient(Integer areaId,Integer mcId, Integer rewardRateId, BigDecimal rewardRate) {
+    public HttpResult updateAnnualCoefficient(Integer judgeObjectId,Integer mcId, Integer rewardRateId, BigDecimal rewardRate) {
         try {
-            return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(areaId,mcId, rewardRateId, rewardRate));
+            return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(judgeObjectId,mcId, rewardRateId, rewardRate));
         } catch (Exception e) {
             return HttpResult.newErrorResult("更新失败");
         }

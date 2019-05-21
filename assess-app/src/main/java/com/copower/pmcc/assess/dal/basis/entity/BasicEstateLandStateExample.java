@@ -546,6 +546,66 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandFactorTotalScoreIsNull() {
+            addCriterion("land_factor_total_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreIsNotNull() {
+            addCriterion("land_factor_total_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreEqualTo(BigDecimal value) {
+            addCriterion("land_factor_total_score =", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreNotEqualTo(BigDecimal value) {
+            addCriterion("land_factor_total_score <>", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreGreaterThan(BigDecimal value) {
+            addCriterion("land_factor_total_score >", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_factor_total_score >=", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreLessThan(BigDecimal value) {
+            addCriterion("land_factor_total_score <", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_factor_total_score <=", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreIn(List<BigDecimal> values) {
+            addCriterion("land_factor_total_score in", values, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreNotIn(List<BigDecimal> values) {
+            addCriterion("land_factor_total_score not in", values, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_factor_total_score between", value1, value2, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_factor_total_score not between", value1, value2, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
         public Criteria andLandLevelIsNull() {
             addCriterion("land_level is null");
             return (Criteria) this;

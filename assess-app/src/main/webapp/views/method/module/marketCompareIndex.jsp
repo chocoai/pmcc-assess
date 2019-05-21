@@ -240,6 +240,7 @@
                 return;
             }
             marketCompare.mcId = defaluts.mcId;
+            marketCompare.areaId = defaluts.areaId;
             marketCompare.isLand = defaluts.isLand;
             marketCompare.evaluation = defaluts.evaluation;
             marketCompare.casesAll = defaluts.casesAll;
@@ -834,6 +835,7 @@
                             evaluation: result.data.evaluation,
                             casesAll: marketCompare.casesAll,
                             isLand: marketCompare.isLand,
+                            areaId: marketCompare.areaId,
                             cases: result.data.cases
                         });
                     } else {
@@ -936,6 +938,7 @@
                     $.ajax({
                         url: '${pageContext.request.contextPath}/marketCompare/updateAnnualCoefficient',
                         data: {
+                            judgeObjectId: marketCompare.judgeObjectId,
                             mcId: marketCompare.mcId,
                             rewardRateId: data.id,
                             rewardRate: AssessCommon.percentToPoint(data.resultValue)
