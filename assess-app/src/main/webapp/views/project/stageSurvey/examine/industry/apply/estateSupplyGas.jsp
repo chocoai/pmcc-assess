@@ -37,14 +37,14 @@
                 <input type="hidden" name="type" class="type">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             供气商名称<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name"
                                                    placeholder="供应商名称" required="required">
                                         </div>
@@ -52,10 +52,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             供气保障等级<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="lineGrade"
                                                     class="form-control search-select select2 lineGrade">
                                             </select>
@@ -65,10 +65,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             供气商信誉<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="reputation"
                                                     class="form-control search-select select2 reputation">
                                             </select>
@@ -77,10 +77,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             供气商等级<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="grade"
                                                     class="form-control search-select select2 grade">
                                             </select>
@@ -89,10 +89,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             供应量或功率
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <input type="text" name="power" class="form-control" data-rule-number='true'
                                                    placeholder="供应量或功率">
                                         </div>

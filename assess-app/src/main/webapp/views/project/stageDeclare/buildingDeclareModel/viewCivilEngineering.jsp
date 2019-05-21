@@ -9,7 +9,7 @@
     <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <div class="col-sm-3">
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                             土地建设<i class="fa fa-user-circle-o" aria-hidden="true"> <span class="caret"></span> </i>
@@ -25,7 +25,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <div class="col-sm-3">
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                             excel<i class="fa fa-file-excel-o" aria-hidden="true"> <span class="caret"></span> </i>
@@ -39,13 +39,13 @@
                         </ul>
                     </div>
                 </div>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <div class="col-sm-3">
                     <div class="btn-group">
                         <div class="btn btn-primary" onclick="civilEngineering.copyData();"> <i class="fa fa-files-o" aria-hidden="true"></i> 复制</div>
                         <div class="btn btn-primary" onclick="civilEngineering.pasteAll();"> <i class="fa fa-clipboard" aria-hidden="true"></i>粘贴</div>
                     </div>
                 </div>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <div class="col-sm-3">
                     <div class="input-group" id="civilEngineeringInputGroup">
                         <input type="hidden" name="id">
                         <input type="text" readonly="readonly" name="name" class="form-control" placeholder="暂无复制数据">
@@ -87,14 +87,14 @@
                 <input type="hidden" name="pid">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        <label class="col-sm-1 control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <div class="col-sm-5">
                                             <input id="declareBuildingPermitFileId"
                                                    name="declareBuildingPermitFileId"
                                                    required="required" placeholder="附件" class="form-control"
@@ -142,14 +142,14 @@
                 <input type="hidden" name="pid">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        <label class="col-sm-1 control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <div class="col-sm-5">
                                             <input id="declareLandUsePermitFileId"
                                                    name="declareLandUsePermitFileId"
                                                    required="required" placeholder="附件" class="form-control"
@@ -197,14 +197,14 @@
                 <input type="hidden" name="pid">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        <label class="col-sm-1 control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <div class="col-sm-5">
                                             <input id="declarePreSalePermitFileId"
                                                    name="declareBuildingConstructionPermitFileId"
                                                    required="required" placeholder="附件" class="form-control"
@@ -252,14 +252,14 @@
                 <input type="hidden" name="pid">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        <label class="col-sm-1 control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <div class="col-sm-5">
                                             <input id="declareBuildingConstructionPermitFileId"
                                                    name="declareBuildingConstructionPermitFileId"
                                                    required="required" placeholder="附件" class="form-control"
@@ -306,14 +306,14 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        <label class="col-sm-1 control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <div class="col-sm-5">
                                             <input id="civilEngineeringFileId" name="civilEngineeringFileId"
                                                    required="required" placeholder="附件" class="form-control"
                                                    type="file">
@@ -357,14 +357,14 @@
                 <input type="hidden" name="pidC">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        <label class="col-sm-1 control-label">
                                             上传附件<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <div class="col-sm-5">
                                             <input id="declareRealtyLandCertFileId" name="declareRealtyLandCertFileId"
                                                    required="required" placeholder="上传附件" class="form-control"
                                                    type="file">
@@ -409,14 +409,14 @@
                 <input type="hidden" name="pidC">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        <label class="col-sm-1 control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <div class="col-sm-5">
                                             <input id="declareRealtyRealEstateCertFileId"
                                                    name="declareRealtyRealEstateCertFileId"
                                                    required="required" placeholder="附件" class="form-control"
@@ -459,7 +459,7 @@
             </div>
             <div class="modal-body">
                 <form id="declareEconomicIndicatorsFrm" class="form-horizontal">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                    <div class="col-md-12">
                         <div class="row">
                             <div class="panel-body">
                             </div>

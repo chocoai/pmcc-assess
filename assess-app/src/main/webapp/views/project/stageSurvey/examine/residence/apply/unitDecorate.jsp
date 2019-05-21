@@ -36,14 +36,14 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             装修部位<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="decorationPart"
                                                     class="form-control decorationPart">
                                             </select>
@@ -52,10 +52,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             装修材料<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="decoratingMaterial"
                                                     class="form-control decoratingMaterial">
                                             </select>
@@ -64,10 +64,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             材料档次<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="materialGrade"
                                                     class="form-control materialGrade">
                                             </select>
@@ -76,10 +76,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             施工工艺<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="constructionTechnology"
                                                     class="form-control constructionTechnology">
                                             </select>
@@ -88,10 +88,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             材料价格区间<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="materialPriceRange"
                                                     class="form-control materialPriceRange">
                                             </select>

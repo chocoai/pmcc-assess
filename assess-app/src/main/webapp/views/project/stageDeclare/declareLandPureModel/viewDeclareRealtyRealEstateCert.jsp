@@ -92,14 +92,14 @@
                 <input type="hidden" name="landCertGetQuestion">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        <label class="col-sm-1 control-label">
                                             批文附件
                                         </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <div class="col-sm-5">
                                             <input id="declareRealtyRealEstateCertNewFileId"
                                                    name="declareRealtyRealEstateCertNewFileId" placeholder="批文附件" class="form-control"
                                                    type="file">

@@ -36,14 +36,14 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             类型<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="type"
                                                     class="form-control type">
                                             </select>
@@ -52,10 +52,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             类别<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="category" class="form-control category">
                                             </select>
                                         </div>
@@ -63,20 +63,20 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <input type="text" name="name" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             设备用途<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="equipmentUse"
                                                     class="form-control equipmentUse">
                                             </select>
@@ -85,10 +85,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             维护状况<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="maintenanceStatus"
                                                     class="form-control maintenanceStatus">
                                             </select>
@@ -97,30 +97,30 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             参数指标
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <input type="text" name="parameterIndex" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             价格
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <input type="text" name="price" class="form-control" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             附件<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <input id="positionDiagramFileID" placeholder="上传附件" class="form-control"
                                                    type="file">
                                             <div id="_positionDiagramFileID"></div>

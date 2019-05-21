@@ -37,10 +37,10 @@
                 <div class="modal-body">
                     <div class="form-group" id="huxingType" style="display: none">
                         <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                            <label class="col-sm-1 control-label">
                                 类型<span class="symbol required"></span>
                             </label>
-                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                            <div class="col-sm-3">
                                 <select name="type" class="form-control type">
                                 </select>
                             </div>
@@ -51,19 +51,19 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                            <label class="col-sm-1 control-label">
                                 面积<span class="symbol required"></span>
                             </label>
-                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                            <div class="col-sm-3">
                                 <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area"
                                        class="form-control" required="required">
                             </div>
                         </div>
                         <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                            <label class="col-sm-1 control-label">
                                 朝向<span class="symbol required"></span>
                             </label>
-                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                            <div class="col-sm-3">
                                 <select name="orientation" class="form-control search-select select2 orientation">
                                 </select>
                             </div>
@@ -71,10 +71,10 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                            <label class="col-sm-1 control-label">
                                 户型描述
                             </label>
-                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 1">
+                            <div class="col-sm-11">
                                             <textarea placeholder="户型描述" name="description" class="form-control" >
                                             </textarea>
                             </div>
@@ -82,10 +82,10 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                            <label class="col-sm-1 control-label">
                                 户型图<span class="symbol required"></span>
                             </label>
-                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 1">
+                            <div class="col-sm-11">
                                 <input id="house_latest_family_planV"  placeholder="上传附件" class="form-control"
                                        type="file">
                                 <div id="_house_latest_family_planV"></div>

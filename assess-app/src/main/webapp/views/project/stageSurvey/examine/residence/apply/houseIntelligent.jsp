@@ -35,14 +35,14 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             开关回路<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="switchCircuit"
                                                     class="form-control search-select select2 switchCircuit">
                                             </select>
@@ -51,10 +51,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             铺设方式<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select required="required" name="layingMethod"
                                                     class="form-control search-select select2 layingMethod">
                                             </select>
@@ -63,10 +63,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             灯具
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select name="lampsLanterns" multiple="multiple"
                                                     class="form-control search-select select2 lampsLanterns">
                                             </select>
@@ -75,10 +75,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             档次
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <select name="grade"
                                                     class="form-control search-select select2 grade">
                                             </select>
@@ -87,10 +87,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             智能系统<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <a href="javascript://;" class="btn btn-xs btn-success"
                                                     onclick="houseIntelligent.prototype.appendHTML('',this)"><i
                                                     class="fa fa-plus"></i></a>
@@ -100,25 +100,25 @@
                                 <div style="margin-bottom: 8px;" class="system">
                                     <div class="form-group">
                                         <div class="x-valid">
-                                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                            <label class="col-sm-2 control-label">
                                                 智能系统
                                             </label>
-                                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <div class="col-sm-2">
                                                 <select required="required" name="intelligentSystem1"
                                                         class="form-control search-select select2 intelligentSystem1">
                                                 </select>
                                             </div>
-                                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <div class="col-sm-2">
                                                 <select required="required" name="layingMethod1"
                                                         class="form-control search-select select2 layingMethod1">
                                                 </select>
                                             </div>
-                                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <div class="col-sm-2">
                                                 <select required="required" name="intelligenceGrade1"
                                                         class="form-control search-select select2 intelligenceGrade1">
                                                 </select>
                                             </div>
-                                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                            <div class="col-sm-4">
                                                 <input type="button" class="btn btn-warning" value="X"
                                                        onclick="houseIntelligent.prototype.cleanHTMLData(this)">
                                             </div>
@@ -127,10 +127,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                        <label class="col-sm-2 control-label">
                                             描述
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 0">
+                                        <div class="col-sm-10">
                                             <textarea name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>

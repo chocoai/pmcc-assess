@@ -17,14 +17,14 @@
             <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">项目名称</label>
-                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 ">
+                    <label class="col-sm-1 control-label">项目名称</label>
+                    <div class="col-sm-7">
                         <label class="form-control">${projectInfo.projectName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">紧急程度</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">紧急程度</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.urgencyName}</label>
                     </div>
                 </div>
@@ -32,77 +32,77 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">委托目的</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">委托目的</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.entrustPurposeName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">委托目的类别</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">委托目的类别</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.entrustAimTypeName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">委托目的描述</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">委托目的描述</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">价值类型</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">价值类型</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.valueTypeName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">价值类型描述</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">价值类型描述</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.remarkValueType}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">执业部门</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">执业部门</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.departmentName}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">评估范围</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">评估范围</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.propertyScopeName}</label></div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">评估包括</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">评估包括</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.scopeInclude}</label></div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">评估不包括</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">评估不包括</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.scopeNotInclude}</label></div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">项目经理</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">项目经理</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.projectMemberVo.userAccountManagerName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">项目成员</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">项目成员</label>
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.projectMemberVo.userAccountMemberName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">评估基准日</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">评估基准日</label>
+                    <div class="col-sm-3">
                         <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
                                                                     pattern='yyyy-MM-dd'/></label>
                     </div>
@@ -110,16 +110,16 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">项目说明</label>
-                    <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                    <label class="col-sm-1 control-label">项目说明</label>
+                    <div class="col-sm-11">
                         <label class="form-control">${projectInfo.remarks}</label></div>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">附件</label>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <label class="col-sm-1 control-label">附件</label>
+                    <div class="col-sm-3">
                         <div id="_attachmentProjectInfoId"></div>
                     </div>
                 </div>
@@ -142,54 +142,54 @@
                     <c:when test="${projectInfo.consignorVo.csType eq 1}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     委托单位
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     法定代表
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csLegalRepresentative}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     社会统一信用代码
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csSociologyCode}</label></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     经营范围
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csScopeOperation}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     单位地址
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csAddress}</label></div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     单位性质
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csUnitPropertiesName}</label>
                                 </div>
                             </div>
@@ -198,27 +198,27 @@
                     <c:otherwise>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     委托姓名
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csName}</label></div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     身份证号
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csIdcard}</label></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     委托住址
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.consignorVo.csAddress}</label></div>
                             </div>
                         </div>
@@ -226,10 +226,10 @@
                 </c:choose>
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             附件
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <div id="_csAttachmentProjectEnclosureId"></div>
                         </div>
                     </div>
@@ -258,56 +258,56 @@
                     <c:when test="${projectInfo.possessorVo.pType eq 1}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     占有单位
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnit}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     占有单位法定代表
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pLegalRepresentative}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     社会统一信用代码
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pSociologyCode}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     经营范围
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pScopeOperation}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     占有单位地址
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pAddress}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     单位性质
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pUnitPropertiesName}</label>
                                 </div>
                             </div>
@@ -316,29 +316,29 @@
                     <c:otherwise>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     占有人姓名
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pName}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     身份证号
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pIdcard}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                                <label class="col-sm-1 control-label">
                                     占有人住址
                                 </label>
-                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                                <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.possessorVo.pAddress}</label>
                                 </div>
                             </div>
@@ -348,10 +348,10 @@
 
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             附件
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <div id="_pAttachmentProjectEnclosureId"></div>
                         </div>
                     </div>
@@ -379,10 +379,10 @@
             <div>
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             报告使用单位
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <c:choose>
                                 <c:when test="${projectInfo.unitInformationVo.uUseUnitName != null}">
                                     <label class="form-control">${projectInfo.unitInformationVo.uUseUnitName}</label>
@@ -395,19 +395,19 @@
                     </div>
 
                     <div class="x-valid">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             法定代表人
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <label class="form-control">${projectInfo.unitInformationVo.uLegalRepresentative}</label>
                         </div>
                     </div>
 
                     <div class="x-valid">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             证照号
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <label class="form-control">${projectInfo.unitInformationVo.uCertificateNumber}</label>
                         </div>
                     </div>
@@ -415,28 +415,28 @@
 
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             单位性质
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <label class="form-control">${projectInfo.unitInformationVo.uUnitPropertiesName}</label>
                         </div>
                     </div>
 
                     <div class="x-valid">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             经营范围
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <label class="form-control">${projectInfo.unitInformationVo.uScopeOperation}</label>
                         </div>
                     </div>
 
                     <div class="x-valid">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             地址
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <label class="form-control">${projectInfo.unitInformationVo.uAddress}</label>
                         </div>
                     </div>
@@ -445,20 +445,20 @@
                 <div class="form-group">
                     <div class="x-valid"
                          style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             业务类型<span class="symbol required"></span>
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <label class="form-control">${projectInfo.unitInformationVo.businessType}</label>
                         </div>
                     </div>
 
                     <div class="x-valid"
                          style="display: ${empty projectInfo.unitInformationVo.assessType?'none':'block'}">
-                        <label class="col-xs-1 col-sm-1 col-md-1 col-lg-1  control-label">
+                        <label class="col-sm-1 control-label">
                             评估类型<span class="symbol required"></span>
                         </label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                        <div class="col-sm-3">
                             <label class="form-control">${projectInfo.unitInformationVo.assessType}</label>
                         </div>
                     </div>
@@ -599,18 +599,18 @@
             <form class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 2">
+                        <div class="col-md-12">
                             <div class="panel-body">
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                                        <div class="col-sm-6">
                                             <input type="text" name="name" placeholder="联系人名字、电话"
                                                    class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                                        <div class="col-sm-6">
                                             <input type="button"
                                                    onclick="findCRMContacts(this)"
                                                    class="btn btn-success" value="查询">
