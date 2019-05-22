@@ -1,8 +1,13 @@
 package com.copower.pmcc.assess.test;
 
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataLandDetailAchievementDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dto.output.data.DataLandDetailAchievementVo;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -13,6 +18,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -25,8 +34,27 @@ import java.util.stream.Collectors;
  * @date: 2019/5/21 17:53
  * @description:
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"classpath*:applicationContextTest.xml"})
 public class WordSheetTest {
+
+    @Autowired
+    private DataLandLevelDetailDao dataLandLevelDetailDao;
+    @Autowired
+    private DataLandDetailAchievementDao dataLandDetailAchievementDao;
+
+    @Test
+    public void clear(){
+        DataLandDetailAchievement query = new DataLandDetailAchievement();
+        List<DataLandDetailAchievement> landDetailAchievements = dataLandDetailAchievementDao.getDataLandDetailAchievementList(query);
+
+        System.out.println("======>"+landDetailAchievements.size());
+    }
+
+    private int id1989 = 1989;
+    private int id1992 = 1992;
     private final List<String> gradeLists = Arrays.asList("1955", "1956", "1957", "1958", "1959");//"优","较优","一般","较劣","劣"
+    private final List<String> gradeLists2 = Arrays.asList("优", "较优", "一般", "较劣", "劣");//"优","较优","一般","较劣","劣"
     private final List<String> romanNumeralList = Arrays.asList("Ⅰ级", "Ⅱ级", "Ⅲ级", "IV级", "Ⅴ级", "Ⅵ级", "Ⅶ级");
     final String path = "D:\\temp\\成都中心城区基准地价\\";
     private final List<String> asList = Arrays.asList("工业用地", "公共管理与公共服务用地", "商服用地", "住宅用地");
@@ -73,60 +101,117 @@ public class WordSheetTest {
                     Sheet sheet = sheetEntry.getValue();
                     Row rowA = null;
                     Row rowB = null;
-                    Cell cell = null;
+                    ExampleDDD exampleDDD = null;
+                    final int temp = i;
+                    try {
+                        exampleDDD = exampleDDDList.stream().filter(oo -> {
+                            if (Objects.equal(oo.getType(), asList.get(temp))) {
+                                if (oo.getNumber_().equals(sheetEntry.getKey())) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }).findFirst().get();
+                    } catch (Exception e1) {
+                        System.out.println(e1.getMessage() + "    ===" + temp);
+                    }
+                    int rowLength = 0;
+                    int c1 = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
+                    int c2 = targetSheet.getPhysicalNumberOfRows() != 0 ? targetSheet.getPhysicalNumberOfRows() : targetSheet.getLastRowNum();
+                    if (c1 >= c2) {
+                        rowLength = c2;
+                    } else {
+                        rowLength = c1;
+                    }
+                    System.out.println("rowLength" + rowLength);
                     //工业用地
                     if (i == 0) {
-                        for (int k = 3; k < 16; k++) {
-                            rowB = sheet.getRow(k);
-                            rowA = targetSheet.getRow(k);
-
-                            for (int j = 0; j < gradeLists.size(); j++) {
-                                DataLandDetailAchievementVo land = new DataLandDetailAchievementVo();
-                                land.setCategoryName(PoiUtils.getCellValue(rowA.getCell(2)));
-                                if (j == 0) {
-                                    land.setGradeName("优");
-                                    land.setGrade(Integer.parseInt(gradeLists.get(j)));
-                                    land.setReamark(PoiUtils.getCellValue(rowA.getCell(3)));
-                                    String value = PoiUtils.getCellValue(rowB.getCell(3));
-                                    if (StringUtils.isNotEmpty(value)) {
-                                        land.setAchievement(new BigDecimal(value));
-                                    }
-                                }
-                                if (j == 1) {
-                                    land.setGradeName("较优");
-                                    land.setGrade(Integer.parseInt(gradeLists.get(j)));
-                                    String value = PoiUtils.getCellValue(rowB.getCell(4));
-                                    land.setReamark(PoiUtils.getCellValue(rowA.getCell(4)));
-                                    if (StringUtils.isNotEmpty(value)) {
-                                        land.setAchievement(new BigDecimal(value));
-                                    }
-                                }
-                                if (j == 2) {
-                                    land.setGradeName("一般");
-                                    land.setGrade(Integer.parseInt(gradeLists.get(j)));
-                                    land.setReamark(PoiUtils.getCellValue(rowA.getCell(5)));
-                                    String value = PoiUtils.getCellValue(rowB.getCell(5));
-                                    if (StringUtils.isNotEmpty(value)) {
-                                        land.setAchievement(new BigDecimal(value));
-                                    }
-                                }
-                                if (j == 3) {
-                                    land.setGradeName("较劣");
-                                    land.setGrade(Integer.parseInt(gradeLists.get(j)));
-                                    land.setReamark(PoiUtils.getCellValue(rowA.getCell(6)));
-                                    String value = PoiUtils.getCellValue(rowB.getCell(6));
-                                    if (StringUtils.isNotEmpty(value)) {
-                                        land.setAchievement(new BigDecimal(value));
-                                    }
-                                }
-                                System.out.println(land);
-                            }
+                        setValue( rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
+                        if (true) {
+                            save(exampleDDD);
                         }
                     }
+                    //公共管理与公共服务用地
+                    if (i == 1) {
+                        setValue( rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
+                        if (true) {
+                            save(exampleDDD);
+                        }
+                    }
+                    //商服用地
+                    if (i == 2) {
+                        setValue( rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
+                        if (true) {
+                            save(exampleDDD);
+                        }
+                    }
+                    //住宅用地
+                    if (i == 3) {
+                        setValue( rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
+                        if (true) {
+                            save(exampleDDD);
+                        }
+                    }
+                    System.out.println(exampleDDD);
                     System.out.println(sheet.getSheetName() + " " + targetSheet.getSheetName());
                 }
             }
 
+        }
+    }
+
+    private void setValue( Row rowA, Row rowB, int rowLength, ExampleDDD exampleDDD, Sheet sheet, Sheet targetSheet) {
+        for (int k = 3; k < rowLength; k++) {
+            rowB = sheet.getRow(k);
+            rowA = targetSheet.getRow(k);
+            for (int j = 0; j < gradeLists.size(); j++) {
+                DataLandDetailAchievementVo  land = new DataLandDetailAchievementVo();
+                land.setCategoryName(PoiUtils.getCellValue(rowA.getCell(2)));
+                land.setCategory(PoiUtils.getCellValue(rowB.getCell(2)));
+                land.setGradeName(gradeLists2.get(j));
+                land.setGrade(Integer.parseInt(gradeLists.get(j)));
+                land.setReamark(PoiUtils.getCellValue(rowA.getCell(3 + j)));
+                String value = PoiUtils.getCellValue(rowB.getCell(3 + j));
+                if (StringUtils.isNotEmpty(value)) {
+                    land.setAchievement(new BigDecimal(value));
+                }
+                if (k >= 10) {
+                    //个别因素
+                    land.setType(id1989);
+                } else {
+                    //区域因素
+                    land.setType(id1992);
+                }
+                if (exampleDDD != null) {
+                    exampleDDD.getDataLandDetailAchievementVos().add(land);
+                }
+            }
+        }
+    }
+
+    private void save(ExampleDDD exampleDDD) {
+        if (exampleDDD != null) {
+            DataLandLevelDetail dataLandLevelDetail = new DataLandLevelDetail();
+            dataLandLevelDetail.setType(exampleDDD.getNumber());
+            dataLandLevelDetail.setClassify(exampleDDD.getType());
+            dataLandLevelDetail.setLandLevelId(332);
+            dataLandLevelDetail.setPrice(new BigDecimal(exampleDDD.getPrice()));
+            dataLandLevelDetailDao.addDataLandLevelDetail(dataLandLevelDetail);
+            exampleDDD.getDataLandDetailAchievementVos().stream().filter(po -> {
+                if (po.getAchievement() == null) {
+                    return false;
+                }
+                if (StringUtils.isEmpty(po.getReamark())) {
+                    return false;
+                }
+                if (StringUtils.isEmpty(po.getCategory())) {
+                    return false;
+                }
+                return true;
+            }).forEachOrdered(po -> {
+                po.setLevelDetailId(dataLandLevelDetail.getId());
+                dataLandDetailAchievementDao.saveDataLandDetailAchievement(po);
+            });
         }
     }
 
