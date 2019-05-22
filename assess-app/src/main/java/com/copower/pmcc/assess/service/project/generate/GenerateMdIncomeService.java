@@ -655,7 +655,7 @@ public class GenerateMdIncomeService implements Serializable {
         if (schemeInfo != null) {
             if (schemeInfo.getMethodDataId() != null) {
                 try {
-                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), schemeInfo.getMethodDataId(), new Date(), areaId);
+                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), schemeInfo.getMethodDataId(), areaId);
                     String temp = generateMdCompareService.generateCompareFile();
                     File file = new File(temp);
                     if (file.isFile()) {

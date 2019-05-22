@@ -2814,7 +2814,7 @@ public class GenerateBaseDataService {
                 //市场比较法
                 schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_MARKET_COMPARE, schemeJudgeObject);
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), new Date(), areaId);
+                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), areaId);
                     try {
                         String generateCompareFile = generateMdCompareService.generateCompareFile();
                         File file = new File(generateCompareFile);

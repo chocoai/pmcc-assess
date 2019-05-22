@@ -22,8 +22,10 @@ public class BaseConstant {
     public static final String MPA_API_URL = "http://restapi.amap.com/v3/staticmap";//静态图的请求地址
     public static final String MAP_WEB_SERVICE_KEY = "0d3f1144352d7e2b683e37dd3757156a";//webservice的key
 
-    //设定用户字段-住宅
-    public static final String ASSESS_DATA_SET_USE_FIELD_HOUSE = "set.use.type.house";
+
+    public static final String ASSESS_DATA_SET_USE_FIELD_HOUSE = "set.use.type.house";//设定用户字段-住宅
+    public static final String ASSESS_DATA_SET_USE_FIELD_LAND_AREA_FACTOR = "land.area.factor";
+    public static final String ASSESS_DATA_SET_USE_FIELD_LAND_INDIVIDUAL_FACTOR = "land.individual.factor";
 
     //估价对象中文显示名称
     public static final String ASSESS_JUDGE_OBJECT_CN_NAME = "号估价对象";

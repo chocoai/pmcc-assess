@@ -50,6 +50,7 @@ public class GenerateMdCompareService {
     private Date valueTimePoint;
     private Integer areaId;
     private List<DataSetUseField> setUseFieldList;
+    private SchemeAreaGroup schemeAreaGroup;
     private MdMarketCompare marketCompare;
     private MdMarketCompareItem evaluationItem;
     private List<MdMarketCompareItem> caseItemList;
@@ -74,11 +75,8 @@ public class GenerateMdCompareService {
     private GenerateMdCompareService() {
     }
 
-    public GenerateMdCompareService(Integer schemeJudgeObjectId, Integer mcId, Date date, Integer areaId) throws Exception {
-        this.schemeJudgeObjectId = schemeJudgeObjectId;
-        this.mcId = mcId;
-        this.valueTimePoint = date;
-        this.areaId = areaId;
+    public GenerateMdCompareService(Integer schemeJudgeObjectId, Integer mcId, Integer areaId) throws Exception {
+
         this.commonService = SpringContextUtils.getBean(CommonService.class);
         this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
@@ -94,6 +92,11 @@ public class GenerateMdCompareService {
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.dataHousePriceIndexService = SpringContextUtils.getBean(DataHousePriceIndexService.class);
         getEvaluationItemList();
+        schemeAreaGroup = schemeAreaGroupService.get(areaId);
+        this.valueTimePoint = schemeAreaGroup.getValueTimePoint();
+        this.schemeJudgeObjectId = schemeJudgeObjectId;
+        this.mcId = mcId;
+        this.areaId = areaId;
     }
 
     /**
