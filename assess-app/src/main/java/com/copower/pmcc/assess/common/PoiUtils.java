@@ -1,7 +1,11 @@
 package com.copower.pmcc.assess.common;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -16,11 +20,84 @@ import java.util.regex.Pattern;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/5/25
  * @time: 18:47
  */
 public class PoiUtils {
+
+    /**
+     * 获取word中的所有表格
+     *
+     * @param path
+     * @return
+     * @throws IOException
+     */
+    public static List<org.apache.poi.hwpf.usermodel.Table> getWordTable(String path) throws IOException {
+        org.apache.poi.poifs.filesystem.POIFSFileSystem pfs = new org.apache.poi.poifs.filesystem.POIFSFileSystem(new FileInputStream(new File(path)));
+        org.apache.poi.hwpf.HWPFDocument hwpf = new org.apache.poi.hwpf.HWPFDocument(pfs);
+        org.apache.poi.hwpf.usermodel.Range range = hwpf.getRange();
+        org.apache.poi.hwpf.usermodel.TableIterator it = new org.apache.poi.hwpf.usermodel.TableIterator(range);
+        List<org.apache.poi.hwpf.usermodel.Table> tableList = Lists.newArrayList();
+        while (it.hasNext()) {
+            org.apache.poi.hwpf.usermodel.Table tb = it.next();
+            if (tb != null) {
+                tableList.add(tb);
+            }
+        }
+        return tableList;
+    }
+
+    /**
+     * 获取word中一个表格的所有行
+     *
+     * @param table
+     * @return
+     */
+    public static List<org.apache.poi.hwpf.usermodel.TableRow> getWordTableRow(org.apache.poi.hwpf.usermodel.Table table) {
+        List<org.apache.poi.hwpf.usermodel.TableRow> tableRowList = Lists.newArrayList();
+        for (int i = 0; i < table.numRows(); i++) {
+            org.apache.poi.hwpf.usermodel.TableRow tableRow = table.getRow(i);
+            if (tableRow != null) {
+                tableRowList.add(tableRow);
+            }
+        }
+        return tableRowList;
+    }
+
+    /**
+     * 获取一个word中的一行的所有单元格
+     *
+     * @param tableRow
+     * @return
+     */
+    public static List<org.apache.poi.hwpf.usermodel.TableCell> getWordTableCell(org.apache.poi.hwpf.usermodel.TableRow tableRow) {
+        List<org.apache.poi.hwpf.usermodel.TableCell> tableCellList = Lists.newArrayList();
+        for (int j = 0; j < tableRow.numCells(); j++) {
+            org.apache.poi.hwpf.usermodel.TableCell tableCell = tableRow.getCell(j);
+            if (tableCell != null) {
+                tableCellList.add(tableCell);
+            }
+        }
+        return tableCellList;
+    }
+
+    /**
+     * 获取word中一个单元格的所有段落
+     *
+     * @param tableCell
+     * @return
+     */
+    public static List<org.apache.poi.hwpf.usermodel.Paragraph> getWordParagraph(org.apache.poi.hwpf.usermodel.TableCell tableCell) {
+        List<org.apache.poi.hwpf.usermodel.Paragraph> paragraphList = Lists.newArrayList();
+        for (int k = 0; k < tableCell.numParagraphs(); k++) {
+            org.apache.poi.hwpf.usermodel.Paragraph paragraph = tableCell.getParagraph(k);
+            if (paragraph != null) {
+                paragraphList.add(paragraph);
+            }
+        }
+        return paragraphList;
+    }
 
     public static String getCellValue(Cell cell) {
         SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -77,6 +154,32 @@ public class PoiUtils {
      */
     public static boolean isExcel2007(String filePath) {
         return filePath.matches("^.+\\.(?i)(xlsx)$");
+    }
+
+
+    public static Workbook getWorkbook(String path) throws IOException {
+        FileInputStream inputStream = new FileInputStream(path);
+        Workbook workbook = PoiUtils.isExcel2003(path) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+        return workbook;
+    }
+
+    public static List<Sheet> getSheet(String path) throws Exception {
+        List<Sheet> sheetList = Lists.newArrayList();
+        Workbook workbook = getWorkbook(path);
+        final int len = 1000;
+        for (int j = 0; j < len; j++) {
+            Sheet sheet = null;
+            try {
+                sheet = workbook.getSheetAt(j);
+            } catch (Exception e) {
+            }
+            if (sheet != null) {
+                sheetList.add(sheet);
+            } else {
+                break;
+            }
+        }
+        return sheetList;
     }
 
     /**

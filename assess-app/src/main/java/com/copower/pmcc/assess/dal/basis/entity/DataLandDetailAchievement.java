@@ -8,7 +8,7 @@ public class DataLandDetailAchievement {
 
     private Integer levelDetailId;
 
-    private Integer category;
+    private String category;
 
     private Integer grade;
 
@@ -40,12 +40,12 @@ public class DataLandDetailAchievement {
         this.levelDetailId = levelDetailId;
     }
 
-    public Integer getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.category = category == null ? null : category.trim();
     }
 
     public Integer getGrade() {

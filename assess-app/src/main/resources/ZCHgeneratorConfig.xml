@@ -48,9 +48,9 @@
             <!--<columnOverride column="path_array" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_data_house_price_index" domainObjectName="DataHousePriceIndex">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_house_price_index" domainObjectName="DataHousePriceIndex">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_basic_house" domainObjectName="BasicHouse">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -64,9 +64,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_data_land_detail_achievement" domainObjectName="DataLandDetailAchievement">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_data_land_detail_achievement" domainObjectName="DataLandDetailAchievement">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_data_land_level_detail" domainObjectName="DataLandLevelDetail">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
