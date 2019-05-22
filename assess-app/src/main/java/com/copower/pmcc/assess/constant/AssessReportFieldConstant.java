@@ -9,8 +9,8 @@ package com.copower.pmcc.assess.constant;
  */
 public class AssessReportFieldConstant {
     public static final String COMPARE_TEMPLATE = "compare.template";  //市场比较法模板
+    public static final String LAND_COMPARE_TEMPLATE = "land.compare.template";  //土地比较法模板
     public static final String INCOME_TEMPLATE = "income.template";  //收益法模板
-
 
     public static final String REPLACE_PRINCIPLE = "replace.principle";  //替代原则
     public static final String INCOME_RENT = "md.income.rent"; //收益法出租
