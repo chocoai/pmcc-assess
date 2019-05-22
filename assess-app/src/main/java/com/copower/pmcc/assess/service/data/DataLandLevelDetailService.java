@@ -148,11 +148,23 @@ public class DataLandLevelDetailService {
     }
 
     /**
-     *
      * @param landLevelId
      * @return
      */
-    public int getCountByLandLevelId(Integer landLevelId){
+    public int getCountByLandLevelId(Integer landLevelId) {
         return dataLandLevelDetailDao.getCountByLandLevelId(landLevelId);
+    }
+
+    public List<DataLandLevelDetail> getDataLandLevelDetailListByPid(Integer landLevelId) {
+        return dataLandLevelDetailDao.getDataLandLevelDetailList(landLevelId);
+    }
+
+    //根据大类和级别获取数据
+    public DataLandLevelDetail getDataByClassifyAndType(String classify, String type, Integer landLevelId) {
+        List<DataLandLevelDetail> dataList = dataLandLevelDetailDao.getDataByClassifyAndType(classify, type, landLevelId);
+        if (CollectionUtils.isNotEmpty(dataList)) {
+            return dataList.get(0);
+        }
+        return null;
     }
 }

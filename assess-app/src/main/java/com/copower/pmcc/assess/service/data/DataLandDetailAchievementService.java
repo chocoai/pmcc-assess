@@ -86,4 +86,13 @@ public class DataLandDetailAchievementService {
         return vo;
     }
 
-}
+    public DataLandDetailAchievement getDataLandDetailAchievement(Integer levelDetailId,String category,Integer grade,Integer type){
+        List<DataLandDetailAchievement> dataLandDetailAchievement = dataLandDetailAchievementDao.getDataLandDetailAchievement(levelDetailId, category, grade, type);
+        if(CollectionUtils.isNotEmpty(dataLandDetailAchievement)){
+            return dataLandDetailAchievement.get(0);
+        }
+        return null;
+    }
+
+
+    }

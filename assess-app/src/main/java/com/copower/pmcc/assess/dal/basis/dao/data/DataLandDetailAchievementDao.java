@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievementExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataLandDetailAchievementMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -53,4 +54,22 @@ public class DataLandDetailAchievementDao {
         return example;
     }
 
+    public List<DataLandDetailAchievement> getDataLandDetailAchievement(Integer levelDetailId,String category,Integer grade,Integer type){
+        DataLandDetailAchievementExample example = new DataLandDetailAchievementExample();
+        DataLandDetailAchievementExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (levelDetailId != null) {
+            criteria.andLevelDetailIdEqualTo(levelDetailId);
+        }
+        if (StringUtils.isNotBlank(category)) {
+            criteria.andCategoryEqualTo(category);
+        }
+        if (grade != null) {
+            criteria.andGradeEqualTo(grade);
+        }
+        if (type != null) {
+            criteria.andTypeEqualTo(type);
+        }
+        return mapper.selectByExample(example);
+    }
 }

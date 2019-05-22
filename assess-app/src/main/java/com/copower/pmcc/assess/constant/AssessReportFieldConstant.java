@@ -9,8 +9,9 @@ package com.copower.pmcc.assess.constant;
  */
 public class AssessReportFieldConstant {
     public static final String COMPARE_TEMPLATE = "compare.template";  //市场比较法模板
-    public static final String LAND_COMPARE_TEMPLATE = "land.compare.template";  //土地比较法模板
     public static final String INCOME_TEMPLATE = "income.template";  //收益法模板
+    public static final String BASE_LAND_PRICE_TEMPLATE = "base.land.price.template";  //基准地价模板
+
 
     public static final String REPLACE_PRINCIPLE = "replace.principle";  //替代原则
     public static final String INCOME_RENT = "md.income.rent"; //收益法出租
@@ -126,4 +127,10 @@ public class AssessReportFieldConstant {
 
     public static final String RISK_ANALYSIS_TAXES_PAYMENT = "risk.analysis.taxes.payment";//风险分析税费缴纳
     public static final String RISK_ANALYSIS_TAXES_PAYMENT_SURVEY = "risk.analysis.taxes.payment.survey";//风险分析税费缴纳调查
+
+
+    public static final String PROGRAMME_MARKET_COSTAPPROACH_GRADE = "programme.market.costApproach.grade";//因素等级
+    public static final String PROGRAMME_MARKET_COSTAPPROACH_FACTOR_INDIVIDUAL = "programme.market.costApproach.factor.individual";//个别因素
+    public static final String PROGRAMME_MARKET_COSTAPPROACH_FACTOR_AREA = "programme.market.costApproach.factor.area";//区域因素
+
 }

@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
+import com.copower.pmcc.assess.service.project.generate.GenerateMdBaseLandPriceService;
 import com.copower.pmcc.assess.service.project.generate.GenerateMdCompareService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -49,8 +50,11 @@ public class DataBlockController extends BaseController {
         //所有省份
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
         try {
-            GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(488,360,262);
-            String s = generateMdCompareService.generateCompareFile();
+//            GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(488,360,262);
+//            String s = generateMdCompareService.generateCompareFile();
+
+            GenerateMdBaseLandPriceService generateMdBaseLandPriceService = new GenerateMdBaseLandPriceService(2,543,323,542);
+            String s = generateMdBaseLandPriceService.generateBaseLandPriceFile();
             System.out.print(s);
         } catch (Exception e) {
             e.printStackTrace();
