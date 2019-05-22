@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.dto.output.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author: zch
@@ -34,5 +35,14 @@ public class DataLandDetailAchievementVo extends DataLandDetailAchievement {
 
     public void setGradeName(String gradeName) {
         this.gradeName = gradeName;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("typeName", typeName)
+                .append("categoryName", categoryName)
+                .append("gradeName", gradeName).append(getGrade()).append(",").append(getAchievement())
+                .toString();
     }
 }

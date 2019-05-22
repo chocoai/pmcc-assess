@@ -236,52 +236,62 @@ public class DataLandDetailAchievementExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategoryEqualTo(Integer value) {
+        public Criteria andCategoryEqualTo(String value) {
             addCriterion("category =", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotEqualTo(Integer value) {
+        public Criteria andCategoryNotEqualTo(String value) {
             addCriterion("category <>", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryGreaterThan(Integer value) {
+        public Criteria andCategoryGreaterThan(String value) {
             addCriterion("category >", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCategoryGreaterThanOrEqualTo(String value) {
             addCriterion("category >=", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryLessThan(Integer value) {
+        public Criteria andCategoryLessThan(String value) {
             addCriterion("category <", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryLessThanOrEqualTo(Integer value) {
+        public Criteria andCategoryLessThanOrEqualTo(String value) {
             addCriterion("category <=", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIn(List<Integer> values) {
+        public Criteria andCategoryLike(String value) {
+            addCriterion("category like", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotLike(String value) {
+            addCriterion("category not like", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIn(List<String> values) {
             addCriterion("category in", values, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotIn(List<Integer> values) {
+        public Criteria andCategoryNotIn(List<String> values) {
             addCriterion("category not in", values, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryBetween(Integer value1, Integer value2) {
+        public Criteria andCategoryBetween(String value1, String value2) {
             addCriterion("category between", value1, value2, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotBetween(Integer value1, Integer value2) {
+        public Criteria andCategoryNotBetween(String value1, String value2) {
             addCriterion("category not between", value1, value2, "category");
             return (Criteria) this;
         }

@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="level_detail_id" property="levelDetailId" jdbcType="INTEGER" />
-    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="achievement" property="achievement" jdbcType="DECIMAL" />
@@ -113,7 +113,7 @@
       type, achievement, reamark, 
       creator, gmt_created, gmt_modified
       )
-    values (#{levelDetailId,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, 
+    values (#{levelDetailId,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{achievement,jdbcType=DECIMAL}, #{reamark,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -157,7 +157,7 @@
         #{levelDetailId,jdbcType=INTEGER},
       </if>
       <if test="category != null" >
-        #{category,jdbcType=INTEGER},
+        #{category,jdbcType=VARCHAR},
       </if>
       <if test="grade != null" >
         #{grade,jdbcType=INTEGER},
@@ -198,7 +198,7 @@
         level_detail_id = #{record.levelDetailId,jdbcType=INTEGER},
       </if>
       <if test="record.category != null" >
-        category = #{record.category,jdbcType=INTEGER},
+        category = #{record.category,jdbcType=VARCHAR},
       </if>
       <if test="record.grade != null" >
         grade = #{record.grade,jdbcType=INTEGER},
@@ -230,7 +230,7 @@
     update tb_data_land_detail_achievement
     set id = #{record.id,jdbcType=INTEGER},
       level_detail_id = #{record.levelDetailId,jdbcType=INTEGER},
-      category = #{record.category,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       achievement = #{record.achievement,jdbcType=DECIMAL},
@@ -249,7 +249,7 @@
         level_detail_id = #{levelDetailId,jdbcType=INTEGER},
       </if>
       <if test="category != null" >
-        category = #{category,jdbcType=INTEGER},
+        category = #{category,jdbcType=VARCHAR},
       </if>
       <if test="grade != null" >
         grade = #{grade,jdbcType=INTEGER},
@@ -278,7 +278,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement" >
     update tb_data_land_detail_achievement
     set level_detail_id = #{levelDetailId,jdbcType=INTEGER},
-      category = #{category,jdbcType=INTEGER},
+      category = #{category,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       achievement = #{achievement,jdbcType=DECIMAL},

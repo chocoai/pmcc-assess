@@ -12,6 +12,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,25 +43,25 @@ public class DataLandDetailAchievementService {
         }
     }
 
-    public boolean deleteDataLandDetailAchievement(Integer id){
-       return dataLandDetailAchievementDao.deleteDataLandDetailAchievement(id);
+    public boolean deleteDataLandDetailAchievement(Integer id) {
+        return dataLandDetailAchievementDao.deleteDataLandDetailAchievement(id);
     }
 
-    public DataLandDetailAchievement getDataLandDetailAchievementById(Integer id){
+    public DataLandDetailAchievement getDataLandDetailAchievementById(Integer id) {
         return dataLandDetailAchievementDao.getDataLandDetailAchievementById(id);
     }
 
-    public List<DataLandDetailAchievement> getDataLandDetailAchievementList(DataLandDetailAchievement oo){
+    public List<DataLandDetailAchievement> getDataLandDetailAchievementList(DataLandDetailAchievement oo) {
         return dataLandDetailAchievementDao.getDataLandDetailAchievementList(oo);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(DataLandDetailAchievement oo){
+    public BootstrapTableVo getBootstrapTableVo(DataLandDetailAchievement oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataLandDetailAchievement> list = getDataLandDetailAchievementList(oo);
         List<DataLandDetailAchievementVo> voList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(list)){
+        if (CollectionUtils.isNotEmpty(list)) {
             list.stream().forEach(po -> voList.add(getDataLandDetailAchievementVo(po)));
         }
         vo.setTotal(page.getTotal());
@@ -67,14 +69,19 @@ public class DataLandDetailAchievementService {
         return vo;
     }
 
-    public DataLandDetailAchievementVo getDataLandDetailAchievementVo(DataLandDetailAchievement oo){
-        if (oo==null){
+    public DataLandDetailAchievementVo getDataLandDetailAchievementVo(DataLandDetailAchievement oo) {
+        if (oo == null) {
             return null;
         }
         DataLandDetailAchievementVo vo = new DataLandDetailAchievementVo();
-        org.springframework.beans.BeanUtils.copyProperties(oo,vo);
+        org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         vo.setTypeName(baseDataDicService.getNameById(oo.getType()));
-        vo.setCategoryName(baseDataDicService.getNameById(oo.getCategory()));
+        if (StringUtils.isNotEmpty(oo.getCategory())){
+            vo.setCategoryName(oo.getCategory());
+            if (NumberUtils.isNumber(oo.getCategory())) {
+                vo.setCategoryName(baseDataDicService.getNameById(oo.getCategory()));
+            }
+        }
         vo.setGradeName(baseDataDicService.getNameById(oo.getGrade()));
         return vo;
     }
