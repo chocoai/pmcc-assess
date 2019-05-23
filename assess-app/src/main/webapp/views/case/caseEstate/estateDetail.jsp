@@ -10,30 +10,30 @@
             <input type="hidden" name="id" value="${caseEstate.id}">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">省</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.provinceName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">市</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">市</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.cityName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">县</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">县</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.districtName}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">楼盘名称</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘名称</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <div class="input-group">
                             <label class="form-control">${caseEstate.name}</label>
                             <span class="input-group-btn">
@@ -45,49 +45,49 @@
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">楼盘方位</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘方位</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.positionName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">基础版块</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.blockName}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">街道名称</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道名称</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.street}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">街道号</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.streetNumber}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">附号</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附号</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.attachNumber}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">占地面积</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">占地面积</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.coverAnArea}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">容积率</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <c:if test="${!empty caseEstate.volumetricRate}">
                             <c:choose>
                                 <c:when test="${caseEstate.volumetricRate.matches('[0-9.]+')}">
@@ -102,8 +102,8 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">绿化率</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿化率</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <c:if test="${!empty caseEstate.greeningRate}">
                             <c:choose>
                                 <c:when test="${caseEstate.greeningRate.matches('[0-9.]+')}">
@@ -119,21 +119,21 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">总楼栋数</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总楼栋数</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.buildingNumber}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">开发商</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">开发商</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.developerName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">建筑面积</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑面积</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.floorArea}</label>
                     </div>
                 </div>
@@ -141,15 +141,15 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">均价</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">均价</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.averagePrice}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">价格区间</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价格区间</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstate.priceRange}</label>
                     </div>
                 </div>
@@ -157,22 +157,22 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">楼盘概况</label>
-                    <div class="col-sm-11">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘概况</label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <label class="form-control">${caseEstate.description}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">总平面图</label>
-                    <div class="col-sm-5">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总平面图</label>
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                         <div id="_estate_floor_total_plan"></div>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">外观图</label>
-                    <div class="col-sm-5">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">外观图</label>
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                         <div id="_estate_floor_Appearance_figure"></div>
                     </div>
                 </div>
@@ -180,29 +180,29 @@
             <c:if test="${caseEstate.type eq 1}">
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">供水平面图</label>
-                        <div class="col-sm-5">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供水平面图</label>
+                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                             <div id="_water_supply_plan"></div>
                         </div>
                     </div>
 
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">供电平面图</label>
-                        <div class="col-sm-5">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供电平面图</label>
+                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                             <div id="_power_supply_plan"></div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">供气平面图</label>
-                        <div class="col-sm-5">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供气平面图</label>
+                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                             <div id="_air_supply_plan"></div>
                         </div>
                     </div>
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">采暖平面图</label>
-                        <div class="col-sm-5">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">采暖平面图</label>
+                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                             <div id="_heating_plan"></div>
                         </div>
                     </div>
@@ -217,35 +217,35 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="x-valid supplyGas">
-                            <label class="col-sm-1 control-label">供气信息</label>
-                            <div class="col-sm-3">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供气信息</label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <label class="form-control">${caseEstate.supplyGasName}</label>
                             </div>
                         </div>
                         <div class="x-valid supplyPower">
-                            <label class="col-sm-1 control-label">供电信息</label>
-                            <div class="col-sm-3">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供电信息</label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <label class="form-control">${caseEstate.supplyPowerName}</label>
                             </div>
                         </div>
 
                         <div class="x-valid supplyWater">
-                            <label class="col-sm-1 control-label">供水情况</label>
-                            <div class="col-sm-3">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供水情况</label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <label class="form-control">${caseEstate.supplyWaterName}</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="x-valid drainWater">
-                            <label class="col-sm-1 control-label">排水情况</label>
-                            <div class="col-sm-3">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">排水情况</label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <label class="form-control">${caseEstate.drainWaterName}</label>
                             </div>
                         </div>
                         <div class="x-valid supplyHeating">
-                            <label class="col-sm-1 control-label">供热信息</label>
-                            <div class="col-sm-3">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供热信息</label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <label class="form-control">${caseEstate.supplyHeatingName}</label>
                             </div>
                         </div>
@@ -263,115 +263,115 @@
         <form id="frm_estateLandState" class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地名称</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地名称</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.name}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地用途类型</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类型</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.landUseTypeName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地用途类别</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类别</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.landUseCategoryName}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地级别</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.landLevelName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">东至</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">东至</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.eastTo}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">南至</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">南至</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.southTo}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">西至</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">西至</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.westTo}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">北至</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">北至</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.northTo}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地形状</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地形状</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.shapeStateName}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地形状备注</label>
-                    <div class="col-sm-11">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地形状备注</label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <label class="form-control">${caseEstateLandState.shapeStateRemark}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地面积</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地面积</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.landArea}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">地形</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地形</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.planenessName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">地势</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地势</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.topographicTerrainName}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">基础设施完备度</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.infrastructureCompletenessName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地开发程度</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地开发程度</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.developmentDegreeName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
                     <c:if test="${caseEstateLandState.developmentDegreeName == '熟地'}">
-                        <label class="col-sm-1 control-label"></label>
-                        <div class="col-sm-3">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label"></label>
+                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                             <label class="form-control">${caseEstateLandState.developmentDegreeContentName}</label>
                         </div>
                     </c:if>
                     <c:if test="${caseEstateLandState.developmentDegreeName != '熟地'}">
-                        <label class="col-sm-1 control-label">土地开发程度备注</label>
-                        <div class="col-sm-3">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地开发程度备注</label>
+                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                             <label class="form-control">${caseEstateLandState.developmentDegreeRemark}</label>
                         </div>
                     </c:if>
@@ -380,8 +380,8 @@
             <div class="x_title">开发限制条件</div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">容积率</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <c:if test="${!empty caseEstateLandState.plotRatio}">
                             <c:choose>
                                 <c:when test="${caseEstateLandState.plotRatio.matches('[0-9.]+')}">
@@ -395,14 +395,14 @@
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">建筑密度</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑密度</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.buildingDensity}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">绿地率</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿地率</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <c:if test="${!empty caseEstateLandState.greenSpaceRate}">
                             <c:choose>
                                 <c:when test="${caseEstateLandState.greenSpaceRate.matches('[0-9.]+')}">
@@ -418,8 +418,8 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">兼容比例</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">兼容比例</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.compatibleRatio}</label>
                     </div>
                 </div>
@@ -427,21 +427,21 @@
             <div class="x_title">土壤</div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">污染</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">污染</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.contaminatedName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">酸碱度</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">酸碱度</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseEstateLandState.phName}</label>
                     </div>
                 </div>
                 <c:if test="${not empty caseEstateLandState.fertilityName}">
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">肥力</label>
-                        <div class="col-sm-3">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">肥力</label>
+                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                             <label class="form-control">${caseEstateLandState.fertilityName}</label>
                         </div>
                     </div>
@@ -450,16 +450,16 @@
             <div class="form-group">
                 <c:if test="${not empty caseEstateLandState.bearingCapacityName}">
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">承载力</label>
-                        <div class="col-sm-3">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">承载力</label>
+                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                             <label class="form-control">${caseEstateLandState.bearingCapacityName}</label>
                         </div>
                     </div>
                 </c:if>
                 <c:if test="${not empty caseEstateLandState.holdOnName}">
                     <div class="x-valid">
-                        <label class="col-sm-1 control-label">稳定性</label>
-                        <div class="col-sm-3">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">稳定性</label>
+                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                             <label class="form-control">${caseEstateLandState.holdOnName}</label>
                         </div>
                     </div>

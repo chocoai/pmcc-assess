@@ -29,10 +29,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SurveyAssetInventoryContentService {
@@ -115,7 +112,13 @@ public class SurveyAssetInventoryContentService {
         //房产
         if (houseProperty.getId().equals(projectCategoryId)) {
             inventoryContentList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
-            inventoryContentList.remove(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_FOUR_TO_LAND));
+            Iterator<BaseDataDic> iterator = inventoryContentList.iterator();
+            while (iterator.hasNext()) {
+                BaseDataDic item = iterator.next();
+                if (item.getFieldName().equals(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_FOUR_TO_LAND)) {
+                    iterator.remove();
+                }
+            }
         }
         //土地
         if (houseLand.getId().equals(projectCategoryId)) {

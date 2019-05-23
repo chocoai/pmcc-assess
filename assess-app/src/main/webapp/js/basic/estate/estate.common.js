@@ -321,7 +321,7 @@
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
+            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
             content: contentUrl,
             success: function (layero) {
                 estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];

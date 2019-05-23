@@ -10,6 +10,9 @@ basicCommon.getApplyId = function () {
     return basicCommon.basicApplyForm.find('[name=id]').val();
 }
 
+basicCommon.getMarkerAreaInHeight = '98%';
+basicCommon.getMarkerAreaInWidth = '98%';
+
 //开发商选择
 basicCommon.developerSelect = function (this_) {
     assessDeveloper.select(function (row) {

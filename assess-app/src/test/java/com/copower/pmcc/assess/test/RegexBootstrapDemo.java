@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.regex.Pattern;
 public class RegexBootstrapDemo {
 
     private final String projectPath = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\project\\";
+    private final String views = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\";
     private final String share = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\share\\";
     private final String stage = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\stage";
     private final String examine = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\src\\main\\webapp\\views\\project\\stageSurvey\\examine";
@@ -50,13 +52,13 @@ public class RegexBootstrapDemo {
         stringList.add("taskApproval.jsp");
         stringList.add("taskIndex.jsp");
 
-        final String path = String.format("%s%s", projectPath, "");
+        final String path = String.format("%s%s", views, "case");
         for (String ss : stringList) {
-            File file = new File(String.format("%s%s", path, ss));
-            replaceFirst(file);
+//            File file = new File(String.format("%s%s", path, ss));
+//            replaceFirst(file);
         }
-//        File file = new File(stage);
-//        replaceFirst(file);
+        File file = new File(path);
+        replaceFirst(file);
     }
 
     private void replaceFirst(File file) throws IOException {
@@ -151,6 +153,8 @@ public class RegexBootstrapDemo {
         bootstraps.put("a", "col-sm-offset-");
         bootstraps.put("a", "col-md-offset-");
         bootstraps.put("a", "col-lg-offset-");
+
+
         return bootstraps;
     }
 

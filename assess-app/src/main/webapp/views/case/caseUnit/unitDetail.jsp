@@ -9,8 +9,8 @@
             <input type="hidden" name="id" value="${caseUnit.id}">
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">单元编号</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <div class="input-group">
                             <label class="form-control">${caseUnit.unitNumber}</label>
                             <span class="input-group-btn">
@@ -21,16 +21,16 @@
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">梯户比</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">梯户比</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${caseUnit.elevatorHouseholdRatio}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">外观图</label>
-                    <div class="col-sm-3">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">外观图</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <div id="_unit_appearance"></div>
                     </div>
                 </div>

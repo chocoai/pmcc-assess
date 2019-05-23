@@ -74,7 +74,7 @@
         html += '<div class="modal-body">';
         html += '<div class="form-group form-horizontal">';
         html += '<div class="x-valid">';
-        html += '<div class="col-sm-12">';
+        html += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
         html += '<div id="_select_land_level_file"></div>';
         html += '</div>';
         html += '</div>';

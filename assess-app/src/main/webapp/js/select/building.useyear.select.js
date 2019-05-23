@@ -43,7 +43,7 @@
         html += "<form class='form-horizontal'>";
         html += '<div class="modal-body">';
         html += "<div class='row'>";
-        html += "<div class='col-md-12'>";
+        html += "<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
         html += "<div class='panel-body'>";
         //直接传入key的情况
         if (key) {
@@ -99,11 +99,11 @@
            $.each(data,function (i,n) {
                retHtml += "<div class='form-group'>";
 
-               retHtml += "<div class='col-sm-1'><span class='checkbox-inline'>";
+               retHtml += "<div class='col-xs-1 col-sm-1 col-md-1 col-lg-1'><span class='checkbox-inline'>";
                retHtml += "<input type='radio' name='name' readonly='readonly' value='" + n.id + "' onclick='assessBuildingUseYear.save(" + n.id +")'>";
                retHtml += '</span></div>';
 
-               retHtml += "<div class='col-sm-11'>";
+               retHtml += "<div class='col-xs-11 col-sm-11 col-md-11 col-lg-11'>";
                retHtml += "<label class='form-control'>" + n.name + "</label>";
                retHtml += "</div>";
 

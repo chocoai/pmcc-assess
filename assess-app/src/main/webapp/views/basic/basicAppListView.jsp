@@ -25,21 +25,24 @@
                     <div id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
                             <div>
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     楼盘名称
                                 </label>
-                                <div class="col-sm-2">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <input type="text" data-rule-maxlength="50"
                                            placeholder="楼盘名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <div type="button" class="btn btn-primary"
                                         onclick="dataObjFun.loadDataList()">
                                     查询
                                 </div>
+                            </div>
+
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <a class="btn btn-success" target="_blank"
                                    href="${pageContext.request.contextPath}/basicApply/basicApplyIndex">新增</a>
                             </div>

@@ -55,13 +55,13 @@
         html += '<div class="form-horizontal">';
         html += '<div class="form-group ">';
         html += '<div>';
-        html += '<label class="col-sm-1 control-label">';
+        html += '<label class="col-xs-1 col-sm-1 col-md-1 col-lg-1 control-label">';
         html += '名称';
         html += '</label>';
-        html += '<div class="col-sm-3">';
+        html += '<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">';
         html += '<input type="text" name="name" class="form-control">';
         html += '</div>';
-        html += '<div class="col-sm-3">';
+        html += '<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">';
         html += '<div type="button" class="btn btn-primary"';
         html += 'onclick="assessProperty.loadPropertyList();">';
         html += '查询';
