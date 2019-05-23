@@ -36,31 +36,31 @@
                     <form class="form-horizontal" id="frmCaseEstate">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     省
                                 </label>
-                                <div class="col-sm-2">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <select name="province" class="form-control search-select select2">
                                     </select>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     市
                                 </label>
-                                <div class="col-sm-2">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <select name="city" class="form-control search-select select2">
                                     </select>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">楼盘名称</label>
-                                <div class="col-sm-2">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘名称</label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <input type="text" class="form-control" name="search"/>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <label class="btn btn-primary" onclick="baseFun.caseEstate.find();">
                                         查询
                                     </label>

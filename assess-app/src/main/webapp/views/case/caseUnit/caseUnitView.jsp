@@ -28,7 +28,7 @@
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-6 col-sm-offset-5">
+                        <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>

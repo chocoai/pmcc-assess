@@ -21,7 +21,7 @@
                     </h2>
                 </div>
                 <div class="title_right">
-                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
+                    <div class="col-xs-5  col-sm-5  col-md-5  col-lg-5 form-group pull-right">
                         <input type="text" id="txt_estate_search" class="form-control" placeholder="楼盘查询....">
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="x_content">
                     <form class="form-horizontal" id="frmCaseBaseHouse">
                         <div class="form-group">
-                            <div class="col-sm-12" style="margin-top:10px;height: 700px;" id="container">
+                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12" style="margin-top:10px;height: 700px;" id="container">
 
                             </div>
                         </div>

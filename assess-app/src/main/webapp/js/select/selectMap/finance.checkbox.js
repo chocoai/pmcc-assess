@@ -80,7 +80,7 @@
                     html += '<div class="modal-body">';
 
                     html += "<div class='row'>";
-                    html += "<div class='col-md-12'>";
+                    html += "<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
                     html += "<div class='panel-body'>";
                     html += AssessMatchingFinance.prototype.write(data);
                     html += '</div>';
@@ -154,13 +154,13 @@
             retHtml += "<input type='checkbox' id='matchingFinance" + i + "' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
             retHtml += "<label for='matchingFinance" + i + "'>" + item.name + "</label>";
             retHtml += '</span></div>';
-            retHtml += "<label class='col-sm-1 control-label'>距离</label>";
-            retHtml += "<div class='col-sm-2'>";
+            retHtml += "<label class='col-xs-1 col-sm-1 col-md-1 col-lg-1 control-label'>距离</label>";
+            retHtml += "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'>";
             retHtml += "<input type='text' class='form-control' name='distance' readonly='readonly' value='" + item.distance + "'" + ">";
             retHtml += "</div>";
 
-            retHtml += "<label class='col-sm-1 control-label'>地址</label>";
-            retHtml += "<div class='col-sm-5'>";
+            retHtml += "<label class='col-xs-1 col-sm-1 col-md-1 col-lg-1 control-label'>地址</label>";
+            retHtml += "<div class='col-xs-5 col-sm-5 col-md-5 col-lg-5'>";
             retHtml += "<label class='form-control theLine'>" + item.address + "</label>";
             retHtml += "</div>";
             retHtml += '</div>';
