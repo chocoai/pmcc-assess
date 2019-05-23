@@ -125,7 +125,7 @@
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <input type="text"
-                   placeholder="容积率" name="volumetricRate" class="form-control x-percent"
+                   placeholder="容积率" name="volumetricRate" class="form-control"
                    value="${basicEstate.volumetricRate}">
         </div>
     </div>

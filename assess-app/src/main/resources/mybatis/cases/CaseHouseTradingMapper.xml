@@ -34,6 +34,7 @@
     <result column="price_connotation" property="priceConnotation" jdbcType="INTEGER" />
     <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
     <result column="scope_include" property="scopeInclude" jdbcType="VARCHAR" />
+    <result column="land_buyer_seller" property="landBuyerSeller" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -99,7 +100,7 @@
     description_content, installment_interest_rate, payment_method, transaction_situation, 
     tax_burden, scope_property, scope_property_explain, down_payment_ratio, lending_rate, 
     loan_period, deposit, information_type, information_category, name, phone, creator, 
-    gmt_created, gmt_modified, price_connotation, scope_not_include, scope_include
+    gmt_created, gmt_modified, price_connotation, scope_not_include, scope_include, land_buyer_seller
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingExample" >
     select
@@ -145,7 +146,7 @@
       information_type, information_category, name, 
       phone, creator, gmt_created, 
       gmt_modified, price_connotation, scope_not_include, 
-      scope_include)
+      scope_include, land_buyer_seller)
     values (#{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, #{tradingType,jdbcType=INTEGER}, 
       #{tradingUnitPrice,jdbcType=DECIMAL}, #{tradingTotalPrice,jdbcType=DECIMAL}, #{buyerExtraTax,jdbcType=VARCHAR}, 
       #{buyerExtraFee,jdbcType=VARCHAR}, #{rentingExtraTax,jdbcType=VARCHAR}, #{rentingExtraFee,jdbcType=VARCHAR}, 
@@ -156,7 +157,7 @@
       #{informationType,jdbcType=INTEGER}, #{informationCategory,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{priceConnotation,jdbcType=INTEGER}, #{scopeNotInclude,jdbcType=VARCHAR}, 
-      #{scopeInclude,jdbcType=VARCHAR})
+      #{scopeInclude,jdbcType=VARCHAR}, #{landBuyerSeller,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -257,6 +258,9 @@
       <if test="scopeInclude != null" >
         scope_include,
       </if>
+      <if test="landBuyerSeller != null" >
+        land_buyer_seller,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
@@ -351,6 +355,9 @@
       </if>
       <if test="scopeInclude != null" >
         #{scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="landBuyerSeller != null" >
+        #{landBuyerSeller,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -459,6 +466,9 @@
       <if test="record.scopeInclude != null" >
         scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
       </if>
+      <if test="record.landBuyerSeller != null" >
+        land_buyer_seller = #{record.landBuyerSeller,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -497,7 +507,8 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       price_connotation = #{record.priceConnotation,jdbcType=INTEGER},
       scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
-      scope_include = #{record.scopeInclude,jdbcType=VARCHAR}
+      scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
+      land_buyer_seller = #{record.landBuyerSeller,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -598,6 +609,9 @@
       <if test="scopeInclude != null" >
         scope_include = #{scopeInclude,jdbcType=VARCHAR},
       </if>
+      <if test="landBuyerSeller != null" >
+        land_buyer_seller = #{landBuyerSeller,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -633,7 +647,8 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       price_connotation = #{priceConnotation,jdbcType=INTEGER},
       scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
-      scope_include = #{scopeInclude,jdbcType=VARCHAR}
+      scope_include = #{scopeInclude,jdbcType=VARCHAR},
+      land_buyer_seller = #{landBuyerSeller,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

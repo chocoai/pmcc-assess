@@ -18,7 +18,7 @@
 
                 <div class="x_content">
                     <div class="x_title">
-                        <div class="nav navbar-right">
+                        <div class="nav navbar-right" id="navBarRight" style="display: none">
                             <div class="btn  btn-default" onclick="areaMap.zoom(true)">放大</div>
                             <div class="btn  btn-default" onclick="areaMap.zoom(false)">缩小</div>
                         </div>
@@ -31,9 +31,9 @@
                 <img id="oImg" style="display: none">
 
                 <div class="x_content">
-                    <div class="col-sm-10 col-md-10" style="margin-top:10px;height: 700px;" id="container">
+                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10" style="margin-top:10px;height: 700px;" id="container">
                     </div>
-                    <div class="col-sm-2 col-md-2">
+                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                         <div class="easyui-panel">
                             <ul id="treeId" class="easyui-tree">
 
@@ -45,7 +45,7 @@
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-6 col-sm-offset-6">
+                        <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6  col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
@@ -173,6 +173,7 @@
     areaMap.createImgMarker = function (n, map) {
         var imageUrl = '${pageContext.request.contextPath}' + n.huxingImg;
         document.getElementById("oImg").src = imageUrl;
+        console.log("imageUrl:"+imageUrl) ;
         areaMap.getImgNaturalDimensions(document.getElementById("oImg"), function (data) {
             var max = 10;
             var min = 2;
@@ -257,9 +258,11 @@
                                     var data = result.data;
                                     switch (node.type) {
                                         case config.house:
+                                            $("#navBarRight").show();
                                             areaMap.createImgMarker(node, map);
                                             break;
                                         case config.estate:
+                                            $("#navBarRight").hide();
                                             if (areaMap.isNotBlank(data)) {
                                                 if (data) {
                                                     $.each(data, function (i, item) {
@@ -272,6 +275,7 @@
                                             }
                                             break;
                                         case config.building:
+                                            $("#navBarRight").hide();
                                             if (areaMap.isNotBlank(data)) {
                                                 if (data) {
                                                     $.each(data, function (i, item) {
@@ -284,6 +288,7 @@
                                             }
                                             break;
                                         case config.unit:
+                                            $("#navBarRight").hide();
                                             if (data) {
                                                 $.each(data, function (i, item) {
                                                     if (item) {

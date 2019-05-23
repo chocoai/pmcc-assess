@@ -4,7 +4,7 @@
 $(function () {
     try {
         $(".select2").each(function () {
-            $(this).select2();
+            $(this).select2({minimumResultsForSearch: -1});
         })
     } catch (e) {
     }

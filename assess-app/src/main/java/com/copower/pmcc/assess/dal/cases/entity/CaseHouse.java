@@ -58,6 +58,12 @@ public class CaseHouse {
 
     private Integer spatialDistribution;
 
+    private BigDecimal floorPrice;
+
+    private Integer useYear;
+
+    private String landLocation;
+
     public Integer getId() {
         return id;
     }
@@ -272,5 +278,29 @@ public class CaseHouse {
 
     public void setSpatialDistribution(Integer spatialDistribution) {
         this.spatialDistribution = spatialDistribution;
+    }
+
+    public BigDecimal getFloorPrice() {
+        return floorPrice;
+    }
+
+    public void setFloorPrice(BigDecimal floorPrice) {
+        this.floorPrice = floorPrice;
+    }
+
+    public Integer getUseYear() {
+        return useYear;
+    }
+
+    public void setUseYear(Integer useYear) {
+        this.useYear = useYear;
+    }
+
+    public String getLandLocation() {
+        return landLocation;
+    }
+
+    public void setLandLocation(String landLocation) {
+        this.landLocation = landLocation == null ? null : landLocation.trim();
     }
 }
