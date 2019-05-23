@@ -514,7 +514,7 @@ public class GenerateBaseDataService {
                 if (infoPublicity != null) {
                     value = infoPublicity.getContent();
                 }
-                stringSet.add(String.format("%s%s",areaFullName, StringUtils.defaultString(value, "房地产评估管理服务信息系统（http://fcpg.cdfgj.gov.cn/）")));
+                stringSet.add(String.format("%s%s", areaFullName, StringUtils.defaultString(value, "房地产评估管理服务信息系统（http://fcpg.cdfgj.gov.cn/）")));
                 stringSet.add("上查询了解得知，截止价值时点，估价对象已设定抵押权。");
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
                 stringSet.clear();
@@ -3065,23 +3065,18 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         new Document().save(localPath);
         AdCompanyQualificationDto adCompanyQualificationDto = getCompanyQualificationForPractising();
-        if (adCompanyQualificationDto != null) {
-            if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
-                List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
-                List<String> images = Lists.newArrayList();
-                if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        if (StringUtils.isNotBlank(imgPath)) {
-                            if (FileUtils.checkImgSuffix(imgPath)) {
-                                images.add(imgPath);
-                            }
-                        }
-                    }
+        if (adCompanyQualificationDto != null && StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
+            List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
+            if(CollectionUtils.isEmpty(attachmentDtoList)) return null;
+            List<String> images = Lists.newArrayList();
+            for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
+                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                if (StringUtils.isNotBlank(imgPath)&&FileUtils.checkImgSuffix(imgPath)) {
+                    images.add(imgPath);
                 }
-                if (CollectionUtils.isNotEmpty(images)) {
-                    AsposeUtils.insertImage(localPath, images, 200, 100);
-                }
+            }
+            if (CollectionUtils.isNotEmpty(images)) {
+                AsposeUtils.insertImage(localPath, images, 200, 100);
             }
         }
         return localPath;
@@ -3102,34 +3097,32 @@ public class GenerateBaseDataService {
         for (String id : strings) {
             DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(Integer.parseInt(id));
             if (dataQualificationVo != null) {
-                if (StringUtils.isNotBlank(dataQualificationVo.getUserAccount())) {
-                    for (String account : dataQualificationVo.getUserAccount().split(",")) {
-                        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
-                        if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
-                            adPersonalQualificationDtoList.stream().forEach(adCompanyQualificationDto -> {
-                                if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
-                                    List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
-                                    if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
-                                        for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
-                                            try {
-                                                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                                                if (StringUtils.isNotBlank(imgPath)) {
-                                                    if (FileUtils.checkImgSuffix(imgPath)) {
-                                                        images.add(imgPath);
-                                                    }
-                                                }
-                                            } catch (Exception e1) {
-                                            }
+                if (StringUtils.isBlank(dataQualificationVo.getUserAccount())) continue;
+                for (String account : dataQualificationVo.getUserAccount().split(",")) {
+                    List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
+                    if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)) continue;
+                    adPersonalQualificationDtoList.forEach(adCompanyQualificationDto -> {
+                        if (StringUtils.isBlank(adCompanyQualificationDto.getStandardImageJson())) return;
+                        List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
+                        if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                            for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
+                                try {
+                                    String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                                    if (StringUtils.isNotBlank(imgPath)) {
+                                        if (FileUtils.checkImgSuffix(imgPath)) {
+                                            images.add(imgPath);
                                         }
                                     }
-
+                                } catch (Exception e1) {
+                                    logger.error(e1.getMessage(), e1);
                                 }
-                            });
+                            }
                         }
-                    }
+                    });
                 }
             }
         }
+        //图片特殊处理
         if (CollectionUtils.isNotEmpty(images)) {
             AsposeUtils.insertImage(localPath, images, 200, 100);
         }
