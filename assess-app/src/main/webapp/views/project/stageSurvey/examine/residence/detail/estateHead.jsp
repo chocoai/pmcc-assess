@@ -92,7 +92,7 @@
             <c:if test="${!empty basicEstate.volumetricRate}">
                 <c:choose>
                     <c:when test="${basicEstate.volumetricRate.matches('[0-9.]+')}">
-                        <label class="form-control">${basicEstate.volumetricRate*100}%</label>
+                        <label class="form-control">${basicEstate.volumetricRate}%</label>
                     </c:when>
                     <c:otherwise>
                         <label class="form-control">${basicEstate.volumetricRate}</label>

@@ -29,6 +29,9 @@
     <result column="research_type" property="researchType" jdbcType="INTEGER" />
     <result column="spatial_distribution_desc" property="spatialDistributionDesc" jdbcType="VARCHAR" />
     <result column="spatial_distribution" property="spatialDistribution" jdbcType="INTEGER" />
+    <result column="floor_price" property="floorPrice" jdbcType="DECIMAL" />
+    <result column="use_year" property="useYear" jdbcType="INTEGER" />
+    <result column="land_location" property="landLocation" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -93,7 +96,7 @@
     cert_use, practical_use, orientation, area, right_interests_restriction, use_environment, 
     description, case_date, version, creator, gmt_created, gmt_modified, new_degree, 
     price_connotation, huxing_id, area_desc, research_type, spatial_distribution_desc, 
-    spatial_distribution
+    spatial_distribution, floor_price, use_year, land_location
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample" >
     select
@@ -137,7 +140,8 @@
       version, creator, gmt_created, 
       gmt_modified, new_degree, price_connotation, 
       huxing_id, area_desc, research_type, 
-      spatial_distribution_desc, spatial_distribution
+      spatial_distribution_desc, spatial_distribution, 
+      floor_price, use_year, land_location
       )
     values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingName,jdbcType=VARCHAR}, 
@@ -147,7 +151,8 @@
       #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{newDegree,jdbcType=VARCHAR}, #{priceConnotation,jdbcType=INTEGER}, 
       #{huxingId,jdbcType=INTEGER}, #{areaDesc,jdbcType=VARCHAR}, #{researchType,jdbcType=INTEGER}, 
-      #{spatialDistributionDesc,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}
+      #{spatialDistributionDesc,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, 
+      #{floorPrice,jdbcType=DECIMAL}, #{useYear,jdbcType=INTEGER}, #{landLocation,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
@@ -234,6 +239,15 @@
       <if test="spatialDistribution != null" >
         spatial_distribution,
       </if>
+      <if test="floorPrice != null" >
+        floor_price,
+      </if>
+      <if test="useYear != null" >
+        use_year,
+      </if>
+      <if test="landLocation != null" >
+        land_location,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="unitId != null" >
@@ -313,6 +327,15 @@
       </if>
       <if test="spatialDistribution != null" >
         #{spatialDistribution,jdbcType=INTEGER},
+      </if>
+      <if test="floorPrice != null" >
+        #{floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="useYear != null" >
+        #{useYear,jdbcType=INTEGER},
+      </if>
+      <if test="landLocation != null" >
+        #{landLocation,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -406,6 +429,15 @@
       <if test="record.spatialDistribution != null" >
         spatial_distribution = #{record.spatialDistribution,jdbcType=INTEGER},
       </if>
+      <if test="record.floorPrice != null" >
+        floor_price = #{record.floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.useYear != null" >
+        use_year = #{record.useYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.landLocation != null" >
+        land_location = #{record.landLocation,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -439,7 +471,10 @@
       area_desc = #{record.areaDesc,jdbcType=VARCHAR},
       research_type = #{record.researchType,jdbcType=INTEGER},
       spatial_distribution_desc = #{record.spatialDistributionDesc,jdbcType=VARCHAR},
-      spatial_distribution = #{record.spatialDistribution,jdbcType=INTEGER}
+      spatial_distribution = #{record.spatialDistribution,jdbcType=INTEGER},
+      floor_price = #{record.floorPrice,jdbcType=DECIMAL},
+      use_year = #{record.useYear,jdbcType=INTEGER},
+      land_location = #{record.landLocation,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -525,6 +560,15 @@
       <if test="spatialDistribution != null" >
         spatial_distribution = #{spatialDistribution,jdbcType=INTEGER},
       </if>
+      <if test="floorPrice != null" >
+        floor_price = #{floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="useYear != null" >
+        use_year = #{useYear,jdbcType=INTEGER},
+      </if>
+      <if test="landLocation != null" >
+        land_location = #{landLocation,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -555,7 +599,10 @@
       area_desc = #{areaDesc,jdbcType=VARCHAR},
       research_type = #{researchType,jdbcType=INTEGER},
       spatial_distribution_desc = #{spatialDistributionDesc,jdbcType=VARCHAR},
-      spatial_distribution = #{spatialDistribution,jdbcType=INTEGER}
+      spatial_distribution = #{spatialDistribution,jdbcType=INTEGER},
+      floor_price = #{floorPrice,jdbcType=DECIMAL},
+      use_year = #{useYear,jdbcType=INTEGER},
+      land_location = #{landLocation,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

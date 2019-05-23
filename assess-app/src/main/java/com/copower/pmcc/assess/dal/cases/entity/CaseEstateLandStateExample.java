@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -2362,6 +2363,396 @@ public class CaseEstateLandStateExample {
 
         public Criteria andInfrastructureCompletenessNotBetween(Integer value1, Integer value2) {
             addCriterion("infrastructure_completeness not between", value1, value2, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitIsNull() {
+            addCriterion("building_height_limit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitIsNotNull() {
+            addCriterion("building_height_limit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitEqualTo(BigDecimal value) {
+            addCriterion("building_height_limit =", value, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitNotEqualTo(BigDecimal value) {
+            addCriterion("building_height_limit <>", value, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitGreaterThan(BigDecimal value) {
+            addCriterion("building_height_limit >", value, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("building_height_limit >=", value, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitLessThan(BigDecimal value) {
+            addCriterion("building_height_limit <", value, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("building_height_limit <=", value, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitIn(List<BigDecimal> values) {
+            addCriterion("building_height_limit in", values, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitNotIn(List<BigDecimal> values) {
+            addCriterion("building_height_limit not in", values, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("building_height_limit between", value1, value2, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightLimitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("building_height_limit not between", value1, value2, "buildingHeightLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsIsNull() {
+            addCriterion("special_restrictions is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsIsNotNull() {
+            addCriterion("special_restrictions is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsEqualTo(String value) {
+            addCriterion("special_restrictions =", value, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsNotEqualTo(String value) {
+            addCriterion("special_restrictions <>", value, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsGreaterThan(String value) {
+            addCriterion("special_restrictions >", value, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsGreaterThanOrEqualTo(String value) {
+            addCriterion("special_restrictions >=", value, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsLessThan(String value) {
+            addCriterion("special_restrictions <", value, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsLessThanOrEqualTo(String value) {
+            addCriterion("special_restrictions <=", value, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsLike(String value) {
+            addCriterion("special_restrictions like", value, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsNotLike(String value) {
+            addCriterion("special_restrictions not like", value, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsIn(List<String> values) {
+            addCriterion("special_restrictions in", values, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsNotIn(List<String> values) {
+            addCriterion("special_restrictions not in", values, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsBetween(String value1, String value2) {
+            addCriterion("special_restrictions between", value1, value2, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialRestrictionsNotBetween(String value1, String value2) {
+            addCriterion("special_restrictions not between", value1, value2, "specialRestrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreIsNull() {
+            addCriterion("land_factor_total_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreIsNotNull() {
+            addCriterion("land_factor_total_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreEqualTo(BigDecimal value) {
+            addCriterion("land_factor_total_score =", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreNotEqualTo(BigDecimal value) {
+            addCriterion("land_factor_total_score <>", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreGreaterThan(BigDecimal value) {
+            addCriterion("land_factor_total_score >", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_factor_total_score >=", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreLessThan(BigDecimal value) {
+            addCriterion("land_factor_total_score <", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_factor_total_score <=", value, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreIn(List<BigDecimal> values) {
+            addCriterion("land_factor_total_score in", values, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreNotIn(List<BigDecimal> values) {
+            addCriterion("land_factor_total_score not in", values, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_factor_total_score between", value1, value2, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandFactorTotalScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_factor_total_score not between", value1, value2, "landFactorTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIsNull() {
+            addCriterion("land_level_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIsNotNull() {
+            addCriterion("land_level_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentEqualTo(String value) {
+            addCriterion("land_level_content =", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotEqualTo(String value) {
+            addCriterion("land_level_content <>", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentGreaterThan(String value) {
+            addCriterion("land_level_content >", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentGreaterThanOrEqualTo(String value) {
+            addCriterion("land_level_content >=", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLessThan(String value) {
+            addCriterion("land_level_content <", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLessThanOrEqualTo(String value) {
+            addCriterion("land_level_content <=", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLike(String value) {
+            addCriterion("land_level_content like", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotLike(String value) {
+            addCriterion("land_level_content not like", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIn(List<String> values) {
+            addCriterion("land_level_content in", values, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotIn(List<String> values) {
+            addCriterion("land_level_content not in", values, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentBetween(String value1, String value2) {
+            addCriterion("land_level_content between", value1, value2, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotBetween(String value1, String value2) {
+            addCriterion("land_level_content not between", value1, value2, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementIsNull() {
+            addCriterion("data_land_level_achievement is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementIsNotNull() {
+            addCriterion("data_land_level_achievement is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementEqualTo(String value) {
+            addCriterion("data_land_level_achievement =", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementNotEqualTo(String value) {
+            addCriterion("data_land_level_achievement <>", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementGreaterThan(String value) {
+            addCriterion("data_land_level_achievement >", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementGreaterThanOrEqualTo(String value) {
+            addCriterion("data_land_level_achievement >=", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementLessThan(String value) {
+            addCriterion("data_land_level_achievement <", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementLessThanOrEqualTo(String value) {
+            addCriterion("data_land_level_achievement <=", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementLike(String value) {
+            addCriterion("data_land_level_achievement like", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementNotLike(String value) {
+            addCriterion("data_land_level_achievement not like", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementIn(List<String> values) {
+            addCriterion("data_land_level_achievement in", values, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementNotIn(List<String> values) {
+            addCriterion("data_land_level_achievement not in", values, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementBetween(String value1, String value2) {
+            addCriterion("data_land_level_achievement between", value1, value2, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementNotBetween(String value1, String value2) {
+            addCriterion("data_land_level_achievement not between", value1, value2, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityIsNull() {
+            addCriterion("investment_intensity is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityIsNotNull() {
+            addCriterion("investment_intensity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityEqualTo(BigDecimal value) {
+            addCriterion("investment_intensity =", value, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityNotEqualTo(BigDecimal value) {
+            addCriterion("investment_intensity <>", value, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityGreaterThan(BigDecimal value) {
+            addCriterion("investment_intensity >", value, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("investment_intensity >=", value, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityLessThan(BigDecimal value) {
+            addCriterion("investment_intensity <", value, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("investment_intensity <=", value, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityIn(List<BigDecimal> values) {
+            addCriterion("investment_intensity in", values, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityNotIn(List<BigDecimal> values) {
+            addCriterion("investment_intensity not in", values, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("investment_intensity between", value1, value2, "investmentIntensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestmentIntensityNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("investment_intensity not between", value1, value2, "investmentIntensity");
             return (Criteria) this;
         }
     }

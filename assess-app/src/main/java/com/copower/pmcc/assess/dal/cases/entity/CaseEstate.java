@@ -70,6 +70,10 @@ public class CaseEstate {
 
     private String locationDescribe;
 
+    private Integer supplyCommunication;
+
+    private Integer supplyRoad;
+
     public Integer getId() {
         return id;
     }
@@ -332,5 +336,21 @@ public class CaseEstate {
 
     public void setLocationDescribe(String locationDescribe) {
         this.locationDescribe = locationDescribe == null ? null : locationDescribe.trim();
+    }
+
+    public Integer getSupplyCommunication() {
+        return supplyCommunication;
+    }
+
+    public void setSupplyCommunication(Integer supplyCommunication) {
+        this.supplyCommunication = supplyCommunication;
+    }
+
+    public Integer getSupplyRoad() {
+        return supplyRoad;
+    }
+
+    public void setSupplyRoad(Integer supplyRoad) {
+        this.supplyRoad = supplyRoad;
     }
 }

@@ -36,6 +36,12 @@
     <result column="development_degree_remark" property="developmentDegreeRemark" jdbcType="VARCHAR" />
     <result column="hold_on" property="holdOn" jdbcType="VARCHAR" />
     <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
+    <result column="building_height_limit" property="buildingHeightLimit" jdbcType="DECIMAL" />
+    <result column="special_restrictions" property="specialRestrictions" jdbcType="VARCHAR" />
+    <result column="land_factor_total_score" property="landFactorTotalScore" jdbcType="DECIMAL" />
+    <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
+    <result column="data_land_level_achievement" property="dataLandLevelAchievement" jdbcType="VARCHAR" />
+    <result column="investment_intensity" property="investmentIntensity" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -101,7 +107,8 @@
     development_degree_content, restrictive_condition, soil, topographic_terrain, plot_ratio, 
     building_density, green_space_rate, compatible_ratio, bearing_capacity, contaminated, 
     ph, fertility, creator, gmt_created, gmt_modified, conclusion, development_degree_remark, 
-    hold_on, infrastructure_completeness
+    hold_on, infrastructure_completeness, building_height_limit, special_restrictions, 
+    land_factor_total_score, land_level_content, data_land_level_achievement, investment_intensity
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandStateExample" >
     select
@@ -147,7 +154,10 @@
       compatible_ratio, bearing_capacity, contaminated, 
       ph, fertility, creator, 
       gmt_created, gmt_modified, conclusion, 
-      development_degree_remark, hold_on, infrastructure_completeness
+      development_degree_remark, hold_on, infrastructure_completeness, 
+      building_height_limit, special_restrictions, 
+      land_factor_total_score, land_level_content, 
+      data_land_level_achievement, investment_intensity
       )
     values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, 
       #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
@@ -159,7 +169,10 @@
       #{compatibleRatio,jdbcType=VARCHAR}, #{bearingCapacity,jdbcType=VARCHAR}, #{contaminated,jdbcType=VARCHAR}, 
       #{ph,jdbcType=VARCHAR}, #{fertility,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{conclusion,jdbcType=VARCHAR}, 
-      #{developmentDegreeRemark,jdbcType=VARCHAR}, #{holdOn,jdbcType=VARCHAR}, #{infrastructureCompleteness,jdbcType=INTEGER}
+      #{developmentDegreeRemark,jdbcType=VARCHAR}, #{holdOn,jdbcType=VARCHAR}, #{infrastructureCompleteness,jdbcType=INTEGER}, 
+      #{buildingHeightLimit,jdbcType=DECIMAL}, #{specialRestrictions,jdbcType=VARCHAR}, 
+      #{landFactorTotalScore,jdbcType=DECIMAL}, #{landLevelContent,jdbcType=VARCHAR}, 
+      #{dataLandLevelAchievement,jdbcType=VARCHAR}, #{investmentIntensity,jdbcType=DECIMAL}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState" >
@@ -267,6 +280,24 @@
       <if test="infrastructureCompleteness != null" >
         infrastructure_completeness,
       </if>
+      <if test="buildingHeightLimit != null" >
+        building_height_limit,
+      </if>
+      <if test="specialRestrictions != null" >
+        special_restrictions,
+      </if>
+      <if test="landFactorTotalScore != null" >
+        land_factor_total_score,
+      </if>
+      <if test="landLevelContent != null" >
+        land_level_content,
+      </if>
+      <if test="dataLandLevelAchievement != null" >
+        data_land_level_achievement,
+      </if>
+      <if test="investmentIntensity != null" >
+        investment_intensity,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="estateId != null" >
@@ -367,6 +398,24 @@
       </if>
       <if test="infrastructureCompleteness != null" >
         #{infrastructureCompleteness,jdbcType=INTEGER},
+      </if>
+      <if test="buildingHeightLimit != null" >
+        #{buildingHeightLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="specialRestrictions != null" >
+        #{specialRestrictions,jdbcType=VARCHAR},
+      </if>
+      <if test="landFactorTotalScore != null" >
+        #{landFactorTotalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="landLevelContent != null" >
+        #{landLevelContent,jdbcType=VARCHAR},
+      </if>
+      <if test="dataLandLevelAchievement != null" >
+        #{dataLandLevelAchievement,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentIntensity != null" >
+        #{investmentIntensity,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -481,6 +530,24 @@
       <if test="record.infrastructureCompleteness != null" >
         infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       </if>
+      <if test="record.buildingHeightLimit != null" >
+        building_height_limit = #{record.buildingHeightLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.specialRestrictions != null" >
+        special_restrictions = #{record.specialRestrictions,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landFactorTotalScore != null" >
+        land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landLevelContent != null" >
+        land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataLandLevelAchievement != null" >
+        data_land_level_achievement = #{record.dataLandLevelAchievement,jdbcType=VARCHAR},
+      </if>
+      <if test="record.investmentIntensity != null" >
+        investment_intensity = #{record.investmentIntensity,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -521,7 +588,13 @@
       conclusion = #{record.conclusion,jdbcType=VARCHAR},
       development_degree_remark = #{record.developmentDegreeRemark,jdbcType=VARCHAR},
       hold_on = #{record.holdOn,jdbcType=VARCHAR},
-      infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER}
+      infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
+      building_height_limit = #{record.buildingHeightLimit,jdbcType=DECIMAL},
+      special_restrictions = #{record.specialRestrictions,jdbcType=VARCHAR},
+      land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
+      land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
+      data_land_level_achievement = #{record.dataLandLevelAchievement,jdbcType=VARCHAR},
+      investment_intensity = #{record.investmentIntensity,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -628,6 +701,24 @@
       <if test="infrastructureCompleteness != null" >
         infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       </if>
+      <if test="buildingHeightLimit != null" >
+        building_height_limit = #{buildingHeightLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="specialRestrictions != null" >
+        special_restrictions = #{specialRestrictions,jdbcType=VARCHAR},
+      </if>
+      <if test="landFactorTotalScore != null" >
+        land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="landLevelContent != null" >
+        land_level_content = #{landLevelContent,jdbcType=VARCHAR},
+      </if>
+      <if test="dataLandLevelAchievement != null" >
+        data_land_level_achievement = #{dataLandLevelAchievement,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentIntensity != null" >
+        investment_intensity = #{investmentIntensity,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -665,7 +756,13 @@
       conclusion = #{conclusion,jdbcType=VARCHAR},
       development_degree_remark = #{developmentDegreeRemark,jdbcType=VARCHAR},
       hold_on = #{holdOn,jdbcType=VARCHAR},
-      infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER}
+      infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
+      building_height_limit = #{buildingHeightLimit,jdbcType=DECIMAL},
+      special_restrictions = #{specialRestrictions,jdbcType=VARCHAR},
+      land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
+      land_level_content = #{landLevelContent,jdbcType=VARCHAR},
+      data_land_level_achievement = #{dataLandLevelAchievement,jdbcType=VARCHAR},
+      investment_intensity = #{investmentIntensity,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

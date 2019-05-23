@@ -2255,6 +2255,126 @@ public class CaseEstateExample {
             addCriterion("location_describe not between", value1, value2, "locationDescribe");
             return (Criteria) this;
         }
+
+        public Criteria andSupplyCommunicationIsNull() {
+            addCriterion("supply_communication is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationIsNotNull() {
+            addCriterion("supply_communication is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationEqualTo(Integer value) {
+            addCriterion("supply_communication =", value, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationNotEqualTo(Integer value) {
+            addCriterion("supply_communication <>", value, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationGreaterThan(Integer value) {
+            addCriterion("supply_communication >", value, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("supply_communication >=", value, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationLessThan(Integer value) {
+            addCriterion("supply_communication <", value, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationLessThanOrEqualTo(Integer value) {
+            addCriterion("supply_communication <=", value, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationIn(List<Integer> values) {
+            addCriterion("supply_communication in", values, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationNotIn(List<Integer> values) {
+            addCriterion("supply_communication not in", values, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationBetween(Integer value1, Integer value2) {
+            addCriterion("supply_communication between", value1, value2, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyCommunicationNotBetween(Integer value1, Integer value2) {
+            addCriterion("supply_communication not between", value1, value2, "supplyCommunication");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadIsNull() {
+            addCriterion("supply_road is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadIsNotNull() {
+            addCriterion("supply_road is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadEqualTo(Integer value) {
+            addCriterion("supply_road =", value, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadNotEqualTo(Integer value) {
+            addCriterion("supply_road <>", value, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadGreaterThan(Integer value) {
+            addCriterion("supply_road >", value, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadGreaterThanOrEqualTo(Integer value) {
+            addCriterion("supply_road >=", value, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadLessThan(Integer value) {
+            addCriterion("supply_road <", value, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadLessThanOrEqualTo(Integer value) {
+            addCriterion("supply_road <=", value, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadIn(List<Integer> values) {
+            addCriterion("supply_road in", values, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadNotIn(List<Integer> values) {
+            addCriterion("supply_road not in", values, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadBetween(Integer value1, Integer value2) {
+            addCriterion("supply_road between", value1, value2, "supplyRoad");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyRoadNotBetween(Integer value1, Integer value2) {
+            addCriterion("supply_road not between", value1, value2, "supplyRoad");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

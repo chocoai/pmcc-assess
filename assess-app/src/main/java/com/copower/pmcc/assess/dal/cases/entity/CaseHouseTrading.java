@@ -68,6 +68,8 @@ public class CaseHouseTrading {
 
     private String scopeInclude;
 
+    private String landBuyerSeller;
+
     public Integer getId() {
         return id;
     }
@@ -322,5 +324,13 @@ public class CaseHouseTrading {
 
     public void setScopeInclude(String scopeInclude) {
         this.scopeInclude = scopeInclude == null ? null : scopeInclude.trim();
+    }
+
+    public String getLandBuyerSeller() {
+        return landBuyerSeller;
+    }
+
+    public void setLandBuyerSeller(String landBuyerSeller) {
+        this.landBuyerSeller = landBuyerSeller == null ? null : landBuyerSeller.trim();
     }
 }

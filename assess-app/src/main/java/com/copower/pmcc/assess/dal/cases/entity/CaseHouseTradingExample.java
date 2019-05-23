@@ -2165,6 +2165,76 @@ public class CaseHouseTradingExample {
             addCriterion("scope_include not between", value1, value2, "scopeInclude");
             return (Criteria) this;
         }
+
+        public Criteria andLandBuyerSellerIsNull() {
+            addCriterion("land_buyer_seller is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerIsNotNull() {
+            addCriterion("land_buyer_seller is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerEqualTo(String value) {
+            addCriterion("land_buyer_seller =", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerNotEqualTo(String value) {
+            addCriterion("land_buyer_seller <>", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerGreaterThan(String value) {
+            addCriterion("land_buyer_seller >", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerGreaterThanOrEqualTo(String value) {
+            addCriterion("land_buyer_seller >=", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerLessThan(String value) {
+            addCriterion("land_buyer_seller <", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerLessThanOrEqualTo(String value) {
+            addCriterion("land_buyer_seller <=", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerLike(String value) {
+            addCriterion("land_buyer_seller like", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerNotLike(String value) {
+            addCriterion("land_buyer_seller not like", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerIn(List<String> values) {
+            addCriterion("land_buyer_seller in", values, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerNotIn(List<String> values) {
+            addCriterion("land_buyer_seller not in", values, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerBetween(String value1, String value2) {
+            addCriterion("land_buyer_seller between", value1, value2, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerNotBetween(String value1, String value2) {
+            addCriterion("land_buyer_seller not between", value1, value2, "landBuyerSeller");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

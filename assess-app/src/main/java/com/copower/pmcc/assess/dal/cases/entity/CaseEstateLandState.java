@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class CaseEstateLandState {
@@ -70,6 +71,18 @@ public class CaseEstateLandState {
     private String holdOn;
 
     private Integer infrastructureCompleteness;
+
+    private BigDecimal buildingHeightLimit;
+
+    private String specialRestrictions;
+
+    private BigDecimal landFactorTotalScore;
+
+    private String landLevelContent;
+
+    private String dataLandLevelAchievement;
+
+    private BigDecimal investmentIntensity;
 
     public Integer getId() {
         return id;
@@ -341,5 +354,53 @@ public class CaseEstateLandState {
 
     public void setInfrastructureCompleteness(Integer infrastructureCompleteness) {
         this.infrastructureCompleteness = infrastructureCompleteness;
+    }
+
+    public BigDecimal getBuildingHeightLimit() {
+        return buildingHeightLimit;
+    }
+
+    public void setBuildingHeightLimit(BigDecimal buildingHeightLimit) {
+        this.buildingHeightLimit = buildingHeightLimit;
+    }
+
+    public String getSpecialRestrictions() {
+        return specialRestrictions;
+    }
+
+    public void setSpecialRestrictions(String specialRestrictions) {
+        this.specialRestrictions = specialRestrictions == null ? null : specialRestrictions.trim();
+    }
+
+    public BigDecimal getLandFactorTotalScore() {
+        return landFactorTotalScore;
+    }
+
+    public void setLandFactorTotalScore(BigDecimal landFactorTotalScore) {
+        this.landFactorTotalScore = landFactorTotalScore;
+    }
+
+    public String getLandLevelContent() {
+        return landLevelContent;
+    }
+
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
+    }
+
+    public String getDataLandLevelAchievement() {
+        return dataLandLevelAchievement;
+    }
+
+    public void setDataLandLevelAchievement(String dataLandLevelAchievement) {
+        this.dataLandLevelAchievement = dataLandLevelAchievement == null ? null : dataLandLevelAchievement.trim();
+    }
+
+    public BigDecimal getInvestmentIntensity() {
+        return investmentIntensity;
+    }
+
+    public void setInvestmentIntensity(BigDecimal investmentIntensity) {
+        this.investmentIntensity = investmentIntensity;
     }
 }
