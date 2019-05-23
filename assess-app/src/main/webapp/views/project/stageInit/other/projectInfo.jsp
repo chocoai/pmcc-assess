@@ -116,6 +116,15 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input required="required" placeholder="评估基准日"
+                           name="valuationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate" readonly="readonly"
+                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目经理<span class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
@@ -163,15 +172,6 @@
                         </button>
                         </span>
                     </div>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日<span class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input required="required" placeholder="评估基准日"
-                           name="valuationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate" readonly="readonly"
-                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
                 </div>
             </div>
         </div>
@@ -246,6 +246,8 @@
     }
 
     function getRemarkEntrustPurpose() {
+        var remarkEntrustPurpose = $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']");
+        remarkEntrustPurpose.val('');
         var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
         if (entrustAimType) {
             $.ajax({
@@ -258,7 +260,7 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data) {
-                            $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']").val(result.data.remark);
+                            remarkEntrustPurpose.val(result.data.remark);
                         }
                     }
                     else {
@@ -290,10 +292,9 @@
                 if (result.ret) {
                     var data = result.data;
                     if (data.length >= 1) {
-                        var option = "";
+                        var option = "<option value=''>-请选择-</option>";
                         for (var i = 0; i < data.length; i++) {
                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            console.log(option + "1");
                         }
                         $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
                     }

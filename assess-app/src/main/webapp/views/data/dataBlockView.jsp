@@ -44,9 +44,6 @@
                                         onclick="dataObjFun.showModel();"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
-                                <div class="btn btn-success" onclick="residueRatioTest();"> 成新率</div>
-                                <div class="btn btn-success" onclick="flowWrite();"> 写入案例</div>
-                                <input type="text" class="form-control" id="processInsId">
                                 <script type="text/javascript">
                                     function flowWrite() {
                                         $.ajax({
