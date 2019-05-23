@@ -175,14 +175,14 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingHoldOn, data.land.holdOn, function (html, data) {
             estateCommon.estateLandStateForm.find("select[name='holdOn']").empty().html(html).trigger('change');
         });
-        if (estateCommon.isNotBlank(data.land.landLevelContent)){
+        if (estateCommon.isNotBlank(data.land.landLevelContent)) {
             var obj = {};
             try {
                 obj = JSON.parse(data.land.landLevelContent);
             } catch (e) {
             }
-            if (estateCommon.isNotBlankObject(obj)){
-                estateCommon.landLevelLoadHtml(obj) ;
+            if (estateCommon.isNotBlankObject(obj)) {
+                // estateCommon.landLevelLoadHtml(obj);
             }
         }
         //绑定变更事件
@@ -301,7 +301,7 @@
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
-            area: ['97%', '80%'] ,
+            area: ['97%', '80%'],
             content: contentUrl,
             success: function (layero) {
                 estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
@@ -319,7 +319,7 @@
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
-            area: ['97%', '80%'] ,
+            area: ['97%', '80%'],
             content: contentUrl,
             success: function (layero) {
                 estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
@@ -413,7 +413,12 @@
         })
     };
 
-    //土地级别详情 填充并且赋值
+    /**
+     * 土地级别详情 填充并且赋值
+     * 说明:首先进入得是一个大型得数组对象,然后把大型数组对象分组变为2维数组对象，
+     * 然后对这个二维数组对象进行遍历在遍历得过程中随机选出一个对象然后在页面上显示这个对象得数据，并且用一个隐藏框把遍历到这个位置得对象json串化保存在这个input中
+     * @param data
+     */
     estateCommon.landLevelLoadHtml = function (data) {
         if (jQuery.isEmptyObject(data)) {
             return false;
@@ -421,59 +426,87 @@
         var target = $("#landLevelTabContent");
         target.empty();
         target.parent().show();
-        $.each(data, function (i, n) {
+        //获取二维数组对象
+        var arr = estateCommon.landLevelFilter(data);
+        var max = arr[0].length;
+        var min = 0;
+        //遍历
+        arr.forEach(function (obj, index) {
+
+            var random = Math.random() * (max - min) + min;
+            random = Math.round(random);
+            if (random >= 0 && random <= arr[0].length - 1) {
+            } else {
+                random = 0;
+            }
+
+            var item = obj[random];
             var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-            landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, n.reamark);
-            landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelAchievement}/g, n.achievement);
-            landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelChange}/g, n.id);
-            AssessCommon.getDataDicInfo(n.type, function (typeData) {
-                AssessCommon.getDataDicInfo(n.category, function (categoryData) {
-                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, n.grade, function (html, data) {
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, categoryData.name);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategory}/g, categoryData.id);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, typeData.name);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(n));
-                        target.append(landLevelBodyHtml);
-                    }, true);
+            landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, item.reamark);
+            landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.achievement);
+            AssessCommon.getDataDicInfo(item.type, function (typeData) {
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, typeData.name);
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
+                AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
+                    target.append(landLevelBodyHtml);
                 });
             });
         });
+
     };
 
+    //删除呀
     estateCommon.landLevelEmpty = function (that) {
         $(that).parent().parent().remove();
     };
 
-    estateCommon.landLevelHandle = function (that, category) {
-        var group = $(that).closest('.group');
-        var grade = $(that).val();
-        if (category) {
-            AssessCommon.getDataDicInfo(category, function (data) {
-                var obj = JSON.parse(data.remark);
-                if (grade) {
-                    AssessCommon.getDataDicInfo(grade, function (item) {
-                        var value = null;
-                        if (item.name == '优') {
-                            value = obj.A;
-                        }
-                        if (item.name == '较优') {
-                            value = obj.B;
-                        }
-                        if (item.name == '一般') {
-                            value = obj.C;
-                        }
-                        if (item.name == '较劣') {
-                            value = obj.D;
-                        }
-                        if (item.name == '劣') {
-                            value = obj.E;
-                        }
-                        if (value) {
-                            group.find("input[name='landLevelAchievement']").val(value);
-                        }
-                    });
+    /**
+     * 土地级别详情分类
+     * @param list
+     * @returns {Array}
+     */
+    estateCommon.landLevelFilter = function (list) {
+        var flag = 0, data = [];
+        for (var i = 0; i < list.length; i++) {
+            var az = '';
+            for (var j = 0; j < data.length; j++) {
+                if (data[j][0].category == list[i].category) {
+                    flag = 1;
+                    az = j;
+                    break;
                 }
+            }
+            if (flag == 1) {
+                data[az].push(list[i]);
+                flag = 0;
+            } else if (flag == 0) {
+                var wdy = [];
+                wdy.push(list[i]);
+                data.push(wdy);
+            }
+        }
+        return data;
+    };
+
+    //change 事件 随着等级变化页面展示不同内容
+    estateCommon.landLevelHandle = function (that) {
+        var group = $(that).closest('.group');
+        var landLevelContent = group.find("input[name='landLevelContent']").val();
+        var obj = {};
+        try {
+            obj = JSON.parse(landLevelContent);
+        } catch (e) {
+        }
+        if (estateCommon.isNotBlankObject(obj)){
+            AssessCommon.getDataDicInfo($(that).val(), function (item) {
+                obj.forEach(function (data, index) {
+                    if (data.gradeName == item.name) {
+                        group.find("input[name='dataLandLevelAchievement']").val(data.achievement);
+                        group.find("label[name='reamark']").html(data.reamark);
+                    }
+                });
             });
         }
     };

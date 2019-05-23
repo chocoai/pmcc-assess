@@ -287,15 +287,15 @@
             {landLevelCategoryName}
         </td>
         <td>
-            <select class="form-control" name="landLevelGrade" onchange="estateCommon.landLevelHandle(this,'{landLevelCategory}');">
+            <select class="form-control" name="landLevelGrade" onchange="estateCommon.landLevelHandle(this);">
                 {landLevelGradeHTML}
             </select>
         </td>
         <td>
-            {reamark}
+            <label name="reamark" class="form-control">{reamark}</label>
         </td>
         <td>
-            <input type="text" class="form-control" name="landLevelAchievement" value="{landLevelAchievement}">
+            <input type="text" class="form-control" name="dataLandLevelAchievement" value="{dataLandLevelAchievement}">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
         <td>

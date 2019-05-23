@@ -8,6 +8,8 @@ import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
 /**
  * @author: zch
  * @date: 2019/5/5 10:52
@@ -57,7 +59,7 @@ public class DataLandDetailAchievementController {
     @GetMapping(value = "/list",name = "list get")
     public HttpResult list(DataLandDetailAchievement oo){
         try {
-            return HttpResult.newCorrectResult(landDetailAchievementService.getDataLandDetailAchievementList(oo));
+            return HttpResult.newCorrectResult(landDetailAchievementService.getDataLandDetailAchievementList(oo).stream().map( po -> landDetailAchievementService.getDataLandDetailAchievementVo(po)).collect(Collectors.toList()));
         } catch (Exception e) {
             return HttpResult.newErrorResult(500, e);
         }

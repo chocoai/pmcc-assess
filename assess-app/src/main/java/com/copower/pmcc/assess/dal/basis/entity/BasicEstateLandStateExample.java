@@ -476,6 +476,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andDataLandLevelAchievementIsNull() {
+            addCriterion("data_land_level_achievement is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementIsNotNull() {
+            addCriterion("data_land_level_achievement is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementEqualTo(String value) {
+            addCriterion("data_land_level_achievement =", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementNotEqualTo(String value) {
+            addCriterion("data_land_level_achievement <>", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementGreaterThan(String value) {
+            addCriterion("data_land_level_achievement >", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementGreaterThanOrEqualTo(String value) {
+            addCriterion("data_land_level_achievement >=", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementLessThan(String value) {
+            addCriterion("data_land_level_achievement <", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementLessThanOrEqualTo(String value) {
+            addCriterion("data_land_level_achievement <=", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementLike(String value) {
+            addCriterion("data_land_level_achievement like", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementNotLike(String value) {
+            addCriterion("data_land_level_achievement not like", value, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementIn(List<String> values) {
+            addCriterion("data_land_level_achievement in", values, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementNotIn(List<String> values) {
+            addCriterion("data_land_level_achievement not in", values, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementBetween(String value1, String value2) {
+            addCriterion("data_land_level_achievement between", value1, value2, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataLandLevelAchievementNotBetween(String value1, String value2) {
+            addCriterion("data_land_level_achievement not between", value1, value2, "dataLandLevelAchievement");
+            return (Criteria) this;
+        }
+
         public Criteria andLandLevelContentIsNull() {
             addCriterion("land_level_content is null");
             return (Criteria) this;

@@ -64,7 +64,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_data_land_detail_achievement" domainObjectName="DataLandDetailAchievement">
+        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

@@ -16,6 +16,8 @@ public class BasicEstateLandState {
 
     private Integer landUseCategory;
 
+    private String dataLandLevelAchievement;
+
     private String landLevelContent;
 
     private BigDecimal landFactorTotalScore;
@@ -126,6 +128,14 @@ public class BasicEstateLandState {
 
     public void setLandUseCategory(Integer landUseCategory) {
         this.landUseCategory = landUseCategory;
+    }
+
+    public String getDataLandLevelAchievement() {
+        return dataLandLevelAchievement;
+    }
+
+    public void setDataLandLevelAchievement(String dataLandLevelAchievement) {
+        this.dataLandLevelAchievement = dataLandLevelAchievement == null ? null : dataLandLevelAchievement.trim();
     }
 
     public String getLandLevelContent() {
