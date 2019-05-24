@@ -117,7 +117,6 @@
 <script type="text/javascript">
 
 
-
     $(document).ready(function () {
         $(".task_examine_item_tab").find('a:first').tab('show');
 
@@ -127,11 +126,21 @@
         });
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
-            estateCommon.fileShow(n, AssessDBKey.BasicEstate,estateCommon.getEstateId());
-        });
+            estateCommon.fileShow(n, AssessDBKey.BasicEstate, estateCommon.getEstateId());
 
-        $.each(unitCommon.unitFileControlIdArray,function (i, n) {
-            unitCommon.fileShow(n,true);
+        });
+        var obj = {} ;
+        try {
+            obj = JSON.parse('${basicEstateLandState.landLevelContent}') ;
+            if (estateCommon.isNotBlankObject(obj)){
+                var objData = estateCommon.landLevelFilter(obj) ;
+                estateCommon.landLevelLoadHtml(objData);
+            }
+        } catch (e) {
+        }
+
+        $.each(unitCommon.unitFileControlIdArray, function (i, n) {
+            unitCommon.fileShow(n, true);
         });
 
         //初始化上传控件
@@ -139,13 +148,13 @@
             houseCommon.fileShow(item);
         });
         var tradingType = undefined;
-        if ('${basicHouseTrading.tradingTypeName}' == '出租'){
-            tradingType = AssessDicKey.examineHouseTransactionTypeLease ;
+        if ('${basicHouseTrading.tradingTypeName}' == '出租') {
+            tradingType = AssessDicKey.examineHouseTransactionTypeLease;
         }
-        if ('${basicHouseTrading.tradingTypeName}' == '出售'){
-            tradingType = AssessDicKey.examineHouseTransactionTypeSell ;
+        if ('${basicHouseTrading.tradingTypeName}' == '出售') {
+            tradingType = AssessDicKey.examineHouseTransactionTypeSell;
         }
-        houseCommon.loadTradingSellAndLeaseList(tradingType,true);
+        houseCommon.loadTradingSellAndLeaseList(tradingType, true);
     });
 
     //审批提交

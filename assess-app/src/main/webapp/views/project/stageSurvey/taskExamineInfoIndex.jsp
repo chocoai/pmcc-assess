@@ -193,10 +193,13 @@
     //任务提交
     function submit(mustUseBox) {
         //数据校验
+        var formData = basicCommon.getFormData();
+        console.log(formData) ;
         if (!basicCommon.valid()) {
             return false;
         }
-        var formData = basicCommon.getFormData();
+
+
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }

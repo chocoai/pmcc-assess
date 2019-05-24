@@ -83,7 +83,7 @@ basicCommon.landLevelSelect = function (this_) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
             $.ajax({
-                url: getContextPath() + "/dataLandDetailAchievement/list",
+                url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
                 type: "get",
                 data: {levelDetailId: data.id},
                 success: function (result) {
@@ -126,7 +126,7 @@ basicCommon.getMarkerAreaInWidth = '98%';
 basicCommon.valid = function () {
     $('.task_examine_item_tab a[data-name=estate]').tab('show');
 
-    if (estateCommon){
+    if (estateCommon) {
         if (estateCommon.estateForm.size() >= 1) {
             if (!estateCommon.estateForm.valid('楼盘数据不完整')) {
                 return false;
@@ -134,7 +134,7 @@ basicCommon.valid = function () {
         }
     }
 
-    if (estateCommon){
+    if (estateCommon) {
         if (estateCommon.estateLandStateForm.size() >= 1) {
             if (!estateCommon.estateLandStateForm.valid('楼盘数据不完整')) {
                 return false;
@@ -168,7 +168,7 @@ basicCommon.valid = function () {
     }
 
     $('.task_examine_item_tab a[data-name=house]').tab('show');
-    if (houseCommon){
+    if (houseCommon) {
         if (houseCommon.houseForm.size() >= 1) {
             if (!houseCommon.houseForm.valid('房屋数据不完整')) {
                 return false;
@@ -176,7 +176,7 @@ basicCommon.valid = function () {
         }
     }
 
-    if (houseCommon){
+    if (houseCommon) {
         if (houseCommon.houseTradingForm.size() >= 1) {
             if (houseCommon.houseTradingForm.length > 0 && !houseCommon.houseTradingForm.valid('房屋数据不完整')) {
                 return false;
@@ -192,20 +192,37 @@ basicCommon.getFormData = function () {
         item.basicApply = formSerializeArray(basicCommon.basicApplyForm);
     }
 
-    if (estateCommon){
+    if (estateCommon) {
         if (estateCommon.estateForm.size() >= 1) {
             item.basicEstate = formSerializeArray(estateCommon.estateForm);
         }
 
         if (estateCommon.estateLandStateForm.size() >= 1) {
-            var data = formSerializeArray(estateCommon.estateLandStateForm) ;
-            var landLevelContent = [] ;
-            estateCommon.estateLandStateForm.find("input[name='landLevelContent']").each(function (i,n) {
-                var group = $(n).closest(".group") ;
-                var obj = JSON.parse($(n).val()) ;
-                landLevelContent.push(obj) ;
+            var data = formSerializeArray(estateCommon.estateLandStateForm);
+            var landLevelContent = [];
+            if (data.landFactorTotalScore) {
+                var landFactorTotalScore = 0;
+                data.landFactorTotalScore.split(",").forEach(function (value, index) {
+                    landFactorTotalScore += Number(value);
+                });
+                data.landFactorTotalScore = landFactorTotalScore;
+            }
+            estateCommon.estateLandStateForm.find("input[name='landLevelContent']").each(function (i, n) {
+                var group = $(n).closest(".group");
+                var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
+                var obj = JSON.parse($(n).val());
+                var dataObject = [] ;
+                obj.forEach(function (value, index) {
+                    if (value.id == dataLandLevelAchievement){
+                        value.modelStr = "update" ;
+                    }
+                    dataObject.push(value) ;
+                });
+                landLevelContent.push(dataObject);
             });
-            data.landLevelContent = JSON.stringify(landLevelContent);
+            if (landLevelContent.length >= 1) {
+                data.landLevelContent = JSON.stringify(landLevelContent);
+            }
             item.basicEstateLandState = data;
         }
     }
@@ -228,19 +245,19 @@ basicCommon.getFormData = function () {
     } catch (e) {
     }
 
-    if (houseCommon){
+    if (houseCommon) {
         if (houseCommon.houseForm.size() >= 1) {
             item.basicHouse = formSerializeArray(houseCommon.houseForm);
         }
 
     }
 
-    if (houseCommon){
+    if (houseCommon) {
         if (houseCommon.houseTradingForm.size() >= 1) {
             var data = formSerializeArray(houseCommon.houseTradingForm);
             try {
                 var str = data.id.split(",");
-                if (str.length > 1){
+                if (str.length > 1) {
                     data.id = str[0];
                 }
             } catch (e) {
@@ -249,7 +266,7 @@ basicCommon.getFormData = function () {
         }
     }
 
-    if (damagedDegree){
+    if (damagedDegree) {
         item.basicDamagedDegree = damagedDegree.getFormData();
     }
 

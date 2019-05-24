@@ -16,10 +16,6 @@ public class BasicEstateLandState {
 
     private Integer landUseCategory;
 
-    private String dataLandLevelAchievement;
-
-    private String landLevelContent;
-
     private BigDecimal landFactorTotalScore;
 
     private Integer landLevel;
@@ -82,6 +78,8 @@ public class BasicEstateLandState {
 
     private Date gmtModified;
 
+    private String landLevelContent;
+
     public Integer getId() {
         return id;
     }
@@ -128,22 +126,6 @@ public class BasicEstateLandState {
 
     public void setLandUseCategory(Integer landUseCategory) {
         this.landUseCategory = landUseCategory;
-    }
-
-    public String getDataLandLevelAchievement() {
-        return dataLandLevelAchievement;
-    }
-
-    public void setDataLandLevelAchievement(String dataLandLevelAchievement) {
-        this.dataLandLevelAchievement = dataLandLevelAchievement == null ? null : dataLandLevelAchievement.trim();
-    }
-
-    public String getLandLevelContent() {
-        return landLevelContent;
-    }
-
-    public void setLandLevelContent(String landLevelContent) {
-        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 
     public BigDecimal getLandFactorTotalScore() {
@@ -392,5 +374,13 @@ public class BasicEstateLandState {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getLandLevelContent() {
+        return landLevelContent;
+    }
+
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 }

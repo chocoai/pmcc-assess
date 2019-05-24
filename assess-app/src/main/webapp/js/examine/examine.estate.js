@@ -182,7 +182,8 @@
             } catch (e) {
             }
             if (estateCommon.isNotBlankObject(obj)) {
-                // estateCommon.landLevelLoadHtml(obj);
+                var objData = estateCommon.landLevelFilter(obj) ;
+                estateCommon.landLevelLoadHtml(objData);
             }
         }
         //绑定变更事件
@@ -426,65 +427,101 @@
         var target = $("#landLevelTabContent");
         target.empty();
         target.parent().show();
-        //获取二维数组对象
-        var arr = estateCommon.landLevelFilter(data);
-        var max = arr[0].length;
-        var min = 0;
-        //遍历
-        var arrObj = [] ;
-        arr.forEach(function (obj, index) {
-            var random = Math.random() * (max - min) + min;
-            random = Math.round(random);
-            if (random >= 0 && random <= arr[0].length - 1) {
-            } else {
-                random = 0;
-            }
-            var item = obj[random];
-            //把二维数组json化实际变成了一维数组了
-            arrObj.push({data:JSON.stringify(item),type:item.type,arr:JSON.stringify(obj)});
-        });
-        //对arrObj 再次分组
-        /*需要说明的是这次分组是对这个二维数组对象的再次分组 当然实际是一维数组*/
-        var arr2 = estateCommon.landLevelFilter2(arrObj);
-        //arr2 分组后变为了二维json数组
-        arr2.forEach(function (data,indexM) {
-            data.forEach(function (objA, index) {
-                //把json化的对象恢复
-                var item = JSON.parse(objA.data) ;
-                var obj = JSON.parse(objA.arr) ;
+
+        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
+        data.forEach(function (dataA, indexM) {
+            $.each(dataA, function (i, obj) {
+                var item = estateCommon.getLandLevelFilter(obj) ;
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, item.reamark);
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.achievement);
-                AssessCommon.getDataDicInfoAsync(item.type, function (typeData) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, typeData.name);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
-                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                        target.append(landLevelBodyHtml);
-                    },false);
-                },false);
-            }) ;
-            console.log(data) ;
-            console.log(indexM) ;
-            if (indexM == 0){
-                target.find("tr").first().find("td").first().attr("rowspan",data.length);
-                target.find("tr").each(function (i,n) {
-                    if (i != 0){
-                        $(n).find("td").first().remove() ;
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
+                var text = "" ;
+                $.each(obj , function ( i ,n) {
+                    text += "等级:"+n.gradeName +"，说明:"+n.reamark +"； \r";
+                });
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
+                AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
+                    target.append(landLevelBodyHtml);
+                }, false);
+            });
+
+            if (indexM == 0) {
+                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i != 0) {
+                        $(n).find("td").first().remove();
                     }
                 });
             }
-            if (indexM == 1){
-                var length = arr2[0].length ;
-                target.find("tr").eq(length).find("td").first().attr("rowspan",data.length);
-                target.find("tr").each(function (i,n) {
-                    if (i > length){
-                        $(n).find("td").first().remove() ;
+            if (indexM == 1) {
+                var length = data[0].length;
+                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i > length) {
+                        $(n).find("td").first().remove();
                     }
                 });
             }
         });
+    };
+
+    //js数组去重复 ,直接重载在原生js上
+    Array.prototype.deleteEle=function(){
+        var newArr = this;
+        for (var i=newArr.length-1; i>=0; i--)
+        {
+            var targetNode = newArr[i];
+            for (var j=0; j<i; j++)
+            {
+                if(targetNode == newArr[j]){
+                    newArr.splice(i,1);
+                    break;
+                }
+            }
+        }
+        return newArr;
+    };
+
+    /**
+     * 获取数组中随机的一个对象或者数组中曾经被选中的那个对象,原则是在收集数据的时候对选中元素进行添加元素属性
+     * @param obj
+     * @returns {*}
+     */
+    estateCommon.getLandLevelFilter = function (obj) {
+        var random = Math.random() * (obj.length - 1);
+        random = Math.round(random);
+        if (random >= 0 && random <= obj.length - 1) {
+        } else {
+            random = 0;
+        }
+        var objArray = [];
+        obj.forEach(function (data, index) {
+            //这里主要是获取对象长度
+            var arr = Object.keys(data);
+            objArray.push(arr.length) ;
+        });
+        if (objArray.deleteEle().length >= 2){
+            //说明修改过一次
+            objArray.sort(function (a, b) {
+                return a-b;
+            });
+            //获取有最大属性值的那个对象
+            var max = objArray[objArray.length - 1];
+            obj.forEach(function (data, index) {
+                //这里主要是获取对象长度
+                var arr = Object.keys(data);
+                if (max == arr.length){
+                    return data ;
+                }
+            });
+        }
+        var item = obj[random];
+        return item;
     };
 
     //删除呀
@@ -498,29 +535,6 @@
      * @returns {Array}
      */
     estateCommon.landLevelFilter = function (list) {
-        var flag = 0, data = [];
-        for (var i = 0; i < list.length; i++) {
-            var az = '';
-            for (var j = 0; j < data.length; j++) {
-                if (data[j][0].category == list[i].category) {
-                    flag = 1;
-                    az = j;
-                    break;
-                }
-            }
-            if (flag == 1) {
-                data[az].push(list[i]);
-                flag = 0;
-            } else if (flag == 0) {
-                var wdy = [];
-                wdy.push(list[i]);
-                data.push(wdy);
-            }
-        }
-        return data;
-    };
-
-    estateCommon.landLevelFilter2 = function (list) {
         var flag = 0, data = [];
         for (var i = 0; i < list.length; i++) {
             var az = '';
@@ -543,6 +557,7 @@
         return data;
     };
 
+
     //change 事件 随着等级变化页面展示不同内容
     estateCommon.landLevelHandle = function (that) {
         var group = $(that).closest('.group');
@@ -552,12 +567,12 @@
             obj = JSON.parse(landLevelContent);
         } catch (e) {
         }
-        if (estateCommon.isNotBlankObject(obj)){
+        if (estateCommon.isNotBlankObject(obj)) {
             AssessCommon.getDataDicInfo($(that).val(), function (item) {
                 obj.forEach(function (data, index) {
                     if (data.gradeName == item.name) {
-                        group.find("input[name='dataLandLevelAchievement']").val(data.achievement);
-                        group.find("label[name='reamark']").html(data.reamark);
+                        group.find("input[name='landFactorTotalScore']").val(data.achievement);
+                        group.find("input[name='dataLandLevelAchievement']").val(data.id);
                     }
                 });
             });

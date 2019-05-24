@@ -66,4 +66,13 @@ public class DataLandDetailAchievementController {
     }
 
 
+    @GetMapping(value = "/landLevelFilter",name = "过滤 list get")
+    public HttpResult landLevelFilter(DataLandDetailAchievement oo){
+        try {
+            return HttpResult.newCorrectResult(landDetailAchievementService.landLevelFilter(oo));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
 }

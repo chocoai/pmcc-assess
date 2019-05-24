@@ -166,7 +166,7 @@
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <input type="text" class="form-control x-percent" placeholder="容积率"
+            <input type="text" class="form-control " placeholder="容积率"
                    name="plotRatio" value="${basicEstateLandState.plotRatio}">
         </div>
     </div>
@@ -297,7 +297,8 @@
             <label name="reamark" class="form-control">{reamark}</label>
         </td>
         <td>
-            <input type="text" class="form-control" name="dataLandLevelAchievement" value="{dataLandLevelAchievement}">
+            <input type="hidden" class="form-control" name="dataLandLevelAchievement" value="{dataLandLevelAchievement}">
+            <input type="text" class="form-control" name="landFactorTotalScore" value="{landFactorTotalScore}">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
         <td>

@@ -39,7 +39,6 @@
             uniqueId: "id",
             search: false,
             onLoadSuccess: function (data) {
-                console.log(data);
                 if (data && data.rows && data.rows.length > 0) {
                     FileUtils.getFileShows({
                         target: "select_land_level_file",
