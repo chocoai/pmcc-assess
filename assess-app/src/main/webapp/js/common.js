@@ -90,7 +90,7 @@ $(function () {
 
         //对象不存在则返回空串
         toString: function (o) {
-            if (!o) return "";
+            if (o == null || o == undefined) return "";
             return o;
         },
 
@@ -721,12 +721,20 @@ $(function () {
 
 //数字运算-避免精度问题
 //加
-var accAdd = function(num1, num2) {
+var accAdd = function (num1, num2) {
     num1 = Number(num1);
     num2 = Number(num2);
     var dec1, dec2, times;
-    try { dec1 = countDecimals(num1)+1; } catch (e) { dec1 = 0; }
-    try { dec2 = countDecimals(num2)+1; } catch (e) { dec2 = 0; }
+    try {
+        dec1 = countDecimals(num1) + 1;
+    } catch (e) {
+        dec1 = 0;
+    }
+    try {
+        dec2 = countDecimals(num2) + 1;
+    } catch (e) {
+        dec2 = 0;
+    }
     times = Math.pow(10, Math.max(dec1, dec2));
     // var result = (num1 * times + num2 * times) / times;
     var result = (accMul(num1, times) + accMul(num2, times)) / times;
@@ -734,12 +742,20 @@ var accAdd = function(num1, num2) {
     // return result;
 };
 //减
-var accSub = function(num1, num2) {
+var accSub = function (num1, num2) {
     num1 = Number(num1);
     num2 = Number(num2);
     var dec1, dec2, times;
-    try { dec1 = countDecimals(num1)+1; } catch (e) { dec1 = 0; }
-    try { dec2 = countDecimals(num2)+1; } catch (e) { dec2 = 0; }
+    try {
+        dec1 = countDecimals(num1) + 1;
+    } catch (e) {
+        dec1 = 0;
+    }
+    try {
+        dec2 = countDecimals(num2) + 1;
+    } catch (e) {
+        dec2 = 0;
+    }
     times = Math.pow(10, Math.max(dec1, dec2));
     // var result = Number(((num1 * times - num2 * times) / times);
     var result = Number((accMul(num1, times) - accMul(num2, times)) / times);
@@ -747,23 +763,35 @@ var accSub = function(num1, num2) {
     // return result;
 };
 //乘
-var accMul = function(num1, num2) {
+var accMul = function (num1, num2) {
     num1 = Number(num1);
     num2 = Number(num2);
     var times = 0, s1 = num1.toString(), s2 = num2.toString();
-    try { times += countDecimals(s1); } catch (e) { }
-    try { times += countDecimals(s2); } catch (e) { }
+    try {
+        times += countDecimals(s1);
+    } catch (e) {
+    }
+    try {
+        times += countDecimals(s2);
+    } catch (e) {
+    }
     var result = convertToInt(s1) * convertToInt(s2) / Math.pow(10, times);
     return getCorrectResult("mul", num1, num2, result);
     // return result;
 };
 //除
-var accDiv = function(num1, num2) {
+var accDiv = function (num1, num2) {
     num1 = Number(num1);
     num2 = Number(num2);
     var t1 = 0, t2 = 0, dec1, dec2;
-    try { t1 = countDecimals(num1); } catch (e) { }
-    try { t2 = countDecimals(num2); } catch (e) { }
+    try {
+        t1 = countDecimals(num1);
+    } catch (e) {
+    }
+    try {
+        t2 = countDecimals(num2);
+    } catch (e) {
+    }
     dec1 = convertToInt(num1);
     dec2 = convertToInt(num2);
     var result = accMul((dec1 / dec2), Math.pow(10, t2 - t1));
@@ -772,8 +800,7 @@ var accDiv = function(num1, num2) {
 };
 
 
-
-var countDecimals = function(num) {
+var countDecimals = function (num) {
     var len = 0;
     try {
         num = Number(num);
@@ -796,7 +823,7 @@ var countDecimals = function(num) {
                 len = str.split('.')[1].length;
             }
         }
-    } catch(e) {
+    } catch (e) {
         throw e;
     } finally {
         if (isNaN(len) || len < 0) {
@@ -806,7 +833,7 @@ var countDecimals = function(num) {
     }
 };
 
-var convertToInt = function(num) {
+var convertToInt = function (num) {
     num = Number(num);
     var newNum = num;
     var times = countDecimals(num);
@@ -819,7 +846,7 @@ var convertToInt = function(num) {
     return newNum;
 };
 
-var getCorrectResult = function(type, num1, num2, result) {
+var getCorrectResult = function (type, num1, num2, result) {
     var temp_result = 0;
     switch (type) {
         case "add":

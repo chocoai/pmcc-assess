@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by kings on 2018-5-23.
  */
 @RestController
-@RequestMapping(value = "generateReport", name = "出具报告")
+@RequestMapping(value = "/generateReport", name = "出具报告")
 public class ProjectReportController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired

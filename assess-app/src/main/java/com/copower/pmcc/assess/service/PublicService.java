@@ -343,31 +343,34 @@ public class PublicService {
      */
     public int computeDifference(BigDecimal var1, BigDecimal var2) {
         if (var1 == null || var2 == null) return -1;//表示错误数据
+        if (var1.equals(0) || var2.equals(0)) return -1;
+        if (var1.compareTo(var2) == 0) return 0;
         BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
         BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
-        return maxDecimal.divide(minDecimal,2,BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
+        return maxDecimal.divide(minDecimal, 2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
     }
 
     /**
      * 获取value值 form kevaluedto的json字符串数组中
+     *
      * @param kevValueJson
      * @param key
      * @return
      */
-    public String getValueFromJSON(String kevValueJson,String key){
-        if(StringUtils.isBlank(kevValueJson)) return null;
+    public String getValueFromJSON(String kevValueJson, String key) {
+        if (StringUtils.isBlank(kevValueJson)) return null;
         try {
             List<KeyValueDto> valueDtoList = JSONObject.parseArray(kevValueJson, KeyValueDto.class);
-            if(CollectionUtils.isEmpty(valueDtoList)) return null;
+            if (CollectionUtils.isEmpty(valueDtoList)) return null;
             if (CollectionUtils.isNotEmpty(valueDtoList)) {
                 for (KeyValueDto keyValueDto : valueDtoList) {
-                    if (key.equals(keyValueDto.getKey())){
+                    if (key.equals(keyValueDto.getKey())) {
                         return keyValueDto.getValue();
                     }
                 }
             }
             return null;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }

@@ -137,8 +137,8 @@
     function initResult() {
         var salesTax = "${salesTax}";
         var total = 0;
-        var evaluationArea = $("#evaluationArea").val();
-        var evaluationPrice = $("#evaluationPrice").val();
+        var evaluationArea = $("#evaluationArea").attr('value');
+        var evaluationPrice = $("#evaluationPrice").attr('value');
         $("#tbody_data_section").find('tr').each(function () {
             var $taxRateValue = $(this).find('[name^=taxRateValue]');
             var rate = $taxRateValue.val();
@@ -208,7 +208,7 @@
     function getFormData() {
         var data = {};
         data.id = $('#master').find('[name=id]').val();
-        data.total = $('#master').find('[name=total]').text();
+        data.total = $('#master').find('[name=total]').text().replace(/,/g,'');
         data.liquidRatios = $('#master').find('[name=liquidRatios]').val();
         data.liquidTime = $('#master').find('[name=liquidTime]').val();
         console.log(data);
@@ -331,8 +331,8 @@
         //地方教育税附加率
         var educationTax = $("input[data-key='data.tax.rate.allocation.education.fee.plus']").attr('data-value');
         var educationPrice = "price_data.tax.rate.allocation.education.fee.plus";
-        var evaluationArea = $("#evaluationArea").val();
-        var evaluationPrice = $("#evaluationPrice").val();
+        var evaluationArea = $("#evaluationArea").attr('value');
+        var evaluationPrice = $("#evaluationPrice").attr('value');
         var $taxRateValue = $(_this).parent().parent().find('[name^=taxRateValue]');
         var rate = $taxRateValue.val();
         var price = 0;
@@ -415,6 +415,7 @@
 
     //格式化金额
     function fmoney(s, n) {
+        if(!AssessCommon.isNumber(s)) return s;
         n = n > 0 && n <= 20 ? n : 2;
         s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";//更改这里n数也可确定要保留的小数位
         var l = s.split(".")[0].split("").reverse(),

@@ -298,7 +298,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     getSchemeReportGeneration(data, function (info) {
-                        initFormSchemeReportGeneration(info, form.attr("id"), areaId);
+                        initFormSchemeReportGeneration(info, form, areaId);
                         Loading.progressHide();
                         toastr.success('报告生成成功!');
                     });

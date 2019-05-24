@@ -137,8 +137,8 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
                 }
             }
         }
-        modelAndView.addObject("groupArea",groupArea);
-        modelAndView.addObject("groupPrice",groupPrice);
+        modelAndView.addObject("groupArea",groupArea.setScale(2,BigDecimal.ROUND_HALF_UP));
+        modelAndView.addObject("groupPrice",groupPrice.setScale(2,BigDecimal.ROUND_HALF_UP));
         //增值税率
         DataTaxRateAllocation allocationSales = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
         String salesTax = String.valueOf(allocationSales.getTaxRate());

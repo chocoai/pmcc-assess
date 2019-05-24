@@ -3,8 +3,10 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -17,7 +19,6 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -70,7 +71,6 @@ public class GenerateCommonMethod {
     public final String errorStr = "无";
 
 
-
     //房地产总价
     public BigDecimal getTotalRealEstate(Integer areId) {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areId);
@@ -87,8 +87,6 @@ public class GenerateCommonMethod {
         }
         return temp;
     }
-
-
 
 
     /**
@@ -703,6 +701,7 @@ public class GenerateCommonMethod {
         Map<String, List<Integer>> listMap = getStringListMap(sortMap);
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
+            if (StringUtils.isBlank(stringListEntry.getKey())) continue;
             String content = stringListEntry.getKey().replaceAll("^<[^>]+>|<[^>]+>$", "");
             if (listMap.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
                 return explain + content;
@@ -983,9 +982,9 @@ public class GenerateCommonMethod {
         }
     }
 
-    public void writeWordTitle(DocumentBuilder builder, LinkedList<Double> doubleLinkedList,LinkedList<String> linkedLists) throws Exception {
+    public void writeWordTitle(DocumentBuilder builder, LinkedList<Double> doubleLinkedList, LinkedList<String> linkedLists) throws Exception {
         if (CollectionUtils.isNotEmpty(linkedLists) && CollectionUtils.isNotEmpty(doubleLinkedList)) {
-            if (linkedLists.size() != doubleLinkedList.size()){
+            if (linkedLists.size() != doubleLinkedList.size()) {
                 return;
             }
             for (int i = 0; i < linkedLists.size(); i++) {
