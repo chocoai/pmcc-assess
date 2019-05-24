@@ -21,7 +21,6 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <!-- 引入假设开发法模块 -->
             <jsp:include page="/views/method/marketDevelopmentIndex.jsp"></jsp:include>
             <!--填写表单-->
@@ -51,24 +50,11 @@
 
 <script>
     $(function () {
-        //支撑信息初始化
-        supportInfoModule.init({
-            supportInfo: JSON.parse($("#supportInfosJSON").val())
-        });
     })
 </script>
 <script type="application/javascript">
-    $(function () {
-    });
-
-
-
     function submit() {
-        if (!supportInfoModule.valid()) {
-            return false;
-        }
         var data = {};
-        data.supportInfoList = supportInfoModule.getData();
         data.mdDevelopmentHypothesis = optionsBuildBox.getHypothesisDevelopment();
         data.mdDevelopmentArchitectural = optionsBuildBox.getArchitecturalEngineering();
         data.mdDevelopment = optionsBuildBox.getBuildKey();

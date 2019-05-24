@@ -86,7 +86,6 @@
                         </tr>
                         </tbody>
                     </table>
-
                 </form>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
@@ -110,6 +109,7 @@
         if("${groupArea}"){
             $("#evaluationArea").text(fmoney("${groupArea}",2))
         }
+        $("#master").find('[name=total]').text(fmoney("${master.total}",2));
     });
 
     function getAnalysisItemList() {
@@ -167,8 +167,8 @@
 
 
     //格式化金额
-    function fmoney(s, n)
-    {
+    function fmoney(s, n) {
+        if(!AssessCommon.isNumber(s)) return s;
         n = n > 0 && n <= 20 ? n : 2;
         s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";//更改这里n数也可确定要保留的小数位
         var l = s.split(".")[0].split("").reverse(),

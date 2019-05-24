@@ -47,10 +47,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="text/javascript">
     $(function () {
-        //支撑信息初始化
-        supportInfoModule.init({
-            supportInfo: JSON.parse($("#supportInfosJSON").val())
-        });
     })
 </script>
 <script type="application/javascript">
@@ -61,11 +57,7 @@
 
     //提交
     function submit() {
-        if (!supportInfoModule.valid()) {
-            return false;
-        }
         var data = {};
-        data.supportInfoList = supportInfoModule.getData();
         data.mdCostBuilding = optionsBuildBox.getMdCostBuilding();
         data.mdCostConstruction = optionsBuildBox.getMdCostConstruction();
         data.mdCost = optionsBuildBox.getBuildKey();

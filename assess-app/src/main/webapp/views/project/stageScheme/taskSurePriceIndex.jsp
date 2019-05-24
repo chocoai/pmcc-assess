@@ -320,16 +320,27 @@
             AssessCommon.elementParsePercent(lastWeightElement);
         }
 
-
+        //如果权重一致则无需填写权重说明
+        var isAverage = true;
+        var preWight = 0;
         var resultPrice = 0;
         $(_this).closest('tbody').find('tr').each(function () {
             var trialPrice = $(this).find("[data-name=trialPrice]").text();
             var weight = $(this).find("[name=weight]").attr('data-value');
             if (AssessCommon.isNumber(trialPrice) && AssessCommon.isNumber(weight)) {
+                if (preWight != 0 && preWight != parseFloat(weight)) {
+                    isAverage = false;
+                }
+                preWight = parseFloat(weight);
                 resultPrice += parseFloat(trialPrice) * parseFloat(weight);
             }
         })
         $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(2));
+        if (isAverage) {
+            $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').hide();
+        }else{
+            $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').show();
+        }
     }
 
     //调整因素

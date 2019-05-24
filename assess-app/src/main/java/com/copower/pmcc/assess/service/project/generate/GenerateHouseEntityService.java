@@ -332,7 +332,6 @@ public class GenerateHouseEntityService {
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
         //类型一共其实有4个类型也就是4部分
         List<String> typeList = Lists.newArrayList("其它", "设备部分", "装修部分");
-        List<String> categoryList = Lists.newArrayList("特种设备", "其他");
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -352,13 +351,14 @@ public class GenerateHouseEntityService {
                     stringListMap.put(oo.getTypeName(), damagedDegreeVoList);
                 });
             }
+            StringBuilder stringBuilder = new StringBuilder();
             if (!stringListMap.isEmpty()) {
-                stringListMap.entrySet().stream().forEach(stringListEntry -> {
+                stringListMap.entrySet().forEach(stringListEntry -> {
                     List<BasicHouseDamagedDegreeVo> damagedDegreeVoList = stringListEntry.getValue();
                     String s = "";
                     if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                         damagedDegreeVoList.stream().forEach(oo -> {
-                            if (typeList.contains(oo.getTypeName()) && categoryList.contains(oo.getCategoryName())) {
+                            if (typeList.contains(oo.getTypeName()) && (oo.getCategoryName().contains("其它") || oo.getCategoryName().contains("特种设备"))) {
                                 stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), oo.getEntityConditionName()));
                             } else {
                                 stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
@@ -369,9 +369,9 @@ public class GenerateHouseEntityService {
                     } else {
                         s = "无";
                     }
-                    linkedHashSet.add(String.format("%s：%s%s", stringListEntry.getKey(), s, "。"));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s: %s。", stringListEntry.getKey(), s)));
                 });
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getIndentHtml(StringUtils.join(linkedHashSet)));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
                 linkedHashSet.clear();
             }
         }

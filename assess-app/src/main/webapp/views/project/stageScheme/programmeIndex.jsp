@@ -303,7 +303,7 @@
                                 <thead>
                                 <tr>
                                     <th width="35%">基本方法</th>
-                                    <th>其它方法</th>
+                                    <%--<th>其它方法</th>--%>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -322,21 +322,21 @@
                                             </div>
                                         </c:forEach>
                                     </td>
-                                    <td id="otherMethodTd">
-                                        <c:forEach var="item" items="${otherMethodList}">
-                                            <div class="btn-group" style="margin: 10px;">
-                                                <button class="btn btn-sm btn-dark"
-                                                        type="button">${item.name}</button>
-                                                <button onclick="programmeMethod.selectUseOther(this);"
-                                                        data-use-flag="false" data-method-type="${item.id}"
-                                                        data-method-name="${item.name}"
-                                                        class="btn btn-sm btn-default btn-select-use"
-                                                        type="button" title="选用"><i
-                                                        class="fa fa-check"></i>
-                                                </button>
-                                            </div>
-                                        </c:forEach>
-                                    </td>
+                                    <%--<td id="otherMethodTd">--%>
+                                        <%--<c:forEach var="item" items="${otherMethodList}">--%>
+                                            <%--<div class="btn-group" style="margin: 10px;">--%>
+                                                <%--<button class="btn btn-sm btn-dark"--%>
+                                                        <%--type="button">${item.name}</button>--%>
+                                                <%--<button onclick="programmeMethod.selectUseOther(this);"--%>
+                                                        <%--data-use-flag="false" data-method-type="${item.id}"--%>
+                                                        <%--data-method-name="${item.name}"--%>
+                                                        <%--class="btn btn-sm btn-default btn-select-use"--%>
+                                                        <%--type="button" title="选用"><i--%>
+                                                        <%--class="fa fa-check"></i>--%>
+                                                <%--</button>--%>
+                                            <%--</div>--%>
+                                        <%--</c:forEach>--%>
+                                    <%--</td>--%>
                                 </tr>
                                 </tbody>
                             </table>

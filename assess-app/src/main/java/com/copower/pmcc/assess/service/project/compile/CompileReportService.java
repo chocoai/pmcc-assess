@@ -157,11 +157,11 @@ public class CompileReportService {
             compileReportDetail.setName(baseDataDic.getName());
             compileReportDetail.setAreaId(projectPlanDetails.getAreaId());
             compileReportDetail.setReportAnalysisType(analysisType.getId());
-            compileReportDetail.setMarketBackgroundType(analysis.getMarketBackgroundType());
             compileReportDetail.setReportAnalysisName(analysisType.getName());
             compileReportDetail.setPlanDetailsId(projectPlanDetails.getId());
             compileReportDetail.setBisModifiable(true);
             if (analysis != null) {
+                compileReportDetail.setMarketBackgroundType(analysis.getMarketBackgroundType());
                 compileReportDetail.setContent(tagfilter(analysis.getTemplate()));
             }
             compileReportDetailDao.addReportDetail(compileReportDetail);

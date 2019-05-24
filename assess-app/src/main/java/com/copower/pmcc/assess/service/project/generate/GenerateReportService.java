@@ -103,6 +103,7 @@ public class GenerateReportService {
             return;
         }
         if (generateReportGeneration.getId() == null || generateReportGeneration.getId().intValue() == 0) {
+            generateReportGeneration.setCreator(processControllerComponent.getThisUser());
             generateReportGenerationService.addGenerateReportGeneration(generateReportGeneration);
         } else {
             generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
