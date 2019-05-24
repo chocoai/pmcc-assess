@@ -280,10 +280,12 @@
 
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
-        <td colspan="2" class="table-cell">
+        <td  class="table-cell">
             {landLevelTypeName}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
             {landLevelCategoryName}
         </td>
         <td>

@@ -5,6 +5,10 @@ package com.copower.pmcc.assess.common;
  * @date: 2019/5/22 10:25
  * @description:
  */
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 罗马数字
  *
@@ -58,6 +62,31 @@ public class RomanNumeral {
     }
 
     /**
+     * 中午输入法打出的罗马数字
+     * @param romanStr
+     * @return
+     */
+    public static Integer intValueChinaWord(String romanStr){
+        if (romanStr.isEmpty()) {
+            throw new IllegalArgumentException("非法的罗马数字格式");
+        }
+        Map<String,Integer> map = new HashMap<String,Integer>(0);
+        map.put("Ⅰ",1);
+        map.put("Ⅱ",2);
+        map.put("Ⅲ",3);
+        map.put("IV",4);
+        map.put("Ⅴ",5);
+        map.put("Ⅵ",6);
+        map.put("Ⅶ",7);
+        map.put("Ⅷ",8);
+        map.put("Ⅸ",9);
+        map.put("Ⅹ",10);
+        map.put("Ⅺ",11);
+        map.put("Ⅻ",12);
+        return map.get(romanStr);
+    }
+
+    /**
      * 罗马数字转阿拉伯数字
      * @param romanStr
      * @return
@@ -66,7 +95,10 @@ public class RomanNumeral {
         if (romanStr.isEmpty()) {
             throw new IllegalArgumentException("非法的罗马数字格式");
         }
-
+        Integer integer = intValueChinaWord(romanStr);
+        if (integer != null){
+            return integer.intValue();
+        }
         int result = 0; //总数值
         int repeatLength = 1; //一个字母连续重复出现的长度
         int place = 0;  //当前已经计算出的位数

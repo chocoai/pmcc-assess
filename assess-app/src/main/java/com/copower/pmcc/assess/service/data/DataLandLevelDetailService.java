@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.RomanNumeral;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
-import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -15,12 +15,17 @@ import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -33,8 +38,6 @@ public class DataLandLevelDetailService {
     private DataLandLevelDetailDao dataLandLevelDetailDao;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private ErpAreaService erpAreaService;
     @Autowired
     private DataLandLevelDao dataLandLevelDao;
 
@@ -59,11 +62,12 @@ public class DataLandLevelDetailService {
      */
     public BootstrapTableVo getDataLandLevelDetailList(Integer landLevelId) {
         BootstrapTableVo vo = new BootstrapTableVo();
+        DataLandLevelDetail oo = new DataLandLevelDetail();
+        oo.setLandLevelId(landLevelId);
+        vo.setRows(dataLandLevelDetailSorted(getDataLandLevelDetailList(oo)));
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataLandLevelDetail> dataLandLevelDetails = dataLandLevelDetailDao.getDataLandLevelDetailList(landLevelId);
         vo.setTotal(page.getTotal());
-        vo.setRows(dataLandLevelDetails);
         return vo;
     }
 
@@ -76,36 +80,80 @@ public class DataLandLevelDetailService {
      * @return
      */
     public BootstrapTableVo getDataLandLevelDetailListByArea(String province, String city, String district) {
-        DataLandLevel dataLandLevelWhere = new DataLandLevel();
-        dataLandLevelWhere.setProvince(province);
-        dataLandLevelWhere.setCity(city);
-        dataLandLevelWhere.setDistrict(district);
-        List<DataLandLevel> levelList = dataLandLevelDao.getDataLandLevelList(dataLandLevelWhere);
-        DataLandLevel dataLandLevel = null;
-        if (CollectionUtils.isEmpty(levelList) && StringUtils.isBlank(district)) return null;
-        if (CollectionUtils.isNotEmpty(levelList) && StringUtils.isBlank(district)) {
-            for (DataLandLevel landLevel : levelList) {
-                if (StringUtils.isBlank(landLevel.getDistrict()))
-                    dataLandLevel = landLevel;
-            }
-        }
-        if (CollectionUtils.isEmpty(levelList) && StringUtils.isNotBlank(district)) {
-            dataLandLevelWhere.setDistrict(null);
-            levelList = dataLandLevelDao.getDataLandLevelList(dataLandLevelWhere);
-            if (CollectionUtils.isEmpty(levelList)) {
-                return null;
-            }
-            dataLandLevel = levelList.get(0);
-        }
-        if (dataLandLevel == null) return null;
-
         BootstrapTableVo vo = new BootstrapTableVo();
+        DataLandLevel dataLandLevelWhere = new DataLandLevel();
+        if (StringUtils.isNotEmpty(province)) {
+            dataLandLevelWhere.setProvince(province);
+        }
+        if (StringUtils.isNotEmpty(city)) {
+            dataLandLevelWhere.setCity(city);
+        }
+        if (StringUtils.isNotEmpty(district)) {
+            dataLandLevelWhere.setDistrict(district);
+        }
+        List<DataLandLevel> levelList = dataLandLevelDao.getDataLandLevelList(dataLandLevelWhere);
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataLandLevelDetail> dataLandLevelDetails = dataLandLevelDetailDao.getDataLandLevelDetailList(dataLandLevel.getId());
-        vo.setTotal(page.getTotal());
-        vo.setRows(dataLandLevelDetails);
+        if (CollectionUtils.isNotEmpty(levelList)) {
+            DataLandLevelDetail oo = new DataLandLevelDetail();
+            oo.setLandLevelId(levelList.stream().findFirst().get().getId());
+            vo.setRows(dataLandLevelDetailSorted(getDataLandLevelDetailList(oo)));
+            vo.setTotal(page.getTotal());
+        } else {
+            vo.setRows(new ArrayList<DataLandLevelDetail>(0));
+        }
         return vo;
+    }
+
+    public List<DataLandLevelDetail> getDataLandLevelDetailList(DataLandLevelDetail oo) {
+        return dataLandLevelDetailSorted(dataLandLevelDetailDao.getDataLandLevelDetailList(oo));
+    }
+
+    /**
+     * 分类并且排序
+     *
+     * @param dataLandLevelDetails
+     * @return
+     */
+    public List<DataLandLevelDetail> dataLandLevelDetailSorted(List<DataLandLevelDetail> dataLandLevelDetails) {
+        LinkedHashMap<String, List<DataLandLevelDetail>> listLinkedHashMap = Maps.newLinkedHashMap();
+        if (CollectionUtils.isNotEmpty(dataLandLevelDetails)) {
+            dataLandLevelDetails.forEach(oo -> {
+                List<DataLandLevelDetail> details = listLinkedHashMap.get(oo.getClassify());
+                if (CollectionUtils.isEmpty(details)) {
+                    details = Lists.newArrayList();
+                }
+                details.add(oo);
+                listLinkedHashMap.put(oo.getClassify(), details);
+            });
+        }
+        List<DataLandLevelDetail> dataLandLevelDetailList = Lists.newArrayList();
+        if (!listLinkedHashMap.isEmpty()) {
+            listLinkedHashMap.entrySet().stream().forEachOrdered(stringListEntry -> {
+                if (CollectionUtils.isNotEmpty(stringListEntry.getValue())) {
+                    List<DataLandLevelDetail> landLevelDetailList = stringListEntry.getValue().stream().sorted((o1, o2) -> {
+                        int i = 0;
+                        final String remove = "级";
+                        if (StringUtils.isNotEmpty(o1.getType())) {
+                            i++;
+                        }
+                        if (StringUtils.isNotEmpty(o2.getType())) {
+                            i++;
+                        }
+                        if (i == 2) {
+                            String value1 = StringUtils.trim(StringUtils.remove(o1.getType(), remove));
+                            String value2 = StringUtils.trim(StringUtils.remove(o2.getType(), remove));
+                            int a = RomanNumeral.intValue(value1);
+                            int b = RomanNumeral.intValue(value2);
+                            return Integer.compare(a, b);
+                        }
+                        return 0;
+                    }).collect(Collectors.toList());
+                    dataLandLevelDetailList.addAll(landLevelDetailList);
+                }
+            });
+        }
+        return dataLandLevelDetailList;
     }
 
     /**
@@ -156,7 +204,9 @@ public class DataLandLevelDetailService {
     }
 
     public List<DataLandLevelDetail> getDataLandLevelDetailListByPid(Integer landLevelId) {
-        return dataLandLevelDetailDao.getDataLandLevelDetailList(landLevelId);
+        DataLandLevelDetail oo = new DataLandLevelDetail();
+        oo.setLandLevelId(landLevelId);
+        return dataLandLevelDetailSorted(getDataLandLevelDetailList(oo));
     }
 
     //根据大类和级别获取数据

@@ -301,10 +301,14 @@ $(function () {
 
         //根据id获取单个数据字典信息
         getDataDicInfo: function (id, callback) {
+            AssessCommon.getDataDicInfoAsync(id, callback, true);
+        },
+        getDataDicInfoAsync:function (id, callback , async) {
             if (id == undefined) return null;
             $.ajax({
                 url: getContextPath() + '/baseDataDic/getDataDicInfo',
                 type: 'get',
+                async: async,
                 data: {id: id},
                 dataType: 'json',
                 success: function (result) {
@@ -314,7 +318,6 @@ $(function () {
                 }
             })
         },
-
         //根据pid获取字典信息
         loadDataDicByPid: function (pid, value, callback) {
             if (pid) {

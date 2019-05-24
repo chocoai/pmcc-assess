@@ -431,30 +431,60 @@
         var max = arr[0].length;
         var min = 0;
         //遍历
+        var arrObj = [] ;
         arr.forEach(function (obj, index) {
-
             var random = Math.random() * (max - min) + min;
             random = Math.round(random);
             if (random >= 0 && random <= arr[0].length - 1) {
             } else {
                 random = 0;
             }
-
             var item = obj[random];
-            var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-            landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, item.reamark);
-            landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.achievement);
-            AssessCommon.getDataDicInfo(item.type, function (typeData) {
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, typeData.name);
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
-                AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                    target.append(landLevelBodyHtml);
-                });
-            });
+            //把二维数组json化实际变成了一维数组了
+            arrObj.push({data:JSON.stringify(item),type:item.type,arr:JSON.stringify(obj)});
         });
-
+        //对arrObj 再次分组
+        /*需要说明的是这次分组是对这个二维数组对象的再次分组 当然实际是一维数组*/
+        var arr2 = estateCommon.landLevelFilter2(arrObj);
+        //arr2 分组后变为了二维json数组
+        arr2.forEach(function (data,indexM) {
+            data.forEach(function (objA, index) {
+                //把json化的对象恢复
+                var item = JSON.parse(objA.data) ;
+                var obj = JSON.parse(objA.arr) ;
+                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, item.reamark);
+                landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.achievement);
+                AssessCommon.getDataDicInfoAsync(item.type, function (typeData) {
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, typeData.name);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
+                        target.append(landLevelBodyHtml);
+                    },false);
+                },false);
+            }) ;
+            console.log(data) ;
+            console.log(indexM) ;
+            if (indexM == 0){
+                target.find("tr").first().find("td").first().attr("rowspan",data.length);
+                target.find("tr").each(function (i,n) {
+                    if (i != 0){
+                        $(n).find("td").first().remove() ;
+                    }
+                });
+            }
+            if (indexM == 1){
+                var length = arr2[0].length ;
+                target.find("tr").eq(length).find("td").first().attr("rowspan",data.length);
+                target.find("tr").each(function (i,n) {
+                    if (i > length){
+                        $(n).find("td").first().remove() ;
+                    }
+                });
+            }
+        });
     };
 
     //删除呀
@@ -473,6 +503,29 @@
             var az = '';
             for (var j = 0; j < data.length; j++) {
                 if (data[j][0].category == list[i].category) {
+                    flag = 1;
+                    az = j;
+                    break;
+                }
+            }
+            if (flag == 1) {
+                data[az].push(list[i]);
+                flag = 0;
+            } else if (flag == 0) {
+                var wdy = [];
+                wdy.push(list[i]);
+                data.push(wdy);
+            }
+        }
+        return data;
+    };
+
+    estateCommon.landLevelFilter2 = function (list) {
+        var flag = 0, data = [];
+        for (var i = 0; i < list.length; i++) {
+            var az = '';
+            for (var j = 0; j < data.length; j++) {
+                if (data[j][0].type == list[i].type) {
                     flag = 1;
                     az = j;
                     break;

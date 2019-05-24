@@ -34,37 +34,63 @@ public class DataLandLevelDetailDao {
     }
 
     public void removeDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
-        DataLandLevelDetailExample example = new DataLandLevelDetailExample();
-        MybatisUtils.convertObj2Example(dataLandLevelDetail, example);
+        DataLandLevelDetailExample example = getExample(dataLandLevelDetail);
         dataLandLevelDetailMapper.deleteByExample(example);
     }
 
     public List<DataLandLevelDetail> getDataLandLevelDetailList(Integer landLevelId) {
-        DataLandLevelDetailExample example = new DataLandLevelDetailExample();
-        example.createCriteria().andLandLevelIdEqualTo(landLevelId).andBisDeleteEqualTo(false);
+        DataLandLevelDetail oo = new DataLandLevelDetail();
+        oo.setLandLevelId(landLevelId);
+        oo.setBisDelete(false);
+        DataLandLevelDetailExample example = getExample(oo);
         example.setOrderByClause("classify,type,category");
         return dataLandLevelDetailMapper.selectByExample(example);
     }
 
     public int getCountByLandLevelId(Integer landLevelId) {
-        DataLandLevelDetailExample example = new DataLandLevelDetailExample();
+        DataLandLevelDetail oo = new DataLandLevelDetail();
+        oo.setLandLevelId(landLevelId);
+        DataLandLevelDetailExample example = getExample(oo) ;
         example.createCriteria().andLandLevelIdEqualTo(landLevelId).andBisDeleteEqualTo(false);
         return dataLandLevelDetailMapper.countByExample(example);
     }
 
     public List<DataLandLevelDetail> getDataByClassifyAndType(String classify, String type, Integer landLevelId) {
+        DataLandLevelDetail oo = new DataLandLevelDetail();
+        oo.setClassify(classify);
+        oo.setType(type);
+        oo.setLandLevelId(landLevelId);
+        return getDataLandLevelDetailList(oo);
+    }
+
+    public List<DataLandLevelDetail> getDataLandLevelDetailList(DataLandLevelDetail oo){
+        DataLandLevelDetailExample example = getExample(oo);
+        return dataLandLevelDetailMapper.selectByExample(example);
+    }
+
+    private DataLandLevelDetailExample getExample(DataLandLevelDetail oo){
         DataLandLevelDetailExample example = new DataLandLevelDetailExample();
+        MybatisUtils.convertObj2Example(oo, example);
         DataLandLevelDetailExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (StringUtils.isNotBlank(classify)) {
-            criteria.andClassifyEqualTo(classify);
+        if (StringUtils.isNotBlank(oo.getClassify())) {
+            criteria.andClassifyEqualTo(oo.getClassify());
         }
-        if (StringUtils.isNotBlank(type)) {
-            criteria.andTypeEqualTo(type);
+        if (StringUtils.isNotBlank(oo.getType())) {
+            criteria.andTypeEqualTo(oo.getType());
         }
-        if (landLevelId != null) {
-            criteria.andLandLevelIdEqualTo(landLevelId);
+        if (StringUtils.isNotEmpty(oo.getCategory())){
+            criteria.andCategoryEqualTo(oo.getCategory());
         }
-        return dataLandLevelDetailMapper.selectByExample(example);
+        if (oo.getLandLevelId() != null) {
+            criteria.andLandLevelIdEqualTo(oo.getLandLevelId());
+        }
+        if (oo.getBisDelete() != null){
+            criteria.andBisDeleteEqualTo(oo.getBisDelete());
+        }
+        if (StringUtils.isNotEmpty(oo.getCreator())){
+            criteria.andCreatorEqualTo(oo.getCreator());
+        }
+        return example;
     }
 }
