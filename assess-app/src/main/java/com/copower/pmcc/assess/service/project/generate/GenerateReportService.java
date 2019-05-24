@@ -680,7 +680,15 @@ public class GenerateReportService {
     }
 
     private String replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
-        //替换
+        if (!preMap.isEmpty()) {
+            AsposeUtils.replaceText(localPath, preMap);
+            if (!textMap.isEmpty()) {
+                for (Map.Entry<String, String> entry : textMap.entrySet()) {
+                    preMap.put(entry.getKey(), entry.getValue());
+                }
+            }
+            AsposeUtils.replaceText(localPath, preMap);
+        }
         if (!fileMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, fileMap);
             if (!textMap.isEmpty()) {
@@ -692,15 +700,6 @@ public class GenerateReportService {
         }
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
-        }
-        if (!preMap.isEmpty()) {
-            AsposeUtils.replaceText(localPath, preMap);
-            if (!textMap.isEmpty()) {
-                for (Map.Entry<String, String> entry : textMap.entrySet()) {
-                    preMap.put(entry.getKey(), entry.getValue());
-                }
-            }
-            AsposeUtils.replaceText(localPath, preMap);
         }
         System.gc();
         return localPath;

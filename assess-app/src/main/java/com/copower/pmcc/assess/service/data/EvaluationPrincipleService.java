@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.CalculationMethodNameEnum;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -181,10 +180,8 @@ public class EvaluationPrincipleService {
         for (int i = 0; i < principleList.size(); i++) {
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
             DataEvaluationPrinciple basis = principleList.get(i);
-
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, basis.getName())).append("</p>");
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
-
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, basis.getName())));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
 
             //代替原则
             if (AssessReportFieldConstant.REPLACE_PRINCIPLE.equals(basis.getFieldName())) {
@@ -202,7 +199,7 @@ public class EvaluationPrincipleService {
 
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     List<SchemeJudgeFunction> applicableJudgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObject.getId());
-                    if(!CollectionUtils.isNotEmpty(applicableJudgeFunctions)){
+                    if (!CollectionUtils.isNotEmpty(applicableJudgeFunctions)) {
                         applicableJudgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObject.getPid());
                     }
                     for (SchemeJudgeFunction judgeFunction : applicableJudgeFunctions) {
@@ -232,29 +229,34 @@ public class EvaluationPrincipleService {
                     }
                 }
                 if (StringUtils.isNotBlank(compare)) {
-                    String substitutionPrincipleName = getSubstitutionPrincipleName(compare.toString());
+                    String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(compare.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.MARKET_COMPARE);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                    if (dataReportTemplateByField != null)
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
                 }
                 if (StringUtils.isNotBlank(cost)) {
-                    String substitutionPrincipleName = getSubstitutionPrincipleName(cost.toString());
+                    String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(cost.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.COST);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                    if (dataReportTemplateByField != null)
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
                 }
                 if (StringUtils.isNotBlank(development)) {
-                    String substitutionPrincipleName = getSubstitutionPrincipleName(development.toString());
+                    String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(development.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DEVELOPMENT);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                    if (dataReportTemplateByField != null)
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
                 }
                 if (StringUtils.isNotBlank(autotrophy)) {
-                    String substitutionPrincipleName = getSubstitutionPrincipleName(autotrophy.toString());
+                    String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(autotrophy.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INCOME_AUTOTROPHY);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                    if (dataReportTemplateByField != null)
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
                 }
                 if (StringUtils.isNotBlank(rent)) {
-                    String substitutionPrincipleName = getSubstitutionPrincipleName(rent.toString());
+                    String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(rent.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INCOME_RENT);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                    if (dataReportTemplateByField != null)
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
                 }
 
             }
@@ -264,14 +266,14 @@ public class EvaluationPrincipleService {
                 List<DataReportTemplateItem> dataReportTemplateItemList = dataReportTemplateItemDao.getListByMasterId(basis.getId(), SchemeSupportTypeEnum.PRINCIPLE.getKey());
                 //委估单位
                 DeclareApply declareApplyByProjectId = declarePublicService.getDeclareApplyByProjectId(projectInfo.getId());
-                String unit = declareApplyByProjectId.getClient();
+                String unit = StringUtils.defaultString(declareApplyByProjectId.getClient());
 
                 for (DataReportTemplateItem templateItem : dataReportTemplateItemList) {
                     switch (templateItem.getFieldName()) {
-                        //区位
-                        case AssessReportFieldConstant.EVALUATE_RESULTS:
+                        case AssessReportFieldConstant.EVALUATE_RESULTS: //区位
                             DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.EVALUATE_RESULTS);
-                            stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委托单位}", unit)).append("</p>");
+                            if (dataReportTemplateByField != null)
+                                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{委托单位}", unit)));
                             break;
                     }
                 }
