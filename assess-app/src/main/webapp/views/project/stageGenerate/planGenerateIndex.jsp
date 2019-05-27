@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -119,20 +120,27 @@
                                 </div>
                             </div>
                             <!-- 报告下载 -->
-                            <div class="form-group">
-                                <c:forEach items="${reportTypeList}" var="reportType">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            <a class="btn-dark btn btn-xs"
-                                               onclick="generateReport('${areaGroup.id}','${reportType.id}',this)">生成${reportType.name}
-                                                <i class="fa fa-file-word-o"></i></a>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div id="_reporttype${reportType.remark}${areaGroup.id}"></div>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                            </div>
+                            <c:if test="${fn:length(reportTypeList) < 3}">
+                                <div class="form-group">
+                                    <c:forEach items="${reportTypeList}" var="reportType"  varStatus="status">
+                                        <%@include file="./generateIndex.jsp" %>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
+                            <c:if test="${fn:length(reportTypeList) >= 3}">
+                                <div class="form-group">
+                                    <c:forEach items="${reportTypeList}" var="reportType" begin="0" end="2" varStatus="status">
+                                        <%@include file="./generateIndex.jsp" %>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
+                            <c:if test="${fn:length(reportTypeList) > 4}">
+                                <div class="form-group">
+                                    <c:forEach items="${reportTypeList}" var="reportType" begin="3" end="${fn:length(reportTypeList)}"  varStatus="status">
+                                        <%@include file="./generateIndex.jsp" %>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
                         </form>
                     </div>
                 </div>
@@ -173,8 +181,36 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
 
-    //报告附件 数组
-    var schemeReportGenerationFileControlIdArray = ["${REPORT_TYPE_PREAUDIT}", "${REPORT_TYPE_TECHNOLOGY}", "${REPORT_TYPE_RESULT}"];
+
+    /**
+     * @author:  zch
+     * 描述:报告附件 数组  拼接为REPORT_TYPE_PREAUDIT
+     * @date:  2019-05-27
+     **/
+    function getSchemeReportGenerationFileControlIdArray(callback) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_TYPE, '', function (html, data) {
+            var fileArray = [];
+            var underline = "_";
+            data.forEach(function (value, index) {
+                var fieldName = value.fieldName;
+                if (fieldName) {
+                    var strArray = fieldName.split(".");
+                    var tempArray = [];
+                    if (strArray.length >= 1) {
+                        strArray.forEach(function (item, i) {
+                            tempArray.push(item.toUpperCase());
+                        });
+                    }
+                    if (tempArray.length >= 1) {
+                        fileArray.push(tempArray.join(underline));
+                    }
+                }
+            });
+            if (callback) {
+                callback(fileArray);
+            }
+        });
+    }
 
     function fileShow(fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({
@@ -248,8 +284,10 @@
             $(frm).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
             $(frm).find("select[name='qualificationType']").val(info.qualificationType).attr("selected", true);
             $(frm).find("input[name='id']").val(info.id);
-            $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
-                fileShow(n + "" + areaGroupId, true, info.id);
+            getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
+                $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
+                    fileShow(n + "" + areaGroupId, true, info.id);
+                });
             });
             dataQualificationShow(info.qualificationType, info.realEstateAppraiser, frm);
         }

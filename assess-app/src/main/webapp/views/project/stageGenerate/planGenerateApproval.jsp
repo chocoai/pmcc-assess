@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -7,8 +8,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
-
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -81,35 +80,39 @@
                                 </div>
                             </div>
                             <!-- 报告下载 -->
-                            <div class="form-group">
-                                <c:forEach items="${reportTypeList}" var="reportType">
-                                    <label class="col-sm-1 control-label">
-                                        <a class="btn-dark btn btn-xs">${reportType.name}</a>
-                                    </label>
-                                    <div class="x-valid">
-                                        <div class="col-sm-3">
-                                            <div id="_reporttype${reportType.remark}${generationVo.areaGroupId}"></div>
-                                        </div>
-                                    </div>
-                                    <script type="text/javascript">
-                                        $(function () {
-                                            FileUtils.getFileShows({
-                                                target: "reporttype${reportType.remark}${generationVo.areaGroupId}",
-                                                formData: {
-                                                    fieldsName: "reporttype${reportType.remark}${generationVo.areaGroupId}",
-                                                    tableName: AssessDBKey.GenerateReportGeneration,
-                                                    tableId: '${generationVo.id}'
-                                                },
-                                                deleteFlag: false
-                                            })
-                                        })
-                                    </script>
-                                </c:forEach>
-                            </div>
+                            <c:if test="${fn:length(reportTypeList) < 3}">
+                                <div class="form-group">
+                                    <c:forEach items="${reportTypeList}" var="reportType"  varStatus="status">
+                                        <%@include file="./generateDetail.jsp" %>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
+                            <c:if test="${fn:length(reportTypeList) >= 3}">
+                                <div class="form-group">
+                                    <c:forEach items="${reportTypeList}" var="reportType" begin="0" end="2" varStatus="status">
+                                        <%@include file="./generateDetail.jsp" %>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
+                            <c:if test="${fn:length(reportTypeList) > 4}">
+                                <div class="form-group">
+                                    <c:forEach items="${reportTypeList}" var="reportType" begin="3" end="${fn:length(reportTypeList)}"  varStatus="status">
+                                        <%@include file="./generateDetail.jsp" %>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
                         </form>
                     </div>
                 </div>
-
+                <script>
+                    $(function () {
+                        getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
+                            $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
+                                fileShow(n + '${generationVo.areaGroupId}', false, '${generationVo.id}');
+                            });
+                        });
+                    })
+                </script>
             </c:forEach>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -122,9 +125,51 @@
 
 
 <script type="text/javascript">
-    $(function () {
 
-    });
+
+    function fileShow(fieldsName, deleteFlag, id) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            //showMode: 'table',
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.GenerateReportGeneration,
+                tableId: id == undefined ? 0 : id
+            },
+            deleteFlag: deleteFlag == undefined ? true : deleteFlag
+        })
+    }
+
+    /**
+     * @author:  zch
+     * 描述:报告附件 数组  拼接为REPORT_TYPE_PREAUDIT
+     * @date:  2019-05-27
+     **/
+    function getSchemeReportGenerationFileControlIdArray(callback) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_TYPE, '', function (html, data) {
+            var fileArray = [];
+            var underline = "_";
+            data.forEach(function (value, index) {
+                var fieldName = value.fieldName;
+                if (fieldName) {
+                    var strArray = fieldName.split(".");
+                    var tempArray = [];
+                    if (strArray.length >= 1) {
+                        strArray.forEach(function (item, i) {
+                            tempArray.push(item.toUpperCase());
+                        });
+                    }
+                    if (tempArray.length >= 1) {
+                        fileArray.push(tempArray.join(underline));
+                    }
+                }
+            });
+            if (callback) {
+                callback(fileArray);
+            }
+        });
+    }
+
 
 
     function saveform() {
