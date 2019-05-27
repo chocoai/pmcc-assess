@@ -128,9 +128,9 @@
             });
         },
         showModel: function () {
-            $("#" + taskCaseAssign.prototype.config().frm).clearAll();
-            taskCaseAssign.prototype.loadHousesList();
-            $('#' + taskCaseAssign.prototype.config().box).modal("show");
+            var href = "${pageContext.request.contextPath}/taskCaseAssign/applyIndex";
+            href += "?id=" + "";
+            window.open(href, "");
         },
         saveData: function () {
             if (!$("#" + taskCaseAssign.prototype.config().frm).valid()) {
@@ -195,7 +195,7 @@
             erpEmployee.select({
                 onSelected: function (data) {
                     if (data.account) {
-                        console.log(data.name)
+
                         $("#queryExecutorName").val(data.name);
                         $("#queryExecutor").val(data.account);
                     }
@@ -211,7 +211,7 @@
             erpEmployee.select({
                 onSelected: function (data) {
                     if (data.account) {
-                        console.log(data.name)
+
                         $("#executorName").val(data.name);
                         $("#executor").val(data.account);
                     }

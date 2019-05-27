@@ -496,15 +496,24 @@
 
     $(function () {
         basicApplyIndex.startApply();
-        //定位成功回调方法
-        mapPosition.getCurrentCity(function (province, city) {
+        if("${province}"&&"${city}"){
             AssessCommon.initAreaInfo({
                 provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
                 cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
-                provinceDefaultText: province,
-                cityDefaultText: city
+                provinceValue: '${province}',
+                cityValue: '${city}'
             });
-        });
+        }else {
+            //定位成功回调方法
+            mapPosition.getCurrentCity(function (province, city) {
+                AssessCommon.initAreaInfo({
+                    provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
+                    cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
+                    provinceDefaultText: province,
+                    cityDefaultText: city
+                });
+            });
+        }
     });
 
 </script>

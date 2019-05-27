@@ -7,11 +7,19 @@ public class TaskCaseAssign {
 
     private String executor;
 
-    private String lpbh;
+    private String province;
 
-    private String status;
+    private String city;
+
+    private String district;
+
+    private String remark;
+
+    private String lpInfo;
 
     private String processInsId;
+
+    private String status;
 
     private String creator;
 
@@ -35,20 +43,44 @@ public class TaskCaseAssign {
         this.executor = executor == null ? null : executor.trim();
     }
 
-    public String getLpbh() {
-        return lpbh;
+    public String getProvince() {
+        return province;
     }
 
-    public void setLpbh(String lpbh) {
-        this.lpbh = lpbh == null ? null : lpbh.trim();
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
     }
 
-    public String getStatus() {
-        return status;
+    public String getCity() {
+        return city;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district == null ? null : district.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getLpInfo() {
+        return lpInfo;
+    }
+
+    public void setLpInfo(String lpInfo) {
+        this.lpInfo = lpInfo == null ? null : lpInfo.trim();
     }
 
     public String getProcessInsId() {
@@ -57,6 +89,14 @@ public class TaskCaseAssign {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getCreator() {

@@ -1,16 +1,18 @@
 package com.copower.pmcc.assess.service;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.funi.FuniHousesDao;
 import com.copower.pmcc.assess.dal.basis.dao.funi.TaskCaseAssignDao;
 import com.copower.pmcc.assess.dal.basis.entity.FuniHouses;
 import com.copower.pmcc.assess.dal.basis.entity.TaskCaseAssign;
+import com.copower.pmcc.assess.dto.input.TaskCaseAssignDto;
 import com.copower.pmcc.assess.dto.output.TaskCaseAssignVo;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
-import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -23,12 +25,13 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -61,6 +64,10 @@ public class TaskCaseAssignService {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ErpAreaService erpAreaService;
+    @Autowired
+    private BasicApplyDao basicApplyDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -111,17 +118,23 @@ public class TaskCaseAssignService {
         TaskCaseAssignVo taskCaseAssignVo = new TaskCaseAssignVo();
         BeanUtils.copyProperties(taskCaseAssign, taskCaseAssignVo);
         taskCaseAssignVo.setExecutorName(erpRpcUserService.getSysUser(taskCaseAssign.getExecutor()).getUserName());
-        String lpbhIds = taskCaseAssign.getLpbh();
-        if (StringUtils.isNotBlank(lpbhIds)) {
-            String[] ids = lpbhIds.split(",");
-            StringBuilder lpmc = new StringBuilder();
-            if (ids != null && ids.length > 0) {
-                for (String FuniHousesId : ids) {
-                    lpmc.append(funiHousesDao.getFuniHouses(Integer.valueOf(FuniHousesId)).getLpmc());
-                    lpmc.append("/");
-                }
+        List<TaskCaseAssignDto> dtoList = JSON.parseArray(taskCaseAssign.getLpInfo(), TaskCaseAssignDto.class);
+        StringBuilder lpmc = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(dtoList)) {
+            for (TaskCaseAssignDto item : dtoList) {
+                lpmc.append(item.getName());
+                lpmc.append("/");
             }
             taskCaseAssignVo.setLpmc(lpmc.toString().substring(0, lpmc.length() - 1));
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(taskCaseAssign.getProvince())) {
+            taskCaseAssignVo.setProvinceName(erpAreaService.getSysAreaName(taskCaseAssign.getProvince()));//省
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(taskCaseAssign.getCity())) {
+            taskCaseAssignVo.setCityName(erpAreaService.getSysAreaName(taskCaseAssign.getCity()));//市或者县
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(taskCaseAssign.getDistrict())) {
+            taskCaseAssignVo.setDistrictName(erpAreaService.getSysAreaName(taskCaseAssign.getDistrict()));//县
         }
         return taskCaseAssignVo;
     }
@@ -133,31 +146,29 @@ public class TaskCaseAssignService {
      * @param taskCaseAssign
      * @throws BusinessException
      */
-    public void addTaskCaseAssignReturnId(TaskCaseAssign taskCaseAssign) {
-        taskCaseAssign.setCreator(processControllerComponent.getThisUser());
-        if (taskCaseAssignDao.addObject(taskCaseAssign)) {
-            //修改参考楼盘信息
-            String[] ids = taskCaseAssign.getLpbh().split(",");
-            FuniHouses funiHouses = new FuniHouses();
-            if (ids != null && ids.length > 0) {
-                for (String FuniHousesId : ids) {
-                    funiHouses = funiHousesDao.getFuniHouses(Integer.valueOf(FuniHousesId));
-                    funiHouses.setComplete(true);
-                    funiHousesDao.editFuniHouses(funiHouses);
-                }
-            }
+    public Integer saveTaskCaseAssign(TaskCaseAssign taskCaseAssign) throws BusinessException {
+        if (taskCaseAssign.getId() == null || taskCaseAssign.getId() == 0) {
+            //添加的楼盘名称
+            List<TaskCaseAssignDto> dtoList = JSON.parseArray(taskCaseAssign.getLpInfo(), TaskCaseAssignDto.class);
+            List<String> dtoLpNames = LangUtils.transform(dtoList, p -> p.getName());
 
-            TaskCaseAssignVo vo = getTaskCaseAssignVo(taskCaseAssign);
-            String projectName = vo.getLpmc();
-            //添加任务
-            ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
-            projectTask.setProjectName(projectName + "信息录入");
-            projectTask.setUserAccount(taskCaseAssign.getExecutor());
-            projectTask.setCreator(processControllerComponent.getThisUser());
-            projectTask.setAppKey(applicationConstant.getAppKey());
-            projectTask.setProjectId(taskCaseAssign.getId());
-            projectTask.setUrl(String.format("/%s/%s", applicationConstant.getAppKey(), "taskCaseAssign/applyIndex?id=" + taskCaseAssign.getId()));
-            bpmRpcProjectTaskService.saveProjectTaskExtend(projectTask);
+            //已分派的楼盘名称
+            List<TaskCaseAssign> listObject = taskCaseAssignDao.getListObject(new TaskCaseAssign());
+            List<String> assignStr = LangUtils.transform(listObject, p -> p.getLpInfo());
+            List<TaskCaseAssignDto> assignInfo = Lists.newArrayList();
+            for (String str : assignStr) {
+                assignInfo.addAll(JSON.parseArray(str, TaskCaseAssignDto.class));
+            }
+            List<String> assignNames = LangUtils.transform(assignInfo, p -> p.getName());
+            assignNames.retainAll(dtoLpNames);
+            if (CollectionUtils.isNotEmpty(assignNames)) {
+                throw new BusinessException("该楼盘已经分派任务");
+            }
+            taskCaseAssign.setCreator(processControllerComponent.getThisUser());
+            return taskCaseAssignDao.addObject(taskCaseAssign);
+        } else {
+            updateTaskCaseAssign(taskCaseAssign);
+            return null;
         }
     }
 
@@ -174,22 +185,22 @@ public class TaskCaseAssignService {
     public boolean deleteTaskCaseAssign(Integer id) throws BusinessException {
         TaskCaseAssign taskCaseAssign = taskCaseAssignDao.getSingleObject(id);
         //修改参考楼盘信息
-        String[] ids = taskCaseAssign.getLpbh().split(",");
+        List<TaskCaseAssignDto> dtoList = JSON.parseArray(taskCaseAssign.getLpInfo(), TaskCaseAssignDto.class);
         FuniHouses funiHouses = new FuniHouses();
-        if (ids != null && ids.length > 0) {
-            for (String FuniHousesId : ids) {
-                funiHouses = funiHousesDao.getFuniHouses(Integer.valueOf(FuniHousesId));
-                funiHouses.setComplete(false);
-                funiHousesDao.editFuniHouses(funiHouses);
+        if (CollectionUtils.isNotEmpty(dtoList)) {
+            for (TaskCaseAssignDto item : dtoList) {
+                funiHouses = funiHousesDao.getFuniHouses(item.getLpbh());
+                if (funiHouses != null) {
+                    funiHouses.setComplete(false);
+                    funiHousesDao.editFuniHouses(funiHouses);
+                }
             }
         }
-        //删除待提交任务
-        bpmRpcProjectTaskService.deleteProjectTaskByProjectid(applicationConstant.getAppKey(), id);
         return taskCaseAssignDao.deleteObject(id);
     }
 
 
-    public BootstrapTableVo getApplyHousesList(String lpbh) {
+    /*public BootstrapTableVo getApplyHousesList(String lpbh) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -206,12 +217,11 @@ public class TaskCaseAssignService {
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(funiHousesList) ? new ArrayList<FuniHouses>() : funiHousesList);
         return bootstrapTableVo;
-    }
+    }*/
 
     /**
      * 流程发起
      *
-     * @param id
      * @return
      * @throws Exception
      */
@@ -231,7 +241,7 @@ public class TaskCaseAssignService {
         processInfo.setProcessEventExecutor(BaseProcessEvent.class);
         processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getKey());
         processInfo.setProcessEventExecutorName(BaseProcessEvent.class.getSimpleName());
-        processInfo.setTableId(id);
+        processInfo.setTableId(assign.getId());
         try {
             processUserDto = processControllerComponent.processStart(processInfo, processControllerComponent.getThisUser(), false);
             assign.setProcessInsId(processUserDto.getProcessInsId());
