@@ -10,10 +10,7 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
+import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.assist.ResidueRatioService;
@@ -980,12 +977,12 @@ public class PublicBasicService {
         }
     }
 
-    public BasicBuilding getBasicBuildingByAppId(Integer appId) throws Exception {
+    public BasicBuildingVo getBasicBuildingByAppId(Integer appId) throws Exception {
         BasicBuilding basicBuilding = new BasicBuilding();
         basicBuilding.setApplyId(appId);
         List<BasicBuilding> basicBuildingMains = basicBuildingService.basicBuildingList(basicBuilding);
         if (!ObjectUtils.isEmpty(basicBuildingMains)) {
-            return basicBuildingMains.get(0);
+            return basicBuildingService.getBasicBuildingVo(basicBuildingMains.get(0));
         } else {
             return null;
         }

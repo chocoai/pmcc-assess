@@ -61,10 +61,10 @@
                     建筑使用年限
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <c:if test="${basicApply.type == 0 || basicApply.type==null}">
+                    <c:if test="${!empty basicBuilding.residenceUseYearName}">
                         <label class="form-control" name="residenceUseYearName">${basicBuilding.residenceUseYearName}</label>
                     </c:if>
-                    <c:if test="${basicApply.type == 1}">
+                    <c:if test="${!empty basicBuilding.industryUseYearName}">
                         <label class="form-control" name="industryUseYearName">${basicBuilding.industryUseYearName}</label>
                     </c:if>
                 </div>

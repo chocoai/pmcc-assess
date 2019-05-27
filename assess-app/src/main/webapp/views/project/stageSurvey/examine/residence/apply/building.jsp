@@ -32,7 +32,6 @@
                     function buildingNumberBlur(_this) {
                         $(_this).val($(_this).val().replace('栋',''));
                         var buildingNameElement = $(_this).closest('.form-group').find('[name=buildingName]');
-                        console.log(buildingNameElement.val());
                         if(!buildingNameElement.val()){
                             buildingNameElement.val($(_this).val()+'栋');
                         }

@@ -6,10 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
+import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -172,7 +169,7 @@ public class BasicApplyController extends BaseController {
         BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getEstateLandStateByAppId(basicApply.getId());
         BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByAppId(basicApply.getId());
         BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply.getId());
-        BasicBuilding basicBuilding = publicBasicService.getBasicBuildingByAppId(basicApply.getId());
+        BasicBuildingVo basicBuilding = publicBasicService.getBasicBuildingByAppId(basicApply.getId());
         if (basicApply != null) {
             modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
         }

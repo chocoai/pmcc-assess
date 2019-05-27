@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
+import com.copower.pmcc.assess.dal.basis.entity.DataProperty;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -17,6 +19,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -178,6 +181,7 @@ public class CaseBuildingService {
         CaseBuildingVo vo = new CaseBuildingVo();
         BeanUtils.copyProperties(caseBuilding, vo);
         vo.setPropertyTypeName(baseDataDicService.getNameById(caseBuilding.getPropertyType()));
+        vo.setCompletedTimeTypeName(baseDataDicService.getNameById(caseBuilding.getCompletedTimeType()));
         vo.setPropertyCategoryName(baseDataDicService.getNameById(caseBuilding.getPropertyCategory()));
         vo.setBuildingStructureTypeName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureType()));
         vo.setBuildingStructureCategoryName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureCategory()));
@@ -185,6 +189,20 @@ public class CaseBuildingService {
         if (caseBuilding.getIndustryUseYear() != null){
             if (dataBuildingNewRateService.getByiDdataBuildingNewRate(caseBuilding.getIndustryUseYear()) != null){
                 vo.setIndustryUseYearName(dataBuildingNewRateService.getByiDdataBuildingNewRate(caseBuilding.getIndustryUseYear()).getBuildingStructure());
+            }
+        }
+        if (NumberUtils.isNumber(caseBuilding.getProperty())){
+            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(Integer.parseInt(caseBuilding.getProperty()));
+            if (dataProperty != null){
+                vo.setPropertyName(dataProperty.getName());
+                vo.setDataProperty(dataPropertyService.getDataPropertyVo(dataProperty));
+            }
+        }
+        if (NumberUtils.isNumber(caseBuilding.getBuilder())){
+            DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(Integer.parseInt(caseBuilding.getBuilder()));
+            if (dataBuilder != null){
+                vo.setBuildingName(dataBuilder.getName());
+                vo.setDataBuilder(dataBuilderService.getDataBuilderVo(dataBuilder));
             }
         }
         return vo;
