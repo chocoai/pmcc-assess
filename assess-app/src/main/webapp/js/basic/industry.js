@@ -13,8 +13,8 @@ var industry = new Object();
 
 industry.config = {
     id: "industry",
-    notIndustry: {key: 0, name: "非工业与仓储"},
-    industry: {key: 1, name: "工业与仓储"},
+    notIndustry: {key: 0, name: "非工业交通仓储"},
+    industry: {key: 1, name: "工业交通仓储"},
     defaultKey: "0",
     build: {
         surface: "industrySurface",//屋面结构
@@ -65,7 +65,7 @@ industry.isNotBlank = function (item) {
 };
 
 /**
- * 非工业与仓储
+ * 非工业交通仓储
  * @type {{init: industry.industryOne.init, build: industry.industryOne.build}}
  */
 industry.industryOne = {

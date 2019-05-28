@@ -114,10 +114,10 @@
         cols.push({
             field: 'type', title: '类型', formatter: function (value, row, index) {
                 if (value == 0) {
-                    return "非工业与仓储";
+                    return "非工业交通仓储";
                 }
                 if (value == 1) {
-                    return "工业与仓储";
+                    return "工业交通仓储";
                 }
             }
         });

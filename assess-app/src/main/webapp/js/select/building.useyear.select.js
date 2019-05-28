@@ -6,12 +6,12 @@
 
 
     assessBuildingUseYear.config = {
-        notIndustry: {key: 0, name: "非工业与仓储"},
-        industry: {key: 1, name: "工业与仓储"},
+        notIndustry: {key: 0, name: "非工业交通仓储"},
+        industry: {key: 1, name: "工业交通仓储"},
         defaultKey: "0"
     };
 
-    //默认为非工业仓储
+    //默认为非工业交通仓储
     assessBuildingUseYear.key = assessBuildingUseYear.config.defaultKey;
 
     assessBuildingUseYear.setKey = function (key) {
@@ -90,7 +90,7 @@
     };
 
     /**
-     * 获取非工业与仓储
+     * 获取非工工业交通仓储
      * @returns {string}
      */
     assessBuildingUseYear.getNoIndustryHTML = function () {

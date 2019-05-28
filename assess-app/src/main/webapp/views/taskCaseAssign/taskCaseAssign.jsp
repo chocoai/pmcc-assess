@@ -31,13 +31,21 @@
                 <div class="x_content">
                     <form id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
+                            <label class="col-sm-1 control-label">
+                                楼盘名称
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" id="queryLpName" placeholder="楼盘名称" class="form-control">
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                名称
+                            </label>
                             <div class="col-sm-3">
                                 <input type="hidden" id="queryExecutor">
                                 <input type="text" readonly="readonly" id="queryExecutorName"
-                                       placeholder="查询人员" class="form-control" required
+                                       placeholder="查询人员" class="form-control"
                                        onclick="taskCaseAssign.prototype.querySelectEmployee();">
                             </div>
-
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-primary"
                                         onclick="taskCaseAssign.prototype.loadDataDicList()">
@@ -82,13 +90,13 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'executorName', title: "人员"});
             cols.push({field: 'lpmc', title: '楼盘名称'});
+            cols.push({field: 'executorName', title: "认领人"});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="taskCaseAssign.prototype.removeData(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick=""><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }

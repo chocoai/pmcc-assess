@@ -123,6 +123,7 @@
             cols.push({field: 'calculationFormula', title: '计算公式'});
             cols.push({field: 'taxesBurden', title: '税费负担方'});
             cols.push({field: 'exExplain', title: '说明'});
+            cols.push({field: 'sorting', title: '排序'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

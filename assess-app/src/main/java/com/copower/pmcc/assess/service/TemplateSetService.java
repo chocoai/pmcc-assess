@@ -22,9 +22,12 @@ import java.util.List;
 public class TemplateSetService {
     @Autowired
     private CrmRpcCustomerService crmRpcCustomerService;
+    @Autowired
+    private PublicService publicService;
 
     public CrmTreeDto getCrmTree() {
         CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
+        crmCustomerDto.setCompanyId(publicService.getCurrentCompany().getCompanyId());
         List<CrmCustomerDto> customerList = crmRpcCustomerService.getCustomerList(crmCustomerDto);
 
         List<CrmTreeDto> crmTreeDtos = new ArrayList<>();
