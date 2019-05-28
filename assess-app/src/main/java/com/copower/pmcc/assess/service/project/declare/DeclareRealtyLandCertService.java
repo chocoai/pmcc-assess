@@ -422,6 +422,7 @@ public class DeclareRealtyLandCertService {
             declareRecord.setId(null);
             declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
+            declareRecord.setRegistrationDate(oo.getRegistrationDate());
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setName(oo.getLandCertName());
             declareRecord.setOwnership(oo.getOwnership());

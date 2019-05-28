@@ -824,6 +824,136 @@ public class DataLandLevelExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andTitleIsNull() {
+            addCriterion("title is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleIsNotNull() {
+            addCriterion("title is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleEqualTo(String value) {
+            addCriterion("title =", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotEqualTo(String value) {
+            addCriterion("title <>", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleGreaterThan(String value) {
+            addCriterion("title >", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleGreaterThanOrEqualTo(String value) {
+            addCriterion("title >=", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLessThan(String value) {
+            addCriterion("title <", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLessThanOrEqualTo(String value) {
+            addCriterion("title <=", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLike(String value) {
+            addCriterion("title like", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotLike(String value) {
+            addCriterion("title not like", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleIn(List<String> values) {
+            addCriterion("title in", values, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotIn(List<String> values) {
+            addCriterion("title not in", values, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleBetween(String value1, String value2) {
+            addCriterion("title between", value1, value2, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotBetween(String value1, String value2) {
+            addCriterion("title not between", value1, value2, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeIsNull() {
+            addCriterion("execution_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeIsNotNull() {
+            addCriterion("execution_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeEqualTo(Date value) {
+            addCriterion("execution_time =", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeNotEqualTo(Date value) {
+            addCriterion("execution_time <>", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeGreaterThan(Date value) {
+            addCriterion("execution_time >", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("execution_time >=", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeLessThan(Date value) {
+            addCriterion("execution_time <", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeLessThanOrEqualTo(Date value) {
+            addCriterion("execution_time <=", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeIn(List<Date> values) {
+            addCriterion("execution_time in", values, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeNotIn(List<Date> values) {
+            addCriterion("execution_time not in", values, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeBetween(Date value1, Date value2) {
+            addCriterion("execution_time between", value1, value2, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeNotBetween(Date value1, Date value2) {
+            addCriterion("execution_time not between", value1, value2, "executionTime");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

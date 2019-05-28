@@ -25,6 +25,10 @@ public class DataLandLevel {
 
     private Date gmtModified;
 
+    private String title;
+
+    private Date executionTime;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +115,21 @@ public class DataLandLevel {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
+    }
+
+    public Date getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(Date executionTime) {
+        this.executionTime = executionTime;
     }
 }

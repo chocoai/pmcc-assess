@@ -2396,6 +2396,66 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andRegistrationDateIsNull() {
+            addCriterion("registration_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateIsNotNull() {
+            addCriterion("registration_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateEqualTo(Date value) {
+            addCriterion("registration_date =", value, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateNotEqualTo(Date value) {
+            addCriterion("registration_date <>", value, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateGreaterThan(Date value) {
+            addCriterion("registration_date >", value, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("registration_date >=", value, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateLessThan(Date value) {
+            addCriterion("registration_date <", value, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateLessThanOrEqualTo(Date value) {
+            addCriterion("registration_date <=", value, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateIn(List<Date> values) {
+            addCriterion("registration_date in", values, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateNotIn(List<Date> values) {
+            addCriterion("registration_date not in", values, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateBetween(Date value1, Date value2) {
+            addCriterion("registration_date between", value1, value2, "registrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistrationDateNotBetween(Date value1, Date value2) {
+            addCriterion("registration_date not between", value1, value2, "registrationDate");
+            return (Criteria) this;
+        }
+
         public Criteria andPriceIsNull() {
             addCriterion("price is null");
             return (Criteria) this;

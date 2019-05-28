@@ -34,6 +34,10 @@ public class DataTaxRateAllocation {
 
     private Date gmtModified;
 
+    private String fieldName;
+
+    private Integer sorting;
+
     public Integer getId() {
         return id;
     }
@@ -152,5 +156,21 @@ public class DataTaxRateAllocation {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName == null ? null : fieldName.trim();
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 }
