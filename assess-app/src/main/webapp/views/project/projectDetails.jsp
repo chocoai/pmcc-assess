@@ -261,7 +261,7 @@
                 idField: 'id',
                 treeField: 'projectPhaseName',
                 datatype: 'json',
-                lines: true,
+                lines: false,
                 autoRowHeight: false,
                 fitColumns: false,
                 checkOnSelect: false,
