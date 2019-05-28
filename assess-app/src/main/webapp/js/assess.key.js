@@ -80,6 +80,7 @@ AssessProjectClassifyKey.singleHousetaskRightCategory = "single.house.property.t
  */
 var AssessDicKey = {}
 //项目申报
+AssessDicKey.REPORT_TYPE = "report.type";//报告类型
 AssessDicKey.projectDeclareHouseCertificateType = "project.declare.house.certificate.type";//房产证类型
 AssessDicKey.projectDeclareCommonSituation = "project.declare.common.situation";//共有情况
 AssessDicKey.projectDeclareLandCertificateType = "project.declare.land.certificate.type";//土地证类型

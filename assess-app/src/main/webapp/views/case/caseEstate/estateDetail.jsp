@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html lang="en" class="no-js">
+<head>
+    <%@include file="/views/share/main_css.jsp" %>
+</head>
 <div class="x_panel">
     <form class="form-horizontal" id="frm_estate">
         <div class="x_content">
@@ -465,6 +469,23 @@
                     </div>
                 </c:if>
             </div>
+            <div class="form-group">
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <table class="table table-striped table-bordered" style="display: none">
+                        <thead>
+                        <tr>
+                            <th width="20%">土地级别类别</th>
+                            <th width="20%">土地级别类型</th>
+                            <th width="15%">等级</th>
+                            <th width="10%">分值</th>
+                        </tr>
+                        </thead>
+                        <tbody id="landLevelTabContent">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </form>
 
         <!-- 网络通信 -->
@@ -571,10 +592,44 @@
 </div>
 
 
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+            {landLevelCategoryName}
+        </td>
+
+
+        <td>
+            <label name="gradeName" class="form-control">{gradeName}</label>
+        </td>
+        <td>
+            <label name="landFactorTotalScore" class="form-control">{landFactorTotalScore}</label>
+        </td>
+
+    </tr>
+</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
 <script type="text/javascript">
     var CaseEstateFun = function () {
 
+    };
+
+    /**
+     * 空字符串检测
+     * @param item
+     * @returns {boolean}
+     */
+    CaseEstateFun.prototype.isNotBlank = function (item) {
+        return caseCommon.isNotBlank(item);
+    };
+
+    CaseEstateFun.prototype.isNotBlankObject = function (obj) {
+        return caseCommon.isNotBlankObject(obj);
     };
 
     CaseEstateFun.prototype.config = {
@@ -618,7 +673,7 @@
             formData: {
                 fieldsName: fieldsName,
                 tableName: table,
-                tableId: ${empty caseEstate.id?0:caseEstate.id},
+                tableId: '${empty caseEstate.id?0:caseEstate.id}',
                 creater: "${currUserAccount}"
             },
             deleteFlag: true
@@ -627,9 +682,30 @@
 
     var caseEstate = new CaseEstateFun();
 
+
     //模块 楼盘基本信息
     caseEstate.estateModel = {
         init: function () {
+            var landLevelContent = undefined;
+
+            try {
+                landLevelContent = '${caseEstateLandState.landLevelContent}';
+            } catch (e) {
+            }
+            if (caseCommon.isNotBlank(landLevelContent)) {
+                var obj = {};
+                try {
+                    obj = JSON.parse(landLevelContent);
+                } catch (e) {
+                }
+                if (caseCommon.isNotBlankObject(obj)) {
+                    try {
+                        var objData = caseCommon.landLevelFilter(obj);
+                        caseCommon.landLevelLoadHtml(objData);
+                    } catch (e) {
+                    }
+                }
+            }
             //总平面图
             caseEstate.showFile(AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN, AssessDBKey.CaseEstate);
             //外观图

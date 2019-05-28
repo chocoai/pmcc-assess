@@ -6,6 +6,7 @@
             <div class="clearfix"></div>
         </div>
         <form class="form-horizontal" id="basicBuildingFrm">
+            <input type="hidden" name="id" value="${caseBuilding.id}">
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -52,17 +53,14 @@
                         建筑使用年限
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <c:if test="${caseBuilding.residenceUseYear != null}">
+                        <c:if test="${!empty caseBuilding.residenceUseYearName}">
                             <label class="form-control" name="residenceUseYearName">${caseBuilding.residenceUseYearName}</label>
                         </c:if>
-                        <c:if test="${caseBuilding.industryUseYear != null}">
+                        <c:if test="${!empty caseBuilding.industryUseYearName}">
                             <label class="form-control" name="industryUseYearName">${caseBuilding.industryUseYearName}</label>
                         </c:if>
                     </div>
                 </div>
-            </div>
-            <input type="hidden" name="id" value="${caseBuilding.id}">
-            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         户型区间
@@ -71,6 +69,8 @@
                         <label class="form-control" name="unitInterval">${caseBuilding.unitInterval}</label>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         物业费
@@ -87,8 +87,6 @@
                         <label class="form-control" name="facilitiesUseFee">${caseBuilding.facilitiesUseFee}</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         建筑高度
@@ -97,6 +95,8 @@
                         <label class="form-control" name="buildingHeight">${caseBuilding.buildingHeight}</label>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         建筑面积
@@ -113,8 +113,6 @@
                         <label class="form-control" name="coverAnArea">${caseBuilding.coverAnArea}</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         层高
@@ -123,6 +121,8 @@
                         <label class="form-control" name="floorHeight">${caseBuilding.floorHeight}</label>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         进深
@@ -139,23 +139,36 @@
                         <label class="form-control" name="landUseYear">${caseBuilding.landUseYear}</label>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         开盘时间
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="openTime"><fmt:formatDate value="${caseBuilding.openTime}"></fmt:formatDate> </label>
+                        <label class="form-control dbdate" name="openTime">
+                            <fmt:formatDate
+                                    value='${caseBuilding.openTime}' pattern='yyyy-MM-dd'/>
+                        </label>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         交房时间
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="roomTime"><fmt:formatDate value="${caseBuilding.roomTime}"></fmt:formatDate></label>
+                        <label class="form-control dbdate" name="roomTime">
+                            <fmt:formatDate
+                                    value='${caseBuilding.roomTime}' pattern='yyyy-MM-dd'/>
+                        </label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        竣工时间获取方式
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="completedTimeTypeName">${caseBuilding.completedTimeTypeName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -163,11 +176,13 @@
                         竣工时间
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="beCompletedTime"><fmt:formatDate value="${caseBuilding.beCompletedTime}"></fmt:formatDate></label>
+
+                        <label class="form-control dbdate" name="beCompletedTime"><fmt:formatDate
+                                value='${caseBuilding.beCompletedTime}' pattern='yyyy-MM-dd'/></label>
+
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -190,7 +205,7 @@
                         物业公司
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="property">${caseBuilding.property}</label>
+                        <label class="form-control" name="property">${caseBuilding.propertyName}</label>
                     </div>
                 </div>
             </div>
@@ -217,7 +232,7 @@
                         建筑公司
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="builder">${caseBuilding.builder}</label>
+                        <label class="form-control" name="builder">${caseBuilding.builderName}</label>
                     </div>
                 </div>
             </div>

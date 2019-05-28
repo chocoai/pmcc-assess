@@ -11,11 +11,10 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,43 +50,12 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateIndex", "", 0, "-1", "");
-        //获取报告类型
         setModelParam(projectPlan, modelAndView);
         return modelAndView;
     }
 
     private void setModelParam(ProjectPlan projectPlan, ModelAndView modelAndView) {
-        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
-        if (CollectionUtils.isNotEmpty(reportTypeList)) {
-            Map<String, String> stringMap = Maps.newHashMap();
-            reportTypeList.stream().forEach(oo -> {
-                if (Objects.equal(oo.getFieldName(), AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT)) {
-                    stringMap.put(oo.getFieldName(), "REPORT_TYPE_PREAUDIT");
-                }
-                if (Objects.equal(oo.getFieldName(), AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
-                    stringMap.put(oo.getFieldName(), "REPORT_TYPE_TECHNOLOGY");
-                }
-                if (Objects.equal(oo.getFieldName(), AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
-                    stringMap.put(oo.getFieldName(), "REPORT_TYPE_RESULT");
-                }
-            });
-            if (!stringMap.isEmpty()) {
-                StringBuilder builder = new StringBuilder(8);
-                for (Map.Entry<String, String> stringEntry : stringMap.entrySet()) {
-                    builder.delete(0, builder.toString().length());
-                    String[] strs = stringEntry.getKey().split("\\.");
-                    for (String s : strs) {
-                        builder.append(s);
-                    }
-                    //必要的(用做页面上附件的字段,与com.copower.pmcc.assess.service.project.generate.GenerateReportService.createSysAttachment相一致)
-                    modelAndView.addObject(stringEntry.getValue(), FormatUtils.underlineToCamel(builder.toString(), false));
-                }
-            }
-            modelAndView.addObject("reportTypeList", reportTypeList);
-        }
         List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
-        modelAndView.addObject("schemeAreaGroupList", schemeAreaGroupList);
-        modelAndView.addObject("projectPlan", projectPlan);
         GenerateReportGeneration schemeReportGeneration = new GenerateReportGeneration();
         List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
@@ -132,21 +100,36 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
             //排序 取最大
             schemeReportGeneration.setInvestigationsEndDate(endTime.stream().sorted().findFirst().get());
         }
-        Map<String, String> qualification = new HashMap<>();
-        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getName());
-        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getName());
-        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getName());
-        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getName());
-        modelAndView.addObject("qualificationTypes", qualification);
+        Map<String, String> qualificationTypes = new HashMap<String, String>(AdPersonalEnum.values().length-1);
+        for (AdPersonalEnum ad:AdPersonalEnum.values()){
+            qualificationTypes.put(ad.getValue(), ad.getName());
+
+        }
+        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
+        List<BaseDataDic> reportTypeList2 = Lists.newArrayList();
+        List<String> stringList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(reportTypeList)){
+            for (BaseDataDic baseDataDic:reportTypeList){
+                for (String s : baseDataDic.getFieldName().split("\\.")) {
+                    stringList.add(s.toUpperCase());
+                }
+                baseDataDic.setFieldName(StringUtils.join(stringList,"_"));
+                reportTypeList2.add(baseDataDic) ;
+                stringList.clear();
+            }
+        }
+        modelAndView.addObject("reportTypeList",reportTypeList2);
+        modelAndView.addObject("schemeAreaGroupList", schemeAreaGroupList);
+        modelAndView.addObject("projectPlan", projectPlan);
+        modelAndView.addObject("qualificationTypes", qualificationTypes);
         modelAndView.addObject("schemeReportGeneration", schemeReportGeneration);
+        modelAndView.addObject("generationVos", generateReportService.getGenerateReportGenerationVos(projectPlan.getProjectId()));
     }
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
-        modelAndView.addObject("generationVos", generateReportService.getGenerateReportGenerationVos(projectPlan.getProjectId()));
-        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
-        modelAndView.addObject("reportTypeList",reportTypeList);
+        setModelParam(projectPlan, modelAndView);
         return modelAndView;
     }
 
@@ -160,9 +143,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
-        modelAndView.addObject("generationVos", generateReportService.getGenerateReportGenerationVos(projectPlan.getProjectId()));
-        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
-        modelAndView.addObject("reportTypeList",reportTypeList);
+        setModelParam(projectPlan, modelAndView);
         return modelAndView;
     }
 

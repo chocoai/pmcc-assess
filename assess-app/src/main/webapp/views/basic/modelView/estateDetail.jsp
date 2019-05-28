@@ -418,8 +418,49 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                <table class="table table-striped table-bordered" style="display: none">
+                    <thead>
+                    <tr>
+                        <th width="20%">土地级别类别</th>
+                        <th width="20%">土地级别类型</th>
+                        <th width="15%">等级</th>
+                        <th width="10%">分值</th>
+                    </tr>
+                    </thead>
+                    <tbody id="landLevelTabContent">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </form>
 </div>
+
+
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td  class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+            {landLevelCategoryName}
+        </td>
+
+
+
+        <td>
+            <label name="gradeName" class="form-control">{gradeName}</label>
+        </td>
+        <td>
+            <label name="landFactorTotalScore" class="form-control">{landFactorTotalScore}</label>
+        </td>
+
+    </tr>
+</script>
 <%@include file="/views/basic/modelView/estate/sonEstateDetail.jsp" %>
 
 

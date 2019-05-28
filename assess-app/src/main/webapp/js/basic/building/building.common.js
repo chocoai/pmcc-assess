@@ -126,6 +126,18 @@
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_building_residence_data, data.residenceUseYear, function (html, data) {
                 buildingCommon.buildingForm.find('select.residenceUseYear').empty().html(html).trigger('change');
             }, false);
+            AssessCommon.loadDataDicByKey(AssessDicKey.completed_time_type, data.completedTimeType, function (html, data) {
+                buildingCommon.buildingForm.find('select.completedTimeType').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_quality, data.constructionQuality, function (html, data) {
+                buildingCommon.buildingForm.find('[name=constructionQuality]').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_appearance_style, data.appearanceStyle, function (html, data) {
+                buildingCommon.buildingForm.find('[name=appearanceStyle]').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_appearance_new_and_old, data.appearanceNewAndOld, function (html, data) {
+                buildingCommon.buildingForm.find('[name=appearanceNewAndOld]').empty().html(html).trigger('change');
+            });
             $.ajax({
                 url: getContextPath() + '/architecture/dataBuildingNewRateList',
                 type: 'get',

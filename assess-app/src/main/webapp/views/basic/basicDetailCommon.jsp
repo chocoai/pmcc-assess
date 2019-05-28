@@ -90,6 +90,8 @@
             estateCommon.detail('${basicApply.id}');
         }
 
+
+
         if ("${basicApply.buildingPartInMode}") {
             buildingCommon.detail('${basicApply.id}');
         }

@@ -136,6 +136,29 @@
 
             <div class="form-group">
                 <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块位置</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${caseHouse.landLocation}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用年限</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${caseHouse.useYear}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼面地价</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${caseHouse.floorPrice}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋出租占用情况描述</label>
                     <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <label class="form-control">${caseHouse.description}</label>
@@ -403,6 +426,12 @@
                         </div>
                     </div>
                 </c:if>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地买售人</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${caseHouseTrading.landBuyerSeller}</label>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

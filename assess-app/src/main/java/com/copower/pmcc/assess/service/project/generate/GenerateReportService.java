@@ -25,6 +25,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -102,16 +103,16 @@ public class GenerateReportService {
         if (StringUtils.isEmpty(ids) || generateReportGeneration.getProjectPlanId() == null) {
             return;
         }
+        String[] strings = ids.split(",");
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
+        if (projectPlan == null) {
+            return;
+        }
         if (generateReportGeneration.getId() == null || generateReportGeneration.getId().intValue() == 0) {
             generateReportGeneration.setCreator(processControllerComponent.getThisUser());
             generateReportGenerationService.addGenerateReportGeneration(generateReportGeneration);
         } else {
             generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
-        }
-        String[] strings = ids.split(",");
-        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
-        if (projectPlan == null) {
-            return;
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(generateReportGeneration.getId());
@@ -138,34 +139,46 @@ public class GenerateReportService {
         }
         for (String string : strings) {
             BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.parseInt(string));
-            if (baseDataDic != null) {
-                //预评报告
-                if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT)) {
-                    BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
-                    if (baseReportTemplate != null) {
-                        //获取替换后得报告文件路径 ==>
-                        String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
-                        if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, sysAttachmentDtoList);
-                        }
-                    }
+            if (baseDataDic == null){
+                continue;
+            }
+            BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
+            if(baseReportTemplate == null){
+                continue;
+            }
+            //房屋评估价值确认书
+            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_CONFIRMATION_HOUSING_VALUATION)) {
+                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                if (StringUtils.isNotBlank(path)) {
+                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
                 }
-                //技术报告
-                if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
-                    BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
-                    if (baseReportTemplate != null) {
-                        String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
-                        if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY, sysAttachmentDtoList);
-                        }
-                    }
+            }
+            //预评意见书
+            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT_PROPOSAL)) {
+                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                if (StringUtils.isNotBlank(path)) {
+                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
                 }
-                //结果报告
-                if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
-                    BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
-                    if (baseReportTemplate != null) {
-                        String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
-                        Document doc = new Document(path);
+            }
+            //预评报告
+            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT)) {
+                //获取替换后得报告文件路径 ==>
+                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                if (StringUtils.isNotBlank(path)) {
+                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
+                }
+            }
+            //技术报告
+            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
+                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                if (StringUtils.isNotBlank(path)) {
+                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
+                }
+            }
+            //结果报告
+            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
+                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                Document doc = new Document(path);
 //                        DocumentBuilder builder = new DocumentBuilder(doc);
 //                        //“目录”两个字居中显示、加粗、搜宋体
 //                        builder.getCurrentParagraph().getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
@@ -180,12 +193,10 @@ public class GenerateReportService {
 //                        builder.moveToBookmark("TOC");
 //                        builder.insertBreak(BreakType.PAGE_BREAK);
 
-                        doc.updateFields();// 更新域
-                        doc.save(path);
-                        if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT, sysAttachmentDtoList);
-                        }
-                    }
+                doc.updateFields();// 更新域
+                doc.save(path);
+                if (StringUtils.isNotBlank(path)) {
+                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
                 }
             }
         }
@@ -209,12 +220,11 @@ public class GenerateReportService {
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(new Long(file.length()).toString());
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        String[] strs = reportType.split("\\.");
-        StringBuilder builder = new StringBuilder(strs.length * 12);
-        for (String s : strs) {
-            builder.append(s);
+        List<String> FieldsName = Lists.newArrayList();
+        for (String s : reportType.split("\\.")) {
+            FieldsName.add(s.toUpperCase());
         }
-        sysAttachmentDto.setFieldsName(String.format("%s%d", FormatUtils.underlineToCamel(builder.toString(), false), generateReportGeneration.getAreaGroupId()));
+        sysAttachmentDto.setFieldsName(String.format("%s%d", StringUtils.join(FieldsName, "_"), generateReportGeneration.getAreaGroupId()));
         sysAttachmentDto.setFileName(baseDataDicService.getCacheDataDicByFieldName(reportType).getName());
         String ftpBasePath = String.format("%s/%s/%s/%s", baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), processControllerComponent.getThisUser(), UUID.randomUUID().toString());
         String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());

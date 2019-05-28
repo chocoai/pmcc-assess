@@ -24,12 +24,21 @@ basicCommon.developerSelect = function (this_) {
 //土地级别选择
 basicCommon.landLevelSelect = function (this_) {
     var $form = $(this_).closest('form');
+    var formGroup = $(this_).closest('.form-group');
     assessLandLevel.select({
         province: $form.find('[name=province]').val(),
         city: $form.find('[name=city]').val(),
         success: function (data) {
-            $(this_).parent().prev().val(data.name);
-            $(this_).parent().prev().prev().val(data.id);
+            formGroup.find("input[name='landLevel']").val(data.id);
+            formGroup.find("input[name='landLevelName']").val(data.name);
+            $.ajax({
+                url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+                type: "get",
+                data: {levelDetailId: data.id},
+                success: function (result) {
+                    estateCommon.landLevelLoadHtml(result.data);
+                }
+            })
         }
     })
 };
@@ -303,7 +312,34 @@ basicCommon.getFormData = function () {
     item.basicApply = basicApply;
     if (basicApply.estatePartInMode) {
         item.basicEstate = formSerializeArray(estateCommon.estateForm);
-        item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
+        if (estateCommon.estateLandStateForm.size() >= 1){
+            var data = formSerializeArray(estateCommon.estateLandStateForm);
+            var landLevelContent = [];
+            if (data.landFactorTotalScore) {
+                var landFactorTotalScore = 0;
+                data.landFactorTotalScore.split(",").forEach(function (value, index) {
+                    landFactorTotalScore += Number(value);
+                });
+                data.landFactorTotalScore = landFactorTotalScore;
+            }
+            estateCommon.estateLandStateForm.find("input[name='landLevelContent']").each(function (i, n) {
+                var group = $(n).closest(".group");
+                var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
+                var obj = JSON.parse($(n).val());
+                var dataObject = [] ;
+                obj.forEach(function (value, index) {
+                    if (value.id == dataLandLevelAchievement){
+                        value.modelStr = "update" ;
+                    }
+                    dataObject.push(value) ;
+                });
+                landLevelContent.push(dataObject);
+            });
+            if (landLevelContent.length >= 1) {
+                data.landLevelContent = JSON.stringify(landLevelContent);
+            }
+            item.basicEstateLandState = data;
+        }
     }
     if (basicApply.buildingPartInMode) {
         item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);

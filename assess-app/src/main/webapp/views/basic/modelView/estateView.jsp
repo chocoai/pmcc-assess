@@ -537,7 +537,59 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                <table class="table table-striped table-bordered" style="display: none">
+                    <thead>
+                    <tr>
+                        <th width="10%">土地级别类别</th>
+                        <th width="10%">土地级别类型</th>
+                        <th width="10%">土地级别等级</th>
+                        <th width="20%">说明</th>
+                        <th width="10%">分值</th>
+                        <th width="5%"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="landLevelTabContent">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
     </form>
 </div>
 
 <%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>
+
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td  class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+            {landLevelCategoryName}
+        </td>
+        <td>
+            <select class="form-control" name="landLevelGrade" onchange="estateCommon.landLevelHandle(this);">
+                {landLevelGradeHTML}
+            </select>
+        </td>
+        <td>
+            <label name="reamark" class="form-control">{reamark}</label>
+        </td>
+        <td>
+            <input type="hidden" class="form-control" name="dataLandLevelAchievement" value="{dataLandLevelAchievement}">
+            <input type="text" class="form-control" name="landFactorTotalScore" value="{landFactorTotalScore}">
+            <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
+        </td>
+        <td>
+            <input class="btn btn-warning" type="button" value="X"
+                   onclick="estateCommon.landLevelEmpty(this)">
+        </td>
+    </tr>
+</script>

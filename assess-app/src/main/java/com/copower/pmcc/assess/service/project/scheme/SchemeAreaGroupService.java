@@ -225,9 +225,6 @@ public class SchemeAreaGroupService {
                         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
                         //获取到房屋中的出租占用情况描述
                         BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId(), projectInfo.getProjectCategoryId());
-                        if (basicHouse != null) {
-                            schemeJudgeObject.setRentalPossessionDesc(basicHouse.getDescription());
-                        }
                         //取得他权中的担保权备注信息
                         SurveyAssetInventory assetInventory = surveyAssetInventoryService.getDataByDeclareId(declareRecord.getId());
                         List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightService.surveyAssetInventoryRights(assetInventory.getPlanDetailId());
@@ -239,7 +236,6 @@ public class SchemeAreaGroupService {
                                     stringBuilder.append(inventoryRight.getRemark());
                                 }
                             }
-                            schemeJudgeObject.setCollateralFound(stringBuilder.toString());
                         }
 
                         schemeJudgeObject.setPid(0);

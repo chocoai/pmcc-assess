@@ -1,10 +1,10 @@
 <%--
   车位信息
 --%>
-<!DOCTYPE html>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
-    <div class="x_title collapse-link" onclick="estateParking.prototype.viewInit()">
+    <div class="x_title collapse-link" onclick="estateParking.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
         </ul>
@@ -29,97 +29,28 @@
     </div>
 </div>
 
-<script type="application/javascript">
+<script >
 
-    $(function () {
-        estateParking.prototype.fileUpload();
-    });
+    var estateParking = {};
 
-    var estateParking;
-    (function () {
-        var flag = true;
-        var fileID = null;
-        estateParking = function () {
+    estateParking.loadDataDicList= function () {
+        var cols = commonColumn.estateParkingColumn();
+        $("#estateParkingList").bootstrapTable('destroy');
+        TableInit("estateParkingList", "${pageContext.request.contextPath}/caseEstateParking/getCaseEstateParkingList", cols, {
+            estateId: ${empty caseEstate.id?0:caseEstate.id}
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
 
-        };
-        estateParking.prototype = {
-            setFlag: function (flag_) {
-                flag = flag_;
-            },
-            getFlag: function () {
-                return flag;
-            },
-            setFileID:function (id_) {
-                fileID = id_;
-            },
-            getFileID:function () {
-                if (fileID == null || fileID == ''){
-                    return 0;
-                }
-                return fileID;
-            },
-            viewInit: function () {
-                estateParking.prototype.loadDataDicList();
-            },
-            fileUpload:function () {
-                FileUtils.uploadFiles({
-                    target:estateParking.prototype.config().fileIDName,
-                    disabledTarget: "btn_submit",
-                    onUpload: function (file) {
-                        var formData={
-                            fieldsName:estateParking.prototype.config().fileIDName,
-                            tableName: AssessDBKey.CaseEstateParking,
-                            tableId: estateParking.prototype.getFileID()
-                        };
-                        return formData;
-                    },onUploadComplete:function () {
-                        estateParking.prototype.showFile();
-                    },
-                    deleteFlag: true
-                });
-            },
-            showFile:function () {
-                FileUtils.getFileShows({
-                    target: estateParking.prototype.config().fileIDName,
-                    formData: {
-                        fieldsName:estateParking.prototype.config().fileIDName,
-                        tableName: AssessDBKey.CaseEstateParking,
-                        tableId: estateParking.prototype.getFileID(),
-                        projectId: 0
-                    },
-                    deleteFlag: true
-                })
-            },
-            config: function () {
-                var data = {};
-                data.table = "estateParkingList";
-                data.box = "divBoxEstateParking";
-                data.frm = "frmEstateParking";
-                data.fileIDName = "house_estateParking" ;//ExamineFileUpLoadFieldEnum
-                return data;
-            },
-            loadDataDicList: function () {
-                var cols = commonColumn.estateParkingColumn();
-                $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
-                TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/caseEstateParking/getCaseEstateParkingList", cols, {
-                    estateId: ${empty caseEstate.id?0:caseEstate.id},
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            },
-
-        }
-    })();
-
+    estateParking.viewInit = function () {
+        this.loadDataDicList();
+    };
 </script>
-
-
-
-</html>
 
 
