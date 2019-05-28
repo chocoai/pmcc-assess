@@ -444,10 +444,6 @@ public class SchemeJudgeObjectService {
                 floorAreaTotal = floorAreaTotal.add(schemeJudgeObject.getFloorArea());
             if (schemeJudgeObject.getEvaluationArea() != null)
                 evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
-            if (StringUtils.isNotBlank(schemeJudgeObject.getRentalPossessionDesc()))
-                rpdBuilder.append(schemeJudgeObject.getRentalPossessionDesc()).append("\r\n");
-            if (StringUtils.isNotBlank(schemeJudgeObject.getCollateralFound()))
-                collateralBuilder.append(schemeJudgeObject.getCollateralFound()).append("\r\n");
             ownershipList.add(schemeJudgeObject.getOwnership());
             seatList.add(schemeJudgeObject.getSeat());
         }
@@ -460,8 +456,6 @@ public class SchemeJudgeObjectService {
         mergeJudgeObject.setSeat(publicService.fusinString(seatList, false));
         mergeJudgeObject.setFloorArea(floorAreaTotal);
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
-        mergeJudgeObject.setRentalPossessionDesc(rpdBuilder.toString());
-        mergeJudgeObject.setCollateralFound(collateralBuilder.toString());
         mergeJudgeObject.setStandardJudgeId(standardJudgeId);
         mergeJudgeObject.setBisSplit(false);
         mergeJudgeObject.setBisEnable(true);
@@ -747,7 +741,6 @@ public class SchemeJudgeObjectService {
         SchemeJudgeObject judgeObject = this.getSchemeJudgeObject(id);
         if (judgeObject == null)
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
-        judgeObject.setRentalPossessionDesc(rentalPossessionDesc);
         this.updateSchemeJudgeObject(judgeObject);
     }
 

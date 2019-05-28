@@ -1309,7 +1309,6 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, schemeJudgeObject.getRentalPossessionDesc());
             }
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);

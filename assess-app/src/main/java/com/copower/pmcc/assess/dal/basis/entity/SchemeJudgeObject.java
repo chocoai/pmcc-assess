@@ -62,14 +62,6 @@ public class SchemeJudgeObject {
 
     private BigDecimal actualPlotRatio;
 
-    private String rentalPossessionDesc;
-
-    private String collateralFound;
-
-    private String liquidRatio;
-
-    private String liquidRatioExplain;
-
     private Integer standardJudgeId;
 
     private String standardJudgeExplain;
@@ -322,38 +314,6 @@ public class SchemeJudgeObject {
 
     public void setActualPlotRatio(BigDecimal actualPlotRatio) {
         this.actualPlotRatio = actualPlotRatio;
-    }
-
-    public String getRentalPossessionDesc() {
-        return rentalPossessionDesc;
-    }
-
-    public void setRentalPossessionDesc(String rentalPossessionDesc) {
-        this.rentalPossessionDesc = rentalPossessionDesc == null ? null : rentalPossessionDesc.trim();
-    }
-
-    public String getCollateralFound() {
-        return collateralFound;
-    }
-
-    public void setCollateralFound(String collateralFound) {
-        this.collateralFound = collateralFound == null ? null : collateralFound.trim();
-    }
-
-    public String getLiquidRatio() {
-        return liquidRatio;
-    }
-
-    public void setLiquidRatio(String liquidRatio) {
-        this.liquidRatio = liquidRatio == null ? null : liquidRatio.trim();
-    }
-
-    public String getLiquidRatioExplain() {
-        return liquidRatioExplain;
-    }
-
-    public void setLiquidRatioExplain(String liquidRatioExplain) {
-        this.liquidRatioExplain = liquidRatioExplain == null ? null : liquidRatioExplain.trim();
     }
 
     public Integer getStandardJudgeId() {

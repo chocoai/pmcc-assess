@@ -31,10 +31,6 @@
     <result column="set_plot_ratio" property="setPlotRatio" jdbcType="DECIMAL" />
     <result column="plan_plot_ratio" property="planPlotRatio" jdbcType="DECIMAL" />
     <result column="actual_plot_ratio" property="actualPlotRatio" jdbcType="DECIMAL" />
-    <result column="rental_possession_desc" property="rentalPossessionDesc" jdbcType="VARCHAR" />
-    <result column="collateral_found" property="collateralFound" jdbcType="VARCHAR" />
-    <result column="liquid_ratio" property="liquidRatio" jdbcType="VARCHAR" />
-    <result column="liquid_ratio_explain" property="liquidRatioExplain" jdbcType="VARCHAR" />
     <result column="standard_judge_id" property="standardJudgeId" jdbcType="INTEGER" />
     <result column="standard_judge_explain" property="standardJudgeExplain" jdbcType="VARCHAR" />
     <result column="not_applicable_reason" property="notApplicableReason" jdbcType="VARCHAR" />
@@ -110,8 +106,7 @@
     original_number, split_number, name, cert_name, ownership, seat, cert_use, practical_use, 
     land_cert_use, land_practical_use, land_use_end_date, land_legal_year, land_remaining_year, 
     set_use, best_use, floor_area, evaluation_area, price, original_price, set_plot_ratio, 
-    plan_plot_ratio, actual_plot_ratio, rental_possession_desc, collateral_found, liquid_ratio, 
-    liquid_ratio_explain, standard_judge_id, standard_judge_explain, not_applicable_reason, 
+    plan_plot_ratio, actual_plot_ratio, standard_judge_id, standard_judge_explain, not_applicable_reason, 
     bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, gmt_created, 
     gmt_modified
   </sql>
@@ -158,9 +153,7 @@
       land_remaining_year, set_use, best_use, 
       floor_area, evaluation_area, price, 
       original_price, set_plot_ratio, plan_plot_ratio, 
-      actual_plot_ratio, rental_possession_desc, 
-      collateral_found, liquid_ratio, liquid_ratio_explain, 
-      standard_judge_id, standard_judge_explain, 
+      actual_plot_ratio, standard_judge_id, standard_judge_explain, 
       not_applicable_reason, bis_split, bis_merge, 
       bis_enable, bis_set_function, sorting, 
       creator, gmt_created, gmt_modified
@@ -174,9 +167,7 @@
       #{landRemainingYear,jdbcType=DECIMAL}, #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, 
       #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
       #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, #{planPlotRatio,jdbcType=DECIMAL}, 
-      #{actualPlotRatio,jdbcType=DECIMAL}, #{rentalPossessionDesc,jdbcType=VARCHAR}, 
-      #{collateralFound,jdbcType=VARCHAR}, #{liquidRatio,jdbcType=VARCHAR}, #{liquidRatioExplain,jdbcType=VARCHAR}, 
-      #{standardJudgeId,jdbcType=INTEGER}, #{standardJudgeExplain,jdbcType=VARCHAR}, 
+      #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, #{standardJudgeExplain,jdbcType=VARCHAR}, 
       #{notApplicableReason,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
       #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
@@ -271,18 +262,6 @@
       </if>
       <if test="actualPlotRatio != null" >
         actual_plot_ratio,
-      </if>
-      <if test="rentalPossessionDesc != null" >
-        rental_possession_desc,
-      </if>
-      <if test="collateralFound != null" >
-        collateral_found,
-      </if>
-      <if test="liquidRatio != null" >
-        liquid_ratio,
-      </if>
-      <if test="liquidRatioExplain != null" >
-        liquid_ratio_explain,
       </if>
       <if test="standardJudgeId != null" >
         standard_judge_id,
@@ -402,18 +381,6 @@
       </if>
       <if test="actualPlotRatio != null" >
         #{actualPlotRatio,jdbcType=DECIMAL},
-      </if>
-      <if test="rentalPossessionDesc != null" >
-        #{rentalPossessionDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="collateralFound != null" >
-        #{collateralFound,jdbcType=VARCHAR},
-      </if>
-      <if test="liquidRatio != null" >
-        #{liquidRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="liquidRatioExplain != null" >
-        #{liquidRatioExplain,jdbcType=VARCHAR},
       </if>
       <if test="standardJudgeId != null" >
         #{standardJudgeId,jdbcType=INTEGER},
@@ -546,18 +513,6 @@
       <if test="record.actualPlotRatio != null" >
         actual_plot_ratio = #{record.actualPlotRatio,jdbcType=DECIMAL},
       </if>
-      <if test="record.rentalPossessionDesc != null" >
-        rental_possession_desc = #{record.rentalPossessionDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="record.collateralFound != null" >
-        collateral_found = #{record.collateralFound,jdbcType=VARCHAR},
-      </if>
-      <if test="record.liquidRatio != null" >
-        liquid_ratio = #{record.liquidRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="record.liquidRatioExplain != null" >
-        liquid_ratio_explain = #{record.liquidRatioExplain,jdbcType=VARCHAR},
-      </if>
       <if test="record.standardJudgeId != null" >
         standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
       </if>
@@ -627,10 +582,6 @@
       set_plot_ratio = #{record.setPlotRatio,jdbcType=DECIMAL},
       plan_plot_ratio = #{record.planPlotRatio,jdbcType=DECIMAL},
       actual_plot_ratio = #{record.actualPlotRatio,jdbcType=DECIMAL},
-      rental_possession_desc = #{record.rentalPossessionDesc,jdbcType=VARCHAR},
-      collateral_found = #{record.collateralFound,jdbcType=VARCHAR},
-      liquid_ratio = #{record.liquidRatio,jdbcType=VARCHAR},
-      liquid_ratio_explain = #{record.liquidRatioExplain,jdbcType=VARCHAR},
       standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
       standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
       not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
@@ -733,18 +684,6 @@
       <if test="actualPlotRatio != null" >
         actual_plot_ratio = #{actualPlotRatio,jdbcType=DECIMAL},
       </if>
-      <if test="rentalPossessionDesc != null" >
-        rental_possession_desc = #{rentalPossessionDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="collateralFound != null" >
-        collateral_found = #{collateralFound,jdbcType=VARCHAR},
-      </if>
-      <if test="liquidRatio != null" >
-        liquid_ratio = #{liquidRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="liquidRatioExplain != null" >
-        liquid_ratio_explain = #{liquidRatioExplain,jdbcType=VARCHAR},
-      </if>
       <if test="standardJudgeId != null" >
         standard_judge_id = #{standardJudgeId,jdbcType=INTEGER},
       </if>
@@ -811,10 +750,6 @@
       set_plot_ratio = #{setPlotRatio,jdbcType=DECIMAL},
       plan_plot_ratio = #{planPlotRatio,jdbcType=DECIMAL},
       actual_plot_ratio = #{actualPlotRatio,jdbcType=DECIMAL},
-      rental_possession_desc = #{rentalPossessionDesc,jdbcType=VARCHAR},
-      collateral_found = #{collateralFound,jdbcType=VARCHAR},
-      liquid_ratio = #{liquidRatio,jdbcType=VARCHAR},
-      liquid_ratio_explain = #{liquidRatioExplain,jdbcType=VARCHAR},
       standard_judge_id = #{standardJudgeId,jdbcType=INTEGER},
       standard_judge_explain = #{standardJudgeExplain,jdbcType=VARCHAR},
       not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
