@@ -146,19 +146,19 @@ public class GenerateBaseExamineService {
         return vo;
     }
 
-    public BasicEstate getEstate() throws Exception {
+    public BasicEstateVo getEstate() throws Exception {
         BasicEstate examineEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         if (examineEstate == null) {
             examineEstate = new BasicEstate();
             logger.error("获取数据异常!", new Exception());
         }
-        return examineEstate;
+        return basicEstateService.getBasicEstateVo(examineEstate);
     }
 
-    public BasicBuilding getBasicBuilding() {
-        BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(getBasicApply().getId());
+    public BasicBuildingVo getBasicBuilding() {
+        BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingByApplyId(getBasicApply().getId());
         if (basicBuilding == null) {
-            basicBuilding = new BasicBuilding();
+            basicBuilding = new BasicBuildingVo();
             logger.error("获取数据异常!", new Exception());
         }
         return basicBuilding;

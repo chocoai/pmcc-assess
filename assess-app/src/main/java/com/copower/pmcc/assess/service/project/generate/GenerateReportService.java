@@ -563,9 +563,17 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.unitType.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordUnitType());
                 }
+                //装修状况
+                if (Objects.equal(BaseReportFieldEnum.DecorationStatus.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDecorationStatus());
+                }
                 //填发单位
                 if (Objects.equal(BaseReportFieldEnum.FillingUnit.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFillingUnit());
+                }
+                //附记
+                if (Objects.equal(BaseReportFieldEnum.AttachmentReark.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAttachmentReark());
                 }
                 //建成年代
                 if (Objects.equal(BaseReportFieldEnum.BeCompletedTimeGetInteger.getName(), name)) {
@@ -579,9 +587,17 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.BuildArea.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBuildArea());
                 }
+                //委托单位
+                if (Objects.equal(BaseReportFieldEnum.EntrustedUnit.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEntrustmentUnit());
+                }
                 //档案保管号
                 if (Objects.equal(BaseReportFieldEnum.ArchivesDepositNumber.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getArchivesDepositNumber());
+                }
+                //使用状况
+                if (Objects.equal(BaseReportFieldEnum.UsageStatus.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUsageStatus());
                 }
                 //委托目的
                 if (Objects.equal(BaseReportFieldEnum.DelegatePurpose.getName(), name)) {
@@ -678,6 +694,10 @@ public class GenerateReportService {
                 //汇总表
                 if (Objects.equal(BaseReportFieldEnum.judgeSummarySheet.getName(), name)) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeSummarySheet());
+                }
+                //建行预评数据表格
+                if (Objects.equal(BaseReportFieldEnum.CCB_Pre_Evaluation_Data_Form.getName(), name)) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCCB_Pre_Evaluation_Data_FormSheet());
                 }
                 //估价结果一览表
                 if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet.getName(), name)) {
