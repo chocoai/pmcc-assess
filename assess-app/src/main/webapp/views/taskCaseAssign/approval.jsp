@@ -10,28 +10,89 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
-            <%@include file="/views/share/form_head.jsp" %>
-            <div class="row">
-                <div class="col-md-12 ">
-                    <div class="x_panel">
-                        <div class="x_content">
-                            <p id="toolbar">
-                                共有<label class="label label-warning" id="lab_total"></label>个案例需补充信息
-                            </p>
-                            <div id="div_house_list" class="row">
-
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>案列任务分派申请</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form id="master" class="form-horizontal">
+                        <input type="hidden" name="id" value="${master.id}">
+                        <div class="form-group ">
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    省
+                                </label>
+                                <div class="col-sm-2">
+                                    <label class="form-control">${master.provinceName}</label>
+                                </div>
                             </div>
-                            <div class="row" style="text-align: right">
-                                <ul id='bp-element' class="pagination pagination-lg  pagination-bricky"></ul>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    市
+                                </label>
+                                <div class="col-sm-2">
+                                    <label class="form-control">${master.cityName}</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    区
+                                </label>
+                                <div class="col-sm-2">
+                                    <label class="form-control">${master.districtName}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-md-1 col-sm-1 col-xs-12 control-label">
+                                    认领人<span class="symbol required"></span>
+                                </label>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label class="form-control">${master.executorName}
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="lpInfo">
 
-                    <%@include file="/views/share/form_approval.jsp" %>
-                    <%@include file="/views/share/form_log.jsp" %>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                    备注
+                                </label>
+                                <div class="col-md-11 col-sm-11 col-xs-12 ">
+                                    <label class="form-control">${master.remark}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
+            <c:if test="${CurrentStep==1}">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div style="text-align: center;">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                取消
+                            </button>
+                            <button id="btn_submit" class="btn btn-success" onclick="saveform();">
+                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
 
+                <div id="showApproval">
+                <%@include file="/views/share/form_approval.jsp" %>
+                </div>
+
+            <%@include file="/views/share/form_log.jsp" %>
         </div>
 
     </div>
@@ -41,103 +102,25 @@
 
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
-<script src="/assets/plugins/bootstrap-paginator/src/bootstrap-paginator.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/lpmc.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+<script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
 <script type="application/javascript">
-    var element = $('#bp-element');
     $(function () {
-        console.log("${assign.lpbh}")
-        loadHouseListAjax(1);
-    })
-
-    function loadHouseListAjax(pages) {
-        var pageSize = 12;
-        $.ajax({
-            url: "${pageContext.request.contextPath}/taskCaseAssign/getApplyHousesList",
-            type: "get",
-            dataType: "json",
-            data: {
-                offset: pages,
-                limit: pageSize,
-                lpbh: "${assign.lpbh}"
-            },
-            success: function (result) {
-                var data = result.rows;
-                if (data.length > 0) {
-                    var html = "";
-                    html += " <div class='col-md-12 col-sm-12 col-xs-12 text-center'>";
-                    html += "</div>";
-                    html += "<div class='clearfix'></div>";
-
-                    $.each(data, function (i, j) {
-                        html += "<div class='col-md-4 col-sm-4 col-xs-12 profile_details'>";
-                        html += "<div class='well profile_view'>";
-                        html += "<div class='col-sm-12'>";
-                        html += "<h4 class='brief'><i><i class='fa fa-cny'></i>" + j.lpjj + "</i></h4>";
-                        html += "<div class='left col-xs-8'>";
-                        html += "<h2>" + j.lpmc + "</h2>";
-                        html += "<p><i class='fa fa-bell-o'></i>" + j.lpdz + " </p>";
-                        html += "<p><i class='fa fa-building'></i>" + j.xmdz + " </p>";
-                        html += "</div>";
-                        html += "<div class='right col-xs-4 text-center'>";
-                        html += "<img src='" + j.lptp + ".160x120.jpg' alt='' class='img-circle img-responsive'>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<div class='col-xs-12 bottom text-center'>";
-                        html += "<div class='col-xs-12 col-sm-4 emphasis'>";
-                        html += "<p class='ratings'>";
-                        html += "<a>0.0</a>";
-                        html += "<a href='#'><span class='fa fa-star'></span></a>";
-                        html += "<a href='#'><span class='fa fa-star'></span></a>";
-                        html += "<a href='#'><span class='fa fa-star'></span></a>";
-                        html += "<a href='#'><span class='fa fa-star'></span></a>";
-                        html += "<a href='#'><span class='fa fa-star-o'></span></a>";
-                        html += "</p>";
-                        html += "</div>";
-                        <%--html += "<div class='col-xs-12 col-sm-4 emphasis'>";--%>
-                        <%--html += "<a  target='_blank'  class='btn btn-primary btn-xs' href='${pageContext.request.contextPath}/taskCaseAssign/basicApplyIndex?lpbh=" + j.id + "'>";--%>
-                        <%--html += "<i class='fa fa-info-circle'> </i> 查看信息";--%>
-                        <%--html += "</a>";--%>
-                        <%--html += "</div>";--%>
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                    });
-                    $("#div_house_list").html(html);
-                    $("#lab_total").html(data.length);
-                    options = {
-                        alignment: "left",
-                        bootstrapMajorVersion: 3,
-                        currentPage: pages, //当前页数，这里是用的EL表达式，获取从后台传过来的值
-                        numberOfPages: 5, //每页显示按钮个数
-                        totalPages: Math.ceil(data.length / pageSize), //总页数，这里是用的EL表达式，获取从后台传过来的值
-                        shouldShowPage: true,//是否显示该按钮
-                        //点击事件
-                        onPageClicked: function (event, originalEvent, type, page) {
-                            loadHouseListAjax(page);
-                        }
-                    };
-
-                    element.bootstrapPaginator(options);
-                }
-                else {
-                    $("#div_house_list").html("<h3>没有找到合适的案例信息.</h3>");
-                    $(element).hide();
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    }
-
-    function saveform() {
-        if (!$("#frm_approval").valid()) {
-            return false;
+        if ("${master}") {
+            writeLpData(${master.lpInfo});
         }
+        if("${CurrentStep}"=="1"){
+            $("#showApproval").hide();
+        }
+    });
+
+
+    //保存数据
+    function saveform() {
         var data = formApproval.getFormData();
+        data.executor = '${master.executor}';
+
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/taskCaseAssign/approvalSubmit",
@@ -160,6 +143,49 @@
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         })
+    }
+
+
+    function writeLpData(json) {
+        $(".lpInfo").empty();
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var html = "<div class='form-group' >";
+            html += "<div class='x-valid'>";
+
+            html += "<label class=' col-md-1 col-sm-1 col-xs-12 control-label'>" + "楼盘名称" + "</label>";
+            html += "<input type='hidden' name='lpbh' value='" + n["lpbh"] + "'>";
+            html += "<input type='hidden' name='lpName' value='" + n["name"] + "'>";
+            html += "<div class=' col-md-2 col-sm-2 col-xs-12 '>";
+            html += "<label class='form-control'>" + n["name"];
+            html += "</label>";
+            html += "</div>";
+
+            html += "<c:if test="${CurrentStep==1}">";
+            html += "<div class='btn btn-xs btn-success' onclick='enterData(this)'>";
+            html += "<i class='fa fa-arrow-right'></i>";
+            html += "</div>";
+            html += "</c:if>";
+
+            html += "<c:if test="${CurrentStep==2}">";
+            html += "<div class='btn btn-xs btn-success' onclick='checkDetail(this)'>";
+            html += "<i class='fa fa-arrow-right'></i>";
+            html += "</div>";
+            html += "</c:if>";
+
+            html += "</div>";
+            html += "</div>";
+            $(".lpInfo").append(html);
+        })
+    }
+
+    function enterData(item) {
+        var assignId = "${master.id}";
+        var lpName = $(item).parent().parent().find("input[name=lpName]").val();
+        var href = "${pageContext.request.contextPath}/taskCaseAssign/basicApplyIndex";
+        href += "?lpName=" + lpName;
+        href += "&assignId=" + assignId;
+        window.open(href, "");
     }
 
 

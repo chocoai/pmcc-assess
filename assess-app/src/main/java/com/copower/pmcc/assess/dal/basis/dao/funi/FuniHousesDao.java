@@ -38,9 +38,12 @@ public class FuniHousesDao {
         return funiHousess;
     }
 
-    public List<FuniHouses> getNotCompleteList(FuniHouses funiHouses) {
+    public List<FuniHouses> getNotCompleteList(FuniHouses funiHouses, String name) {
         FuniHousesExample example = new FuniHousesExample();
         FuniHousesExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andLpmcLike(String.format("%%%s%%", name));
+        }
         //未进行任务分配的
         criteria.andCompleteEqualTo(false);
         MybatisUtils.convertObj2Criteria(funiHouses, criteria);

@@ -43,7 +43,7 @@ public class DataTaxRateAllocationDao {
     public List<DataTaxRateAllocation> getDataTaxRateAllocationList(DataTaxRateAllocation dataHousePriceIndex) {
         DataTaxRateAllocationExample example = new DataTaxRateAllocationExample();
         MybatisUtils.convertObj2Example(dataHousePriceIndex, example);
-        example.setOrderByClause("bis_national_unity desc,province,city");
+        example.setOrderByClause("sorting asc,bis_national_unity desc,province,city");
         return dataHousePriceIndexMapper.selectByExample(example);
     }
 

@@ -554,6 +554,24 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
+                                        <label class="col-sm-2 control-label">执行时间</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" readonly="readonly"
+                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                   name="executionTime" placeholder="执行时间">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">标题</label>
+                                        <div class="col-sm-10">
+                                            <input placeholder="标题" class="form-control" name="title" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">文号</label>
                                         <div class="col-sm-10">
                                             <input placeholder="文号" class="form-control" name="wordSymbol" type="text">

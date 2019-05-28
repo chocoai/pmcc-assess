@@ -52,8 +52,9 @@ public class TaskCaseAssignDao {
         return taskCaseAssignMapper.selectByPrimaryKey(id);
     }
 
-    public boolean addObject(TaskCaseAssign bidCostInfo) {
-        return taskCaseAssignMapper.insertSelective(bidCostInfo) == 1;
+    public Integer addObject(TaskCaseAssign bidCostInfo) {
+        taskCaseAssignMapper.insertSelective(bidCostInfo);
+        return bidCostInfo.getId();
     }
 
     public boolean updateObject(TaskCaseAssign bidCostInfo) {
