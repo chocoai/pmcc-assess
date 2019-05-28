@@ -2865,17 +2865,32 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        SysAttachmentDto sysAttachmentDto = schemeReportFileService.getProjectProxyFileList(projectId);
-        if (sysAttachmentDto != null) {
-            String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-            List<String> images = Lists.newArrayList();
-            if (FileUtils.checkImgSuffix(imgPath)) {
-                images.add(imgPath);
-            }
-            AsposeUtils.imageInsertToWrod(images, 1, builder);
+        List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(projectId, AssessUploadEnum.PROJECT_PROXY.getKey(), FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+            this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
         }
         document.save(localPath);
         return localPath;
+    }
+
+    public void imgComposingByAttachmentDtoList(List<SysAttachmentDto> sysAttachmentDtoList, DocumentBuilder builder) throws Exception {
+        List<Map<String, String>> imgList = Lists.newArrayList();
+        for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+            Map<String, String> imgMap = Maps.newHashMap();
+            String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+            if (FileUtils.checkImgSuffix(imgPath)) {
+                String imgSuffixName = sysAttachmentDto.getFileName();
+                String imgName = sysAttachmentDto.getFileName().substring(0,imgSuffixName.lastIndexOf("."));
+                imgMap.put(imgPath, imgName);
+                imgList.add(imgMap);
+            }
+        }
+        if (imgList.size() == 1) {
+            AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
+        }
+        if (imgList.size() > 1) {
+            AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
+        }
     }
 
     /**
@@ -2889,16 +2904,13 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
-                List<String> imgPathList = Lists.newArrayList();
+                if (schemeJudgeObjectList.size() > 1) {
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
+                }
                 List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        imgPathList.add(imgPath);
-                    }
+                    this.imgComposingByAttachmentDtoList(sysAttachmentDtoList, builder);
                 }
-                AsposeUtils.imageInsertToWrod(imgPathList, 1, builder);
             }
         }
         document.save(localPath);
@@ -2916,22 +2928,11 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    List<Map<String, String>> imgList = Lists.newArrayList();
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
-                    for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
-                        Map<String, String> imgMap = Maps.newHashMap();
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
-                        String imgName = sysAttachmentDto.getFileName();
-                        imgMap.put(imgPath, imgName);
-                        imgList.add(imgMap);
+                    if (this.schemeJudgeObjectDeclareList.size() > 1) {
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     }
-                    if (imgList.size() == 1) {
-                        AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
-                    }
-                    if (imgList.size() > 1) {
-                        AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
-                    }
+                    this.imgComposing(sysAttachmentDtoList, builder);
                 }
             }
         }
@@ -2939,6 +2940,25 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    public void imgComposing(List<SchemeReportFileItem> sysAttachmentDtoList, DocumentBuilder builder) throws Exception {
+        List<Map<String, String>> imgList = Lists.newArrayList();
+        for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
+            Map<String, String> imgMap = Maps.newHashMap();
+            String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
+            if (FileUtils.checkImgSuffix(imgPath)) {
+                String imgSuffixName = sysAttachmentDto.getFileName();
+                String imgName = sysAttachmentDto.getFileName().substring(0,imgSuffixName.lastIndexOf("."));
+                imgMap.put(imgPath, imgName);
+                imgList.add(imgMap);
+            }
+        }
+        if (imgList.size() == 1) {
+            AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
+        }
+        if (imgList.size() > 1) {
+            AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
+        }
+    }
 
     /**
      * 估价对象权属证明复印件
@@ -2952,13 +2972,11 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    List<String> imgPathList = Lists.newArrayList();
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        imgPathList.add(imgPath);
+                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    if (this.schemeJudgeObjectDeclareList.size() > 1) {
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     }
-                    AsposeUtils.imageInsertToWrod(imgPathList, 1, builder);
+                    this.imgComposingByAttachmentDtoList(sysAttachmentDtoList, builder);
                 }
             }
         }
@@ -2981,29 +2999,29 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 //1.先取地址不一致附件
                 List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getId());
-                if (CollectionUtils.isEmpty(addressFileList)) continue;
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
                 if (CollectionUtils.isNotEmpty(addressFileList)) {
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml("<span style=\"text-indent:2em\">地址不一致附件</span>"), true);
-                    for (SysAttachmentDto sysAttachmentDto : addressFileList) {
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        imgPathList.add(imgPath);
+                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    if (this.schemeJudgeObjectDeclareList.size() > 1) {
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("%s%s", schemeJudgeObject.getName(),"地址不一致附件")), true);
                     }
-                    AsposeUtils.imageInsertToWrod(imgPathList, 2, builder);
+                    this.imgComposingByAttachmentDtoList(addressFileList, builder);
                 }
             }
         }
 
         //2.法定优先受偿款附件
-
         Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(areaId);
         List<SysAttachmentDto> reimFileList = reimbursementFileList.get(1);
         if (CollectionUtils.isNotEmpty(reimFileList)) {
-            builder.writeln("法定优先受偿款附件");
-            for (SysAttachmentDto sysAttachmentDto : reimFileList) {
-                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                generateCommonMethod.builderInsertImage(builder, imgPath);
-            }
+            builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+            builder.insertHtml(generateCommonMethod.getWarpCssHtml("法定优先受偿款附件"), true);
+//            builder.writeln("法定优先受偿款附件");
+//            for (SysAttachmentDto sysAttachmentDto : reimFileList) {
+//                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+//                generateCommonMethod.builderInsertImage(builder, imgPath);
+//
+//            }
+            this.imgComposingByAttachmentDtoList(reimFileList, builder);
         }
 
         //3.取得自定义的附件
@@ -3012,13 +3030,9 @@ public class GenerateBaseDataService {
             for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
                 List<SysAttachmentDto> fileList = schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId());
                 if (CollectionUtils.isNotEmpty(fileList)) {
+                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeReportFileCustom.getName())), true);
-                    imgPathList = Lists.newArrayList();
-                    for (SysAttachmentDto sysAttachmentDto : fileList) {
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        imgPathList.add(imgPath);
-                    }
-                    AsposeUtils.imageInsertToWrod(imgPathList, 2, builder);
+                    this.imgComposingByAttachmentDtoList(fileList, builder);
                 }
             }
         }
@@ -3033,27 +3047,18 @@ public class GenerateBaseDataService {
      */
     public String getCopyBusinessLicenseRealEstateValuationAgency() throws Exception {
         String localPath = getLocalPath();
-        new Document().save(localPath);
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         AdCompanyQualificationDto adCompanyQualificationDto = getCompanyQualificationForLicense();
         if (adCompanyQualificationDto != null) {
             if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
                 List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
-                List<String> images = Lists.newArrayList();
                 if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        if (StringUtils.isNotBlank(imgPath)) {
-                            if (FileUtils.checkImgSuffix(imgPath)) {
-                                images.add(imgPath);
-                            }
-                        }
-                    }
-                }
-                if (CollectionUtils.isNotEmpty(images)) {
-                    AsposeUtils.insertImage(localPath, images, 200, 100);
+                    this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
                 }
             }
         }
+        document.save(localPath);
         return localPath;
     }
 
@@ -3064,22 +3069,15 @@ public class GenerateBaseDataService {
      */
     public String getCopyQualificationCertificateRealEstateValuationInstitution() throws Exception {
         String localPath = getLocalPath();
-        new Document().save(localPath);
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         AdCompanyQualificationDto adCompanyQualificationDto = getCompanyQualificationForPractising();
         if (adCompanyQualificationDto != null && StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
             List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
-            if(CollectionUtils.isEmpty(attachmentDtoList)) return null;
-            List<String> images = Lists.newArrayList();
-            for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
-                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                if (StringUtils.isNotBlank(imgPath)&&FileUtils.checkImgSuffix(imgPath)) {
-                    images.add(imgPath);
-                }
-            }
-            if (CollectionUtils.isNotEmpty(images)) {
-                AsposeUtils.insertImage(localPath, images, 200, 100);
-            }
+            if (CollectionUtils.isEmpty(attachmentDtoList)) return null;
+            this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
         }
+        document.save(localPath);
         return localPath;
     }
 
@@ -3092,7 +3090,8 @@ public class GenerateBaseDataService {
      */
     public String getRegisteredRealEstateValuerValuationInstitution(String str) throws Exception {
         String localPath = getLocalPath();
-        new Document().save(localPath);
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         List<String> images = Lists.newArrayList();
         String[] strings = str.split(",");
         for (String id : strings) {
@@ -3106,27 +3105,19 @@ public class GenerateBaseDataService {
                         if (StringUtils.isBlank(adCompanyQualificationDto.getStandardImageJson())) return;
                         List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
                         if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
-                            for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
-                                try {
-                                    String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                                    if (StringUtils.isNotBlank(imgPath)) {
-                                        if (FileUtils.checkImgSuffix(imgPath)) {
-                                            images.add(imgPath);
-                                        }
-                                    }
-                                } catch (Exception e1) {
-                                    logger.error(e1.getMessage(), e1);
-                                }
+                            try {
+                                builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                                builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("%s%s", publicService.getUserNameByAccount(adCompanyQualificationDto.getUserAccount()),"注册证书复印件")), true);
+                                this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
+                            }catch (Exception e1){
+                                logger.error(e1.getMessage(), e1);
                             }
                         }
                     });
                 }
             }
         }
-        //图片特殊处理
-        if (CollectionUtils.isNotEmpty(images)) {
-            AsposeUtils.insertImage(localPath, images, 200, 100);
-        }
+        document.save(localPath);
         return localPath;
     }
 
