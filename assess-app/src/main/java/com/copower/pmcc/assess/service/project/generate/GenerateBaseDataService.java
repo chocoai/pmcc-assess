@@ -3725,7 +3725,6 @@ public class GenerateBaseDataService {
         this.compileReportService = SpringContextUtils.getBean(CompileReportService.class);
         this.schemeReportFileService = SpringContextUtils.getBean(SchemeReportFileService.class);
         this.dataQualificationService = SpringContextUtils.getBean(DataQualificationService.class);
-        this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
         this.schemeInfoService = SpringContextUtils.getBean(SchemeInfoService.class);
         this.evaluationMethodService = SpringContextUtils.getBean(EvaluationMethodService.class);
         this.schemeLiquidationAnalysisService = SpringContextUtils.getBean(SchemeLiquidationAnalysisService.class);
