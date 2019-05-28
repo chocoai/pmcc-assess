@@ -249,7 +249,7 @@ public class GenerateCommonMethod {
     }
 
     /**
-     * 按照报告类型
+     * 获取数值的四舍五入的绝对值，并且考虑是否除以10000
      *
      * @param bigDecimal
      * @return

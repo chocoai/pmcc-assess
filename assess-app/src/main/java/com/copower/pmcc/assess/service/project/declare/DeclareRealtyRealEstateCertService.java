@@ -267,6 +267,7 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setName(oo.getCertName());
             declareRecord.setOwnership(oo.getOwnership());
             declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
+            declareRecord.setRegistrationDate(oo.getRegistrationDate());
             declareRecord.setSeat(oo.getBeLocated());
             declareRecord.setStreetNumber(oo.getStreetNumber());
             declareRecord.setAttachedNumber(oo.getAttachedNumber());

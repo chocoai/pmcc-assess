@@ -60,14 +60,14 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_declare_record" domainObjectName="DeclareRecord">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">
+        <table tableName="tb_declare_record" domainObjectName="DeclareRecord">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>
         </table>
+
+        <!--<table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_data_land_level_detail" domainObjectName="DataLandLevelDetail">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

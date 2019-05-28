@@ -503,6 +503,14 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.SetUse.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse());
                 }
+                //坐落
+                if (Objects.equal(BaseReportFieldEnum.Seat.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectSeatList());
+                }
+                //权证号
+                if (Objects.equal(BaseReportFieldEnum.CERT_NAME.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList());
+                }
                 //证载用途
                 if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses());
@@ -518,6 +526,62 @@ public class GenerateReportService {
                 //评估面积
                 if (Objects.equal(BaseReportFieldEnum.AssessArea.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessArea());
+                }
+                //评估单价
+                if (Objects.equal(BaseReportFieldEnum.AssessPrice.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessPrice());
+                }
+                //评估总价
+                if (Objects.equal(BaseReportFieldEnum.AssessTotal.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessAssessTotal());
+                }
+                //登记时间
+                if (Objects.equal(BaseReportFieldEnum.RegistrationDate.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegistrationDate());
+                }
+                //房屋结构 建筑结构
+                if (Objects.equal(BaseReportFieldEnum.housingStructure.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBuildingStructureCategory());
+                }
+                //总层数
+                if (Objects.equal(BaseReportFieldEnum.floorCount.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFloorCount());
+                }
+                //楼盘名称
+                if (Objects.equal(BaseReportFieldEnum.estateName.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEstateName());
+                }
+                //房屋性质
+                if (Objects.equal(BaseReportFieldEnum.houseNature.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHouseNature());
+                }
+                //房屋所有权人
+                if (Objects.equal(BaseReportFieldEnum.ownership.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOwnership());
+                }
+                //户型
+                if (Objects.equal(BaseReportFieldEnum.unitType.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordUnitType());
+                }
+                //填发单位
+                if (Objects.equal(BaseReportFieldEnum.FillingUnit.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFillingUnit());
+                }
+                //建成年代
+                if (Objects.equal(BaseReportFieldEnum.BeCompletedTimeGetInteger.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBeCompletedTimeGetInteger());
+                }
+                //楼层
+                if (Objects.equal(BaseReportFieldEnum.floor.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordFloor());
+                }
+                //建筑面积
+                if (Objects.equal(BaseReportFieldEnum.BuildArea.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBuildArea());
+                }
+                //档案保管号
+                if (Objects.equal(BaseReportFieldEnum.ArchivesDepositNumber.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getArchivesDepositNumber());
                 }
                 //委托目的
                 if (Objects.equal(BaseReportFieldEnum.DelegatePurpose.getName(), name)) {

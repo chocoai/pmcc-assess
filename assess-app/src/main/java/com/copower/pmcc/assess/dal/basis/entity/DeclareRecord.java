@@ -72,6 +72,8 @@ public class DeclareRecord {
 
     private String inventoryContentKey;
 
+    private Date registrationDate;
+
     private BigDecimal price;
 
     private Boolean bisPartIn;
@@ -354,6 +356,14 @@ public class DeclareRecord {
 
     public void setInventoryContentKey(String inventoryContentKey) {
         this.inventoryContentKey = inventoryContentKey == null ? null : inventoryContentKey.trim();
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     public BigDecimal getPrice() {
