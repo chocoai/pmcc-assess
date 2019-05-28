@@ -17,6 +17,8 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,7 +80,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, province, city, district, type, ex_explain, tax_rate, amount, bis_national_unity, 
-    calculate_base, calculation_formula, taxes_burden, creator, gmt_created, gmt_modified
+    calculate_base, calculation_formula, taxes_burden, creator, gmt_created, gmt_modified, 
+    field_name, sorting
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocationExample" >
     select
@@ -118,12 +121,14 @@
       type, ex_explain, tax_rate, 
       amount, bis_national_unity, calculate_base, 
       calculation_formula, taxes_burden, creator, 
-      gmt_created, gmt_modified)
+      gmt_created, gmt_modified, field_name, 
+      sorting)
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{exExplain,jdbcType=VARCHAR}, #{taxRate,jdbcType=DECIMAL}, 
       #{amount,jdbcType=DECIMAL}, #{bisNationalUnity,jdbcType=BIT}, #{calculateBase,jdbcType=VARCHAR}, 
       #{calculationFormula,jdbcType=VARCHAR}, #{taxesBurden,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{fieldName,jdbcType=VARCHAR}, 
+      #{sorting,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -173,6 +178,12 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="fieldName != null" >
+        field_name,
+      </if>
+      <if test="sorting != null" >
+        sorting,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="province != null" >
@@ -216,6 +227,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fieldName != null" >
+        #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -273,6 +290,12 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.fieldName != null" >
+        field_name = #{record.fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -294,7 +317,9 @@
       taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      field_name = #{record.fieldName,jdbcType=VARCHAR},
+      sorting = #{record.sorting,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -344,6 +369,12 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="fieldName != null" >
+        field_name = #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -362,7 +393,9 @@
       taxes_burden = #{taxesBurden,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      field_name = #{fieldName,jdbcType=VARCHAR},
+      sorting = #{sorting,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

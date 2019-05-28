@@ -1085,6 +1085,136 @@ public class DataTaxRateAllocationExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andFieldNameIsNull() {
+            addCriterion("field_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameIsNotNull() {
+            addCriterion("field_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameEqualTo(String value) {
+            addCriterion("field_name =", value, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameNotEqualTo(String value) {
+            addCriterion("field_name <>", value, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameGreaterThan(String value) {
+            addCriterion("field_name >", value, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameGreaterThanOrEqualTo(String value) {
+            addCriterion("field_name >=", value, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameLessThan(String value) {
+            addCriterion("field_name <", value, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameLessThanOrEqualTo(String value) {
+            addCriterion("field_name <=", value, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameLike(String value) {
+            addCriterion("field_name like", value, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameNotLike(String value) {
+            addCriterion("field_name not like", value, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameIn(List<String> values) {
+            addCriterion("field_name in", values, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameNotIn(List<String> values) {
+            addCriterion("field_name not in", values, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameBetween(String value1, String value2) {
+            addCriterion("field_name between", value1, value2, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFieldNameNotBetween(String value1, String value2) {
+            addCriterion("field_name not between", value1, value2, "fieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNull() {
+            addCriterion("sorting is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNotNull() {
+            addCriterion("sorting is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingEqualTo(Integer value) {
+            addCriterion("sorting =", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotEqualTo(Integer value) {
+            addCriterion("sorting <>", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThan(Integer value) {
+            addCriterion("sorting >", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sorting >=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThan(Integer value) {
+            addCriterion("sorting <", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThanOrEqualTo(Integer value) {
+            addCriterion("sorting <=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIn(List<Integer> values) {
+            addCriterion("sorting in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotIn(List<Integer> values) {
+            addCriterion("sorting not in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingBetween(Integer value1, Integer value2) {
+            addCriterion("sorting between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
+            addCriterion("sorting not between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

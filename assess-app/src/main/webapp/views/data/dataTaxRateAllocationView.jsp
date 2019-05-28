@@ -399,6 +399,26 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
+                                            字段名称
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control"
+                                                   name="fieldName" placeholder="字段名称">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            排序
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" data-rule-number='true'
+                                                   name="sorting" placeholder="排序">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
                                             说明
                                         </label>
                                         <div class="col-sm-11">
