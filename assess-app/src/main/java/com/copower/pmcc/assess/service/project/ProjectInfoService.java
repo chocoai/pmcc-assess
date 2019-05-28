@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
+import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
@@ -9,7 +12,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
-import com.copower.pmcc.assess.dto.input.project.initiate.*;
+import com.copower.pmcc.assess.dto.input.project.initiate.InitiateProjectDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
@@ -24,10 +27,10 @@ import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.event.project.ProjectAssignEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
-import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -44,12 +47,15 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
+import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
+import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -113,7 +119,7 @@ public class ProjectInfoService {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
-    private ProjectPhaseService projectPhaseService;
+    private ErpRpcToolsService erpRpcToolsService;
     @Autowired
     private BaseParameterService baseParameterServcie;
     @Autowired
@@ -130,6 +136,8 @@ public class ProjectInfoService {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private AdRpcQualificationsService adRpcQualificationsService;
 
 
     /**
@@ -142,7 +150,7 @@ public class ProjectInfoService {
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
         projectMember.setBisEnable(true);
-        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(),projectMember, projectDto.getProjectInfo(), bisNextUser);
+        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), projectMember, projectDto.getProjectInfo(), bisNextUser);
     }
 
     @Transactional(rollbackFor = {Exception.class})
@@ -182,6 +190,7 @@ public class ProjectInfoService {
 
     /**
      * 分派项目经理
+     *
      * @param projectMember
      * @param projectInfo
      */
@@ -408,13 +417,13 @@ public class ProjectInfoService {
      * @param planId
      * @return
      */
-    public ProjectPlanVo getProjectPlanItem(Integer planId){
+    public ProjectPlanVo getProjectPlanItem(Integer planId) {
         ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
-        if(projectPlan==null) return null;
+        if (projectPlan == null) return null;
         return getProjectPlanVo(projectPlan);
     }
 
-    public ProjectPlanVo getProjectPlanVo(ProjectPlan projectPlan){
+    public ProjectPlanVo getProjectPlanVo(ProjectPlan projectPlan) {
         ProjectPlanVo projectPlanVo = new ProjectPlanVo();
         BeanUtils.copyProperties(projectPlan, projectPlanVo);
         String viewUrl = String.format("/%s/ProjectPlan/planDetailsById?planId=", applicationConstant.getAppKey());
@@ -631,7 +640,7 @@ public class ProjectInfoService {
         return crmBaseDataDicDtos;
     }
 
-    public void clear(){
+    public void clear() {
         consignorService.clear();
         possessorService.clear();
         unitInformationService.clear();
@@ -647,5 +656,28 @@ public class ProjectInfoService {
         }
     }
 
-
+    /**
+     * 生成报告二维码查看
+     *
+     * @param projectInfo    项目信息
+     * @param reportDate     报告出具日期
+     * @param documentNumber 报告文号
+     * @param reportFileId   报告附件id
+     * @return
+     * @throws Exception
+     */
+    public ProjectDocumentDto finishProjectDocument(ProjectInfo projectInfo, Date reportDate, String documentNumber, Integer reportFileId) throws Exception {
+        String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
+        InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
+        String customer = InitiateContactsEnum.legalPerson.getId().equals(consignorVo.getCsType()) ? consignorVo.getCsEntrustmentUnitName() : consignorVo.getCsName();
+        AdCompanyQualificationDto qualificationDto = adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
+        ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
+        projectDocumentDto.setProjectName(projectInfo.getProjectName());
+        projectDocumentDto.setCustomer(customer);
+        projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
+        projectDocumentDto.setDocumentNumber(documentNumber);
+        projectDocumentDto.setReportDate(DateUtils.formatDate(reportDate));
+        projectDocumentDto.setReportMember(publicService.getUserNameByAccount(projectManager));
+        return erpRpcToolsService.finishProjectDocument(projectDocumentDto, reportFileId);
+    }
 }

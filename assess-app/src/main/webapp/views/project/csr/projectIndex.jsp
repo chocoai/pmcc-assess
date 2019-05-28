@@ -410,6 +410,7 @@
     function selectEntrustmentUnit() {
         crmCustomer.select({
             multi: false,//是否允许多选
+            companyId:3,
             onSelected: function (nodes) {
                 $("#entrustmentUnitId").val(nodes[0].id);
                 $("#entrustmentUnitName").val(nodes[0].name);

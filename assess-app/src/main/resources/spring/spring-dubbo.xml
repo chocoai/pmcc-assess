@@ -23,6 +23,7 @@
     <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcCustomReportService" id="erpRpcCustomReportService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcProjectService" id="erpRpcProjectService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService" id="erpRpcAttachmentService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcReportProviderFileService" id="erpFileReportProvider" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
     <!-- ======================bpm - consumer========================== -->
     <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcBoxService" id="bpmRpcBoxService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService" id="bpmRpcProcessInsManagerService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
