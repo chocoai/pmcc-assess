@@ -60,6 +60,9 @@ AssessDBKey.DeclarePreSalePermit = "tb_declare_pre_sale_permit";
 AssessDBKey.DeclareLandUsePermit = "tb_declare_land_use_permit";
 AssessDBKey.DeclareBuildingPermit = "tb_declare_building_permit";
 
+AssessDBKey.MdCost = "tb_md_cost";
+AssessDBKey.MdDevelopment = "tb_md_development";
+
 /**
  * 项目分类key
  */

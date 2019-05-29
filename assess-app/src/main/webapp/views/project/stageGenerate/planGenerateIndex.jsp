@@ -38,7 +38,7 @@
                     </div>
                     <div class="x_content">
                         <form class="form-horizontal" id="groupForm${areaGroup.id}">
-                            <input type="hidden" name="areaGroupId" value="${areaGroup.id}">
+                            <input type="hidden" id="areaGroupId" name="areaGroupId" value="${areaGroup.id}">
                             <input type="hidden" name="id">
                             <div class="form-group">
                                 <div class="x-valid">
@@ -363,6 +363,7 @@
         }
         var data = {};
         data.planId = '${projectPlan.id}';
+        data.areaGroupId = $("#areaGroupId").val();
         var url = "${pageContext.request.contextPath}/generate/submitApply";
         if ("${empty processInsId?"0":processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/generate/submitEditApproval";

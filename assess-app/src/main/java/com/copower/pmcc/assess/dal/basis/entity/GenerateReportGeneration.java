@@ -9,6 +9,8 @@ public class GenerateReportGeneration {
 
     private Integer projectPlanId;
 
+    private String qualificationType;
+
     private Date investigationsStartDate;
 
     private Date investigationsEndDate;
@@ -19,9 +21,11 @@ public class GenerateReportGeneration {
 
     private String realEstateAppraiser;
 
-    private String qualificationType;
-
     private Integer areaGroupId;
+
+    private String processInsId;
+
+    private String status;
 
     private String creator;
 
@@ -51,6 +55,14 @@ public class GenerateReportGeneration {
 
     public void setProjectPlanId(Integer projectPlanId) {
         this.projectPlanId = projectPlanId;
+    }
+
+    public String getQualificationType() {
+        return qualificationType;
+    }
+
+    public void setQualificationType(String qualificationType) {
+        this.qualificationType = qualificationType == null ? null : qualificationType.trim();
     }
 
     public Date getInvestigationsStartDate() {
@@ -93,20 +105,28 @@ public class GenerateReportGeneration {
         this.realEstateAppraiser = realEstateAppraiser == null ? null : realEstateAppraiser.trim();
     }
 
-    public String getQualificationType() {
-        return qualificationType;
-    }
-
-    public void setQualificationType(String qualificationType) {
-        this.qualificationType = qualificationType == null ? null : qualificationType.trim();
-    }
-
     public Integer getAreaGroupId() {
         return areaGroupId;
     }
 
     public void setAreaGroupId(Integer areaGroupId) {
         this.areaGroupId = areaGroupId;
+    }
+
+    public String getProcessInsId() {
+        return processInsId;
+    }
+
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getCreator() {
