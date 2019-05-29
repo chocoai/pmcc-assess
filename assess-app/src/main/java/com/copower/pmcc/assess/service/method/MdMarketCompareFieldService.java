@@ -205,19 +205,19 @@ public class MdMarketCompareFieldService extends BaseService {
                             String convenience = generateLoactionService.getParkingConvenience(basicApply);//停车方便度
                             String trafficCharges = generateLoactionService.getTrafficCharges(basicApply);//交通收费情况
                             if (StringUtils.isNotBlank(roadCondition)) {
-                                stringBuilder.append(String.format("道路状况:%s", roadCondition));
+                                stringBuilder.append(String.format("%s;", roadCondition));
                             }
                             if (StringUtils.isNotBlank(transport)) {
-                                stringBuilder.append(String.format("出入可利用的交通工具:%s", transport));
+                                stringBuilder.append(String.format("%s;", transport));
                             }
                             if (StringUtils.isNotBlank(trafficControl)) {
-                                stringBuilder.append(String.format("交通管制情况:%s", trafficControl));
+                                stringBuilder.append(String.format("%s;", trafficControl));
                             }
                             if (StringUtils.isNotBlank(convenience)) {
-                                stringBuilder.append(String.format("停车方便度:%s", convenience));
+                                stringBuilder.append(String.format("%s;", convenience));
                             }
                             if (StringUtils.isNotBlank(trafficCharges)) {
-                                stringBuilder.append(String.format("交通收费情况:%s", trafficCharges));
+                                stringBuilder.append(String.format("%s", trafficCharges));
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRAFFIC_CONDITIONS.getKey(), stringBuilder.toString()));
                             break;
@@ -228,7 +228,13 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case PUBLIC_SERVICE_FACILITIES://公共服务设施
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateLoactionService.getExternalPublicServiceFacilities(basicApply));
+                            List<String> facilities = generateLoactionService.getExternalPublicServiceFacilities(basicApply,false);
+                            if(CollectionUtils.isNotEmpty(facilities)){
+                                for (String facility : facilities) {
+                                    stringBuilder.append(facility);
+                                }
+                            }
+
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PUBLIC_SERVICE_FACILITIES.getKey(), stringBuilder.toString()));
                             break;
                         case NATURAL://自然环境
@@ -596,12 +602,12 @@ public class MdMarketCompareFieldService extends BaseService {
     }
 
     private MarketCompareItemDto getMarketCompareItemDto(String name, String value, Boolean isCase) {
+        value = StringUtils.isBlank(value) ? (isCase ? "无" : "") : value;
+        value = value.replaceAll("^[,，.。;；、]+|[,，.。;；、]+$", "");
         MarketCompareItemDto marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName(name);
         marketCompareItemDto.setScore(100);
         marketCompareItemDto.setRatio(new BigDecimal("1"));
-        value = StringUtils.isBlank(value) ? (isCase ? "无" : "") : value;
-        value = value.replaceAll("^[,，.。;；、]+[,，.。;；、]+$", "");
         marketCompareItemDto.setValue(value);
         return marketCompareItemDto;
     }

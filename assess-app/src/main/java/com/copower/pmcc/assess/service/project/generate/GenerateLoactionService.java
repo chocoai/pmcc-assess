@@ -559,7 +559,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public List<String> getExternalPublicServiceFacilities(BasicApply basicApply) throws Exception {
+    public List<String> getExternalPublicServiceFacilities(BasicApply basicApply, Boolean isShowName) throws Exception {
         List<String> stringArrayList = Lists.newArrayList();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
@@ -568,23 +568,29 @@ public class GenerateLoactionService {
         List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
             //购物商场
-            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":"), false));
+            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET,
+                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":") : "", false));
             //餐饮
-            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT, String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":"), false));
+            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT,
+                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":") : "", false));
             //休闲娱乐
-            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION, String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":"), false));
+            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION,
+                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":") : "", false));
         }
         //金融服务
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            stringArrayList.add(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null, null, String.format("%s%s", "金融服务", ":")));
+            stringArrayList.add(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null,
+                    null, isShowName ? String.format("%s%s", "金融服务", ":") : ""));
         }
         //医疗
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            stringArrayList.add(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList, null, String.format("%s%s", "医疗", ":")));
+            stringArrayList.add(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList,
+                    null, isShowName ? String.format("%s%s", "医疗", ":") : ""));
         }
         //教育
         if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
-            stringArrayList.add(getFinanceAndMedicalAndEducation(null, null, basicMatchingEducationList, String.format("%s%s", "教育", ":")));
+            stringArrayList.add(getFinanceAndMedicalAndEducation(null, null,
+                    basicMatchingEducationList, isShowName ? String.format("%s%s", "教育", ":") : ""));
         }
         return stringArrayList;
     }

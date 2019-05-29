@@ -2767,7 +2767,7 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml("3、外部基础设施"));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApply)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("4、外部公共服务设施"));
-                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApply);
+                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApply,true);
                 if (CollectionUtils.isNotEmpty(stringArrayList)) {
                     stringArrayList.stream().forEach(s -> stringBuilder.append(generateCommonMethod.getIndentHtml(s)));
                 }
