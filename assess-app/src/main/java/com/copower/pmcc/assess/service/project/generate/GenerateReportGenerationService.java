@@ -39,6 +39,11 @@ public class GenerateReportGenerationService {
         return generateReportGenerationDao.getGenerateReportGenerationByAreaGroupId(areaGroupId, projectPlanId);
     }
 
+    public GenerateReportGeneration getGenerateReportGenerationByProcessInsId(String processInsId) throws Exception {
+        GenerateReportGeneration generateReportGeneration = new GenerateReportGeneration();
+        generateReportGeneration.setProcessInsId(processInsId);
+        return generateReportGenerationDao.getGenerateReportGeneration(generateReportGeneration);
+    }
 
     public boolean updateGenerateReportGeneration(GenerateReportGeneration generateReportGeneration) throws Exception {
         return generateReportGenerationDao.updateGenerateReportGeneration(generateReportGeneration);

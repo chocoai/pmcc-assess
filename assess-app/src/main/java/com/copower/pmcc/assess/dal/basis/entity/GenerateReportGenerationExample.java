@@ -285,6 +285,76 @@ public class GenerateReportGenerationExample {
             return (Criteria) this;
         }
 
+        public Criteria andQualificationTypeIsNull() {
+            addCriterion("qualification_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeIsNotNull() {
+            addCriterion("qualification_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeEqualTo(String value) {
+            addCriterion("qualification_type =", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotEqualTo(String value) {
+            addCriterion("qualification_type <>", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeGreaterThan(String value) {
+            addCriterion("qualification_type >", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("qualification_type >=", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLessThan(String value) {
+            addCriterion("qualification_type <", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLessThanOrEqualTo(String value) {
+            addCriterion("qualification_type <=", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLike(String value) {
+            addCriterion("qualification_type like", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotLike(String value) {
+            addCriterion("qualification_type not like", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeIn(List<String> values) {
+            addCriterion("qualification_type in", values, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotIn(List<String> values) {
+            addCriterion("qualification_type not in", values, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeBetween(String value1, String value2) {
+            addCriterion("qualification_type between", value1, value2, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotBetween(String value1, String value2) {
+            addCriterion("qualification_type not between", value1, value2, "qualificationType");
+            return (Criteria) this;
+        }
+
         public Criteria andInvestigationsStartDateIsNull() {
             addCriterion("investigations_start_date is null");
             return (Criteria) this;
@@ -595,76 +665,6 @@ public class GenerateReportGenerationExample {
             return (Criteria) this;
         }
 
-        public Criteria andQualificationTypeIsNull() {
-            addCriterion("qualification_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeIsNotNull() {
-            addCriterion("qualification_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeEqualTo(String value) {
-            addCriterion("qualification_type =", value, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeNotEqualTo(String value) {
-            addCriterion("qualification_type <>", value, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeGreaterThan(String value) {
-            addCriterion("qualification_type >", value, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("qualification_type >=", value, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeLessThan(String value) {
-            addCriterion("qualification_type <", value, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeLessThanOrEqualTo(String value) {
-            addCriterion("qualification_type <=", value, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeLike(String value) {
-            addCriterion("qualification_type like", value, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeNotLike(String value) {
-            addCriterion("qualification_type not like", value, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeIn(List<String> values) {
-            addCriterion("qualification_type in", values, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeNotIn(List<String> values) {
-            addCriterion("qualification_type not in", values, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeBetween(String value1, String value2) {
-            addCriterion("qualification_type between", value1, value2, "qualificationType");
-            return (Criteria) this;
-        }
-
-        public Criteria andQualificationTypeNotBetween(String value1, String value2) {
-            addCriterion("qualification_type not between", value1, value2, "qualificationType");
-            return (Criteria) this;
-        }
-
         public Criteria andAreaGroupIdIsNull() {
             addCriterion("area_group_id is null");
             return (Criteria) this;
@@ -722,6 +722,146 @@ public class GenerateReportGenerationExample {
 
         public Criteria andAreaGroupIdNotBetween(Integer value1, Integer value2) {
             addCriterion("area_group_id not between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIsNull() {
+            addCriterion("process_ins_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIsNotNull() {
+            addCriterion("process_ins_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdEqualTo(String value) {
+            addCriterion("process_ins_id =", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotEqualTo(String value) {
+            addCriterion("process_ins_id <>", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThan(String value) {
+            addCriterion("process_ins_id >", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("process_ins_id >=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThan(String value) {
+            addCriterion("process_ins_id <", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThanOrEqualTo(String value) {
+            addCriterion("process_ins_id <=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLike(String value) {
+            addCriterion("process_ins_id like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotLike(String value) {
+            addCriterion("process_ins_id not like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIn(List<String> values) {
+            addCriterion("process_ins_id in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotIn(List<String> values) {
+            addCriterion("process_ins_id not in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdBetween(String value1, String value2) {
+            addCriterion("process_ins_id between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotBetween(String value1, String value2) {
+            addCriterion("process_ins_id not between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(String value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(String value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(String value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(String value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(String value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLike(String value) {
+            addCriterion("status like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotLike(String value) {
+            addCriterion("status not like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<String> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<String> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(String value1, String value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(String value1, String value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 

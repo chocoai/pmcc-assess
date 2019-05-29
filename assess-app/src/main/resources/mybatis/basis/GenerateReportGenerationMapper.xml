@@ -5,13 +5,15 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="project_plan_id" property="projectPlanId" jdbcType="INTEGER" />
+    <result column="qualification_type" property="qualificationType" jdbcType="VARCHAR" />
     <result column="investigations_start_date" property="investigationsStartDate" jdbcType="TIMESTAMP" />
     <result column="investigations_end_date" property="investigationsEndDate" jdbcType="TIMESTAMP" />
     <result column="report_issuance_date" property="reportIssuanceDate" jdbcType="TIMESTAMP" />
     <result column="home_work_end_time" property="homeWorkEndTime" jdbcType="TIMESTAMP" />
     <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="VARCHAR" />
-    <result column="qualification_type" property="qualificationType" jdbcType="VARCHAR" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,9 +77,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, project_plan_id, investigations_start_date, investigations_end_date, 
-    report_issuance_date, home_work_end_time, real_estate_appraiser, qualification_type, 
-    area_group_id, creator, gmt_created, gmt_modified
+    id, project_id, project_plan_id, qualification_type, investigations_start_date, investigations_end_date, 
+    report_issuance_date, home_work_end_time, real_estate_appraiser, area_group_id, process_ins_id, 
+    status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGenerationExample" >
     select
@@ -113,16 +115,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_generate_report_generation (project_id, project_plan_id, investigations_start_date, 
-      investigations_end_date, report_issuance_date, 
-      home_work_end_time, real_estate_appraiser, 
-      qualification_type, area_group_id, creator, 
-      gmt_created, gmt_modified)
-    values (#{projectId,jdbcType=INTEGER}, #{projectPlanId,jdbcType=INTEGER}, #{investigationsStartDate,jdbcType=TIMESTAMP}, 
-      #{investigationsEndDate,jdbcType=TIMESTAMP}, #{reportIssuanceDate,jdbcType=TIMESTAMP}, 
-      #{homeWorkEndTime,jdbcType=TIMESTAMP}, #{realEstateAppraiser,jdbcType=VARCHAR}, 
-      #{qualificationType,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_generate_report_generation (project_id, project_plan_id, qualification_type, 
+      investigations_start_date, investigations_end_date, 
+      report_issuance_date, home_work_end_time, 
+      real_estate_appraiser, area_group_id, process_ins_id, 
+      status, creator, gmt_created, 
+      gmt_modified)
+    values (#{projectId,jdbcType=INTEGER}, #{projectPlanId,jdbcType=INTEGER}, #{qualificationType,jdbcType=VARCHAR}, 
+      #{investigationsStartDate,jdbcType=TIMESTAMP}, #{investigationsEndDate,jdbcType=TIMESTAMP}, 
+      #{reportIssuanceDate,jdbcType=TIMESTAMP}, #{homeWorkEndTime,jdbcType=TIMESTAMP}, 
+      #{realEstateAppraiser,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +139,9 @@
       </if>
       <if test="projectPlanId != null" >
         project_plan_id,
+      </if>
+      <if test="qualificationType != null" >
+        qualification_type,
       </if>
       <if test="investigationsStartDate != null" >
         investigations_start_date,
@@ -151,11 +158,14 @@
       <if test="realEstateAppraiser != null" >
         real_estate_appraiser,
       </if>
-      <if test="qualificationType != null" >
-        qualification_type,
-      </if>
       <if test="areaGroupId != null" >
         area_group_id,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="creator != null" >
         creator,
@@ -174,6 +184,9 @@
       <if test="projectPlanId != null" >
         #{projectPlanId,jdbcType=INTEGER},
       </if>
+      <if test="qualificationType != null" >
+        #{qualificationType,jdbcType=VARCHAR},
+      </if>
       <if test="investigationsStartDate != null" >
         #{investigationsStartDate,jdbcType=TIMESTAMP},
       </if>
@@ -189,11 +202,14 @@
       <if test="realEstateAppraiser != null" >
         #{realEstateAppraiser,jdbcType=VARCHAR},
       </if>
-      <if test="qualificationType != null" >
-        #{qualificationType,jdbcType=VARCHAR},
-      </if>
       <if test="areaGroupId != null" >
         #{areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -224,6 +240,9 @@
       <if test="record.projectPlanId != null" >
         project_plan_id = #{record.projectPlanId,jdbcType=INTEGER},
       </if>
+      <if test="record.qualificationType != null" >
+        qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
+      </if>
       <if test="record.investigationsStartDate != null" >
         investigations_start_date = #{record.investigationsStartDate,jdbcType=TIMESTAMP},
       </if>
@@ -239,11 +258,14 @@
       <if test="record.realEstateAppraiser != null" >
         real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
       </if>
-      <if test="record.qualificationType != null" >
-        qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
-      </if>
       <if test="record.areaGroupId != null" >
         area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -264,13 +286,15 @@
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       project_plan_id = #{record.projectPlanId,jdbcType=INTEGER},
+      qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
       investigations_start_date = #{record.investigationsStartDate,jdbcType=TIMESTAMP},
       investigations_end_date = #{record.investigationsEndDate,jdbcType=TIMESTAMP},
       report_issuance_date = #{record.reportIssuanceDate,jdbcType=TIMESTAMP},
       home_work_end_time = #{record.homeWorkEndTime,jdbcType=TIMESTAMP},
       real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
-      qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -287,6 +311,9 @@
       <if test="projectPlanId != null" >
         project_plan_id = #{projectPlanId,jdbcType=INTEGER},
       </if>
+      <if test="qualificationType != null" >
+        qualification_type = #{qualificationType,jdbcType=VARCHAR},
+      </if>
       <if test="investigationsStartDate != null" >
         investigations_start_date = #{investigationsStartDate,jdbcType=TIMESTAMP},
       </if>
@@ -302,11 +329,14 @@
       <if test="realEstateAppraiser != null" >
         real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
       </if>
-      <if test="qualificationType != null" >
-        qualification_type = #{qualificationType,jdbcType=VARCHAR},
-      </if>
       <if test="areaGroupId != null" >
         area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -324,13 +354,15 @@
     update tb_generate_report_generation
     set project_id = #{projectId,jdbcType=INTEGER},
       project_plan_id = #{projectPlanId,jdbcType=INTEGER},
+      qualification_type = #{qualificationType,jdbcType=VARCHAR},
       investigations_start_date = #{investigationsStartDate,jdbcType=TIMESTAMP},
       investigations_end_date = #{investigationsEndDate,jdbcType=TIMESTAMP},
       report_issuance_date = #{reportIssuanceDate,jdbcType=TIMESTAMP},
       home_work_end_time = #{homeWorkEndTime,jdbcType=TIMESTAMP},
       real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
-      qualification_type = #{qualificationType,jdbcType=VARCHAR},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
