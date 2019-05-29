@@ -23,9 +23,9 @@ public class GenerateController {
 
     @ResponseBody
     @RequestMapping(value = "/submitApply", name = "提交申请", method = RequestMethod.POST)
-    public HttpResult submitApply(Integer planId) {
+    public HttpResult submitApply(Integer planId,Integer areaGroupId) {
         try {
-            generateService.submitApply(planId);
+            generateService.submitApply(planId,areaGroupId);
         } catch (Exception e) {
             log.error(e.getMessage(),e);
             return HttpResult.newErrorResult("提交申请异常");

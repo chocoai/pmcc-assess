@@ -1,9 +1,12 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.event.project.GenerateEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanApprovalEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
@@ -47,6 +50,9 @@ public class GenerateService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private GenerateReportGenerationService generateReportGenerationService;
+
 
     /**
      * 报告生成申请提交
@@ -55,7 +61,7 @@ public class GenerateService {
      * @throws BusinessException
      */
     @Transactional(rollbackFor = Exception.class)
-    public void submitApply(Integer planId) throws BusinessException {
+    public void submitApply(Integer planId,Integer areaGroupId) throws Exception {
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
@@ -77,9 +83,14 @@ public class GenerateService {
         processInfo.setWorkStage(projectWorkStage.getWorkStageName());
         processInfo.setWorkStageId(projectWorkStage.getId());
         processInfo.setAppKey(applicationConstant.getAppKey());
+        processInfo.setProcessEventExecutor(GenerateEvent.class);
 
         try {
             processUserDto = processControllerComponent.processStart(processInfo, projectInfo.getCreator(), false);
+            GenerateReportGeneration generateReportGeneration = generateReportGenerationService.getGenerateReportGenerationByAreaGroupId(areaGroupId,planId);
+            generateReportGeneration.setProcessInsId(processUserDto.getProcessInsId());
+            generateReportGeneration.setStatus(ProjectStatusEnum.RUNING.getKey());
+            generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
         } catch (BpmException e) {
             log.info(e.getMessage());
             throw new BusinessException(e.getMessage());
