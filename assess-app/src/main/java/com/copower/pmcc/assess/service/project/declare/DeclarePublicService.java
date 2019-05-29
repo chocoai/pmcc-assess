@@ -759,12 +759,11 @@ public class DeclarePublicService {
         //套内面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
             if (this.isNumeric(PoiUtils.getCellValue(row.getCell(13)))) {
-                declareRealtyHouseCert.setInnerArea(PoiUtils.getCellValue(row.getCell(13)));
+                declareRealtyHouseCert.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
             } else {
                 builder.append(String.format("\n第%s行异常：套内面积应填写数字", i));
                 return false;
             }
-            declareRealtyHouseCert.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
         }
         //总层数
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
@@ -1039,7 +1038,7 @@ public class DeclarePublicService {
     }
 
     //验证是否是数字或小数
-    public static boolean isNumeric(String str) {
+    public boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         if (str.indexOf(".") > 0) {//判断是否有小数点
             if (str.indexOf(".") == str.lastIndexOf(".") && str.split("\\.").length == 2) { //判断是否只有一个小数点
