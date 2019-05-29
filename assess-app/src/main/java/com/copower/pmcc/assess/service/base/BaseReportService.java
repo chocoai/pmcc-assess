@@ -101,7 +101,7 @@ public class BaseReportService {
         BaseReportTemplateVo baseReportTemplateVo = new BaseReportTemplateVo();
         BeanUtils.copyProperties(baseReportTemplate, baseReportTemplateVo);
         baseReportTemplateVo.setEntrustPurposeName(baseDataDicService.getNameById(baseReportTemplate.getEntrustPurpose()));
-
+        baseReportTemplateVo.setLoanTypeName(baseDataDicService.getNameById(baseReportTemplate.getLoanType()));
         List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(baseReportTemplate.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         if (CollectionUtils.isNotEmpty(baseAttachments)) {
             List<String> report = LangUtils.transform(baseAttachments, o -> baseAttachmentService.getViewHtml(o));
@@ -127,7 +127,8 @@ public class BaseReportService {
             return null;
         }
         BaseReportTemplate template = getReportTemplate(Integer.valueOf(unitInformationVo.getuUseUnit()),
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), reportType, projectInfo.getEntrustPurpose());
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(),
+                reportType, projectInfo.getEntrustPurpose(), projectInfo.getLoanType());
         return template;
     }
 
@@ -138,10 +139,10 @@ public class BaseReportService {
      * @param projectTypeId     项目类型
      * @param projectCategoryId 项目类别
      * @param reportType        报告类型
-     * @param entrustPurpose        委托目的
+     * @param entrustPurpose    委托目的
      * @return
      */
-    public BaseReportTemplate getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer entrustPurpose) {
+    public BaseReportTemplate getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer entrustPurpose,Integer loanType) {
         //1.先查询报告使用单位是否设置模板，如果未设置则取系统内置模板，
         //2.如果设置了则根据参数获取对应模板，如果还是未找到则取统内置模板，
         BaseReportTemplate resultTemplate = null;
@@ -153,12 +154,12 @@ public class BaseReportService {
         baseReportTemplateWhere.setCategory(projectCategoryId);
         baseReportTemplateWhere.setBisEnable(true);
         List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
-        resultTemplate = getReportTemplateByPurpose(reportTemplateList, entrustPurpose);
+        resultTemplate = getReportTemplateByPurpose(reportTemplateList, entrustPurpose,loanType);
         if (CollectionUtils.isEmpty(reportTemplateList)) {//系统内置模板
             useUnit = 0;
             baseReportTemplateWhere.setUseUnit(useUnit);
             reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
-            resultTemplate = getReportTemplateByPurpose(reportTemplateList, entrustPurpose);
+            resultTemplate = getReportTemplateByPurpose(reportTemplateList, entrustPurpose,loanType);
         }
         return resultTemplate;
     }
@@ -170,20 +171,25 @@ public class BaseReportService {
      * @param entrustPurpose
      * @return
      */
-    private BaseReportTemplate getReportTemplateByPurpose(List<BaseReportTemplate> reportTemplateList, Integer entrustPurpose) {
+    private BaseReportTemplate getReportTemplateByPurpose(List<BaseReportTemplate> reportTemplateList, Integer entrustPurpose, Integer loanType) {
         if (CollectionUtils.isEmpty(reportTemplateList)) return null;
+        if (reportTemplateList.size() == 1) return reportTemplateList.get(0);
         //1.先循环模板查询是否与参数委托目的一致的模板,找到后直接返回
         //2.如果未找到则寻找没有设置委托目的的模板
         for (BaseReportTemplate template : reportTemplateList) {
-            if(template.getEntrustPurpose()!=null&&template.getEntrustPurpose().equals(entrustPurpose))
+            if (template.getEntrustPurpose() != null && template.getLoanType() != null) {
+                if (template.getEntrustPurpose().equals(entrustPurpose) && template.getLoanType().equals(loanType))
+                    return template;
+            } else if (template.getEntrustPurpose() != null && template.getEntrustPurpose().equals(entrustPurpose)) {
+                return template;
+            } else if (template.getLoanType() != null && template.getLoanType().equals(loanType)) {
+                return template;
+            }
+            if (template.getEntrustPurpose() != null && template.getEntrustPurpose().equals(entrustPurpose))
                 return template;
         }
-        List<BaseReportTemplate> filter = LangUtils.filter(reportTemplateList, o -> o.getEntrustPurpose() == null || o.getEntrustPurpose() == 0);
-        if(CollectionUtils.isEmpty(filter))return null;
-        return filter.get(0);
+        return reportTemplateList.get(0);
     }
-
-
 
 
 }

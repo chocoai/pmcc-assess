@@ -2767,7 +2767,7 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml("3、外部基础设施"));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApply)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("4、外部公共服务设施"));
-                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApply,true);
+                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApply, true);
                 if (CollectionUtils.isNotEmpty(stringArrayList)) {
                     stringArrayList.stream().forEach(s -> stringBuilder.append(generateCommonMethod.getIndentHtml(s)));
                 }
@@ -3031,62 +3031,62 @@ public class GenerateBaseDataService {
             }
             if (declareRecord != null && declareRecord.getFloorArea() != null) {
                 stringLinkedList.add("建筑面积（㎡）");
-                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(),false));
+                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), false));
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
             if (declareRecord != null && declareRecord.getPrice() != null) {
                 stringLinkedList.add("登记价（元）");
-                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(),false));
+                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), false));
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
-            if (basicBuildingVo != null && basicBuildingVo.getBeCompletedTime() != null){
+            if (basicBuildingVo != null && basicBuildingVo.getBeCompletedTime() != null) {
                 stringLinkedList.add("竣工日期");
-                stringLinkedList.add(DateUtils.format( basicBuildingVo.getBeCompletedTime() , DateUtils.DATE_CHINESE_PATTERN));
+                stringLinkedList.add(DateUtils.format(basicBuildingVo.getBeCompletedTime(), DateUtils.DATE_CHINESE_PATTERN));
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
-            if (StringUtils.isNotEmpty(huxingName)){
-                String v1 = "室" ;
-                String v2 = "厅" ;
-                String v3 = "厨" ;
-                String v4 = "卫" ;
-                String v5 = "花园" ;
-                String v6 = "阳台" ;
-                if (org.apache.commons.lang.StringUtils.contains(huxingName,v1)){
+            if (StringUtils.isNotEmpty(huxingName)) {
+                String v1 = "室";
+                String v2 = "厅";
+                String v3 = "厨";
+                String v4 = "卫";
+                String v5 = "花园";
+                String v6 = "阳台";
+                if (org.apache.commons.lang.StringUtils.contains(huxingName, v1)) {
                     stringLinkedList.add("居室");
-                    stringLinkedList.add(org.apache.commons.lang.StringUtils.substringBefore(huxingName,v1));
+                    stringLinkedList.add(org.apache.commons.lang.StringUtils.substringBefore(huxingName, v1));
                     generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                     stringLinkedList.clear();
                 }
-                Pattern pattern = Pattern.compile(String.format("\\d%s",v2));
+                Pattern pattern = Pattern.compile(String.format("\\d%s", v2));
                 Matcher matcher = pattern.matcher(huxingName);
-                if (matcher.find()){
-                    String s = generateCommonMethod.getNumber(matcher.group()) ;
-                    if (StringUtils.isNotEmpty(s)){
+                if (matcher.find()) {
+                    String s = generateCommonMethod.getNumber(matcher.group());
+                    if (StringUtils.isNotEmpty(s)) {
                         stringLinkedList.add("厅");
                         stringLinkedList.add(s);
                         generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                         stringLinkedList.clear();
                     }
                 }
-                pattern = Pattern.compile(String.format("\\d%s",v3));
+                pattern = Pattern.compile(String.format("\\d%s", v3));
                 matcher = pattern.matcher(huxingName);
-                if (matcher.find()){
-                    String s = generateCommonMethod.getNumber(matcher.group()) ;
-                    if (StringUtils.isNotEmpty(s)){
+                if (matcher.find()) {
+                    String s = generateCommonMethod.getNumber(matcher.group());
+                    if (StringUtils.isNotEmpty(s)) {
                         stringLinkedList.add("厨房");
                         stringLinkedList.add(s);
                         generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                         stringLinkedList.clear();
                     }
                 }
-                pattern = Pattern.compile(String.format("\\d%s",v4));
+                pattern = Pattern.compile(String.format("\\d%s", v4));
                 matcher = pattern.matcher(huxingName);
-                if (matcher.find()){
-                    String s = generateCommonMethod.getNumber(matcher.group()) ;
-                    if (StringUtils.isNotEmpty(s)){
+                if (matcher.find()) {
+                    String s = generateCommonMethod.getNumber(matcher.group());
+                    if (StringUtils.isNotEmpty(s)) {
                         stringLinkedList.add("卫生间");
                         stringLinkedList.add(s);
                         generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
@@ -3420,6 +3420,42 @@ public class GenerateBaseDataService {
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String generateCompareFile = generateMdIncomeService.generateCompareFile();
+                    File file = new File(generateCompareFile);
+                    if (file.isFile()) {
+                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdIncome.getName());
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
+                        //去掉html
+                        key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
+                        key = String.format("%s%s", key, UUID.randomUUID().toString());
+                        map.put(key, generateCompareFile);
+                        builder.writeln(key);
+                    }
+                }
+
+                //成本法
+                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_COST, schemeJudgeObject);
+                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                    List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
+                    if(CollectionUtils.isEmpty(attachmentDtos))continue;
+                    String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
+                    File file = new File(generateCompareFile);
+                    if (file.isFile()) {
+                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdIncome.getName());
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
+                        //去掉html
+                        key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
+                        key = String.format("%s%s", key, UUID.randomUUID().toString());
+                        map.put(key, generateCompareFile);
+                        builder.writeln(key);
+                    }
+                }
+
+                //假设开发法
+                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_DEVELOPMENT, schemeJudgeObject);
+                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                    List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
+                    if(CollectionUtils.isEmpty(attachmentDtos))continue;
+                    String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
                     File file = new File(generateCompareFile);
                     if (file.isFile()) {
                         String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdIncome.getName());

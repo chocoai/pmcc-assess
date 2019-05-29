@@ -535,6 +535,66 @@ public class BaseReportTemplateExample {
             return (Criteria) this;
         }
 
+        public Criteria andLoanTypeIsNull() {
+            addCriterion("loan_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeIsNotNull() {
+            addCriterion("loan_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeEqualTo(Integer value) {
+            addCriterion("loan_type =", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeNotEqualTo(Integer value) {
+            addCriterion("loan_type <>", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeGreaterThan(Integer value) {
+            addCriterion("loan_type >", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("loan_type >=", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeLessThan(Integer value) {
+            addCriterion("loan_type <", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("loan_type <=", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeIn(List<Integer> values) {
+            addCriterion("loan_type in", values, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeNotIn(List<Integer> values) {
+            addCriterion("loan_type not in", values, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeBetween(Integer value1, Integer value2) {
+            addCriterion("loan_type between", value1, value2, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("loan_type not between", value1, value2, "loanType");
+            return (Criteria) this;
+        }
+
         public Criteria andInsertRowIndexIsNull() {
             addCriterion("insert_row_index is null");
             return (Criteria) this;

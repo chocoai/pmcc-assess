@@ -36,6 +36,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private String departmentName;
     private String valueTypeName;
     private String propertyScopeName;
+    private String loanTypeName;
     private Integer finishPre;
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
@@ -223,5 +224,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setEntrustAimTypeName(String entrustAimTypeName) {
         this.entrustAimTypeName = entrustAimTypeName;
+    }
+
+    public String getLoanTypeName() {
+        return loanTypeName;
+    }
+
+    public void setLoanTypeName(String loanTypeName) {
+        this.loanTypeName = loanTypeName;
     }
 }

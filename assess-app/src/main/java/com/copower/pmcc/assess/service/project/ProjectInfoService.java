@@ -551,6 +551,7 @@ public class ProjectInfoService {
         if (projectInfo.getUrgency() != null) {
             projectInfoVo.setUrgencyName(bidBaseDataDicService.getNameById(projectInfo.getUrgency()));
         }
+        projectInfoVo.setLoanTypeName(bidBaseDataDicService.getNameById(projectInfo.getLoanType()));
         if (projectInfo.getDepartmentId() != null) {
             projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
         }

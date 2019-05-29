@@ -371,7 +371,7 @@ public class CsrBorrowerService {
         CsrProjectInfo csrProjectInfo = csrProjectInfoService.getById(csrProjectInfoID);
         BaseReportTemplate baseReportTemplate = null;
         baseReportTemplate = baseReportService.getReportTemplate(csrProjectInfo.getEntrustmentUnitId(), csrProjectInfo.getProjectTypeId(),
-                csrProjectInfo.getProjectCategoryId(), baseDataDic.getId(),csrProjectInfo.getEntrustPurpose());
+                csrProjectInfo.getProjectCategoryId(), baseDataDic.getId(),csrProjectInfo.getEntrustPurpose(),null);
         responseEntity = toExportFormBorrowers(request, response, baseReportTemplate, csrProjectInfoID);
         return responseEntity;
     }

@@ -50,6 +50,8 @@ public class TemplateSetController {
         modelAndView.addObject("projectTypeList", projectTypeList);
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         modelAndView.addObject("entrustPurposeList", entrustPurposeList);
+        List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
+        modelAndView.addObject("loanTypeList", loanTypeList);
         List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("reportType", cacheDataDicList);
         modelAndView.addObject("currUserAccount", processControllerComponent.getThisUser());

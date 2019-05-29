@@ -98,6 +98,7 @@ AssessDicKey.dataEntrustmentPurposeMortgage = "data.entrustment.purpose.mortgage
 AssessDicKey.property_scope = "examine.house.scope.property";//评估范围
 AssessDicKey.project_initiate_urgency = "project.initiate.urgency";//紧急程度
 AssessDicKey.data_company_reputation = "data.company.reputation";//公司信誉
+AssessDicKey.dataLoanType="data.loan.type";//贷款类型
 
 //楼盘
 AssessDicKey.estate_position = "estate.position";//楼盘方位

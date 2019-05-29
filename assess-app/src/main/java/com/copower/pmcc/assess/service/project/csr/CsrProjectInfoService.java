@@ -643,7 +643,7 @@ public class CsrProjectInfoService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
 
         BaseReportTemplate reportTemplateFileDto = baseReportService.getReportTemplate(csrProjectInfo.getEntrustmentUnitId(), csrProjectInfo.getProjectTypeId(),
-                csrProjectInfo.getProjectCategoryId(), baseDataDic.getId(),csrProjectInfo.getEntrustPurpose());
+                csrProjectInfo.getProjectCategoryId(), baseDataDic.getId(),csrProjectInfo.getEntrustPurpose(),null);
         if (reportTemplateFileDto == null)
             throw new BusinessException("未找到对应的报告模板");
 

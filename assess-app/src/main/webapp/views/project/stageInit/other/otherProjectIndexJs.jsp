@@ -301,6 +301,9 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.project_initiate_urgency, item.urgency, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.urgency").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.dataLoanType, item.loanType, function (html, data) {
+                $("#" + objProject.config.info.frm).find("select.loanType").empty().html(html).trigger('change');
+            });
             $("#" + objProject.config.info.frm).find("select.valueType").change(function () {
                 var valueType = $("#" + objProject.config.info.frm).find("select.valueType").val();
                 if (objProject.isNotBlank(valueType)) {

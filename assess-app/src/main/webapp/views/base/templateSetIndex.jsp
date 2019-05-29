@@ -120,6 +120,21 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            贷款类型
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name='loanType' class='form-control  search-select select2'>
+                                                <option value="0">-请选择-</option>
+                                                <c:forEach var="item" items="${loanTypeList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class='x-valid'>
                                         <label class='col-sm-2 control-label'>报告模板</label>
                                         <div class='col-sm-10'>
@@ -198,6 +213,7 @@
         var cols = [];
         cols.push({field: 'name', title: '名称', width: '20%'});
         cols.push({field: 'entrustPurposeName', title: '委托目的', width: '20%'});
+        cols.push({field: 'loanTypeName', title: '贷款类型', width: '20%'});
         cols.push({
             field: 'report', title: '报告模板', width: '30%', formatter: function (value, row, index) {
                 var s = "";

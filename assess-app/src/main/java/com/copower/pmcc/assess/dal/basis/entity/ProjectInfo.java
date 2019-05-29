@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProjectInfo {
@@ -51,7 +52,13 @@ public class ProjectInfo {
 
     private String scopeNotInclude;
 
+    private Integer loanType;
+
+    private Integer contractId;
+
     private String contractName;
+
+    private BigDecimal contractPrice;
 
     private String status;
 
@@ -261,12 +268,36 @@ public class ProjectInfo {
         this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
     }
 
+    public Integer getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(Integer loanType) {
+        this.loanType = loanType;
+    }
+
+    public Integer getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(Integer contractId) {
+        this.contractId = contractId;
+    }
+
     public String getContractName() {
         return contractName;
     }
 
     public void setContractName(String contractName) {
         this.contractName = contractName == null ? null : contractName.trim();
+    }
+
+    public BigDecimal getContractPrice() {
+        return contractPrice;
+    }
+
+    public void setContractPrice(BigDecimal contractPrice) {
+        this.contractPrice = contractPrice;
     }
 
     public String getStatus() {

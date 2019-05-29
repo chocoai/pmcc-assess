@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class BaseReportTemplateVo extends BaseReportTemplate {
     private String entrustPurposeName;
+    private String loanTypeName;
     private List<String> report;
 
     public String getEntrustPurposeName() {
@@ -21,6 +22,14 @@ public class BaseReportTemplateVo extends BaseReportTemplate {
 
     public void setEntrustPurposeName(String entrustPurposeName) {
         this.entrustPurposeName = entrustPurposeName;
+    }
+
+    public String getLoanTypeName() {
+        return loanTypeName;
+    }
+
+    public void setLoanTypeName(String loanTypeName) {
+        this.loanTypeName = loanTypeName;
     }
 
     public List<String> getReport() {

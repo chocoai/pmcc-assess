@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1655,6 +1656,126 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andLoanTypeIsNull() {
+            addCriterion("loan_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeIsNotNull() {
+            addCriterion("loan_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeEqualTo(Integer value) {
+            addCriterion("loan_type =", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeNotEqualTo(Integer value) {
+            addCriterion("loan_type <>", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeGreaterThan(Integer value) {
+            addCriterion("loan_type >", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("loan_type >=", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeLessThan(Integer value) {
+            addCriterion("loan_type <", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("loan_type <=", value, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeIn(List<Integer> values) {
+            addCriterion("loan_type in", values, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeNotIn(List<Integer> values) {
+            addCriterion("loan_type not in", values, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeBetween(Integer value1, Integer value2) {
+            addCriterion("loan_type between", value1, value2, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLoanTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("loan_type not between", value1, value2, "loanType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdIsNull() {
+            addCriterion("contract_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdIsNotNull() {
+            addCriterion("contract_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdEqualTo(Integer value) {
+            addCriterion("contract_id =", value, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdNotEqualTo(Integer value) {
+            addCriterion("contract_id <>", value, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdGreaterThan(Integer value) {
+            addCriterion("contract_id >", value, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("contract_id >=", value, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdLessThan(Integer value) {
+            addCriterion("contract_id <", value, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdLessThanOrEqualTo(Integer value) {
+            addCriterion("contract_id <=", value, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdIn(List<Integer> values) {
+            addCriterion("contract_id in", values, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdNotIn(List<Integer> values) {
+            addCriterion("contract_id not in", values, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdBetween(Integer value1, Integer value2) {
+            addCriterion("contract_id between", value1, value2, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("contract_id not between", value1, value2, "contractId");
+            return (Criteria) this;
+        }
+
         public Criteria andContractNameIsNull() {
             addCriterion("contract_name is null");
             return (Criteria) this;
@@ -1722,6 +1843,66 @@ public class ProjectInfoExample {
 
         public Criteria andContractNameNotBetween(String value1, String value2) {
             addCriterion("contract_name not between", value1, value2, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceIsNull() {
+            addCriterion("contract_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceIsNotNull() {
+            addCriterion("contract_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceEqualTo(BigDecimal value) {
+            addCriterion("contract_price =", value, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceNotEqualTo(BigDecimal value) {
+            addCriterion("contract_price <>", value, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceGreaterThan(BigDecimal value) {
+            addCriterion("contract_price >", value, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("contract_price >=", value, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceLessThan(BigDecimal value) {
+            addCriterion("contract_price <", value, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("contract_price <=", value, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceIn(List<BigDecimal> values) {
+            addCriterion("contract_price in", values, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceNotIn(List<BigDecimal> values) {
+            addCriterion("contract_price not in", values, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("contract_price between", value1, value2, "contractPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("contract_price not between", value1, value2, "contractPrice");
             return (Criteria) this;
         }
 

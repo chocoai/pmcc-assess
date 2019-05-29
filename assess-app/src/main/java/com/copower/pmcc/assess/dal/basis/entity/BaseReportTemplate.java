@@ -17,6 +17,8 @@ public class BaseReportTemplate {
 
     private Integer entrustPurpose;
 
+    private Integer loanType;
+
     private Integer insertRowIndex;
 
     private Boolean bisEnable;
@@ -81,6 +83,14 @@ public class BaseReportTemplate {
 
     public void setEntrustPurpose(Integer entrustPurpose) {
         this.entrustPurpose = entrustPurpose;
+    }
+
+    public Integer getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(Integer loanType) {
+        this.loanType = loanType;
     }
 
     public Integer getInsertRowIndex() {

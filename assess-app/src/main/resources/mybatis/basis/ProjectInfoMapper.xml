@@ -26,7 +26,10 @@
     <result column="property_scope" property="propertyScope" jdbcType="VARCHAR" />
     <result column="scope_include" property="scopeInclude" jdbcType="VARCHAR" />
     <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
+    <result column="loan_type" property="loanType" jdbcType="INTEGER" />
+    <result column="contract_id" property="contractId" jdbcType="INTEGER" />
     <result column="contract_name" property="contractName" jdbcType="VARCHAR" />
+    <result column="contract_price" property="contractPrice" jdbcType="DECIMAL" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
     <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER" />
@@ -99,8 +102,8 @@
     province, city, district, valuation_date, entrust_purpose, entrust_aim_type, remark_entrust_purpose, 
     value_type, remark_value_type, department_id, remarks, complete_date_plan, complete_date_actual, 
     complete_date_start, process_ins_id, property_scope, scope_include, scope_not_include, 
-    contract_name, status, project_status, public_project_id, assign_process_ins_id, 
-    assign_status, creator, gmt_created, gmt_modified
+    loan_type, contract_id, contract_name, contract_price, status, project_status, public_project_id, 
+    assign_process_ins_id, assign_status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample" >
     select
@@ -143,7 +146,8 @@
       value_type, remark_value_type, department_id, 
       remarks, complete_date_plan, complete_date_actual, 
       complete_date_start, process_ins_id, property_scope, 
-      scope_include, scope_not_include, contract_name, 
+      scope_include, scope_not_include, loan_type, 
+      contract_id, contract_name, contract_price, 
       status, project_status, public_project_id, 
       assign_process_ins_id, assign_status, creator, 
       gmt_created, gmt_modified)
@@ -154,7 +158,8 @@
       #{valueType,jdbcType=INTEGER}, #{remarkValueType,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
       #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{propertyScope,jdbcType=VARCHAR}, 
-      #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, 
+      #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{loanType,jdbcType=INTEGER}, 
+      #{contractId,jdbcType=INTEGER}, #{contractName,jdbcType=VARCHAR}, #{contractPrice,jdbcType=DECIMAL}, 
       #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, 
       #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
@@ -234,8 +239,17 @@
       <if test="scopeNotInclude != null" >
         scope_not_include,
       </if>
+      <if test="loanType != null" >
+        loan_type,
+      </if>
+      <if test="contractId != null" >
+        contract_id,
+      </if>
       <if test="contractName != null" >
         contract_name,
+      </if>
+      <if test="contractPrice != null" >
+        contract_price,
       </if>
       <if test="status != null" >
         status,
@@ -332,8 +346,17 @@
       <if test="scopeNotInclude != null" >
         #{scopeNotInclude,jdbcType=VARCHAR},
       </if>
+      <if test="loanType != null" >
+        #{loanType,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null" >
+        #{contractId,jdbcType=INTEGER},
+      </if>
       <if test="contractName != null" >
         #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractPrice != null" >
+        #{contractPrice,jdbcType=DECIMAL},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -442,8 +465,17 @@
       <if test="record.scopeNotInclude != null" >
         scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
       </if>
+      <if test="record.loanType != null" >
+        loan_type = #{record.loanType,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractId != null" >
+        contract_id = #{record.contractId,jdbcType=INTEGER},
+      </if>
       <if test="record.contractName != null" >
         contract_name = #{record.contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractPrice != null" >
+        contract_price = #{record.contractPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
@@ -500,7 +532,10 @@
       property_scope = #{record.propertyScope,jdbcType=VARCHAR},
       scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
       scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
+      loan_type = #{record.loanType,jdbcType=INTEGER},
+      contract_id = #{record.contractId,jdbcType=INTEGER},
       contract_name = #{record.contractName,jdbcType=VARCHAR},
+      contract_price = #{record.contractPrice,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=VARCHAR},
       project_status = #{record.projectStatus,jdbcType=VARCHAR},
       public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
@@ -585,8 +620,17 @@
       <if test="scopeNotInclude != null" >
         scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
       </if>
+      <if test="loanType != null" >
+        loan_type = #{loanType,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null" >
+        contract_id = #{contractId,jdbcType=INTEGER},
+      </if>
       <if test="contractName != null" >
         contract_name = #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractPrice != null" >
+        contract_price = #{contractPrice,jdbcType=DECIMAL},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -640,7 +684,10 @@
       property_scope = #{propertyScope,jdbcType=VARCHAR},
       scope_include = #{scopeInclude,jdbcType=VARCHAR},
       scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
+      loan_type = #{loanType,jdbcType=INTEGER},
+      contract_id = #{contractId,jdbcType=INTEGER},
       contract_name = #{contractName,jdbcType=VARCHAR},
+      contract_price = #{contractPrice,jdbcType=DECIMAL},
       status = #{status,jdbcType=VARCHAR},
       project_status = #{projectStatus,jdbcType=VARCHAR},
       public_project_id = #{publicProjectId,jdbcType=INTEGER},

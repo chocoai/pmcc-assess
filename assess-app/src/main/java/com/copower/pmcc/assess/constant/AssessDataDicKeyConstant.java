@@ -22,6 +22,7 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_COMPANY_REPUTATION = "data.company.reputation";//公司信誉
     public static final String DATA_SERVICE_CONTENT = "data.service.content";//物业服务
     public static final String DATA_INDEX_LAND_TYPE = "data.index.land.type";//土地指数
+    public static final String DATA_LOAN_TYPE = "data.loan.type";//贷款类型
 
     /*
      * 报告配置
