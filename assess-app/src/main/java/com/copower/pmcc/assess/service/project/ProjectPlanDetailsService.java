@@ -425,15 +425,14 @@ public class ProjectPlanDetailsService {
     }
 
     public void deleteProjectPlanDetails(ProjectPlanDetails projectPlanDetails) {
-        if (projectPlanDetails == null && projectPlanDetails.getStatus() == null) return;
+        if (projectPlanDetails == null) return;
         try {
             if (ProcessStatusEnum.RUN.getValue().equals(projectPlanDetails.getStatus())) {
                 bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(), projectPlanDetails.getId());
                 if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId()) && !projectPlanDetails.getProcessInsId().equals("0"))
                     bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());
-            } else {
-                projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
             }
+            projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
         }

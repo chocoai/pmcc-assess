@@ -218,7 +218,7 @@ public class EvaluationPrincipleService {
                             case AssessReportFieldConstant.INCOME:
                                 SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(judgeFunction.getJudgeObjectId(), judgeFunction.getMethodType());
                                 MdIncome incomeById = mdIncomeDao.getIncomeById(schemeInfo.getMethodDataId());
-                                if (incomeById.getOperationMode() == 0) {
+                                if (incomeById != null && incomeById.getOperationMode() == 0) {
                                     autotrophy.append(judgeObject.getNumber()).append(",");
                                 } else {
                                     rent.append(judgeObject.getNumber()).append(",");

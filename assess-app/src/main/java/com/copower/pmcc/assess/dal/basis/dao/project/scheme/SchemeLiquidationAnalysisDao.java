@@ -52,6 +52,7 @@ public class SchemeLiquidationAnalysisDao {
     public SchemeLiquidationAnalysis getSchemeLiquidationAnalysis(SchemeLiquidationAnalysis schemeLiquidationAnalysis) {
         SchemeLiquidationAnalysisExample example = new SchemeLiquidationAnalysisExample();
         MybatisUtils.convertObj2Example(schemeLiquidationAnalysis, example);
+        example.setOrderByClause("id desc");
         List<SchemeLiquidationAnalysis> list = schemeLiquidationAnalysisMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(list)) return list.get(0);
         return null;

@@ -269,7 +269,7 @@ public class DataReportAnalysisService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(other.getTemplate()));
                 //实现价格
                 DataReportTemplateItem realized = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.MARKET_VALUE_ANALYSIS_REALIZED_PRICE);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(realized.getTemplate().replace("#{变现比率}", liquidRatios)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(realized.getTemplate().replace("#{变现比率}", StringUtils.defaultString(liquidRatios))));
             }
             //变现时间费税及清偿
             if (AssessReportFieldConstant.PAY_OFF_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
@@ -278,7 +278,7 @@ public class DataReportAnalysisService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(other.getTemplate()));
                 //政策
                 DataReportTemplateItem policy = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.PAY_OFF_ANALYSIS_POLICY);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(policy.getTemplate().replace("#{变现时间}", liquidTime)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(policy.getTemplate().replace("#{变现时间}", StringUtils.defaultString(liquidTime))));
                 //费用一览表
                 DataReportTemplateItem schedule = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.PAY_OFF_ANALYSIS_SCHEDULE);
                 stringBuilder.append(generateCommonMethod.getIndentHtml(schedule.getTemplate()));
