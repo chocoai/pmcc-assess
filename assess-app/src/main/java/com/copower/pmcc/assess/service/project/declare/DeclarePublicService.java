@@ -596,10 +596,10 @@ public class DeclarePublicService {
             return false;
         }
         //建筑面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(5)))) {
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(5)))&&StringUtils.isNumeric(PoiUtils.getCellValue(row.getCell(5)))) {
             declareRealtyHouseCert.setFloorArea(PoiUtils.getCellValue(row.getCell(5)));
         } else {
-            builder.append(String.format("\n第%s行异常：建筑面积必须填写", i));
+            builder.append(String.format("\n第%s行异常：建筑面积必须填写数字", i));
             return false;
         }
         //验证基础字典中数据
