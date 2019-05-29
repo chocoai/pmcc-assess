@@ -1095,7 +1095,7 @@ public class GenerateBaseDataService {
                                 }
                                 break;
                             case 5:
-                                if (!StringUtils.isEmpty(item.getPrice().toString())) {
+                                if (item.getPrice()!=null) {
                                     builder.writeln(item.getPrice().toString());
                                 } else {
                                     builder.writeln("空");

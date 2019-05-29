@@ -167,7 +167,7 @@ public class ResidueRatioService {
         BigDecimal equipmentScore = this.getTypeScore(houseId, "equipment.part");
         BigDecimal otherScore = this.getTypeScore(houseId, "other");
         BigDecimal total = structuralScore.add(decorationScore).add(equipmentScore).add(otherScore);
-        String level = "%50";
+        String level = "50%";
         if (total.compareTo(new BigDecimal("85")) == 1 && total.compareTo(new BigDecimal("100")) < 1) {
             level = "90%";
         }
