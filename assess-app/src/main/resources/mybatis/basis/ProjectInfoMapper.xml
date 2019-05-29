@@ -26,6 +26,7 @@
     <result column="property_scope" property="propertyScope" jdbcType="VARCHAR" />
     <result column="scope_include" property="scopeInclude" jdbcType="VARCHAR" />
     <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
+    <result column="contract_name" property="contractName" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
     <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER" />
@@ -98,8 +99,8 @@
     province, city, district, valuation_date, entrust_purpose, entrust_aim_type, remark_entrust_purpose, 
     value_type, remark_value_type, department_id, remarks, complete_date_plan, complete_date_actual, 
     complete_date_start, process_ins_id, property_scope, scope_include, scope_not_include, 
-    status, project_status, public_project_id, assign_process_ins_id, assign_status, 
-    creator, gmt_created, gmt_modified
+    contract_name, status, project_status, public_project_id, assign_process_ins_id, 
+    assign_status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample" >
     select
@@ -142,10 +143,10 @@
       value_type, remark_value_type, department_id, 
       remarks, complete_date_plan, complete_date_actual, 
       complete_date_start, process_ins_id, property_scope, 
-      scope_include, scope_not_include, status, 
-      project_status, public_project_id, assign_process_ins_id, 
-      assign_status, creator, gmt_created, 
-      gmt_modified)
+      scope_include, scope_not_include, contract_name, 
+      status, project_status, public_project_id, 
+      assign_process_ins_id, assign_status, creator, 
+      gmt_created, gmt_modified)
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP}, 
@@ -153,10 +154,10 @@
       #{valueType,jdbcType=INTEGER}, #{remarkValueType,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
       #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{propertyScope,jdbcType=VARCHAR}, 
-      #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{assignProcessInsId,jdbcType=VARCHAR}, 
-      #{assignStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, 
+      #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -232,6 +233,9 @@
       </if>
       <if test="scopeNotInclude != null" >
         scope_not_include,
+      </if>
+      <if test="contractName != null" >
+        contract_name,
       </if>
       <if test="status != null" >
         status,
@@ -327,6 +331,9 @@
       </if>
       <if test="scopeNotInclude != null" >
         #{scopeNotInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null" >
+        #{contractName,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -435,6 +442,9 @@
       <if test="record.scopeNotInclude != null" >
         scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
       </if>
+      <if test="record.contractName != null" >
+        contract_name = #{record.contractName,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -490,6 +500,7 @@
       property_scope = #{record.propertyScope,jdbcType=VARCHAR},
       scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
       scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
+      contract_name = #{record.contractName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       project_status = #{record.projectStatus,jdbcType=VARCHAR},
       public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
@@ -574,6 +585,9 @@
       <if test="scopeNotInclude != null" >
         scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
       </if>
+      <if test="contractName != null" >
+        contract_name = #{contractName,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -626,6 +640,7 @@
       property_scope = #{propertyScope,jdbcType=VARCHAR},
       scope_include = #{scopeInclude,jdbcType=VARCHAR},
       scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
+      contract_name = #{contractName,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       project_status = #{projectStatus,jdbcType=VARCHAR},
       public_project_id = #{publicProjectId,jdbcType=INTEGER},

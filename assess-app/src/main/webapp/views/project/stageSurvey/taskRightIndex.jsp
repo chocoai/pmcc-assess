@@ -50,20 +50,20 @@
                                 删除
                             </button>
                         </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="false">导入数据
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="javascript://"
-                                       onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>
-                                </li>
-                                <li><a href="javascript://;"
-                                       onclick="$('#ajaxFileUpload_number').val('').trigger('click')">导入数据</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <%--<div class="btn-group">--%>
+                            <%--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"--%>
+                                    <%--aria-expanded="false">导入数据--%>
+                                <%--<span class="caret"></span>--%>
+                            <%--</button>--%>
+                            <%--<ul class="dropdown-menu" role="menu">--%>
+                                <%--<li><a href="javascript://"--%>
+                                       <%--onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>--%>
+                                <%--</li>--%>
+                                <%--<li><a href="javascript://;"--%>
+                                       <%--onclick="$('#ajaxFileUpload_number').val('').trigger('click')">导入数据</a>--%>
+                                <%--</li>--%>
+                            <%--</ul>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
                 <div class="form-group">

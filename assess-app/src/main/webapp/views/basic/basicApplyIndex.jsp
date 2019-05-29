@@ -54,12 +54,12 @@
                             </div>
                             <span class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 checkbox-inline">
                                 <input type="radio" id="applyFormType0" name="type" value="0">
-                                <label for="applyFormType0">非工业与仓储</label>
+                                <label for="applyFormType0">非工业交通仓储</label>
                             </span>
 
                             <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
                                 <input type="radio" id="applyFormType1" name="type" value="1">
-                                <label for="applyFormType1">工业与仓储</label>
+                                <label for="applyFormType1">工业交通仓储</label>
                             </span>
                         </div>
                         <div class="form-group">

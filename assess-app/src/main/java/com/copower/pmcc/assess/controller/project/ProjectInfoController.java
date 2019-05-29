@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
@@ -63,6 +64,8 @@ public class ProjectInfoController {
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private DataValueDefinitionService dataValueDefinitionService;
+    @Autowired
+    private PublicService publicService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -79,6 +82,7 @@ public class ProjectInfoController {
         projectInfo.setProjectCategoryId(projectCategoryId);
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         projectInfoService.clear();
         return modelAndView;
     }

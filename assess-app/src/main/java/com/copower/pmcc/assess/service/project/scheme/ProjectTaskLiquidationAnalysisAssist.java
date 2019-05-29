@@ -44,15 +44,15 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisIndex", "", 0, "0", "");
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         if (schemeLiquidationAnalysis == null) {
+            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(), projectPlanDetails.getId());
             schemeLiquidationAnalysis = new SchemeLiquidationAnalysis();
             schemeLiquidationAnalysis.setProjectId(projectPlanDetails.getProjectId());
             schemeLiquidationAnalysis.setPlanDetailsId(projectPlanDetails.getId());
             schemeLiquidationAnalysis.setAreaId(projectPlanDetails.getAreaId());
             schemeLiquidationAnalysisService.saveLiquidationAnalysis(schemeLiquidationAnalysis);
-            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(), projectPlanDetails.getId());
         }
         modelAndView.addObject("master", schemeLiquidationAnalysis);
-        setModelParam(modelAndView,projectPlanDetails);
+        setModelParam(modelAndView, projectPlanDetails);
         return modelAndView;
     }
 
@@ -71,7 +71,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval", processInsId, boxId, taskId, agentUserAccount);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
-        setModelParam(modelAndView,projectPlanDetails);
+        setModelParam(modelAndView, projectPlanDetails);
         return modelAndView;
     }
 
@@ -90,7 +90,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisIndex", processInsId, boxId, taskId, agentUserAccount);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
-        setModelParam(modelAndView,projectPlanDetails);
+        setModelParam(modelAndView, projectPlanDetails);
         return modelAndView;
     }
 
@@ -104,7 +104,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
-        setModelParam(modelAndView,projectPlanDetails);
+        setModelParam(modelAndView, projectPlanDetails);
         return modelAndView;
     }
 
@@ -131,17 +131,19 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         //应该获取最终测算好的价格与面积
         if (CollectionUtils.isNotEmpty(judgeObjects)) {
             for (SchemeJudgeObject judgeObject : judgeObjects) {
-                if(judgeObject.getEvaluationArea()!=null&&judgeObject.getPrice()!=null){
+                if (judgeObject.getEvaluationArea() != null) {
                     groupArea = groupArea.add(judgeObject.getEvaluationArea());
-                    groupPrice=groupPrice.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                    if (judgeObject.getPrice() != null) {
+                        groupPrice = groupPrice.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                    }
                 }
             }
         }
-        modelAndView.addObject("groupArea",groupArea.setScale(2,BigDecimal.ROUND_HALF_UP));
-        modelAndView.addObject("groupPrice",groupPrice.setScale(2,BigDecimal.ROUND_HALF_UP));
+        modelAndView.addObject("groupArea", groupArea.setScale(2, BigDecimal.ROUND_HALF_UP));
+        modelAndView.addObject("groupPrice", groupPrice.setScale(2, BigDecimal.ROUND_HALF_UP));
         //增值税率
         DataTaxRateAllocation allocationSales = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
         String salesTax = String.valueOf(allocationSales.getTaxRate());
-        modelAndView.addObject("salesTax",salesTax);
+        modelAndView.addObject("salesTax", salesTax);
     }
 }

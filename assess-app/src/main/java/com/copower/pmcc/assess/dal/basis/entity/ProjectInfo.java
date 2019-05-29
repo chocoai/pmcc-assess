@@ -51,6 +51,8 @@ public class ProjectInfo {
 
     private String scopeNotInclude;
 
+    private String contractName;
+
     private String status;
 
     private String projectStatus;
@@ -257,6 +259,14 @@ public class ProjectInfo {
 
     public void setScopeNotInclude(String scopeNotInclude) {
         this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
+    }
+
+    public String getContractName() {
+        return contractName;
+    }
+
+    public void setContractName(String contractName) {
+        this.contractName = contractName == null ? null : contractName.trim();
     }
 
     public String getStatus() {

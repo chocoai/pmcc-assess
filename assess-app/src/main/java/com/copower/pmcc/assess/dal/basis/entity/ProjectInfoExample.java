@@ -1655,6 +1655,76 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andContractNameIsNull() {
+            addCriterion("contract_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameIsNotNull() {
+            addCriterion("contract_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameEqualTo(String value) {
+            addCriterion("contract_name =", value, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameNotEqualTo(String value) {
+            addCriterion("contract_name <>", value, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameGreaterThan(String value) {
+            addCriterion("contract_name >", value, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameGreaterThanOrEqualTo(String value) {
+            addCriterion("contract_name >=", value, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameLessThan(String value) {
+            addCriterion("contract_name <", value, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameLessThanOrEqualTo(String value) {
+            addCriterion("contract_name <=", value, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameLike(String value) {
+            addCriterion("contract_name like", value, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameNotLike(String value) {
+            addCriterion("contract_name not like", value, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameIn(List<String> values) {
+            addCriterion("contract_name in", values, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameNotIn(List<String> values) {
+            addCriterion("contract_name not in", values, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameBetween(String value1, String value2) {
+            addCriterion("contract_name between", value1, value2, "contractName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNameNotBetween(String value1, String value2) {
+            addCriterion("contract_name not between", value1, value2, "contractName");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;

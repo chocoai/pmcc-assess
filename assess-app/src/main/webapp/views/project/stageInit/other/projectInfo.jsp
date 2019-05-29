@@ -177,6 +177,31 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目合同</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <div class="input-group">
+                        <input type="text" class="form-control" readonly="readonly" name="contractName"
+                               onclick="selectContract();"
+                               value="${projectInfo.contractName}">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="selectContract();">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目说明</label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <textarea name="remarks"
@@ -196,7 +221,19 @@
         </div>
     </form>
 </div>
+<script src="/pmcc-contract/js/cms_contract_utils.js"></script>
 <script type="text/javascript">
+    /*选择合同*/
+    function selectContract() {
+        cmsContract.select({
+            multi: false,//是否允许多选
+            appkey: "pmcc-assess",
+            onSelected: function (data) {
+                $("#" + objProject.config.info.frm).find("[name=contractName]").val(data.name);
+            }
+        });
+    }
+
     function getValueDefinition() {
         var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
         getCategory(entrustPurpose, false);

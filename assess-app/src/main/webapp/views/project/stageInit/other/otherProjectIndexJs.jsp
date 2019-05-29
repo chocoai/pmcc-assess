@@ -688,6 +688,7 @@
         //选择客户
         crmCustomer.select({
             multi: false,//是否允许多选
+            companyId:${companyId},
             onSelected: function (nodes) {
                 $(this_).closest('.input-group').find("input[name='uUseUnit']").val(nodes[0].id);
                 $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(nodes[0].name);

@@ -54,7 +54,7 @@
 
     var ue = UE.getEditor('landDefinition', {
         toolbars: [
-            ['source','autotypeset','bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
         ],
         zIndex: 11009,
         initialFrameHeight: 120,
@@ -83,9 +83,12 @@
 
         loadLandLevelList: function () {
             var cols = [];
-            cols.push({field: 'provinceName', title: '省'});
-            cols.push({field: 'cityName', title: '市'});
-            cols.push({field: 'districtName', title: '县'});
+            cols.push({
+                field: 'provinceName', title: '省', formatter: function (value, row, index) {
+                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+                }
+            });
+            cols.push({field: 'title', title: '标题'});
             cols.push({
                 field: 'valuationDate', title: '估价期日', formatter: function (value, row, index) {
                     return formatDate(value);
@@ -93,6 +96,11 @@
             });
             cols.push({
                 field: 'releaseDate', title: '发布日期', formatter: function (value, row, index) {
+                    return formatDate(value);
+                }
+            });
+            cols.push({
+                field: 'executionTime', title: '执行时间', formatter: function (value, row, index) {
                     return formatDate(value);
                 }
             });
@@ -249,9 +257,11 @@
         //加载土地级别信息
         loadLandLevelDetailList: function () {
             var cols = [];
-            cols.push({field: 'classify', title: '大类', formatter: function (value, row, index) {
-                return '<span title="' + row.levelRange + '">' + value + '</span>';
-            }});
+            cols.push({
+                field: 'classify', title: '大类', formatter: function (value, row, index) {
+                    return '<span title="' + row.levelRange + '">' + value + '</span>';
+                }
+            });
             cols.push({field: 'type', title: '类型'});
             cols.push({field: 'category', title: '类别'});
             cols.push({field: 'price', title: '单价'});
@@ -349,7 +359,7 @@
     landLevel.showDataLandDetailAchievement = function () {
         var levelDetailId = landLevel.config().achievementBoxDetail.find("input[name='levelDetailId']").val();
         landLevel.showLandDetailAchievementList(levelDetailId);
-        landLevel.initFormLandDetailAchievement({levelDetailId:levelDetailId});
+        landLevel.initFormLandDetailAchievement({levelDetailId: levelDetailId});
         landLevel.config().achievementBox.modal("show");
     };
 
@@ -500,32 +510,28 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">省
+                                        <label class="col-sm-1 control-label">省
                                             <span class="symbol required"></span></label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-3">
                                             <select id="province" name="province"
                                                     class="form-control search-select select2"
                                                     required="required">
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">市<span
+                                        <label class="col-sm-1 control-label">市<span
                                                 class="symbol required"></span></label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-3">
                                             <select id="city" name="city" class="form-control search-select select2"
                                                     required="required">
 
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">县</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-1 control-label">县</label>
+                                        <div class="col-sm-3">
                                             <select id="district" name="district"
                                                     class="form-control search-select select2">
                                             </select>
@@ -534,28 +540,24 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">估价期日</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-1 control-label">估价期日</label>
+                                        <div class="col-sm-3">
                                             <input type="text" readonly="readonly"
                                                    class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
                                                    name="valuationDate" placeholder="估价期日">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">发布日期</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-1 control-label">发布日期</label>
+                                        <div class="col-sm-3">
                                             <input type="text" readonly="readonly"
                                                    class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
                                                    name="releaseDate" placeholder="发布日期">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">执行时间</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-1 control-label">执行时间</label>
+                                        <div class="col-sm-3">
                                             <input type="text" readonly="readonly"
                                                    class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
                                                    name="executionTime" placeholder="执行时间">
@@ -564,23 +566,21 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">标题</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-1 control-label">标题</label>
+                                        <div class="col-sm-3">
                                             <input placeholder="标题" class="form-control" name="title" type="text">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">文号</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-1 control-label">文号</label>
+                                        <div class="col-sm-3">
                                             <input placeholder="文号" class="form-control" name="wordSymbol" type="text">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-sm-1 control-label">
                                             基准地价定义
                                         </label>
                                         <div class="col-sm-10">
@@ -590,7 +590,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">附件</label>
+                                        <label class="col-sm-1 control-label">附件</label>
                                         <div class="col-sm-10">
                                             <input id="uploadFile" placeholder="上传附件" class="form-control" type="file">
                                             <div id="_uploadFile"></div>
@@ -782,7 +782,8 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">类型<span class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">类型<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-10">
                                             <select name="type" required
                                                     class="form-control search-select select2 type">
@@ -792,7 +793,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">类别<span class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">类别<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-10">
                                             <select name="category" required
                                                     class="form-control search-select select2 category">
@@ -803,7 +805,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">等级<span class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">等级<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-10">
                                             <select name="grade" required
                                                     class="form-control search-select select2 grade">
@@ -813,7 +816,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">分值<span class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">分值<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-10">
                                             <input type="text" data-rule-number='true' required class="form-control"
                                                    name="achievement"
