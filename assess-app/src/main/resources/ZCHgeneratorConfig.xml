@@ -60,9 +60,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_record" domainObjectName="DeclareRecord">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_declare_record" domainObjectName="DeclareRecord">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -101,9 +101,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_declare_realty_house_cert" domainObjectName="DeclareRealtyHouseCert">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_declare_realty_house_cert" domainObjectName="DeclareRealtyHouseCert">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_declare_realty_land_cert" domainObjectName="DeclareRealtyLandCert">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

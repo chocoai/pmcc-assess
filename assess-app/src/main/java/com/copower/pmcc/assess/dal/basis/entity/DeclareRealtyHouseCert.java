@@ -54,9 +54,9 @@ public class DeclareRealtyHouseCert {
 
     private String location;
 
-    private BigDecimal evidenceArea;
+    private BigDecimal innerArea;
 
-    private String innerArea;
+    private BigDecimal evidenceArea;
 
     private String other;
 
@@ -290,20 +290,20 @@ public class DeclareRealtyHouseCert {
         this.location = location == null ? null : location.trim();
     }
 
+    public BigDecimal getInnerArea() {
+        return innerArea;
+    }
+
+    public void setInnerArea(BigDecimal innerArea) {
+        this.innerArea = innerArea;
+    }
+
     public BigDecimal getEvidenceArea() {
         return evidenceArea;
     }
 
     public void setEvidenceArea(BigDecimal evidenceArea) {
         this.evidenceArea = evidenceArea;
-    }
-
-    public String getInnerArea() {
-        return innerArea;
-    }
-
-    public void setInnerArea(String innerArea) {
-        this.innerArea = innerArea == null ? null : innerArea.trim();
     }
 
     public String getOther() {

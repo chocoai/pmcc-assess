@@ -364,9 +364,6 @@
                                           required="required"></textarea>
                                 <span id="transactionTaxeFeeRatioReadonly"
                                       data-template="${transactionTaxeFeeRatioReadonly}"></span>
-                                <input type="text" name="landUseTax" placeholder="土地使用税" class="form-control"
-                                       data-rule-number="true"
-                                       required="required">
                             </div>
                         </div>
                     </div>
@@ -726,6 +723,7 @@
             return false;
         }
         var data = formParams("frm_lease_cost");
+        console.log(data) ;
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/updateLeaseCost",

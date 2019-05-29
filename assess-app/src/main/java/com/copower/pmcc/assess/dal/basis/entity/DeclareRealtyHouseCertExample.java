@@ -1786,6 +1786,66 @@ public class DeclareRealtyHouseCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andInnerAreaIsNull() {
+            addCriterion("inner_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaIsNotNull() {
+            addCriterion("inner_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaEqualTo(BigDecimal value) {
+            addCriterion("inner_area =", value, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaNotEqualTo(BigDecimal value) {
+            addCriterion("inner_area <>", value, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaGreaterThan(BigDecimal value) {
+            addCriterion("inner_area >", value, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("inner_area >=", value, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaLessThan(BigDecimal value) {
+            addCriterion("inner_area <", value, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("inner_area <=", value, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaIn(List<BigDecimal> values) {
+            addCriterion("inner_area in", values, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaNotIn(List<BigDecimal> values) {
+            addCriterion("inner_area not in", values, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("inner_area between", value1, value2, "innerArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInnerAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("inner_area not between", value1, value2, "innerArea");
+            return (Criteria) this;
+        }
+
         public Criteria andEvidenceAreaIsNull() {
             addCriterion("evidence_area is null");
             return (Criteria) this;
@@ -1843,76 +1903,6 @@ public class DeclareRealtyHouseCertExample {
 
         public Criteria andEvidenceAreaNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("evidence_area not between", value1, value2, "evidenceArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaIsNull() {
-            addCriterion("inner_area is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaIsNotNull() {
-            addCriterion("inner_area is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaEqualTo(String value) {
-            addCriterion("inner_area =", value, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaNotEqualTo(String value) {
-            addCriterion("inner_area <>", value, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaGreaterThan(String value) {
-            addCriterion("inner_area >", value, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaGreaterThanOrEqualTo(String value) {
-            addCriterion("inner_area >=", value, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaLessThan(String value) {
-            addCriterion("inner_area <", value, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaLessThanOrEqualTo(String value) {
-            addCriterion("inner_area <=", value, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaLike(String value) {
-            addCriterion("inner_area like", value, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaNotLike(String value) {
-            addCriterion("inner_area not like", value, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaIn(List<String> values) {
-            addCriterion("inner_area in", values, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaNotIn(List<String> values) {
-            addCriterion("inner_area not in", values, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaBetween(String value1, String value2) {
-            addCriterion("inner_area between", value1, value2, "innerArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andInnerAreaNotBetween(String value1, String value2) {
-            addCriterion("inner_area not between", value1, value2, "innerArea");
             return (Criteria) this;
         }
 

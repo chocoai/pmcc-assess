@@ -684,7 +684,7 @@ public class DeclarePublicService {
         }
         //套内面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
-            declareRealtyHouseCert.setInnerArea(PoiUtils.getCellValue(row.getCell(13)));
+            declareRealtyHouseCert.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
         }
         //总层数
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
