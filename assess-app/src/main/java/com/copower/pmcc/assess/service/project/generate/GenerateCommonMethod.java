@@ -26,6 +26,8 @@ import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +49,7 @@ import java.util.stream.Collectors;
  */
 @Component
 public class GenerateCommonMethod {
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -596,19 +598,23 @@ public class GenerateCommonMethod {
     public void mergeCellTable(Set<MergeCellModel> mergeCellModelList, Table table) {
         if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
             for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                Cell cellStartRange = null;
-                Cell cellEndRange = null;
-                if (mergeCellModel.getCellEndRange() == null && mergeCellModel.getCellStartRange() == null) {
-                    cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                    cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                } else {
-                    cellStartRange = mergeCellModel.getCellStartRange();
-                    cellEndRange = mergeCellModel.getCellEndRange();
-                }
-                if (cellStartRange != null && cellEndRange != null) {
-                    if (table != null) {
-                        AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+                try {
+                    Cell cellStartRange = null;
+                    Cell cellEndRange = null;
+                    if (mergeCellModel.getCellEndRange() == null && mergeCellModel.getCellStartRange() == null) {
+                        cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
+                        cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
+                    } else {
+                        cellStartRange = mergeCellModel.getCellStartRange();
+                        cellEndRange = mergeCellModel.getCellEndRange();
                     }
+                    if (cellStartRange != null && cellEndRange != null) {
+                        if (table != null) {
+                            AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+                        }
+                    }
+                }catch (Exception e){
+                    logger.error(e.getMessage(),e);
                 }
             }
         }
