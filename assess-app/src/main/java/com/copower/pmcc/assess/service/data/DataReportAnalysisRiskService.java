@@ -74,8 +74,7 @@ public class DataReportAnalysisRiskService {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
         for (int i = 0; i < reportAnalysisList.size(); i++) {
             DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, dataReportAnalysis.getName())));
-            stringBuilder.append(dataReportAnalysis.getTemplate());
+
             //风险分析税费缴纳
             if (AssessReportFieldConstant.RISK_ANALYSIS_TAXES_PAYMENT.equals(dataReportAnalysis.getFieldName())) {
                 //缴纳正常委估对象
@@ -101,6 +100,9 @@ public class DataReportAnalysisRiskService {
                     }
 
                     if (StringUtils.isNotBlank(damageContent)) {
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, dataReportAnalysis.getName())));
+                        stringBuilder.append(dataReportAnalysis.getTemplate());
+
                         DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.RISK_ANALYSIS_TAXES_PAYMENT_SURVEY);
                         stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{税费缴纳调查}", damageContent)).append("</p>");
                     }
@@ -112,6 +114,9 @@ public class DataReportAnalysisRiskService {
 //                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.RISK_ANALYSIS_TAXES_PAYMENT_SURVEY);
 //                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{税费缴纳调查}", content)).append("</p>");
 //                }
+            }else {
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, dataReportAnalysis.getName())));
+                stringBuilder.append(dataReportAnalysis.getTemplate());
             }
         }
         return generateCommonMethod.getWarpCssHtml(stringBuilder.toString());
