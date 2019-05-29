@@ -13,6 +13,7 @@ import java.util.List;
  */
 public enum BaseReportFieldEnum implements Serializable {
     ReportNumber("文号"),
+    ReportNumber2("报告编号"),//文号中的具体编号
     RegistrationDate("登记时间"),
     ReportingCategories("报告类别"),
     ValuationProjectName("估价项目名称"),
@@ -40,6 +41,8 @@ public enum BaseReportFieldEnum implements Serializable {
     Co_ownership("共有权情况"),
     AssessTotal("评估总价"),
     AssessArea("评估面积"),
+    BuildArea("建筑面积"),
+    CoverArea("套内建筑面积"),
     AssessPrice("评估单价"),
     surveyExamineDate("现场查勘期"),
     surveyExamineCreate("现场查勘人员"),
@@ -56,9 +59,9 @@ public enum BaseReportFieldEnum implements Serializable {
     houseNature("房屋性质"),
     ownership("房屋所有权人"),
     ArchivesDepositNumber("档案保管号"),
-    BuildArea("建筑面积"),
     floor("楼层"),
     unitType("户型"),
+    ThisYear("当前年份"),//今年
     estateName("楼盘名称"),
     BeCompletedTimeGetInteger("建成年代"),
     FillingUnit("填发单位"),
@@ -67,6 +70,14 @@ public enum BaseReportFieldEnum implements Serializable {
     UsageStatus("使用状况"),
     EntrustedUnit("委托单位"),
     CCB_Pre_Evaluation_Data_Form("建行预评数据表格"),
+    LandCertificateField1("土地证号"),
+    LandCertificateField2("土地所有权人"),
+    LandCertificateField3("土地证载用途"),
+    LandCertificateField4("土地权利性质"),
+    LandCertificateField5("土地面积"),
+    LandCertificateField6("土地终止日期"),
+    LandCertificateField7("土地登记机关"),
+    LandCertificateField8("土地登记日期"),
 
     JudgeBuildResultSurveySheet("估价结果一览表"),
     JudgeBuildResultSurveySheet2("估价结果一览表不含坐落"),
@@ -82,6 +93,7 @@ public enum BaseReportFieldEnum implements Serializable {
     EvaluationThink("估价技术思路"),
     PrincipalInfo("估价委托人信息"),
     PrincipalDescribe("估价对象描述"),
+    PrincipalDataDescribe("估价信息描述"),
     DeterminationMarketValueValuationObject("估价对象市场价值的确定"),
     HotTip("特别提示"),
 
@@ -102,6 +114,9 @@ public enum BaseReportFieldEnum implements Serializable {
     EvaluationMethodResult("分类评估方法结果"),
 
     StatutoryOptimumReimbursement("法定优先受偿款"),
+    StatutoryOptimumReimbursement3("其他法定优先受偿款"),
+    StatutoryOptimumReimbursement2("拖欠的建设工程价款"),
+    StatutoryOptimumReimbursement1("已抵押担保债权数额"),
     StatutoryPriorityAmountTotal("法定优先受偿款总金额"),
 
     ComputationProcess("主要计算过程"),

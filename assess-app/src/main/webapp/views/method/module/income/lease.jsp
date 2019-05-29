@@ -711,6 +711,7 @@
             return false;
         }
         var data = formParams("frm_lease_cost");
+        console.log(data) ;
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/updateLeaseCost",

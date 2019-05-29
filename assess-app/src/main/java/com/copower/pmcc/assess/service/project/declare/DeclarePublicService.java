@@ -146,17 +146,11 @@ public class DeclarePublicService {
             oo.setCertName(cerName);
             oo.setNumber(generateCommonMethod.getNumber(cerName));
             oo.setLocation(StringUtils.substringBeforeLast(cerName, "不动产"));
-        } else {
-            builder.append(String.format("\n第%s行异常：权证号必须填写", i));
-            return false;
         }
 
         //房屋所有权人
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(4)))) {
             oo.setOwnership(PoiUtils.getCellValue(row.getCell(4)));
-        } else {
-            builder.append(String.format("\n第%s行异常：房屋所有权人必须填写", i));
-            return false;
         }
 
 
@@ -770,6 +764,7 @@ public class DeclarePublicService {
                 builder.append(String.format("\n第%s行异常：套内面积应填写数字", i));
                 return false;
             }
+            declareRealtyHouseCert.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
         }
         //总层数
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {

@@ -133,14 +133,22 @@ public class SchemeReimbursementService {
     }
 
 
-    public String getFullDescription(SchemeReimbursementItem object) {
+
+    public String getFullDescription(SchemeReimbursementItem object, Integer number) {
         StringBuilder builder = new StringBuilder(8);
         BigDecimal decimal = new BigDecimal("10000");
-        builder.append(String.format("已抵押担保的债权数额总价%s万元,", (object.getMortgagedTotalPrice().divide(decimal))));
-        builder.append(String.format("拖欠的建设工程价款总价%s万元,", (object.getOwedTotalPrice().divide(decimal))));
-        builder.append(String.format("其它法定优先受偿款总价%s万元,", (object.getOtherTotalPrice().divide(decimal))));
-        builder.append(String.format("估价师知悉的法定优先受偿款总价%s万元,", (object.getKnowTotalPrice().divide(decimal))));
-
+        if (number == 0 || number == 1) {
+            builder.append(String.format("已抵押担保的债权数额总价%s万元,", (object.getMortgagedTotalPrice().divide(decimal))));
+        }
+        if (number == 0 || number == 2) {
+            builder.append(String.format("拖欠的建设工程价款总价%s万元,", (object.getOwedTotalPrice().divide(decimal))));
+        }
+        if (number == 0 || number == 3) {
+            builder.append(String.format("其它法定优先受偿款总价%s万元,", (object.getOtherTotalPrice().divide(decimal))));
+        }
+        if (number == 0 || number == 4) {
+            builder.append(String.format("估价师知悉的法定优先受偿款总价%s万元,", (object.getKnowTotalPrice().divide(decimal))));
+        }
         return builder.toString();
     }
 
@@ -191,14 +199,14 @@ public class SchemeReimbursementService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(schemeAreaGroup.getId());
-        if (projectPlanDetails == null || CollectionUtils.isEmpty(schemeJudgeObjectList) || projectPhase == null || schemeReimbursement == null){
+        if (projectPlanDetails == null || CollectionUtils.isEmpty(schemeJudgeObjectList) || projectPhase == null || schemeReimbursement == null) {
             return;
         }
         ProjectPlanDetails query = new ProjectPlanDetails();
         query.setProjectId(projectPlanDetails.getProjectId());
         query.setProjectPhaseId(projectPhase.getId());
         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-        if (CollectionUtils.isEmpty(projectPlanDetailsList)){
+        if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
             return;
         }
         //SurveyAssetInventoryRightRecordCenter只会有一个
@@ -207,12 +215,12 @@ public class SchemeReimbursementService {
         selectRightRecordCenter.setPlanDetailsId(projectPlanDetailsList.get(0).getId());
         selectRightRecordCenter.setProcessInsId(projectPlanDetailsList.get(0).getProcessInsId());
         List<SurveyAssetInventoryRightRecordCenter> centerList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordCenterList(selectRightRecordCenter);
-        if (CollectionUtils.isEmpty(centerList)){
+        if (CollectionUtils.isEmpty(centerList)) {
             return;
         }
         //他项权利组(多对) 每组有一个或者多个他项权力   他项权利组对应一个SchemeReimbursementItem
         List<SurveyAssetInventoryRightRecord> rightRecordList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordList(centerList.get(0).getId(), centerList.get(0).getProjectId(), centerList.get(0).getPlanDetailsId());
-        if (CollectionUtils.isEmpty(rightRecordList)){
+        if (CollectionUtils.isEmpty(rightRecordList)) {
             return;
         }
         for (SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord : rightRecordList) {

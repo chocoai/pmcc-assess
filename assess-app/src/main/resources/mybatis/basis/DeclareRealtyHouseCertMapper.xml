@@ -27,8 +27,8 @@
     <result column="housing_structure" property="housingStructure" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="inner_area" property="innerArea" jdbcType="DECIMAL" />
     <result column="evidence_area" property="evidenceArea" jdbcType="DECIMAL" />
-    <result column="inner_area" property="innerArea" jdbcType="VARCHAR" />
     <result column="other" property="other" jdbcType="VARCHAR" />
     <result column="land_number" property="landNumber" jdbcType="VARCHAR" />
     <result column="land_acquisition" property="landAcquisition" jdbcType="VARCHAR" />
@@ -108,7 +108,7 @@
     id, pid, plan_details_id, cert_name, province, city, district, type, number, ownership, 
     public_situation, be_located, street_number, attached_number, building_number, unit, 
     floor, room_number, registration_time, nature, floor_count, cert_use, housing_structure, 
-    floor_area, location, evidence_area, inner_area, other, land_number, land_acquisition, 
+    floor_area, location, inner_area, evidence_area, other, land_number, land_acquisition, 
     use_start_date, use_end_date, public_area, other_note, registration_authority, land_registration_date, 
     registration_date, declare_type, enable, bis_record, creator, gmt_created, gmt_modified
   </sql>
@@ -154,7 +154,7 @@
       floor, room_number, registration_time, 
       nature, floor_count, cert_use, 
       housing_structure, floor_area, location, 
-      evidence_area, inner_area, other, 
+      inner_area, evidence_area, other, 
       land_number, land_acquisition, use_start_date, 
       use_end_date, public_area, other_note, 
       registration_authority, land_registration_date, 
@@ -169,7 +169,7 @@
       #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, 
       #{nature,jdbcType=INTEGER}, #{floorCount,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, 
       #{housingStructure,jdbcType=VARCHAR}, #{floorArea,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
-      #{evidenceArea,jdbcType=DECIMAL}, #{innerArea,jdbcType=VARCHAR}, #{other,jdbcType=VARCHAR}, 
+      #{innerArea,jdbcType=DECIMAL}, #{evidenceArea,jdbcType=DECIMAL}, #{other,jdbcType=VARCHAR}, 
       #{landNumber,jdbcType=VARCHAR}, #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, 
       #{useEndDate,jdbcType=TIMESTAMP}, #{publicArea,jdbcType=DECIMAL}, #{otherNote,jdbcType=VARCHAR}, 
       #{registrationAuthority,jdbcType=VARCHAR}, #{landRegistrationDate,jdbcType=TIMESTAMP}, 
@@ -255,11 +255,11 @@
       <if test="location != null" >
         location,
       </if>
-      <if test="evidenceArea != null" >
-        evidence_area,
-      </if>
       <if test="innerArea != null" >
         inner_area,
+      </if>
+      <if test="evidenceArea != null" >
+        evidence_area,
       </if>
       <if test="other != null" >
         other,
@@ -383,11 +383,11 @@
       <if test="location != null" >
         #{location,jdbcType=VARCHAR},
       </if>
+      <if test="innerArea != null" >
+        #{innerArea,jdbcType=DECIMAL},
+      </if>
       <if test="evidenceArea != null" >
         #{evidenceArea,jdbcType=DECIMAL},
-      </if>
-      <if test="innerArea != null" >
-        #{innerArea,jdbcType=VARCHAR},
       </if>
       <if test="other != null" >
         #{other,jdbcType=VARCHAR},
@@ -523,11 +523,11 @@
       <if test="record.location != null" >
         location = #{record.location,jdbcType=VARCHAR},
       </if>
+      <if test="record.innerArea != null" >
+        inner_area = #{record.innerArea,jdbcType=DECIMAL},
+      </if>
       <if test="record.evidenceArea != null" >
         evidence_area = #{record.evidenceArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.innerArea != null" >
-        inner_area = #{record.innerArea,jdbcType=VARCHAR},
       </if>
       <if test="record.other != null" >
         other = #{record.other,jdbcType=VARCHAR},
@@ -609,8 +609,8 @@
       housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
+      inner_area = #{record.innerArea,jdbcType=DECIMAL},
       evidence_area = #{record.evidenceArea,jdbcType=DECIMAL},
-      inner_area = #{record.innerArea,jdbcType=VARCHAR},
       other = #{record.other,jdbcType=VARCHAR},
       land_number = #{record.landNumber,jdbcType=VARCHAR},
       land_acquisition = #{record.landAcquisition,jdbcType=VARCHAR},
@@ -706,11 +706,11 @@
       <if test="location != null" >
         location = #{location,jdbcType=VARCHAR},
       </if>
+      <if test="innerArea != null" >
+        inner_area = #{innerArea,jdbcType=DECIMAL},
+      </if>
       <if test="evidenceArea != null" >
         evidence_area = #{evidenceArea,jdbcType=DECIMAL},
-      </if>
-      <if test="innerArea != null" >
-        inner_area = #{innerArea,jdbcType=VARCHAR},
       </if>
       <if test="other != null" >
         other = #{other,jdbcType=VARCHAR},
@@ -789,8 +789,8 @@
       housing_structure = #{housingStructure,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
+      inner_area = #{innerArea,jdbcType=DECIMAL},
       evidence_area = #{evidenceArea,jdbcType=DECIMAL},
-      inner_area = #{innerArea,jdbcType=VARCHAR},
       other = #{other,jdbcType=VARCHAR},
       land_number = #{landNumber,jdbcType=VARCHAR},
       land_acquisition = #{landAcquisition,jdbcType=VARCHAR},
