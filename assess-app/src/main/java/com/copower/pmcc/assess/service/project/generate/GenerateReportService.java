@@ -98,7 +98,7 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-    @Transactional(rollbackFor = {Exception.class})
+//    @Transactional(rollbackFor = {Exception.class})
     public void createReportWord(String ids, GenerateReportGeneration generateReportGeneration) throws Exception {
         if (StringUtils.isEmpty(ids) || generateReportGeneration.getProjectPlanId() == null) {
             return;
