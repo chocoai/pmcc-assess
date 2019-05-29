@@ -332,18 +332,6 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                有效出租收缴率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="additionalCapture" placeholder="有效出租收缴率" class="form-control"
-                                       data-rule-number="true"
-                                       required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 其它相关税费率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
@@ -364,9 +352,6 @@
                                           required="required"></textarea>
                                 <span id="transactionTaxeFeeRatioReadonly"
                                       data-template="${transactionTaxeFeeRatioReadonly}"></span>
-                                <input type="text" name="landUseTax" placeholder="土地使用税" class="form-control"
-                                       data-rule-number="true"
-                                       required="required">
                             </div>
                         </div>
                     </div>
