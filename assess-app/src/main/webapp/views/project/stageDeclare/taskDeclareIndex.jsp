@@ -114,8 +114,8 @@
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
     $(document).ready(function () {
-        declareCommon.showFile(AssessUploadKey.PROJECT_PROXY,AssessDBKey.ProjectInfo,"${projectPlanDetails.projectId}",true);
-        declareCommon.fileUpload(AssessUploadKey.PROJECT_PROXY,AssessDBKey.ProjectInfo,"${projectPlanDetails.projectId}",true);
+        declareCommon.showFile(AssessUploadKey.PROJECT_PROXY,AssessDBKey.ProjectInfo,"${projectPlanDetails.projectId}",true, AssessUploadKey.PROJECT_PROXY);
+        declareCommon.fileUpload(AssessUploadKey.PROJECT_PROXY,AssessDBKey.ProjectInfo,"${projectPlanDetails.projectId}",true, AssessUploadKey.PROJECT_PROXY);
     });
 </script>
 <script type="application/javascript">

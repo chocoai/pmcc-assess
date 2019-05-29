@@ -64,13 +64,15 @@ declareCommon.declareHouseType = "" ;//房产申报类型
 declareCommon.declareLandType = "" ;//土地申报类型
 declareCommon.declareRealType = "" ;//不动产申报类型
 
-declareCommon.fileUpload = function (target, tableName, id,deleteFlag) {
+declareCommon.fileUpload = function (target, tableName, id,deleteFlag,fieldsName) {
     FileUtils.uploadFiles({
         target: target,
         disabledTarget: "btn_submit",
         formData: {
             tableName: tableName,
-            tableId: id
+            tableId: id,
+            fieldsName: fieldsName,
+            projectId: id
         },
         deleteFlag: deleteFlag
     });
@@ -91,12 +93,14 @@ declareCommon.fileUpload = function (target, tableName, id,deleteFlag) {
     // });
 };
 
-declareCommon.showFile = function (target, tableName, id , deleteFlag) {
+declareCommon.showFile = function (target, tableName, id , deleteFlag,fieldsName) {
     FileUtils.getFileShows({
         target: target,
         formData: {
             tableName: tableName,
             tableId: id,
+            fieldsName: fieldsName,
+            projectId: id
         },
         deleteFlag: deleteFlag
     })
