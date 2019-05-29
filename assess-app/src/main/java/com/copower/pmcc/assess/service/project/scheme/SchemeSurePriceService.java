@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +107,7 @@ public class SchemeSurePriceService {
      * @return
      */
     @Transactional
-    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) {
+    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) throws BusinessException {
         SchemeSurePriceItem where = new SchemeSurePriceItem();
         where.setJudgeObjectId(judgeObjectId);
         List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
@@ -145,6 +146,8 @@ public class SchemeSurePriceService {
         List<SchemeSurePriceItem> priceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
         //如果价格差异小于等于10% 自动设置对应权重 求取平均价
         List<BigDecimal> decimalList = LangUtils.transform(priceItemList, o -> o.getTrialPrice());
+        if(CollectionUtils.isEmpty(decimalList))
+            throw new BusinessException("未获取到方法试算价格");
         Collections.sort(decimalList);
         if (publicService.computeDifference(decimalList.get(0), decimalList.get(decimalList.size() - 1)) <= 10) {
             BigDecimal averageWeight = new BigDecimal("1").divide(new BigDecimal(priceItemList.size()), 4, BigDecimal.ROUND_HALF_DOWN);

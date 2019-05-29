@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceFactorService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
@@ -33,8 +34,10 @@ public class SchemeSurePriceController {
     @ResponseBody
     public HttpResult getSchemeSurePriceItemList(Integer judgeObjectId) {
         try {
-            List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceItemList(judgeObjectId,true);
+            List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceItemList(judgeObjectId, true);
             return HttpResult.newCorrectResult(schemeSurePriceList);
+        } catch (BusinessException ex) {
+            return HttpResult.newErrorResult(ex.getMessage());
         } catch (Exception e) {
             return HttpResult.newErrorResult("获取数据异常");
         }
@@ -58,7 +61,7 @@ public class SchemeSurePriceController {
     public HttpResult saveSurePriceFactor(Integer judgeObjectId, BigDecimal price, String formData) {
         try {
             List<SchemeSurePriceFactor> factorList = JSON.parseArray(formData, SchemeSurePriceFactor.class);
-            return HttpResult.newCorrectResult(schemeSurePriceFactorService.saveSurePriceFactor(judgeObjectId,price, factorList));
+            return HttpResult.newCorrectResult(schemeSurePriceFactorService.saveSurePriceFactor(judgeObjectId, price, factorList));
         } catch (Exception e) {
             return HttpResult.newErrorResult("获取数据异常");
         }
