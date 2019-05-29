@@ -95,10 +95,8 @@ declareCommon.showFile = function (target, tableName, id , deleteFlag) {
     FileUtils.getFileShows({
         target: target,
         formData: {
-            fieldsName: target,
             tableName: tableName,
             tableId: id,
-            projectId: 0
         },
         deleteFlag: deleteFlag
     })

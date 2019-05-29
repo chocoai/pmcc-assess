@@ -141,6 +141,9 @@
 
     //提交表单
     function submitForm(mustUseBox) {
+        if (!$("#declareApplyForm").valid()) {
+            return false;
+        }
         var formData = {};
 
         if ("${processInsId}" != "0") {
