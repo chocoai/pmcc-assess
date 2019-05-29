@@ -116,9 +116,23 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目合同</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${projectInfo.contractName}</label>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${projectInfo.loanTypeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目合同</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${projectInfo.contractName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">合同金额</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${projectInfo.contractPrice}</label>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
