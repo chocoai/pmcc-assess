@@ -4,6 +4,7 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <link href="/pmcc-assess/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -17,6 +18,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
 <input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>

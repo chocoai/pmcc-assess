@@ -154,7 +154,7 @@ public class BasicBuildingService {
      * @return
      * @throws Exception
      */
-    public BasicBuilding getBasicBuildingByApplyId(Integer applyId) {
+    public BasicBuildingVo getBasicBuildingByApplyId(Integer applyId) {
         BasicBuilding where = new BasicBuilding();
         where.setApplyId(applyId);
         if (applyId == null || applyId == 0) {
@@ -162,7 +162,7 @@ public class BasicBuildingService {
         }
         List<BasicBuilding> basicBuildings = basicBuildingDao.getBasicBuildingList(where);
         if (CollectionUtils.isEmpty(basicBuildings)) return null;
-        return basicBuildings.get(0);
+        return getBasicBuildingVo(basicBuildings.stream().findFirst().get());
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) throws Exception {

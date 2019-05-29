@@ -688,7 +688,7 @@ public class GenerateCommonMethod {
      * @param map
      * @return
      */
-    public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumner) {
+    public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumBer) {
         if (map == null || map.size() <= 0) return "";
         //map按key值排序
         Map<Integer, String> sortMap = new TreeMap<>(new Comparator<Integer>() {
@@ -703,12 +703,39 @@ public class GenerateCommonMethod {
         for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
             if (StringUtils.isBlank(stringListEntry.getKey())) continue;
             String content = stringListEntry.getKey().replaceAll("^<[^>]+>|<[^>]+>$", "");
-            if (listMap.size() <= 1 && isShowJudgeNumner == Boolean.FALSE) {
+            if (listMap.size() <= 1 && isShowJudgeNumBer == Boolean.FALSE) {
                 return explain + content;
             }
             builder.append(String.format("%s号", convertNumber(stringListEntry.getValue()))).append(StringUtils.defaultString(explain)).append(content).append(symbol);
         }
         return builder.toString();
+    }
+
+    /**
+     * 当只有一个估价对象的时候不会分别描述
+     * 具体看 judgeEachDesc
+     *
+     * @param map
+     * @param explain
+     * @param symbol
+     * @param isShowJudgeNumBer
+     * @return
+     */
+    public String judgeEachDesc2(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumBer) {
+        if (map == null || map.size() <= 0) {
+            return "";
+        }
+        if (map.size() == 1) {
+            StringBuilder stringBuilder = new StringBuilder(8);
+            if (isShowJudgeNumBer.equals(Boolean.FALSE)) {
+                stringBuilder.append(StringUtils.defaultString(explain)).append(map.entrySet().stream().findFirst().get().getValue());
+            } else {
+                stringBuilder.append(StringUtils.defaultString(explain)).append(map.entrySet().stream().findFirst().get().getValue()).append(symbol);
+            }
+            return stringBuilder.toString();
+        } else {
+            return judgeEachDesc(map, explain, symbol, isShowJudgeNumBer);
+        }
     }
 
     /**

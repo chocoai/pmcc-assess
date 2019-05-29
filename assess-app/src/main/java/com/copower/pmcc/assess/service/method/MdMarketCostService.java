@@ -60,6 +60,14 @@ public class MdMarketCostService {
     private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
 
 
+    public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
+        if (schemeJudgeObject == null) return null;
+        MdCost mdCost = new MdCost();
+        mdCost.setName(schemeJudgeObject.getName());
+        mdCost.setCreator(commonService.thisUserAccount());
+        saveAndUpdateMdCost(mdCost);
+        return mdCost;
+    }
 
     public Integer saveAndUpdateMdCost(MdCost mdCost){
         if (mdCost.getId() == null){

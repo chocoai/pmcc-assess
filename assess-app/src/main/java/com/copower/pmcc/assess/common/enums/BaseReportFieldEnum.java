@@ -62,6 +62,11 @@ public enum BaseReportFieldEnum implements Serializable {
     estateName("楼盘名称"),
     BeCompletedTimeGetInteger("建成年代"),
     FillingUnit("填发单位"),
+    AttachmentReark("附记"),
+    DecorationStatus("装修状况"),
+    UsageStatus("使用状况"),
+    EntrustedUnit("委托单位"),
+    CCB_Pre_Evaluation_Data_Form("建行预评数据表格"),
 
     JudgeBuildResultSurveySheet("估价结果一览表"),
     JudgeBuildResultSurveySheet2("估价结果一览表不含坐落"),

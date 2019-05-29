@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentHypothesisDao;
 import com.copower.pmcc.assess.dal.basis.entity.MdDevelopment;
 import com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitectural;
 import com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentHypothesis;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.erp.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,14 @@ public class MdDevelopmentService {
     private MdDevelopmentHypothesisDao mdDevelopmentHypothesisDao;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    public MdDevelopment initExplore(SchemeJudgeObject schemeJudgeObject) {
+        if (schemeJudgeObject == null) return null;
+        MdDevelopment mdDevelopment = new MdDevelopment();
+        mdDevelopment.setName(schemeJudgeObject.getName());
+        mdDevelopment.setCreator(commonService.thisUserAccount());
+        saveAndUpdateMdDevelopment(mdDevelopment);
+        return mdDevelopment;
+    }
 
     public MdDevelopment getMdDevelopmentById(Integer id){
         return mdDevelopmentDao.getMdDevelopmentById(id);
