@@ -43,4 +43,6 @@
     <%@include file="/views/project/stageSurvey/examine/industry/detail/matchingMaterial.jsp" %>
 </div>
 
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js"></script>
+
 

@@ -16,48 +16,4 @@
         </table>
     </div>
 </div>
-<script>
 
-    var houseCorollaryEquipment;
-    (function () {
-        houseCorollaryEquipment = function () {
-
-        };
-        houseCorollaryEquipment.prototype = {
-            isNotBlank: function (item) {
-                if (item) {
-                    return true;
-                }
-                return false;
-            },
-            config: function () {
-                var data = {};
-                data.table = "HouseCorollaryEquipmentList";
-                data.box = "divBoxHouseCorollaryEquipment";
-                data.frm = "frmHouseCorollaryEquipment";
-                data.FileID = "positionDiagramFileID";// ExamineFileUpLoadTwoFieldEnum
-                return data;
-            },
-            loadDataDicList: function () {
-                var cols = commonColumn.houseCorollaryEquipmentColumn();
-                $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
-                TableInit(houseCorollaryEquipment.prototype.config().table, "${pageContext.request.contextPath}/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
-                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
-                    approval: true
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            }
-        }
-        //绑定事件
-        $('#' + houseCorollaryEquipment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
-            houseCorollaryEquipment.prototype.loadDataDicList();
-        })
-    })();
-
-</script>

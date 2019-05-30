@@ -21,46 +21,5 @@
 </div>
 
 <script>
-    var estateSupplyGas;
-    (function () {
-        estateSupplyGas = function () {
-        };
-        estateSupplyGas.prototype = {
-            config: function () {
-                var data = {};
-                data.table = "EstateSupplyGasList";
-                data.box = "divBoxEstateSupplyGas";
-                data.frm = "frmEstateSupplyGas";
-                data.type = "estateSupplyGas";//根据 ExamineEstateSupplyEnumType 配置
-                return data;
-            },
-            isNotBlank: function (item) {
-                if (item) {
-                    return true;
-                }
-                return false;
-            },
-            loadDataDicList: function () {
-                var cols = commonColumn.estateSupplyGasColumn();
-                $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
-                TableInit(estateSupplyGas.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
-                    estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    type: estateSupplyGas.prototype.config().type,
-                    approval: true
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            }
-        }
 
-        //绑定事件
-        $('#' + estateSupplyGas.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
-            estateSupplyGas.prototype.loadDataDicList();
-        })
-    })();
 </script>

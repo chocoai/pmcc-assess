@@ -19,47 +19,4 @@
     </div>
 </div>
 
-<script>
-    var matchingEducation;
-    (function () {
-        matchingEducation = function () {
 
-        };
-        matchingEducation.prototype = {
-            isNotBlank: function (item) {
-                if (item) {
-                    return true;
-                }
-                return false;
-            },
-            config: function () {
-                var data = {};
-                data.table = "MatchingEducationList";
-                data.box = "divBoxMatchingEducation";
-                data.frm = "frmMatchingEducation";
-                data.type = "null";//
-                return data;
-            },
-            loadDataDicList: function () {
-                var cols = commonColumn.matchingEducationColumn();
-                $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
-                TableInit(matchingEducation.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEducation/getBootstrapTableVo", cols, {
-                    estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval: true
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            }
-        }
-
-        //绑定事件
-        $('#' + matchingEducation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
-            matchingEducation.prototype.loadDataDicList();
-        })
-    })();
-</script>

@@ -27,3 +27,4 @@
 </div>
 
 <%@include file="/views/project/stageSurvey/examine/residence/detail/houseDamagedDegree.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js"></script>
