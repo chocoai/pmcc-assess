@@ -100,11 +100,11 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
             //排序 取最大
             schemeReportGeneration.setInvestigationsEndDate(endTime.stream().sorted().findFirst().get());
         }
-        Map<String, String> qualificationTypes = new HashMap<String, String>(AdPersonalEnum.values().length-1);
-        for (AdPersonalEnum ad:AdPersonalEnum.values()){
-            qualificationTypes.put(ad.getValue(), ad.getName());
-
-        }
+        Map<String, String> qualificationTypes = new HashMap<>();
+        qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getName());
+        qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getName());
+        qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getName());
+        qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getName());
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         List<BaseDataDic> reportTypeList2 = Lists.newArrayList();
         List<String> stringList = Lists.newArrayList();
