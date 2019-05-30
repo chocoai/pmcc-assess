@@ -96,7 +96,7 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick=""><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="taskCaseAssign.prototype.removeData(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }

@@ -55,6 +55,7 @@
             <columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>
         </table>
         <table tableName="tb_document_template_field">
+        <table tableName="tb_project_info">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>
         </table>

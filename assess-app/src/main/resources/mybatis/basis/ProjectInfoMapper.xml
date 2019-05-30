@@ -27,7 +27,7 @@
     <result column="scope_include" property="scopeInclude" jdbcType="VARCHAR" />
     <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
     <result column="loan_type" property="loanType" jdbcType="INTEGER" />
-    <result column="contract_id" property="contractId" jdbcType="INTEGER" />
+    <result column="contract_id" property="contractId" jdbcType="VARCHAR" />
     <result column="contract_name" property="contractName" jdbcType="VARCHAR" />
     <result column="contract_price" property="contractPrice" jdbcType="DECIMAL" />
     <result column="status" property="status" jdbcType="VARCHAR" />
@@ -159,7 +159,7 @@
       #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{propertyScope,jdbcType=VARCHAR}, 
       #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{loanType,jdbcType=INTEGER}, 
-      #{contractId,jdbcType=INTEGER}, #{contractName,jdbcType=VARCHAR}, #{contractPrice,jdbcType=DECIMAL}, 
+      #{contractId,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, #{contractPrice,jdbcType=DECIMAL}, 
       #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, 
       #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
@@ -350,7 +350,7 @@
         #{loanType,jdbcType=INTEGER},
       </if>
       <if test="contractId != null" >
-        #{contractId,jdbcType=INTEGER},
+        #{contractId,jdbcType=VARCHAR},
       </if>
       <if test="contractName != null" >
         #{contractName,jdbcType=VARCHAR},
@@ -469,7 +469,7 @@
         loan_type = #{record.loanType,jdbcType=INTEGER},
       </if>
       <if test="record.contractId != null" >
-        contract_id = #{record.contractId,jdbcType=INTEGER},
+        contract_id = #{record.contractId,jdbcType=VARCHAR},
       </if>
       <if test="record.contractName != null" >
         contract_name = #{record.contractName,jdbcType=VARCHAR},
@@ -533,7 +533,7 @@
       scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
       scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
       loan_type = #{record.loanType,jdbcType=INTEGER},
-      contract_id = #{record.contractId,jdbcType=INTEGER},
+      contract_id = #{record.contractId,jdbcType=VARCHAR},
       contract_name = #{record.contractName,jdbcType=VARCHAR},
       contract_price = #{record.contractPrice,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=VARCHAR},
@@ -624,7 +624,7 @@
         loan_type = #{loanType,jdbcType=INTEGER},
       </if>
       <if test="contractId != null" >
-        contract_id = #{contractId,jdbcType=INTEGER},
+        contract_id = #{contractId,jdbcType=VARCHAR},
       </if>
       <if test="contractName != null" >
         contract_name = #{contractName,jdbcType=VARCHAR},
@@ -685,7 +685,7 @@
       scope_include = #{scopeInclude,jdbcType=VARCHAR},
       scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
       loan_type = #{loanType,jdbcType=INTEGER},
-      contract_id = #{contractId,jdbcType=INTEGER},
+      contract_id = #{contractId,jdbcType=VARCHAR},
       contract_name = #{contractName,jdbcType=VARCHAR},
       contract_price = #{contractPrice,jdbcType=DECIMAL},
       status = #{status,jdbcType=VARCHAR},

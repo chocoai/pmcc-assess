@@ -111,9 +111,11 @@
 <!-- 表单js -->
 <script src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js"></script>
 <script type="text/javascript">
 
 

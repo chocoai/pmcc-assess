@@ -82,14 +82,15 @@ basicCommon.landLevelSelect = function (this_) {
         success: function (data) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
-            $.ajax({
-                url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
-                type: "get",
-                data: {levelDetailId: data.id},
-                success: function (result) {
-                    estateCommon.landLevelLoadHtml(result.data);
-                }
-            })
+            //房产先不启用
+            // $.ajax({
+            //     url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+            //     type: "get",
+            //     data: {levelDetailId: data.id},
+            //     success: function (result) {
+            //         estateCommon.landLevelLoadHtml(result.data);
+            //     }
+            // })
         }
     })
 };

@@ -1726,52 +1726,62 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andContractIdEqualTo(Integer value) {
+        public Criteria andContractIdEqualTo(String value) {
             addCriterion("contract_id =", value, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdNotEqualTo(Integer value) {
+        public Criteria andContractIdNotEqualTo(String value) {
             addCriterion("contract_id <>", value, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdGreaterThan(Integer value) {
+        public Criteria andContractIdGreaterThan(String value) {
             addCriterion("contract_id >", value, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andContractIdGreaterThanOrEqualTo(String value) {
             addCriterion("contract_id >=", value, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdLessThan(Integer value) {
+        public Criteria andContractIdLessThan(String value) {
             addCriterion("contract_id <", value, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdLessThanOrEqualTo(Integer value) {
+        public Criteria andContractIdLessThanOrEqualTo(String value) {
             addCriterion("contract_id <=", value, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdIn(List<Integer> values) {
+        public Criteria andContractIdLike(String value) {
+            addCriterion("contract_id like", value, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdNotLike(String value) {
+            addCriterion("contract_id not like", value, "contractId");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractIdIn(List<String> values) {
             addCriterion("contract_id in", values, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdNotIn(List<Integer> values) {
+        public Criteria andContractIdNotIn(List<String> values) {
             addCriterion("contract_id not in", values, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdBetween(Integer value1, Integer value2) {
+        public Criteria andContractIdBetween(String value1, String value2) {
             addCriterion("contract_id between", value1, value2, "contractId");
             return (Criteria) this;
         }
 
-        public Criteria andContractIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andContractIdNotBetween(String value1, String value2) {
             addCriterion("contract_id not between", value1, value2, "contractId");
             return (Criteria) this;
         }

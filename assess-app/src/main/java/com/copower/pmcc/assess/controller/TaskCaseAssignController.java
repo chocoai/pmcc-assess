@@ -217,4 +217,15 @@ public class TaskCaseAssignController {
         return vo;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/deleteTaskCaseAssignById", name = "删除数据", method = {RequestMethod.POST})
+    public HttpResult deleteBasicEstateTagging(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(200, taskCaseAssignService.deleteTaskCaseAssign(id));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
 }

@@ -20,6 +20,8 @@ public class CaseEstate {
 
     private String developer;
 
+    private String developerName;
+
     private String name;
 
     private String streetNumber;
@@ -136,6 +138,14 @@ public class CaseEstate {
 
     public void setDeveloper(String developer) {
         this.developer = developer == null ? null : developer.trim();
+    }
+
+    public String getDeveloperName() {
+        return developerName;
+    }
+
+    public void setDeveloperName(String developerName) {
+        this.developerName = developerName == null ? null : developerName.trim();
     }
 
     public String getName() {
