@@ -507,6 +507,7 @@
             target: "attachmentProjectInfoId",
             formData: {
                 tableName: AssessDBKey.ProjectInfo,
+                fieldsName:"attachmentProjectInfoId",
                 tableId: ${projectInfo.id}
             },
             deleteFlag: false
