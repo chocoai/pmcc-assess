@@ -120,8 +120,8 @@ basicCommon.blockSelect = function (this_) {
     })
 };
 
-basicCommon.getMarkerAreaInHeight = '98%';
-basicCommon.getMarkerAreaInWidth = '98%';
+basicCommon.getMarkerAreaInHeight = '80%';
+basicCommon.getMarkerAreaInWidth = '80%';
 
 basicCommon.valid = function () {
     $('.task_examine_item_tab a[data-name=estate]').tab('show');

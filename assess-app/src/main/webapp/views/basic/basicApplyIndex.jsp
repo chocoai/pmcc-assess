@@ -38,7 +38,7 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     省
                                 </label>
-                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <select name="province" class="form-control search-select select2">
                                     </select>
                                 </div>
@@ -47,7 +47,7 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     市
                                 </label>
-                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <select name="city" class="form-control search-select select2">
                                     </select>
                                 </div>
@@ -67,7 +67,7 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     楼盘名称
                                 </label>
-                                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                     <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
                                     <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
                                            value="${basicApply.estateName}">
@@ -99,7 +99,7 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     楼栋编号
                                 </label>
-                                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                     <input type="hidden" name="caseBuildingId"
                                            value="${basicApply.caseBuildingId}">
                                     <input type="text" class="form-control" name="buildingNumber" placeholder="楼栋编号"
@@ -132,7 +132,7 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     单元编号
                                 </label>
-                                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                     <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                                     <input type="text" class="form-control" name="unitNumber" placeholder="单元编号"
                                            value="${basicApply.unitNumber}">
@@ -163,7 +163,7 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     房屋编号
                                 </label>
-                                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                                     <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
                                     <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号"
                                            value="${basicApply.houseNumber}">

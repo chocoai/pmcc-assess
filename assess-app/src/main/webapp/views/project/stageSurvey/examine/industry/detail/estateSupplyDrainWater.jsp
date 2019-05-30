@@ -19,49 +19,4 @@
     </div>
 </div>
 
-<script>
-    var estateDrainWater;
-    (function () {
-        estateDrainWater = function () {
-
-        };
-        estateDrainWater.prototype = {
-            config: function () {
-                var data = {};
-                data.table = "EstateDrainWaterList";
-                data.box = "divBoxEstateDrainWater";
-                data.frm = "frmEstateDrainWater";
-                data.type = "estateDrainWater";//根据 ExamineEstateSupplyEnumType 配置
-                return data;
-            },
-            isNotBlank: function (item) {
-                if (item) {
-                    return true;
-                }
-                return false;
-            },
-            loadDataDicList: function () {
-                var cols = commonColumn.estateDrainWaterColumn();
-                $("#" + estateDrainWater.prototype.config().table).bootstrapTable('destroy');
-                TableInit(estateDrainWater.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
-                    type: estateDrainWater.prototype.config().type,
-                    estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval: true
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            }
-        }
-
-        //绑定事件
-        $('#' + estateDrainWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
-            estateDrainWater.prototype.loadDataDicList();
-        })
-    })();
-</script>
 

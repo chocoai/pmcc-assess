@@ -22,48 +22,7 @@
 
 <script>
 
-    var matchingMaterial;
-    (function () {
-        matchingMaterial = function () {
 
-        };
-        matchingMaterial.prototype = {
-            isNotBlank: function (item) {
-                if (item) {
-                    return true;
-                }
-                return false;
-            },
-            config: function () {
-                var data = {};
-                data.table = "MatchingMaterialList";
-                data.box = "divBoxMatchingMaterial";
-                data.frm = "frmMatchingMaterial";
-                data.type = "null";//
-                return data;
-            },
-            loadDataDicList: function () {
-                var cols = commonColumn.matchingMaterialColumn();
-                $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
-                TableInit(matchingMaterial.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingMaterial/getBootstrapTableVo", cols, {
-                    estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval: true
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            },
-        }
-
-        //绑定事件
-        $('#' + matchingMaterial.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
-            matchingMaterial.prototype.loadDataDicList();
-        })
-    })();
 
 
 </script>

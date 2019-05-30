@@ -121,15 +121,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="unitElevator.prototype.saveData()">
-                        保存
-                    </button>
-                </div>
             </form>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="unitElevator.prototype.saveData()">
+                    保存
+                </button>
+            </div>
         </div>
     </div>
 </div>

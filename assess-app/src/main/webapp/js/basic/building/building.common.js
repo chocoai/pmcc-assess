@@ -183,7 +183,6 @@
                         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
                             buildingCommon.fileShow(item);
                         })
-                        buildingModelDetail.prototype.viewInit(); //加载从表数据
                     });
                 }
             }
