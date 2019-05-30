@@ -1,6 +1,9 @@
 /**
  * Created by kings on 2019-5-30.
  */
+var detailEstateId = $('#basicEstate').find('[name=id]').val();
+detailEstateId=detailEstateId?detailEstateId:$('#frm_estate').find('[name=id]').val();
+
 var estateNetwork;
 (function () {
     estateNetwork = function () {
@@ -23,8 +26,8 @@ var estateNetwork;
         loadDataDicList: function () {
             var cols = commonColumn.estateNetworkColumn();
             $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateNetwork.prototype.config().table, getContextPath()+"/basicEstateNetwork/getBootstrapTableVo", cols, {
-                estateId: $('#basicEstate').find('[name=id]').val(),
+            TableInit(estateNetwork.prototype.config().table, getContextPath() + "/basicEstateNetwork/getBootstrapTableVo", cols, {
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -66,8 +69,8 @@ var estateParking;
         loadDataDicList: function () {
             var cols = commonColumn.estateParkingColumn();
             $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateParking.prototype.config().table, getContextPath()+"/basicEstateParking/getBootstrapTableVo", cols, {
-                estateId: $('#basicEstate').find('[name=id]').val(),
+            TableInit(estateParking.prototype.config().table, getContextPath() + "/basicEstateParking/getBootstrapTableVo", cols, {
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -109,8 +112,8 @@ var matchingEnvironment;
         loadDataDicList: function () {
             var cols = commonColumn.matchingEnvironmentColumn();
             $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingEnvironment.prototype.config().table, getContextPath()+"/basicMatchingEnvironment/getBootstrapTableVo", cols, {
-                estateId: $('#basicEstate').find('[name=id]').val(),
+            TableInit(matchingEnvironment.prototype.config().table, getContextPath() + "/basicMatchingEnvironment/getBootstrapTableVo", cols, {
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -151,8 +154,8 @@ var matchingFinance;
         loadDataDicList: function () {
             var cols = commonColumn.matchingFinanceColumn();
             $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingFinance.prototype.config().table, getContextPath()+"/basicMatchingFinance/getBootstrapTableVo", cols, {
-                estateId: $('#basicEstate').find('[name=id]').val(),
+            TableInit(matchingFinance.prototype.config().table, getContextPath() + "/basicMatchingFinance/getBootstrapTableVo", cols, {
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -194,8 +197,8 @@ var matchingEducation;
         loadDataDicList: function () {
             var cols = commonColumn.matchingEducationColumn();
             $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingEducation.prototype.config().table, getContextPath()+"/basicMatchingEducation/getBootstrapTableVo", cols, {
-                estateId: $('#basicEstate').find('[name=id]').val(),
+            TableInit(matchingEducation.prototype.config().table, getContextPath() + "/basicMatchingEducation/getBootstrapTableVo", cols, {
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -237,9 +240,9 @@ var matchingRecreation;
         loadDataDicList: function () {
             var cols = commonColumn.matchingRecreationColumn();
             $("#" + matchingRecreation.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingRecreation.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+            TableInit(matchingRecreation.prototype.config().table, getContextPath() + "/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingRecreation.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -281,9 +284,9 @@ var matchingRestaurant;
         loadDataDicList: function () {
             var cols = commonColumn.matchingRestaurantColumn();
             $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingRestaurant.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+            TableInit(matchingRestaurant.prototype.config().table, getContextPath() + "/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingRestaurant.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -325,9 +328,9 @@ var matchingMarket;
         loadDataDicList: function () {
             var cols = commonColumn.matchingMarketColumn();
             $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMarket.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+            TableInit(matchingMarket.prototype.config().table, getContextPath() + "/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingMarket.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -367,10 +370,10 @@ var matchingMedical;
             return false;
         },
         loadDataDicList: function () {
-            var cols =commonColumn.matchingMedicalColumn();
+            var cols = commonColumn.matchingMedicalColumn();
             $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMedical.prototype.config().table, getContextPath()+"/basicMatchingMedical/getBootstrapTableVo", cols, {
-                estateId: $('#basicEstate').find('[name=id]').val(),
+            TableInit(matchingMedical.prototype.config().table, getContextPath() + "/basicMatchingMedical/getBootstrapTableVo", cols, {
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -412,9 +415,9 @@ var matchingTransit;
         loadDataDicList: function () {
             var cols = commonColumn.matchingTransitColumn();
             $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingTransit.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingTransit.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingTransit.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -456,9 +459,9 @@ var matchingTrafficHub;
         loadDataDicList: function () {
             var cols = commonColumn.matchingTrafficHubColumn();
             $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingTrafficHub.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingTrafficHub.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingTrafficHub.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -500,9 +503,9 @@ var matchingMetro;
         loadDataDicList: function () {
             var cols = commonColumn.matchingMetroColumn();
             $("#" + matchingMetro.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMetro.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingMetro.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMetro.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -544,9 +547,9 @@ var matchingMainRoad;
         loadDataDicList: function () {
             var cols = commonColumn.matchingMainRoadColumn();
             $("#" + matchingMainRoad.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMainRoad.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingMainRoad.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMainRoad.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -588,9 +591,9 @@ var matchingMainConversion;
         loadDataDicList: function () {
             var cols = commonColumn.matchingMainConversionColumn();
             $("#" + matchingMainConversion.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMainConversion.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingMainConversion.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMainConversion.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -632,9 +635,9 @@ var estateSupplyWater;
         loadDataDicList: function () {
             var cols = commonColumn.estateSupplyWaterColumn();
             $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyWater.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
+            TableInit(estateSupplyWater.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyWater.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -676,9 +679,9 @@ var estateDrainWater;
         loadDataDicList: function () {
             var cols = commonColumn.estateDrainWaterColumn();
             $("#" + estateDrainWater.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateDrainWater.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
+            TableInit(estateDrainWater.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateDrainWater.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -720,9 +723,9 @@ var estateSupplyPower;
         loadDataDicList: function () {
             var cols = commonColumn.estateSupplyPowerColumn();
             $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyPower.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
+            TableInit(estateSupplyPower.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyPower.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -763,9 +766,9 @@ var estateSupplyHeating;
         loadDataDicList: function () {
             var cols = commonColumn.estateSupplyHeatingColumn();
             $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyHeating.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
+            TableInit(estateSupplyHeating.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyHeating.prototype.config().type,
-                estateId: $('#basicEstate').find('[name=id]').val(),
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
@@ -806,8 +809,8 @@ var estateSupplyGas;
         loadDataDicList: function () {
             var cols = commonColumn.estateSupplyGasColumn();
             $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyGas.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
-                estateId: $('#basicEstate').find('[name=id]').val(),
+            TableInit(estateSupplyGas.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
+                estateId: detailEstateId,
                 type: estateSupplyGas.prototype.config().type,
                 approval: true
             }, {
@@ -850,8 +853,8 @@ var matchingMaterial;
         loadDataDicList: function () {
             var cols = commonColumn.matchingMaterialColumn();
             $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMaterial.prototype.config().table, getContextPath()+"/basicMatchingMaterial/getBootstrapTableVo", cols, {
-                estateId: $('#basicEstate').find('[name=id]').val(),
+            TableInit(matchingMaterial.prototype.config().table, getContextPath() + "/basicMatchingMaterial/getBootstrapTableVo", cols, {
+                estateId: detailEstateId,
                 approval: true
             }, {
                 showColumns: false,
