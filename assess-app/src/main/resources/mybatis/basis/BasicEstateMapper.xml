@@ -11,6 +11,7 @@
     <result column="block_id" property="blockId" jdbcType="INTEGER" />
     <result column="block_name" property="blockName" jdbcType="VARCHAR" />
     <result column="developer" property="developer" jdbcType="VARCHAR" />
+    <result column="developer_name" property="developerName" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="street_number" property="streetNumber" jdbcType="VARCHAR" />
     <result column="street" property="street" jdbcType="VARCHAR" />
@@ -97,8 +98,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, type, province, city, district, block_id, block_name, developer, name, 
-    street_number, street, number, land_level, attach_number, floor_area, cover_an_area, 
+    id, apply_id, type, province, city, district, block_id, block_name, developer, developer_name, 
+    name, street_number, street, number, land_level, attach_number, floor_area, cover_an_area, 
     volumetric_rate, greening_rate, building_number, position, description, average_price, 
     price_range, supply_heating, supply_power, supply_communication, supply_road, supply_water, 
     drain_water, supply_gas, location_describe, creator, gmt_created, gmt_modified
@@ -139,28 +140,28 @@
     </selectKey>
     insert into tb_basic_estate (apply_id, type, province, 
       city, district, block_id, 
-      block_name, developer, name, 
-      street_number, street, number, 
-      land_level, attach_number, floor_area, 
-      cover_an_area, volumetric_rate, greening_rate, 
-      building_number, position, description, 
-      average_price, price_range, supply_heating, 
-      supply_power, supply_communication, supply_road, 
-      supply_water, drain_water, supply_gas, 
-      location_describe, creator, gmt_created, 
-      gmt_modified)
+      block_name, developer, developer_name, 
+      name, street_number, street, 
+      number, land_level, attach_number, 
+      floor_area, cover_an_area, volumetric_rate, 
+      greening_rate, building_number, position, 
+      description, average_price, price_range, 
+      supply_heating, supply_power, supply_communication, 
+      supply_road, supply_water, drain_water, 
+      supply_gas, location_describe, creator, 
+      gmt_created, gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
-      #{blockName,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{streetNumber,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
-      #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
-      #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, #{supplyHeating,jdbcType=INTEGER}, 
-      #{supplyPower,jdbcType=INTEGER}, #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER}, 
-      #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, #{supplyGas,jdbcType=INTEGER}, 
-      #{locationDescribe,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{blockName,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, #{developerName,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
+      #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
+      #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, 
+      #{supplyHeating,jdbcType=INTEGER}, #{supplyPower,jdbcType=INTEGER}, #{supplyCommunication,jdbcType=INTEGER}, 
+      #{supplyRoad,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, 
+      #{supplyGas,jdbcType=INTEGER}, #{locationDescribe,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -191,6 +192,9 @@
       </if>
       <if test="developer != null" >
         developer,
+      </if>
+      <if test="developerName != null" >
+        developer_name,
       </if>
       <if test="name != null" >
         name,
@@ -295,6 +299,9 @@
       </if>
       <if test="developer != null" >
         #{developer,jdbcType=VARCHAR},
+      </if>
+      <if test="developerName != null" >
+        #{developerName,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -412,6 +419,9 @@
       <if test="record.developer != null" >
         developer = #{record.developer,jdbcType=VARCHAR},
       </if>
+      <if test="record.developerName != null" >
+        developer_name = #{record.developerName,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -506,6 +516,7 @@
       block_id = #{record.blockId,jdbcType=INTEGER},
       block_name = #{record.blockName,jdbcType=VARCHAR},
       developer = #{record.developer,jdbcType=VARCHAR},
+      developer_name = #{record.developerName,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       street_number = #{record.streetNumber,jdbcType=VARCHAR},
       street = #{record.street,jdbcType=VARCHAR},
@@ -562,6 +573,9 @@
       </if>
       <if test="developer != null" >
         developer = #{developer,jdbcType=VARCHAR},
+      </if>
+      <if test="developerName != null" >
+        developer_name = #{developerName,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -654,6 +668,7 @@
       block_id = #{blockId,jdbcType=INTEGER},
       block_name = #{blockName,jdbcType=VARCHAR},
       developer = #{developer,jdbcType=VARCHAR},
+      developer_name = #{developerName,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       street_number = #{streetNumber,jdbcType=VARCHAR},
       street = #{street,jdbcType=VARCHAR},
