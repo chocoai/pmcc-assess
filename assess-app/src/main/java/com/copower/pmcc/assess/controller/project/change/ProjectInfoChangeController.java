@@ -42,6 +42,8 @@ public class ProjectInfoChangeController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -57,6 +59,7 @@ public class ProjectInfoChangeController {
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject("projectId", projectInfo.getId());
         modelAndView.addObject("ProjectAFFILIATED", crmRpcBaseDataDicService.getUnitPropertiesList());
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
 

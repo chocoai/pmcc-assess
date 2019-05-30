@@ -54,7 +54,7 @@ public class ProjectInfo {
 
     private Integer loanType;
 
-    private Integer contractId;
+    private String contractId;
 
     private String contractName;
 
@@ -276,12 +276,12 @@ public class ProjectInfo {
         this.loanType = loanType;
     }
 
-    public Integer getContractId() {
+    public String getContractId() {
         return contractId;
     }
 
-    public void setContractId(Integer contractId) {
-        this.contractId = contractId;
+    public void setContractId(String contractId) {
+        this.contractId = contractId == null ? null : contractId.trim();
     }
 
     public String getContractName() {

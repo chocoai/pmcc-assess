@@ -4112,22 +4112,18 @@ public class GenerateBaseDataService {
     }
 
     public void imgComposingByAttachmentDtoList(List<SysAttachmentDto> sysAttachmentDtoList, DocumentBuilder builder) throws Exception {
-        List<Map<String, String>> imgList = Lists.newArrayList();
+        List<String> imgPathList = Lists.newArrayList();
         for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-            Map<String, String> imgMap = Maps.newHashMap();
             String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
             if (FileUtils.checkImgSuffix(imgPath)) {
-                String imgSuffixName = sysAttachmentDto.getFileName();
-                String imgName = sysAttachmentDto.getFileName().substring(0, imgSuffixName.lastIndexOf("."));
-                imgMap.put(imgPath, imgName);
-                imgList.add(imgMap);
+                imgPathList.add(imgPath);
             }
         }
-        if (imgList.size() == 1) {
-            AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
+        if (imgPathList.size() == 1) {
+            AsposeUtils.imageInsertToWrod(imgPathList, 1, builder);
         }
-        if (imgList.size() > 1) {
-            AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
+        if (imgPathList.size() > 1) {
+            AsposeUtils.imageInsertToWrod(imgPathList, 2, builder);
         }
     }
 

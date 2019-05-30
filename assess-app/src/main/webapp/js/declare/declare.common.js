@@ -445,6 +445,11 @@ declareCommon.initHouse = function (item,form,fileArr,callback) {
     if (callback){
         callback();
     }
+
+    frm.find("select").select2({
+        minimumResultsForSearch: -1
+    });
+
 };
 //土地初始化并且赋值
 declareCommon.initLand = function (item,form,fileArr,callback) {
@@ -493,6 +498,10 @@ declareCommon.initLand = function (item,form,fileArr,callback) {
     if (callback){
         callback();
     }
+
+    frm.find("select").select2({
+        minimumResultsForSearch: -1
+    });
 };
 
 //不动产初始化并且赋值
@@ -555,4 +564,8 @@ declareCommon.initDeclareRealty = function (item,form,fileArr,callback) {
     if (callback){
         callback();
     }
+
+    frm.find("select").select2({
+        minimumResultsForSearch: -1
+    });
 };

@@ -8,7 +8,7 @@
 </div>
 
 <div  id="industryMaintenance">
-    <%@include file="/views/project/stageSurvey/examine/industry/detail/buildingMaintenance.jsp.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/buildingMaintenance.jsp" %>
 </div>
 
 <%@include file="/views/project/stageSurvey/examine/residence/detail/buildingFunction.jsp" %>

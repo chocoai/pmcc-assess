@@ -443,14 +443,15 @@ public class AsposeUtils {
                     builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
                             RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
                     //设置样式
+                    builder.getCellFormat().getBorders().setColor(Color.white);
                     builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
                     builder.getCellFormat().setWidth(cellWidth);
-                    builder.getCellFormat().getBorders().setColor(Color.white);
                     builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
                     builder.getRowFormat().setAlignment(RowAlignment.CENTER);
+                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                 }
             }
             builder.endRow();

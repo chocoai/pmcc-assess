@@ -82,14 +82,15 @@ basicCommon.landLevelSelect = function (this_) {
         success: function (data) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
-            $.ajax({
-                url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
-                type: "get",
-                data: {levelDetailId: data.id},
-                success: function (result) {
-                    estateCommon.landLevelLoadHtml(result.data);
-                }
-            })
+            //房产先不启用
+            // $.ajax({
+            //     url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+            //     type: "get",
+            //     data: {levelDetailId: data.id},
+            //     success: function (result) {
+            //         estateCommon.landLevelLoadHtml(result.data);
+            //     }
+            // })
         }
     })
 };
@@ -120,8 +121,8 @@ basicCommon.blockSelect = function (this_) {
     })
 };
 
-basicCommon.getMarkerAreaInHeight = '98%';
-basicCommon.getMarkerAreaInWidth = '98%';
+basicCommon.getMarkerAreaInHeight = '80%';
+basicCommon.getMarkerAreaInWidth = '80%';
 
 basicCommon.valid = function () {
     $('.task_examine_item_tab a[data-name=estate]').tab('show');
