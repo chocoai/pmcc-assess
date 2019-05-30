@@ -17,9 +17,8 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventory
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
+import com.copower.pmcc.assess.dto.output.basic.*;
+import com.copower.pmcc.assess.dto.output.data.DataPropertyVo;
 import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
@@ -432,7 +431,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getHouseNature() {
-        String value = "";
+        String value = "/";
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -560,6 +559,7 @@ public class GenerateBaseDataService {
 
     /**
      * 获取某些土地证字段
+     *
      * @param baseReportFieldEnum
      * @return
      */
@@ -788,6 +788,31 @@ public class GenerateBaseDataService {
         return "/";
     }
 
+    /**
+     * 层户比
+     * @return
+     * @throws Exception
+     */
+    public String getLayerNumber()throws Exception {
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply == null || basicApply.getId() == null) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicUnit basicUnit = generateBaseExamineService.getBasicUnit();
+            if (basicUnit != null && StringUtils.isNotEmpty(basicUnit.getElevatorHouseholdRatio())) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicUnit.getElevatorHouseholdRatio());
+            }
+        }
+        String value = "";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", true);
+        }
+        return value;
+    }
+
     //使用状况
     public String getUsageStatus() {
         return "/";
@@ -814,6 +839,128 @@ public class GenerateBaseDataService {
         String value = "";
         if (!map.isEmpty()) {
             value = generateCommonMethod.judgeEachDesc2(map, "总共", "层", true);
+        }
+        return value;
+    }
+
+    /**
+     * 朝向
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getOrientation() throws Exception {
+        return generateLoactionService.getOrientation(getSchemeJudgeObjectList());
+    }
+
+    /**
+     * 获取层高
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getStoreyHeight() throws Exception {
+        return generateCommonMethod.trim(generateHouseEntityService.getFloorHeight(getSchemeJudgeObjectList()));
+    }
+
+    /**
+     * 获取装饰的部位
+     *
+     * @param reportFieldEnum
+     * @return
+     */
+    public String getOutfitDecorate(BaseReportFieldEnum reportFieldEnum) {
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply == null || basicApply.getId() == null) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            List<BasicBuildingOutfitVo> basicBuildingOutfitVos = generateBaseExamineService.getBasicBuildingOutfitList();
+            if (CollectionUtils.isEmpty(basicBuildingOutfitVos)) {
+                continue;
+            }
+            String name = null;
+            switch (reportFieldEnum) {
+                case exteriorWallDecorate: {
+                    name = "外墙";
+                }
+                break;
+                case LobbyDecorate: {
+                    name = "大堂";
+                }
+                break;
+                default:
+                    break;
+            }
+            String nameValue = name;
+            Multimap<String, String> multimap = ArrayListMultimap.create();
+            basicBuildingOutfitVos.forEach(basicBuildingOutfitVo -> {
+                if (StringUtils.contains(basicBuildingOutfitVo.getDecorationPart(), nameValue)) {
+                    multimap.put(nameValue, basicBuildingOutfitVo.getDecoratingMaterialName());
+                }
+            });
+            if (!multimap.isEmpty()) {
+                Collection<String> stringList = multimap.get(name);
+                String string = StringUtils.join(stringList, "、");
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s:%s", name, string));
+            }
+        }
+        String value = "/";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", true);
+        }
+        return value;
+    }
+
+    /**
+     * 地基及墙面
+     *
+     * @return
+     */
+    public String getFoundationAndWall() {
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply == null || basicApply.getId() == null) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            List<BasicBuildingFunction> basicBuildingFunctions = generateBaseExamineService.getBasicBuildingFunctionList();
+            if (CollectionUtils.isEmpty(basicBuildingFunctions)) {
+                continue;
+            }
+            Multimap<String, String> stringStringMultimap = ArrayListMultimap.create();
+            String nameA = "地面";
+            String nameB = "墙面";
+            basicBuildingFunctions.forEach(basicBuildingFunction -> {
+                if (basicBuildingFunction.getDecorationPart() != null && StringUtils.isNotEmpty(basicBuildingFunction.getRemark())) {
+                    String value = baseDataDicService.getNameById(basicBuildingFunction.getDecorationPart());
+                    if (StringUtils.contains(value, nameA)) {
+                        stringStringMultimap.put(nameA, basicBuildingFunction.getRemark());
+                    }
+                    if (StringUtils.contains(value, nameB)) {
+                        stringStringMultimap.put(nameB, basicBuildingFunction.getRemark());
+                    }
+                }
+            });
+            if (!stringStringMultimap.isEmpty()) {
+                List<String> stringList = Lists.newArrayList();
+                if (CollectionUtils.isNotEmpty(stringStringMultimap.get(nameA))) {
+                    stringList.add(String.format("%s:%s", nameA, StringUtils.join(stringStringMultimap.get(nameA), "、")));
+                }
+                if (CollectionUtils.isNotEmpty(stringStringMultimap.get(nameB))) {
+                    stringList.add(String.format("%s:%s", nameB, StringUtils.join(stringStringMultimap.get(nameB), "、")));
+                }
+                if (CollectionUtils.isNotEmpty(stringList)) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList, ";"));
+                }
+            }
+        }
+        String value = "/";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", true);
         }
         return value;
     }
@@ -1250,7 +1397,7 @@ public class GenerateBaseDataService {
                                 }
                                 break;
                             case 5:
-                                if (item.getPrice()!=null) {
+                                if (item.getPrice() != null) {
                                     builder.writeln(item.getPrice().toString());
                                 } else {
                                     builder.writeln("空");
@@ -2816,52 +2963,355 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 获取不重复楼盘和估价对象的一一对应集合
+     * 获取其它  某些字段数据
      *
+     * @param reportFieldEnum
+     * @return
      * @throws Exception
      */
-    private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
-        schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(schemeJudgeObjectList, true);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
-        Map<String, String> stringMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && projectPhase != null) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(projectId);
-                query.setProjectPhaseId(projectPhase.getId());
-                query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(query);
-                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                if (CollectionUtils.isNotEmpty(projectDetails) && declareRecord != null) {
-                    for (ProjectPlanDetails projectPlanDetails : projectDetails) {
-                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                        BasicApply basicApply = generateBaseExamineService.getBasicApply();
-                        if (basicApply != null && basicApply.getId() != null) {
-                            BasicEstate basicEstate = generateBaseExamineService.getEstate();
-                            if (basicEstate != null && StringUtils.isNotBlank(basicEstate.getName())) {
-                                String value = declareRecord.getStreetNumber();
-                                if (StringUtils.isNotEmpty(value)) {
-                                    stringMap.put(value,
-                                            String.format("%s,%s",
-                                                    basicApply.getPlanDetailsId().toString(),
-                                                    schemeJudgeObject.getId().toString()));
-                                }
+    public String getJudgeObjectOtherFieldValue(BaseReportFieldEnum reportFieldEnum) throws Exception {
+        Map<Integer, String> map = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        String value = "/";
+        inner: switch (reportFieldEnum) {
+            case JudgeObjectOtherField1: {
+
+            }
+            break;
+            case JudgeObjectOtherField2: {
+                String text = generateLoactionService.getFaceStreet(schemeJudgeObjectList);
+                if (StringUtils.isNotEmpty(text)) {
+                    value = text;
+                }
+            }
+            break;
+            case JudgeObjectOtherField3: {
+
+            }
+            break;
+            case JudgeObjectOtherField4: {
+                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    BasicEstateLandStateVo basicEstateLandStateVo = generateBaseExamineService.getBasicEstateLandState() ;
+                    if (basicEstateLandStateVo == null){
+                        continue;
+                    }
+                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getGreenSpaceRate())){
+                        if (NumberUtils.isNumber(basicEstateLandStateVo.getGreenSpaceRate())){
+                            String text = generateCommonMethod.getPercentileSystem(new BigDecimal(basicEstateLandStateVo.getGreenSpaceRate())) ;
+                            if (StringUtils.isNotEmpty(text)){
+                                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), text);
                             }
                         }
                     }
                 }
             }
+            break;
+            case JudgeObjectOtherField5: {
+
+            }
+            break;
+            case JudgeObjectOtherField6: {
+                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    String text = generateLoactionService.getParkingConvenience(basicApply);
+                    if (StringUtils.isNotEmpty(text)){
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), text);
+                    }
+                }
+            }
+            break;
+            case JudgeObjectOtherField7: {
+                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    BasicBuildingVo basicBuilding = generateBaseExamineService.getBasicBuilding();
+                    if (basicBuilding == null){
+                        continue;
+                    }
+                    DataPropertyVo dataPropertyVo  = basicBuilding.getDataProperty();
+                    if (dataPropertyVo == null){
+                        continue;
+                    }
+                    if (StringUtils.isNotEmpty(dataPropertyVo.getName()) && dataPropertyVo.getCompanyNature() != null && dataPropertyVo.getSocialPrestige() != null){
+                        LinkedList<String> stringLinkedList = Lists.newLinkedList();
+                        stringLinkedList.add(dataPropertyVo.getName()) ;
+                        stringLinkedList.add("公司性质") ;
+                        stringLinkedList.add(dataPropertyVo.getCompanyNatureName()) ;
+                        stringLinkedList.add("社会信誉") ;
+                        stringLinkedList.add(dataPropertyVo.getSocialPrestigeName()) ;
+                        String text = StringUtils.join(stringLinkedList, "") ;
+                        if (StringUtils.isNotEmpty(text)){
+                            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), text);
+                        }
+                    }
+                }
+            }
+            break;
+            case JudgeObjectOtherField8: {
+                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList){
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    BasicBuildingVo basicBuilding = generateBaseExamineService.getBasicBuilding();
+                    if (basicBuilding == null){
+                        continue;
+                    }
+                    if (basicBuilding.getBeCompletedTime() == null){
+                        continue;
+                    }
+                    try {
+                        int a = DateUtils.getYear(new Date()) ;
+                        int b = DateUtils.getYear(basicBuilding.getBeCompletedTime()) ;
+                        int num = Math.abs(a-b) ;
+                        if (basicBuilding.getLandUseYear() != null){
+                            BigDecimal bigDecimal = new BigDecimal(num / basicBuilding.getLandUseYear()) ;
+                            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getPercentileSystem(bigDecimal));
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            }
+            break;
+            default:
+                break;
         }
-        if (!stringMap.isEmpty()) {
-            for (Map.Entry<String, String> stringEntry : stringMap.entrySet()) {
-                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(Integer.parseInt(stringEntry.getValue().split(",")[0]));
-                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(Integer.parseInt(stringEntry.getValue().split(",")[1]));
-                schemeJudgeObjectLinkedHashMap.put(generateBaseExamineService.getBasicApply(), schemeJudgeObject);
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", false);
+        }
+        return value;
+    }
+
+    /**
+     * 获取房屋的装修情况
+     *
+     * @param reportFieldEnum
+     * @return
+     * @throws Exception
+     */
+    public String getJudgeObjectDamagedDegreeFieldValue(BaseReportFieldEnum reportFieldEnum) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        String localPath = getLocalPath(RandomStringUtils.random(12));
+        String value = "/";
+        switch (reportFieldEnum) {
+            case JudgeObjectDamagedDegreeField1:
+                value = generateHouseEntityService.getDamagedDegree2(getSchemeJudgeObjectList(), 0);
+                break;
+            case JudgeObjectDamagedDegreeField2:
+                value = generateHouseEntityService.getDamagedDegree2(getSchemeJudgeObjectList(), 1);
+                break;
+            case JudgeObjectDamagedDegreeField3:
+                value = generateHouseEntityService.getDamagedDegree2(getSchemeJudgeObjectList(), 2);
+                break;
+            case JudgeObjectDamagedDegreeField4:
+                value = generateHouseEntityService.getDamagedDegree2(getSchemeJudgeObjectList(), 3);
+                break;
+            case JudgeObjectDamagedDegreeField5:
+                value = generateHouseEntityService.getDamagedDegree2(getSchemeJudgeObjectList(), 4);
+                break;
+            case JudgeObjectDamagedDegreeField6:
+                value = generateHouseEntityService.getDamagedDegree2(getSchemeJudgeObjectList(), 5);
+                break;
+            case JudgeObjectDamagedDegreeField7:
+                value = generateHouseEntityService.getDamagedDegree2(getSchemeJudgeObjectList(), 6);
+                break;
+            case JudgeObjectDamagedDegreeField8:
+                break;
+            default:
+                break;
+        }
+        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(value), false);
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 获取某些区位信息字段
+     *
+     * @param reportFieldEnum
+     * @return
+     * @throws Exception
+     */
+    public String getJudgeObjectLocationValue(BaseReportFieldEnum reportFieldEnum) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        String localPath = getLocalPath(RandomStringUtils.random(12));
+        StringBuilder stringBuilder = new StringBuilder(8);
+        LinkedList<String> stringLinkedList = Lists.newLinkedList();
+        Map<Integer, String> map = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null) {
+                continue;
+            }
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply == null) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicEstateVo basicEstateVo = generateBaseExamineService.getEstate();
+            BasicHouseVo basicHouseVo = generateBaseExamineService.getBasicHouse();
+            BasicEstateLandStateVo basicEstateLandStateVo = generateBaseExamineService.getBasicEstateLandState();
+            switch (reportFieldEnum) {
+                case JudgeObjectLoactionField1:
+                    if (StringUtils.isNotEmpty(declareRecord.getSeat())) {
+                        stringBuilder.append("估价对象位于");
+                        stringBuilder.append(basicEstateVo.getCityName()).append(basicEstateVo.getDistrictName()).append(declareRecord.getSeat());
+                        stringBuilder.append(",").append("地处").append(basicEstateVo.getCityName()).append(basicEstateVo.getDistrictName());
+                    }
+                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                        stringLinkedList.add(stringBuilder.toString());
+                    }
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                    if (StringUtils.isNotEmpty(basicHouseVo.getFloor())) {
+                        stringBuilder.append("估价对象位于所在建筑物的第").append(basicHouseVo.getFloor()).append("层").append(",");
+                    }
+                    if (basicHouseVo.getOrientation() != null) {
+                        stringBuilder.append(basicHouseVo.getOrientationName()).append("朝向");
+                    }
+                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                        stringLinkedList.add(stringBuilder.toString());
+                    }
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                    Map<String, String> stringMap = Maps.newHashMap();
+                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getSouthTo())) {
+                        stringMap.put("南临", basicEstateLandStateVo.getSouthTo());
+                    }
+                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getNorthTo())) {
+                        stringMap.put("北临", basicEstateLandStateVo.getNorthTo());
+                    }
+                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getWestTo())) {
+                        stringMap.put("西临", basicEstateLandStateVo.getWestTo());
+                    }
+                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getEastTo())) {
+                        stringMap.put("东临", basicEstateLandStateVo.getEastTo());
+                    }
+                    if (!stringMap.isEmpty()) {
+                        stringBuilder.append("估价对象所在宗地");
+                        List<String> stringList = Lists.newArrayList();
+                        stringMap.entrySet().forEach(stringStringEntry -> {
+                            stringList.add(String.format("%s%s", stringStringEntry.getKey(), stringStringEntry.getValue()));
+                        });
+                        stringBuilder.append(StringUtils.join(stringList, ","));
+                        if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                            stringLinkedList.add(stringBuilder.toString());
+                        }
+                        stringBuilder.delete(0, stringBuilder.toString().length());
+                    }
+                    if (CollectionUtils.isNotEmpty(stringLinkedList)) {
+                        String value = StringUtils.join(stringLinkedList, "。");
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                    stringLinkedList.clear();
+                    break;
+                case JudgeObjectLoactionField2: {
+                    List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
+                    String value = generateLoactionService.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "区域内", false);
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                case JudgeObjectLoactionField3: {
+                    List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
+                    String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TRANSIT, "", false);
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                case JudgeObjectLoactionField4: {
+                    List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
+                    String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "区域内", false);
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                case JudgeObjectLoactionField5: {
+                    List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
+                    String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.METRO, "区域内", false);
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                case JudgeObjectLoactionField6: {
+                    String value = generateLoactionService.getExternalInfrastructure(basicApply);
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                case JudgeObjectLoactionField7: {
+                    List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
+                    String value = generateLoactionService.getFinanceAndMedicalAndEducation(null, null,
+                            basicMatchingEducationList, "区域内");
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = String.format("%s%s", value, "教育条件较好。");
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                case JudgeObjectLoactionField8: {
+                    List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
+                    String value = generateLoactionService.getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList,
+                            null, "区域内");
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = String.format("%s%s", value, "医疗条件较好。");
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                case JudgeObjectLoactionField9: {
+                    String value = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                case JudgeObjectLoactionField10: {
+                    String value = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
+                    if (StringUtils.isNotEmpty(value)) {
+                        value = generateCommonMethod.getIndentHtml(value);
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+                default:
+                    break;
             }
         }
-        return schemeJudgeObjectLinkedHashMap;
+        String value = "/";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", false);
+        }
+        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(value), false);
+        doc.save(localPath);
+        return localPath;
     }
 
 
@@ -3084,6 +3534,17 @@ public class GenerateBaseDataService {
         }
         doc.save(localPath);
         return localPath;
+    }
+
+    /**
+     * 户型及布局
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getHuxingLayout() throws Exception {
+        String s = generateCommonMethod.trim(generateHouseEntityService.getSpatialDistribution(getSchemeJudgeObjectList()));
+        return StringUtils.isNotBlank(s) ? s : "/";
     }
 
     /**
@@ -3593,7 +4054,7 @@ public class GenerateBaseDataService {
                 schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_COST, schemeJudgeObject);
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
-                    if(CollectionUtils.isEmpty(attachmentDtos))continue;
+                    if (CollectionUtils.isEmpty(attachmentDtos)) continue;
                     String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
                     File file = new File(generateCompareFile);
                     if (file.isFile()) {
@@ -3611,7 +4072,7 @@ public class GenerateBaseDataService {
                 schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_DEVELOPMENT, schemeJudgeObject);
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
-                    if(CollectionUtils.isEmpty(attachmentDtos))continue;
+                    if (CollectionUtils.isEmpty(attachmentDtos)) continue;
                     String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
                     File file = new File(generateCompareFile);
                     if (file.isFile()) {
