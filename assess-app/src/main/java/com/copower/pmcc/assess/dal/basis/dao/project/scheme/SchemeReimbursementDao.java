@@ -35,7 +35,7 @@ public class SchemeReimbursementDao {
     }
 
     public boolean addSchemeReimbursement(SchemeReimbursement schemeReimbursement) {
-        int i = schemeReimbursementMapper.insert(schemeReimbursement);
+        int i = schemeReimbursementMapper.insertSelective(schemeReimbursement);
         return i > 0;
     }
 
