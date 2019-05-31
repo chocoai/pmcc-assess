@@ -111,7 +111,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿化率</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicEstate.greeningRate}</label>
+                    <label class="form-control" id="greeningRate_d">${basicEstate.greeningRate}</label>
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">开发商</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicEstate.developer}</label>
+                    <label class="form-control">${basicEstate.developerName}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -377,7 +377,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿地率</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicEstateLandState.greenSpaceRate}</label>
+                    <label class="form-control" id="greenSpaceRate_d">${basicEstateLandState.greenSpaceRate}</label>
                 </div>
             </div>
         </div>
@@ -392,29 +392,35 @@
         <div class="x_title">土壤</div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">承载力</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicEstateLandState.bearingCapacity}</label>
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">污染</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicEstateLandState.contaminated}</label>
+                    <label class="form-control">${basicEstateLandState.contaminatedName}</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">酸碱度</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicEstateLandState.ph}</label>
+                    <label class="form-control">${basicEstateLandState.phName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">肥力</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" id="fertility_d">${basicEstateLandState.fertilityName}</label>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">肥力</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">稳定性</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicEstateLandState.fertility}</label>
+                    <label class="form-control" id="holdOn_d">${basicEstateLandState.holdOnName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">承载力</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" id="bearingCapacity_d">${basicEstateLandState.bearingCapacityName}</label>
                 </div>
             </div>
         </div>
