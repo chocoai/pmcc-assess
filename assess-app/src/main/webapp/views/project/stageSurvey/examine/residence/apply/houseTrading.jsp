@@ -97,6 +97,7 @@
         <%@include file="./houseTradingBody.jsp" %>
     </form>
 </div>
+<%@include file="./houseTradingBodyBox.jsp" %>
 
 
 
