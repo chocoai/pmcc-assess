@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.document;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.aspose.words.DocumentBase;
 import com.copower.pmcc.assess.common.DocumentWordUtils;
 import com.copower.pmcc.assess.common.enums.document.DocumentBaseEnum;
 import com.copower.pmcc.assess.dal.basis.dao.document.DocumentDao;
@@ -11,46 +10,51 @@ import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateBookmark;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateField;
 import com.copower.pmcc.assess.dto.output.DocumentTemplateFieldVo;
+import com.copower.pmcc.assess.dto.output.document.DocumentSendVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
-import com.copower.pmcc.bpm.api.executor.ProcessEventExecutor;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.DynamicFormField;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
-import java.security.Key;
 import java.text.MessageFormat;
 import java.util.*;
 
 /**
  * 描述:发文
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/11/17
  * @time: 14:50
  */
@@ -77,6 +81,8 @@ public class DocumentSendService {
     private DocumentWordUtils documentWordUtils;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
+    @Autowired
+    private PublicService publicService;
 
     public List<DocumentSend> getDocumentSend(DocumentSend documentSend) {
         return documentDao.getDocumentSendList(documentSend);
@@ -125,9 +131,8 @@ public class DocumentSendService {
         processInfo.setProjectId(documentSend.getProjectId());
         String processInsId = "";
         try {
-            if(StringUtils.isBlank(appointUserAccount))
-            {
-                appointUserAccount=processControllerComponent.getThisUser();
+            if (StringUtils.isBlank(appointUserAccount)) {
+                appointUserAccount = processControllerComponent.getThisUser();
             }
             ProcessUserDto processUserDto = processControllerComponent.processStart(processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
             processInsId = processUserDto.getProcessInsId();
@@ -221,7 +226,7 @@ public class DocumentSendService {
     }
 
     public Integer buildDoc(DocumentSend documentSend) throws BusinessException {
-        if(documentSend.getId()==null || documentSend.getId()==0) {
+        if (documentSend.getId() == null || documentSend.getId() == 0) {
             documentSend.setProcessInsId("0");
         }
         documentSend = saveDocumentSend(documentSend);
@@ -300,5 +305,32 @@ public class DocumentSendService {
         Map<String, String> wordValues = new HashMap<String, String>();
         wordValues.put(DocumentBaseEnum.PROJECTNAME.getValue(), "");
         return wordValues;
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param projectId
+     * @return
+     */
+    public BootstrapTableVo getDocumentSendVoList(Integer projectId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        DocumentSend documentSend = new DocumentSend();
+        documentSend.setProjectId(projectId);
+        List<DocumentSend> list = documentDao.getDocumentSendList(documentSend);
+        List<DocumentSendVo> vos = LangUtils.transform(list, p -> getDocumentSendVo(p));
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DocumentSendVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public DocumentSendVo getDocumentSendVo(DocumentSend documentSend) {
+        if (documentSend == null) return null;
+        DocumentSendVo vo = new DocumentSendVo();
+        BeanUtils.copyProperties(documentSend, vo);
+        vo.setUserName(publicService.getUserNameByAccount(documentSend.getCreator()));
+        return vo;
     }
 }
