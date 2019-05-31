@@ -207,13 +207,13 @@ public class GenerateBaseExamineService {
         return basicUnitDecorateService.getBasicUnitDecorateList(getBasicUnit().getId());
     }
 
-    public BasicHouse getBasicHouse() {
+    public BasicHouseVo getBasicHouse() {
         BasicHouse basicHouse = basicHouseService.getHouseByApplyId(getBasicApply().getId());
         if (basicHouse == null) {
             basicHouse = new BasicHouse();
             logger.error("获取数据异常!", new Exception());
         }
-        return basicHouse;
+        return basicHouseService.getBasicHouseVo(basicHouse);
     }
 
     public BasicHouseTrading getBasicTrading() {

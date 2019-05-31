@@ -289,6 +289,44 @@
                 }
             }
 
+            if (estateCommon.isNotBlank(data.basicEstateLandState.landUseType)) {
+                var strArr = ["林地", "园地", "水域", "耕地", "草地"];//来自于实体描述1(1).docx中的规则
+                var landUseTypeId = data.basicEstateLandState.landUseType;
+                if (landUseTypeId) {
+                    AssessCommon.getDataDicInfo(landUseTypeId, function (landUseTypeData) {
+                        var str = strArr.join(",");
+                        //当属于数组中的任意一项时显示
+                        if (str.indexOf(landUseTypeData.name) != -1) {
+                            $("#fertility_d").parent().parent().show();
+                            $("#holdOn_d").parent().parent().hide();
+                            $("#bearingCapacity_d").parent().parent().hide();
+                        } else {
+                            $("#fertility_d").parent().parent().hide();
+                            $("#holdOn_d").parent().parent().show();
+                            $("#bearingCapacity_d").parent().parent().show();
+                        }
+                    });
+                }
+            }
+
+            if (estateCommon.isNotBlank(data.basicEstate.greeningRate)) {
+                var greeningRateVal = AssessCommon.pointToPercent(data.basicEstate.greeningRate);
+                estateCommon.estateForm.find("input[name='greeningRate']").val(greeningRateVal);
+                $("#greeningRate_d").text(greeningRateVal);
+            }
+
+            if (estateCommon.isNotBlank(data.basicEstateLandState.greenSpaceRate)) {
+                var greenSpaceRateVal = AssessCommon.pointToPercent(data.basicEstateLandState.greenSpaceRate);
+                estateCommon.estateLandStateForm.find("input[name='greenSpaceRate']").val(greenSpaceRateVal);
+                $("#greenSpaceRate_d").text(greenSpaceRateVal);
+            }
+
+            if (estateCommon.isNotBlank(data.basicEstate.greeningRate)) {
+                var greeningRateVal = AssessCommon.pointToPercent(data.basicEstate.greeningRate);
+                estateCommon.estateForm.find("input[name='greeningRate']").val(greeningRateVal);
+                $("#greeningRate_d").text(greeningRateVal);
+            }
+
             //绑定变更事件
             estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
                 var strArr = ["林地", "园地", "水域", "耕地", "草地"];//来自于实体描述1(1).docx中的规则

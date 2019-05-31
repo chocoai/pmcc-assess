@@ -24,7 +24,7 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的<span class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="entrustPurpose" class="form-control search-select select2 entrustPurpose"
-                            required="required" onchange="getValueDefinition();">
+                            required="required" onchange="getCategoryAndValueDefinition();">
                     </select>
                 </div>
             </div>
@@ -33,7 +33,6 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="entrustAimType" class="form-control search-select select2 entrustAimType_p"
                             required="required" onchange="getRemarkEntrustPurpose();">
-                        <option selected="selected" value=''>请先选择委托目的</option>
                     </select>
                 </div>
             </div>
@@ -249,9 +248,14 @@
         });
     }
 
+    function getCategoryAndValueDefinition() {
+        var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
+        getCategory(entrustPurpose);
+        getValueDefinition();
+    }
+
     function getValueDefinition() {
         var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
-        getCategory(entrustPurpose, false);
 
         var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
         if (entrustPurpose && valueType) {
@@ -328,11 +332,11 @@
     }
 
     //委托目的类别
-    function getCategory(pid, categoryValue) {
-        if (!categoryValue) {
-            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
-        }
+    function getCategory(pid) {
         if (!pid) {
+            var option = "<option value=''>-请先选择委托目的-</option>";
+            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
+            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
             return false;
         }
         $.ajax({
@@ -349,6 +353,7 @@
                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         }
                         $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
+                        $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
                     }
 
                 }
@@ -360,9 +365,6 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
-        if (categoryValue) {
-            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val([categoryValue]).trigger('change');
-        }
 
     }
 </script>

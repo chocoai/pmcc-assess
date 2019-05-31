@@ -26,6 +26,12 @@ public class BasicBuildingVo extends BasicBuilding {
     private DataBuilderVo dataBuilder;
     private DataPropertyVo dataProperty;
 
+    private String constructionQualityName;
+
+    private String appearanceStyleName;
+
+    private String appearanceNewAndOldName;
+
     public String getCompletedTimeTypeName() {
         return completedTimeTypeName;
     }
@@ -121,5 +127,29 @@ public class BasicBuildingVo extends BasicBuilding {
 
     public void setDataProperty(DataPropertyVo dataProperty) {
         this.dataProperty = dataProperty;
+    }
+
+    public String getConstructionQualityName() {
+        return constructionQualityName;
+    }
+
+    public void setConstructionQualityName(String constructionQualityName) {
+        this.constructionQualityName = constructionQualityName;
+    }
+
+    public String getAppearanceStyleName() {
+        return appearanceStyleName;
+    }
+
+    public void setAppearanceStyleName(String appearanceStyleName) {
+        this.appearanceStyleName = appearanceStyleName;
+    }
+
+    public String getAppearanceNewAndOldName() {
+        return appearanceNewAndOldName;
+    }
+
+    public void setAppearanceNewAndOldName(String appearanceNewAndOldName) {
+        this.appearanceNewAndOldName = appearanceNewAndOldName;
     }
 }

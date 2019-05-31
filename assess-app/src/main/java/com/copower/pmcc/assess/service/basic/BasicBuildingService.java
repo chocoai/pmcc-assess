@@ -217,6 +217,9 @@ public class BasicBuildingService {
                 vo.setDataBuilder(dataBuilderService.getDataBuilderVo(dataBuilder));
             }
         }
+        vo.setConstructionQualityName(baseDataDicService.getNameById(basicBuilding.getConstructionQuality()));
+        vo.setAppearanceStyleName(baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()));
+        vo.setAppearanceNewAndOldName(baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()));
         return vo;
     }
 
