@@ -42,7 +42,7 @@ public class DeclareApplyDao {
     }
 
     public boolean addDeclareApply(DeclareApply declareApply) {
-        int i = declareApplyMapper.insert(declareApply);
+        int i = declareApplyMapper.insertSelective(declareApply);
         return i > 0;
     }
 
