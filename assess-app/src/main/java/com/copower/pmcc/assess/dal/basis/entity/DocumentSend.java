@@ -21,6 +21,8 @@ public class DocumentSend {
 
     private String uuid;
 
+    private Integer projectId;
+
     private String extendConten;
 
     public Integer getId() {
@@ -93,6 +95,14 @@ public class DocumentSend {
 
     public void setUuid(String uuid) {
         this.uuid = uuid == null ? null : uuid.trim();
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public String getExtendConten() {

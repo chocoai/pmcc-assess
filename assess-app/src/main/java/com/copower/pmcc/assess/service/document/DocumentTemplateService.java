@@ -122,7 +122,10 @@ public class DocumentTemplateService {
         List<DocumentTemplate> documentTemplateList = documentDao.getDocumentTemplateList(search);
         return documentTemplateList;
     }
-
+public DocumentTemplate getDocumentTemplate(Integer id)
+{
+    return documentDao.getDocumentTemplate(id);
+}
     @Transactional(rollbackFor = Exception.class)
     public void deleteDocumentTemplate(Integer id) {
         documentDao.deleteDocumentTemplate(id);

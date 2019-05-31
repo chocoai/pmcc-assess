@@ -34,7 +34,7 @@ public class DocumentDao {
     public List<DocumentSend> getDocumentSendList(DocumentSend documentSend) {
         DocumentSendExample example = new DocumentSendExample();
         MybatisUtils.convertObj2Example(documentSend, example);
-        return documentSendMapper.selectByExample(example);
+        return documentSendMapper.selectByExampleWithBLOBs(example);
     }
 
     public DocumentSend getDocumentSend(Integer id) {

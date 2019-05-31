@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
+import com.copower.pmcc.assess.service.document.DocumentTemplateService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -66,6 +67,8 @@ public class ProjectInfoController {
     private DataValueDefinitionService dataValueDefinitionService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private DocumentTemplateService documentTemplateService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -132,7 +135,6 @@ public class ProjectInfoController {
         return HttpResult.newCorrectResult();
     }
 
-
     @ResponseBody
     @RequestMapping(value = "/projectEditSubmit", name = "项目立项返回修改", method = RequestMethod.POST)
     public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) {
@@ -143,7 +145,6 @@ public class ProjectInfoController {
         }
         return HttpResult.newCorrectResult();
     }
-
 
     @ResponseBody
     @RequestMapping(value = "/projectApprovalSubmit", name = "项目立项审批", method = RequestMethod.POST)
@@ -166,7 +167,6 @@ public class ProjectInfoController {
         }
         return HttpResult.newCorrectResult();
     }
-
 
     @RequestMapping(value = "/projectAssignDetails", name = "分派项目经理详情")
     public Object projectAssignDetails(String processInsId) {
@@ -231,6 +231,10 @@ public class ProjectInfoController {
         modelAndView.addObject("isPM", StringUtils.equals(projectMemberVo.getUserAccountManager(), processControllerComponent.getThisUser()));
         //区域
         modelAndView.addObject("areaGroupList", schemeAreaGroupService.getAreaGroupList(projectId));
+        //项目发文件
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("");
+        modelAndView.addObject("documentTemplateList", documentTemplateList);
+
         return modelAndView;
     }
 
@@ -283,7 +287,7 @@ public class ProjectInfoController {
             ProjectPlanVo projectPlanItem = projectInfoService.getProjectPlanItem(planId);
             return HttpResult.newCorrectResult(projectPlanItem);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("取得计划编制信息异常");
         }
     }
@@ -295,7 +299,7 @@ public class ProjectInfoController {
             DataValueDefinition valueDefinition = dataValueDefinitionService.getValueDefinition(entrustPurpose, valueType);
             return HttpResult.newCorrectResult(valueDefinition);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("取得价值定义信息异常");
         }
     }
@@ -307,7 +311,7 @@ public class ProjectInfoController {
             BaseDataDic dataDicById = baseDataDicService.getDataDicById(entrustAimType);
             return HttpResult.newCorrectResult(dataDicById);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("取得价值定义信息异常");
         }
     }

@@ -11,6 +11,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.DocumentSend" extends="BaseResultMap" >
     <result column="extend_conten" property="extendConten" jdbcType="LONGVARCHAR" />
@@ -74,7 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, number, title, contract_type, process_ins_id, status, creator, created, uuid
+    id, number, title, contract_type, process_ins_id, status, creator, created, uuid, 
+    project_id
   </sql>
   <sql id="Blob_Column_List" >
     extend_conten
@@ -133,12 +135,12 @@
     </selectKey>
     insert into tb_document_send (number, title, contract_type, 
       process_ins_id, status, creator, 
-      created, uuid, extend_conten
-      )
+      created, uuid, project_id, 
+      extend_conten)
     values (#{number,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{contractType,jdbcType=INTEGER}, 
       #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{created,jdbcType=TIMESTAMP}, #{uuid,jdbcType=VARCHAR}, #{extendConten,jdbcType=LONGVARCHAR}
-      )
+      #{created,jdbcType=TIMESTAMP}, #{uuid,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, 
+      #{extendConten,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DocumentSend" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -170,6 +172,9 @@
       <if test="uuid != null" >
         uuid,
       </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
       <if test="extendConten != null" >
         extend_conten,
       </if>
@@ -198,6 +203,9 @@
       </if>
       <if test="uuid != null" >
         #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
       </if>
       <if test="extendConten != null" >
         #{extendConten,jdbcType=LONGVARCHAR},
@@ -240,6 +248,9 @@
       <if test="record.uuid != null" >
         uuid = #{record.uuid,jdbcType=VARCHAR},
       </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
       <if test="record.extendConten != null" >
         extend_conten = #{record.extendConten,jdbcType=LONGVARCHAR},
       </if>
@@ -259,6 +270,7 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=TIMESTAMP},
       uuid = #{record.uuid,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=INTEGER},
       extend_conten = #{record.extendConten,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -274,7 +286,8 @@
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=TIMESTAMP},
-      uuid = #{record.uuid,jdbcType=VARCHAR}
+      uuid = #{record.uuid,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -306,6 +319,9 @@
       <if test="uuid != null" >
         uuid = #{uuid,jdbcType=VARCHAR},
       </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
       <if test="extendConten != null" >
         extend_conten = #{extendConten,jdbcType=LONGVARCHAR},
       </if>
@@ -322,6 +338,7 @@
       creator = #{creator,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
       uuid = #{uuid,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER},
       extend_conten = #{extendConten,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -334,7 +351,8 @@
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
-      uuid = #{uuid,jdbcType=VARCHAR}
+      uuid = #{uuid,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
