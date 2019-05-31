@@ -70,28 +70,29 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-info">
-                                    项目发文
-                                </button>
-                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <c:forEach var="item" items="${documentTemplateList}">
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/documentSend/applyIndex/${item.id}&${projectInfo.id}"
-                                               target="_blank">${item.templateName}</a>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="clearfix"></div>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
+                        项目发文
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <table class="table table-bordered" id="tb_documentSendList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </div>
+            </div>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -215,7 +216,7 @@
         });
 
         projectDetails.getRuningTab().tab('show');
-
+        projectDetails.loadDocumentSend();
         setInterval(function () {
             projectDetails.loadPlanItem(projectDetails.getActiveTab().closest('li').attr('plan-id'));
         }, 30 * 1000)
@@ -627,6 +628,29 @@
                     }
                 }
             })
+        },
+
+        //项目发文
+        loadDocumentSend: function () {
+            var cols = [];
+            cols.push({field: 'title', title: '标题'});
+            cols.push({
+                field: 'created', title: '创建日期',  formatter: function (value, row, index) {
+                    return formatDate(value, true);
+                }
+            });
+            cols.push({field: 'userName', title: '创建人'});
+            $("#tb_documentSendList").bootstrapTable('destroy');
+            TableInit("tb_documentSendList", "${pageContext.request.contextPath}/documentSend/getDocumentSendVoList", cols, {
+                projectId: ${projectInfo.id}
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
         }
     };
 

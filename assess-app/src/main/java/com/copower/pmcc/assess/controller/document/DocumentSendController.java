@@ -11,6 +11,7 @@ import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
@@ -188,4 +189,9 @@ public class DocumentSendController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getDocumentSendVoList", name = "项目发文列表", method = RequestMethod.GET)
+    public BootstrapTableVo getDocumentSendVoList(Integer projectId) {
+        return documentSendService.getDocumentSendVoList(projectId);
+    }
 }
