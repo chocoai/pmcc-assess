@@ -150,7 +150,7 @@
         var retHtml = "";
         $.each(data.poiList.pois, function (i, item) {
             retHtml += "<div class='form-group'>";
-            retHtml += "<div class='col-sm-3'><span class='checkbox-inline'>";
+            retHtml += "<div class='col-xs-3 col-sm-3 col-md-3 col-lg-3'><span class='checkbox-inline'>";
             retHtml += "<input type='checkbox' id='matchingFinance" + i + "' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
             retHtml += "<label for='matchingFinance" + i + "'>" + item.name + "</label>";
             retHtml += '</span></div>';
