@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -141,11 +140,11 @@ public class GenerateReportService {
         }
         for (String string : strings) {
             BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.parseInt(string));
-            if (baseDataDic == null){
+            if (baseDataDic == null) {
                 continue;
             }
             BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
-            if(baseReportTemplate == null){
+            if (baseReportTemplate == null) {
                 continue;
             }
             //房屋评估价值确认书
@@ -510,8 +509,11 @@ public class GenerateReportService {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse());
                 }
                 //坐落
+                if (Objects.equal(BaseReportFieldEnum.Seat2.getName(), name)) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectSeatList(true));
+                }
                 if (Objects.equal(BaseReportFieldEnum.Seat.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectSeatList());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectSeatList(false));
                 }
                 //权证号
                 if (Objects.equal(BaseReportFieldEnum.CERT_NAME.getName(), name)) {
@@ -536,6 +538,10 @@ public class GenerateReportService {
                 //评估单价
                 if (Objects.equal(BaseReportFieldEnum.AssessPrice.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessPrice());
+                }
+                //评估总价分述
+                if (Objects.equal(BaseReportFieldEnum.AssessPriceClassification.getName(), name)) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessPriceClassification());
                 }
                 //评估总价
                 if (Objects.equal(BaseReportFieldEnum.AssessTotal.getName(), name)) {
@@ -567,7 +573,7 @@ public class GenerateReportService {
                 }
                 //户型
                 if (Objects.equal(BaseReportFieldEnum.unitType.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordUnitType());
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordUnitType());
                 }
                 //装修状况
                 if (Objects.equal(BaseReportFieldEnum.DecorationStatus.getName(), name)) {
@@ -687,15 +693,15 @@ public class GenerateReportService {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(0));
                 }
                 if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement1.getName(), name)) {
-                    String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement1.name()) ;
+                    String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement1.name());
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(Integer.parseInt(text)));
                 }
                 if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement2.getName(), name)) {
-                    String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement2.name()) ;
+                    String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement2.name());
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(Integer.parseInt(text)));
                 }
                 if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement3.getName(), name)) {
-                    String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement3.name()) ;
+                    String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement3.name());
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(Integer.parseInt(text)));
                 }
                 //抵押价值总金额

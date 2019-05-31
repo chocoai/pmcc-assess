@@ -165,7 +165,7 @@ public class GenerateCommonMethod {
                 return a.compareTo(b);
             }
         });
-        schemeJudgeObjectList.sort(ordering);
+        schemeJudgeObjectList.sort(ordering.reverse());
         return schemeJudgeObjectList;
     }
 
@@ -628,6 +628,10 @@ public class GenerateCommonMethod {
      */
     public String getWarpCssHtml(String html) {
         return String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", html);
+    }
+
+    public String getSongWarpCssHtml(String html) {
+        return String.format("<div style='font-family:宋体;line-height:150%%;font-size:10.0pt'>%s</div>", html);
     }
 
     /**
