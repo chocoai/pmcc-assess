@@ -186,6 +186,7 @@ public class BasicBuildingService {
         vo.setBuildingStructureTypeName(baseDataDicService.getNameById(basicBuilding.getBuildingStructureType()));
         vo.setBuildingStructureCategoryName(baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory()));
         vo.setResidenceUseYearName(baseDataDicService.getNameById(basicBuilding.getResidenceUseYear()));
+        vo.setBetweenDistanceName(baseDataDicService.getNameById(basicBuilding.getBetweenDistance()));
         if (basicBuilding.getCompletedTimeType() != null) {
             vo.setCompletedTimeTypeName(baseDataDicService.getDataDicById(basicBuilding.getCompletedTimeType()).getName());
         }

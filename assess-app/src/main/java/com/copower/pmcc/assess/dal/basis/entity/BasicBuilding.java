@@ -80,6 +80,10 @@ public class BasicBuilding {
 
     private Integer appearanceNewAndOld;
 
+    private Integer betweenDistance;
+
+    private String betweenDistanceDescription;
+
     private String creator;
 
     private Date gmtCreated;
@@ -388,6 +392,22 @@ public class BasicBuilding {
 
     public void setAppearanceNewAndOld(Integer appearanceNewAndOld) {
         this.appearanceNewAndOld = appearanceNewAndOld;
+    }
+
+    public Integer getBetweenDistance() {
+        return betweenDistance;
+    }
+
+    public void setBetweenDistance(Integer betweenDistance) {
+        this.betweenDistance = betweenDistance;
+    }
+
+    public String getBetweenDistanceDescription() {
+        return betweenDistanceDescription;
+    }
+
+    public void setBetweenDistanceDescription(String betweenDistanceDescription) {
+        this.betweenDistanceDescription = betweenDistanceDescription == null ? null : betweenDistanceDescription.trim();
     }
 
     public String getCreator() {

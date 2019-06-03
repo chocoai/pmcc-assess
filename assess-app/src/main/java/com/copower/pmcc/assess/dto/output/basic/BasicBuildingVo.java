@@ -19,6 +19,7 @@ public class BasicBuildingVo extends BasicBuilding {
     private String propertyCategoryName;
     private String propertyTypeName;
     private String completedTimeTypeName;
+    private String betweenDistanceName;
 
     private String residenceUseYearName;
 
@@ -106,6 +107,14 @@ public class BasicBuildingVo extends BasicBuilding {
 
     public String getIndustryUseYearName() {
         return industryUseYearName;
+    }
+
+    public String getBetweenDistanceName() {
+        return betweenDistanceName;
+    }
+
+    public void setBetweenDistanceName(String betweenDistanceName) {
+        this.betweenDistanceName = betweenDistanceName;
     }
 
     public void setIndustryUseYearName(String industryUseYearName) {
