@@ -121,7 +121,7 @@
             cols.push({field: 'amount', title: '金额'});
             cols.push({field: 'calculateBase', title: '计算基数', width: '20%'});
             cols.push({field: 'calculationFormula', title: '计算公式'});
-            cols.push({field: 'taxesBurden', title: '税费负担方'});
+            cols.push({field: 'taxesBurdenName', title: '税费负担方'});
             cols.push({field: 'exExplain', title: '说明'});
             cols.push({field: 'sorting', title: '排序'});
             cols.push({
@@ -392,8 +392,12 @@
                                             税费负担方
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control"
-                                                   name="taxesBurden" placeholder="税费负担方">
+                                            <select name='taxesBurden' class='form-control  search-select select2'>
+                                                <option value="0">-请选择-</option>
+                                                <c:forEach var="item" items="${taxesBurdenList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

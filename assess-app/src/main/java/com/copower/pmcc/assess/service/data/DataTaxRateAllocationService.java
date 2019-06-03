@@ -133,6 +133,12 @@ public class DataTaxRateAllocationService {
                 vo.setTypeName(baseDataDic.getName());
             }
         }
+        if (dataTaxRateAllocation.getTaxesBurden() != null) {
+            baseDataDic = baseDataDicService.getDataDicById(dataTaxRateAllocation.getTaxesBurden());
+            if (baseDataDic != null) {
+                vo.setTaxesBurdenName(baseDataDic.getName());
+            }
+        }
         return vo;
     }
 }

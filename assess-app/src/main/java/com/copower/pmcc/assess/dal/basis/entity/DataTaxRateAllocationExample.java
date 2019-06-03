@@ -836,62 +836,52 @@ public class DataTaxRateAllocationExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenEqualTo(String value) {
+        public Criteria andTaxesBurdenEqualTo(Integer value) {
             addCriterion("taxes_burden =", value, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenNotEqualTo(String value) {
+        public Criteria andTaxesBurdenNotEqualTo(Integer value) {
             addCriterion("taxes_burden <>", value, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenGreaterThan(String value) {
+        public Criteria andTaxesBurdenGreaterThan(Integer value) {
             addCriterion("taxes_burden >", value, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenGreaterThanOrEqualTo(String value) {
+        public Criteria andTaxesBurdenGreaterThanOrEqualTo(Integer value) {
             addCriterion("taxes_burden >=", value, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenLessThan(String value) {
+        public Criteria andTaxesBurdenLessThan(Integer value) {
             addCriterion("taxes_burden <", value, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenLessThanOrEqualTo(String value) {
+        public Criteria andTaxesBurdenLessThanOrEqualTo(Integer value) {
             addCriterion("taxes_burden <=", value, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenLike(String value) {
-            addCriterion("taxes_burden like", value, "taxesBurden");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaxesBurdenNotLike(String value) {
-            addCriterion("taxes_burden not like", value, "taxesBurden");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaxesBurdenIn(List<String> values) {
+        public Criteria andTaxesBurdenIn(List<Integer> values) {
             addCriterion("taxes_burden in", values, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenNotIn(List<String> values) {
+        public Criteria andTaxesBurdenNotIn(List<Integer> values) {
             addCriterion("taxes_burden not in", values, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenBetween(String value1, String value2) {
+        public Criteria andTaxesBurdenBetween(Integer value1, Integer value2) {
             addCriterion("taxes_burden between", value1, value2, "taxesBurden");
             return (Criteria) this;
         }
 
-        public Criteria andTaxesBurdenNotBetween(String value1, String value2) {
+        public Criteria andTaxesBurdenNotBetween(Integer value1, Integer value2) {
             addCriterion("taxes_burden not between", value1, value2, "taxesBurden");
             return (Criteria) this;
         }

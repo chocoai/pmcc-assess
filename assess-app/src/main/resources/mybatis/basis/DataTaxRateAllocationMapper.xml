@@ -13,7 +13,7 @@
     <result column="bis_national_unity" property="bisNationalUnity" jdbcType="BIT" />
     <result column="calculate_base" property="calculateBase" jdbcType="VARCHAR" />
     <result column="calculation_formula" property="calculationFormula" jdbcType="VARCHAR" />
-    <result column="taxes_burden" property="taxesBurden" jdbcType="VARCHAR" />
+    <result column="taxes_burden" property="taxesBurden" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -126,7 +126,7 @@
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{exExplain,jdbcType=VARCHAR}, #{taxRate,jdbcType=DECIMAL}, 
       #{amount,jdbcType=DECIMAL}, #{bisNationalUnity,jdbcType=BIT}, #{calculateBase,jdbcType=VARCHAR}, 
-      #{calculationFormula,jdbcType=VARCHAR}, #{taxesBurden,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{calculationFormula,jdbcType=VARCHAR}, #{taxesBurden,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{fieldName,jdbcType=VARCHAR}, 
       #{sorting,jdbcType=INTEGER})
   </insert>
@@ -217,7 +217,7 @@
         #{calculationFormula,jdbcType=VARCHAR},
       </if>
       <if test="taxesBurden != null" >
-        #{taxesBurden,jdbcType=VARCHAR},
+        #{taxesBurden,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -279,7 +279,7 @@
         calculation_formula = #{record.calculationFormula,jdbcType=VARCHAR},
       </if>
       <if test="record.taxesBurden != null" >
-        taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR},
+        taxes_burden = #{record.taxesBurden,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -314,7 +314,7 @@
       bis_national_unity = #{record.bisNationalUnity,jdbcType=BIT},
       calculate_base = #{record.calculateBase,jdbcType=VARCHAR},
       calculation_formula = #{record.calculationFormula,jdbcType=VARCHAR},
-      taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR},
+      taxes_burden = #{record.taxesBurden,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
@@ -358,7 +358,7 @@
         calculation_formula = #{calculationFormula,jdbcType=VARCHAR},
       </if>
       <if test="taxesBurden != null" >
-        taxes_burden = #{taxesBurden,jdbcType=VARCHAR},
+        taxes_burden = #{taxesBurden,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -390,7 +390,7 @@
       bis_national_unity = #{bisNationalUnity,jdbcType=BIT},
       calculate_base = #{calculateBase,jdbcType=VARCHAR},
       calculation_formula = #{calculationFormula,jdbcType=VARCHAR},
-      taxes_burden = #{taxesBurden,jdbcType=VARCHAR},
+      taxes_burden = #{taxesBurden,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
