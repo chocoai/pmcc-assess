@@ -207,7 +207,7 @@
         })
     }
 
-    houseCommon.showUseCondition = function(data){
+    houseCommon.showUseCondition = function (data) {
         console.log("==123==")
         if (houseCommon.isNotBlank(data.basicHouse.useCondition)) {
             console.log("==12==")
@@ -638,6 +638,16 @@
                 }
             }
         })
+    }
+
+    //计算单价
+    houseCommon.computeUnitPrice = function () {
+        var area = houseCommon.houseForm.find('[name=area]').val();
+        var tradingTotalPrice = houseCommon.houseTradingForm.find('[name=tradingTotalPrice]').val();
+        if (AssessCommon.isNumber(area) && AssessCommon.isNumber(area)) {
+            var tradingUnitPrice = parseFloat(tradingTotalPrice) / parseFloat(area);
+            houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val(tradingUnitPrice.toFixed(2));
+        }
     }
 
     window.houseCommon = houseCommon;

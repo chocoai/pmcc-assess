@@ -431,7 +431,7 @@
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice" required
-                           value="${basicHouseTrading.tradingTotalPrice}">
+                        onblur="houseCommon.computeUnitPrice();"   value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>
             <div class="x-valid">
