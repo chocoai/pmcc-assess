@@ -251,12 +251,6 @@
     function getCategoryAndValueDefinition() {
         var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
         getCategory(entrustPurpose);
-        getValueDefinition();
-    }
-
-    function getValueDefinition() {
-        var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
-
         var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
         if (entrustPurpose && valueType) {
             entrustPurpose = "," + entrustPurpose + ",";
@@ -272,19 +266,58 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data) {
-                            var s = result.data.template;
-                            var content = s.replace(/<[^>]+>/g, "");
-                            console.log(content);
                             $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
                             $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
                             $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
-                            $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val(content);
                         } else {
                             $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
-                            ;
                             $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
                             $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
-                            $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val("");
+
+                        }
+                    }
+                    else {
+                        toastr.warning(result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+
+        }
+    }
+
+    function getValueDefinition() {
+        var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
+
+        var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
+        AssessCommon.getDataDicInfo(valueType, function (data) {
+            if(data) {
+                $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val(data.remark);
+            }
+        });
+        if (entrustPurpose && valueType) {
+            entrustPurpose = "," + entrustPurpose + ",";
+            valueType = "," + valueType + ",";
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
+                type: "post",
+                dataType: "json",
+                data: {
+                    entrustPurpose: entrustPurpose,
+                    valueType: valueType
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data) {
+                            $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
+                            $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
+                            $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
+                        } else {
+                            $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
+                            $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
+                            $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
 
                         }
                     }
