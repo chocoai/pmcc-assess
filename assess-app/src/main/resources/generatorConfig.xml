@@ -42,7 +42,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_document_send">
+        <table tableName="tb_basic_house_trading">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>
         </table>

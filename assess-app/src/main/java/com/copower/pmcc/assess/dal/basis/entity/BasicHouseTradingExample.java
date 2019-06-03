@@ -1536,52 +1536,62 @@ public class BasicHouseTradingExample {
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateEqualTo(BigDecimal value) {
+        public Criteria andLendingRateEqualTo(String value) {
             addCriterion("lending_rate =", value, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateNotEqualTo(BigDecimal value) {
+        public Criteria andLendingRateNotEqualTo(String value) {
             addCriterion("lending_rate <>", value, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateGreaterThan(BigDecimal value) {
+        public Criteria andLendingRateGreaterThan(String value) {
             addCriterion("lending_rate >", value, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andLendingRateGreaterThanOrEqualTo(String value) {
             addCriterion("lending_rate >=", value, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateLessThan(BigDecimal value) {
+        public Criteria andLendingRateLessThan(String value) {
             addCriterion("lending_rate <", value, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andLendingRateLessThanOrEqualTo(String value) {
             addCriterion("lending_rate <=", value, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateIn(List<BigDecimal> values) {
+        public Criteria andLendingRateLike(String value) {
+            addCriterion("lending_rate like", value, "lendingRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLendingRateNotLike(String value) {
+            addCriterion("lending_rate not like", value, "lendingRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLendingRateIn(List<String> values) {
             addCriterion("lending_rate in", values, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateNotIn(List<BigDecimal> values) {
+        public Criteria andLendingRateNotIn(List<String> values) {
             addCriterion("lending_rate not in", values, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andLendingRateBetween(String value1, String value2) {
             addCriterion("lending_rate between", value1, value2, "lendingRate");
             return (Criteria) this;
         }
 
-        public Criteria andLendingRateNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andLendingRateNotBetween(String value1, String value2) {
             addCriterion("lending_rate not between", value1, value2, "lendingRate");
             return (Criteria) this;
         }

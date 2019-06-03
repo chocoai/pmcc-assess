@@ -42,7 +42,7 @@ public class CaseHouseTrading {
 
     private String downPaymentRatio;
 
-    private BigDecimal lendingRate;
+    private String lendingRate;
 
     private Integer loanPeriod;
 
@@ -222,12 +222,12 @@ public class CaseHouseTrading {
         this.downPaymentRatio = downPaymentRatio == null ? null : downPaymentRatio.trim();
     }
 
-    public BigDecimal getLendingRate() {
+    public String getLendingRate() {
         return lendingRate;
     }
 
-    public void setLendingRate(BigDecimal lendingRate) {
-        this.lendingRate = lendingRate;
+    public void setLendingRate(String lendingRate) {
+        this.lendingRate = lendingRate == null ? null : lendingRate.trim();
     }
 
     public Integer getLoanPeriod() {
