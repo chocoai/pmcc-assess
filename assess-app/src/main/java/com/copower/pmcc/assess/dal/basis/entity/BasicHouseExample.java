@@ -1716,6 +1716,136 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andUseConditionIsNull() {
+            addCriterion("use_condition is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionIsNotNull() {
+            addCriterion("use_condition is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionEqualTo(Integer value) {
+            addCriterion("use_condition =", value, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionNotEqualTo(Integer value) {
+            addCriterion("use_condition <>", value, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionGreaterThan(Integer value) {
+            addCriterion("use_condition >", value, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("use_condition >=", value, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionLessThan(Integer value) {
+            addCriterion("use_condition <", value, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionLessThanOrEqualTo(Integer value) {
+            addCriterion("use_condition <=", value, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionIn(List<Integer> values) {
+            addCriterion("use_condition in", values, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionNotIn(List<Integer> values) {
+            addCriterion("use_condition not in", values, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionBetween(Integer value1, Integer value2) {
+            addCriterion("use_condition between", value1, value2, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionNotBetween(Integer value1, Integer value2) {
+            addCriterion("use_condition not between", value1, value2, "useCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionIsNull() {
+            addCriterion("use_condition_description is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionIsNotNull() {
+            addCriterion("use_condition_description is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionEqualTo(String value) {
+            addCriterion("use_condition_description =", value, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionNotEqualTo(String value) {
+            addCriterion("use_condition_description <>", value, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionGreaterThan(String value) {
+            addCriterion("use_condition_description >", value, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("use_condition_description >=", value, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionLessThan(String value) {
+            addCriterion("use_condition_description <", value, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("use_condition_description <=", value, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionLike(String value) {
+            addCriterion("use_condition_description like", value, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionNotLike(String value) {
+            addCriterion("use_condition_description not like", value, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionIn(List<String> values) {
+            addCriterion("use_condition_description in", values, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionNotIn(List<String> values) {
+            addCriterion("use_condition_description not in", values, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionBetween(String value1, String value2) {
+            addCriterion("use_condition_description between", value1, value2, "useConditionDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseConditionDescriptionNotBetween(String value1, String value2) {
+            addCriterion("use_condition_description not between", value1, value2, "useConditionDescription");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

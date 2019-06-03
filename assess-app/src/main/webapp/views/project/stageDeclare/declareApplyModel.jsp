@@ -226,12 +226,12 @@
                 if (commonDeclareApplyModel.isNotBlank(id)) {
                     AssessCommon.getDataDicInfo(id, function (data) {
                         if (commonDeclareApplyModel.isNotBlank(data)) {
-                            text = location + data.name + "字地" + number + "号";
+                            text = location + data.name + "字第" + number + "号";
                             engine.find("input[name='certName']").val(text);
                         }
                     });
                 } else {
-                    text = location + id + "字地" + number + "号";
+                    text = location + id + "字第" + number + "号";
                     engine.find("input[name='certName']").val(text);
                 }
             }

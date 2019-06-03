@@ -22,7 +22,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">所在楼层<span class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
+                    <input type="text" data-rule-maxlength="100"
                            placeholder="所在楼层(请输入数字)" name="floor" required
                            class="form-control" value="${basicHouse.floor}">
                 </div>

@@ -157,6 +157,9 @@
             tradingType = AssessDicKey.examineHouseTransactionTypeSell;
         }
         houseCommon.loadTradingSellAndLeaseList(tradingType, true);
+        houseCommon.detail(basicCommon.getApplyId(), function (data) {
+            houseCommon.showUseCondition(data);
+        });
     });
 
     //审批提交

@@ -24,7 +24,7 @@
     <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
     <result column="scope_property_explain" property="scopePropertyExplain" jdbcType="VARCHAR" />
     <result column="down_payment_ratio" property="downPaymentRatio" jdbcType="VARCHAR" />
-    <result column="lending_rate" property="lendingRate" jdbcType="DECIMAL" />
+    <result column="lending_rate" property="lendingRate" jdbcType="VARCHAR" />
     <result column="loan_period" property="loanPeriod" jdbcType="INTEGER" />
     <result column="deposit" property="deposit" jdbcType="VARCHAR" />
     <result column="information_type" property="informationType" jdbcType="INTEGER" />
@@ -156,7 +156,7 @@
       #{installmentInterestRate,jdbcType=VARCHAR}, #{paymentMethod,jdbcType=INTEGER}, 
       #{transactionSituation,jdbcType=INTEGER}, #{taxBurden,jdbcType=INTEGER}, #{scopeProperty,jdbcType=INTEGER}, 
       #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{scopePropertyExplain,jdbcType=VARCHAR}, 
-      #{downPaymentRatio,jdbcType=VARCHAR}, #{lendingRate,jdbcType=DECIMAL}, #{loanPeriod,jdbcType=INTEGER}, 
+      #{downPaymentRatio,jdbcType=VARCHAR}, #{lendingRate,jdbcType=VARCHAR}, #{loanPeriod,jdbcType=INTEGER}, 
       #{deposit,jdbcType=VARCHAR}, #{informationType,jdbcType=INTEGER}, #{informationCategory,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{landBuyerSeller,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
@@ -333,7 +333,7 @@
         #{downPaymentRatio,jdbcType=VARCHAR},
       </if>
       <if test="lendingRate != null" >
-        #{lendingRate,jdbcType=DECIMAL},
+        #{lendingRate,jdbcType=VARCHAR},
       </if>
       <if test="loanPeriod != null" >
         #{loanPeriod,jdbcType=INTEGER},
@@ -446,7 +446,7 @@
         down_payment_ratio = #{record.downPaymentRatio,jdbcType=VARCHAR},
       </if>
       <if test="record.lendingRate != null" >
-        lending_rate = #{record.lendingRate,jdbcType=DECIMAL},
+        lending_rate = #{record.lendingRate,jdbcType=VARCHAR},
       </if>
       <if test="record.loanPeriod != null" >
         loan_period = #{record.loanPeriod,jdbcType=INTEGER},
@@ -510,7 +510,7 @@
       scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
       scope_property_explain = #{record.scopePropertyExplain,jdbcType=VARCHAR},
       down_payment_ratio = #{record.downPaymentRatio,jdbcType=VARCHAR},
-      lending_rate = #{record.lendingRate,jdbcType=DECIMAL},
+      lending_rate = #{record.lendingRate,jdbcType=VARCHAR},
       loan_period = #{record.loanPeriod,jdbcType=INTEGER},
       deposit = #{record.deposit,jdbcType=VARCHAR},
       information_type = #{record.informationType,jdbcType=INTEGER},
@@ -593,7 +593,7 @@
         down_payment_ratio = #{downPaymentRatio,jdbcType=VARCHAR},
       </if>
       <if test="lendingRate != null" >
-        lending_rate = #{lendingRate,jdbcType=DECIMAL},
+        lending_rate = #{lendingRate,jdbcType=VARCHAR},
       </if>
       <if test="loanPeriod != null" >
         loan_period = #{loanPeriod,jdbcType=INTEGER},
@@ -654,7 +654,7 @@
       scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
       scope_property_explain = #{scopePropertyExplain,jdbcType=VARCHAR},
       down_payment_ratio = #{downPaymentRatio,jdbcType=VARCHAR},
-      lending_rate = #{lendingRate,jdbcType=DECIMAL},
+      lending_rate = #{lendingRate,jdbcType=VARCHAR},
       loan_period = #{loanPeriod,jdbcType=INTEGER},
       deposit = #{deposit,jdbcType=VARCHAR},
       information_type = #{informationType,jdbcType=INTEGER},

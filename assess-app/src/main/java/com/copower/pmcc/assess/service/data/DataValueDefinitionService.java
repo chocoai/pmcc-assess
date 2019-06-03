@@ -112,12 +112,12 @@ public class DataValueDefinitionService {
 
     public void saveData(DataValueDefinition dataValueDefinition) throws Exception {
         //生成word
-        String localPath = String.format("%s\\价值定义%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
-        String html = dataValueDefinition.getTemplate();//这是html文本
-        builder.insertHtml(html);
-        document.save(localPath);
+//        String localPath = String.format("%s\\价值定义%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+//        Document document = new Document();
+//        DocumentBuilder builder = new DocumentBuilder(document);
+//        String html = dataValueDefinition.getTemplate();//这是html文本
+//        builder.insertHtml(html);
+//        document.save(localPath);
         if (dataValueDefinition.getId() == null || dataValueDefinition.getId().equals(0)) {
             dataValueDefinitionDao.addObject(dataValueDefinition);
         } else {

@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation;
 import com.copower.pmcc.assess.dto.output.data.DataTaxRateAllocationVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -37,11 +40,15 @@ public class DataTaxRateAllocationController {
     private DataTaxRateAllocationService dataTaxRateAllocationService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
         String view = "/data/dataTaxRateAllocationView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        List<BaseDataDic> taxesBurdenList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_TAXES_BURDEN);
+        modelAndView.addObject("taxesBurdenList", taxesBurdenList);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         return modelAndView;
     }

@@ -48,17 +48,11 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" charset="utf-8"
-        src="${pageContext.request.contextPath}/excludes/plugins/ueditor1_4_3_3/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8"
-        src="${pageContext.request.contextPath}/excludes/plugins/ueditor1_4_3_3/ueditor.all.js"></script>
-<script type="text/javascript" charset="utf-8"
-        src="${pageContext.request.contextPath}/excludes/plugins/ueditor1_4_3_3/lang/zh-cn/zh-cn.js"></script>
+
 <script type="text/javascript">
     $(function () {
         dataValueDefinition.prototype.loadDataDicList();
     });
-    var ue = UE.getEditor('template');
     var dataValueDefinition = function () {
 
     };
@@ -132,7 +126,6 @@
             var data = formParams(dataValueDefinition.prototype.config().frm);
             data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';
             data.valueType = ',' + data.valueType + ',';
-            data.template = ue.getContent();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataValueDefinition/saveAndUpdateDataValueDefinition",
                 type: "post",
@@ -165,10 +158,7 @@
                         $("#" + dataValueDefinition.prototype.config().frm).initForm(result.data);
                         AssessCommon.checkboxToChecked($("#frmFather").find(":checkbox[name='entrustmentPurpose']"), result.data.entrustmentPurpose.split(','));
                         AssessCommon.checkboxToChecked($("#frmFather").find(":checkbox[name='valueType']"), result.data.valueType.split(','));
-                        var content = result.data.template;
-                        setTimeout(function () {
-                            ue.setContent(content, false);
-                        }, 500);
+
                         $('#' + dataValueDefinition.prototype.config().box).modal("show");
                     }
                 },
@@ -264,18 +254,6 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input required type="text" class="form-control" name="scopeNotInclude">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            模版<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <%--<textarea placeholder="填写模版" class="form-control" id="template"
-                                                      name="template" required="required"></textarea>--%>
-                                            <div style="width:99%;height:200px;" id="template"></div>
                                         </div>
                                     </div>
                                 </div>

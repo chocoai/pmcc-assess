@@ -26,7 +26,7 @@ public class DataTaxRateAllocation {
 
     private String calculationFormula;
 
-    private String taxesBurden;
+    private Integer taxesBurden;
 
     private String creator;
 
@@ -126,12 +126,12 @@ public class DataTaxRateAllocation {
         this.calculationFormula = calculationFormula == null ? null : calculationFormula.trim();
     }
 
-    public String getTaxesBurden() {
+    public Integer getTaxesBurden() {
         return taxesBurden;
     }
 
-    public void setTaxesBurden(String taxesBurden) {
-        this.taxesBurden = taxesBurden == null ? null : taxesBurden.trim();
+    public void setTaxesBurden(Integer taxesBurden) {
+        this.taxesBurden = taxesBurden;
     }
 
     public String getCreator() {

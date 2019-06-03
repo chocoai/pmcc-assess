@@ -13,6 +13,15 @@ public class DataTaxRateAllocationVo extends DataTaxRateAllocation {
     private String districtName;
     private String taxRateName;
     private String typeName;
+    private String taxesBurdenName;
+
+    public String getTaxesBurdenName() {
+        return taxesBurdenName;
+    }
+
+    public void setTaxesBurdenName(String taxesBurdenName) {
+        this.taxesBurdenName = taxesBurdenName;
+    }
 
     public String getProvinceName() {
         return provinceName;
