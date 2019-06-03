@@ -40,6 +40,8 @@
     <result column="construction_quality" property="constructionQuality" jdbcType="INTEGER" />
     <result column="appearance_style" property="appearanceStyle" jdbcType="INTEGER" />
     <result column="appearance_new_and_old" property="appearanceNewAndOld" jdbcType="INTEGER" />
+    <result column="between_distance" property="betweenDistance" jdbcType="INTEGER" />
+    <result column="between_distance_description" property="betweenDistanceDescription" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -109,7 +111,8 @@
     cover_an_area, property_type, property_category, open_time, room_time, completed_time_type, 
     be_completed_time, floor_height, diameter_depth, land_use_year, net_height, building_structure_type, 
     building_structure_category, first_floor, max_floor, in_jacket_area, use_area, construction_quality, 
-    appearance_style, appearance_new_and_old, creator, gmt_created, gmt_modified
+    appearance_style, appearance_new_and_old, between_distance, between_distance_description, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" >
     select
@@ -157,8 +160,9 @@
       net_height, building_structure_type, building_structure_category, 
       first_floor, max_floor, in_jacket_area, 
       use_area, construction_quality, appearance_style, 
-      appearance_new_and_old, creator, gmt_created, 
-      gmt_modified)
+      appearance_new_and_old, between_distance, between_distance_description, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, 
       #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
       #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, 
@@ -171,8 +175,9 @@
       #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
       #{firstFloor,jdbcType=INTEGER}, #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=DECIMAL}, 
       #{useArea,jdbcType=DECIMAL}, #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
-      #{appearanceNewAndOld,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{appearanceNewAndOld,jdbcType=INTEGER}, #{betweenDistance,jdbcType=INTEGER}, #{betweenDistanceDescription,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -290,6 +295,12 @@
       </if>
       <if test="appearanceNewAndOld != null" >
         appearance_new_and_old,
+      </if>
+      <if test="betweenDistance != null" >
+        between_distance,
+      </if>
+      <if test="betweenDistanceDescription != null" >
+        between_distance_description,
       </if>
       <if test="creator != null" >
         creator,
@@ -412,6 +423,12 @@
       </if>
       <if test="appearanceNewAndOld != null" >
         #{appearanceNewAndOld,jdbcType=INTEGER},
+      </if>
+      <if test="betweenDistance != null" >
+        #{betweenDistance,jdbcType=INTEGER},
+      </if>
+      <if test="betweenDistanceDescription != null" >
+        #{betweenDistanceDescription,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -547,6 +564,12 @@
       <if test="record.appearanceNewAndOld != null" >
         appearance_new_and_old = #{record.appearanceNewAndOld,jdbcType=INTEGER},
       </if>
+      <if test="record.betweenDistance != null" >
+        between_distance = #{record.betweenDistance,jdbcType=INTEGER},
+      </if>
+      <if test="record.betweenDistanceDescription != null" >
+        between_distance_description = #{record.betweenDistanceDescription,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -601,6 +624,8 @@
       construction_quality = #{record.constructionQuality,jdbcType=INTEGER},
       appearance_style = #{record.appearanceStyle,jdbcType=INTEGER},
       appearance_new_and_old = #{record.appearanceNewAndOld,jdbcType=INTEGER},
+      between_distance = #{record.betweenDistance,jdbcType=INTEGER},
+      between_distance_description = #{record.betweenDistanceDescription,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -722,6 +747,12 @@
       <if test="appearanceNewAndOld != null" >
         appearance_new_and_old = #{appearanceNewAndOld,jdbcType=INTEGER},
       </if>
+      <if test="betweenDistance != null" >
+        between_distance = #{betweenDistance,jdbcType=INTEGER},
+      </if>
+      <if test="betweenDistanceDescription != null" >
+        between_distance_description = #{betweenDistanceDescription,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -773,6 +804,8 @@
       construction_quality = #{constructionQuality,jdbcType=INTEGER},
       appearance_style = #{appearanceStyle,jdbcType=INTEGER},
       appearance_new_and_old = #{appearanceNewAndOld,jdbcType=INTEGER},
+      between_distance = #{betweenDistance,jdbcType=INTEGER},
+      between_distance_description = #{betweenDistanceDescription,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

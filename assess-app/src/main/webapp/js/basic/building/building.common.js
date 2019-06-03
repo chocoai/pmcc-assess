@@ -138,6 +138,10 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_appearance_new_and_old, data.appearanceNewAndOld, function (html, data) {
                 buildingCommon.buildingForm.find('[name=appearanceNewAndOld]').empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_between_distance, data.betweenDistance, function (html, data) {
+                buildingCommon.buildingForm.find('select.betweenDistance').empty().html(html).trigger('change');
+            });
+
             $.ajax({
                 url: getContextPath() + '/architecture/dataBuildingNewRateList',
                 type: 'get',

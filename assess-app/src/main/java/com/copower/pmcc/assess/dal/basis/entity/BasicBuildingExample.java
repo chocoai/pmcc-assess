@@ -2446,6 +2446,136 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andBetweenDistanceIsNull() {
+            addCriterion("between_distance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceIsNotNull() {
+            addCriterion("between_distance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceEqualTo(Integer value) {
+            addCriterion("between_distance =", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceNotEqualTo(Integer value) {
+            addCriterion("between_distance <>", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceGreaterThan(Integer value) {
+            addCriterion("between_distance >", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("between_distance >=", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceLessThan(Integer value) {
+            addCriterion("between_distance <", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceLessThanOrEqualTo(Integer value) {
+            addCriterion("between_distance <=", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceIn(List<Integer> values) {
+            addCriterion("between_distance in", values, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceNotIn(List<Integer> values) {
+            addCriterion("between_distance not in", values, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceBetween(Integer value1, Integer value2) {
+            addCriterion("between_distance between", value1, value2, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceNotBetween(Integer value1, Integer value2) {
+            addCriterion("between_distance not between", value1, value2, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionIsNull() {
+            addCriterion("between_distance_description is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionIsNotNull() {
+            addCriterion("between_distance_description is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionEqualTo(String value) {
+            addCriterion("between_distance_description =", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionNotEqualTo(String value) {
+            addCriterion("between_distance_description <>", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionGreaterThan(String value) {
+            addCriterion("between_distance_description >", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("between_distance_description >=", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionLessThan(String value) {
+            addCriterion("between_distance_description <", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("between_distance_description <=", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionLike(String value) {
+            addCriterion("between_distance_description like", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionNotLike(String value) {
+            addCriterion("between_distance_description not like", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionIn(List<String> values) {
+            addCriterion("between_distance_description in", values, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionNotIn(List<String> values) {
+            addCriterion("between_distance_description not in", values, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionBetween(String value1, String value2) {
+            addCriterion("between_distance_description between", value1, value2, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionNotBetween(String value1, String value2) {
+            addCriterion("between_distance_description not between", value1, value2, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
