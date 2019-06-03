@@ -257,8 +257,12 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getBigDecimalRound(BigDecimal bigDecimal, boolean tenThousand) {
+       return getBigDecimalRound(bigDecimal,0,tenThousand);
+    }
+
+    public String getBigDecimalRound(BigDecimal bigDecimal, int newScale, boolean tenThousand) {
         //四舍五入,并且取到0
-        bigDecimal = bigDecimal.setScale(0, BigDecimal.ROUND_UP);
+        bigDecimal = bigDecimal.setScale(newScale, BigDecimal.ROUND_UP);
         if (tenThousand) {
             bigDecimal = bigDecimal.divide(new BigDecimal(10000));
         }
@@ -267,7 +271,6 @@ public class GenerateCommonMethod {
             bigDecimal = new BigDecimal(Math.abs(bigDecimal.doubleValue()));
             String s = bigDecimal.toString();
             s = s.substring(1, bigDecimal.toString().length());
-//            bigDecimal = new BigDecimal(s);
         }
         return bigDecimal.toString();
     }
@@ -613,8 +616,8 @@ public class GenerateCommonMethod {
                             AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
                         }
                     }
-                }catch (Exception e){
-                    logger.error(e.getMessage(),e);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
                 }
             }
         }
@@ -632,6 +635,10 @@ public class GenerateCommonMethod {
 
     public String getSongWarpCssHtml(String html) {
         return String.format("<div style='font-family:宋体;line-height:150%%;font-size:10.0pt'>%s</div>", html);
+    }
+
+    public String getSongWarpCssHtml2(String html) {
+        return String.format("<div style='font-family:宋体;text-align:right;float:right;width:150px;font-size:12.0pt'>%s</div>", html);
     }
 
     /**

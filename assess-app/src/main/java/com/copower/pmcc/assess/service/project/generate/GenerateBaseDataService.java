@@ -3587,7 +3587,7 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 建行预评数据表格
+     * 建行预评数据表格 复杂word
      *
      * @return
      * @throws Exception
@@ -3595,23 +3595,39 @@ public class GenerateBaseDataService {
     public String getCCB_Pre_Evaluation_Data_FormSheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
-        generateCommonMethod.settingBuildingTable(documentBuilder);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
         String localPath = getLocalPath();
         Map<String, String> map = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        List<String> keys = Lists.newArrayList();
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            String documentPath = getCCB_Pre_Evaluation_Data_FormWriteWord(schemeJudgeObject);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().sorted((o1, o2) -> {
+            int x = generateCommonMethod.parseIntJudgeNumber(o1.getNumber());
+            int y = generateCommonMethod.parseIntJudgeNumber(o2.getNumber());
+            return (x < y) ? 1 : ((x == y) ? 0 : -1);
+        }).collect(Collectors.toList());
+        List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList = schemeLiquidationAnalysisService.getAnalysisItemListByAreaId(areaId);
+        for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
+            String documentPath = getCCB_Pre_Evaluation_Data_FormWriteWord(schemeJudgeObject, liquidationAnalysisItemList, schemeJudgeObjectList.size(), i);
             if (StringUtils.isNotEmpty(documentPath)) {
-                documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject) + "</div>"), true);
-                String key = String.format("%s%s", schemeJudgeObject.getId().toString(), RandomStringUtils.randomAlphabetic(22));
-                map.put(key, documentPath);
-                documentBuilder.writeln(key);
+                String title = generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject) + "</div>");
+                map.put(title, documentPath);
             }
         }
-        doc.save(localPath, SaveFormat.DOC);
         if (!map.isEmpty()) {
-            AsposeUtils.replaceTextToFile(localPath, map);
+            if (map.size() == 1) {
+                Map<String, String> stringMap = Maps.newHashMap();
+                stringMap.put("", map.entrySet().stream().findFirst().get().getValue());
+                AsposeUtils.insertBreakDocumentHandle(stringMap, localPath, "下一页", "");
+            } else {
+                AsposeUtils.insertBreakDocumentHandle(map, localPath, "下一页", "");
+            }
+        }
+        File file = new File(localPath);
+        if (file.isFile()) {
+            doc = new Document(localPath);
+            //删除空白
+            doc.getMailMerge().deleteFields();
+        } else {
+            doc.save(localPath);
         }
         return localPath;
     }
@@ -3623,8 +3639,11 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject) throws Exception {
+    private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, int size, int i) throws Exception {
         String localPath = getLocalPath();
+        final String sellerPayment = "卖方缴纳";
+        final String tradingParties = "交易双方";
+        final String buyerPayment = "买方缴纳";
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         LinkedList<String> stringLinkedList = Lists.newLinkedList();
         String value = "";
@@ -3635,8 +3654,10 @@ public class GenerateBaseDataService {
             Document doc = new Document();
             DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
             generateCommonMethod.settingBuildingTable(documentBuilder);
+            documentBuilder.getFont().setName("宋体");
+            documentBuilder.getFont().setSize(12);
             String huxingName = generateBaseExamineService.getBasicHouse().getHuxingName();
-
+            documentBuilder.startTable();
             //start
             stringLinkedList.add("项目名称");
             stringLinkedList.add(StringUtils.isNotBlank(projectInfo.getProjectName()) ? projectInfo.getProjectName() : value);
@@ -3688,20 +3709,20 @@ public class GenerateBaseDataService {
                 stringLinkedList.clear();
             }
             if (declareRecord != null && declareRecord.getFloorArea() != null) {
-                stringLinkedList.add("建筑面积（㎡）");
-                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), false));
+                stringLinkedList.add("建筑面积(㎡)");
+                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 2, false));
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
             if (declareRecord != null && declareRecord.getPrice() != null) {
-                stringLinkedList.add("登记价（元）");
-                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), false));
+                stringLinkedList.add("登记价(元)");
+                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), 2, false));
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
             if (basicBuildingVo != null && basicBuildingVo.getBeCompletedTime() != null) {
                 stringLinkedList.add("竣工日期");
-                stringLinkedList.add(DateUtils.format(basicBuildingVo.getBeCompletedTime(), DateUtils.DATE_CHINESE_PATTERN));
+                stringLinkedList.add(DateUtils.format(basicBuildingVo.getBeCompletedTime(), DateUtils.DATE_SHORT_PATTERN));
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
@@ -3752,7 +3773,100 @@ public class GenerateBaseDataService {
                     }
                 }
             }
+            {
+                stringLinkedList.add("抵押价值单价(元/㎡)");
+                if (schemeJudgeObject.getPrice() != null) {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 2, false));
+                } else {
+                    stringLinkedList.add("");
+                }
+                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
+                stringLinkedList.clear();
+            }
+            {
+                stringLinkedList.add("抵押价值(元/㎡)");
+                if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
+                    BigDecimal bigDecimal = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                } else {
+                    stringLinkedList.add("");
+                }
+                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
+                stringLinkedList.clear();
+            }
+            {
+                stringLinkedList.add("抵押净值1(元/㎡)");
+                if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
+                    List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
+                        if (Objects.equal(oo.getTaxesBurden(), buyerPayment)) {
+                            return true;
+                        }
+                        if (Objects.equal(oo.getTaxesBurden(), tradingParties)) {
+                            return true;
+                        }
+                        return false;
+                    }).collect(Collectors.toList());
+                    if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisItemList)) {
+                        BigDecimal bigDecimal = new BigDecimal(0);
+                        for (SchemeLiquidationAnalysisItem analysisItem : schemeLiquidationAnalysisItemList) {
+                            if (analysisItem.getPrice() == null) {
+                                continue;
+                            }
+                            bigDecimal = bigDecimal.add(analysisItem.getPrice());
+                        }
+                        if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
+                            BigDecimal bigDecimal2 = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
+                            bigDecimal = bigDecimal2.subtract(bigDecimal) ;
+                            stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                        }
+                    }
+                }
+                if (stringLinkedList.size() == 1) {
+                    stringLinkedList.add("");
+                }
+                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
+                stringLinkedList.clear();
+            }
+            {
+                stringLinkedList.add("抵押净值2(元/㎡)");
+                if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
+                    List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
+                        if (Objects.equal(oo.getTaxesBurden(), sellerPayment)) {
+                            return true;
+                        }
+                        if (Objects.equal(oo.getTaxesBurden(), tradingParties)) {
+                            return true;
+                        }
+                        return false;
+                    }).collect(Collectors.toList());
+                    if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisItemList)) {
+                        BigDecimal bigDecimal = new BigDecimal(0);
+                        for (SchemeLiquidationAnalysisItem analysisItem : schemeLiquidationAnalysisItemList) {
+                            if (analysisItem.getPrice() == null) {
+                                continue;
+                            }
+                            bigDecimal = bigDecimal.add(analysisItem.getPrice());
+                        }
+                        if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
+                            BigDecimal bigDecimal2 = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
+                            bigDecimal = bigDecimal2.subtract(bigDecimal) ;
+                            stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                        }
+                    }
+                }
+                if (stringLinkedList.size() == 1) {
+                    stringLinkedList.add("");
+                }
+                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
+                stringLinkedList.clear();
+            }
             documentBuilder.endTable();
+            if (i != size - 1) {
+                if (size != 1) {
+                    documentBuilder.writeln();
+                    documentBuilder.insertHtml(generateCommonMethod.getSongWarpCssHtml2("下一页"), false);
+                }
+            }
             doc.save(localPath, SaveFormat.DOC);
             return localPath;
         }

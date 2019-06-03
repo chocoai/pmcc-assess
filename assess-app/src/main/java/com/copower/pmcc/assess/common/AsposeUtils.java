@@ -5,6 +5,7 @@ import com.aspose.words.Shape;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -439,7 +440,9 @@ public class AsposeUtils {
                     BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
                     int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
                     int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
-                    if(imgPathList.size()==1){targeHeight = 250;}
+                    if (imgPathList.size() == 1) {
+                        targeHeight = 250;
+                    }
                     builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
                             RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
                     //设置样式
@@ -469,7 +472,7 @@ public class AsposeUtils {
         if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
         if (builder == null) throw new RuntimeException("builder empty");
         Table table = builder.startTable();
-        int rowLength = (imgList.size() % colCount > 0 ? (imgList.size() / colCount) + 1 : imgList.size() / colCount)*2;//行数
+        int rowLength = (imgList.size() % colCount > 0 ? (imgList.size() / colCount) + 1 : imgList.size() / colCount) * 2;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
         int maxWidth = 560;
@@ -480,7 +483,7 @@ public class AsposeUtils {
             if (j % 2 == 0) {
                 for (int k = 0; k < colCount; k++) {
                     builder.insertCell();
-                    index = j/2 * colCount + k;
+                    index = j / 2 * colCount + k;
                     if (index < imgList.size()) {
                         Map<String, String> stringStringMap = imgList.get(index);
                         String imgPath = "";
@@ -491,7 +494,9 @@ public class AsposeUtils {
                         BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
                         int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
                         int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
-                        if(imgList.size()==1){targeHeight = 250;}
+                        if (imgList.size() == 1) {
+                            targeHeight = 250;
+                        }
                         builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
                                 RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
                         //设置样式
@@ -509,7 +514,7 @@ public class AsposeUtils {
                 builder.endRow();
             }
             //插入名称
-            if(j%2!=0) {
+            if (j % 2 != 0) {
                 for (int k = 0; k < colCount; k++) {
                     builder.insertCell();
                     index = j / 2 * colCount + k;
@@ -529,5 +534,100 @@ public class AsposeUtils {
         }
 
         // table.setBorders(0, 0, Color.white);
+    }
+
+    public static void insertBreakValue(String path, String nextPage, String lastPage, List<String> stringList) throws Exception {
+        String a = "上一页";
+        String b = "最后一页";
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        for (int i = 0; i < stringList.size(); i++) {
+            builder.insertHtml(stringList.get(i), false);
+            if (i != stringList.size() - 1) {
+                // Insert few page breaks (just for testing) 插入分页符
+                builder.insertBreak(BreakType.PAGE_BREAK);
+            }
+        }
+        // Move DocumentBuilder cursor into the primary footer. 将DocumentBuilder光标移到主页脚中
+        builder.moveToHeaderFooter(HeaderFooterType.FOOTER_PRIMARY);
+
+        // We want to insert a field like this: 我们要插入这样的字段
+        // { IF {PAGE} <> {NUMPAGES} "See Next Page" "Last Page" }
+        Field field = builder.insertField("IF ");
+        builder.moveTo(field.getSeparator());
+        builder.insertField("PAGE");
+        builder.write(" <> ");
+        builder.insertField("NUMPAGES");
+        StringBuilder stringBuilder = new StringBuilder(8);
+        stringBuilder.append("\"").append(StringUtils.isEmpty(nextPage) ? a : nextPage).append("\"");
+        stringBuilder.append("\"").append(StringUtils.isEmpty(lastPage) ? b : lastPage).append("\"");
+        builder.write(stringBuilder.toString());
+        // Finally update the outer field to recalcaluate the final value. Doing this will automatically update 最后更新外部字段以重新计算最终值。这样做将自动更新
+        // the inner fields at the same time.同时显示内部字段
+        field.update();
+        doc.save(path);
+    }
+
+    /**
+     * stringMap key是标题 value 是待插入word路径 , path是源word路径也是最终的路径
+     * 参考 com.copower.pmcc.assess.service.project.generate.GenerateBaseDataService#getCCB_Pre_Evaluation_Data_FormSheet() 方法
+     * @param stringMap key title ,value:word path
+     * @param path      word path
+     * @throws Exception
+     */
+    public static void insertBreakDocumentHandle(Map<String, String> stringMap, String path, String nextPage, String lastPage) throws Exception {
+        Map<String, String> stringMap1 = Maps.newHashMap();
+        Map<String, String> stringMap2 = Maps.newHashMap();
+        if (!stringMap.isEmpty()) {
+            stringMap.entrySet().forEach(entry -> {
+                String key = String.format("${%s}", RandomStringUtils.randomAlphabetic(9));
+                stringMap1.put(key, entry.getValue());
+                stringMap2.put(entry.getKey(), key);
+            });
+        }
+        AsposeUtils.insertBreakDocument(path, nextPage, lastPage, stringMap2 );
+        AsposeUtils.replaceTextToFile(path, stringMap1);
+    }
+
+    private static void insertBreakDocument(String path, String nextPage, String lastPage, Map<String, String> stringStringMap) throws Exception {
+        String a = "上一页";
+        String b = "最后一页";
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        List<String> keys = Lists.newArrayList();
+        List<String> values = Lists.newArrayList();
+        for (Map.Entry<String, String> stringEntry : stringStringMap.entrySet()) {
+            keys.add(stringEntry.getKey());
+            values.add(stringEntry.getValue());
+        }
+        for (int i = 0; i < stringStringMap.size(); i++) {
+            if (StringUtils.isNotEmpty(keys.get(i))) {
+                builder.insertHtml(keys.get(i), false);
+            }
+            builder.writeln(values.get(i));
+            if (i != stringStringMap.size() - 1) {
+                // Insert few page breaks (just for testing) 插入分页符
+                builder.insertBreak(BreakType.PAGE_BREAK);
+            }
+        }
+        // Move DocumentBuilder cursor into the primary footer. 将DocumentBuilder光标移到主页脚中
+        builder.moveToHeaderFooter(HeaderFooterType.FOOTER_PRIMARY);
+
+        // We want to insert a field like this: 我们要插入这样的字段
+        // { IF {PAGE} <> {NUMPAGES} "See Next Page" "Last Page" }
+        Field field = builder.insertField("IF ");
+        builder.moveTo(field.getSeparator());
+        builder.insertField("PAGE");
+        builder.write(" <> ");
+        builder.insertField("NUMPAGES");
+        StringBuilder stringBuilder = new StringBuilder(8);
+        //这不需要StringUtils.isEmpty(),StringUtils.isBlank() 这样的判断条件，可以允许"" 这样的字符
+        stringBuilder.append("\"").append(nextPage == null ? a : nextPage).append("\"");
+        stringBuilder.append("\"").append(lastPage == null ? b : lastPage).append("\"");
+        builder.write(stringBuilder.toString());
+        // Finally update the outer field to recalcaluate the final value. Doing this will automatically update 最后更新外部字段以重新计算最终值。这样做将自动更新
+        // the inner fields at the same time.同时显示内部字段
+        field.update();
+        doc.save(path);
     }
 }
