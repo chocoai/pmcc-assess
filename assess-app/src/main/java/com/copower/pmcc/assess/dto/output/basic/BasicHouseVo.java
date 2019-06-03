@@ -16,6 +16,15 @@ public class BasicHouseVo extends BasicHouse {
     private String OrientationName;
     private String researchTypeName;
     private String spatialDistributionName;
+    private String useConditionName;
+
+    public String getUseConditionName() {
+        return useConditionName;
+    }
+
+    public void setUseConditionName(String useConditionName) {
+        this.useConditionName = useConditionName;
+    }
 
     public String getResearchTypeName() {
         return researchTypeName;

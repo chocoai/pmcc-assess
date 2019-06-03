@@ -27,6 +27,8 @@
     <result column="floor_price" property="floorPrice" jdbcType="DECIMAL" />
     <result column="land_location" property="landLocation" jdbcType="VARCHAR" />
     <result column="new_degree" property="newDegree" jdbcType="VARCHAR" />
+    <result column="use_condition" property="useCondition" jdbcType="INTEGER" />
+    <result column="use_condition_description" property="useConditionDescription" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -94,8 +96,8 @@
     id, apply_id, unit_id, house_number, floor, floor_desc, huxing_id, huxing_name, new_huxing_name, 
     spatial_distribution, spatial_distribution_desc, cert_use, practical_use, orientation, 
     area, area_desc, research_type, right_interests_restriction, use_environment, description, 
-    case_date, use_year, floor_price, land_location, new_degree, creator, gmt_created, 
-    gmt_modified, price_connotation
+    case_date, use_year, floor_price, land_location, new_degree, use_condition, use_condition_description, 
+    creator, gmt_created, gmt_modified, price_connotation
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample" >
     select
@@ -139,8 +141,9 @@
       research_type, right_interests_restriction, 
       use_environment, description, case_date, 
       use_year, floor_price, land_location, 
-      new_degree, creator, gmt_created, 
-      gmt_modified, price_connotation)
+      new_degree, use_condition, use_condition_description, 
+      creator, gmt_created, gmt_modified, 
+      price_connotation)
     values (#{applyId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingId,jdbcType=INTEGER}, 
       #{huxingName,jdbcType=VARCHAR}, #{newHuxingName,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, 
@@ -149,8 +152,9 @@
       #{researchType,jdbcType=INTEGER}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
       #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
       #{useYear,jdbcType=INTEGER}, #{floorPrice,jdbcType=DECIMAL}, #{landLocation,jdbcType=VARCHAR}, 
-      #{newDegree,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{priceConnotation,jdbcType=INTEGER})
+      #{newDegree,jdbcType=VARCHAR}, #{useCondition,jdbcType=INTEGER}, #{useConditionDescription,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{priceConnotation,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -229,6 +233,12 @@
       </if>
       <if test="newDegree != null" >
         new_degree,
+      </if>
+      <if test="useCondition != null" >
+        use_condition,
+      </if>
+      <if test="useConditionDescription != null" >
+        use_condition_description,
       </if>
       <if test="creator != null" >
         creator,
@@ -315,6 +325,12 @@
       </if>
       <if test="newDegree != null" >
         #{newDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="useCondition != null" >
+        #{useCondition,jdbcType=INTEGER},
+      </if>
+      <if test="useConditionDescription != null" >
+        #{useConditionDescription,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -414,6 +430,12 @@
       <if test="record.newDegree != null" >
         new_degree = #{record.newDegree,jdbcType=VARCHAR},
       </if>
+      <if test="record.useCondition != null" >
+        use_condition = #{record.useCondition,jdbcType=INTEGER},
+      </if>
+      <if test="record.useConditionDescription != null" >
+        use_condition_description = #{record.useConditionDescription,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -458,6 +480,8 @@
       floor_price = #{record.floorPrice,jdbcType=DECIMAL},
       land_location = #{record.landLocation,jdbcType=VARCHAR},
       new_degree = #{record.newDegree,jdbcType=VARCHAR},
+      use_condition = #{record.useCondition,jdbcType=INTEGER},
+      use_condition_description = #{record.useConditionDescription,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
@@ -541,6 +565,12 @@
       <if test="newDegree != null" >
         new_degree = #{newDegree,jdbcType=VARCHAR},
       </if>
+      <if test="useCondition != null" >
+        use_condition = #{useCondition,jdbcType=INTEGER},
+      </if>
+      <if test="useConditionDescription != null" >
+        use_condition_description = #{useConditionDescription,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -582,6 +612,8 @@
       floor_price = #{floorPrice,jdbcType=DECIMAL},
       land_location = #{landLocation,jdbcType=VARCHAR},
       new_degree = #{newDegree,jdbcType=VARCHAR},
+      use_condition = #{useCondition,jdbcType=INTEGER},
+      use_condition_description = #{useConditionDescription,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},

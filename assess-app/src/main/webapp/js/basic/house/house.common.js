@@ -18,7 +18,17 @@
         }
         return false
     };
-
+    /**
+     * 空字符串检测
+     * @param item
+     * @returns {boolean}
+     */
+    houseCommon.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
         AssessUploadKey.HOUSE_HUXING_PLAN,
@@ -106,11 +116,13 @@
             success: function (result) {
                 if (result.ret) {
                     houseCommon.houseForm.initForm(result.data.basicHouse, function () {
+                        houseCommon.showUseCondition(result.data);
                         //附件显示
                         $.each(houseCommon.houseFileControlIdArray, function (i, item) {
                             houseCommon.fileShow(item, false);
                         })
                     })
+
                     houseCommon.houseTradingForm.initForm(result.data.basicHouseTrading, function () {
                         houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeSell, true);
                         houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeLease, true);
@@ -136,6 +148,13 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, data.basicHouse.orientation, function (html, data) {
                 houseCommon.houseForm.find("select.orientation").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUseCondition, data.basicHouse.useCondition, function (html, data) {
+                houseCommon.houseForm.find("select.useCondition").empty().html(html).trigger('change');
+            });
+
+            houseCommon.showUseCondition(data);
+
+
             //完损度数据加载
             damagedDegree.loadDamagedDegreeList();
 
@@ -188,7 +207,42 @@
         })
     }
 
+    houseCommon.showUseCondition = function(data){
+        console.log("==123==")
+        if (houseCommon.isNotBlank(data.basicHouse.useCondition)) {
+            console.log("==12==")
+            var strArr = ["出租", "自用"];//来自于实体描述1(1).docx中的规则
+            var useConditionId = data.basicHouse.useCondition;
+            if (useConditionId) {
+                AssessCommon.getDataDicInfo(useConditionId, function (useConditionData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(useConditionData.name) != -1) {
+                        $("#useConditionDescription").parent().parent().hide();
+                    } else {
+                        $("#useConditionDescription").parent().parent().show();
+                    }
+                });
+            }
+        }
 
+        //绑定变更事件
+        houseCommon.houseForm.find("select.useCondition").off('change').on('change', function () {
+            var strArr = ["出租", "自用"];//来自于实体描述1(1).docx中的规则
+            var useConditionId = houseCommon.houseForm.find("select.useCondition").val();
+            if (useConditionId) {
+                AssessCommon.getDataDicInfo(useConditionId, function (useConditionData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(useConditionData.name) != -1) {
+                        $("#useConditionDescription").parent().parent().hide();
+                    } else {
+                        $("#useConditionDescription").parent().parent().show();
+                    }
+                });
+            }
+        });
+    }
     //附件上传
     houseCommon.fileUpload = function (fieldsName) {
         FileUtils.uploadFiles({

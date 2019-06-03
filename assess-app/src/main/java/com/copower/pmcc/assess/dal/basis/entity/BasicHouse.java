@@ -54,6 +54,10 @@ public class BasicHouse {
 
     private String newDegree;
 
+    private Integer useCondition;
+
+    private String useConditionDescription;
+
     private String creator;
 
     private Date gmtCreated;
@@ -260,6 +264,22 @@ public class BasicHouse {
 
     public void setNewDegree(String newDegree) {
         this.newDegree = newDegree == null ? null : newDegree.trim();
+    }
+
+    public Integer getUseCondition() {
+        return useCondition;
+    }
+
+    public void setUseCondition(Integer useCondition) {
+        this.useCondition = useCondition;
+    }
+
+    public String getUseConditionDescription() {
+        return useConditionDescription;
+    }
+
+    public void setUseConditionDescription(String useConditionDescription) {
+        this.useConditionDescription = useConditionDescription == null ? null : useConditionDescription.trim();
     }
 
     public String getCreator() {

@@ -19,6 +19,18 @@
         return false
     };
 
+    /**
+     * 空字符串检测
+     * @param item
+     * @returns {boolean}
+     */
+    houseCommon.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
+
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
         AssessUploadKey.HOUSE_HUXING_PLAN,
@@ -99,6 +111,11 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, data.basicHouse.spatialDistribution, function (html, data) {
                 houseCommon.houseForm.find("select.spatialDistribution").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUseCondition, data.basicHouse.useCondition, function (html, data) {
+                houseCommon.houseForm.find("select.useCondition").empty().html(html).trigger('change');
+            });
+
+            houseCommon.showUseCondition(data);
 
             //初始化上传控件
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
@@ -148,6 +165,41 @@
         }
     };
 
+    houseCommon.showUseCondition = function(data){
+        if (houseCommon.isNotBlank(data.basicHouse.useCondition)) {
+            console.log("3330000==")
+            var strArr = ["出租", "自用"];//来自于实体描述1(1).docx中的规则
+            var useConditionId = data.basicHouse.useCondition;
+            if (useConditionId) {
+                AssessCommon.getDataDicInfo(useConditionId, function (useConditionData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(useConditionData.name) != -1) {
+                        $("#useConditionDescription").parent().parent().hide();
+                    } else {
+                        $("#useConditionDescription").parent().parent().show();
+                    }
+                });
+            }
+        }
+
+        //绑定变更事件
+        houseCommon.houseForm.find("select.useCondition").off('change').on('change', function () {
+            var strArr = ["出租", "自用"];//来自于实体描述1(1).docx中的规则
+            var useConditionId = houseCommon.houseForm.find("select.useCondition").val();
+            if (useConditionId) {
+                AssessCommon.getDataDicInfo(useConditionId, function (useConditionData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(useConditionData.name) != -1) {
+                        $("#useConditionDescription").parent().parent().hide();
+                    } else {
+                        $("#useConditionDescription").parent().parent().show();
+                    }
+                });
+            }
+        });
+    }
 
     //附件上传
     houseCommon.fileUpload = function (fieldsName) {
