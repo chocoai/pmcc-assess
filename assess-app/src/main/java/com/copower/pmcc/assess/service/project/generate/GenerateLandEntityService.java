@@ -55,7 +55,7 @@ public class GenerateLandEntityService {
         //地势
         final boolean topographicTerrain = Objects.equal("地势低排水较差", landStateVo.getTopographicTerrainName());
         //形状
-        final boolean shapeState = Objects.equal("方便利用", landStateVo.getShapeStateName());
+        final boolean shapeState = Objects.equal("形状规则", landStateVo.getShapeStateName());
         String content = null;
         if (!planEness && !topographicTerrain && shapeState) {
             content = "有利用于提升估价对象价值";
