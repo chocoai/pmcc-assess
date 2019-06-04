@@ -72,7 +72,7 @@ declareCommon.fileUpload = function (target, tableName, id,deleteFlag,fieldsName
             tableName: tableName,
             tableId: id,
             fieldsName: fieldsName,
-            projectId: id
+            // projectId: id
         },
         deleteFlag: deleteFlag
     });
@@ -100,7 +100,7 @@ declareCommon.showFile = function (target, tableName, id , deleteFlag,fieldsName
             tableName: tableName,
             tableId: id,
             fieldsName: fieldsName,
-            projectId: id
+            // projectId: id
         },
         deleteFlag: deleteFlag
     })
