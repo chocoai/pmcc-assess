@@ -3,11 +3,13 @@ package com.copower.pmcc.assess.test;
 
 import com.aspose.words.*;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
@@ -17,9 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.List;
 
@@ -31,6 +31,54 @@ import java.util.List;
  * @date: 2017/12/14 17:30
  */
 public class Test {
+
+    public String getWarpCssHtml(String html, String fontName, Integer fontSize, String lineHeight) {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        stringBuilder.append("<div").append(" ");
+        stringBuilder.append("style='");
+        stringBuilder.append("font-family:").append(StringUtils.isNotBlank(fontName) ? fontName : "仿宋_GB2312").append(";");
+        stringBuilder.append("line-height:").append(StringUtils.isNotBlank(lineHeight) ? lineHeight : "150").append("%").append(";");
+        stringBuilder.append("font-size:").append(fontSize != null ? fontSize : "14").append("pt").append(";");
+        stringBuilder.append("'").append(" ").append(">");
+
+        stringBuilder.append(html);
+        stringBuilder.append("</div>");
+        return stringBuilder.toString();
+    }
+
+    public String getWarpCssHtml(String html, List<KeyValueDto> keyValueDtoList) {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        stringBuilder.append("<div").append(" ");
+        if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
+            if (keyValueDtoList.stream().anyMatch(keyValueDto -> {
+                if (StringUtils.isNotEmpty(keyValueDto.getKey()) && StringUtils.isNotEmpty(keyValueDto.getValue())) {
+                    return true;
+                }
+                return false;
+            })) {
+                stringBuilder.append("style='");
+                keyValueDtoList.forEach(keyValueDto -> {
+                    if (StringUtils.isNotEmpty(keyValueDto.getKey()) && StringUtils.isNotEmpty(keyValueDto.getValue())) {
+                        stringBuilder.append(keyValueDto.getKey()).append(":").append(keyValueDto.getValue()).append(";");
+                    }
+                });
+                stringBuilder.append("'");
+            }
+        }
+        stringBuilder.append(">");
+        stringBuilder.append(html);
+        stringBuilder.append("</div>");
+        return stringBuilder.toString();
+    }
+
+    @org.junit.Test
+    public void htmlTest() {
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(4) ;
+        keyValueDtoList.add(new KeyValueDto("font-family","仿宋_GB2312")) ;
+        keyValueDtoList.add(new KeyValueDto("font-size","14pt")) ;
+        keyValueDtoList.add(new KeyValueDto("line-height","100%")) ;
+        System.out.println(getWarpCssHtml(RandomStringUtils.random(22),keyValueDtoList));
+    }
 
     @org.junit.Test
     public void simpleTest() {
@@ -119,27 +167,27 @@ public class Test {
     @org.junit.Test
     public void imageInsertWordTest() throws Exception {
         //list为图片地址
-        List<Map<String,String>> imglist = Lists.newArrayList();
-        Map<String,String> imgMap = Maps.newHashMap();
-        imgMap.put("D:\\test\\1.jpg","1");
+        List<Map<String, String>> imglist = Lists.newArrayList();
+        Map<String, String> imgMap = Maps.newHashMap();
+        imgMap.put("D:\\test\\1.jpg", "1");
         imglist.add(imgMap);
-        Map<String,String> imgMap2 = Maps.newHashMap();
-        imgMap2.put("D:\\test\\2.jpg","2");
+        Map<String, String> imgMap2 = Maps.newHashMap();
+        imgMap2.put("D:\\test\\2.jpg", "2");
         imglist.add(imgMap2);
-        Map<String,String> imgMap3 = Maps.newHashMap();
-        imgMap3.put("D:\\test\\1.jpg","1");
+        Map<String, String> imgMap3 = Maps.newHashMap();
+        imgMap3.put("D:\\test\\1.jpg", "1");
         imglist.add(imgMap3);
-        Map<String,String> imgMap4 = Maps.newHashMap();
-        imgMap4.put("D:\\test\\2.jpg","2");
+        Map<String, String> imgMap4 = Maps.newHashMap();
+        imgMap4.put("D:\\test\\2.jpg", "2");
         imglist.add(imgMap4);
-        Map<String,String> imgMap5 = Maps.newHashMap();
-        imgMap5.put("D:\\test\\1.jpg","1");
+        Map<String, String> imgMap5 = Maps.newHashMap();
+        imgMap5.put("D:\\test\\1.jpg", "1");
         imglist.add(imgMap5);
-        Map<String,String> imgMap6 = Maps.newHashMap();
-        imgMap6.put("D:\\test\\2.jpg","2");
+        Map<String, String> imgMap6 = Maps.newHashMap();
+        imgMap6.put("D:\\test\\2.jpg", "2");
         imglist.add(imgMap6);
-        Map<String,String> imgMap7 = Maps.newHashMap();
-        imgMap7.put("D:\\test\\1.jpg","1");
+        Map<String, String> imgMap7 = Maps.newHashMap();
+        imgMap7.put("D:\\test\\1.jpg", "1");
         imglist.add(imgMap7);
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
@@ -149,20 +197,20 @@ public class Test {
         builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
 
         Table table = builder.startTable();
-       // table.setBorders(0, 0, Color.black);
+        // table.setBorders(0, 0, Color.black);
 
         int colLength = 2;//列数
-        int rowLength = (imglist.size() % colLength > 0 ? (imglist.size() / colLength) + 1 : imglist.size() / colLength)*2;//行数
+        int rowLength = (imglist.size() % colLength > 0 ? (imglist.size() / colLength) + 1 : imglist.size() / colLength) * 2;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
         int maxWidth = 560;
         int cellWidth = maxWidth / colLength;
-        int imageMaxWidth = cellWidth - (60/colLength);
+        int imageMaxWidth = cellWidth - (60 / colLength);
         for (int j = 0; j < rowLength; j++) {
-            if(j%2==0) {
+            if (j % 2 == 0) {
                 for (int k = 0; k < colLength; k++) {
                     builder.insertCell();
-                    index = j/2 * colLength + k;
+                    index = j / 2 * colLength + k;
                     if (index < imglist.size()) {
                         Map<String, String> stringStringMap = imglist.get(index);
                         String imgPath = "";
@@ -189,7 +237,7 @@ public class Test {
                 }
                 builder.endRow();
             }
-            if(j%2!=0) {
+            if (j % 2 != 0) {
                 for (int k = 0; k < colLength; k++) {
                     builder.insertCell();
                     index = j / 2 * colLength + k;
@@ -211,7 +259,6 @@ public class Test {
         //this.completeTableBorder(document);
         document.save("D:\\test\\2.doc");
     }
-
 
 
     public static int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
@@ -413,14 +460,14 @@ public class Test {
     }
 
     @org.junit.Test
-    public void testCompute(){
-        System.out.print(computeDifference(new BigDecimal("100"),new BigDecimal("100")));
+    public void testCompute() {
+        System.out.print(computeDifference(new BigDecimal("100"), new BigDecimal("100")));
     }
 
     public int computeDifference(BigDecimal var1, BigDecimal var2) {
         if (var1 == null || var2 == null) return -1;//表示错误数据
         BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
         BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
-        return maxDecimal.divide(minDecimal,2,BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
+        return maxDecimal.divide(minDecimal, 2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
     }
 }

@@ -14,6 +14,7 @@ public enum SchemeSupportTypeEnum {
     PRINCIPLE("principle", "评估原则"),//原则
     BASIS("basis", "评估依据"),//依据
     REPORT_ANALYSIS_CATEGORY_LIQUIDITY("report.analysis.category.liquidity", "变现能力分析"),//报告分析(变现能力分析)
+    REPORT_ANALYSIS_CATEGORY_LIQUIDITY2("report.analysis.category.liquidity", "变现能力分析"),//报告分析(变现能力分析) 小微快贷的报告
     REPORT_ANALYSIS_CATEGORY_RISK("report.analysis.category.risk", "风险分析"),//报告分析(风险分析)
     REPORT_ANALYSIS_CATEGORY_MARKET("report.analysis.category.market", "市场背景描述与分析");//报告分析(市场背景描述与分析)
     private String key;

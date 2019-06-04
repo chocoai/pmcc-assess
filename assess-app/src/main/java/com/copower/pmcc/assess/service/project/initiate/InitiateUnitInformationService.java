@@ -44,9 +44,26 @@ public class InitiateUnitInformationService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    public Integer saveAndUpdate(InitiateUnitInformation initiateUnitInformation){
+    public Integer saveAndUpdate(InitiateUnitInformation initiateUnitInformation)throws Exception{
         if (initiateUnitInformation == null){
             return null;
+        }
+        CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
+        if (NumberUtils.isNumber(initiateUnitInformation.getuUseUnit())) {
+            if (initiateUnitInformation.getInfoWrite() != null) {
+                if (initiateUnitInformation.getInfoWrite().booleanValue()) {
+                    //更新单元信息
+                    crmCustomerDto.setId(Integer.parseInt(initiateUnitInformation.getuUseUnit()));
+                    crmCustomerDto.setLegalRepresentative(initiateUnitInformation.getuLegalRepresentative());
+                    crmCustomerDto.setAddress(initiateUnitInformation.getuAddress());
+                    crmCustomerDto.setBusinessScope(initiateUnitInformation.getuScopeOperation());
+                    crmCustomerDto.setCertificateNumber(initiateUnitInformation.getuCertificateNumber());
+                    if (NumberUtils.isNumber(initiateUnitInformation.getuUnitProperties())) {
+                        crmCustomerDto.setUnitProperties(Integer.parseInt(initiateUnitInformation.getuUnitProperties()));
+                    }
+                    crmRpcCustomerService.updateCustomer(crmCustomerDto);
+                }
+            }
         }
         if (initiateUnitInformation.getId()==null || initiateUnitInformation.getId().intValue()==0){
             initiateUnitInformation.setCreator(commonService.thisUserAccount());

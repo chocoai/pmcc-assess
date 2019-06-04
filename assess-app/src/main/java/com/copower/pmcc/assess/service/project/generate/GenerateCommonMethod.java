@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
@@ -160,12 +161,12 @@ public class GenerateCommonMethod {
         Ordering<SchemeJudgeObject> ordering = Ordering.from(new Comparator<SchemeJudgeObject>() {
             @Override
             public int compare(SchemeJudgeObject o1, SchemeJudgeObject o2) {
-                Integer a = parseIntJudgeNumber(o1.getNumber());
-                Integer b = parseIntJudgeNumber(o2.getNumber());
+                Integer a = new Integer(parseIntJudgeNumber(o1.getNumber()));
+                Integer b = new Integer(parseIntJudgeNumber(o2.getNumber()));
                 return a.compareTo(b);
             }
         });
-        schemeJudgeObjectList.sort(ordering.reverse());
+        schemeJudgeObjectList.sort(ordering);
         return schemeJudgeObjectList;
     }
 
@@ -630,15 +631,29 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getWarpCssHtml(String html) {
-        return String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", html);
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(3) ;
+        keyValueDtoList.add(new KeyValueDto("font-family","仿宋_GB2312")) ;
+        keyValueDtoList.add(new KeyValueDto("font-size","14.0pt")) ;
+        keyValueDtoList.add(new KeyValueDto("line-height","150%")) ;
+        return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
     }
 
     public String getSongWarpCssHtml(String html) {
-        return String.format("<div style='font-family:宋体;line-height:150%%;font-size:10.0pt'>%s</div>", html);
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(3) ;
+        keyValueDtoList.add(new KeyValueDto("font-family","宋体")) ;
+        keyValueDtoList.add(new KeyValueDto("font-size","10.0pt")) ;
+        keyValueDtoList.add(new KeyValueDto("line-height","150%")) ;
+        return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
     }
 
     public String getSongWarpCssHtml2(String html) {
-        return String.format("<div style='font-family:宋体;text-align:right;float:right;width:150px;font-size:12.0pt'>%s</div>", html);
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(5) ;
+        keyValueDtoList.add(new KeyValueDto("font-family","宋体")) ;
+        keyValueDtoList.add(new KeyValueDto("font-size","12.0pt")) ;
+        keyValueDtoList.add(new KeyValueDto("text-align","right")) ;
+        keyValueDtoList.add(new KeyValueDto("float","right")) ;
+        keyValueDtoList.add(new KeyValueDto("width","150px")) ;
+        return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
     }
 
     /**
@@ -648,7 +663,7 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getIndentHtml(String html) {
-        return String.format("<div style='text-indent:2em'>%s</div>", html);
+        return AsposeUtils.getWarpCssHtml(html, "text-indent" ,"2em");
     }
 
     /**
@@ -1017,27 +1032,11 @@ public class GenerateCommonMethod {
     }
 
     public void writeWordTitle(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
-        if (CollectionUtils.isNotEmpty(titles)) {
-            for (String title : titles) {
-                builder.insertCell();
-                builder.write(title);
-            }
-            builder.endRow();
-        }
+        AsposeUtils.writeWordTitle(builder, titles) ;
     }
 
     public void writeWordTitle(DocumentBuilder builder, LinkedList<Double> doubleLinkedList, LinkedList<String> linkedLists) throws Exception {
-        if (CollectionUtils.isNotEmpty(linkedLists) && CollectionUtils.isNotEmpty(doubleLinkedList)) {
-            if (linkedLists.size() != doubleLinkedList.size()) {
-                return;
-            }
-            for (int i = 0; i < linkedLists.size(); i++) {
-                Cell cell = builder.insertCell();
-                cell.getCellFormat().setWidth(doubleLinkedList.get(i).doubleValue());
-                builder.write(linkedLists.get(i));
-            }
-            builder.endRow();
-        }
+        AsposeUtils.writeWordTitle(builder, doubleLinkedList, linkedLists);
     }
 
 }

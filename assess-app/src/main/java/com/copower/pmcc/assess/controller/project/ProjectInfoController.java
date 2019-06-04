@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -84,6 +85,9 @@ public class ProjectInfoController {
         projectInfo.setProjectTypeId(projectTypeId);
         projectInfo.setProjectCategoryId(projectCategoryId);
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
+        InitiateUnitInformationVo unitInformationVo = new InitiateUnitInformationVo();
+        unitInformationVo.setInfoWrite(true);
+        projectInfoVo.setUnitInformationVo(unitInformationVo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         projectInfoService.clear();

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.common;
 
 import com.aspose.words.*;
 import com.aspose.words.Shape;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -15,8 +16,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.List;
@@ -575,9 +575,9 @@ public class AsposeUtils {
      * @param path      word path
      * @throws Exception
      */
-    public static void insertBreakDocumentHandle(Map<String, String> stringMap, String path, String nextPage, String lastPage) throws Exception {
-        Map<String, String> stringMap1 = Maps.newHashMap();
-        Map<String, String> stringMap2 = Maps.newHashMap();
+    public static void insertBreakDocumentHandle(LinkedHashMap<String, String> stringMap, String path, String nextPage, String lastPage) throws Exception {
+        LinkedHashMap<String, String> stringMap1 = Maps.newLinkedHashMap() ;
+        LinkedHashMap<String, String> stringMap2 = Maps.newLinkedHashMap() ;
         if (!stringMap.isEmpty()) {
             stringMap.entrySet().forEach(entry -> {
                 String key = String.format("${%s}", RandomStringUtils.randomAlphabetic(9));
@@ -589,7 +589,7 @@ public class AsposeUtils {
         AsposeUtils.replaceTextToFile(path, stringMap1);
     }
 
-    private static void insertBreakDocument(String path, String nextPage, String lastPage, Map<String, String> stringStringMap) throws Exception {
+    private static void insertBreakDocument(String path, String nextPage, String lastPage, LinkedHashMap<String, String> stringStringMap) throws Exception {
         String a = "上一页";
         String b = "最后一页";
         Document doc = new Document();
@@ -629,5 +629,75 @@ public class AsposeUtils {
         // the inner fields at the same time.同时显示内部字段
         field.update();
         doc.save(path);
+    }
+
+    public static void writeWordTitle(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
+        if (CollectionUtils.isNotEmpty(titles)) {
+            for (String title : titles) {
+                builder.insertCell();
+                builder.write(title);
+            }
+            builder.endRow();
+        }
+    }
+
+    public  static void writeWordTitle(DocumentBuilder builder, LinkedList<Double> doubleLinkedList, LinkedList<String> linkedLists) throws Exception {
+        if (CollectionUtils.isNotEmpty(linkedLists) && CollectionUtils.isNotEmpty(doubleLinkedList)) {
+            if (linkedLists.size() != doubleLinkedList.size()) {
+                return;
+            }
+            for (int i = 0; i < linkedLists.size(); i++) {
+                Cell cell = builder.insertCell();
+                cell.getCellFormat().setWidth(doubleLinkedList.get(i).doubleValue());
+                builder.write(linkedLists.get(i));
+            }
+            builder.endRow();
+        }
+    }
+
+    /**
+     * <div style='font-family:仿宋_GB2312;font-size:14pt;line-height:100%;'>html</div>
+     * @param html
+     * @param keyValueDtoList
+     * @return
+     */
+    public static String getWarpCssHtml(String html, List<KeyValueDto> keyValueDtoList) {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        stringBuilder.append("<div").append(" ");
+        if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
+            if (keyValueDtoList.stream().anyMatch(keyValueDto -> {
+                if (StringUtils.isNotEmpty(keyValueDto.getKey()) && StringUtils.isNotEmpty(keyValueDto.getValue())) {
+                    return true;
+                }
+                return false;
+            })) {
+                stringBuilder.append("style='");
+                keyValueDtoList.forEach(keyValueDto -> {
+                    if (StringUtils.isNotEmpty(keyValueDto.getKey()) && StringUtils.isNotEmpty(keyValueDto.getValue())) {
+                        stringBuilder.append(keyValueDto.getKey()).append(":").append(keyValueDto.getValue()).append(";");
+                    }
+                });
+                stringBuilder.append("'");
+            }
+        }
+        stringBuilder.append(">");
+        stringBuilder.append(html);
+        stringBuilder.append("</div>");
+        return stringBuilder.toString();
+    }
+
+    public static String getWarpCssHtml(String html, String key,String value) {
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(1) ;
+        keyValueDtoList.add(new KeyValueDto(key,value)) ;
+        return getWarpCssHtml(html,keyValueDtoList);
+    }
+
+    public static List<KeyValueDto> getKeyValueDtoList(){
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(4) ;
+        keyValueDtoList.add(new KeyValueDto("font-family","仿宋_GB2312")) ;
+        keyValueDtoList.add(new KeyValueDto("font-size","14pt")) ;
+        keyValueDtoList.add(new KeyValueDto("line-height","100%")) ;
+        keyValueDtoList.add(new KeyValueDto("text-indent","2em")) ;
+        return keyValueDtoList;
     }
 }
