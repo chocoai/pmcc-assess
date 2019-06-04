@@ -134,6 +134,7 @@
 
     //显示房屋对应部分信息
     houseCommon.showHouseView = function (data) {
+        if (!data && !data.basicHouse)return;
         houseCommon.houseForm.initForm(data.basicHouse, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, data.basicHouse.certUse, function (html, data) {
@@ -175,6 +176,7 @@
 
         //交易情况
         houseCommon.houseTradingForm.initForm(data.basicHouseTrading, function () {
+            if (!data.basicHouseTrading)return;
             houseCommon.changeEvent(data.basicHouseTrading);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionSituation, data.basicHouseTrading.transactionSituation, function (html, data) {
                 houseCommon.houseTradingForm.find("select.transactionSituation").empty().html(html).trigger('change');

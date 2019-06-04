@@ -73,7 +73,6 @@
     };
 
 
-
     //房屋明细
     houseCommon.detail = function (applyId, callback) {
         $.ajax({
@@ -90,6 +89,7 @@
 
     //房屋初始化以及赋值
     houseCommon.initForm = function (data) {
+        if (!data || !data.basicHouse) return;
         //基本信息
         houseCommon.houseForm.initForm(data.basicHouse, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
@@ -165,7 +165,7 @@
         }
     };
 
-    houseCommon.showUseCondition = function(data){
+    houseCommon.showUseCondition = function (data) {
         if (houseCommon.isNotBlank(data.basicHouse.useCondition)) {
             console.log("3330000==")
             var strArr = ["出租", "自用"];//来自于实体描述1(1).docx中的规则
@@ -601,7 +601,7 @@
     };
 
     houseCommon.autocompleteStart = function () {
-        if ($("#txt_House_search").size() >= 1){
+        if ($("#txt_House_search").size() >= 1) {
             $("#txt_House_search").apHouse({
                 caseUnitId: function () {
                     return basicCommon.getCaseUnitId();

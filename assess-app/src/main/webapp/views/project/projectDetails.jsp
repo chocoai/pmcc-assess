@@ -53,10 +53,10 @@
                                    onclick="projectDetails.stopProject()"><i class="fa fa-stop">&nbsp;</i>终止</a>
                             </c:if>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-danger">
+                                <button type="button" class="btn btn-primary">
                                     项目变更
                                 </button>
-                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
@@ -68,6 +68,22 @@
                                         <a href="${pageContext.request.contextPath}/project.information.change/applyView?projectId=${projectInfo.id}"
                                            target="_blank">信息变更</a>
                                     </li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary">
+                                    项目发文
+                                </button>
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <c:forEach var="item" items="${documentTemplateList}">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/documentSend/applyIndex/${item.id}&${projectInfo.id}"
+                                               target="_blank">${item.templateName}</a>
+                                        </li>
+                                    </c:forEach>
                                 </ul>
                             </div>
                         </div>

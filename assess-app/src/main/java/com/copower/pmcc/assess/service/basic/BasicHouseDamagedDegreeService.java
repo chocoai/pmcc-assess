@@ -78,6 +78,7 @@ public class BasicHouseDamagedDegreeService {
     }
 
     public List<BasicHouseDamagedDegree> getDamagedDegreeList(Integer houseId) {
+        if (houseId == null || houseId <= 0) return null;
         BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
         basicHouseDamagedDegree.setHouseId(houseId);
         List<BasicHouseDamagedDegree> list = basicHouseDamagedDegreeDao.getDamagedDegreeList(basicHouseDamagedDegree);
@@ -85,6 +86,7 @@ public class BasicHouseDamagedDegreeService {
     }
 
     public List<BasicHouseDamagedDegree> getDamagedDegreeList(Integer houseId, Integer type) {
+        if (houseId == null || houseId <= 0) return null;
         BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
         basicHouseDamagedDegree.setHouseId(houseId);
         basicHouseDamagedDegree.setType(type);
