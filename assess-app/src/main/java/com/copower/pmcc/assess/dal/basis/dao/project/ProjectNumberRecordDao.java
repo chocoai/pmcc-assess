@@ -34,25 +34,10 @@ public class ProjectNumberRecordDao {
      * @param reportType
      * @return
      */
-    public List<ProjectNumberRecord> getPreauditNumberList(Integer year, Integer reportType) {
+    public List<ProjectNumberRecord> getNumberList(Integer year, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
         criteria.andYearEqualTo(year).andReportTypeEqualTo(reportType);
-        example.setOrderByClause("number desc");
-        return projectNumberRecordMapper.selectByExample(example);
-    }
-
-    /**
-     * 非预评报告编号
-     *
-     * @param year
-     * @param reportType
-     * @return
-     */
-    public List<ProjectNumberRecord> getUnPreauditNumberList(Integer year, Integer reportType) {
-        ProjectNumberRecordExample example = new ProjectNumberRecordExample();
-        ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andYearEqualTo(year).andReportTypeNotEqualTo(reportType);
         example.setOrderByClause("number desc");
         return projectNumberRecordMapper.selectByExample(example);
     }

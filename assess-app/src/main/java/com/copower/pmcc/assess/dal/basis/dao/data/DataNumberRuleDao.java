@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
 import com.copower.pmcc.assess.dal.basis.entity.DataNumberRuleExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataNumberRuleMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,10 +21,17 @@ public class DataNumberRuleDao {
         if (reportType != null) {
             criteria.andReportTypeEqualTo(reportType);
         }
+        criteria.andBisEnableEqualTo(true);
         example.setOrderByClause("id desc");
         List<DataNumberRule> dataNumberRules = dataNumberRuleMapper.selectByExample(example);
 
         return dataNumberRules;
+    }
+
+    public List<DataNumberRule> getDataNumberRule(DataNumberRule dataNumberRule) {
+        DataNumberRuleExample example = new DataNumberRuleExample();
+        MybatisUtils.convertObj2Example(dataNumberRule,example);
+        return dataNumberRuleMapper.selectByExample(example);
     }
 
     public Boolean update(DataNumberRule dataNumberRule) {

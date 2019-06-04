@@ -56,31 +56,30 @@ public class ProjectNumberRecordService {
         DataNumberRule numberRule = dataNumberRuleService.getDataNumberRule(reportType);
         if (numberRule == null)
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+        if (numberRule.getStartNumber() != null)
+            number = numberRule.getStartNumber();
         ReportNumberService reportNumberService = null;
         String reportNumber = numberRule.getNumberRule().replaceAll("\\{prefix\\}", numberRule.getPrefix())
                 .replaceAll("\\{year\\}", String.valueOf(year));
         if (StringUtils.equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, baseDataDic.getFieldName())) {
             //找到当前年份中编号报告为预评的最大号
-            reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber, true).invoke();
+            reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber).invoke();
             number = reportNumberService.getNumber();
             reportNumber = reportNumberService.getReportNumber();
         } else {
             //根据配置判断是否存在同号行为，如技术报告使用结果报告号
             //如果为同号配置，则根据项目区域及报告类型取得对应的报告编号
             if (numberRule.getSameReportType() != null) {
-                //先找到对应同号是否已生成，如果生成则使用对应同号，没有生成则取最大号
                 numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectId, areaId, year, numberRule.getSameReportType());
                 if (numberRecord != null) {
                     number = numberRecord.getNumber();
-                    reportNumber =  reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
+                    reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
                 } else {
-                    reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber, false).invoke();
-                    number = reportNumberService.getNumber();
-                    reportNumber = reportNumberService.getReportNumber();
+                    //暂不处理
                 }
             } else {
                 //直接取最大号
-                reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber, false).invoke();
+                reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber).invoke();
                 number = reportNumberService.getNumber();
                 reportNumber = reportNumberService.getReportNumber();
             }
@@ -105,7 +104,7 @@ public class ProjectNumberRecordService {
         private String reportNumber;
         private Boolean isPreaudit;
 
-        public ReportNumberService(Integer reportType, int year, int number, DataNumberRule numberRule, String reportNumber, Boolean isPreaudit) {
+        public ReportNumberService(Integer reportType, int year, int number, DataNumberRule numberRule, String reportNumber) {
             this.reportType = reportType;
             this.year = year;
             this.number = number;
@@ -124,16 +123,11 @@ public class ProjectNumberRecordService {
 
         public ReportNumberService invoke() {
             PageHelper.startPage(0, 1);//取一条数据
-            List<ProjectNumberRecord> preauditNumberList = null;
-            if (isPreaudit) {
-                preauditNumberList = projectNumberRecordDao.getPreauditNumberList(year, reportType);
-            } else {
-                preauditNumberList = projectNumberRecordDao.getUnPreauditNumberList(year, reportType);
-            }
-            if (CollectionUtils.isEmpty(preauditNumberList)) {
+            List<ProjectNumberRecord> numberRecords = projectNumberRecordDao.getNumberList(year, reportType);
+            if (CollectionUtils.isEmpty(numberRecords)) {
                 reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
             } else {
-                number = preauditNumberList.get(0).getNumber() + 1;
+                number = numberRecords.get(0).getNumber() + 1;
                 reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
             }
             return this;

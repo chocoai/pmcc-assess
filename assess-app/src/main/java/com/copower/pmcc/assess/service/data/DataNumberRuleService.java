@@ -62,6 +62,14 @@ public class DataNumberRuleService {
         return dataNumberRulesList.get(0);
     }
 
+    public DataNumberRule getDataNumberRule(String fieldName){
+        DataNumberRule where=new DataNumberRule();
+        where.setFieldName(fieldName);
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(where);
+        if(CollectionUtils.isEmpty(dataNumberRulesList)) return null;
+        return dataNumberRulesList.get(0);
+    }
+
     public boolean save(DataNumberRule dataNumberRule) throws BusinessException {
         if(dataNumberRule == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());

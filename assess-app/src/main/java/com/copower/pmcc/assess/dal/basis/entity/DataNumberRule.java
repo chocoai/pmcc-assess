@@ -7,6 +7,8 @@ public class DataNumberRule {
 
     private Integer reportType;
 
+    private String fieldName;
+
     private String prefix;
 
     private String numberRule;
@@ -18,6 +20,8 @@ public class DataNumberRule {
     private Integer startNumber;
 
     private Integer sameReportType;
+
+    private Boolean bisEnable;
 
     private String creator;
 
@@ -39,6 +43,14 @@ public class DataNumberRule {
 
     public void setReportType(Integer reportType) {
         this.reportType = reportType;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName == null ? null : fieldName.trim();
     }
 
     public String getPrefix() {
@@ -87,6 +99,14 @@ public class DataNumberRule {
 
     public void setSameReportType(Integer sameReportType) {
         this.sameReportType = sameReportType;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public String getCreator() {

@@ -1,12 +1,15 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseReportDao;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
+import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -46,6 +49,8 @@ public class BaseReportService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private InitiateUnitInformationService initiateUnitInformationService;
+    @Autowired
+    private CrmCustomerService crmCustomerService;
 
     public BaseReportTemplate getBaseReportTemplateById(Integer id) {
         return baseReportDao.getBaseReportTemplateById(id);
@@ -128,7 +133,10 @@ public class BaseReportService {
         }
         BaseReportTemplate template = getReportTemplate(Integer.valueOf(unitInformationVo.getuUseUnit()),
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(),
-                reportType, projectInfo.getEntrustPurpose(), projectInfo.getLoanType());
+                reportType, projectInfo.getLoanType());
+        if (template == null) {
+            template = getCompanyTemplate(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), reportType, projectInfo.getLoanType());
+        }
         return template;
     }
 
@@ -139,14 +147,13 @@ public class BaseReportService {
      * @param projectTypeId     项目类型
      * @param projectCategoryId 项目类别
      * @param reportType        报告类型
-     * @param entrustPurpose    委托目的
      * @return
      */
-    public BaseReportTemplate getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer entrustPurpose,Integer loanType) {
-        //1.先查询报告使用单位是否设置模板，如果未设置则取系统内置模板，
-        //2.如果设置了则根据参数获取对应模板，如果还是未找到则取统内置模板，
-        BaseReportTemplate resultTemplate = null;
-
+    public BaseReportTemplate getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer loanType) {
+        //1.根据类型查看当前报告使用单位是否有报告模板
+        //2.如果没有报告模板则到上级客户获取
+        //3.如何客户配置了模板则获取对应的模板
+        //4.如果都没有配置模板则获取公司默认模板
         BaseReportTemplate baseReportTemplateWhere = new BaseReportTemplate();
         baseReportTemplateWhere.setReportType(reportType);
         baseReportTemplateWhere.setUseUnit(useUnit);//报告使用单位
@@ -154,39 +161,47 @@ public class BaseReportService {
         baseReportTemplateWhere.setCategory(projectCategoryId);
         baseReportTemplateWhere.setBisEnable(true);
         List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
-        resultTemplate = getReportTemplateByPurpose(reportTemplateList, entrustPurpose,loanType);
-        if (CollectionUtils.isEmpty(reportTemplateList)) {//系统内置模板
-            useUnit = 0;
-            baseReportTemplateWhere.setUseUnit(useUnit);
-            reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
-            resultTemplate = getReportTemplateByPurpose(reportTemplateList, entrustPurpose,loanType);
+        if (CollectionUtils.isEmpty(reportTemplateList)) {
+            CrmCustomerDto customer = crmCustomerService.getCustomer(useUnit);
+            if (customer == null) return null;
+            return getReportTemplate(customer.getPid(), projectTypeId, projectCategoryId, reportType, loanType);
         }
-        return resultTemplate;
+        return getReportTemplateByLoanType(reportTemplateList, loanType);
+    }
+
+    /**
+     * 获取公司默认模板
+     *
+     * @param projectTypeId
+     * @param projectCategoryId
+     * @param reportType
+     * @param loanType
+     * @return
+     */
+    public BaseReportTemplate getCompanyTemplate(Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer loanType) {
+        BaseReportTemplate baseReportTemplateWhere = new BaseReportTemplate();
+        baseReportTemplateWhere.setReportType(reportType);
+        baseReportTemplateWhere.setUseUnit(0);
+        baseReportTemplateWhere.setType(projectTypeId);
+        baseReportTemplateWhere.setCategory(projectCategoryId);
+        baseReportTemplateWhere.setBisEnable(true);
+        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
+        return getReportTemplateByLoanType(reportTemplateList, loanType);
     }
 
     /**
      * 现有模板数据中根据委托目的获取报告模板
      *
      * @param reportTemplateList
-     * @param entrustPurpose
      * @return
      */
-    private BaseReportTemplate getReportTemplateByPurpose(List<BaseReportTemplate> reportTemplateList, Integer entrustPurpose, Integer loanType) {
+    private BaseReportTemplate getReportTemplateByLoanType(List<BaseReportTemplate> reportTemplateList, Integer loanType) {
         if (CollectionUtils.isEmpty(reportTemplateList)) return null;
         if (reportTemplateList.size() == 1) return reportTemplateList.get(0);
-        //1.先循环模板查询是否与参数委托目的一致的模板,找到后直接返回
-        //2.如果未找到则寻找没有设置委托目的的模板
         for (BaseReportTemplate template : reportTemplateList) {
-            if (template.getEntrustPurpose() != null && template.getLoanType() != null) {
-                if (template.getEntrustPurpose().equals(entrustPurpose) && template.getLoanType().equals(loanType))
-                    return template;
-            } else if (template.getEntrustPurpose() != null && template.getEntrustPurpose().equals(entrustPurpose)) {
-                return template;
-            } else if (template.getLoanType() != null && template.getLoanType().equals(loanType)) {
+            if (template.getLoanType() != null && template.getLoanType().equals(loanType)) {
                 return template;
             }
-            if (template.getEntrustPurpose() != null && template.getEntrustPurpose().equals(entrustPurpose))
-                return template;
         }
         return reportTemplateList.get(0);
     }

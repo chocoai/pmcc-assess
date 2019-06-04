@@ -255,6 +255,20 @@
                     $(this).trigger('click');
                 }
             })
+            //分值背影颜色设置
+            $("#tb_md_mc_item_list").find('[data-name="score"] a').each(function () {
+                var currScore = $(this).text();//修改后的值
+                var evaluationScore = $(this).closest('tr').find('[data-type="evaluation"]').text();
+                if (evaluationScore && currScore) {
+                    evaluationScore = parseFloat(evaluationScore);
+                    currScore = parseFloat(currScore);
+                    $(this).removeClass('bg-green').removeClass('bg-red');
+                    if (evaluationScore > currScore)
+                        $(this).addClass('bg-green');
+                    if (evaluationScore < currScore)
+                        $(this).addClass('bg-red');
+                }
+            })
             if (!defaluts.readonly) {
                 setElementEditable();
                 $('#tb_md_mc_item_list').find('tr[data-group="trading.time"][data-name="text"]').each(function () {
@@ -337,7 +351,7 @@
                         trHtml += '>'
                         trHtml += ' <td>' + toString(item.name) + '</td>';
                         if (evaluationItem) {
-                            trHtml += ' <td data-item-id="' + toString(defaluts.evaluation.id) + '">' + toString(evaluationItem.value) + '</td>';
+                            trHtml += ' <td data-type="evaluation" data-item-id="' + toString(defaluts.evaluation.id) + '">' + toString(evaluationItem.value) + '</td>';
                         }
                         if (defaluts.cases && defaluts.cases.length > 0) {
                             for (var j = 0; j < defaluts.cases.length; j++) {
@@ -1128,7 +1142,7 @@
 
 <%--分值模板只读--%>
 <script type="text/html" id="pScoreTempView">
-    <td>{score}</td>
+    <td><a href="javascript://">{score}</a></td>
 </script>
 
 <%--行数据模板--%>
@@ -1167,7 +1181,7 @@
         {caseText}
     </tr>
     <tr data-name="score">
-        <td>{evaluationScore}</td>
+        <td data-type="evaluation">{evaluationScore}</td>
         {caseScore}
     </tr>
     <tr data-name="ratio">

@@ -119,28 +119,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- 报告下载 -->
-                            <c:if test="${fn:length(reportTypeList) < 3}">
+                            <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                 <div class="form-group">
-                                    <c:forEach items="${reportTypeList}" var="reportType"  varStatus="status">
-                                        <%@include file="./generateIndex.jsp" %>
-                                    </c:forEach>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            <a class="btn-dark btn btn-xs"
+                                               onclick="generateReport('${areaGroup.id}','${reportType.id}',this)">生成${reportType.name}
+                                                <i class="fa fa-file-word-o"></i></a>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <div id="_${reportType.fieldName}${areaGroup.id}"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </c:if>
-                            <c:if test="${fn:length(reportTypeList) >= 3}">
-                                <div class="form-group">
-                                    <c:forEach items="${reportTypeList}" var="reportType" begin="0" end="2" varStatus="status">
-                                        <%@include file="./generateIndex.jsp" %>
-                                    </c:forEach>
-                                </div>
-                            </c:if>
-                            <c:if test="${fn:length(reportTypeList) > 4}">
-                                <div class="form-group">
-                                    <c:forEach items="${reportTypeList}" var="reportType" begin="3" end="${fn:length(reportTypeList)}"  varStatus="status">
-                                        <%@include file="./generateIndex.jsp" %>
-                                    </c:forEach>
-                                </div>
-                            </c:if>
+                            </c:forEach>
                         </form>
                     </div>
                 </div>
