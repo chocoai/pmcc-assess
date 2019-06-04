@@ -328,6 +328,10 @@ public class GenerateHouseEntityService {
      * @throws Exception
      */
     public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+        return getDamagedDegreeBase(judgeObjectList,true) ;
+    }
+
+    public String getDamagedDegreeBase(List<SchemeJudgeObject> judgeObjectList, boolean html) throws Exception {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
         //类型一共其实有4个类型也就是4部分
@@ -369,7 +373,11 @@ public class GenerateHouseEntityService {
                     } else {
                         s = "无";
                     }
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s: %s。", stringListEntry.getKey(), s)));
+                    if (html) {
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s: %s。", stringListEntry.getKey(), s)));
+                    }else {
+                        stringBuilder.append(String.format("%s: %s。", stringListEntry.getKey(), s));
+                    }
                 });
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
                 linkedHashSet.clear();
@@ -378,92 +386,6 @@ public class GenerateHouseEntityService {
         return generateCommonMethod.judgeEachDesc(map, "", ";", false);
     }
 
-    public String getDamagedDegree2(List<SchemeJudgeObject> judgeObjectList, int number) throws Exception {
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
-        //类型一共其实有4个类型也就是4部分
-        List<String> typeList = Lists.newArrayList("其它", "设备部分", "装修部分");
-        Map<Integer, String> map = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            if (basicApply == null) {
-                continue;
-            }
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicHouseDamagedDegreeVo> degreeVoList = generateBaseExamineService.getDamagedDegreeVoList();
-            Map<String, List<BasicHouseDamagedDegreeVo>> stringListMap = Maps.newHashMap();
-            if (CollectionUtils.isNotEmpty(degreeVoList)) {
-                degreeVoList.stream().forEach(oo -> {
-                    List<BasicHouseDamagedDegreeVo> damagedDegreeVoList = stringListMap.get(oo.getTypeName());
-                    if (CollectionUtils.isEmpty(damagedDegreeVoList)) {
-                        damagedDegreeVoList = Lists.newArrayList();
-                    }
-                    damagedDegreeVoList.add(oo);
-                    stringListMap.put(oo.getTypeName(), damagedDegreeVoList);
-                });
-            }
-            StringBuilder stringBuilder = new StringBuilder();
-            if (!stringListMap.isEmpty()) {
-                stringListMap.entrySet().forEach(stringListEntry -> {
-                    List<BasicHouseDamagedDegreeVo> damagedDegreeVoList = stringListEntry.getValue();
-                    String s = "";
-                    if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
-                        damagedDegreeVoList.stream().forEach(oo -> {
-                            if (typeList.contains(oo.getTypeName())) {
-                                switch (number) {
-                                    case 0:
-                                        if (StringUtils.contains(oo.getCategoryName(), "门")) {
-                                            stringLinkedHashSet.add(oo.getEntityConditionContent());
-                                        }
-                                        break;
-                                    case 1:
-                                        if (StringUtils.contains(oo.getCategoryName(), "窗")) {
-                                            stringLinkedHashSet.add(oo.getEntityConditionContent());
-                                        }
-                                        break;
-                                    case 2:
-                                        if (StringUtils.contains(oo.getCategoryName(), "地面")) {
-                                            stringLinkedHashSet.add(oo.getEntityConditionContent());
-                                        }
-                                        break;
-                                    case 3:
-                                        if (StringUtils.contains(oo.getCategoryName(), "墙")) {
-                                            stringLinkedHashSet.add(oo.getEntityConditionContent());
-                                        }
-                                        break;
-                                    case 4:
-                                        if (StringUtils.contains(oo.getCategoryName(), "棚")) {
-                                            stringLinkedHashSet.add(oo.getEntityConditionContent());
-                                        }
-                                        break;
-                                    case 5:
-                                        if (StringUtils.contains(oo.getCategoryName(), "卫")) {
-                                            stringLinkedHashSet.add(oo.getEntityConditionContent());
-                                        }
-                                        break;
-                                    case 6:
-                                        if (StringUtils.contains(oo.getCategoryName(), "厨房")) {
-                                            stringLinkedHashSet.add(oo.getEntityConditionContent());
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        });
-                        s = StringUtils.join(stringLinkedHashSet, "、");
-                        stringLinkedHashSet.clear();
-                    } else {
-                        s = "/";
-                    }
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(s));
-                });
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
-                linkedHashSet.clear();
-            }
-        }
-        return generateCommonMethod.judgeEachDesc(map, "", ";", false);
-    }
 
     /**
      * 建筑实体分析

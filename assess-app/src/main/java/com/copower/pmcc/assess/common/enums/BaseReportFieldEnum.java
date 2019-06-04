@@ -44,6 +44,8 @@ public enum BaseReportFieldEnum implements Serializable {
     BuildArea("建筑面积"),
     CoverArea("套内建筑面积"),
     AssessPrice("评估单价"),
+    NetAssessmentOne("评估净值one"),
+    NetAssessmentTwo("评估净值two"),
     AssessPriceClassification("评估总价分述"),
     surveyExamineDate("现场查勘期"),
     surveyExamineCreate("现场查勘人员"),
@@ -113,6 +115,7 @@ public enum BaseReportFieldEnum implements Serializable {
     JudgeObjectOtherField6("停车场"),
     JudgeObjectOtherField7("物业管理"),
     JudgeObjectOtherField8("成新率"),
+    AversionFacility("厌恶设施"),
 
     JudgeBuildResultSurveySheet("估价结果一览表"),
     JudgeBuildResultSurveySheet2("估价结果一览表不含坐落"),
@@ -131,6 +134,7 @@ public enum BaseReportFieldEnum implements Serializable {
     PrincipalDataDescribe("估价信息描述"),
     DeterminationMarketValueValuationObject("估价对象市场价值的确定"),
     HotTip("特别提示"),
+    HotTip2("特别提示小微快贷"),
 
     RegisteredRealEstateValuerAndNumber("注册房产估价师及注册号"),
     XIEHE_organizationInfo("房地产估价机构信息"),
@@ -161,6 +165,7 @@ public enum BaseReportFieldEnum implements Serializable {
     EVALUATION_BASIS("评估依据"),
     EVALUATION_PRINCIPLE("评估原则"),
     ANALYSIS_CATEGORY_LIQUIDITY("变现能力分析"),
+    ANALYSIS_CATEGORY_LIQUIDITY2("变现能力分析小微快贷"),
     LIQUIDATION_ANALYSIS("变现分析税费"),
     ANALYSIS_CATEGORY_RISK("风险提示"),
     ReportArea("出具报告区域"),
