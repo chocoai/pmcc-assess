@@ -338,29 +338,33 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             basicBuilding.setApplyId(basicApply.getId());
             basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
         }
-        if (basicUnit == null) {
-            basicUnit = new BasicUnit();
-            basicUnit.setApplyId(basicApply.getId());
-            basicUnit.setBuildingId(basicBuilding.getId());
-            basicUnitService.saveAndUpdateBasicUnit(basicUnit);
-        }
-        if (basicHouse == null) {
-            basicHouse = new BasicHouse();
-            basicHouse.setUnitId(basicUnit.getId());
-            basicHouse.setApplyId(basicApply.getId());
-            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
-            //添加交易信息
-            basicHouseTrading = new BasicHouseTrading();
-            basicHouseTrading.setHouseId(basicHouse.getId());
-            basicHouseTrading.setApplyId(basicApply.getId());
-            if (surveyExamineInfo != null) {
-                basicHouseTrading.setTradingType(surveyExamineInfo.getTransactionType());
+        if (BasicApplyTypeEnum.RESIDENCE.getId().equals(surveyExamineInfo.getExamineFormType()) ||
+                BasicApplyTypeEnum.INDUSTRY.getId().equals(surveyExamineInfo.getExamineFormType())) {
+            if (basicUnit == null) {
+                basicUnit = new BasicUnit();
+                basicUnit.setApplyId(basicApply.getId());
+                basicUnit.setBuildingId(basicBuilding.getId());
+                basicUnitService.saveAndUpdateBasicUnit(basicUnit);
             }
-            basicHouseTrading.setCreator(commonService.thisUserAccount());
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
-            //添加完损度信息
-            basicHouseService.initDemagedDegree(basicHouse);
+            if (basicHouse == null) {
+                basicHouse = new BasicHouse();
+                basicHouse.setUnitId(basicUnit.getId());
+                basicHouse.setApplyId(basicApply.getId());
+                basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                //添加交易信息
+                basicHouseTrading = new BasicHouseTrading();
+                basicHouseTrading.setHouseId(basicHouse.getId());
+                basicHouseTrading.setApplyId(basicApply.getId());
+                if (surveyExamineInfo != null) {
+                    basicHouseTrading.setTradingType(surveyExamineInfo.getTransactionType());
+                }
+                basicHouseTrading.setCreator(commonService.thisUserAccount());
+                basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+                //添加完损度信息
+                basicHouseService.initDemagedDegree(basicHouse);
+            }
         }
+
         //案例
         if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
             if (surveyCaseStudy == null) {

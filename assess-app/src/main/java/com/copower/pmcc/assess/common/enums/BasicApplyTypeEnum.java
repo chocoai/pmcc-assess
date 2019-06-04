@@ -8,7 +8,9 @@ package com.copower.pmcc.assess.common.enums;
  * @time: 15:46
  */
 public enum BasicApplyTypeEnum {
-    RESIDENCE(0, "fc.residence", "非工业交通仓储"), INDUSTRY(1, "fc.industry", "工业交通仓储");
+    RESIDENCE(0, "fc.residence", "非工业交通仓储"),
+    INDUSTRY(1, "fc.industry", "工业交通仓储"),
+    STRUCTURE(2, "fc.structure", "构筑物");
 
     private Integer id;
     private String key;
