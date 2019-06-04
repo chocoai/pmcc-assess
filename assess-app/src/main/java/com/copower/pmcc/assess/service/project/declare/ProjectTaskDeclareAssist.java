@@ -2,12 +2,15 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,6 +31,8 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     private DeclarePublicService declarePublicService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private InitiateConsignorService initiateConsignorService;
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareIndex", "", 0, "0", "");
@@ -38,6 +43,8 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
         modelAndView.addObject("declare",declare);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        InitiateConsignorVo consignor = initiateConsignorService.getDataByProjectId(projectPlanDetails.getProjectId());
+        modelAndView.addObject("consignor", StringUtils.isEmpty(consignor.getCsEntrustmentUnit())?consignor.getCsName():consignor.getCsEntrustmentUnit());
         return modelAndView;
     }
 

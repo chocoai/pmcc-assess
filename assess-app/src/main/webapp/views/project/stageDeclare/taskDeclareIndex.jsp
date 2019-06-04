@@ -41,8 +41,16 @@
                                     委托单位<span class="symbol required"></span>
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="client" class="form-control" placeholder="委托单位"
-                                           required value='${declare.client}' />
+                                    <c:choose>
+                                        <c:when test="${empty declare.client}">
+                                            <input name="client" class="form-control" placeholder="委托单位"
+                                                   required value='${consignor}'/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input name="client" class="form-control" placeholder="委托单位"
+                                                   required value='${declare.client}'/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -114,8 +122,8 @@
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
     $(document).ready(function () {
-        declareCommon.showFile(AssessUploadKey.PROJECT_PROXY,AssessDBKey.ProjectInfo,"${projectPlanDetails.projectId}",true, AssessUploadKey.PROJECT_PROXY);
-        declareCommon.fileUpload(AssessUploadKey.PROJECT_PROXY,AssessDBKey.ProjectInfo,"${projectPlanDetails.projectId}",true, AssessUploadKey.PROJECT_PROXY);
+        declareCommon.showFile(AssessUploadKey.PROJECT_PROXY, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, AssessUploadKey.PROJECT_PROXY);
+        declareCommon.fileUpload(AssessUploadKey.PROJECT_PROXY, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, AssessUploadKey.PROJECT_PROXY);
     });
 </script>
 <script type="application/javascript">
@@ -144,7 +152,7 @@
         if (!$("#declareApplyForm").valid()) {
             return false;
         }
-        var formData = {};
+        var formData = formParams("declareApplyForm");;
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
