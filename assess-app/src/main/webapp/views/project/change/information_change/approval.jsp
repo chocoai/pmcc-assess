@@ -21,7 +21,7 @@
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+            <%@include file="/views/share/project/projectInfo.jsp" %>
             <!-- 公共模块end -->
             <%@include file="approval/project_info_approval.jsp"%>
             <!-- 公共尾部模块引用 -->

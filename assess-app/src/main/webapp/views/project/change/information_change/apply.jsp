@@ -30,6 +30,44 @@
                     <%@include file="/views/project/stageInit/other/projectInfo.jsp" %>
                 </div>
             </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <h2> 委托人</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- 委托人 start -->
+                <%@include file="/views/project/stageInit/other/projectConsignor.jsp" %>
+                <!-- 委托人 end -->
+            </div>
+
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <h2> 占有人</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- 占有人 start -->
+                <%@include file="/views/project/stageInit/other/projectPossessor.jsp" %>
+                <!-- 占有人 end -->
+            </div>
+
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h2> 报告使用单位</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- 报告使用单位 start -->
+                <%@include file="/views/project/stageInit/other/projectUnit_information.jsp" %>
+                <!-- 报告使用单位 end -->
+            </div>
             <%@include file="/views/project/stageInit/other/otherProjectIndexJs.jsp" %>
             <!-- 公共模块end -->
             <%@include file="apply/project_info_apply.jsp" %>
@@ -65,14 +103,8 @@
 
 <script type="text/javascript">
     (function () {
-        objProject.info.loadInit({
-            province: objProject.isNotBlank("${projectInfo.province}") ? "${projectInfo.province}" : null,
-            city: objProject.isNotBlank("${projectInfo.city}") ? "${projectInfo.city}" : null,
-            district: objProject.isNotBlank("${projectInfo.district}") ? "${projectInfo.district}" : null,
-            valueType: objProject.isNotBlank("${projectInfo.valueType}") ? "${projectInfo.valueType}" : null,
-            entrustPurpose: objProject.isNotBlank("${projectInfo.entrustPurpose}") ? "${projectInfo.entrustPurpose}" : null,
-            urgency: objProject.isNotBlank("${projectInfo.urgency}") ? "${projectInfo.urgency}" : null
-        });
+        objProject.loadInit();
+
         $("#" + objProject.config.info.frm).find("input[name='userAccountMember']").parent().parent().parent().hide();
         $("#" + objProject.config.info.frm).find("input[name='userAccountManager']").parent().parent().parent().hide();
     }());
@@ -89,13 +121,16 @@
         if (!$("#project_info_form").valid()) {
             return false;
         }
-        var data = {
-            oldRecord:JSON.stringify(JSON.parse('${el:toJsonString(projectInfo)}')),
-            newRecord:JSON.stringify(formParams(objProject.config.info.frm)),
-            changeReason:$("#changeReason").val(),
-            projectId:"${projectInfo.id}",
-            id:"${costsProjectChangeLog.id}"
-        };
+        var data = {};
+
+        if("${CurrentStep}"!="0"){
+            data.oldRecord = JSON.stringify(JSON.parse('${el:toJsonString(projectInfo)}'))
+        }
+        data.newRecord = JSON.stringify(objProject.getFormData());
+        data.changeReason = $("#changeReason").val();
+        data.projectId = "${projectInfo.id}";
+        data.id = "${costsProjectChangeLog.id}"
+
 
         if ("${processInsId}" == "0") {
             //申请
