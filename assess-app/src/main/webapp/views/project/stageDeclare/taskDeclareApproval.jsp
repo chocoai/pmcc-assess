@@ -189,7 +189,7 @@
                 if (declareCommon.isNotBlank(data)) {
                     $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
                     $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
-                    declareCommon.initLand(item, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareApprovalFun.houseConfig.landFileId], null);
+                    declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareApprovalFun.houseConfig.son.declareRealtyLandCert.fileId], null);
                     $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
                 } else {
                     toastr.success('关联的土地证数据已经被删除!');
