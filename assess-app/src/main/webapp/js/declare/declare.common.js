@@ -477,6 +477,32 @@ declareCommon.initLand = function (item,form,fileArr,callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
     });
+    //绑定变更事件
+    frm.find("select.landRightNature").off('change').on('change', function () {
+        var landRightNatureId = frm.find("select.landRightNature").val();
+        if (landRightNatureId) {
+            AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
+                console.log(landRightNatureData.name)
+                if (landRightNatureData.name == "划拨") {
+                    frm.find("input[name='terminationDate']").parent().parent().hide();
+                } else {
+                    frm.find("input[name='terminationDate']").parent().parent().show();
+                }
+            });
+        }
+    });
+    if(item.landRightNature){
+        var landRightNatureId = item.landRightNature;
+        AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
+            if (landRightNatureData.name == "划拨") {
+                $("#terminationDate_d").parent().parent().hide();
+                frm.find("input[name='terminationDate']").parent().parent().hide();
+            } else {
+                $("#terminationDate_d").parent().parent().show();
+                frm.find("input[name='terminationDate']").parent().parent().show();
+            }
+        });
+    }
     try {
         //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
         frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));
@@ -536,6 +562,33 @@ declareCommon.initDeclareRealty = function (item,form,fileArr,callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         frm.find("select[name='nature']").empty().html(html).trigger('change');
     });
+    //绑定变更事件
+    frm.find("select.landRightNature").off('change').on('change', function () {
+        var landRightNatureId = frm.find("select.landRightNature").val();
+        if (landRightNatureId) {
+            AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
+                console.log(landRightNatureData.name)
+                if (landRightNatureData.name == "划拨") {
+                    frm.find("input[name='useEndDate']").parent().parent().hide();
+                } else {
+                    frm.find("input[name='useEndDate']").parent().parent().show();
+                }
+            });
+        }
+    });
+    if(item.landRightNature){
+        var landRightNatureId = item.landRightNature;
+        AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
+            if (landRightNatureData.name == "划拨") {
+                $("#useEndDateFmt_d").parent().parent().hide();
+                frm.find("input[name='useEndDate']").parent().parent().hide();
+            } else {
+                $("#useEndDateFmt_d").parent().parent().show();
+                frm.find("input[name='useEndDate']").parent().parent().show();
+            }
+        });
+    }
+
     try {
         //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
         frm.find("input[name='registrationTime']").val(formatDate(item.registrationTime));
