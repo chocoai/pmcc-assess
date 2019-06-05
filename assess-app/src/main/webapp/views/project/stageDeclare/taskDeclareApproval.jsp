@@ -189,7 +189,7 @@
                 if (declareCommon.isNotBlank(data)) {
                     $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
                     $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
-                    declareCommon.initLand(item, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareApprovalFun.houseConfig.landFileId], null);
+                    declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareApprovalFun.houseConfig.son.declareRealtyLandCert.fileId], null);
                     $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
                 } else {
                     toastr.success('关联的土地证数据已经被删除!');
@@ -288,7 +288,7 @@
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".panel-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
         declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),function (area) {
-            declareCommon.initDeclareRealty(item,$("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),[declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId],null);
+            declareCommon.initDeclareRealty(item,$("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),[declareApprovalFun.declareRealtyRealEstateCertConfig.fileId],null);
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
         });
     };
@@ -351,11 +351,7 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                               <div class="form-group">
-                                     <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                         <div id="_declareRealtyHouseCertFileId"></div>
-                                     </div>
-                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -459,11 +455,7 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                        <div id="_declareRealtyLandCertFileId"></div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -494,11 +486,7 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                        <div id="_declareRealtyRealEstateCertFileId"></div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>

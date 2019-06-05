@@ -5,6 +5,8 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectChangeTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dto.output.ProjectInfoChangeVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -22,6 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -49,7 +54,7 @@ public class ProjectInfoChangeController {
     @Autowired
     private ProjectStateChangeService stateChangeService;
 
-    @GetMapping(value = "/applyView",name = "项目信息变更申请")
+    @GetMapping(value = "/applyView", name = "项目信息变更申请")
     public ModelAndView apply(Integer projectId) throws BusinessException {
         //获取流程模型
         String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_INFORMATION_CHANGE_PROCESS_KEY);
@@ -67,7 +72,7 @@ public class ProjectInfoChangeController {
     @PostMapping(value = "/applyCommit", name = "项目信息申请提交")
     public HttpResult applyCommit(ProjectChangeLog costsProjectChangeLog) {
         try {
-            stateChangeService.applyCommit(costsProjectChangeLog,BaseParameterEnum.PROJECT_INFORMATION_CHANGE_PROCESS_KEY, ProjectChangeTypeEnum.INFO_CHANGE);
+            stateChangeService.applyCommit(costsProjectChangeLog, BaseParameterEnum.PROJECT_INFORMATION_CHANGE_PROCESS_KEY, ProjectChangeTypeEnum.INFO_CHANGE);
         } catch (BusinessException e) {
             logger.error("修改项目信息异常", e);
             e.printStackTrace();
@@ -76,13 +81,24 @@ public class ProjectInfoChangeController {
     }
 
     @RequestMapping(value = "/approvalView", name = "项目信息审批页")
-    public ModelAndView approvalView(Integer boxId, String processInsId, String taskId, String agentUserAccount) {
+    public ModelAndView approvalView(Integer boxId, String processInsId, String taskId, String agentUserAccount) throws Exception {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/information_change/approval", processInsId, boxId, taskId, agentUserAccount);
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("costsProjectChangeLog", costsProjectChangeLog);
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
-        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
-        modelAndView.addObject("projectId", projectInfo.getId());
+        ProjectInfoChangeVo projectInfoChangeVo = JSON.parseObject(costsProjectChangeLog.getNewRecord(), ProjectInfoChangeVo.class);
+        ProjectInfoVo simpleProjectInfoVo = stateChangeService.getSimpleProjectInfoVo(projectInfoChangeVo);
+        modelAndView.addObject("projectInfo", simpleProjectInfoVo);
+        ProjectInfoVo oldProjectInfoVo = JSON.parseObject(costsProjectChangeLog.getOldRecord(), ProjectInfoVo.class);
+        modelAndView.addObject("oldProjectInfo", oldProjectInfoVo);
+        List<Map<String, Object>> voMaps = stateChangeService.compareTwoClass(oldProjectInfoVo, simpleProjectInfoVo);
+
+        ProjectInfo newData = JSON.parseObject(projectInfoChangeVo.getProjectInfo(), ProjectInfo.class);
+        ProjectInfo oldData = JSON.parseObject(costsProjectChangeLog.getOldRecord(), ProjectInfo.class);
+        List<Map<String, Object>> dataMaps = stateChangeService.compareTwoClass(oldData, newData);
+        voMaps.addAll(dataMaps);
+        String changeContent = stateChangeService.getChangeFields(voMaps);
+        modelAndView.addObject("changeContent", changeContent);
+        modelAndView.addObject("projectId", simpleProjectInfoVo.getId());
         return modelAndView;
     }
 
@@ -100,7 +116,7 @@ public class ProjectInfoChangeController {
     }
 
     @GetMapping(value = "/detailView", name = "详情页")
-    public ModelAndView detailView(Integer boxId, String processInsId) {
+    public ModelAndView detailView(Integer boxId, String processInsId) throws Exception {
         return approvalView(boxId, processInsId, "-1", "");
     }
 
@@ -109,9 +125,14 @@ public class ProjectInfoChangeController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/information_change/apply", processInsId, boxId, taskId, agentUserAccount);
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("costsProjectChangeLog", costsProjectChangeLog);
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
-        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
-        modelAndView.addObject("projectId", projectInfo.getId());
+        ProjectInfoChangeVo projectInfoChangeVo = JSON.parseObject(costsProjectChangeLog.getNewRecord(), ProjectInfoChangeVo.class);
+        ProjectInfoVo simpleProjectInfoVo = stateChangeService.getSimpleProjectInfoVo(projectInfoChangeVo);
+        modelAndView.addObject("projectInfo", simpleProjectInfoVo);
+        modelAndView.addObject("projectId", simpleProjectInfoVo.getId());
+
+        modelAndView.addObject("ProjectAFFILIATED", crmRpcBaseDataDicService.getUnitPropertiesList());
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
+
         return modelAndView;
     }
 
@@ -119,7 +140,7 @@ public class ProjectInfoChangeController {
     @ResponseBody
     public HttpResult editCommit(ProjectChangeLog costsProjectChangeLog, ApprovalModelDto approvalModelDto) {
         try {
-            stateChangeService.updateCommit(costsProjectChangeLog, approvalModelDto,ProjectChangeTypeEnum.INFO_CHANGE);
+            stateChangeService.updateCommit(costsProjectChangeLog, approvalModelDto, ProjectChangeTypeEnum.INFO_CHANGE);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("修改失败", e);
@@ -128,12 +149,12 @@ public class ProjectInfoChangeController {
     }
 
     @ResponseBody
-    @PostMapping(value="/isChanging",name="判断是否有变更已在流程中,只允许同时存在一个变更流程")
-    public HttpResult informationChange(Integer projectId){
-        boolean flag = stateChangeService.isChanging(projectId,ProjectChangeTypeEnum.INFO_CHANGE);
-        if(flag){
+    @PostMapping(value = "/isChanging", name = "判断是否有变更已在流程中,只允许同时存在一个变更流程")
+    public HttpResult informationChange(Integer projectId) {
+        boolean flag = stateChangeService.isChanging(projectId, ProjectChangeTypeEnum.INFO_CHANGE);
+        if (flag) {
             return HttpResult.newCorrectResult();
-        }else{
+        } else {
             return HttpResult.newErrorResult("项目正在重启中");
         }
     }

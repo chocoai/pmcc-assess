@@ -257,13 +257,18 @@
                                     <td>
                                         <div class="x-valid show-hide"
                                              style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <select class="form-control" name="sureConsistent${item.id}" required>
+                                            <select class="form-control" id="sureConsistent${item.id}" name="sureConsistent${item.id}" required>
                                                 <option value=""></option>
                                                 <option value="一致">一致</option>
                                                 <option value="不一致">不一致</option>
                                             </select>
                                         </div>
                                     </td>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            getConsistentVal("sureConsistent${item.id}", "${item.sureConsistent}");
+                                        })
+                                    </script>
                                     <td>
                                         <a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>
                                     </td>
@@ -989,6 +994,10 @@
             $(".paymentItem").empty();
             $("#showPaymentAdd").hide();
         }
+    }
+
+    function getConsistentVal(id,value){
+        $("#"+id).val(value);
     }
 </script>
 

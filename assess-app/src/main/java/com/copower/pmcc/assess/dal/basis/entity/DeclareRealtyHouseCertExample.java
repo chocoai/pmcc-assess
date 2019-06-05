@@ -2945,6 +2945,136 @@ public class DeclareRealtyHouseCertExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andGroundNumIsNull() {
+            addCriterion("ground_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumIsNotNull() {
+            addCriterion("ground_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumEqualTo(String value) {
+            addCriterion("ground_num =", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumNotEqualTo(String value) {
+            addCriterion("ground_num <>", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumGreaterThan(String value) {
+            addCriterion("ground_num >", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumGreaterThanOrEqualTo(String value) {
+            addCriterion("ground_num >=", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumLessThan(String value) {
+            addCriterion("ground_num <", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumLessThanOrEqualTo(String value) {
+            addCriterion("ground_num <=", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumLike(String value) {
+            addCriterion("ground_num like", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumNotLike(String value) {
+            addCriterion("ground_num not like", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumIn(List<String> values) {
+            addCriterion("ground_num in", values, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumNotIn(List<String> values) {
+            addCriterion("ground_num not in", values, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumBetween(String value1, String value2) {
+            addCriterion("ground_num between", value1, value2, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumNotBetween(String value1, String value2) {
+            addCriterion("ground_num not between", value1, value2, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaIsNull() {
+            addCriterion("apportionment_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaIsNotNull() {
+            addCriterion("apportionment_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaEqualTo(BigDecimal value) {
+            addCriterion("apportionment_area =", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaNotEqualTo(BigDecimal value) {
+            addCriterion("apportionment_area <>", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaGreaterThan(BigDecimal value) {
+            addCriterion("apportionment_area >", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("apportionment_area >=", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaLessThan(BigDecimal value) {
+            addCriterion("apportionment_area <", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("apportionment_area <=", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaIn(List<BigDecimal> values) {
+            addCriterion("apportionment_area in", values, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaNotIn(List<BigDecimal> values) {
+            addCriterion("apportionment_area not in", values, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("apportionment_area between", value1, value2, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("apportionment_area not between", value1, value2, "apportionmentArea");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

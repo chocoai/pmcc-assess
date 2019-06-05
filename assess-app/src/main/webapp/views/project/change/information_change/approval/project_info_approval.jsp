@@ -22,7 +22,7 @@
                                 项目名称<span class="symbol required"></span>
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <input class="form-control" id="projectName" name="projectName" readonly value="${projectInfo.projectName}">
+                                <input class="form-control" id="projectName" name="projectName" readonly value="${oldProjectInfo.projectName}">
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,17 @@
                                 项目信息变更原因
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <input class="form-control" id="changeReason" name="changeReason" readonly value="${costsProjectChangeLog.changeReason}">
+                                <label class="form-control">${costsProjectChangeLog.changeReason}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                项目信息变更内容
+                            </label>
+                            <div class="col-md-11 col-sm-11 col-xs-12">
+                                <label class="form-control">${changeContent}</label>
                             </div>
                         </div>
                     </div>

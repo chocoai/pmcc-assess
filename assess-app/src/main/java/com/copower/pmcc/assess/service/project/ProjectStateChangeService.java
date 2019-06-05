@@ -1,17 +1,26 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectChangeTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectChangeLogDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.ProjectInfoChangeVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.event.project.ProjectInfoChangeEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectPauseChangeEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectRestartChangeEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectStopChangeEvent;
+import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
+import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -36,6 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -54,14 +65,21 @@ public class ProjectStateChangeService extends BaseService {
     private PublicService publicService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private InitiateConsignorService consignorService;
+    @Autowired
+    private InitiateUnitInformationService unitInformationService;
+    @Autowired
+    private InitiatePossessorService possessorService;
 
     /**
      * 通过项目id和变更类型获取数据
+     *
      * @param projectId
      * @param changeTypeEnum
      * @return
      */
-    public List<ProjectChangeLog> getProjectChangeLog(Integer projectId, ProjectChangeTypeEnum changeTypeEnum){
+    public List<ProjectChangeLog> getProjectChangeLog(Integer projectId, ProjectChangeTypeEnum changeTypeEnum) {
         ProjectChangeLog where = new ProjectChangeLog();
         where.setProjectId(projectId);
         where.setChangeType(changeTypeEnum.getValue());
@@ -76,23 +94,24 @@ public class ProjectStateChangeService extends BaseService {
 
     /**
      * 获取变更列表
+     *
      * @return
      */
-    public BootstrapTableVo getProjectChangeHistory(Integer projectId, ProjectChangeTypeEnum changeTypeEnum) throws Exception{
+    public BootstrapTableVo getProjectChangeHistory(Integer projectId, ProjectChangeTypeEnum changeTypeEnum) throws Exception {
         //Bootstrap表格对象
         BootstrapTableVo vo = new BootstrapTableVo();
         //分页参数对象
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectChangeLog> costsProjectChangeLogs = getProjectChangeLog(projectId,changeTypeEnum);
-        List<Map<String,String>> maps = new ArrayList<>();
+        List<ProjectChangeLog> costsProjectChangeLogs = getProjectChangeLog(projectId, changeTypeEnum);
+        List<Map<String, String>> maps = new ArrayList<>();
         //遍历集合
         for (int i = 0; i < costsProjectChangeLogs.size(); i++) {
             //将动态表单元素字段转换为JSONArray
             JSONArray arry = new JSONArray("[" + costsProjectChangeLogs.get(i).getNewRecord() + "]");
             for (int j = 0; j < arry.length(); j++) {
                 JSONObject jsonObject = arry.getJSONObject(j);
-                String a= costsProjectChangeLogs.get(i).getStatus();
+                String a = costsProjectChangeLogs.get(i).getStatus();
                 jsonObject.put("status", costsProjectChangeLogs.get(i).getStatus());
                 jsonObject.put("processInsId", costsProjectChangeLogs.get(i).getProcessInsId());
                 /**
@@ -116,7 +135,7 @@ public class ProjectStateChangeService extends BaseService {
     public void applyCommit(ProjectChangeLog costsProjectChangeLog, BaseParameterEnum baseParameterEnum, ProjectChangeTypeEnum projectChangeTypeEnum) throws BusinessException {
         try {
             //流程
-            ProcessUserDto processUserDto = submitTask(costsProjectChangeLog, baseParameterEnum,projectChangeTypeEnum);
+            ProcessUserDto processUserDto = submitTask(costsProjectChangeLog, baseParameterEnum, projectChangeTypeEnum);
             if (processUserDto != null) costsProjectChangeLog.setProcessInsId(processUserDto.getProcessInsId());
             costsProjectChangeLog.setChangeType(projectChangeTypeEnum.getValue());
             costsProjectChangeLog.setCreator(commonService.thisUserAccount());
@@ -126,25 +145,29 @@ public class ProjectStateChangeService extends BaseService {
             throw new BusinessException(e.getMessage());
         }
     }
+
     private ProcessUserDto submitTask(ProjectChangeLog costsProjectChangeLog, BaseParameterEnum baseParameterEnum, ProjectChangeTypeEnum projectChangeTypeEnum) throws BusinessException {
         ProcessUserDto processUserDto = new ProcessUserDto();
         ProcessInfo processInfo = new ProcessInfo();
         processInfo.setProjectId(costsProjectChangeLog.getProjectId());
         String boxName = baseParameterService.getBaseParameter(baseParameterEnum);
-        BoxReDto boxReDto =  bpmRpcBoxService.getBoxReByBoxName(boxName);;
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
+        ;
         ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
 
-        processInfo.setFolio(String.format("%s【变更提交】%s",projectChangeTypeEnum.getName(), costsProjectInfo.getProjectName()));//流程描述
+        processInfo.setFolio(String.format("%s【变更提交】%s", projectChangeTypeEnum.getName(), costsProjectInfo.getProjectName()));//流程描述
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectChangeLog.class));
         //监听器判断
-        if(projectChangeTypeEnum.getValue().equals("pause_change")){
+        if (projectChangeTypeEnum.equals(ProjectChangeTypeEnum.PAUSE_CHANGE)) {
             processInfo.setProcessEventExecutor(ProjectPauseChangeEvent.class);
-        }else if(projectChangeTypeEnum.getValue().equals("stop_change")){
+        } else if (projectChangeTypeEnum.equals(ProjectChangeTypeEnum.STOP_CHANGE)) {
             processInfo.setProcessEventExecutor(ProjectStopChangeEvent.class);
-        }else if(projectChangeTypeEnum.getValue().equals("restart_change")){
+        } else if (projectChangeTypeEnum.equals(ProjectChangeTypeEnum.RESTART_CHANGE)) {
             processInfo.setProcessEventExecutor(ProjectRestartChangeEvent.class);
+        } else if (projectChangeTypeEnum.equals(ProjectChangeTypeEnum.INFO_CHANGE)) {
+            processInfo.setProcessEventExecutor(ProjectInfoChangeEvent.class);
         }
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setTableId(costsProjectChangeLog.getId());
@@ -163,7 +186,8 @@ public class ProjectStateChangeService extends BaseService {
         ProjectChangeLog costsProjectChangeLog = new ProjectChangeLog();
         costsProjectChangeLog.setProcessInsId(processInsId);
         List<ProjectChangeLog> costsProjectChangeLogs = projectChangeLogMapper.getProjectChangeLog(costsProjectChangeLog);
-        if (com.alibaba.dubbo.common.utils.CollectionUtils.isNotEmpty(costsProjectChangeLogs)) costsProjectChangeLog = costsProjectChangeLogs.get(0);
+        if (com.alibaba.dubbo.common.utils.CollectionUtils.isNotEmpty(costsProjectChangeLogs))
+            costsProjectChangeLog = costsProjectChangeLogs.get(0);
         return costsProjectChangeLog;
     }
 
@@ -178,7 +202,7 @@ public class ProjectStateChangeService extends BaseService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateCommit(ProjectChangeLog costsProjectChangeLog, ApprovalModelDto approvalModelDto,ProjectChangeTypeEnum projectChangeTypeEnum)throws Exception{
+    public void updateCommit(ProjectChangeLog costsProjectChangeLog, ApprovalModelDto approvalModelDto, ProjectChangeTypeEnum projectChangeTypeEnum) throws Exception {
         //1.更新数据
         projectChangeLogMapper.modifyProjectChangeLog(costsProjectChangeLog);
         //2.提交任务
@@ -196,21 +220,156 @@ public class ProjectStateChangeService extends BaseService {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             e.printStackTrace();
-            log.error("提交失败",e);
+            log.error("提交失败", e);
         }
     }
 
     //变更审批中
-    public boolean isChanging(Integer projectId,ProjectChangeTypeEnum projectChangeTypeEnum) {
+    public boolean isChanging(Integer projectId, ProjectChangeTypeEnum projectChangeTypeEnum) {
         ProjectChangeLog costsProjectChangeLog = new ProjectChangeLog();
         costsProjectChangeLog.setStatus(ProcessStatusEnum.RUN.getValue());
         costsProjectChangeLog.setProjectId(projectId);
         costsProjectChangeLog.setChangeType(projectChangeTypeEnum.getValue());
         List<ProjectChangeLog> costsProjectChangeLogs = projectChangeLogMapper.getProjectChangeLog(costsProjectChangeLog);
-        if(CollectionUtils.isNotEmpty(costsProjectChangeLogs)){
+        if (CollectionUtils.isNotEmpty(costsProjectChangeLogs)) {
             return false;
-        }else{
+        } else {
             return true;
         }
+    }
+
+    public ProjectInfoVo getSimpleProjectInfoVo(ProjectInfoChangeVo projectInfoChangeVo) {
+        ProjectInfoVo projectInfoVo = new ProjectInfoVo();
+        ProjectInfo projectInfo = JSON.parseObject(projectInfoChangeVo.getProjectInfo(), ProjectInfo.class);
+        projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
+        InitiateConsignor initiateConsignor = JSON.parseObject(projectInfoChangeVo.getConsignor(), InitiateConsignor.class);
+        InitiateConsignorVo initiateConsignorVo = consignorService.getInitiateConsignorVo(initiateConsignor);
+        InitiatePossessor initiatePossessor = JSON.parseObject(projectInfoChangeVo.getPossessor(), InitiatePossessor.class);
+        InitiatePossessorVo initiatePossessorVo = possessorService.getInitiatePossessorVo(initiatePossessor);
+        InitiateUnitInformation initiateUnitInformation = JSON.parseObject(projectInfoChangeVo.getUnitInformation(), InitiateUnitInformation.class);
+        InitiateUnitInformationVo initiateUnitInformationVo = unitInformationService.getInitiateUnitInformationVo(initiateUnitInformation);
+
+        projectInfoVo.setPossessorVo(initiatePossessorVo);
+        projectInfoVo.setConsignorVo(initiateConsignorVo);
+        projectInfoVo.setUnitInformationVo(initiateUnitInformationVo);
+        return projectInfoVo;
+    }
+
+    /**
+     * 获取两个对象同名属性内容不相同的列表
+     *
+     * @param class1 对象1
+     * @param class2 对象2
+     * @return
+     * @throws ClassNotFoundException
+     * @throws IllegalAccessException
+     */
+    public static List<Map<String, Object>> compareTwoClass(Object class1, Object class2) throws ClassNotFoundException, IllegalAccessException {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        //获取对象的class
+        Class<?> clazz1 = class1.getClass();
+        Class<?> clazz2 = class2.getClass();
+        //获取对象的属性列表
+        Field[] field1 = clazz1.getDeclaredFields();
+        Field[] field2 = clazz2.getDeclaredFields();
+        //遍历属性列表field1
+        for (int i = 0; i < field1.length; i++) {
+            //遍历属性列表field2
+            for (int j = 0; j < field2.length; j++) {
+                //如果field1[i]属性名与field2[j]属性名内容相同
+                if (field1[i].getName().equals(field2[j].getName())) {
+                    if (field1[i].getName().equals(field2[j].getName())) {
+                        field1[i].setAccessible(true);
+                        field2[j].setAccessible(true);
+                        //如果field1[i]属性值与field2[j]属性值内容不相同
+                        if (!compareTwo(field1[i].get(class1), field2[j].get(class2))) {
+                            Map<String, Object> map2 = new HashMap<String, Object>();
+                            if (field1[i].getName().equals("valuationDate")) {
+                                SimpleDateFormat sdf2 = new SimpleDateFormat(" yyyy年MM月");
+                                map2.put(field1[i].getName(), field1[i].get(class1) + "-->" + field2[j].get(class2));
+                            } else {
+                                map2.put(field1[i].getName(), field1[i].get(class1) + "-->" + field2[j].get(class2));
+                            }
+                            list.add(map2);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        return list;
+
+    }
+
+    public static boolean compareTwo(Object object1, Object object2) {
+
+        if (object1 == null && object2 == null) {
+            return true;
+        }
+        if (object1 == null && object2 != null) {
+            return false;
+        }
+        if (object1.equals(object2)) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public String getChangeFields(List<Map<String, Object>> maps) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map<String, Object> map : maps) {
+            for (Map.Entry<String, Object> item : map.entrySet()) {
+                switch (item.getKey()) {
+                    case "urgencyName":
+                        stringBuilder.append("紧急程度发生改变:" + item.getValue() + "；");
+                        break;
+                    case "entrustPurposeName":
+                        stringBuilder.append("委托目的发生改变:" + item.getValue() + "；");
+                        break;
+                    case "entrustAimTypeName":
+                        stringBuilder.append("委托目的类别发生改变:" + item.getValue() + "；");
+                        break;
+                    case "remarkEntrustPurpose":
+                        stringBuilder.append("委托目的描述发生改变:" + item.getValue() + "；");
+                        break;
+                    case "valueTypeName":
+                        stringBuilder.append("价值类型发生改变:" + item.getValue() + "；");
+                        break;
+                    case "remarkValueType":
+                        stringBuilder.append("价值类型描述发生改变:" + item.getValue() + "；");
+                        break;
+                    case "departmentName":
+                        stringBuilder.append("执业部门发生改变:" + item.getValue() + "；");
+                        break;
+                    case "propertyScopeName":
+                        stringBuilder.append("评估范围发生改变:" + item.getValue() + "；");
+                        break;
+                    case "scopeInclude":
+                        stringBuilder.append("评估包括发生改变:" + item.getValue() + "；");
+                        break;
+                    case "scopeNotInclude":
+                        stringBuilder.append("评估不包括发生改变:" + item.getValue() + "；");
+                        break;
+                    case "valuationDate":
+                        stringBuilder.append("评估基准日发生改变:" + item.getValue() + "；");
+                        break;
+                    case "loanTypeName":
+                        stringBuilder.append("贷款类型发生改变:" + item.getValue() + "；");
+                        break;
+                    case "contractName":
+                        stringBuilder.append("项目合同发生改变:" + item.getValue() + "；");
+                        break;
+                    case "contractPrice":
+                        stringBuilder.append("合同金额发生改变:" + item.getValue() + "；");
+                        break;
+                    case "remarks":
+                        stringBuilder.append("项目说明发生改变:" + item.getValue() + "；");
+                        break;
+                }
+
+            }
+        }
+        return stringBuilder.toString();
     }
 }

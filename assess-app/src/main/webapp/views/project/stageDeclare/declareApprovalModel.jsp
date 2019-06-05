@@ -328,6 +328,21 @@
                 </div>
             </div>
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">公摊面积<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="publicArea"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="apportionmentArea"></label>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总层数<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -335,6 +350,7 @@
                 </div>
             </div>
         </div>
+
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
         <div class="form-group">
@@ -354,19 +370,14 @@
                     <label class="form-control" name="useEndDate"></label>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">公摊面积<span class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="publicArea"></label>
-                </div>
-            </div>
+
         </div>
 
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地取得方式</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="landAcquisition"></label>
+                    <label class="form-control" name="landAcquisitionName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -698,6 +709,12 @@
                     <label class="form-control" name="number"></label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">不动产单元号</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label   name="realEstateUnitNumber" class="form-control">
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -828,10 +845,9 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总层数<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="floorCount"></label>
+                    <label class="form-control" name="apportionmentArea"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -852,6 +868,19 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附记其它</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="otherNote"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总层数<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="floorCount"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">取得价格</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="acquisitionPrice"></label>
                 </div>
             </div>
         </div>
@@ -904,20 +933,6 @@
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="useRightArea"></label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="apportionmentArea"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">取得价格</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="acquisitionPrice"></label>
                 </div>
             </div>
         </div>

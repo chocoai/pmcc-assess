@@ -2354,11 +2354,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">类型<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">类型</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="type" class="form-control search-select select2 type"
-                            required="required" onchange="commonDeclareApplyModel.house.certNameSplicing(this)">
+                             onchange="commonDeclareApplyModel.house.certNameSplicing(this)">
                     </select>
                 </div>
             </div>
@@ -2399,6 +2398,12 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input placeholder="登记日期" name="registrationDate" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate roomTime">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">丘地号</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" placeholder="丘地号" name="groundNum" class="form-control">
                 </div>
             </div>
         </div>
@@ -2532,11 +2537,18 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text"
+                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control" data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总层数</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="总层数(数字)" name="floorCount" class="form-control" data-rule-maxlength="100"
-                           data-rule-number='true'>
+                           placeholder="总层数" name="floorCount" class="form-control">
                 </div>
             </div>
         </div>

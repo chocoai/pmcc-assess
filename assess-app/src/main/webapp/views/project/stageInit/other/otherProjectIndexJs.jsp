@@ -76,6 +76,46 @@
         })
     };
 
+    objProject.getCategory = function(pid, value) {
+        if (!pid) {
+            var option = "<option value=''>-请先选择委托目的-</option>";
+            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
+            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
+            return false;
+        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseDataDic/getCacheDataDicListByPid",
+            type: "get",
+            dataType: "json",
+            data: {pid: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (data.length >= 1) {
+                        var option = "<option value=''>-请选择-</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                        $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
+                        if (value) {
+                            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val([value]).trigger('change');
+                        } else {
+                            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
+                        }
+                    }
+
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+
+    };
+
     objProject.config = {
         info: {
             frm: "frm_project_info",
@@ -295,31 +335,134 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.dataEntrustmentPurpose, item.entrustPurpose, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.entrustPurpose").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.dataEntrustmentPurposeMortgage, item.entrustAimType, function (html, data) {
-                $("#" + objProject.config.info.frm).find("select.entrustAimType").empty().html(html).trigger('change');
-            });
             AssessCommon.loadDataDicByKey(AssessDicKey.project_initiate_urgency, item.urgency, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.urgency").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByPid(item.entrustPurpose, item.entrustAimType, function (html, data) {
+                $("#" + objProject.config.info.frm).find("select.entrustAimType_p").empty().html(html).trigger('change');
+
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.dataLoanType, item.loanType, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.loanType").empty().html(html).trigger('change');
             });
+
             $("#" + objProject.config.info.frm).find("select.valueType").change(function () {
-                var valueType = $("#" + objProject.config.info.frm).find("select.valueType").val();
-                if (objProject.isNotBlank(valueType)) {
-                    AssessCommon.getDataDicInfo(valueType, function (data) {
+                var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
+                var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
+                AssessCommon.getDataDicInfo(valueType, function (data) {
+                    if (data) {
                         $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val(data.remark);
-                    });
+                    }
+                });
+                if (entrustPurpose && valueType) {
+                    entrustPurpose = "," + entrustPurpose + ",";
+                    valueType = "," + valueType + ",";
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            entrustPurpose: entrustPurpose,
+                            valueType: valueType
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                if (result.data) {
+                                    $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
+                                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
+                                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
+                                } else {
+                                    $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
+                                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
+                                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
+                                }
+                            }
+                            else {
+                                toastr.warning(result.errmsg);
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    })
+
                 }
             });
-           /* $("#" + objProject.config.info.frm).find("select.entrustPurpose").change(function () {
-                var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").val();
-                if (objProject.isNotBlank(entrustPurpose)) {
-                    AssessCommon.getDataDicInfo(entrustPurpose, function (data) {
-                        $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']").val(data.remark);
-                    });
+            $("#" + objProject.config.info.frm).find("select.entrustPurpose").change(function () {
+                var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
+                var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
+                if (entrustAimType) {
+                    objProject.getCategory(entrustPurpose,false);
+                } else {
+                    objProject.getCategory(entrustPurpose, "${projectInfo.entrustAimType}");
                 }
-            });*/
+                var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
+
+                if (entrustPurpose && valueType) {
+                    entrustPurpose = "," + entrustPurpose + ",";
+                    valueType = "," + valueType + ",";
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            entrustPurpose: entrustPurpose,
+                            valueType: valueType
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                if (result.data) {
+                                    $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
+                                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
+                                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
+                                } else {
+                                    $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
+                                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
+                                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
+
+                                }
+                            }
+                            else {
+                                toastr.warning(result.errmsg);
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    })
+
+                }
+            });
+
+            $("#" + objProject.config.info.frm).find("select.entrustAimType_p").change(function () {
+                var remarkEntrustPurpose = $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']");
+                remarkEntrustPurpose.val('');
+                var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
+                if (entrustAimType) {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/projectInfo/getRemarkEntrustPurpose",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            entrustAimType: entrustAimType,
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                if (result.data) {
+                                    remarkEntrustPurpose.val(result.data.remark);
+                                }
+                            }
+                            else {
+                                toastr.warning(result.errmsg);
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    })
+
+                }
+            });
         }
     };
 
@@ -845,6 +988,9 @@
                 valueType: objProject.isNotBlank("${projectInfo.valueType}") ? "${projectInfo.valueType}" : null,
                 entrustPurpose: objProject.isNotBlank("${projectInfo.entrustPurpose}") ? "${projectInfo.entrustPurpose}" : null,
                 urgency: objProject.isNotBlank("${projectInfo.urgency}") ? "${projectInfo.urgency}" : null,
+                entrustAimType: objProject.isNotBlank("${projectInfo.entrustAimType}") ? "${projectInfo.entrustAimType}" : null,
+                loanType: objProject.isNotBlank("${projectInfo.loanType}") ? "${projectInfo.loanType}" : null,
+                propertyScope: objProject.isNotBlank("${projectInfo.propertyScope}") ? "${projectInfo.propertyScope}" : null,
                 id: objProject.isNotBlank("${projectInfo.id}") ? "${projectInfo.id}" : null
             });
             objProject.consignor.loadInit({

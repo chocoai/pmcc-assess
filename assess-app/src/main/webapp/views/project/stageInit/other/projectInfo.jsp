@@ -5,14 +5,16 @@
         <input type="hidden" name="id" value="${projectInfo.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目名称<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目名称<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
                     <input required placeholder="项目名称" name="projectName"
                            value="${projectInfo.projectName}" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">紧急程度<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">紧急程度<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="urgency" class="form-control search-select select2 urgency" required="required">
                     </select>
@@ -21,18 +23,20 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="entrustPurpose" class="form-control search-select select2 entrustPurpose"
-                            required="required" onchange="getCategoryAndValueDefinition();">
+                            required="required">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的类别<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的类别<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="entrustAimType" class="form-control search-select select2 entrustAimType_p"
-                            required="required" onchange="getRemarkEntrustPurpose();">
+                            required="required" >
                     </select>
                 </div>
             </div>
@@ -47,10 +51,11 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价值类型<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价值类型<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="valueType" class="form-control search-select select2 valueType" required="required"
-                            onchange="getValueDefinition();">
+                           >
                     </select>
                 </div>
             </div>
@@ -62,7 +67,8 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="departmentId"
@@ -115,7 +121,8 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input required="required" placeholder="评估基准日"
                            name="valuationDate" data-date-format="yyyy-mm-dd"
@@ -124,7 +131,8 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目经理<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目经理<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="userAccountManager"
@@ -209,7 +217,8 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">合同金额（单位/元）</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input name="contractPrice" data-rule-number="true" class="form-control" placeholder="合同金额" value="${projectInfo.contractPrice}"/>
+                    <input name="contractPrice" data-rule-number="true" class="form-control" placeholder="合同金额"
+                           value="${projectInfo.contractPrice}"/>
                 </div>
             </div>
         </div>
@@ -248,156 +257,5 @@
         });
     }
 
-    function getCategoryAndValueDefinition() {
-        var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
-        getCategory(entrustPurpose);
-        var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
-        if (entrustPurpose && valueType) {
-            entrustPurpose = "," + entrustPurpose + ",";
-            valueType = "," + valueType + ",";
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
-                type: "post",
-                dataType: "json",
-                data: {
-                    entrustPurpose: entrustPurpose,
-                    valueType: valueType
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        if (result.data) {
-                            $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
-                            $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
-                            $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
-                        } else {
-                            $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
-                            $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
-                            $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
 
-                        }
-                    }
-                    else {
-                        toastr.warning(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-
-        }
-    }
-
-    function getValueDefinition() {
-        var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
-
-        var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
-        AssessCommon.getDataDicInfo(valueType, function (data) {
-            if(data) {
-                $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val(data.remark);
-            }
-        });
-        if (entrustPurpose && valueType) {
-            entrustPurpose = "," + entrustPurpose + ",";
-            valueType = "," + valueType + ",";
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
-                type: "post",
-                dataType: "json",
-                data: {
-                    entrustPurpose: entrustPurpose,
-                    valueType: valueType
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        if (result.data) {
-                            $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
-                            $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
-                            $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
-                        } else {
-                            $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
-                            $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
-                            $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
-
-                        }
-                    }
-                    else {
-                        toastr.warning(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-
-        }
-
-    }
-
-    function getRemarkEntrustPurpose() {
-        var remarkEntrustPurpose = $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']");
-        remarkEntrustPurpose.val('');
-        var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
-        if (entrustAimType) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getRemarkEntrustPurpose",
-                type: "post",
-                dataType: "json",
-                data: {
-                    entrustAimType: entrustAimType,
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        if (result.data) {
-                            remarkEntrustPurpose.val(result.data.remark);
-                        }
-                    }
-                    else {
-                        toastr.warning(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-
-        }
-    }
-
-    //委托目的类别
-    function getCategory(pid) {
-        if (!pid) {
-            var option = "<option value=''>-请先选择委托目的-</option>";
-            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
-            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
-            return false;
-        }
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseDataDic/getCacheDataDicListByPid",
-            type: "get",
-            dataType: "json",
-            data: {pid: pid},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    if (data.length >= 1) {
-                        var option = "<option value=''>-请选择-</option>";
-                        for (var i = 0; i < data.length; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
-                        $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
-                    }
-
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-
-    }
 </script>
