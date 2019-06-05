@@ -140,7 +140,7 @@ public class DeclareRealtyHouseCertService {
                 }
             }
             //房产证的所有权人和土地证使用权人进行匹配   &&   房产证座落和土地证座落匹配
-            if (CollectionUtils.isNotEmpty(declareRealtyHouseCertList)) {
+            if (CollectionUtils.isEmpty(declareRealtyHouseCertList)) {
                 if (StringUtils.isNotBlank(landCert.getOwnership()) && StringUtils.isNotBlank(landCert.getBeLocated())) {
                     houseCert.setOwnership(landCert.getOwnership());
                     houseCert.setBeLocated(landCert.getBeLocated());

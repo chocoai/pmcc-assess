@@ -184,18 +184,24 @@
     //房产证关联的土地证
     declareApprovalFun.houseRelationLandData = function (id) {
         var item = $("#" + declareApprovalFun.houseConfig.table).bootstrapTable('getRowByUniqueId', id);
-        if (declareCommon.isNotBlank(item.pid)) {//关联情况
-            declareCommon.getLandData(item.pid, function (data) {
-                if (declareCommon.isNotBlank(data)) {
-                    $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
-                    $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
-                    declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareApprovalFun.houseConfig.son.declareRealtyLandCert.fileId], null);
-                    $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
-                } else {
-                    toastr.success('关联的土地证数据已经被删除!');
-                }
-            });
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
         }
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.landId)) {//关联情况
+                declareCommon.getLandData(centerData.landId, function (data) {
+                    if (declareCommon.isNotBlank(data)) {
+                        $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
+                        $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
+                        declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareApprovalFun.houseConfig.son.declareRealtyLandCert.fileId], null);
+                        $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
+                    } else {
+                        toastr.success('关联的土地证数据已经被删除!');
+                    }
+                });
+            }
+        });
     };
 
     //房产 table list
@@ -205,9 +211,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                if (row.pid) {
-                    str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.houseRelationLandData(' + row.id + ');" ><i class="fa fa-check">土地证</i></a>';
-                }
+                str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.houseRelationLandData(' + row.id + ');" ><i class="fa fa-eye">土地证</i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="declareApprovalFun.houseFindData(' + row.id + ',\'tb_List\')">房产证<i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
