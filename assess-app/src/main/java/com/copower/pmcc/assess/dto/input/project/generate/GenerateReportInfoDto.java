@@ -10,7 +10,7 @@ import java.util.Date;
  * @Date: 2019/1/28 11:27
  * @Description:
  */
-public class GenerateReportGenerationDto implements Serializable {
+public class GenerateReportInfoDto implements Serializable {
     private Integer id;
 
     private Integer projectId;

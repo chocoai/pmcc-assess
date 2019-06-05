@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration;
+import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
@@ -51,7 +51,7 @@ public class GenerateService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private GenerateReportGenerationService generateReportGenerationService;
+    private GenerateReportInfoService generateReportGenerationService;
 
 
     /**
@@ -87,10 +87,10 @@ public class GenerateService {
 
         try {
             processUserDto = processControllerComponent.processStart(processInfo, projectInfo.getCreator(), false);
-            GenerateReportGeneration generateReportGeneration = generateReportGenerationService.getGenerateReportGenerationByAreaGroupId(areaGroupId,planId);
+            GenerateReportInfo generateReportGeneration = generateReportGenerationService.getGenerateReportInfoByAreaGroupId(areaGroupId,planId);
             generateReportGeneration.setProcessInsId(processUserDto.getProcessInsId());
             generateReportGeneration.setStatus(ProjectStatusEnum.RUNING.getKey());
-            generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
+            generateReportGenerationService.updateGenerateReportInfo(generateReportGeneration);
         } catch (BpmException e) {
             log.info(e.getMessage());
             throw new BusinessException(e.getMessage());

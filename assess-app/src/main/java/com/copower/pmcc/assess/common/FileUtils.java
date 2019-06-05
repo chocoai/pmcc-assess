@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,6 +25,7 @@ public class FileUtils {
 
     /**
      * 传入 字节流和文件名称
+     *
      * @param fileName
      * @param bodys
      * @return
@@ -46,18 +48,17 @@ public class FileUtils {
     }
 
     /**
-     *
      * @param zipPathAndName 压缩成的文件路径
      * @return 返回一个压缩后的字节流
      * @throws IOException
      */
-    public static byte[] getZipFile(List<File> fileList, String zipPathAndName)throws IOException{
+    public static byte[] getZipFile(List<File> fileList, String zipPathAndName) throws IOException {
         File zipFile = new File(zipPathAndName);
         File[] srcFile = new File[fileList.size()];
-        for (int i = 0; i <fileList.size() ; i++) {
+        for (int i = 0; i < fileList.size(); i++) {
             srcFile[i] = fileList.get(i);
         }
-        zipFiles(srcFile,zipFile);
+        zipFiles(srcFile, zipFile);
         return org.apache.commons.io.FileUtils.readFileToByteArray(zipFile);
     }
 
@@ -87,10 +88,11 @@ public class FileUtils {
 
     /**
      * 注意： 该方法适用的图片格式为 bmp/gif/jpg/png
+     *
      * @param path
      * @return
      */
-    public static boolean checkImgSuffix(String path){
+    public static boolean checkImgSuffix(String path) {
         File file = new File(path);
         try {
             // 通过ImageReader来解码这个file并返回一个BufferedImage对象
@@ -98,11 +100,41 @@ public class FileUtils {
             // 或者在解析过程中报错，也返回false
             Image image = ImageIO.read(file);
             return image != null;
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             return false;
         }
     }
 
+    /**
+     * @param base64String base64编码字符串
+     * @param path   图片路径-具体到文件
+     * @return
+     * @Description: 将base64编码字符串转换为图片
+     * @Author:
+     * @CreateTime:
+     */
+    public static boolean base64ToImage(String base64String, String path) {
+        if (base64String == null)
+            return false;
+        BASE64Decoder decoder = new BASE64Decoder();
+        try {
+            // 解密
+            byte[] b = decoder.decodeBuffer(base64String);
+            // 处理数据
+            for (int i = 0; i < b.length; ++i) {
+                if (b[i] < 0) {
+                    b[i] += 256;
+                }
+            }
+            OutputStream out = new FileOutputStream(path);
+            out.write(b);
+            out.flush();
+            out.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 
     public static FileUtils getFileUtils() {

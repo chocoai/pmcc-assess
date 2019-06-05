@@ -34,10 +34,7 @@ import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
-import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.SchemeReportFileService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
@@ -46,9 +43,12 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.*;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
 import com.google.common.collect.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -120,6 +120,9 @@ public class GenerateBaseDataService {
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
     private DataBestUseDescriptionService dataBestUseDescriptionService;
     private BaseProjectClassifyService baseProjectClassifyService;
+    private ProjectQrcodeRecordService projectQrcodeRecordService;
+    private ErpRpcToolsService erpRpcToolsService;
+    private ApplicationConstant applicationConstant;
 
     /**
      * 构造器必须传入的参数
@@ -177,6 +180,46 @@ public class GenerateBaseDataService {
             }
         }
         return errorStr;
+    }
+
+    /**
+     * 获取报告二维码
+     *
+     * @return
+     */
+    public String getReportQrcode(GenerateReportInfo generateReportInfo,String reportType) throws Exception {
+        //1.先从本地查看是否已生成过二维码
+        //2.如果已生成直接返回已生成的二维码
+        //3.如果没有生成则调用接口生成二维码并记录数据到本地
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.baseReportTemplate.getReportType());
+        String imageDirPath = baseAttachmentService.createTempDirPath();
+        String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
+        String imageFullPath = imageDirPath + File.separator + imageName;
+        String qrCode = null;
+        if (qrcodeRecode != null) {
+            qrCode = qrcodeRecode.getQrcode();
+        } else {
+            AdCompanyQualificationDto qualificationDto = getCompanyQualificationForPractising();
+            ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
+            projectDocumentDto.setProjectName(projectInfo.getProjectName());
+            projectDocumentDto.setCustomer(getPrincipal());
+            projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
+            projectDocumentDto.setDocumentNumber(getWordNumber());
+            projectDocumentDto.setReportDate(getValueTimePoint());
+            projectDocumentDto.setReportMember(projectInfo.getUserAccountManagerName());
+            projectDocumentDto.setAppKey(applicationConstant.getAppKey());
+            projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+            projectDocumentDto.setTableId(generateReportInfo.getId());
+            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType,generateReportInfo.getAreaGroupId()));
+            erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+        }
+        FileUtils.base64ToImage(qrCode, imageFullPath);
+        builder.insertImage(localPath);
+        document.save(localPath);
+        return localPath;
     }
 
 
@@ -1684,12 +1727,12 @@ public class GenerateBaseDataService {
      * @param generateReportGeneration
      * @throws Exception
      */
-    public String getRegisteredRealEstateValuerAndNumber(GenerateReportGeneration generateReportGeneration) throws Exception {
+    public String getRegisteredRealEstateValuerAndNumber(GenerateReportInfo generateReportInfo) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
         StringBuilder stringBuilder = new StringBuilder(8);
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
-        String[] strings = generateReportGeneration.getRealEstateAppraiser().split(",");
+        String[] strings = generateReportInfo.getRealEstateAppraiser().split(",");
         stringBuilder.append("<p>");
         for (String id : strings) {
             DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(Integer.parseInt(id));
@@ -5171,6 +5214,9 @@ public class GenerateBaseDataService {
         this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
         this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
+        this.projectQrcodeRecordService = SpringContextUtils.getBean(ProjectQrcodeRecordService.class);
+        this.erpRpcToolsService = SpringContextUtils.getBean(ErpRpcToolsService.class);
+        this.applicationConstant=SpringContextUtils.getBean(ApplicationConstant.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

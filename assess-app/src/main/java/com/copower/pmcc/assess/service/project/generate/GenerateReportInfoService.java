@@ -2,11 +2,11 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataQualificationDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportGenerationDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataQualification;
-import com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration;
+import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportGenerationVo;
+import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportInfoVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -25,53 +25,53 @@ import java.util.List;
  * @Description:报告生成
  */
 @Service
-public class GenerateReportGenerationService {
+public class GenerateReportInfoService {
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
-    private GenerateReportGenerationDao generateReportGenerationDao;
+    private GenerateReportInfoDao generateReportInfoDao;
     @Autowired
     private DataQualificationDao dataQualificationDao;
     @Autowired
     private PublicService publicService;
 
-    public GenerateReportGeneration getGenerateReportGenerationByAreaGroupId(Integer areaGroupId, Integer projectPlanId) throws Exception {
-        return generateReportGenerationDao.getGenerateReportGenerationByAreaGroupId(areaGroupId, projectPlanId);
+    public GenerateReportInfo getGenerateReportInfoByAreaGroupId(Integer areaGroupId, Integer projectPlanId) throws Exception {
+        return generateReportInfoDao.getGenerateReportInfoByAreaGroupId(areaGroupId, projectPlanId);
     }
 
-    public GenerateReportGeneration getGenerateReportGenerationByProcessInsId(String processInsId) throws Exception {
-        GenerateReportGeneration generateReportGeneration = new GenerateReportGeneration();
+    public GenerateReportInfo getGenerateReportInfoByProcessInsId(String processInsId) throws Exception {
+        GenerateReportInfo generateReportGeneration = new GenerateReportInfo();
         generateReportGeneration.setProcessInsId(processInsId);
-        return generateReportGenerationDao.getGenerateReportGeneration(generateReportGeneration);
+        return generateReportInfoDao.getGenerateReportInfo(generateReportGeneration);
     }
 
-    public boolean updateGenerateReportGeneration(GenerateReportGeneration generateReportGeneration) throws Exception {
-        return generateReportGenerationDao.updateGenerateReportGeneration(generateReportGeneration);
+    public boolean updateGenerateReportInfo(GenerateReportInfo generateReportGeneration) throws Exception {
+        return generateReportInfoDao.updateGenerateReportInfo(generateReportGeneration);
     }
 
-    public boolean addGenerateReportGeneration(GenerateReportGeneration generateReportGeneration) throws Exception {
-        return generateReportGenerationDao.addGenerateReportGeneration(generateReportGeneration);
+    public boolean addGenerateReportInfo(GenerateReportInfo generateReportGeneration) throws Exception {
+        return generateReportInfoDao.addGenerateReportInfo(generateReportGeneration);
     }
 
-    public boolean deleteGenerateReportGeneration(Integer id) throws Exception {
-        return generateReportGenerationDao.deleteGenerateReportGeneration(id);
+    public boolean deleteGenerateReportInfo(Integer id) throws Exception {
+        return generateReportInfoDao.deleteGenerateReportInfo(id);
     }
 
-    public GenerateReportGeneration getByGenerateReportGenerationId(Integer id) throws Exception {
-        return generateReportGenerationDao.getByGenerateReportGenerationId(id);
+    public GenerateReportInfo getByGenerateReportInfoId(Integer id) throws Exception {
+        return generateReportInfoDao.getByGenerateReportInfoId(id);
     }
 
-    public GenerateReportGeneration getGenerateReportGeneration(GenerateReportGeneration generateReportGeneration) {
-        return generateReportGenerationDao.getGenerateReportGeneration(generateReportGeneration);
+    public GenerateReportInfo getGenerateReportInfo(GenerateReportInfo generateReportGeneration) {
+        return generateReportInfoDao.getGenerateReportInfo(generateReportGeneration);
     }
 
-    public List<GenerateReportGeneration> generateReportGenerationList(GenerateReportGeneration generateReportGeneration) {
-        return generateReportGenerationDao.generateReportGenerationList(generateReportGeneration);
+    public List<GenerateReportInfo> generateReportGenerationList(GenerateReportInfo generateReportGeneration) {
+        return generateReportInfoDao.generateReportGenerationList(generateReportGeneration);
     }
 
-    public GenerateReportGenerationVo getGenerateReportGenerationVo(GenerateReportGeneration generateReportGeneration) {
+    public GenerateReportInfoVo getGenerateReportInfoVo(GenerateReportInfo generateReportGeneration) {
         if (generateReportGeneration == null) return null;
-        GenerateReportGenerationVo vo = new GenerateReportGenerationVo();
+        GenerateReportInfoVo vo = new GenerateReportInfoVo();
         BeanUtils.copyProperties(generateReportGeneration, vo);
         SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(generateReportGeneration.getAreaGroupId());
         if (schemeAreaGroup != null)

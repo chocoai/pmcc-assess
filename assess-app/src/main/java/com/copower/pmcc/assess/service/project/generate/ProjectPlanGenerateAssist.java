@@ -14,7 +14,6 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,6 +45,8 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
@@ -56,7 +57,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
 
     private void setModelParam(ProjectPlan projectPlan, ModelAndView modelAndView) {
         List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
-        GenerateReportGeneration schemeReportGeneration = new GenerateReportGeneration();
+        GenerateReportInfo generateReportInfo = new GenerateReportInfo();
         List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         List<Date> startTime = Lists.newArrayList();
@@ -87,7 +88,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
             }
         }
         if (CollectionUtils.isNotEmpty(startTime)) {
-            schemeReportGeneration.setInvestigationsStartDate(startTime.stream().sorted(
+            generateReportInfo.setInvestigationsStartDate(startTime.stream().sorted(
                     //反向排序 取最小
                     (o1, o2) -> {
                         long thisTime = o1.getTime();
@@ -98,7 +99,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         }
         if (CollectionUtils.isNotEmpty(endTime)) {
             //排序 取最大
-            schemeReportGeneration.setInvestigationsEndDate(endTime.stream().sorted().findFirst().get());
+            generateReportInfo.setInvestigationsEndDate(endTime.stream().sorted().findFirst().get());
         }
         Map<String, String> qualificationTypes = new HashMap<>();
         qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getName());
@@ -110,10 +111,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         List<String> stringList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(reportTypeList)){
             for (BaseDataDic baseDataDic:reportTypeList){
-                for (String s : baseDataDic.getFieldName().split("\\.")) {
-                    stringList.add(s.toUpperCase());
-                }
-                baseDataDic.setFieldName(StringUtils.join(stringList,"_"));
+                baseDataDic.setFieldName(generateCommonMethod.getReportFieldsName(baseDataDic.getFieldName(),null));
                 reportTypeList2.add(baseDataDic) ;
                 stringList.clear();
             }
@@ -122,7 +120,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         modelAndView.addObject("schemeAreaGroupList", schemeAreaGroupList);
         modelAndView.addObject("projectPlan", projectPlan);
         modelAndView.addObject("qualificationTypes", qualificationTypes);
-        modelAndView.addObject("schemeReportGeneration", schemeReportGeneration);
+        modelAndView.addObject("schemeReportGeneration", generateReportInfo);
         modelAndView.addObject("generationVos", generateReportService.getGenerateReportGenerationVos(projectPlan.getProjectId()));
     }
 

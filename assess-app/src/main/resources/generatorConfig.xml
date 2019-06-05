@@ -42,7 +42,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_data_number_rule">
+        <table tableName="tb_generate_report_info">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>
         </table>

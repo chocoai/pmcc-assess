@@ -12,7 +12,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
-import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportGenerationVo;
+import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportInfoVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
@@ -26,7 +26,6 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -66,7 +65,7 @@ public class GenerateReportService {
     @Autowired
     private BaseReportService baseReportService;
     @Autowired
-    private GenerateReportGenerationService generateReportGenerationService;
+    private GenerateReportInfoService generateReportGenerationService;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -81,14 +80,14 @@ public class GenerateReportService {
      * @param projectId
      * @return
      */
-    public List<GenerateReportGenerationVo> getGenerateReportGenerationVos(Integer projectId) {
-        GenerateReportGeneration where = new GenerateReportGeneration();
+    public List<GenerateReportInfoVo> getGenerateReportGenerationVos(Integer projectId) {
+        GenerateReportInfo where = new GenerateReportInfo();
         where.setProjectId(projectId);
-        List<GenerateReportGeneration> generationList = generateReportGenerationService.generateReportGenerationList(where);
+        List<GenerateReportInfo> generationList = generateReportGenerationService.generateReportGenerationList(where);
         if (CollectionUtils.isEmpty(generationList)) {
             return null;
         }
-        return LangUtils.transform(generationList, o -> generateReportGenerationService.getGenerateReportGenerationVo(o));
+        return LangUtils.transform(generationList, o -> generateReportGenerationService.getGenerateReportInfoVo(o));
     }
 
 
@@ -96,29 +95,29 @@ public class GenerateReportService {
      * 创建报告模板
      *
      * @param ids
-     * @param generateReportGeneration
+     * @param generateReportInfo
      * @return
      * @throws Exception
      */
 //    @Transactional(rollbackFor = {Exception.class})
-    public void createReportWord(String ids, GenerateReportGeneration generateReportGeneration) throws Exception {
-        if (StringUtils.isEmpty(ids) || generateReportGeneration.getProjectPlanId() == null) {
+    public void createReportWord(String ids, GenerateReportInfo generateReportInfo) throws Exception {
+        if (StringUtils.isEmpty(ids) || generateReportInfo.getProjectPlanId() == null) {
             return;
         }
         String[] strings = ids.split(",");
-        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
         if (projectPlan == null) {
             return;
         }
-        if (generateReportGeneration.getId() == null || generateReportGeneration.getId().intValue() == 0) {
-            generateReportGeneration.setCreator(processControllerComponent.getThisUser());
-            generateReportGenerationService.addGenerateReportGeneration(generateReportGeneration);
+        if (generateReportInfo.getId() == null || generateReportInfo.getId().intValue() == 0) {
+            generateReportInfo.setCreator(processControllerComponent.getThisUser());
+            generateReportGenerationService.addGenerateReportInfo(generateReportInfo);
         } else {
-            generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
+            generateReportGenerationService.updateGenerateReportInfo(generateReportInfo);
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(generateReportGeneration.getId());
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGeneration.class));
+        sysAttachmentDto.setTableId(generateReportInfo.getId());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
         //必要的(否则垃圾会越来越多)
@@ -150,36 +149,36 @@ public class GenerateReportService {
             }
             //房屋评估价值确认书
             if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_CONFIRMATION_HOUSING_VALUATION)) {
-                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
                 if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
+                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
                 }
             }
             //预评意见书
             if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT_PROPOSAL)) {
-                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
                 if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
+                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
                 }
             }
             //预评报告
             if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT)) {
                 //获取替换后得报告文件路径 ==>
-                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
                 if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
+                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
                 }
             }
             //技术报告
             if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
-                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
                 if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
+                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
                 }
             }
             //结果报告
             if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
-                String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, baseDataDic.getFieldName());
+                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
                 Document doc = new Document(path);
 //                        DocumentBuilder builder = new DocumentBuilder(doc);
 //                        //“目录”两个字居中显示、加粗、搜宋体
@@ -198,7 +197,7 @@ public class GenerateReportService {
                 doc.updateFields();// 更新域
                 doc.save(path);
                 if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportGeneration, baseDataDic.getFieldName(), sysAttachmentDtoList);
+                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
                 }
             }
         }
@@ -210,23 +209,19 @@ public class GenerateReportService {
      * @param path
      * @return
      */
-    private void createSysAttachment(String path, GenerateReportGeneration generateReportGeneration, String reportType, List<SysAttachmentDto> sysAttachmentDtoList) throws Exception {
+    private void createSysAttachment(String path, GenerateReportInfo generateReportInfo, String reportType, List<SysAttachmentDto> sysAttachmentDtoList) throws Exception {
         if (StringUtils.isEmpty(path)) {
             return;
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(generateReportGeneration.getId());
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGeneration.class));
+        sysAttachmentDto.setTableId(generateReportInfo.getId());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
         File file = new File(path);
         sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()));
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(new Long(file.length()).toString());
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        List<String> FieldsName = Lists.newArrayList();
-        for (String s : reportType.split("\\.")) {
-            FieldsName.add(s.toUpperCase());
-        }
-        sysAttachmentDto.setFieldsName(String.format("%s%d", StringUtils.join(FieldsName, "_"), generateReportGeneration.getAreaGroupId()));
+        sysAttachmentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType,generateReportInfo.getAreaGroupId()));
         sysAttachmentDto.setFileName(baseDataDicService.getCacheDataDicByFieldName(reportType).getName());
         String ftpBasePath = String.format("%s/%s/%s/%s", baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), processControllerComponent.getThisUser(), UUID.randomUUID().toString());
         String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
@@ -247,11 +242,11 @@ public class GenerateReportService {
      * 创建报告模板(具体)
      *
      * @param baseReportTemplate
-     * @param generateReportGeneration
+     * @param generateReportInfo
      * @return
      * @throws Exception
      */
-    private String fullReportPath(BaseReportTemplate baseReportTemplate, GenerateReportGeneration generateReportGeneration, String reportType) throws Exception {
+    private String fullReportPath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         String tempDir = null;
         SysAttachmentDto query = new SysAttachmentDto();
         query.setTableId(baseReportTemplate.getId());
@@ -289,11 +284,11 @@ public class GenerateReportService {
                 regexDto.setName(baseReportFieldEnum.getName()).setChineseName(baseReportFieldEnum.getName()).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
-            ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
-            ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportGeneration.getProjectId()));
-            GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportGeneration.getAreaGroupId(), baseReportTemplate, projectPlan);
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
+            ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
+            GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
             if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet)) {
-                tempDir = generateCompareFile(bookmarkAndRegexDtoHashSet, generateBaseDataService, tempDir, generateReportGeneration, reportType);
+                tempDir = generateCompareFile(bookmarkAndRegexDtoHashSet, generateBaseDataService, tempDir, generateReportInfo, reportType);
             }
         }
         return tempDir;
@@ -307,7 +302,7 @@ public class GenerateReportService {
      * @param generateReportGeneration
      * @throws Exception
      */
-    public String generateCompareFile(Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet, GenerateBaseDataService generateBaseDataService, String localPath, GenerateReportGeneration generateReportGeneration, String reportType) throws Exception {
+    public String generateCompareFile(Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet, GenerateBaseDataService generateBaseDataService, String localPath, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         Map<String, String> textMap = Maps.newHashMap();
         Map<String, String> preMap = Maps.newHashMap();
         Map<String, String> bookmarkMap = Maps.newHashMap();
@@ -326,6 +321,10 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.ReportNumber2.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber2());
                 }
+                //报告二维码
+                if (Objects.equal(BaseReportFieldEnum.ReportQrcode.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo,reportType));
+                }
                 //报告类别
                 if (Objects.equal(BaseReportFieldEnum.ReportingCategories.getName(), name)) {
                     if (StringUtils.isNotBlank(reportType)) {
@@ -336,8 +335,8 @@ public class GenerateReportService {
                 //报告出具日期
                 if (Objects.equal(BaseReportFieldEnum.ReportIssuanceDate.getName(), name)) {
                     String reportIssuanceStr = null;
-                    if (generateReportGeneration.getReportIssuanceDate() != null) {
-                        reportIssuanceStr = DateUtils.format(generateReportGeneration.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
+                    if (generateReportInfo.getReportIssuanceDate() != null) {
+                        reportIssuanceStr = DateUtils.format(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
                     } else {
                         reportIssuanceStr = DateUtils.format(generateBaseDataService.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
                     }
@@ -345,7 +344,7 @@ public class GenerateReportService {
                 }
                 //协助工作人员
                 if (Objects.equal(BaseReportFieldEnum.AssistanceStaff.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssistanceStaff(generateReportGeneration.getRealEstateAppraiser()));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssistanceStaff(generateReportInfo.getRealEstateAppraiser()));
                 }
                 //评估假设
                 if (Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
@@ -412,7 +411,7 @@ public class GenerateReportService {
                 }
                 //作业结束时间
                 if (Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHomeWorkEndTime(generateReportGeneration.getHomeWorkEndTime()));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHomeWorkEndTime(generateReportInfo.getHomeWorkEndTime()));
                 }
                 //作业开始时间
                 if (Objects.equal(BaseReportFieldEnum.HomeWorkStartTime.getName(), name)) {
@@ -420,7 +419,7 @@ public class GenerateReportService {
                 }
                 //现场查勘期
                 if (Objects.equal(BaseReportFieldEnum.surveyExamineDate.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSurveyExamineDate(generateReportGeneration.getInvestigationsStartDate(), generateReportGeneration.getInvestigationsEndDate()));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSurveyExamineDate(generateReportInfo.getInvestigationsStartDate(), generateReportInfo.getInvestigationsEndDate()));
                 }
                 //现场查勘人员
                 if (Objects.equal(BaseReportFieldEnum.surveyExamineCreate.getName(), name)) {
@@ -479,11 +478,11 @@ public class GenerateReportService {
                 }
                 //注册房产估价师及注册号
                 if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportGeneration));
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportInfo));
                 }
                 //注册房地产估价师注册证书复印件
                 if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerValuationInstitution.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerValuationInstitution(generateReportGeneration.getRealEstateAppraiser()));
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerValuationInstitution(generateReportInfo.getRealEstateAppraiser()));
                 }
                 //房地产总价
                 if (Objects.equal(BaseReportFieldEnum.TotalRealEstatePrice.getName(), name)) {

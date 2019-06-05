@@ -679,6 +679,6 @@ public class ProjectInfoService {
         projectDocumentDto.setDocumentNumber(documentNumber);
         projectDocumentDto.setReportDate(DateUtils.formatDate(reportDate));
         projectDocumentDto.setReportMember(publicService.getUserNameByAccount(projectManager));
-        return erpRpcToolsService.finishProjectDocument(projectDocumentDto, reportFileId);
+        return erpRpcToolsService.saveProjectDocument(projectDocumentDto);
     }
 }

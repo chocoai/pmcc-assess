@@ -19,7 +19,7 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
-import com.copower.pmcc.assess.service.project.generate.GenerateReportGenerationService;
+import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.*;
@@ -93,7 +93,7 @@ public class EvaluationHypothesisService {
     @Autowired
     private MdIncomeDao mdIncomeDao;
     @Autowired
-    private GenerateReportGenerationService generateReportGenerationService;
+    private GenerateReportInfoService generateReportGenerationService;
     @Autowired
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     @Autowired
@@ -415,10 +415,10 @@ public class EvaluationHypothesisService {
                 //评估基准日
                 Date valuationDate = projectInfo.getValuationDate();
                 //查勘结束日期
-                GenerateReportGeneration generateReportGeneration = new GenerateReportGeneration();
-                generateReportGeneration.setProjectId(projectInfo.getId());
-                generateReportGeneration.setAreaGroupId(areaGroupId);
-                GenerateReportGeneration generation = generateReportGenerationService.getGenerateReportGeneration(generateReportGeneration);
+                GenerateReportInfo generateReportInfo = new GenerateReportInfo();
+                generateReportInfo.setProjectId(projectInfo.getId());
+                generateReportInfo.setAreaGroupId(areaGroupId);
+                GenerateReportInfo generation = generateReportGenerationService.getGenerateReportInfo(generateReportInfo);
                 Date investigationsEndDate = generation.getInvestigationsEndDate();
                 //区位损坏委估对象
                 StringBuilder surroundingsDamage = new StringBuilder();
@@ -645,10 +645,10 @@ public class EvaluationHypothesisService {
                 //评估基准日
                 Date valuationDate = projectInfo.getValuationDate();
                 //现场查勘结束日期
-                GenerateReportGeneration generateReportGeneration = new GenerateReportGeneration();
+                GenerateReportInfo generateReportGeneration = new GenerateReportInfo();
                 generateReportGeneration.setProjectId(projectInfo.getId());
                 generateReportGeneration.setAreaGroupId(areaGroupId);
-                GenerateReportGeneration generation = generateReportGenerationService.getGenerateReportGeneration(generateReportGeneration);
+                GenerateReportInfo generation = generateReportGenerationService.getGenerateReportInfo(generateReportGeneration);
                 Date investigationsEndDate = generation.getInvestigationsEndDate();
                 //抵押评估
                 Integer pledgeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId();

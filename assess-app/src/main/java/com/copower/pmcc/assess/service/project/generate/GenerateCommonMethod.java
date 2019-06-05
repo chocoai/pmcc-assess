@@ -258,7 +258,7 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getBigDecimalRound(BigDecimal bigDecimal, boolean tenThousand) {
-       return getBigDecimalRound(bigDecimal,0,tenThousand);
+        return getBigDecimalRound(bigDecimal, 0, tenThousand);
     }
 
     public String getBigDecimalRound(BigDecimal bigDecimal, int newScale, boolean tenThousand) {
@@ -631,28 +631,28 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getWarpCssHtml(String html) {
-        List<KeyValueDto> keyValueDtoList = new ArrayList<>(3) ;
-        keyValueDtoList.add(new KeyValueDto("font-family","仿宋_GB2312")) ;
-        keyValueDtoList.add(new KeyValueDto("font-size","14.0pt")) ;
-        keyValueDtoList.add(new KeyValueDto("line-height","150%")) ;
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+        keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
+        keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
+        keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
         return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
     }
 
     public String getSongWarpCssHtml(String html) {
-        List<KeyValueDto> keyValueDtoList = new ArrayList<>(3) ;
-        keyValueDtoList.add(new KeyValueDto("font-family","宋体")) ;
-        keyValueDtoList.add(new KeyValueDto("font-size","10.0pt")) ;
-        keyValueDtoList.add(new KeyValueDto("line-height","150%")) ;
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+        keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
+        keyValueDtoList.add(new KeyValueDto("font-size", "10.0pt"));
+        keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
         return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
     }
 
     public String getSongWarpCssHtml2(String html) {
-        List<KeyValueDto> keyValueDtoList = new ArrayList<>(5) ;
-        keyValueDtoList.add(new KeyValueDto("font-family","宋体")) ;
-        keyValueDtoList.add(new KeyValueDto("font-size","12.0pt")) ;
-        keyValueDtoList.add(new KeyValueDto("text-align","right")) ;
-        keyValueDtoList.add(new KeyValueDto("float","right")) ;
-        keyValueDtoList.add(new KeyValueDto("width","150px")) ;
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(5);
+        keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
+        keyValueDtoList.add(new KeyValueDto("font-size", "12.0pt"));
+        keyValueDtoList.add(new KeyValueDto("text-align", "right"));
+        keyValueDtoList.add(new KeyValueDto("float", "right"));
+        keyValueDtoList.add(new KeyValueDto("width", "150px"));
         return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
     }
 
@@ -663,7 +663,7 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getIndentHtml(String html) {
-        return AsposeUtils.getWarpCssHtml(html, "text-indent" ,"2em");
+        return AsposeUtils.getWarpCssHtml(html, "text-indent", "2em");
     }
 
     /**
@@ -1032,11 +1032,30 @@ public class GenerateCommonMethod {
     }
 
     public void writeWordTitle(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
-        AsposeUtils.writeWordTitle(builder, titles) ;
+        AsposeUtils.writeWordTitle(builder, titles);
     }
 
     public void writeWordTitle(DocumentBuilder builder, LinkedList<Double> doubleLinkedList, LinkedList<String> linkedLists) throws Exception {
         AsposeUtils.writeWordTitle(builder, doubleLinkedList, linkedLists);
+    }
+
+    /**
+     * 获取报告附件关联fieldsName
+     *
+     * @param reportType
+     * @param areaId
+     * @return
+     */
+    public String getReportFieldsName(String reportType, Integer areaId) {
+        if (StringUtils.isBlank(reportType)) return null;
+        List<String> FieldsName = Lists.newArrayList();
+        for (String s : reportType.split("\\.")) {
+            FieldsName.add(s.toUpperCase());
+        }
+        if (areaId == null)
+            return StringUtils.join(FieldsName, "_");
+        else
+            return String.format("%s%d", StringUtils.join(FieldsName, "_"), areaId);
     }
 
 }

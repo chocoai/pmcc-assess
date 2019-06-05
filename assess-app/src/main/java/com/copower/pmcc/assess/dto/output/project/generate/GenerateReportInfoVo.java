@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.dto.output.project.generate;
 
-import com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration;
+import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
 
 /**
  * Created by kings on 2018-5-23.
  */
-public class GenerateReportGenerationVo extends GenerateReportGeneration {
+public class GenerateReportInfoVo extends GenerateReportInfo {
     private String areaGroupName;
     private String qualificationTypeName;
     private String realEstateAppraiserName;

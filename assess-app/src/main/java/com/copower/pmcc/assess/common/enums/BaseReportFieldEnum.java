@@ -14,6 +14,7 @@ import java.util.List;
 public enum BaseReportFieldEnum implements Serializable {
     ReportNumber("文号"),
     ReportNumber2("报告编号"),//文号中的具体编号
+    ReportQrcode("报告二维码"),
     RegistrationDate("登记时间"),
     ReportingCategories("报告类别"),
     ValuationProjectName("估价项目名称"),
@@ -184,9 +185,7 @@ public enum BaseReportFieldEnum implements Serializable {
     BACKGROUND_ANALYSIS_GENERAL("房地产市场总体概况"),
     BACKGROUND_ANALYSIS_MARKET("同类房地产市场状况"),
     BACKGROUND_ANALYSIS_BLOCK("同类房地产市场版块状况"),
-    BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),
-
-    ;
+    BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),;
 
     private String key;
 
