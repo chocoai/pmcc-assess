@@ -92,6 +92,8 @@ public class DeclareRealtyHouseCert {
 
     private String groundNum;
 
+    private BigDecimal apportionmentArea;
+
     public Integer getId() {
         return id;
     }
@@ -442,5 +444,13 @@ public class DeclareRealtyHouseCert {
 
     public void setGroundNum(String groundNum) {
         this.groundNum = groundNum == null ? null : groundNum.trim();
+    }
+
+    public BigDecimal getApportionmentArea() {
+        return apportionmentArea;
+    }
+
+    public void setApportionmentArea(BigDecimal apportionmentArea) {
+        this.apportionmentArea = apportionmentArea;
     }
 }

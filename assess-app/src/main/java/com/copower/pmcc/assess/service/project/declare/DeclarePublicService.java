@@ -791,21 +791,30 @@ public class DeclarePublicService {
             if (this.isNumeric(PoiUtils.getCellValue(row.getCell(18)))) {
                 declareRealtyHouseCert.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(18))));
             } else {
-                builder.append(String.format("\n第%s行异常：公摊面积应填写", i));
+                builder.append(String.format("\n第%s行异常：公摊面积应填写数字", i));
+                return false;
+            }
+        }
+        //分摊面积
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))) {
+            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(19)))) {
+                declareRealtyHouseCert.setApportionmentArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(19))));
+            } else {
+                builder.append(String.format("\n第%s行异常：分摊面积应填写数字", i));
                 return false;
             }
         }
         //土地取得方式
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))) {
-            declareRealtyHouseCert.setLandAcquisition(PoiUtils.getCellValue(row.getCell(19)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(20)))) {
+            declareRealtyHouseCert.setLandAcquisition(PoiUtils.getCellValue(row.getCell(20)));
         }
         //登记机关
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(20)))) {
-            declareRealtyHouseCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(20)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(21)))) {
+            declareRealtyHouseCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(21)));
         }
         //其它
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(21)))) {
-            declareRealtyHouseCert.setOther(PoiUtils.getCellValue(row.getCell(21)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(22)))) {
+            declareRealtyHouseCert.setOther(PoiUtils.getCellValue(row.getCell(22)));
         }
 
         return true;

@@ -3015,6 +3015,66 @@ public class DeclareRealtyHouseCertExample {
             addCriterion("ground_num not between", value1, value2, "groundNum");
             return (Criteria) this;
         }
+
+        public Criteria andApportionmentAreaIsNull() {
+            addCriterion("apportionment_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaIsNotNull() {
+            addCriterion("apportionment_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaEqualTo(BigDecimal value) {
+            addCriterion("apportionment_area =", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaNotEqualTo(BigDecimal value) {
+            addCriterion("apportionment_area <>", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaGreaterThan(BigDecimal value) {
+            addCriterion("apportionment_area >", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("apportionment_area >=", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaLessThan(BigDecimal value) {
+            addCriterion("apportionment_area <", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("apportionment_area <=", value, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaIn(List<BigDecimal> values) {
+            addCriterion("apportionment_area in", values, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaNotIn(List<BigDecimal> values) {
+            addCriterion("apportionment_area not in", values, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("apportionment_area between", value1, value2, "apportionmentArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andApportionmentAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("apportionment_area not between", value1, value2, "apportionmentArea");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

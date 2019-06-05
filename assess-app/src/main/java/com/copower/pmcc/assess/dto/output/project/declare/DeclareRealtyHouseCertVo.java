@@ -18,6 +18,15 @@ public class DeclareRealtyHouseCertVo extends DeclareRealtyHouseCert {
     private String useEndDateFmt;
     private String natureName;
     private String publicSituationName;
+    private String landAcquisitionName;
+
+    public String getLandAcquisitionName() {
+        return landAcquisitionName;
+    }
+
+    public void setLandAcquisitionName(String landAcquisitionName) {
+        this.landAcquisitionName = landAcquisitionName;
+    }
 
     public String getPublicSituationName() {
         return publicSituationName;

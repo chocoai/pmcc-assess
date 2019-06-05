@@ -288,7 +288,7 @@
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".panel-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
         declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),function (area) {
-            declareCommon.initDeclareRealty(item,$("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),[declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId],null);
+            declareCommon.initDeclareRealty(item,$("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),[declareApprovalFun.declareRealtyRealEstateCertConfig.fileId],null);
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
         });
     };
@@ -351,11 +351,7 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                               <div class="form-group">
-                                     <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                         <div id="_declareRealtyHouseCertFileId"></div>
-                                     </div>
-                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -459,11 +455,7 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                        <div id="_declareRealtyLandCertFileId"></div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -494,11 +486,7 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                        <div id="_declareRealtyRealEstateCertFileId"></div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
