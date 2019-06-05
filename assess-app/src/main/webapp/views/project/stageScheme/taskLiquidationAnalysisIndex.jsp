@@ -191,6 +191,16 @@
                         price = Number(evaluationPrice * rate).toFixed(2);
                         break;
                     }
+                    //契税
+                    case "data.tax.rate.allocation.deed.tax": {
+                        price = Number(evaluationPrice * rate).toFixed(2);
+                        break;
+                    }
+                    //预计处置费用
+                    case "data.tax.rate.allocation.disposal.fee": {
+                        price = Number(evaluationPrice * rate).toFixed(2);
+                        break;
+                    }
                 }
             } else {
                 if (rate && evaluationArea) {

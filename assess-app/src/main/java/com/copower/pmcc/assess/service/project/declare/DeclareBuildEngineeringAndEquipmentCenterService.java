@@ -6,11 +6,14 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -20,7 +23,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/22 10:27
- * @Description:在建工程中间表
+ * @Description:申报中间表
  */
 @Service
 public class DeclareBuildEngineeringAndEquipmentCenterService {
@@ -50,6 +53,10 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private DeclareRealtyLandCertService declareRealtyLandCertService;
     @Autowired
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
+    @Autowired
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
+    @Autowired
+    private TaskExecutor executor;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -73,7 +80,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
             for (DeclareBuildEngineeringAndEquipmentCenter buildEngineeringAndEquipmentCenter : declareBuildEngineeringAndEquipmentCenterList) {
                 Integer indicatorId = buildEngineeringAndEquipmentCenter.getIndicatorId();
                 if (indicatorId != null) {
-                    if (!ObjectUtils.isEmpty(declareBuildEconomicIndicatorsService.getEntityListByPid(indicatorId))) {
+                    if (CollectionUtils.isNotEmpty(declareBuildEconomicIndicatorsService.getEntityListByPid(indicatorId))) {
                         economicIndicators.addAll(declareBuildEconomicIndicatorsService.getEntityListByPid(indicatorId));
                     }
                 }
@@ -84,6 +91,30 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
 
     public List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList(DeclareBuildEngineeringAndEquipmentCenter oo) {
         return declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(oo);
+    }
+
+    public void deleteIds(String id) {
+        List<Integer> ids = FormatUtils.transformString2Integer(id);
+        List<String> types = Lists.newArrayList();
+        types.add(DeclareBuildEconomicIndicatorsCenter.class.getSimpleName());
+        types.add(DeclareBuildingConstructionPermit.class.getSimpleName());
+        types.add(DeclareBuildingPermit.class.getSimpleName());
+        types.add(DeclareLandUsePermit.class.getSimpleName());
+        types.add(DeclarePreSalePermit.class.getSimpleName());
+        types.add(DeclareRealtyLandCert.class.getSimpleName());
+        types.add(DeclareRealtyRealEstateCert.class.getSimpleName());
+        ids.stream().forEachOrdered(integer -> {
+            DeclareBuildEngineeringAndEquipmentCenter center = getDeclareBuildEngineeringAndEquipmentCenterById(integer);
+            if (center != null) {
+                executor.execute(() -> {
+                    deleteByType2(types, center);
+                });
+            }
+        });
+        executor.execute(() -> {
+            declareBuildEngineeringAndEquipmentCenterDao.deleteIds(ids);
+        });
+
     }
 
     public DeclareBuildEngineeringAndEquipmentCenter getDeclareBuildEngineeringAndEquipmentCenterById(Integer id) {
@@ -101,179 +132,253 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
      * @param copyId
      * @param type
      */
+    @Deprecated
     public void copy(String ids, Integer copyId, String type) {
         if (StringUtils.isEmpty(ids)) {
             return;
         }
-        for (String id : ids.split(",")) {
-            if (StringUtils.isNotBlank(type)) {
-                //在建工程（土建）
-                DeclareBuildEngineeringAndEquipmentCenter centerA = getDeclareBuildEngineeringAndEquipmentCenterById(copyId);
-                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = null;
-                if (Objects.equal(DeclareBuildEngineering.class.getSimpleName(), type)) {
-                    DeclareBuildEngineering declareBuildEngineering = declareBuildEngineeringService.getDeclareBuildEngineeringById(Integer.parseInt(id));
-                    DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-                    query.setBuildEngineeringId(declareBuildEngineering.getId());
-                    query.setType(DeclareBuildEngineering.class.getSimpleName());
-                    centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-                }
-                if (Objects.equal(DeclareBuildEquipmentInstall.class.getSimpleName(), type)) {
-                    DeclareBuildEquipmentInstall declareBuildEquipmentInstall = declareBuildEquipmentInstallService.getDeclareBuildEquipmentInstallById(Integer.parseInt(id));
-                    DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-                    query.setBuildEquipmentId(declareBuildEquipmentInstall.getId());
-                    query.setType(DeclareBuildEquipmentInstall.class.getSimpleName());
-                    centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-                }
-                //在建工程 (设备安装)
-                if (!ObjectUtils.isEmpty(centerList)) {
-                    DeclareBuildEngineeringAndEquipmentCenter centerB = centerList.get(0);
-                    if (centerB != null) {
-                        int cid = centerB.getId();
-                        centerA.setBuildEngineeringId(null);
-                        centerA.setBuildEquipmentId(null);
-                        BeanUtils.copyProperties(centerA, centerB);
-                        centerB.setId(cid);
-                        declareBuildEngineeringAndEquipmentCenterDao.updateDeclareBuildEngineeringAndEquipmentCenter(centerB);
-                    }
+        if (StringUtils.isEmpty(type)) {
+            return;
+        }
+        if (copyId == null) {
+            return;
+        }
+        List<Integer> integerList2 = FormatUtils.transformString2Integer(ids);
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = Lists.newArrayList();
+        integerList2.forEach(integer -> {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setType(type);
+            if (Objects.equal(DeclareBuildEngineering.class.getSimpleName(), type)) {
+                DeclareBuildEngineering declareBuildEngineering = declareBuildEngineeringService.getDeclareBuildEngineeringById(integer);
+                query.setBuildEngineeringId(declareBuildEngineering.getId());
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList2 = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList2)) {
+                    centerList.addAll(centerList2);
                 }
             }
+            if (Objects.equal(DeclareBuildEquipmentInstall.class.getSimpleName(), type)) {
+                DeclareBuildEquipmentInstall declareBuildEquipmentInstall = declareBuildEquipmentInstallService.getDeclareBuildEquipmentInstallById(integer);
+                query.setBuildEquipmentId(declareBuildEquipmentInstall.getId());
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList2 = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList2)) {
+                    centerList.addAll(centerList2);
+                }
+            }
+            if (Objects.equal(DeclareRealtyHouseCert.class.getSimpleName(), type)) {
+                DeclareRealtyHouseCert declareRealtyHouseCert = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(integer);
+                query.setHouseId(declareRealtyHouseCert.getId());
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList2 = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList2)) {
+                    centerList.addAll(centerList2);
+                }
+            }
+        });
+        List<Integer> integerList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            centerList.forEach(oo -> integerList.add(oo.getId()));
+        }
+        if (CollectionUtils.isNotEmpty(integerList)) {
+            copy(StringUtils.join(integerList, ","), copyId);
         }
     }
 
-    public boolean deleteByType(String type, Integer dataId, Integer centerId) throws Exception {
-        if (dataId == null || StringUtils.isEmpty(type) || centerId == null) {
-            throw new Exception("null 参数");
+    public void copy(String ids, Integer copyId) {
+        if (StringUtils.isEmpty(ids)) {
+            return;
+        }
+        if (copyId == null) {
+            return;
+        }
+        DeclareBuildEngineeringAndEquipmentCenter copyData = getDeclareBuildEngineeringAndEquipmentCenterById(copyId);
+        if (copyData == null) {
+            return;
+        }
+        List<Integer> integerList = FormatUtils.transformString2Integer(ids);
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = Lists.newArrayList();
+        integerList.forEach(integer -> {
+            DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = getDeclareBuildEngineeringAndEquipmentCenterById(integer);
+            if (equipmentCenter != null) {
+                centerList.add(equipmentCenter);
+            }
+        });
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            centerList.forEach(equipmentCenter -> {
+                executor.execute(() -> {
+                    Integer idA = equipmentCenter.getId();
+                    BeanUtils.copyProperties(copyData, equipmentCenter);
+                    equipmentCenter.setId(idA);
+                    //把不属于从数据的设置为null
+                    equipmentCenter.setBuildEngineeringId(null);
+                    equipmentCenter.setBuildEquipmentId(null);
+                    equipmentCenter.setHouseId(null);
+                    declareBuildEngineeringAndEquipmentCenterDao.updateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                });
+            });
+        }
+    }
+
+    public void deleteByType(String type, Integer centerId) {
+        if (StringUtils.isEmpty(type) || centerId == null) {
+            return;
         }
         DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = getDeclareBuildEngineeringAndEquipmentCenterById(centerId);
         if (equipmentCenter == null) {
+            return;
+        }
+        deleteByType2(Lists.newArrayList(type), equipmentCenter);
+    }
+
+    /**
+     * 根据类型删除子从表
+     *
+     * @param types
+     * @param equipmentCenter
+     * @return
+     */
+    private boolean deleteByType2(List<String> types, DeclareBuildEngineeringAndEquipmentCenter equipmentCenter) {
+        if (CollectionUtils.isEmpty(types) || equipmentCenter == null) {
             return false;
         }
-        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-        query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
-        query.setType(equipmentCenter.getType());
-        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = null;
-
-
         //经济指标
-        if (DeclareBuildEconomicIndicatorsCenter.class.getSimpleName().equals(type)) {
-            query.setIndicatorId(dataId);
-            centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-            if (ObjectUtils.isEmpty(centerList)) {
-                return false;
-            }
-            //当只存在一个的时候，把中间表包含经济指标的id设为null,并且删除其原表的数据
-            //当有多个关联关系的时候则把中间表包含经济指标的id设为null
-            if (centerList.size() == 1) {
-                DeclareBuildEconomicIndicatorsCenter deleteIndicatorsCenter = new DeclareBuildEconomicIndicatorsCenter();
-                deleteIndicatorsCenter.setId(centerList.get(0).getIndicatorId());
-                declareBuildEconomicIndicatorsCenterService.removeDeclareBuildEconomicIndicatorsCenter(deleteIndicatorsCenter);
-            }
-            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
-                center.setIndicatorId(0);
-                saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
-            }
+        if (types.contains(DeclareBuildEconomicIndicatorsCenter.class.getSimpleName())) {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
+            query.setType(equipmentCenter.getType());
+            query.setIndicatorId(equipmentCenter.getIndicatorId());
+            executor.execute(() -> {
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList)) {
+                    //当只存在一个的时候，把中间表包含经济指标的id设为null,并且删除其原表的数据
+                    //当有多个关联关系的时候则把中间表包含经济指标的id设为null
+                    if (centerList.size() == 1) {
+                        DeclareBuildEconomicIndicatorsCenter deleteIndicatorsCenter = new DeclareBuildEconomicIndicatorsCenter();
+                        deleteIndicatorsCenter.setId(equipmentCenter.getIndicatorId());
+                        declareBuildEconomicIndicatorsCenterService.removeDeclareBuildEconomicIndicatorsCenter(deleteIndicatorsCenter);
+                    }
+                    equipmentCenter.setIndicatorId(0);
+                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                }
+            });
         }
         //建筑工程施工许可证
-        if (DeclareBuildingConstructionPermit.class.getSimpleName().equals(type)) {
-            query.setBuildingConstructionPermitId(dataId);
-            centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-            if (ObjectUtils.isEmpty(centerList)) {
-                return false;
-            }
-            if (centerList.size() == 1) {
-                DeclareBuildingConstructionPermit delete = new DeclareBuildingConstructionPermit();
-                delete.setId(centerList.get(0).getBuildingConstructionPermitId());
-                declareBuildingConstructionPermitService.removeDeclareBuildingConstructionPermit(delete);
-            }
-            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
-                center.setBuildingConstructionPermitId(0);
-                saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
-            }
+        if (types.contains(DeclareBuildingConstructionPermit.class.getSimpleName())) {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
+            query.setType(equipmentCenter.getType());
+            query.setBuildingConstructionPermitId(equipmentCenter.getBuildingConstructionPermitId());
+            executor.execute(() -> {
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList)) {
+                    if (centerList.size() == 1) {
+                        DeclareBuildingConstructionPermit delete = new DeclareBuildingConstructionPermit();
+                        delete.setId(equipmentCenter.getBuildingConstructionPermitId());
+                        declareBuildingConstructionPermitService.removeDeclareBuildingConstructionPermit(delete);
+                    }
+                    equipmentCenter.setBuildingConstructionPermitId(0);
+                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                }
+            });
         }
         //建设工程规划许可证
-        if (DeclareBuildingPermit.class.getSimpleName().equals(type)) {
-            query.setBuildingPermitId(dataId);
-            centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-            if (ObjectUtils.isEmpty(centerList)) {
-                return false;
-            }
-            if (centerList.size() == 1) {
-                DeclareBuildingPermit delete = new DeclareBuildingPermit();
-                delete.setId(centerList.get(0).getBuildingPermitId());
-                declareBuildingPermitService.removeDeclareBuildingPermit(delete);
-            }
-            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
-                center.setBuildingPermitId(0);
-                saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
-            }
+        if (types.contains(DeclareBuildingPermit.class.getSimpleName())) {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
+            query.setType(equipmentCenter.getType());
+            query.setBuildingPermitId(equipmentCenter.getBuildingPermitId());
+            executor.execute(() -> {
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList)) {
+                    if (centerList.size() == 1) {
+                        DeclareBuildingPermit delete = new DeclareBuildingPermit();
+                        delete.setId(equipmentCenter.getBuildingPermitId());
+                        declareBuildingPermitService.removeDeclareBuildingPermit(delete);
+                    }
+                    equipmentCenter.setBuildingPermitId(0);
+                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                }
+            });
         }
         //建设用地规划许可证
-        if (DeclareLandUsePermit.class.getSimpleName().equals(type)) {
-            query.setLandUsePermitId(dataId);
-            centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-            if (ObjectUtils.isEmpty(centerList)) {
-                return false;
-            }
-            if (centerList.size() == 1) {
-                DeclareLandUsePermit delete = new DeclareLandUsePermit();
-                delete.setId(centerList.get(0).getLandUsePermitId());
-                declareLandUsePermitService.removeDeclareLandUsePermit(delete);
-            }
-            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
-                center.setLandUsePermitId(0);
-                saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
-            }
+        if (types.contains(DeclareLandUsePermit.class.getSimpleName())) {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
+            query.setType(equipmentCenter.getType());
+            query.setLandUsePermitId(equipmentCenter.getLandUsePermitId());
+            executor.execute(() -> {
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList)) {
+                    if (centerList.size() == 1) {
+                        DeclareLandUsePermit delete = new DeclareLandUsePermit();
+                        delete.setId(equipmentCenter.getLandUsePermitId());
+                        declareLandUsePermitService.removeDeclareLandUsePermit(delete);
+                    }
+                    equipmentCenter.setLandUsePermitId(0);
+                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                }
+            });
         }
         //商品房预售许可证
-        if (DeclarePreSalePermit.class.getSimpleName().equals(type)) {
-            query.setPreSalePermitId(dataId);
-            centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-            if (ObjectUtils.isEmpty(centerList)) {
-                return false;
-            }
-            if (centerList.size() == 1) {
-                DeclarePreSalePermit delete = new DeclarePreSalePermit();
-                delete.setId(centerList.get(0).getPreSalePermitId());
-                declarePreSalePermitService.removeDeclarePreSalePermit(delete);
-            }
-            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
-                center.setPreSalePermitId(0);
-                saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
-            }
+        if (types.contains(DeclarePreSalePermit.class.getSimpleName())) {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
+            query.setType(equipmentCenter.getType());
+            query.setPreSalePermitId(equipmentCenter.getPreSalePermitId());
+            executor.execute(() -> {
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList)) {
+                    if (centerList.size() == 1) {
+                        DeclarePreSalePermit delete = new DeclarePreSalePermit();
+                        delete.setId(equipmentCenter.getPreSalePermitId());
+                        declarePreSalePermitService.removeDeclarePreSalePermit(delete);
+                    }
+                    equipmentCenter.setPreSalePermitId(0);
+                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                }
+            });
         }
         //土地证
-        if (DeclareRealtyLandCert.class.getSimpleName().equals(type)){
-            query.setLandId(dataId);
-            centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-            if (ObjectUtils.isEmpty(centerList)) {
-                return false;
-            }
-            if (centerList.size() == 1){
-                DeclareRealtyLandCert delete = new DeclareRealtyLandCert();
-                delete.setId(centerList.get(0).getLandId());
-                declareRealtyLandCertService.removeDeclareRealtyLandCert(delete);
-            }
-            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
-                center.setLandId(0);
-                saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
-            }
+        if (types.contains(DeclareRealtyLandCert.class.getSimpleName())) {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
+            query.setType(equipmentCenter.getType());
+            query.setLandId(equipmentCenter.getLandId());
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                    if (CollectionUtils.isNotEmpty(centerList)) {
+                        if (centerList.size() == 1) {
+                            DeclareRealtyLandCert delete = new DeclareRealtyLandCert();
+                            delete.setId(equipmentCenter.getLandId());
+                            declareRealtyLandCertService.removeDeclareRealtyLandCert(delete);
+                        }
+                        equipmentCenter.setLandId(0);
+                        saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                    }
+                }
+            });
         }
         //不动产
-        if (DeclareRealtyRealEstateCert.class.getSimpleName().equals(type)){
-            query.setRealEstateId(dataId);
-            centerList = declareBuildEngineeringAndEquipmentCenterList(query);
-            if (ObjectUtils.isEmpty(centerList)) {
-                return false;
-            }
-            if (centerList.size() == 1){
-                DeclareRealtyRealEstateCert delete = new DeclareRealtyRealEstateCert();
-                delete.setId(centerList.get(0).getRealEstateId());
-                declareRealtyRealEstateCertService.removeDeclareRealtyRealEstateCert(delete);
-            }
-            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
-                center.setRealEstateId(0);
-                saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
-            }
+        if (types.contains(DeclareRealtyRealEstateCert.class.getSimpleName())) {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
+            query.setType(equipmentCenter.getType());
+            query.setRealEstateId(equipmentCenter.getRealEstateId());
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                    if (CollectionUtils.isNotEmpty(centerList)) {
+                        if (centerList.size() == 1) {
+                            DeclareRealtyRealEstateCert delete = new DeclareRealtyRealEstateCert();
+                            delete.setId(equipmentCenter.getRealEstateId());
+                            declareRealtyRealEstateCertService.removeDeclareRealtyRealEstateCert(delete);
+                        }
+                        equipmentCenter.setRealEstateId(0);
+                        saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                    }
+                }
+            });
         }
         return true;
     }

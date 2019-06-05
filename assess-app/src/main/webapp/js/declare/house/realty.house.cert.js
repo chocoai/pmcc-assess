@@ -18,7 +18,8 @@ assessCommonHouse.config = {
             name: declareCommon.config.house.son.declareRealtyLandCert.name,
             table: declareCommon.config.house.son.declareRealtyLandCert.table
         }
-    }
+    },
+    handleCopy: "#houseHandleInputGroup"
 };
 
 /**
@@ -70,7 +71,17 @@ assessCommonHouse.saveAndUpdateHouse = function () {
             return false;
         }
     }
-    declareCommon.saveHouseData(data, function () {
+    declareCommon.saveHouseData(data, function (item) {
+        if (!declareCommon.isNotBlank(data.id)) {
+            declareCommon.declareBuildCenterSaveAndUpdate({
+                houseId: item,
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                type: declareCommon.declareCenterData.houseId.type
+            }, function () {
+                //重新加载一次
+                assessCommonHouse.loadList();
+            });
+        }
         assessCommonHouse.loadList();
         toastr.success('成功!');
         $('#' + assessCommonHouse.config.box).modal("hide");
@@ -89,12 +100,16 @@ assessCommonHouse.deleteHouse = function () {
     } else {
         Alert("确认要删除么？", 2, null, function () {
             var idArray = [];
+            var idCenters = [];
             $.each(rows, function (i, item) {
                 idArray.push(item.id);
+                idCenters.push(item.centerId);
             });
             declareCommon.deleteHouseData(idArray.join(","), function () {
-                toastr.success('删除成功');
-                assessCommonHouse.loadList();
+                declareCommon.deleteDeclareBuildCenter(idCenters.join(","), function () {
+                    toastr.success('删除成功');
+                    assessCommonHouse.loadList();
+                });
             });
         })
     }
@@ -128,11 +143,66 @@ assessCommonHouse.showAddModelHouse = function (data) {
     declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.frm), function (area) {
         if (jQuery.isEmptyObject(data)) {
             assessCommonHouse.init(area);
-        }else {
+        } else {
             assessCommonHouse.init(data);
         }
     });
     $('#' + assessCommonHouse.config.box).modal("show");
+};
+
+/**
+ * 拷贝数据
+ */
+assessCommonHouse.copyData = function () {
+    var rows = $("#" + assessCommonHouse.config.table).bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要复制的数据");
+    } else if (rows.length == 1) {
+        Alert("确认要复制？", 2, null, function () {
+            $(assessCommonHouse.config.handleCopy).find("input[name='name']").val(rows[0].certName);
+            $(assessCommonHouse.config.handleCopy).find("input[name='id']").val(rows[0].centerId);
+            toastr.info("复制从数据成功!");
+            $("#" + assessCommonHouse.config.table).bootstrapTable('uncheckAll');
+        });
+    } else {
+        toastr.info("只能选择一行数据进行复制");
+    }
+};
+
+/**
+ * 粘贴数据 (把复制的从表粘贴到所有的列中)
+ */
+assessCommonHouse.pasteAll = function () {
+    var rows = $("#" + assessCommonHouse.config.table).bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要复制的数据");
+    } else if (rows.length >= 1) {
+        var copyId = $(assessCommonHouse.config.handleCopy).find("input[name='id']").val();
+        var idArray = [];
+        rows.forEach(function (ele, index) {
+            idArray.push(ele.centerId);
+        });
+        //过滤一次
+        var filtered = idArray.filter(function (element, index, array) {
+            return element == copyId;
+        });
+        //判断
+        if (filtered.length == 1) {
+            toastr.info("需要粘贴的从数据包含了自身,这样情况是不被允许的");
+            $("#" + assessCommonHouse.config.table).bootstrapTable('uncheckAll');
+            return false;
+        }
+        Alert("确认要粘贴？", 2, null, function () {
+            declareCommon.copyDeclareBuildCenter(copyId, idArray.join(","), function () {
+                toastr.info("粘贴从数据成功!");
+                $("#" + assessCommonHouse.config.table).bootstrapTable('uncheckAll');
+                $(assessCommonHouse.config.handleCopy).find("input").val('');
+                assessCommonHouse.loadList();
+            });
+        });
+    } else {
+        toastr.info("只能选择一行数据进行复制");
+    }
 };
 
 /**
@@ -150,36 +220,65 @@ assessCommonHouse.initLand = function (item) {
 assessCommonHouse.showAddModelLand = function (id) {
     $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).find("#" + commonDeclareApplyModel.config.land.handleId).remove();
     $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApplyModel.land.getHtml());
+    var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
     declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.son.declareRealtyLandCert.frm), function (area) {
         $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("show");
-        var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
-        if (declareCommon.isNotBlank(item.pid)) {//关联情况
-            declareCommon.getLandData(item.pid, function (data) {
-                if (declareCommon.isNotBlank(data)) {
-                    assessCommonHouse.initLand(data);
-                } else {
-                    toastr.success('关联的土地证数据已经被删除!');
-                    toastr.success('请重新填写!');
-                }
-            });
-        } else {//未关联情况
-            var data = {
-                pid: item.id,
-                beLocated: item.beLocated,
-                streetNumber: item.streetNumber,
-                attachedNumber: item.attachedNumber,
-                buildingNumber: item.buildingNumber,
-                unit: item.unit,
-                roomNumber: item.roomNumber,
-                floor: item.floor,
-                province: item.province,
-                city: item.city,
-                district: item.district
-            };
-            assessCommonHouse.initLand(data);
-        }
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.landId)) {//关联情况
+                declareCommon.getLandData(centerData.landId, function (data) {
+                    if (declareCommon.isNotBlank(data)) {
+                        data.centerId = item.centerId;
+                        assessCommonHouse.initLand(data);
+                    } else {
+                        toastr.success('关联的土地证数据已经被删除!');
+                        toastr.success('请重新填写!');
+                    }
+                });
+            } else {//未关联情况
+                var data = {
+                    centerId: item.centerId,
+                    beLocated: item.beLocated,
+                    streetNumber: item.streetNumber,
+                    attachedNumber: item.attachedNumber,
+                    buildingNumber: item.buildingNumber,
+                    unit: item.unit,
+                    roomNumber: item.roomNumber,
+                    floor: item.floor,
+                    province: item.province,
+                    city: item.city,
+                    district: item.district
+                };
+                assessCommonHouse.initLand(data);
+            }
+        });
     });
 };
+
+/**
+ * 删除中间表得土地证 注意这得删除不是通过土地证方法删除得土地证而是中间表删除得土地证
+ */
+assessCommonHouse.deleteLandCenter = function () {
+    var data = formParams(assessCommonHouse.config.son.declareRealtyLandCert.frm);
+    console.log(data);
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.landId)) {//关联情况
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.landId.type, function () {
+                    $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("hide");
+                    toastr.success('已经删除!');
+                    assessCommonHouse.loadList();
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
+};
+
 
 /**
  * 土地证保存
@@ -194,8 +293,7 @@ assessCommonHouse.saveAndUpdateLand = function () {
     data.enable = declareCommon.branchData;
     declareCommon.saveLandData(data, function (landId) {
         if (landId) {
-            var houseId = data.pid;
-            declareCommon.saveHouseData({id: houseId, pid: landId}, function () {
+            declareCommon.declareBuildCenterSaveAndUpdate({landId: landId, id: data.centerId}, function () {
                 assessCommonHouse.loadList();
                 $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("hide");
             });
@@ -310,18 +408,22 @@ assessCommonHouse.inputFile = function () {
  */
 assessCommonHouse.landImportEvent = function (id) {
     var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
-    if (declareCommon.isNotBlank(item.pid)) {
-        declareCommon.getLandData(item.pid, function (data) {
-            if (declareCommon.isNotBlank(data)) {
-                $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId).attr("data-id", data.id);
-                $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId).trigger('click');
+    if (declareCommon.isNotBlank(item.centerId)) {
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.landId)) {
+                declareCommon.getLandData(centerData.landId, function (data) {
+                    if (declareCommon.isNotBlank(data)) {
+                        $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId).attr("data-id", data.id);
+                        $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId).trigger('click');
+                    } else {
+                        toastr.success('关联的土地证数据已经被删除!');
+                        toastr.success('请重新填写!');
+                    }
+                });
             } else {
-                toastr.success('关联的土地证数据已经被删除!');
-                toastr.success('请重新填写!');
+                toastr.success('没有关联土地证数据!');
             }
         });
-    } else {
-        toastr.success('没有关联土地证数据!');
     }
 };
 
@@ -401,11 +503,7 @@ assessCommonHouse.loadList = function () {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            if (row.pid) {
-                str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonHouse.showAddModelLand(' + row.id + ');" ><i class="fa fa-check">土地证</i></a>';
-            } else {
-                str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonHouse.showAddModelLand(' + row.id + ');" ><i class="fa fa-remove">土地证</i></a>';
-            }
+            str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonHouse.showAddModelLand(' + row.id + ');" ><i class="fa fa-eye">土地证</i></a>';
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='assessCommonHouse.houseImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证附件" + "</a>";
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='assessCommonHouse.landImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
             str += '</div>';

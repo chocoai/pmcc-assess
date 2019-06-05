@@ -591,6 +591,13 @@
 
         <div class="form-group">
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">取得价格<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="acquisitionPrice"></label>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     权利性质
                 </label>
@@ -603,14 +610,7 @@
                     终止日期<span class="symbol required"></span>
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="terminationDate"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">取得价格<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="acquisitionPrice"></label>
+                    <label class="form-control" name="terminationDate" id="terminationDate_d"></label>
                 </div>
             </div>
         </div>
@@ -712,7 +712,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">不动产单元号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label   name="realEstateUnitNumber" class="form-control">
+                    <label name="realEstateUnitNumber" class="form-control"></label>
                 </div>
             </div>
         </div>
@@ -911,6 +911,13 @@
 
         <div class="form-group">
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共用宗地面积<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="useRightArea"></label>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地使用年限起<span class="symbol required"></span>
                 </label>
@@ -925,14 +932,7 @@
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <%--<label class="form-control" name="useEndDate"></label>--%>
-                    <input type="text" name="useEndDateFmt" class="form-control" readonly="readonly">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共用宗地面积<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="useRightArea"></label>
+                    <input type="text" name="useEndDateFmt"  id="useEndDateFmt_d" class="form-control" readonly="readonly">
                 </div>
             </div>
         </div>

@@ -42,6 +42,12 @@ public class DeclareBuildEngineeringAndEquipmentCenterDao {
         declareBuildEngineeringAndEquipmentCenterMapper.deleteByExample(example);
     }
 
+    public void deleteIds(List<Integer> ids){
+        DeclareBuildEngineeringAndEquipmentCenterExample example = new DeclareBuildEngineeringAndEquipmentCenterExample();
+        example.createCriteria().andIdIn(ids) ;
+        declareBuildEngineeringAndEquipmentCenterMapper.deleteByExample(example);
+    }
+
     public List<DeclareBuildEngineeringAndEquipmentCenter> getDeclareBuildEngineeringAndEquipmentCenterList(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter){
         DeclareBuildEngineeringAndEquipmentCenterExample example = new DeclareBuildEngineeringAndEquipmentCenterExample();
         MybatisUtils.convertObj2Example(declareBuildEngineeringAndEquipmentCenter, example);

@@ -4,7 +4,7 @@
 var declareCommon = {};
 
 declareCommon.config = {
-    land:{
+    land: {
         frm: "frmDeclareRealtyLandCert",
         name: "土地证",
         table: "tableDeclareRealtyLandCert",
@@ -18,7 +18,7 @@ declareCommon.config = {
             box: "declareRealtyLandCert_HouseCert_box"
         }
     },
-    house:{
+    house: {
         frm: "frmDeclareRealtyHouseCert",
         name: "房产证",
         table: "tableDeclareRealtyHouseCert",
@@ -38,7 +38,7 @@ declareCommon.config = {
             }
         }
     },
-    declareRealty:{
+    declareRealty: {
         frm: "frmDeclareRealtyRealEstateCert",
         name: "不动产证",
         table: "tableDeclareRealtyRealEstateCert",
@@ -48,6 +48,20 @@ declareCommon.config = {
         fileView: "declareRealtyRealEstateCertFileView"
     }
 };
+
+declareCommon.declareCenterData = {
+    buildEngineeringId: {name: "在建工程（土建）", field: "buildEngineeringId", type: "DeclareBuildEngineering"},
+    buildEquipmentId: {name: "在建工程（设备安装）", field: "buildEquipmentId", type: "DeclareBuildEquipmentInstall"},
+    houseId: {name: "房产证", field: "houseId", type: "DeclareRealtyHouseCert"},
+    buildingConstructionPermitId: {name: "建筑工程施工许可证", field: "buildingConstructionPermitId", type: "DeclareBuildingConstructionPermit"},
+    buildingPermitId: {name: "建设工程规划许可证", field: "buildingPermitId", type: "DeclareBuildingPermit"},
+    landUsePermitId: {name: "建设用地规划许可证", field: "landUsePermitId", type: "DeclareLandUsePermit"},
+    preSalePermitId: {name: "商品房预售许可证", field: "preSalePermitId", type: "DeclarePreSalePermit"},
+    landId: {name: "土地证", field: "landId", type: "DeclareRealtyLandCert"},
+    realEstateId: {name: "不动产", field: "realEstateId", type: "DeclareRealtyRealEstateCert"},
+    indicatorId: {name: "经济指标", field: "indicatorId", type: "DeclareBuildEconomicIndicatorsCenter"}
+};
+
 declareCommon.declareApplyForm = $('#declareApplyForm');
 
 declareCommon.getPlanDetailsId = function () {
@@ -57,14 +71,14 @@ declareCommon.getProjectId = function () {
     return declareCommon.declareApplyForm.find('[name=projectId]').val();
 };
 //来源 com.copower.pmcc.assess.common.enums.DeclareTypeEnum
-declareCommon.masterData = "master" ;//主数据
-declareCommon.branchData = "branch" ;//从数据
+declareCommon.masterData = "master";//主数据
+declareCommon.branchData = "branch";//从数据
 
-declareCommon.declareHouseType = "" ;//房产申报类型
-declareCommon.declareLandType = "" ;//土地申报类型
-declareCommon.declareRealType = "" ;//不动产申报类型
+declareCommon.declareHouseType = "";//房产申报类型
+declareCommon.declareLandType = "";//土地申报类型
+declareCommon.declareRealType = "";//不动产申报类型
 
-declareCommon.fileUpload = function (target, tableName, id,deleteFlag,fieldsName) {
+declareCommon.fileUpload = function (target, tableName, id, deleteFlag, fieldsName) {
     FileUtils.uploadFiles({
         target: target,
         disabledTarget: "btn_submit",
@@ -93,7 +107,7 @@ declareCommon.fileUpload = function (target, tableName, id,deleteFlag,fieldsName
     // });
 };
 
-declareCommon.showFile = function (target, tableName, id , deleteFlag,fieldsName) {
+declareCommon.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
     FileUtils.getFileShows({
         target: target,
         formData: {
@@ -113,7 +127,7 @@ declareCommon.isNotBlank = function (item) {
     return false;
 };
 //必要的,由于新添加html dom 很多样式未启动,所有手动开启
-declareCommon.showHtmlMastInit = function (target,callback) {
+declareCommon.showHtmlMastInit = function (target, callback) {
     try {
         mapPosition.getCurrentCityByArea(function (area) {
             //由于是填充的hmtl所以需要手动初始化select2
@@ -219,11 +233,133 @@ declareCommon.getEquipmentInstallationColumn = function () {
     return cols;
 };
 
-declareCommon.saveLandData = function (data,callback) {
+/**
+ * 申报 中间表
+ * @param item
+ * @param callback
+ */
+declareCommon.declareBuildCenterSaveAndUpdate  = function (item , callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter",
+        data: item,
+        success: function (result) {
+            if (result.ret) {
+                if (callback){
+                    callback(result.data) ;
+                }
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+/**
+ * 申报中间表 获取
+ * @param id
+ * @param callback
+ */
+declareCommon.getDeclareBuildCenter = function (id , callback) {
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+        data: {id:id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback){
+                    callback(result.data) ;
+                }
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+} ;
+
+/**
+ * 需要传入 type  , centerId
+ * 申报中间表 根据type删除子项id
+ * @param centerId
+ * @param type
+ * @param callback
+ */
+declareCommon.deleteByDeclareBuildCenterType = function (centerId , type , callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/deleteByType",
+        data: {centerId:centerId , type:type},
+        success: function (result) {
+            if (result.ret) {
+                if (callback){
+                    callback(result.data) ;
+                }
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+/**
+ * 申报中间表 删除
+ * @param id
+ * @param callback
+ */
+declareCommon.deleteDeclareBuildCenter = function (id,callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/deleteDeclareBuildEngineeringAndEquipmentCenterById",
+        data: {id:id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback){
+                    callback() ;
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+} ;
+
+declareCommon.copyDeclareBuildCenter = function (copyId  ,ids , callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
+        data: {copyId:copyId , ids:ids},
+        success: function (result) {
+            if (result.ret) {
+                if (callback){
+                    callback() ;
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+} ;
+
+declareCommon.saveLandData = function (data, callback) {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
-        data: {formData:JSON.stringify(data)},
+        data: {formData: JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -237,7 +373,7 @@ declareCommon.saveLandData = function (data,callback) {
     });
 };
 
-declareCommon.getLandData = function (id,callback) {
+declareCommon.getLandData = function (id, callback) {
     $.ajax({
         url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
         type: "get",
@@ -256,7 +392,7 @@ declareCommon.getLandData = function (id,callback) {
     });
 };
 
-declareCommon.deleteHouseData = function (ids,callback) {
+declareCommon.deleteHouseData = function (ids, callback) {
     $.ajax({
         url: getContextPath() + "/declareRealtyHouseCert/deleteDeclareRealtyHouseCertById",
         type: "post",
@@ -276,7 +412,7 @@ declareCommon.deleteHouseData = function (ids,callback) {
     })
 };
 
-declareCommon.deleteLandData = function (ids,callback) {
+declareCommon.deleteLandData = function (ids, callback) {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/deleteDeclareRealtyLandCertById",
@@ -294,11 +430,11 @@ declareCommon.deleteLandData = function (ids,callback) {
     });
 };
 
-declareCommon.saveHouseData = function (data,callback) {
+declareCommon.saveHouseData = function (data, callback) {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
-        data: {formData:JSON.stringify(data)},
+        data: {formData: JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -312,7 +448,7 @@ declareCommon.saveHouseData = function (data,callback) {
     });
 };
 
-declareCommon.getHouseData = function (id,callback) {
+declareCommon.getHouseData = function (id, callback) {
     $.ajax({
         url: getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
         type: "get",
@@ -330,7 +466,7 @@ declareCommon.getHouseData = function (id,callback) {
 };
 
 //不动产获取
-declareCommon.getDeclareRealtyData = function (id,callback) {
+declareCommon.getDeclareRealtyData = function (id, callback) {
     $.ajax({
         url: getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
         type: "get",
@@ -348,7 +484,7 @@ declareCommon.getDeclareRealtyData = function (id,callback) {
 };
 
 //不动产 delete
-declareCommon.deleteDeclareRealtyData = function (ids,callback) {
+declareCommon.deleteDeclareRealtyData = function (ids, callback) {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/deleteDeclareRealtyRealEstateCertById",
@@ -365,12 +501,13 @@ declareCommon.deleteDeclareRealtyData = function (ids,callback) {
         }
     });
 };
+
 //不动产save
-declareCommon.saveDeclareRealtyData = function (data,callback) {
+declareCommon.saveDeclareRealtyData = function (data, callback) {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-        data: {formData:JSON.stringify(data)},
+        data: {formData: JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -385,7 +522,7 @@ declareCommon.saveDeclareRealtyData = function (data,callback) {
 };
 
 //房产初始化并且赋值
-declareCommon.initHouse = function (item,form,fileArr,callback) {
+declareCommon.initHouse = function (item, form, fileArr, callback) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -436,13 +573,13 @@ declareCommon.initHouse = function (item,form,fileArr,callback) {
     }
 
 
-    if (fileArr){
-        $.each(fileArr,function (i,n) {
-            declareCommon.showFile(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
-            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
+    if (fileArr) {
+        $.each(fileArr, function (i, n) {
+            declareCommon.showFile(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
         });
     }
-    if (callback){
+    if (callback) {
         callback();
     }
 
@@ -452,7 +589,7 @@ declareCommon.initHouse = function (item,form,fileArr,callback) {
 
 };
 //土地初始化并且赋值
-declareCommon.initLand = function (item,form,fileArr,callback) {
+declareCommon.initLand = function (item, form, fileArr, callback) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -477,6 +614,32 @@ declareCommon.initLand = function (item,form,fileArr,callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
     });
+    //绑定变更事件
+    frm.find("select.landRightNature").off('change').on('change', function () {
+        var landRightNatureId = frm.find("select.landRightNature").val();
+        if (landRightNatureId) {
+            AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
+                console.log(landRightNatureData.name)
+                if (landRightNatureData.name == "划拨") {
+                    frm.find("input[name='terminationDate']").parent().parent().hide();
+                } else {
+                    frm.find("input[name='terminationDate']").parent().parent().show();
+                }
+            });
+        }
+    });
+    if(item.landRightNature){
+        var landRightNatureId = item.landRightNature;
+        AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
+            if (landRightNatureData.name == "划拨") {
+                $("#terminationDate_d").parent().parent().hide();
+                frm.find("input[name='terminationDate']").parent().parent().hide();
+            } else {
+                $("#terminationDate_d").parent().parent().show();
+                frm.find("input[name='terminationDate']").parent().parent().show();
+            }
+        });
+    }
     try {
         //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
         frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));
@@ -489,13 +652,13 @@ declareCommon.initLand = function (item,form,fileArr,callback) {
         frm.find("label[name='registrationDate']").html(formatDate(item.registrationDate));
     } catch (e) {
     }
-    if (fileArr){
-        $.each(fileArr,function (i,n) {
-            declareCommon.showFile(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
-            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
+    if (fileArr) {
+        $.each(fileArr, function (i, n) {
+            declareCommon.showFile(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
         });
     }
-    if (callback){
+    if (callback) {
         callback();
     }
 
@@ -505,7 +668,7 @@ declareCommon.initLand = function (item,form,fileArr,callback) {
 };
 
 //不动产初始化并且赋值
-declareCommon.initDeclareRealty = function (item,form,fileArr,callback) {
+declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -536,6 +699,33 @@ declareCommon.initDeclareRealty = function (item,form,fileArr,callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         frm.find("select[name='nature']").empty().html(html).trigger('change');
     });
+    //绑定变更事件
+    frm.find("select.landRightNature").off('change').on('change', function () {
+        var landRightNatureId = frm.find("select.landRightNature").val();
+        if (landRightNatureId) {
+            AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
+                console.log(landRightNatureData.name)
+                if (landRightNatureData.name == "划拨") {
+                    frm.find("input[name='useEndDate']").parent().parent().hide();
+                } else {
+                    frm.find("input[name='useEndDate']").parent().parent().show();
+                }
+            });
+        }
+    });
+    if(item.landRightNature){
+        var landRightNatureId = item.landRightNature;
+        AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
+            if (landRightNatureData.name == "划拨") {
+                $("#useEndDateFmt_d").parent().parent().hide();
+                frm.find("input[name='useEndDate']").parent().parent().hide();
+            } else {
+                $("#useEndDateFmt_d").parent().parent().show();
+                frm.find("input[name='useEndDate']").parent().parent().show();
+            }
+        });
+    }
+
     try {
         //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
         frm.find("input[name='registrationTime']").val(formatDate(item.registrationTime));
@@ -555,13 +745,13 @@ declareCommon.initDeclareRealty = function (item,form,fileArr,callback) {
         frm.find("label[name='terminationDate']").html(formatDate(item.terminationDate));
     } catch (e) {
     }
-    if (fileArr){
-        $.each(fileArr,function (i,n) {
-            declareCommon.showFile(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
-            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0' , true);
+    if (fileArr) {
+        $.each(fileArr, function (i, n) {
+            declareCommon.showFile(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
         });
     }
-    if (callback){
+    if (callback) {
         callback();
     }
 
