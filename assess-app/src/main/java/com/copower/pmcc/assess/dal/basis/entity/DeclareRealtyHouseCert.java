@@ -90,6 +90,8 @@ public class DeclareRealtyHouseCert {
 
     private Date gmtModified;
 
+    private String groundNum;
+
     public Integer getId() {
         return id;
     }
@@ -432,5 +434,13 @@ public class DeclareRealtyHouseCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getGroundNum() {
+        return groundNum;
+    }
+
+    public void setGroundNum(String groundNum) {
+        this.groundNum = groundNum == null ? null : groundNum.trim();
     }
 }

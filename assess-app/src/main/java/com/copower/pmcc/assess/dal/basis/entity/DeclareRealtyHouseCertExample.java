@@ -2945,6 +2945,76 @@ public class DeclareRealtyHouseCertExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andGroundNumIsNull() {
+            addCriterion("ground_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumIsNotNull() {
+            addCriterion("ground_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumEqualTo(String value) {
+            addCriterion("ground_num =", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumNotEqualTo(String value) {
+            addCriterion("ground_num <>", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumGreaterThan(String value) {
+            addCriterion("ground_num >", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumGreaterThanOrEqualTo(String value) {
+            addCriterion("ground_num >=", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumLessThan(String value) {
+            addCriterion("ground_num <", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumLessThanOrEqualTo(String value) {
+            addCriterion("ground_num <=", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumLike(String value) {
+            addCriterion("ground_num like", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumNotLike(String value) {
+            addCriterion("ground_num not like", value, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumIn(List<String> values) {
+            addCriterion("ground_num in", values, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumNotIn(List<String> values) {
+            addCriterion("ground_num not in", values, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumBetween(String value1, String value2) {
+            addCriterion("ground_num between", value1, value2, "groundNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroundNumNotBetween(String value1, String value2) {
+            addCriterion("ground_num not between", value1, value2, "groundNum");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

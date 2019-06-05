@@ -650,6 +650,8 @@ public class DeclarePublicService {
                 if (certName.contains(type.getName())) {
                     declareRealtyHouseCert.setType(type.getId().toString());
                     declareRealtyHouseCert.setLocation(StringUtils.substringBetween(declareRealtyHouseCert.getCertName(), "", type.getName()));
+                }else{
+                    declareRealtyHouseCert.setLocation(StringUtils.substringBetween(declareRealtyHouseCert.getCertName(), "", "第"));
                 }
             }
         } else {
@@ -688,9 +690,13 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
             declareRealtyHouseCert.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(7))));
         }
-        //房屋坐落
+        //丘地号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))) {
-            declareRealtyHouseCert.setBeLocated(PoiUtils.getCellValue(row.getCell(8)));
+            declareRealtyHouseCert.setGroundNum(PoiUtils.getCellValue(row.getCell(8)));
+        }
+        //房屋坐落
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(9)))) {
+            declareRealtyHouseCert.setBeLocated(PoiUtils.getCellValue(row.getCell(9)));
             Map<String, String> locatedMap = beLocatedSplicing(declareRealtyHouseCert.getBeLocated());
             if (!locatedMap.isEmpty()) {
                 if (locatedMap.containsKey(STREET)) {
@@ -718,7 +724,7 @@ public class DeclarePublicService {
         }
         BaseDataDic typeDic = null;
         //验证基础字典中数据
-        String planningUse = PoiUtils.getCellValue(row.getCell(9));
+        String planningUse = PoiUtils.getCellValue(row.getCell(10));
         if (StringUtils.isNotBlank(planningUse)) {
             typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
             if (typeDic == null) {
@@ -731,11 +737,11 @@ public class DeclarePublicService {
         }
 
         //房屋结构
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
-            declareRealtyHouseCert.setHousingStructure(PoiUtils.getCellValue(row.getCell(10)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
+            declareRealtyHouseCert.setHousingStructure(PoiUtils.getCellValue(row.getCell(11)));
         }
         //验证基础字典中数据
-        String nature = PoiUtils.getCellValue(row.getCell(11));
+        String nature = PoiUtils.getCellValue(row.getCell(12));
         if (StringUtils.isNotBlank(nature)) {
             typeDic = baseDataDicService.getDataDicByName(natures, nature);
             if (typeDic == null) {
@@ -748,63 +754,58 @@ public class DeclarePublicService {
             }
         }
         //证载面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
-            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(12)))) {
-                declareRealtyHouseCert.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(12))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
+            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(13)))) {
+                declareRealtyHouseCert.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
             } else {
                 builder.append(String.format("\n第%s行异常：证载面积应填写数字", i));
                 return false;
             }
         }
         //套内面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
-            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(13)))) {
-                declareRealtyHouseCert.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
+            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(14)))) {
+                declareRealtyHouseCert.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(14))));
             } else {
                 builder.append(String.format("\n第%s行异常：套内面积应填写数字", i));
                 return false;
             }
         }
         //总层数
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
-            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(14)))) {
-                declareRealtyHouseCert.setFloorCount(PoiUtils.getCellValue(row.getCell(14)));
-            } else {
-                builder.append(String.format("\n第%s行异常：总层数应填写数字", i));
-                return false;
-            }
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
+            declareRealtyHouseCert.setFloorCount(PoiUtils.getCellValue(row.getCell(15)));
         }
         //土地使用年限起
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
-            declareRealtyHouseCert.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(15))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
+            declareRealtyHouseCert.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(16))));
         }
         //土地使用年限止
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
-            declareRealtyHouseCert.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(16))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {
+            declareRealtyHouseCert.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(17))));
         } else {
             builder.append(String.format("\n第%s行异常：土地使用年限止必须填写", i));
             return false;
         }
         //公摊面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {
-            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(17)))) {
-                declareRealtyHouseCert.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(17))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))) {
+            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(18)))) {
+                declareRealtyHouseCert.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(18))));
             } else {
                 builder.append(String.format("\n第%s行异常：公摊面积应填写", i));
                 return false;
             }
         }
         //土地取得方式
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))) {
-            declareRealtyHouseCert.setLandAcquisition(PoiUtils.getCellValue(row.getCell(18)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))) {
+            declareRealtyHouseCert.setLandAcquisition(PoiUtils.getCellValue(row.getCell(19)));
         }
         //登记机关
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))) {
-            declareRealtyHouseCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(19)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(20)))) {
+            declareRealtyHouseCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(20)));
         }
         //其它
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(20)))) {
-            declareRealtyHouseCert.setOther(PoiUtils.getCellValue(row.getCell(20)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(21)))) {
+            declareRealtyHouseCert.setOther(PoiUtils.getCellValue(row.getCell(21)));
         }
 
         return true;
