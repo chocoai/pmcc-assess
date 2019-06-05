@@ -18,6 +18,7 @@ public class DeclareRealtyHouseCertVo extends DeclareRealtyHouseCert {
     private String useEndDateFmt;
     private String natureName;
     private String publicSituationName;
+    private Integer centerId;
 
     public String getPublicSituationName() {
         return publicSituationName;
@@ -97,5 +98,13 @@ public class DeclareRealtyHouseCertVo extends DeclareRealtyHouseCert {
 
     public void setPlanningUseName(String planningUseName) {
         this.planningUseName = planningUseName;
+    }
+
+    public Integer getCenterId() {
+        return centerId;
+    }
+
+    public void setCenterId(Integer centerId) {
+        this.centerId = centerId;
     }
 }

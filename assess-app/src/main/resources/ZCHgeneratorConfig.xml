@@ -48,7 +48,7 @@
             <!--<columnOverride column="path_array" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_initiate_unit_information" domainObjectName="InitiateUnitInformation">
+        <table tableName="tb_declare_build_engineering_and_equipment_center" domainObjectName="DeclareBuildEngineeringAndEquipmentCenter">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

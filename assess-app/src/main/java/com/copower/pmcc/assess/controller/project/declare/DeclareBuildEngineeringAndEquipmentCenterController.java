@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project.declare;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @Auther: zch
  * @Date: 2018/11/22 17:39
- * @Description:在建工程中间表
+ * @Description:申报中间表
  */
 @RequestMapping(value = "/declareBuildEngineeringAndEquipmentCenter")
 @RestController
@@ -55,7 +56,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
         try {
             if (declareBuildEngineeringAndEquipmentCenter != null) {
                 return HttpResult.newCorrectResult(declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(declareBuildEngineeringAndEquipmentCenter));
-            }else {
+            } else {
                 return HttpResult.newErrorResult("异常");
             }
         } catch (Exception e) {
@@ -65,9 +66,13 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
     }
 
     @RequestMapping(value = "/copyDeclareBuildEngineeringAndEquipmentCenter", method = {RequestMethod.POST}, name = "在建工程中间表 copy")
-    public HttpResult copy(Integer copyId,String type,String ids){
+    public HttpResult copy(Integer copyId, String type, String ids) {
         try {
-            declareBuildEngineeringAndEquipmentCenterService.copy(ids,copyId,type);
+            if (StringUtils.isNotEmpty(type)) {
+                declareBuildEngineeringAndEquipmentCenterService.copy(ids, copyId, type);
+            }else {
+                declareBuildEngineeringAndEquipmentCenterService.copy(ids, copyId);
+            }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
@@ -75,10 +80,21 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
         }
     }
 
-    @PostMapping(value = "/deleteByType",name = "根据type删除子项id")
-    public HttpResult deleteByType(String type,Integer dataId,Integer centerId){
+    @PostMapping(value = "/deleteDeclareBuildEngineeringAndEquipmentCenterById", name = "删除")
+    public HttpResult deleteById(String id) {
         try {
-            declareBuildEngineeringAndEquipmentCenterService.deleteByType(type, dataId,centerId);
+            declareBuildEngineeringAndEquipmentCenterService.deleteIds(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @PostMapping(value = "/deleteByType", name = "根据type删除子项id")
+    public HttpResult deleteByType(String type, Integer centerId) {
+        try {
+            declareBuildEngineeringAndEquipmentCenterService.deleteByType(type, centerId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

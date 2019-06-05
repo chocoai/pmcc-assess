@@ -17,6 +17,8 @@ public class DeclareBuildEngineeringAndEquipmentCenter {
 
     private Integer landId;
 
+    private Integer houseId;
+
     private Integer indicatorId;
 
     private Integer realEstateId;
@@ -87,6 +89,14 @@ public class DeclareBuildEngineeringAndEquipmentCenter {
 
     public void setLandId(Integer landId) {
         this.landId = landId;
+    }
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
     }
 
     public Integer getIndicatorId() {
