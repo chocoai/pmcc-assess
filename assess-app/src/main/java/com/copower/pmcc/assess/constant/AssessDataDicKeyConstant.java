@@ -124,6 +124,7 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_TAX_RATE_ALLOCATION_TRANSACTION_CHARGES = "data.tax.rate.allocation.transaction.charges"; //交易手续费
     public static final String DATA_TAX_RATE_ALLOCATION_OTHER_TAXES_FEE = "data.tax.rate.allocation.other.taxes.fee"; //其它税费
     public static final String DATA_TAX_RATE_ALLOCATION_CORPORATE_INCOME_TAX = "data.tax.rate.allocation.corporate.income.tax"; //所得税
+    public static final String DATA_TAX_RATE_ALLOCATION_DISPOSAL_FEE = "data.tax.rate.allocation.disposal.fee"; //	预计处置费用
 
     /**
      * 工作方案
