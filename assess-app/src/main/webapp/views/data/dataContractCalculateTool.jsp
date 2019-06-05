@@ -22,22 +22,23 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group ">
+                    <c:if test="${readonly ne true}">
+                        <form id="frmQuery" class="form-horizontal">
+                            <div class="form-group ">
 
-                            <div class="col-sm-3">
-                                <%--   <button type="button" class="btn btn-primary" onclick="dataContractCalculateTool.prototype.loadDataDicList()">
-                                       查询
-                                   </button>--%>
+                                <div class="col-sm-3">
+                                        <%--   <button type="button" class="btn btn-primary" onclick="dataContractCalculateTool.prototype.loadDataDicList()">
+                                               查询
+                                           </button>--%>
 
-                                <button type="button" class="btn btn-success"
-                                        onclick="dataContractCalculateTool.prototype.showModel()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
+                                    <button type="button" class="btn btn-success"
+                                            onclick="dataContractCalculateTool.prototype.showModel()"
+                                            data-toggle="modal" href="#divBox"> 新增
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-
-                    </form>
+                        </form>
+                    </c:if>
                     <table class="table table-bordered" id="tb_FatherList">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -70,6 +71,7 @@
             cols.push({field: 'referenceNumber', title: '文号'});
             cols.push({field: 'customerName', title: '客户名称'});
             cols.push({field: 'fileViewName', title: '附件'});
+            <c:if test="${readonly ne true}">
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -80,6 +82,7 @@
                     return str;
                 }
             });
+            </c:if>
             $("#" + dataContractCalculateTool.prototype.config().table).bootstrapTable('destroy');
             TableInit(dataContractCalculateTool.prototype.config().table, "${pageContext.request.contextPath}/dataContractCalculateTool/list", cols, {}, {
                 showColumns: false,
@@ -174,7 +177,7 @@
                 deleteFlag: true
             })
         },
-        loadFiles:function (tableId) {
+        loadFiles: function (tableId) {
             FileUtils.uploadFiles({
                 target: "uploadFile",
                 onUpload: function (file) {

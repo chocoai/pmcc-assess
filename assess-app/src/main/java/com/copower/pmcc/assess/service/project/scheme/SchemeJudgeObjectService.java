@@ -4,6 +4,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -534,6 +535,27 @@ public class SchemeJudgeObjectService {
         }
     }
 
+    /**
+     * 回滚项目到方案阶段
+     *
+     * @param projectId
+     * @param planId
+     */
+    public void rollBackToProgramme(Integer projectId, Integer planId) {
+        //将整个项目的阶段任务回滚到方案阶段
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
+        List<ProjectPlan> planList = projectPlanService.getProjectplanByProjectId(projectId, null);
+        for (ProjectPlan plan : planList) {
+            if (plan.getStageSort().intValue() > projectPlan.getStageSort().intValue()) {
+                //设置状态为等待 删除阶段下的任务
+                plan.setProjectStatus(ProjectStatusEnum.WAIT.getKey());
+                plan.setBisAutoComplete(false);
+                projectPlanService.updateProjectPlan(plan);
+                projectPlanDetailsService.deletePlanDetailsByPlanId(plan.getId());
+            }
+        }
+        projectPlanDetailsService.deletePlanDetailsByPlanId(planId);
+    }
 
     /**
      * 提交方案
@@ -549,10 +571,8 @@ public class SchemeJudgeObjectService {
         if (count > 0)
             throw new BusinessException("还有委估对象未设置评估方法请检查");
         saveProgrammeAll(schemeProgrammeDtos);
-        projectPlanDetailsService.deletePlanDetailsByPlanId(planId);
+        rollBackToProgramme(projectId, planId);
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectId);
-
-
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);

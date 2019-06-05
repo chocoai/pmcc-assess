@@ -93,19 +93,28 @@ public class DataTaxRateAllocationService {
         if (baseDataDic == null) return null;
         DataTaxRateAllocation where = new DataTaxRateAllocation();
         where.setType(baseDataDic.getId());
-        if (StringUtils.isBlank(province) && StringUtils.isBlank(city) && StringUtils.isBlank(district)) {
-            where.setBisNationalUnity(true);
-        } else {
-            where.setBisNationalUnity(false);
-            where.setProvince(province);
-            where.setCity(city);
-            //当区县配置数据才获取否则取上级区域
-            if (StringUtils.isNotBlank(district) && dataTaxRateAllocationDao.hasDataTaxRate(baseDataDic.getId(), province, city, district)) {
-                where.setDistrict(district);
+        List<DataTaxRateAllocation> rateAllocations = dataTaxRateAllocationDao.getDataTaxRateAllocationList(where);
+        if(CollectionUtils.isEmpty(rateAllocations)) return null;
+        if(rateAllocations.size()==1) return rateAllocations.get(0);
+
+        if(StringUtils.isNotBlank(district)){
+            for (DataTaxRateAllocation rateAllocation : rateAllocations) {
+                if(StringUtils.isNotBlank(rateAllocation.getDistrict())&&district.equals(rateAllocation.getDistrict()))
+                    return rateAllocation;
             }
         }
-        List<DataTaxRateAllocation> rateAllocations = dataTaxRateAllocationDao.getDataTaxRateAllocationList(where);
-        if (CollectionUtils.isEmpty(rateAllocations)) return null;
+        if(StringUtils.isNotBlank(city)){
+            for (DataTaxRateAllocation rateAllocation : rateAllocations) {
+                if(StringUtils.isNotBlank(rateAllocation.getCity())&&city.equals(rateAllocation.getCity()))
+                    return rateAllocation;
+            }
+        }
+        if(StringUtils.isNotBlank(province)){
+            for (DataTaxRateAllocation rateAllocation : rateAllocations) {
+                if(StringUtils.isNotBlank(rateAllocation.getProvince())&&province.equals(rateAllocation.getProvince()))
+                    return rateAllocation;
+            }
+        }
         return rateAllocations.get(0);
     }
 

@@ -47,7 +47,8 @@
 </div>
 <%@include file="/views/document/bookmark.jsp" %>
 <%@include file="/views/document/fieldsSetting.jsp" %>
-<div id="modalTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+<div id="modalTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class='modal-header'>
@@ -109,6 +110,7 @@
                 };
                 return formData;
             },
+            editFlag: true,
             deleteFlag: true
         }, {
             onUploadComplete: function (file, result) {
@@ -125,6 +127,7 @@
                 tableName: "tb_document_template",
                 tableId: $("#templateId").val()
             },
+            editFlag: true,
             deleteFlag: true
         });
     }
@@ -143,7 +146,7 @@
         });
         TableInit(templateTable, "${pageContext.request.contextPath}/DocumentTemplate/getDocumentTemplate", cols, {}, {
             showColumns: false,
-            toolbar:"toolbar_template",
+            toolbar: "toolbar_template",
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }

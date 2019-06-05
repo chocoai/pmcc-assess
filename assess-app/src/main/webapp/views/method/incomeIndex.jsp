@@ -149,10 +149,10 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                结束时间<span class="symbol required"></span>
+                                结束时间
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" required name="endDate" placeholder="结束时间"
+                                <input type="text" name="endDate" placeholder="结束时间"
                                        data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
                                        readonly="readonly">
                             </div>

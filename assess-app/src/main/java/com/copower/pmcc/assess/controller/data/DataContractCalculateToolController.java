@@ -31,6 +31,14 @@ public class DataContractCalculateToolController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/viewonly", name = "转到index页面 ", method = {RequestMethod.GET})
+    public ModelAndView viewonly() {
+        String view = "/data/dataContractCalculateTool";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject("readonly", true);
+        return modelAndView;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo list() {

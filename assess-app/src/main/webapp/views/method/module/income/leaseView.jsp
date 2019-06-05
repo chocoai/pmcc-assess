@@ -535,7 +535,7 @@
                 return AssessCommon.pointToPercent(value);
             }
         });
-        cols.push({field: 'landUseTax', title: '增长率说明'});
+        cols.push({field: 'rentalGrowthRateExplain', title: '增长率说明'});
         $("#tb_lease_parameter_list").bootstrapTable('destroy');
         TableInit("tb_lease_parameter_list", "${pageContext.request.contextPath}/income/getDateSectionList", cols, {
             operationMode: incomeIndex.getOperationMode(),

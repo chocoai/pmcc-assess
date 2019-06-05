@@ -69,7 +69,7 @@ public class ProjectNumberRecordService {
         } else {
             //根据配置判断是否存在同号行为，如技术报告使用结果报告号
             //如果为同号配置，则根据项目区域及报告类型取得对应的报告编号
-            if (numberRule.getSameReportType() != null) {
+            if (numberRule.getSameReportType() != null && numberRule.getSameReportType()>0){
                 numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectId, areaId, year, numberRule.getSameReportType());
                 if (numberRecord != null) {
                     number = numberRecord.getNumber();
@@ -77,7 +77,7 @@ public class ProjectNumberRecordService {
                 } else {
                     //暂不处理
                 }
-            } else {
+            } else{
                 //直接取最大号
                 reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber).invoke();
                 number = reportNumberService.getNumber();

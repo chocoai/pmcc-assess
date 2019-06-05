@@ -261,6 +261,16 @@ public class BaseAttachmentService {
     }
 
     /**
+     * 获取附件编辑html
+     *
+     * @param baseAttachment
+     * @return
+     */
+    public String getEditHtml(SysAttachmentDto baseAttachment,Boolean allowSave) {
+        return erpRpcAttachmentService.getAttachmentEditHtml(baseAttachment,allowSave);
+    }
+
+    /**
      * 下载ftp附件到本地
      *
      * @param attachmentId

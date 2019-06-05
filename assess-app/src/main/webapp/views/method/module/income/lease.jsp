@@ -236,7 +236,8 @@
                                 有效收缴率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="additionalCapture" placeholder="有效收缴率" class="form-control x-percent"
+                                <input type="text" name="additionalCapture" placeholder="有效收缴率"
+                                       class="form-control x-percent"
                                        required="required">
                             </div>
                         </div>
@@ -245,7 +246,8 @@
                                 有效收缴率说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="additionalCaptureRemark" placeholder="有效收缴率说明" class="form-control"
+                                <input type="text" name="additionalCaptureRemark" placeholder="有效收缴率说明"
+                                       class="form-control"
                                        required="required">
                             </div>
                         </div>
@@ -502,7 +504,7 @@
             <input type="hidden" data-name="rentalGrowthRate" value="{rentalGrowthRate}">
             <label>{beginDate}</label>
         </td>
-        <td><label>{endDate}</label></td>
+        <td><label data-name="endDate">{endDate}</label></td>
         <td><label data-name="yearCount">{yearCount}</label></td>
         <td><label data-name="incomeTotal">{incomeTotal}</label></td>
         <td><label data-name="costTotal">{costTotal}</label></td>
@@ -711,7 +713,7 @@
             return false;
         }
         var data = formParams("frm_lease_cost");
-        console.log(data) ;
+        console.log(data);
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/updateLeaseCost",
@@ -1010,24 +1012,43 @@
         r = parseFloat(r);
         var incomePriceTotal = 0;//收益价格合计
         $("#leaseResultBody").find('tr').each(function () {
-            var n = $(this).find('[data-name=yearCount]').text();
-            if (!AssessCommon.isNumber(n)) return false;
-            n = parseFloat(n);//期限
-
-            var g = $(this).find('[data-name=rentalGrowthRate]').val();
-            if (!AssessCommon.isNumber(g)) return false;
-            g = parseFloat(g);//租金增长率
-
-            var h = (1 - Math.pow((1 + g) / (1 + r), n)).toFixed(6);//年期修正系数
-            if (h <= 0) return false;
-            var k = (h / (r - g)).toFixed(6);//收益现值系数
-
-            $(this).find('[data-name=correctionFactor]').text(h);
-            $(this).find('[data-name=presentValueFactor]').text(k);
-            var netProfit = $(this).find('[data-name=netProfit]').text();
+            //判断有无结束时间，确定其计算方法
+            var endDate = $(this).find('[data-name=endDate]').text();
+            var netProfit = $(this).find('[data-name=netProfit]').text();//净收益
             if (!AssessCommon.isNumber(netProfit)) return false;
             netProfit = parseFloat(netProfit);
-            var incomePrice = (netProfit * k).toFixed(2);
+            var incomePrice = 0;
+            if (endDate) {
+                var n = $(this).find('[data-name=yearCount]').text();
+                if (!AssessCommon.isNumber(n)) return false;
+                n = parseFloat(n);//期限
+
+                var g = $(this).find('[data-name=rentalGrowthRate]').val();
+                if (!AssessCommon.isNumber(g)) return false;
+                g = parseFloat(g);//租金增长率
+
+                var h = (1 - Math.pow((1 + g) / (1 + r), n)).toFixed(6);//年期修正系数
+                if (h <= 0) return false;
+                var k = (h / (r - g)).toFixed(6);//收益现值系数
+
+                $(this).find('[data-name=correctionFactor]').text(h);
+                $(this).find('[data-name=presentValueFactor]').text(k);
+                incomePrice = (netProfit * k).toFixed(2);
+            } else {
+                //找出前几段的年限总和，如果为0则不参与运算
+                var n = 0;
+                $(this).prevAll().each(function () {
+                    var yearCount = $(this).find('[data-name=yearCount]').text();
+                    if (AssessCommon.isNumber(yearCount)) {
+                        n += parseFloat(yearCount);
+                    }
+                })
+                if (n == 0) {
+                    incomePrice = ((netProfit / r) / (1 + r)).toFixed(2);
+                } else {
+                    incomePrice = ((netProfit / r) / Math.pow((1 + r), n)).toFixed(2);
+                }
+            }
             incomePriceTotal = incomePriceTotal + parseFloat(incomePrice);
             $(this).find('[data-name=incomePrice]').text(incomePrice);//收益价格
         })

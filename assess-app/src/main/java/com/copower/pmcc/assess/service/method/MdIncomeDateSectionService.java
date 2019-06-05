@@ -50,7 +50,9 @@ public class MdIncomeDateSectionService {
      */
     @Transactional
     public void saveDateSection(MdIncomeDateSection mdIncomeDateSection) {
-        int diffDays = DateUtils.diffDate(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate());
+        int diffDays = 0;
+        if (mdIncomeDateSection.getEndDate() != null)
+            diffDays = DateUtils.diffDate(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate());
         BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
         if (mdIncomeDateSection.getId() != null && mdIncomeDateSection.getId() > 0) {
             mdIncomeDateSection.setYearCount(yearCount);

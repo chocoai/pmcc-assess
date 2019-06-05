@@ -92,7 +92,7 @@ public class DataContractCalculateToolService {
             StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentDtos) {
                 if (attachmentDto.getTableId().equals(reportAnalysis.getId())) {
-                    stringBuilder.append(baseAttachmentService.getViewHtml(attachmentDto));
+                    stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto,false));
                 }
             }
             vo.setFileViewName(stringBuilder.toString());
