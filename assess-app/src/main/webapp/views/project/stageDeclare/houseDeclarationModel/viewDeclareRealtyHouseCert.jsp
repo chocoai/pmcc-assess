@@ -12,44 +12,61 @@
     <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="btn-group">
-                    <div type="button" class="btn btn-success" onclick="assessCommonHouse.showAddModelHouse()"
-                         data-toggle="modal"> 新增
+                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                    <div class="btn-group">
+                        <div type="button" class="btn btn-success" onclick="assessCommonHouse.showAddModelHouse()"
+                             data-toggle="modal"> 新增
+                        </div>
+                        <div type="button" class="btn btn-primary" onclick="assessCommonHouse.editHouse()"> 编辑</div>
+                        <c:if test="${projectPlanDetails.bisRestart ne true}">
+                            <div type="button" class="btn btn-primary" onclick="assessCommonHouse.deleteHouse()"> 删除</div>
+                        </c:if>
+                        <div type="button" class="btn btn-primary" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)"> 下载模板</div>
+                        <div type="button" class="btn btn-primary" onclick="$('#ajaxFileUploadHouse').val('').trigger('click')"> 导入</div>
                     </div>
-                    <div type="button" class="btn btn-primary" onclick="assessCommonHouse.editHouse()"> 编辑</div>
-                    <c:if test="${projectPlanDetails.bisRestart ne true}">
-                        <div type="button" class="btn btn-primary" onclick="assessCommonHouse.deleteHouse()"> 删除</div>
-                    </c:if>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入房产证
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a>
-                        </li>
-                        <li><a onclick="$('#ajaxFileUploadHouse').val('').trigger('click')">导入</a>
-                        </li>
-                    </ul>
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)"><span>下载模板</span></a>
+                            </li>
+                            <li><a onclick="$('#ajaxFileUploadHouseLand').val('').trigger('click')"><span>导入</span></a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <a onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)"><span>下载模板</span></a>
-                        </li>
-                        <li><a onclick="$('#ajaxFileUploadHouseLand').val('').trigger('click')"><span>导入</span></a>
-                        </li>
-                    </ul>
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                    <div class="btn-group">
+                        <div class="btn btn-primary" onclick="assessCommonHouse.copyData();"> <i class="fa fa-files-o" aria-hidden="true"></i> 复制</div>
+                        <div class="btn btn-primary" onclick="assessCommonHouse.pasteAll();"> <i class="fa fa-clipboard" aria-hidden="true"></i>粘贴</div>
+                    </div>
+                </div>
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                    <div class="input-group" id="houseHandleInputGroup">
+                        <input type="hidden" name="id">
+                        <input type="text" readonly="readonly" name="name" class="form-control" placeholder="暂无复制数据">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default docs-tooltip"
+                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                    data-toggle="tooltip" data-original-title="清除">
+                            <i class="fa fa-trash-o"></i>
+                            </button>
+                            </span>
+                    </div>
                 </div>
             </div>
+
             <div class="form-group">
-                <div class="x-valid">
-                    <table class="table table-bordered" id="tableDeclareRealtyHouseCert">
-                        <!-- cerare document add ajax data-->
-                    </table>
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <div class="x-valid">
+                        <table class="table table-bordered" id="tableDeclareRealtyHouseCert">
+                            <!-- cerare document add ajax data-->
+                        </table>
+                    </div>
                 </div>
             </div>
         </form>
@@ -127,7 +144,7 @@
             </div>
             <form id="frmSonDeclareRealtyLandCert" class="form-horizontal">
                 <input type="hidden" name="id">
-                <input type="hidden" name="pid">
+                <input type="hidden" name="centerId">
                 <div class="modal-body">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -154,6 +171,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
+                    <input type="button" class="btn btn-warning" value="删除"  onclick="assessCommonHouse.deleteLandCenter()">
                     <button type="button" class="btn btn-primary"
                             onclick="assessCommonHouse.saveAndUpdateLand();">
                         保存
