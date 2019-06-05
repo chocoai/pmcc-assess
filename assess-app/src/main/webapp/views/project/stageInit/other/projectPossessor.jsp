@@ -47,7 +47,7 @@
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pSociologyCode"
                                value="${projectInfo.possessorVo.pSociologyCode}"
-                               class="form-control" data-rule-number='true' name="number" required="required">
+                               class="form-control"  name="number" required="required">
                     </div>
                 </div>
             </div>
