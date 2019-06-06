@@ -253,7 +253,18 @@ public class GenerateBaseDataService {
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.legalPerson.getId())) {
             value = projectInfo.getConsignorVo().getCsEntrustmentUnit();
         }
+        if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
+            value = projectInfo.getConsignorVo().getCsName();
+        }
         return value;
+    }
+
+    //报告使用单位
+    public String getReportUnitString(){
+        if (StringUtils.isNotEmpty(projectInfo.getUnitInformationVo().getuUseUnitName())){
+            return projectInfo.getUnitInformationVo().getuUseUnitName() ;
+        }
+        return "/" ;
     }
 
     /**
@@ -442,12 +453,12 @@ public class GenerateBaseDataService {
      *
      * @throws Exception
      */
-    public String getSeparationCertificateUses() throws Exception {
+    public String getSeparationCertificateUses(boolean explainShow) throws Exception {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
             map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "证载用途为", false);
+        return generateCommonMethod.judgeSummaryDesc(map, explainShow?"证载用途为":"", false);
     }
 
     /**
@@ -2034,12 +2045,12 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getSetUse() {
+    public String getSetUse( boolean explainShow) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectDeclareList) {
             map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "设定用途为", false);
+        return generateCommonMethod.judgeSummaryDesc(map, explainShow?"设定用途为":"", false);
     }
 
 
@@ -3323,6 +3334,7 @@ public class GenerateBaseDataService {
         return value;
     }
 
+
     /**
      * 维护保养状况
      *
@@ -4127,8 +4139,8 @@ public class GenerateBaseDataService {
         final String buyerPayment = "买方缴纳";
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList = schemeLiquidationAnalysisService.getAnalysisItemListByAreaId(areaId);
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
+        if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)){
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
                     if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentOne.name())) {
                         if (Objects.equal(oo.getTaxesBurden(), buyerPayment)) {

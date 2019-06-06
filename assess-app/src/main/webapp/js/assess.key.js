@@ -48,7 +48,7 @@ AssessDBKey.SchemeReimbursement = "tb_scheme_reimbursement";
 AssessDBKey.SchemeReportFileCustom = "tb_scheme_report_file_custom";
 
 AssessDBKey.BaseFileTemplate = "tb_base_file_template";
-AssessDBKey.GenerateReportGeneration = "tb_generate_report_generation";
+AssessDBKey.GenerateReportInfo = "tb_generate_report_info";
 
 
 AssessDBKey.DeclareRealtyHouseCert = "tb_declare_realty_house_cert";
