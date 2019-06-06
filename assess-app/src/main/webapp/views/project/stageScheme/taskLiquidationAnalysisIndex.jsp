@@ -171,6 +171,14 @@
                         }
                         break;
                     }
+                    //地方教育税附加
+                    case "data.tax.rate.allocation.local.education.tax.additional": {
+                        if (rate && evaluationPrice) {
+                            var temp = evaluationPrice / 1.05;
+                            price = Number(temp * salesTax * rate).toFixed(2);
+                        }
+                        break;
+                    }
                     //印花税
                     case "data.tax.rate.allocation.stamp.duty": {
                         price = Number(evaluationPrice * rate).toFixed(2);
@@ -338,9 +346,13 @@
         //城建税率
         var constructionTax = $("input[data-key='data.tax.rate.allocation.construction.tax']").attr('data-value');
         var constructionPrice = "price_data.tax.rate.allocation.construction.tax";
-        //地方教育税附加率
+        //教育税附加率
         var educationTax = $("input[data-key='data.tax.rate.allocation.education.fee.plus']").attr('data-value');
         var educationPrice = "price_data.tax.rate.allocation.education.fee.plus";
+        //地方教育税附加率
+        var landEducationTax = $("input[data-key='data.tax.rate.allocation.local.education.tax.additional']").attr('data-value');
+        var landEducationPrice = "price_data.tax.rate.allocation.local.education.tax.additional";
+
         var evaluationArea = $("#evaluationArea").attr('value');
         var evaluationPrice = $("#evaluationPrice").attr('value');
         var $taxRateValue = $(_this).parent().parent().find('[name^=taxRateValue]');
@@ -358,8 +370,10 @@
                     }
                     $('input[data-key="' + constructionPrice + '"]').attr("data-value", (price * constructionTax).toFixed(2));
                     $('input[data-key="' + educationPrice + '"]').attr("data-value", (price * educationTax).toFixed(2));
+                    $('input[data-key="' + landEducationPrice + '"]').attr("data-value", (price * landEducationTax).toFixed(2));
                     $('input[data-key="' + constructionPrice + '"]').val(fmoney(price * constructionTax, 2));
                     $('input[data-key="' + educationPrice + '"]').val(fmoney(price * educationTax, 2));
+                    $('input[data-key="' + landEducationPrice + '"]').val(fmoney(price * landEducationTax, 2));
                     break;
                 }
                 //城建税
@@ -372,6 +386,14 @@
                 }
                 //教育税附加
                 case "data.tax.rate.allocation.education.fee.plus": {
+                    if (rate && evaluationPrice) {
+                        var temp = evaluationPrice / 1.05;
+                        price = Number(temp * salesTax * rate).toFixed(2);
+                    }
+                    break;
+                }
+                //地方教育税附加
+                case "data.tax.rate.allocation.local.education.tax.additional": {
                     if (rate && evaluationPrice) {
                         var temp = evaluationPrice / 1.05;
                         price = Number(temp * salesTax * rate).toFixed(2);
@@ -395,6 +417,16 @@
                 }
                 //企业所得税
                 case "data.tax.rate.allocation.corporate.income.tax": {
+                    price = Number(evaluationPrice * rate).toFixed(2);
+                    break;
+                }
+                //契税
+                case "data.tax.rate.allocation.deed.tax": {
+                    price = Number(evaluationPrice * rate).toFixed(2);
+                    break;
+                }
+                //预计处置费用
+                case "data.tax.rate.allocation.disposal.fee": {
                     price = Number(evaluationPrice * rate).toFixed(2);
                     break;
                 }
