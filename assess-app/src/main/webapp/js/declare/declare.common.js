@@ -550,7 +550,33 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landAcquisition, function (html, data) {
         frm.find("select[name='landAcquisition']").empty().html(html).trigger('change');
     });
-
+    //绑定变更事件
+    frm.find("select.landAcquisition").off('change').on('change', function () {
+        var landAcquisitionId = frm.find("select.landAcquisition").val();
+        console.log(landAcquisitionId+'==');
+        if (landAcquisitionId) {
+            AssessCommon.getDataDicInfo(landAcquisitionId, function (landAcquisitionData) {
+                console.log(landAcquisitionData.name)
+                if (landAcquisitionData.name == "划拨") {
+                    frm.find("input[name='useEndDate']").parent().parent().hide();
+                } else {
+                    frm.find("input[name='useEndDate']").parent().parent().show();
+                }
+            });
+        }
+    });
+    if(item.landAcquisition){
+        var landAcquisitionId = item.landAcquisition;
+        AssessCommon.getDataDicInfo(landAcquisitionId, function (landAcquisitionData) {
+            if (landAcquisitionData.name == "划拨") {
+                $("#useEndDate_d").parent().parent().hide();
+                frm.find("input[name='useEndDate']").parent().parent().hide();
+            } else {
+                $("#useEndDate_d").parent().parent().show();
+                frm.find("input[name='useEndDate']").parent().parent().show();
+            }
+        });
+    }
 
     try {
         //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢

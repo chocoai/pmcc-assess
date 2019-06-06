@@ -2556,6 +2556,23 @@
             color="#6f5499" size="10"/>
         <div class="form-group">
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地取得方式</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select required="required" name="landAcquisition"
+                            class="form-control search-select select2 landAcquisition">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text"
+                           placeholder="登记机关" name="registrationAuthority" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地使用年限起<span class="symbol required"></span>
                 </label>
@@ -2573,23 +2590,6 @@
                     <input placeholder="土地使用年限止" required
                            name="useEndDate" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate roomTime">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地取得方式</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="landAcquisition"
-                            class="form-control search-select select2">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="登记机关" name="registrationAuthority" class="form-control">
                 </div>
             </div>
         </div>

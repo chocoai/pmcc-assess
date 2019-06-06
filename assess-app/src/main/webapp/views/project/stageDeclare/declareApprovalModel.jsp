@@ -346,26 +346,6 @@
             color="#6f5499" size="10"/>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    土地使用年限起
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="useStartDate"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    土地使用年限止
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="useEndDate"></label>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地取得方式</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="landAcquisitionName"></label>
@@ -378,6 +358,25 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地使用年限起
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="useStartDate"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地使用年限止
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="useEndDate" id="useEndDate_d"></label>
+                </div>
+            </div>
+        </div>
+
 
         <div class="form-group">
             <div class="x-valid">
