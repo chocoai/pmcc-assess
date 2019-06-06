@@ -760,21 +760,21 @@ $(function () {
         else if (province == "海南")
             return "琼";
         else if (province == "四川")
-            return "川/蜀";
+            return "川";
         else if (province == "贵州")
-            return "黔/贵";
+            return "黔";
         else if (province == "云南")
-            return "云/滇";
+            return "云";
         else if (province == "陕西")
-            return "陕/秦";
+            return "陕";
         else if (province == "甘肃")
-            return "甘/陇";
+            return "甘";
         else if (province == "青海")
             return "青";
         else if (province == "台湾")
             return "台";
         else if (province == "内蒙古")
-            return "内蒙古";
+            return "内";
         else if (province == "广西")
             return "桂";
         else if (province == "宁夏")
