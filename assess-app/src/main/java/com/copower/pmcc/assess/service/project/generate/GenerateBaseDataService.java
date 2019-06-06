@@ -1973,6 +1973,7 @@ public class GenerateBaseDataService {
 
     /**
      * 变现能力分析小微快贷
+     *
      * @return
      * @throws Exception
      */
@@ -1988,9 +1989,9 @@ public class GenerateBaseDataService {
         try {
             result = dataReportAnalysisService.getReportLiquidity2(this.projectInfo, areaId);
         } catch (Exception e1) {
-            logger.error(e1.getMessage(),e1);
+            logger.error(e1.getMessage(), e1);
         }
-        result = StringUtils.replacePattern(result,"\\$\\{.*?\\}","") ;
+        result = StringUtils.replacePattern(result, "\\$\\{.*?\\}", "");
         builder.insertHtml(AsposeUtils.getWarpCssHtml(result, keyValueDtoList), false);
         document.save(localPath);
         return localPath;
@@ -2960,6 +2961,8 @@ public class GenerateBaseDataService {
         final Integer colMax = seat ? new Integer(11) : new Integer(10);
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = this.getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList);
+        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价（元/㎡）", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
+        //有他项权力的情况
         if (!reimbursementItemVoListMap.isEmpty()) {
             List<SchemeJudgeObject> listA = Lists.newArrayList();
             List<SchemeJudgeObject> objectList = Lists.newArrayList();
@@ -2967,7 +2970,6 @@ public class GenerateBaseDataService {
             if (CollectionUtils.isNotEmpty(listA)) {
                 objectList = Lists.newArrayList(CollectionUtils.subtract(schemeJudgeObjectList, listA.stream().distinct().collect(Collectors.toList())));
             }
-            LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价（元/㎡）", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
             if (!seat) {
                 strings.remove(1);
             }
@@ -2996,7 +2998,7 @@ public class GenerateBaseDataService {
                             if (declareRecord != null && declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
                                 total = total.add(declareRecord.getPracticalArea().multiply(declareRecord.getPrice()));
                             }
-                            this.writeJudgeObjectResultSurveyInCell(new SchemeReimbursementItemVo(), integerEntry.getKey(), integerEntry.getValue(), builder, doubleLinkedList, seat);
+                            this.writeJudgeObjectResultSurveyInCell(integerEntry.getKey(), integerEntry.getValue(), builder, doubleLinkedList, seat);
                         }
                         Cell cellRange0 = null;
                         for (int j = 0; j < colMax; j++) {
@@ -3043,18 +3045,22 @@ public class GenerateBaseDataService {
                 for (SchemeJudgeObject schemeJudgeObject : objectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply != null) {
-                        schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
+                        this.writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat);
                     }
                 }
-                if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
-                    for (Map.Entry<BasicApply, SchemeJudgeObject> integerEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-                        try {
-                            this.writeJudgeObjectResultSurveyInCell(new SchemeReimbursementItemVo(), integerEntry.getKey(), integerEntry.getValue(), builder, doubleLinkedList, seat);
-                        } catch (Exception e) {
-                        }
-                    }
+            }
+        }
+        //无他项权力的情况
+        if (reimbursementItemVoListMap.isEmpty()){
+            if (!seat) {
+                strings.remove(1);
+            }
+            generateCommonMethod.writeWordTitle(builder, doubleLinkedList, strings);
+            for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
+                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                if (basicApply != null) {
+                    this.writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat);
                 }
-                schemeJudgeObjectLinkedHashMap.clear();
             }
         }
         generateCommonMethod.mergeCellTable(mergeCellModelList, table);
@@ -3064,7 +3070,7 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 估价结果一览表 (肢体)
+     * 估价结果一览表 (子表)
      *
      * @param itemVo
      * @param basicApply
@@ -3073,7 +3079,7 @@ public class GenerateBaseDataService {
      * @param seat
      * @throws Exception
      */
-    private void writeJudgeObjectResultSurveyInCell(SchemeReimbursementItemVo itemVo, BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat) throws Exception {
+    private void writeJudgeObjectResultSurveyInCell(BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat) throws Exception {
         LinkedList<String> linkedLists = Lists.newLinkedList();
         final String nullValue = "";
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
@@ -4096,7 +4102,7 @@ public class GenerateBaseDataService {
                         if (StringUtils.contains(oo.getTaxesBurden(), buyerPayment)) {
                             return true;
                         }
-                        if (StringUtils.contains(oo.getTaxesBurden() ,tradingParties)) {
+                        if (StringUtils.contains(oo.getTaxesBurden(), tradingParties)) {
                             return true;
                         }
                         return false;
@@ -4130,10 +4136,10 @@ public class GenerateBaseDataService {
                 stringLinkedList.add("抵押净值2(元/㎡)");
                 if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
                     List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-                        if (StringUtils.contains(oo.getTaxesBurden() ,sellerPayment)) {
+                        if (StringUtils.contains(oo.getTaxesBurden(), sellerPayment)) {
                             return true;
                         }
-                        if (StringUtils.contains(oo.getTaxesBurden() ,tradingParties)) {
+                        if (StringUtils.contains(oo.getTaxesBurden(), tradingParties)) {
                             return true;
                         }
                         return false;
@@ -4191,13 +4197,13 @@ public class GenerateBaseDataService {
         List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList = schemeLiquidationAnalysisService.getAnalysisItemListByAreaId(areaId);
         if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
             List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-                if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentTwo.name())){
-                    return StringUtils.contains(oo.getTaxesBurden() ,sellerPayment) ;
+                if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentTwo.name())) {
+                    return StringUtils.contains(oo.getTaxesBurden(), sellerPayment);
                 }
-                if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentOne.name())){
-                    return StringUtils.contains(oo.getTaxesBurden() ,buyerPayment) ;
+                if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentOne.name())) {
+                    return StringUtils.contains(oo.getTaxesBurden(), buyerPayment);
                 }
-                return StringUtils.contains(oo.getTaxesBurden() ,tradingParties) ;
+                return StringUtils.contains(oo.getTaxesBurden(), tradingParties);
             }).collect(Collectors.toList());
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisItemList)) {
