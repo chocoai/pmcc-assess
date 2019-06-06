@@ -696,9 +696,11 @@ public class SurveyExamineTaskService {
                 }
             }
             //写入成新率
-            String newDegree = residueRatioService.getObservationalRatio(basicHouse.getId());
-            basicHouse.setNewDegree(newDegree);
-            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+            if (basicHouse != null) {
+                String newDegree = residueRatioService.getObservationalRatio(basicHouse.getId());
+                basicHouse.setNewDegree(newDegree);
+                basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+            }
         }
         String survey = jsonObject.getString("survey");
         if (StringUtils.isNotBlank(survey)) {
