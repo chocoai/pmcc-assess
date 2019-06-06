@@ -114,6 +114,7 @@
                 if (!commonDeclareApplyModel.isNotBlank(id)) {
                     id = "";
                 }
+                console.log(id)
                 if (commonDeclareApplyModel.isNotBlank(id)) {
                     AssessCommon.getDataDicInfo(id, function (data) {
                         if (commonDeclareApplyModel.isNotBlank(data)) {
@@ -223,7 +224,10 @@
                 if (!commonDeclareApplyModel.isNotBlank(id)) {
                     id = "";
                 }
-                if (commonDeclareApplyModel.isNotBlank(id)) {
+                if(id=="0"){
+                    text = location  + "字第" + number + "号";
+                    engine.find("input[name='certName']").val(text);
+                }else if (commonDeclareApplyModel.isNotBlank(id)) {
                     AssessCommon.getDataDicInfo(id, function (data) {
                         if (commonDeclareApplyModel.isNotBlank(data)) {
                             text = location + data.name + "字第" + number + "号";
@@ -231,7 +235,7 @@
                         }
                     });
                 } else {
-                    text = location + id + "字第" + number + "号";
+                    text = location  + "字第" + number + "号";
                     engine.find("input[name='certName']").val(text);
                 }
             }
@@ -320,6 +324,9 @@
                 var id = engine.find("select.landRightType").val();
                 var location = engine.find("input[name='location']").val();
                 var year = engine.find("input[name='year']").val();
+                if(year){
+                    year = "(" +engine.find("input[name='year']").val()+")";
+                }
                 var number = engine.find("input[name='number']").val();
                 if (!commonDeclareApplyModel.isNotBlank(number)) {
                     number = "";
@@ -339,17 +346,6 @@
                 }
 
 
-                /* if (commonDeclareApplyModel.isNotBlank(id)) {
-                     AssessCommon.getDataDicInfo(id, function (data) {
-                         if (commonDeclareApplyModel.isNotBlank(data)) {
-                             text = location + data.name + year + "第" + number + "号";
-                             engine.find("input[name='landCertName']").val(text);
-                         }
-                     });
-                 } else {
-                     text = location + year + "第" + number + "号";
-                     engine.find("input[name='landCertName']").val(text);
-                 }*/
             }
         },
         //房屋坐落 拼接
@@ -1570,15 +1566,6 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">不动产权证号</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" readonly="readonly"
-                           placeholder="不动产权证号" name="certName" class="form-control">
-                </div>
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="x-valid">
@@ -1607,7 +1594,14 @@
                 </div>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">不动产权证号</label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <input type="text" placeholder="不动产权证号" name="certName" class="form-control">
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利人<span
@@ -1641,15 +1635,6 @@
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" readonly="readonly"
-                           placeholder="房屋坐落" name="beLocated" class="form-control">
-                </div>
-            </div>
-        </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号</label>
@@ -1708,7 +1693,15 @@
                 </div>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <input type="text" readonly="readonly"
+                           placeholder="房屋坐落" name="beLocated" class="form-control">
+                </div>
+            </div>
+        </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 
@@ -1805,10 +1798,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总层数</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="总层数(数字)" name="floorCount" class="form-control"
-                           data-rule-maxlength="100"
-                           data-rule-number='true'>
+                    <input type="text" placeholder="总层数" name="floorCount" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -2324,15 +2314,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房产权证号</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" readonly="readonly"
-                           placeholder="房产权证号" name="certName" class="form-control">
-                </div>
-            </div>
-        </div>
+
 
         <div class="form-group">
             <div class="x-valid">
@@ -2356,9 +2338,22 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">类型</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="type" class="form-control search-select select2 type"
-                             onchange="commonDeclareApplyModel.house.certNameSplicing(this)">
+                    <select class="form-control" name="type" onchange="commonDeclareApplyModel.house.certNameSplicing(this)">
+                        <option value="0">--请选择--</option>
+                        <c:if test="${not empty certificateTypes}">
+                            <c:forEach items="${certificateTypes}" var="item">
+                                <option value="${item.id}">${item.name}</option>
+                            </c:forEach>
+                        </c:if>
                     </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房产权证号</label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <input type="text" placeholder="房产权证号" name="certName" class="form-control">
                 </div>
             </div>
         </div>
@@ -2409,15 +2404,6 @@
         </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" readonly="readonly"
-                           placeholder="房屋坐落" name="beLocated" class="form-control">
-                </div>
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="x-valid">
@@ -2477,7 +2463,14 @@
                 </div>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <input type="text" placeholder="房屋坐落" name="beLocated" class="form-control">
+                </div>
+            </div>
+        </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 
@@ -2642,17 +2635,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    土地权证号
-                </label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" name="landCertName" readonly="readonly"
-                           class="form-control" placeholder="土地权证号">
-                </div>
-            </div>
-        </div>
+
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -2720,6 +2703,16 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地权证号
+                </label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <input type="text" name="landCertName" class="form-control" placeholder="土地权证号">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     登记日期
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -2731,15 +2724,6 @@
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落<span class="symbol required"></span></label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" readonly="readonly"
-                           placeholder="房屋坐落" name="beLocated" class="form-control">
-                </div>
-            </div>
-        </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号<span
@@ -2800,7 +2784,14 @@
                 </div>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落<span class="symbol required"></span></label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <input type="text" placeholder="房屋坐落" name="beLocated" class="form-control">
+                </div>
+            </div>
+        </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 

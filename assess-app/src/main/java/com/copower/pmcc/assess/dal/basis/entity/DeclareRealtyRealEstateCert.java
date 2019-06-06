@@ -52,7 +52,7 @@ public class DeclareRealtyRealEstateCert {
 
     private String housingStructure;
 
-    private Integer floorCount;
+    private String floorCount;
 
     private BigDecimal floorArea;
 
@@ -310,12 +310,12 @@ public class DeclareRealtyRealEstateCert {
         this.housingStructure = housingStructure == null ? null : housingStructure.trim();
     }
 
-    public Integer getFloorCount() {
+    public String getFloorCount() {
         return floorCount;
     }
 
-    public void setFloorCount(Integer floorCount) {
-        this.floorCount = floorCount;
+    public void setFloorCount(String floorCount) {
+        this.floorCount = floorCount == null ? null : floorCount.trim();
     }
 
     public BigDecimal getFloorArea() {

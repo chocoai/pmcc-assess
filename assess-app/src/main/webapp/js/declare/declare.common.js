@@ -535,9 +535,6 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
         districtValue: item.district
     });
     frm.validate();
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType, item.type, function (html, data) {
-        frm.find("select[name='type']").empty().html(html).trigger('change');
-    });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
     });
@@ -609,7 +606,7 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
         callback();
     }
 
-    frm.find("select").select2({
+    frm.find("select.select2").select2({
         minimumResultsForSearch: -1
     });
 
