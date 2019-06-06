@@ -266,10 +266,7 @@ public class DeclarePublicService {
         //总层数
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
             if (this.isNumeric(PoiUtils.getCellValue(row.getCell(14)))) {
-                oo.setFloorCount(Integer.parseInt(PoiUtils.getCellValue(row.getCell(14))));
-            } else {
-                builder.append(String.format("\n第%s行异常：总层数应填写数字", i));
-                return false;
+                oo.setFloorCount(PoiUtils.getCellValue(row.getCell(14)));
             }
         }
         //登记机关

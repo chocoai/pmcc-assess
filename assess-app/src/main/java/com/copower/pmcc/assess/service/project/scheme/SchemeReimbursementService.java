@@ -133,7 +133,6 @@ public class SchemeReimbursementService {
     }
 
 
-
     public String getFullDescription(SchemeReimbursementItem object, Integer number) {
         StringBuilder builder = new StringBuilder(8);
         BigDecimal decimal = new BigDecimal("10000");
@@ -162,7 +161,29 @@ public class SchemeReimbursementService {
     public List<SchemeReimbursementItemVo> getItemByMasterId(Integer masterId) {
         SchemeReimbursementItem schemeReimbursementItem = new SchemeReimbursementItem();
         schemeReimbursementItem.setMasterId(masterId);
-        return findQueryBySchemeReimbursementItem2(schemeReimbursementItem);
+        List<SchemeReimbursementItemVo> itemVos = findQueryBySchemeReimbursementItem2(schemeReimbursementItem);
+        if (CollectionUtils.isEmpty(itemVos)) {
+            SchemeReimbursement reimbursement = schemeReimbursementDao.getSchemeReimbursement(masterId);
+            List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(reimbursement.getAreaId());
+            if (CollectionUtils.isNotEmpty(judgeObjects)) {
+                for (SchemeJudgeObject judgeObject : judgeObjects) {
+                    SchemeReimbursementItem reimbursementItem = new SchemeReimbursementItem();
+                    reimbursementItem.setName(judgeObject.getName());
+                    reimbursementItem.setProjectId(judgeObject.getProjectId());
+                    reimbursementItem.setMasterId(masterId);
+                    reimbursementItem.setJudgeObjectId(judgeObject.getId());
+                    reimbursementItem.setPlanDetailsId(reimbursementItem.getPlanDetailsId());
+                    reimbursementItem.setKnowTotalPrice(new BigDecimal("0"));
+                    reimbursementItem.setMortgagedTotalPrice(new BigDecimal("0"));
+                    reimbursementItem.setOwedTotalPrice(new BigDecimal("0"));
+                    reimbursementItem.setOtherTotalPrice(new BigDecimal("0"));
+                    reimbursementItem.setCreator(processControllerComponent.getThisUser());
+                    schemeReimbursementItemDao.addObject(reimbursementItem);
+                }
+            }
+            itemVos = findQueryBySchemeReimbursementItem2(schemeReimbursementItem);
+        }
+        return itemVos;
     }
 
     public void saveAndUpdateSchemeReimbursementItem(SchemeReimbursementItem schemeReimbursementItem) {

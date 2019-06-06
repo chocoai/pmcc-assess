@@ -26,7 +26,7 @@
     <result column="nature" property="nature" jdbcType="INTEGER" />
     <result column="house_cert_use" property="houseCertUse" jdbcType="INTEGER" />
     <result column="housing_structure" property="housingStructure" jdbcType="VARCHAR" />
-    <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
+    <result column="floor_count" property="floorCount" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
     <result column="evidence_area" property="evidenceArea" jdbcType="DECIMAL" />
     <result column="inner_area" property="innerArea" jdbcType="DECIMAL" />
@@ -189,7 +189,7 @@
       #{publicSituation,jdbcType=INTEGER}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
       #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
       #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, #{nature,jdbcType=INTEGER}, 
-      #{houseCertUse,jdbcType=INTEGER}, #{housingStructure,jdbcType=VARCHAR}, #{floorCount,jdbcType=INTEGER}, 
+      #{houseCertUse,jdbcType=INTEGER}, #{housingStructure,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, 
       #{floorArea,jdbcType=DECIMAL}, #{evidenceArea,jdbcType=DECIMAL}, #{innerArea,jdbcType=DECIMAL}, 
       #{other,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, #{graphNumber,jdbcType=VARCHAR}, 
       #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, 
@@ -448,7 +448,7 @@
         #{housingStructure,jdbcType=VARCHAR},
       </if>
       <if test="floorCount != null" >
-        #{floorCount,jdbcType=INTEGER},
+        #{floorCount,jdbcType=VARCHAR},
       </if>
       <if test="floorArea != null" >
         #{floorArea,jdbcType=DECIMAL},
@@ -630,7 +630,7 @@
         housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
       </if>
       <if test="record.floorCount != null" >
-        floor_count = #{record.floorCount,jdbcType=INTEGER},
+        floor_count = #{record.floorCount,jdbcType=VARCHAR},
       </if>
       <if test="record.floorArea != null" >
         floor_area = #{record.floorArea,jdbcType=DECIMAL},
@@ -759,7 +759,7 @@
       nature = #{record.nature,jdbcType=INTEGER},
       house_cert_use = #{record.houseCertUse,jdbcType=INTEGER},
       housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
-      floor_count = #{record.floorCount,jdbcType=INTEGER},
+      floor_count = #{record.floorCount,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
       evidence_area = #{record.evidenceArea,jdbcType=DECIMAL},
       inner_area = #{record.innerArea,jdbcType=DECIMAL},
@@ -869,7 +869,7 @@
         housing_structure = #{housingStructure,jdbcType=VARCHAR},
       </if>
       <if test="floorCount != null" >
-        floor_count = #{floorCount,jdbcType=INTEGER},
+        floor_count = #{floorCount,jdbcType=VARCHAR},
       </if>
       <if test="floorArea != null" >
         floor_area = #{floorArea,jdbcType=DECIMAL},
@@ -995,7 +995,7 @@
       nature = #{nature,jdbcType=INTEGER},
       house_cert_use = #{houseCertUse,jdbcType=INTEGER},
       housing_structure = #{housingStructure,jdbcType=VARCHAR},
-      floor_count = #{floorCount,jdbcType=INTEGER},
+      floor_count = #{floorCount,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=DECIMAL},
       evidence_area = #{evidenceArea,jdbcType=DECIMAL},
       inner_area = #{innerArea,jdbcType=DECIMAL},
