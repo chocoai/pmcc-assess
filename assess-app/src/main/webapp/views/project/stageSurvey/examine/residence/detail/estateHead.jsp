@@ -89,32 +89,14 @@
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <c:if test="${!empty basicEstate.volumetricRate}">
-                <c:choose>
-                    <c:when test="${basicEstate.volumetricRate.matches('[0-9.]+')}">
-                        <label class="form-control">${basicEstate.volumetricRate}%</label>
-                    </c:when>
-                    <c:otherwise>
-                        <label class="form-control">${basicEstate.volumetricRate}</label>
-                    </c:otherwise>
-                </c:choose>
-            </c:if>
+            <label class="form-control">${basicEstate.volumetricRate}</label>
         </div>
     </div>
 
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿化率</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <c:if test="${!empty basicEstate.greeningRate}">
-                <c:choose>
-                    <c:when test="${basicEstate.greeningRate.matches('[0-9.]+')}">
-                        <label class="form-control">${basicEstate.greeningRate*100}%</label>
-                    </c:when>
-                    <c:otherwise>
-                        <label class="form-control">${basicEstate.greeningRate}</label>
-                    </c:otherwise>
-                </c:choose>
-            </c:if>
+            <label class="form-control">${basicEstate.greeningRate}</label>
         </div>
     </div>
 </div>
