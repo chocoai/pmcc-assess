@@ -31,6 +31,21 @@ import java.util.List;
  * @date: 2017/12/14 17:30
  */
 public class Test {
+    public  boolean isInteger(BigDecimal bigDecimal){
+        if (bigDecimal == null){
+            return false;
+        }
+        return bigDecimal.toBigInteger().intValue() == bigDecimal.doubleValue() ;
+    }
+
+    public static void main(String[] args) {
+        BigDecimal bigDecimal = new BigDecimal("3.00") ;
+        System.out.println(bigDecimal.doubleValue());
+        System.out.println(bigDecimal.toBigInteger().toString());
+        System.out.println(bigDecimal.toBigInteger().intValue() == bigDecimal.doubleValue());
+    }
+
+
 
     public String getWarpCssHtml(String html, String fontName, Integer fontSize, String lineHeight) {
         StringBuilder stringBuilder = new StringBuilder(8);

@@ -257,23 +257,29 @@ public class GenerateCommonMethod {
      * @param bigDecimal
      * @return
      */
-    public String getBigDecimalRound(BigDecimal bigDecimal, boolean tenThousand) {
+    public String getBigDecimalRound(final BigDecimal bigDecimal, boolean tenThousand) {
         return getBigDecimalRound(bigDecimal, 0, tenThousand);
     }
 
-    public String getBigDecimalRound(BigDecimal bigDecimal, int newScale, boolean tenThousand) {
-        //四舍五入,并且取到0
-        bigDecimal = bigDecimal.setScale(newScale, BigDecimal.ROUND_UP);
+    public String getBigDecimalRound(final BigDecimal bigDecimal, int newScale, boolean tenThousand) {
+        //四舍五入,并且取到约定的位数
+        BigDecimal setScale = bigDecimal.setScale(newScale, BigDecimal.ROUND_UP);
         if (tenThousand) {
-            bigDecimal = bigDecimal.divide(new BigDecimal(10000));
+            setScale = setScale.divide(new BigDecimal(10000));
         }
-        if (bigDecimal.doubleValue() < 0) {
-            //取绝对值
-            bigDecimal = new BigDecimal(Math.abs(bigDecimal.doubleValue()));
-            String s = bigDecimal.toString();
-            s = s.substring(1, bigDecimal.toString().length());
+        return setScale.abs().toString();
+    }
+
+    /**
+     * 判断是否为整数 仅仅判断是否是整数
+     * @param bigDecimal
+     * @return
+     */
+    public  boolean isInteger(BigDecimal bigDecimal){
+        if (bigDecimal == null){
+            return false;
         }
-        return bigDecimal.toString();
+        return bigDecimal.abs().toBigInteger().intValue() == bigDecimal.abs().doubleValue() ;
     }
 
     /**
@@ -757,7 +763,18 @@ public class GenerateCommonMethod {
         if (map == null || map.size() <= 0) {
             return "";
         }
-        if (map.size() == 1) {
+        boolean one = false;
+        if (map.size() == 1){
+            one = true;
+        }
+        if (!one){
+            Set<String> stringSet = Sets.newHashSet();
+            map.entrySet().forEach(integerStringEntry -> stringSet.add(integerStringEntry.getValue()));
+            if (stringSet.size() == 1){
+                one = true;
+            }
+        }
+        if (one){
             StringBuilder stringBuilder = new StringBuilder(8);
             if (isShowJudgeNumBer.equals(Boolean.FALSE)) {
                 stringBuilder.append(StringUtils.defaultString(explain)).append(map.entrySet().stream().findFirst().get().getValue());
@@ -765,7 +782,7 @@ public class GenerateCommonMethod {
                 stringBuilder.append(StringUtils.defaultString(explain)).append(map.entrySet().stream().findFirst().get().getValue()).append(symbol);
             }
             return stringBuilder.toString();
-        } else {
+        }else {
             return judgeEachDesc(map, explain, symbol, isShowJudgeNumBer);
         }
     }

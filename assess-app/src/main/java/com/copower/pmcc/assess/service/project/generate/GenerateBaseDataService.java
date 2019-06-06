@@ -187,7 +187,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getReportQrcode(GenerateReportInfo generateReportInfo,String reportType) throws Exception {
+    public String getReportQrcode(GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         //1.先从本地查看是否已生成过二维码
         //2.如果已生成直接返回已生成的二维码
         //3.如果没有生成则调用接口生成二维码并记录数据到本地
@@ -213,7 +213,7 @@ public class GenerateBaseDataService {
             projectDocumentDto.setAppKey(applicationConstant.getAppKey());
             projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
             projectDocumentDto.setTableId(generateReportInfo.getId());
-            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType,generateReportInfo.getAreaGroupId()));
+            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
             erpRpcToolsService.saveProjectDocument(projectDocumentDto);
         }
         FileUtils.base64ToImage(qrCode, imageFullPath);
@@ -250,11 +250,11 @@ public class GenerateBaseDataService {
     }
 
     //报告使用单位
-    public String getReportUnitString(){
-        if (StringUtils.isNotEmpty(projectInfo.getUnitInformationVo().getuUseUnitName())){
-            return projectInfo.getUnitInformationVo().getuUseUnitName() ;
+    public String getReportUnitString() {
+        if (StringUtils.isNotEmpty(projectInfo.getUnitInformationVo().getuUseUnitName())) {
+            return projectInfo.getUnitInformationVo().getuUseUnitName();
         }
-        return "/" ;
+        return "/";
     }
 
     /**
@@ -443,12 +443,16 @@ public class GenerateBaseDataService {
      *
      * @throws Exception
      */
-    public String getSeparationCertificateUses(boolean explainShow) throws Exception {
+    public String getSeparationCertificateUses(boolean judgeEachDesc) throws Exception {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
             map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
         }
-        return generateCommonMethod.judgeSummaryDesc(map, explainShow?"证载用途为":"", false);
+        if (judgeEachDesc) {
+            return generateCommonMethod.judgeSummaryDesc(map, "证载用途为", false);
+        } else {
+            return generateCommonMethod.judgeEachDesc2(map, "证载用途为", "", false);
+        }
     }
 
     /**
@@ -1946,16 +1950,36 @@ public class GenerateBaseDataService {
                 result = dataReportAnalysisService.getReportLiquidity(this.projectInfo, areaId);
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
                 break;
-            case REPORT_ANALYSIS_CATEGORY_LIQUIDITY2:
-                result = dataReportAnalysisService.getReportLiquidity2(this.projectInfo, areaId);
-//                builder.insertHtml(generateCommonMethod.getSongWarpCssHtml(result), true);
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
-                break;
             case REPORT_ANALYSIS_CATEGORY_RISK:
                 result = dataReportAnalysisRiskService.getReportRisk(areaId);
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
                 break;
         }
+        document.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 变现能力分析小微快贷
+     * @return
+     * @throws Exception
+     */
+    public String getLiquidityRisk2() throws Exception {
+        Document document = new Document();
+        String localPath = getLocalPath();
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+        keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
+        keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
+        keyValueDtoList.add(new KeyValueDto("line-height", "100%"));
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        String result = "/";
+        try {
+            result = dataReportAnalysisService.getReportLiquidity2(this.projectInfo, areaId);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(),e1);
+        }
+        result = StringUtils.replacePattern(result,"\\$\\{.*?\\}","") ;
+        builder.insertHtml(AsposeUtils.getWarpCssHtml(result, keyValueDtoList), false);
         document.save(localPath);
         return localPath;
     }
@@ -2035,12 +2059,12 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getSetUse( boolean explainShow) {
+    public String getSetUse(boolean explainShow) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectDeclareList) {
             map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
         }
-        return generateCommonMethod.judgeSummaryDesc(map, explainShow?"设定用途为":"", false);
+        return generateCommonMethod.judgeSummaryDesc(map, explainShow ? "设定用途为" : "", false);
     }
 
 
@@ -2759,7 +2783,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getSchemeJudgeObjectSeatList(boolean flag) throws Exception {
+    public String getSchemeJudgeObjectSeatList(boolean songFont) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
@@ -2777,7 +2801,7 @@ public class GenerateBaseDataService {
         }
         if (!map.isEmpty()) {
             if (map.size() == 1) {
-                builder.writeln(map.entrySet().stream().findFirst().get().getValue());
+                builder.insertHtml(generateCommonMethod.getSongWarpCssHtml(map.entrySet().stream().findFirst().get().getValue()), false);
             } else {
                 map.entrySet().stream().forEachOrdered(stringEntry -> {
                     String value = String.format("%s%s", generateCommonMethod.getSchemeJudgeObjectShowName(stringEntry.getKey()), stringEntry.getValue());
@@ -2790,7 +2814,7 @@ public class GenerateBaseDataService {
         }
         String localPath = getLocalPath();
         doc.save(localPath);
-        if (flag) {
+        if (songFont) {
             return localPath;
         } else {
             String value = "/";
@@ -3876,7 +3900,7 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 建行预评数据表格
+     * 建社银行预评数据表格
      *
      * @param schemeJudgeObject
      * @return
@@ -3884,9 +3908,9 @@ public class GenerateBaseDataService {
      */
     private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, int size, int i) throws Exception {
         String localPath = getLocalPath();
-        final String sellerPayment = "卖方缴纳";
-        final String tradingParties = "交易双方";
-        final String buyerPayment = "买方缴纳";
+        final String sellerPayment = "卖方";
+        final String tradingParties = "双方";
+        final String buyerPayment = "买方";
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         LinkedList<String> stringLinkedList = Lists.newLinkedList();
         String value = "";
@@ -3953,13 +3977,21 @@ public class GenerateBaseDataService {
             }
             if (declareRecord != null && declareRecord.getFloorArea() != null) {
                 stringLinkedList.add("建筑面积(㎡)");
-                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 2, false));
+                if (generateCommonMethod.isInteger(declareRecord.getFloorArea())) {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 0, false));
+                } else {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 2, false));
+                }
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
             if (declareRecord != null && declareRecord.getPrice() != null) {
                 stringLinkedList.add("登记价(元)");
-                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), 2, false));
+                if (generateCommonMethod.isInteger(declareRecord.getPrice())) {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), 0, false));
+                } else {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), 2, false));
+                }
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
@@ -4019,7 +4051,11 @@ public class GenerateBaseDataService {
             {
                 stringLinkedList.add("抵押价值单价(元/㎡)");
                 if (schemeJudgeObject.getPrice() != null) {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 2, false));
+                    if (generateCommonMethod.isInteger(schemeJudgeObject.getPrice())) {
+                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 0, false));
+                    } else {
+                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 2, false));
+                    }
                 } else {
                     stringLinkedList.add("");
                 }
@@ -4030,7 +4066,11 @@ public class GenerateBaseDataService {
                 stringLinkedList.add("抵押价值(元/㎡)");
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     BigDecimal bigDecimal = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                    if (generateCommonMethod.isInteger(bigDecimal)) {
+                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 0, false));
+                    } else {
+                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                    }
                 } else {
                     stringLinkedList.add("");
                 }
@@ -4041,10 +4081,10 @@ public class GenerateBaseDataService {
                 stringLinkedList.add("抵押净值1(元/㎡)");
                 if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
                     List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-                        if (Objects.equal(oo.getTaxesBurden(), buyerPayment)) {
+                        if (StringUtils.contains(oo.getTaxesBurden(), buyerPayment)) {
                             return true;
                         }
-                        if (Objects.equal(oo.getTaxesBurden(), tradingParties)) {
+                        if (StringUtils.contains(oo.getTaxesBurden() ,tradingParties)) {
                             return true;
                         }
                         return false;
@@ -4060,7 +4100,11 @@ public class GenerateBaseDataService {
                         if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                             BigDecimal bigDecimal2 = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                             bigDecimal = bigDecimal2.subtract(bigDecimal);
-                            stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                            if (generateCommonMethod.isInteger(bigDecimal)) {
+                                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 0, false));
+                            } else {
+                                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                            }
                         }
                     }
                 }
@@ -4074,10 +4118,10 @@ public class GenerateBaseDataService {
                 stringLinkedList.add("抵押净值2(元/㎡)");
                 if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
                     List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-                        if (Objects.equal(oo.getTaxesBurden(), sellerPayment)) {
+                        if (StringUtils.contains(oo.getTaxesBurden() ,sellerPayment)) {
                             return true;
                         }
-                        if (Objects.equal(oo.getTaxesBurden(), tradingParties)) {
+                        if (StringUtils.contains(oo.getTaxesBurden() ,tradingParties)) {
                             return true;
                         }
                         return false;
@@ -4093,7 +4137,11 @@ public class GenerateBaseDataService {
                         if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                             BigDecimal bigDecimal2 = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                             bigDecimal = bigDecimal2.subtract(bigDecimal);
-                            stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                            if (generateCommonMethod.isInteger(bigDecimal)) {
+                                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 0, false));
+                            } else {
+                                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                            }
                         }
                     }
                 }
@@ -4124,29 +4172,22 @@ public class GenerateBaseDataService {
      */
     public String getNetAssessmentNumber(BaseReportFieldEnum reportFieldEnum) {
         Map<Integer, String> map = Maps.newHashMap();
-        final String sellerPayment = "卖方缴纳";
-        final String tradingParties = "交易双方";
-        final String buyerPayment = "买方缴纳";
+        final String sellerPayment = "卖方";
+        final String tradingParties = "双方";
+        final String buyerPayment = "买方";
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList = schemeLiquidationAnalysisService.getAnalysisItemListByAreaId(areaId);
-        if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)){
+        if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
+            List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
+                if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentTwo.name())){
+                    return StringUtils.contains(oo.getTaxesBurden() ,sellerPayment) ;
+                }
+                if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentOne.name())){
+                    return StringUtils.contains(oo.getTaxesBurden() ,buyerPayment) ;
+                }
+                return StringUtils.contains(oo.getTaxesBurden() ,tradingParties) ;
+            }).collect(Collectors.toList());
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-                    if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentOne.name())) {
-                        if (Objects.equal(oo.getTaxesBurden(), buyerPayment)) {
-                            return true;
-                        }
-                    }
-                    if (Objects.equal(reportFieldEnum.name(), BaseReportFieldEnum.NetAssessmentTwo.name())) {
-                        if (Objects.equal(oo.getTaxesBurden(), sellerPayment)) {
-                            return true;
-                        }
-                    }
-                    if (Objects.equal(oo.getTaxesBurden(), tradingParties)) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisItemList)) {
                     BigDecimal bigDecimal = new BigDecimal(0);
                     for (SchemeLiquidationAnalysisItem analysisItem : schemeLiquidationAnalysisItemList) {
@@ -4167,7 +4208,7 @@ public class GenerateBaseDataService {
         if (!map.isEmpty()) {
             return generateCommonMethod.judgeEachDesc2(map, "", ",", false);
         }
-        return "";
+        return "/";
     }
 
     /**
@@ -4946,12 +4987,8 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getPrincipalDataDescribe() throws Exception {
-        String localPath = getLocalPath();
-        Document document = new Document();
         StringBuilder stringBuilder = new StringBuilder(8);
         Map<Integer, String> map = Maps.newHashMap();
-        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
-        generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             if (schemeJudgeObject.getDeclareRecordId() == null) {
@@ -4968,8 +5005,12 @@ public class GenerateBaseDataService {
                 stringBuilder.append(declareRecord.getPublicSituation());
                 stringBuilder.append("的位于");
             }
-            stringBuilder.append(declareRecord.getSeat());
-            stringBuilder.append(declareRecord.getCertUse()).append("用房地产");
+            if (StringUtils.isNotEmpty(declareRecord.getSeat())) {
+                stringBuilder.append(declareRecord.getSeat());
+            }
+            if (StringUtils.isNotEmpty(declareRecord.getCertUse())) {
+                stringBuilder.append(declareRecord.getCertUse()).append("用房地产");
+            }
             {
                 stringBuilder.append("(");
                 if (declareRecord.getFloorArea() != null) {
@@ -4985,7 +5026,9 @@ public class GenerateBaseDataService {
                 if (StringUtils.isNotEmpty(declareRecord.getLandRightNature())) {
                     stringBuilder.append(declareRecord.getLandRightNature());
                 }
-                stringBuilder.append(declareRecord.getCertUse());
+                if (StringUtils.isNotEmpty(declareRecord.getCertUse())) {
+                    stringBuilder.append(declareRecord.getCertUse());
+                }
                 if (declareRecord.getPracticalArea() != null) {
                     stringBuilder
                             .append("土地使用权面积:")
@@ -4995,15 +5038,14 @@ public class GenerateBaseDataService {
                 stringBuilder.append(")");
             }
             stringBuilder.append("进行了抵押价值评估");
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getIndentHtml(stringBuilder.toString()));
+            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
             stringBuilder.delete(0, stringBuilder.length());
         }
         if (!map.isEmpty()) {
             String s = generateCommonMethod.judgeEachDesc2(map, "", ",", false);
-            documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(s)), true);
+            return s;
         }
-        document.save(localPath);
-        return localPath;
+        return "";
     }
 
     /**
@@ -5228,7 +5270,7 @@ public class GenerateBaseDataService {
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
         this.projectQrcodeRecordService = SpringContextUtils.getBean(ProjectQrcodeRecordService.class);
         this.erpRpcToolsService = SpringContextUtils.getBean(ErpRpcToolsService.class);
-        this.applicationConstant=SpringContextUtils.getBean(ApplicationConstant.class);
+        this.applicationConstant = SpringContextUtils.getBean(ApplicationConstant.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {
@@ -5314,9 +5356,5 @@ public class GenerateBaseDataService {
      */
     public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
         return generateCommonMethod.getSortSchemeJudgeObject(this.schemeJudgeObjectList);
-    }
-
-    public GenerateBaseExamineService getGenerateBaseExamineService(Integer planDetailsId) {
-        return new GenerateBaseExamineService(planDetailsId);
     }
 }

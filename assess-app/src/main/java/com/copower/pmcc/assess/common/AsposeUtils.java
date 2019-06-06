@@ -103,6 +103,20 @@ public class AsposeUtils {
         return stringList;
     }
 
+    /**
+     * 获取word文本
+     * @param document
+     * @return
+     */
+    public static String getDocumentText(Document document){
+        StringBuilder stringBuilder = new StringBuilder(8) ;
+        ParagraphCollection paragraphs = document.getFirstSection().getBody().getParagraphs();
+        for (int i = 0; i < paragraphs.toArray().length; i++) {
+            stringBuilder.append(paragraphs.get(i).getText()) ;
+        }
+        return stringBuilder.toString();
+    }
+
     public static Map<String, String> getRegexExtendList(Document document) {
         Map<String, String> map = Maps.newHashMap();
         //获取所有段落

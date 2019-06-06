@@ -221,7 +221,7 @@ public class GenerateReportService {
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(new Long(file.length()).toString());
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        sysAttachmentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType,generateReportInfo.getAreaGroupId()));
+        sysAttachmentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
         sysAttachmentDto.setFileName(baseDataDicService.getCacheDataDicByFieldName(reportType).getName());
         String ftpBasePath = String.format("%s/%s/%s/%s", baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), processControllerComponent.getThisUser(), UUID.randomUUID().toString());
         String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
@@ -323,7 +323,7 @@ public class GenerateReportService {
                 }
                 //报告二维码
                 if (Objects.equal(BaseReportFieldEnum.ReportQrcode.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo,reportType));
+                    generateCommonMethod.putValue(true, true, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType));
                 }
                 //报告类别
                 if (Objects.equal(BaseReportFieldEnum.ReportingCategories.getName(), name)) {
@@ -367,7 +367,7 @@ public class GenerateReportService {
                 }
                 //变现能力分析小微快贷
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY2.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk(SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_LIQUIDITY2));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk2());
                 }
                 //风险提示
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {
@@ -395,18 +395,18 @@ public class GenerateReportService {
                 }
                 //特别提示
                 if (Objects.equal(BaseReportFieldEnum.HotTip.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3) ;
-                    keyValueDtoList.add(new KeyValueDto("font-family","仿宋_GB2312")) ;
-                    keyValueDtoList.add(new KeyValueDto("font-size","14.0pt")) ;
-                    keyValueDtoList.add(new KeyValueDto("line-height","150%")) ;
+                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
                 }
                 //特别提示小微快贷
                 if (Objects.equal(BaseReportFieldEnum.HotTip2.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3) ;
-                    keyValueDtoList.add(new KeyValueDto("font-family","仿宋_GB2312")) ;
-                    keyValueDtoList.add(new KeyValueDto("font-size","14.0pt")) ;
-                    keyValueDtoList.add(new KeyValueDto("line-height","150%")) ;
+                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
                 }
                 //作业结束时间
@@ -799,7 +799,7 @@ public class GenerateReportService {
                 }
                 //估价信息描述
                 if (Objects.equal(BaseReportFieldEnum.PrincipalDataDescribe.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalDataDescribe());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalDataDescribe());
                 }
                 //估价对象权属
                 if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectSheet.getName(), name)) {
@@ -922,7 +922,7 @@ public class GenerateReportService {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false,textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField7.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField7));
