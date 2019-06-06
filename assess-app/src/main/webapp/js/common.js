@@ -303,7 +303,7 @@ $(function () {
         getDataDicInfo: function (id, callback) {
             AssessCommon.getDataDicInfoAsync(id, callback, true);
         },
-        getDataDicInfoAsync:function (id, callback , async) {
+        getDataDicInfoAsync: function (id, callback, async) {
             if (id == undefined) return null;
             $.ajax({
                 url: getContextPath() + '/baseDataDic/getDataDicInfo',
@@ -711,8 +711,87 @@ $(function () {
             if (!str) return "";
             if (length >= str.length) return str;
             return str.substring(0, length) + "...";
-        }
-    };
+        },
+
+        /**
+         * 根据省份名称返回省份简称
+         * @param province
+         * @returns {String}
+         */
+         provinceForShort:function(province) {
+        if (province == "北京")
+            return "京";
+        else if (province == "天津")
+            return "津";
+        else if (province == "重庆")
+            return "渝";
+        else if (province == "上海")
+            return "沪";
+        else if (province == "河北")
+            return "冀";
+        else if (province == "山西")
+            return "晋";
+        else if (province == "辽宁")
+            return "辽";
+        else if (province == "吉林")
+            return "吉";
+        else if (province == "黑龙江")
+            return "黑";
+        else if (province == "江苏")
+            return "苏";
+        else if (province == "浙江")
+            return "浙";
+        else if (province == "安徽")
+            return "皖";
+        else if (province == "福建")
+            return "闽";
+        else if (province == "江西")
+            return "赣";
+        else if (province == "山东")
+            return "鲁";
+        else if (province == "河南")
+            return "豫";
+        else if (province == "湖北")
+            return "鄂";
+        else if (province == "湖南")
+            return "湘";
+        else if (province == "广东")
+            return "粤";
+        else if (province == "海南")
+            return "琼";
+        else if (province == "四川")
+            return "川";
+        else if (province == "贵州")
+            return "黔";
+        else if (province == "云南")
+            return "云";
+        else if (province == "陕西")
+            return "陕";
+        else if (province == "甘肃")
+            return "甘";
+        else if (province == "青海")
+            return "青";
+        else if (province == "台湾")
+            return "台";
+        else if (province == "内蒙古")
+            return "内";
+        else if (province == "广西")
+            return "桂";
+        else if (province == "宁夏")
+            return "宁";
+        else if (province == "新疆")
+            return "新";
+        else if (province == "西藏")
+            return "藏";
+        else if (province == "香港")
+            return "港";
+        else if (province == "澳门")
+            return "澳";
+        else
+            return "";
+    }
+}
+    ;
 
     window.AssessCommon = assessCommon;
     //一亩=666.67

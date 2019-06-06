@@ -20,7 +20,7 @@
                 <div class="x_content">
                     <div class="x_title">
                         <h3>
-                            房产证申报
+                            房产证
                         </h3>
                         <div class="clearfix"></div>
                     </div>
@@ -36,25 +36,25 @@
             </div>
 
             <!-- 土地证 -->
-            <div class="x_panel" id="viewDeclareRealtyLandCert">
-                <div class="x_content">
-                    <div class="x_title">
-                        <h3>
-                            土地证
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <table class="table table-bordered" id="tableDeclareRealtyLandCert">
-                                    <!-- cerare document add ajax data-->
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <%--<div class="x_panel" id="viewDeclareRealtyLandCert">--%>
+                <%--<div class="x_content">--%>
+                    <%--<div class="x_title">--%>
+                        <%--<h3>--%>
+                            <%--土地证--%>
+                        <%--</h3>--%>
+                        <%--<div class="clearfix"></div>--%>
+                    <%--</div>--%>
+                    <%--<form class="form-horizontal">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<div class="x-valid">--%>
+                                <%--<table class="table table-bordered" id="tableDeclareRealtyLandCert">--%>
+                                    <%--<!-- cerare document add ajax data-->--%>
+                                <%--</table>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</form>--%>
+                <%--</div>--%>
+            <%--</div>--%>
 
             <!-- 不动产证 -->
             <div class="x_panel" id="viewDeclareRealtyRealEstateCert">
@@ -386,11 +386,7 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                        <div id="_sonDeclareRealtyLandCertFileId"></div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>

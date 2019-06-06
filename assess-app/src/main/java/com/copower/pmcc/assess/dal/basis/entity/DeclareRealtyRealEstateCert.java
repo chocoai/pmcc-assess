@@ -26,6 +26,8 @@ public class DeclareRealtyRealEstateCert {
 
     private String number;
 
+    private String year;
+
     private String name;
 
     private String ownership;
@@ -52,7 +54,7 @@ public class DeclareRealtyRealEstateCert {
 
     private String housingStructure;
 
-    private Integer floorCount;
+    private String floorCount;
 
     private BigDecimal floorArea;
 
@@ -206,6 +208,14 @@ public class DeclareRealtyRealEstateCert {
         this.number = number == null ? null : number.trim();
     }
 
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year == null ? null : year.trim();
+    }
+
     public String getName() {
         return name;
     }
@@ -310,12 +320,12 @@ public class DeclareRealtyRealEstateCert {
         this.housingStructure = housingStructure == null ? null : housingStructure.trim();
     }
 
-    public Integer getFloorCount() {
+    public String getFloorCount() {
         return floorCount;
     }
 
-    public void setFloorCount(Integer floorCount) {
-        this.floorCount = floorCount;
+    public void setFloorCount(String floorCount) {
+        this.floorCount = floorCount == null ? null : floorCount.trim();
     }
 
     public BigDecimal getFloorArea() {

@@ -12,10 +12,10 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeReimbursementService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -71,9 +71,9 @@ public class SchemeReportFileService extends BaseService {
     @Autowired
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
-    private SchemeReimbursementService schemeReimbursementService;
+    private BasicUnitService basicUnitService;
     @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
+    private BasicHouseService basicHouseService;
     @Autowired
     private PublicService publicService;
 
@@ -116,40 +116,55 @@ public class SchemeReportFileService extends BaseService {
         if (basicApply != null) {
             BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            List<SysAttachmentDto> dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-            if (CollectionUtils.isNotEmpty(dtoList)) {
-                dtoList.forEach(o -> {
-                    o.setReName(AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getValue());
-                    attachmentDtoList.add(o);
-                });
+            BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+            List<SysAttachmentDto> dtoList = null;
+            if (basicEstate != null) {
+                dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                if (CollectionUtils.isNotEmpty(dtoList)) {
+                    dtoList.forEach(o -> {
+                        o.setReName(AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getValue());
+                        attachmentDtoList.add(o);
+                    });
+                }
             }
-            dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            if (CollectionUtils.isNotEmpty(dtoList)) {
-                dtoList.forEach(o -> {
-                    o.setReName(AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getValue());
-                    attachmentDtoList.add(o);
-                });
+
+            if(basicBuilding!=null){
+                dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                if (CollectionUtils.isNotEmpty(dtoList)) {
+                    dtoList.forEach(o -> {
+                        o.setReName(AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getValue());
+                        attachmentDtoList.add(o);
+                    });
+                }
+
+                dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                if (CollectionUtils.isNotEmpty(dtoList)) {
+                    dtoList.forEach(o -> {
+                        o.setReName(AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getValue());
+                        attachmentDtoList.add(o);
+                    });
+                }
             }
-            dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            if (CollectionUtils.isNotEmpty(dtoList)) {
-                dtoList.forEach(o -> {
-                    o.setReName(AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getValue());
-                    attachmentDtoList.add(o);
-                });
+
+            if(basicUnit!=null){
+                dtoList = baseAttachmentService.getByField_tableId(basicUnit.getId(), AssessUploadEnum.UNIT_APPEARANCE.getKey(), FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+                if (CollectionUtils.isNotEmpty(dtoList)) {
+                    dtoList.forEach(o -> {
+                        o.setReName(AssessUploadEnum.UNIT_APPEARANCE.getValue());
+                        attachmentDtoList.add(o);
+                    });
+                }
             }
-            dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.UNIT_APPEARANCE.getKey(), FormatUtils.entityNameConvertToTableName(BasicUnit.class));
-            if (CollectionUtils.isNotEmpty(dtoList)) {
-                dtoList.forEach(o -> {
-                    o.setReName(AssessUploadEnum.UNIT_APPEARANCE.getValue());
-                    attachmentDtoList.add(o);
-                });
-            }
-            dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.HOUSE_DECORATE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-            if (CollectionUtils.isNotEmpty(dtoList)) {
-                dtoList.forEach(o -> {
-                    o.setReName(AssessUploadEnum.HOUSE_DECORATE.getValue());
-                    attachmentDtoList.add(o);
-                });
+
+            if(basicHouse!=null){
+                dtoList = baseAttachmentService.getByField_tableId(basicHouse.getId(), AssessUploadEnum.HOUSE_DECORATE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+                if (CollectionUtils.isNotEmpty(dtoList)) {
+                    dtoList.forEach(o -> {
+                        o.setReName(AssessUploadEnum.HOUSE_DECORATE.getValue());
+                        attachmentDtoList.add(o);
+                    });
+                }
             }
         }
         return attachmentDtoList;

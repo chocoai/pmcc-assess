@@ -836,6 +836,76 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andYearIsNull() {
+            addCriterion("year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearIsNotNull() {
+            addCriterion("year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearEqualTo(String value) {
+            addCriterion("year =", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearNotEqualTo(String value) {
+            addCriterion("year <>", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearGreaterThan(String value) {
+            addCriterion("year >", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearGreaterThanOrEqualTo(String value) {
+            addCriterion("year >=", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearLessThan(String value) {
+            addCriterion("year <", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearLessThanOrEqualTo(String value) {
+            addCriterion("year <=", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearLike(String value) {
+            addCriterion("year like", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearNotLike(String value) {
+            addCriterion("year not like", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearIn(List<String> values) {
+            addCriterion("year in", values, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearNotIn(List<String> values) {
+            addCriterion("year not in", values, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearBetween(String value1, String value2) {
+            addCriterion("year between", value1, value2, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearNotBetween(String value1, String value2) {
+            addCriterion("year not between", value1, value2, "year");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
@@ -1716,52 +1786,62 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountEqualTo(Integer value) {
+        public Criteria andFloorCountEqualTo(String value) {
             addCriterion("floor_count =", value, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountNotEqualTo(Integer value) {
+        public Criteria andFloorCountNotEqualTo(String value) {
             addCriterion("floor_count <>", value, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountGreaterThan(Integer value) {
+        public Criteria andFloorCountGreaterThan(String value) {
             addCriterion("floor_count >", value, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountGreaterThanOrEqualTo(Integer value) {
+        public Criteria andFloorCountGreaterThanOrEqualTo(String value) {
             addCriterion("floor_count >=", value, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountLessThan(Integer value) {
+        public Criteria andFloorCountLessThan(String value) {
             addCriterion("floor_count <", value, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountLessThanOrEqualTo(Integer value) {
+        public Criteria andFloorCountLessThanOrEqualTo(String value) {
             addCriterion("floor_count <=", value, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountIn(List<Integer> values) {
+        public Criteria andFloorCountLike(String value) {
+            addCriterion("floor_count like", value, "floorCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorCountNotLike(String value) {
+            addCriterion("floor_count not like", value, "floorCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorCountIn(List<String> values) {
             addCriterion("floor_count in", values, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountNotIn(List<Integer> values) {
+        public Criteria andFloorCountNotIn(List<String> values) {
             addCriterion("floor_count not in", values, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountBetween(Integer value1, Integer value2) {
+        public Criteria andFloorCountBetween(String value1, String value2) {
             addCriterion("floor_count between", value1, value2, "floorCount");
             return (Criteria) this;
         }
 
-        public Criteria andFloorCountNotBetween(Integer value1, Integer value2) {
+        public Criteria andFloorCountNotBetween(String value1, String value2) {
             addCriterion("floor_count not between", value1, value2, "floorCount");
             return (Criteria) this;
         }

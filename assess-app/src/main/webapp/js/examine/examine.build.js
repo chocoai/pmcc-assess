@@ -108,7 +108,18 @@
             buildingCommon.fileShow(item);
         });
         buildingModelView.prototype.viewInit();
+        buildingCommon.addLableData(data.vSpecifications);
     };
+
+    buildingCommon.addLableData = function(json) {
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var specificationNameId = 'specificationName'+i;
+            var specificationContentId = 'specificationContent'+i;
+            $("#"+specificationNameId).val(n["specificationName"]);
+            $("#"+specificationContentId).val(n["specificationContent"]);
+        })
+    }
 
     //楼栋标注
     buildingCommon.mapMarker = function (readonly) {

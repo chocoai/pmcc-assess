@@ -324,6 +324,7 @@ public class GenerateReportService {
                 //报告二维码
                 if (Objects.equal(BaseReportFieldEnum.ReportQrcode.getName(), name)) {
                     generateCommonMethod.putValue(true, true, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType));
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo,reportType));
                 }
                 //报告类别
                 if (Objects.equal(BaseReportFieldEnum.ReportingCategories.getName(), name)) {

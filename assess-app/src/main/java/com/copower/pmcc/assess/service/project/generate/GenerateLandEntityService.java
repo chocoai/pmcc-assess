@@ -41,7 +41,7 @@ public class GenerateLandEntityService {
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        if (Lists.newArrayList(landStateVo.getEastTo(), landStateVo.getWestTo(), landStateVo.getSouthTo(), landStateVo.getNorthTo()).stream().filter(s -> StringUtils.isNotBlank(s)).count() >= 4){
+        if (Lists.newArrayList(landStateVo.getEastTo(), landStateVo.getWestTo(), landStateVo.getSouthTo(), landStateVo.getNorthTo()).stream().filter(s -> StringUtils.isNotBlank(s)).count() >= 4) {
             linkedHashSet.add("四至清淅");
         }
         if (StringUtils.isNotBlank(landStateVo.getLandUseTypeName())) {
@@ -55,7 +55,7 @@ public class GenerateLandEntityService {
         //地势
         final boolean topographicTerrain = Objects.equal("地势低排水较差", landStateVo.getTopographicTerrainName());
         //形状
-        final boolean shapeState = Objects.equal("形状规则", landStateVo.getShapeStateName());
+        final boolean shapeState = Objects.equal("形状规则", StringUtils.defaultString(landStateVo.getShapeStateName(), "形状规则"));
         String content = null;
         if (!planEness && !topographicTerrain && shapeState) {
             content = "有利用于提升估价对象价值";
@@ -76,12 +76,12 @@ public class GenerateLandEntityService {
             content = "将严重限制估价对象价值";
         }
         if (Objects.equal(landStateVo.getDevelopmentDegreeName(), "熟地")) {
-            if (StringUtils.isNotEmpty(content)){
+            if (StringUtils.isNotEmpty(content)) {
                 linkedHashSet.add(content);
             }
             linkedHashSet.add("对估价对象价值产生较有利的影响。");
         }
-        return generateCommonMethod.trim(StringUtils.join(linkedHashSet,"，"));
+        return generateCommonMethod.trim(StringUtils.join(linkedHashSet, "，"));
     }
 
 
@@ -146,8 +146,8 @@ public class GenerateLandEntityService {
                     }
                 }
             }
-        }else {
-            if (StringUtils.isNotBlank(landStateVo.getDevelopmentDegreeRemark())){
+        } else {
+            if (StringUtils.isNotBlank(landStateVo.getDevelopmentDegreeRemark())) {
                 return landStateVo.getDevelopmentDegreeRemark();
             }
         }
@@ -240,16 +240,16 @@ public class GenerateLandEntityService {
     public String fourTheFor(BasicEstateLandStateVo landStateVo) throws Exception {
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         if (StringUtils.isNotBlank(landStateVo.getEastTo())) {
-            stringSet.add(String.format("%s%s","东至",landStateVo.getEastTo()));
+            stringSet.add(String.format("%s%s", "东至", landStateVo.getEastTo()));
         }
         if (StringUtils.isNotBlank(landStateVo.getSouthTo())) {
-            stringSet.add(String.format("%s%s","南至",landStateVo.getSouthTo()));
+            stringSet.add(String.format("%s%s", "南至", landStateVo.getSouthTo()));
         }
         if (StringUtils.isNotBlank(landStateVo.getWestTo())) {
-            stringSet.add(String.format("%s%s","西至",landStateVo.getWestTo()));
+            stringSet.add(String.format("%s%s", "西至", landStateVo.getWestTo()));
         }
         if (StringUtils.isNotBlank(landStateVo.getNorthTo())) {
-            stringSet.add(String.format("%s%s","北至",landStateVo.getNorthTo()));
+            stringSet.add(String.format("%s%s", "北至", landStateVo.getNorthTo()));
         }
         String v = StringUtils.join(stringSet.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList()), "、");
         return StringUtils.isNotBlank(v) ? v : error;

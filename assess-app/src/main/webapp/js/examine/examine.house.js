@@ -167,7 +167,6 @@
 
     houseCommon.showUseCondition = function (data) {
         if (houseCommon.isNotBlank(data.basicHouse.useCondition)) {
-            console.log("3330000==")
             var strArr = ["出租", "自用"];//来自于实体描述1(1).docx中的规则
             var useConditionId = data.basicHouse.useCondition;
             if (useConditionId) {

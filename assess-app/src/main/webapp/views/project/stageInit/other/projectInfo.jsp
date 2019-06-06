@@ -251,6 +251,7 @@
             multi: false,//是否允许多选
             appkey: "pmcc-assess",
             onSelected: function (data) {
+                console.log(data);
                 $("#" + objProject.config.info.frm).find("[name=contractId]").val(data.uuid);
                 $("#" + objProject.config.info.frm).find("[name=contractName]").val(data.name);
             }

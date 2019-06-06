@@ -84,6 +84,18 @@ public class BasicBuilding {
 
     private String betweenDistanceDescription;
 
+    private String vStructura;
+
+    private String vSpecifications;
+
+    private String vStructuralConstruction;
+
+    private String vBasicPractice;
+
+    private String vStructuralPractice;
+
+    private String remark;
+
     private String creator;
 
     private Date gmtCreated;
@@ -408,6 +420,54 @@ public class BasicBuilding {
 
     public void setBetweenDistanceDescription(String betweenDistanceDescription) {
         this.betweenDistanceDescription = betweenDistanceDescription == null ? null : betweenDistanceDescription.trim();
+    }
+
+    public String getvStructura() {
+        return vStructura;
+    }
+
+    public void setvStructura(String vStructura) {
+        this.vStructura = vStructura == null ? null : vStructura.trim();
+    }
+
+    public String getvSpecifications() {
+        return vSpecifications;
+    }
+
+    public void setvSpecifications(String vSpecifications) {
+        this.vSpecifications = vSpecifications == null ? null : vSpecifications.trim();
+    }
+
+    public String getvStructuralConstruction() {
+        return vStructuralConstruction;
+    }
+
+    public void setvStructuralConstruction(String vStructuralConstruction) {
+        this.vStructuralConstruction = vStructuralConstruction == null ? null : vStructuralConstruction.trim();
+    }
+
+    public String getvBasicPractice() {
+        return vBasicPractice;
+    }
+
+    public void setvBasicPractice(String vBasicPractice) {
+        this.vBasicPractice = vBasicPractice == null ? null : vBasicPractice.trim();
+    }
+
+    public String getvStructuralPractice() {
+        return vStructuralPractice;
+    }
+
+    public void setvStructuralPractice(String vStructuralPractice) {
+        this.vStructuralPractice = vStructuralPractice == null ? null : vStructuralPractice.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {

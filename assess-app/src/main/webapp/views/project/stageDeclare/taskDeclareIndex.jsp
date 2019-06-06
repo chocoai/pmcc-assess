@@ -20,9 +20,9 @@
             </div>
 
             <!-- 土地证 -->
-            <div id="viewDeclareRealtyLandCert">
-                <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
-            </div>
+            <%--<div id="viewDeclareRealtyLandCert">--%>
+                <%--<%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>--%>
+            <%--</div>--%>
 
             <!-- 不动产证 -->
             <div id="viewDeclareRealtyRealEstateCert">

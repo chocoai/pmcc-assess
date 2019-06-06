@@ -126,29 +126,31 @@
 
     //检查是否添加任务
     taskCaseIndex.checkAssignmentTask = function (mustUseBox) {
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/surveyCaseStudy/checkAssignmentTask",
-            data: {
-                planDetailsId: "${projectPlanDetails.id}"
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                console.log("=====");
-                console.log(result.data + "=====");
-                if (result.data) {
-                    submit(mustUseBox);
-                    $('#plan_details_modal').modal('hide');
-                } else {
-                    Alert("请添加一条任务");
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
+        submit(mustUseBox);
+        //先不做任务检查
+        <%--Loading.progressShow();--%>
+        <%--$.ajax({--%>
+            <%--url: "${pageContext.request.contextPath}/surveyCaseStudy/checkAssignmentTask",--%>
+            <%--data: {--%>
+                <%--planDetailsId: "${projectPlanDetails.id}"--%>
+            <%--},--%>
+            <%--type: "post",--%>
+            <%--dataType: "json",--%>
+            <%--success: function (result) {--%>
+                <%--Loading.progressHide();--%>
+                <%--console.log("=====");--%>
+                <%--console.log(result.data + "=====");--%>
+                <%--if (result.data) {--%>
+                    <%--submit(mustUseBox);--%>
+                    <%--$('#plan_details_modal').modal('hide');--%>
+                <%--} else {--%>
+                    <%--Alert("请添加一条任务");--%>
+                <%--}--%>
+            <%--},--%>
+            <%--error: function (result) {--%>
+                <%--Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);--%>
+            <%--}--%>
+        <%--});--%>
     };
 
     //加载案例数据

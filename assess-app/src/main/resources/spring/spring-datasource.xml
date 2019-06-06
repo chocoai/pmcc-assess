@@ -82,4 +82,10 @@
     <!-- ======================================= -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 
+    <!-- 报表默认数据源 -->
+    <bean id="defaultInternalDataSource" class="com.copower.pmcc.erp.report.datasource.MultipleInternalDataSource">
+        <constructor-arg name="appKey" value="${app.key}"></constructor-arg>
+        <constructor-arg name="dataSourceName" value="master"></constructor-arg>
+        <constructor-arg name="dataSource" ref="masterDataSource"></constructor-arg>
+    </bean>
 </beans>

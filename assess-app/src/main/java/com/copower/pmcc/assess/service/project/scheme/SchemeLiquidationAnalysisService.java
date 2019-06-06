@@ -105,19 +105,32 @@ public class SchemeLiquidationAnalysisService {
             schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         }
 
-        //地方教育税附加
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
+        //教育税附加
         DataTaxRateAllocation education = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_EDUCATION_FEE_PLUS, null, null, null);
-        DataTaxRateAllocation localEducation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, areaGroup.getProvince(), areaGroup.getCity(), null);
-        if (education != null && localEducation != null) {
+        if (education != null) {
             analysisItem.setTaxRateId(education.getId());
-            analysisItem.setTaxRateValue(String.valueOf(localEducation.getTaxRate().add(education.getTaxRate())));
+            analysisItem.setTaxRateValue(String.valueOf(education.getTaxRate()));
             analysisItem.setCalculationMethod(ComputeDataTypeEnum.RELATIVE.getId());
             analysisItem.setTaxRateName(baseDataDicService.getNameById(education.getType()));
             analysisItem.setCalculateBase(education.getCalculateBase());
             analysisItem.setCalculationFormula(education.getCalculationFormula());
             analysisItem.setTaxesBurden(baseDataDicService.getNameById(education.getTaxesBurden()));
             analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_EDUCATION_FEE_PLUS);
+            schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
+        }
+
+        //地方教育税附加
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
+        DataTaxRateAllocation localEducation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, areaGroup.getProvince(), areaGroup.getCity(), null);
+        if (localEducation != null) {
+            analysisItem.setTaxRateId(localEducation.getId());
+            analysisItem.setTaxRateValue(String.valueOf(localEducation.getTaxRate()));
+            analysisItem.setCalculationMethod(ComputeDataTypeEnum.RELATIVE.getId());
+            analysisItem.setTaxRateName(baseDataDicService.getNameById(localEducation.getType()));
+            analysisItem.setCalculateBase(localEducation.getCalculateBase());
+            analysisItem.setCalculationFormula(localEducation.getCalculationFormula());
+            analysisItem.setTaxesBurden(baseDataDicService.getNameById(localEducation.getTaxesBurden()));
+            analysisItem.setTypeKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL);
             schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         }
 

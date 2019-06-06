@@ -197,6 +197,7 @@ public class GenerateBaseDataService {
         ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.baseReportTemplate.getReportType());
         String imageDirPath = baseAttachmentService.createTempDirPath();
         String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
+        com.copower.pmcc.erp.common.utils.FileUtils.folderMake(imageDirPath);
         String imageFullPath = imageDirPath + File.separator + imageName;
         String qrCode = null;
         if (qrcodeRecode != null) {
@@ -214,10 +215,21 @@ public class GenerateBaseDataService {
             projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
             projectDocumentDto.setTableId(generateReportInfo.getId());
             projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
+            projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+
+            qrcodeRecode = new ProjectQrcodeRecord();
+            qrcodeRecode.setProjectId(projectId);
+            qrcodeRecode.setAreaId(areaId);
+            qrcodeRecode.setReportType(this.baseReportTemplate.getReportType());
+            qrcodeRecode.setProjectDocumentId(projectDocumentDto.getId());
+            qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
+            projectQrcodeRecordService.saveProjectQrcodeRecode(qrcodeRecode);
+            qrCode = projectDocumentDto.getQrcode();
+            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
             erpRpcToolsService.saveProjectDocument(projectDocumentDto);
         }
         FileUtils.base64ToImage(qrCode, imageFullPath);
-        builder.insertImage(localPath);
+        builder.insertImage(imageFullPath,100L,100L);
         document.save(localPath);
         return localPath;
     }
