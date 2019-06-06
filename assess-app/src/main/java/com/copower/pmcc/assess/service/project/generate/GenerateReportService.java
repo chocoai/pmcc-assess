@@ -522,7 +522,10 @@ public class GenerateReportService {
                 }
                 //设定用途
                 if (Objects.equal(BaseReportFieldEnum.SetUse.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse(true));
+                }
+                if (Objects.equal(BaseReportFieldEnum.SetUse2.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse(false));
                 }
                 //坐落
                 if (Objects.equal(BaseReportFieldEnum.Seat2.getName(), name)) {
@@ -537,11 +540,14 @@ public class GenerateReportService {
                 }
                 //证载用途
                 if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses(true));
+                }
+                if (Objects.equal(BaseReportFieldEnum.CertificationPurpose2.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses(false));
                 }
                 //房产类型
                 if (Objects.equal(BaseReportFieldEnum.HouseType.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse(true));
                 }
                 //土地 实际用途
                 if (Objects.equal(BaseReportFieldEnum.PracticalUse.getName(), name)) {
@@ -958,6 +964,10 @@ public class GenerateReportService {
                 //厌恶设施
                 if (Objects.equal(BaseReportFieldEnum.AversionFacility.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAversionFacility());
+                }
+                //报告使用单位
+                if (Objects.equal(BaseReportFieldEnum.ReportUnitString.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportUnitString());
                 }
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
