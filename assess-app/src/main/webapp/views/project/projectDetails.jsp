@@ -102,10 +102,8 @@
                     </h3>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
-
+                <div class="x_content collapse">
                     <table class="table table-bordered" id="tb_documentSendList">
-                        <!-- cerare document add ajax data-->
                     </table>
                 </div>
             </div>
