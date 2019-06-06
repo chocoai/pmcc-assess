@@ -149,7 +149,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省
-                    </label>
+                </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="provinceName"></label>
                 </div>
@@ -293,18 +293,18 @@
                 </div>
             </div>
 
-              <div class="x-valid">
-               <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋结构</label>
-               <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                   <label class="form-control" name="housingStructure"></label>
-               </div>
-           </div>
             <div class="x-valid">
-               <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋性质</label>
-               <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                   <label class="form-control" name="natureName"></label>
-               </div>
-           </div>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋结构</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="housingStructure"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋性质</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="natureName"></label>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -686,13 +686,20 @@
                 </div>
             </div>
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">年份</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label name="year" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">不动产单元号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label name="realEstateUnitNumber" class="form-control"></label>
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋所有权人</label>
@@ -903,7 +910,8 @@
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <%--<label class="form-control" name="useEndDate"></label>--%>
-                    <input type="text" name="useEndDateFmt"  id="useEndDateFmt_d" class="form-control" readonly="readonly">
+                    <input type="text" name="useEndDateFmt" id="useEndDateFmt_d" class="form-control"
+                           readonly="readonly">
                 </div>
             </div>
         </div>

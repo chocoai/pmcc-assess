@@ -26,6 +26,8 @@ public class DeclareRealtyRealEstateCert {
 
     private String number;
 
+    private String year;
+
     private String name;
 
     private String ownership;
@@ -204,6 +206,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setNumber(String number) {
         this.number = number == null ? null : number.trim();
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year == null ? null : year.trim();
     }
 
     public String getName() {
