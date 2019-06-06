@@ -228,8 +228,8 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case PUBLIC_SERVICE_FACILITIES://公共服务设施
                             stringBuilder = new StringBuilder();
-                            List<String> facilities = generateLoactionService.getExternalPublicServiceFacilities(basicApply,false);
-                            if(CollectionUtils.isNotEmpty(facilities)){
+                            List<String> facilities = generateLoactionService.getExternalPublicServiceFacilities(basicApply, false);
+                            if (CollectionUtils.isNotEmpty(facilities)) {
                                 for (String facility : facilities) {
                                     stringBuilder.append(facility);
                                 }
@@ -425,7 +425,7 @@ public class MdMarketCompareFieldService extends BaseService {
                                 for (BasicHouseEquipment examineHouseEquipment : equipmentList) {
                                     if (StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseHeating.getKey())) {
                                         stringBuilder.append(baseDataDicService.getNameById(examineHouseEquipment.getCategory()));
-                                        stringBuilder.append(examineHouseEquipment.getEquipment()).append(examineHouseEquipment.getEquipmentPrice()).append("、");
+                                        stringBuilder.append(examineHouseEquipment.getEquipment()).append("、");
                                     }
                                 }
                             }

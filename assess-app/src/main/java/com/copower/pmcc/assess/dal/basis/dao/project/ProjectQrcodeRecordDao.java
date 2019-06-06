@@ -32,7 +32,7 @@ public class ProjectQrcodeRecordDao {
         ProjectQrcodeRecordExample.Criteria criteria = example.createCriteria();
         criteria.andProjectIdEqualTo(projectId).andAreaIdEqualTo(areaId).andReportTypeEqualTo(reportType);
         example.setOrderByClause("id desc");
-        List<ProjectQrcodeRecord> numberRecordList = projectQrcodeRecordMapper.selectByExample(example);
+        List<ProjectQrcodeRecord> numberRecordList = projectQrcodeRecordMapper.selectByExampleWithBLOBs(example);
         if (CollectionUtils.isEmpty(numberRecordList)) return null;
         return numberRecordList.get(0);
     }

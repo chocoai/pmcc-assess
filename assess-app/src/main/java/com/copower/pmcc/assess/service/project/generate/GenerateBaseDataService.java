@@ -187,7 +187,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getReportQrcode(GenerateReportInfo generateReportInfo,String reportType) throws Exception {
+    public String getReportQrcode(GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         //1.先从本地查看是否已生成过二维码
         //2.如果已生成直接返回已生成的二维码
         //3.如果没有生成则调用接口生成二维码并记录数据到本地
@@ -197,6 +197,7 @@ public class GenerateBaseDataService {
         ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.baseReportTemplate.getReportType());
         String imageDirPath = baseAttachmentService.createTempDirPath();
         String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
+        com.copower.pmcc.erp.common.utils.FileUtils.folderMake(imageDirPath);
         String imageFullPath = imageDirPath + File.separator + imageName;
         String qrCode = null;
         if (qrcodeRecode != null) {
@@ -213,11 +214,20 @@ public class GenerateBaseDataService {
             projectDocumentDto.setAppKey(applicationConstant.getAppKey());
             projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
             projectDocumentDto.setTableId(generateReportInfo.getId());
-            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType,generateReportInfo.getAreaGroupId()));
-            erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
+            projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+
+            qrcodeRecode = new ProjectQrcodeRecord();
+            qrcodeRecode.setProjectId(projectId);
+            qrcodeRecode.setAreaId(areaId);
+            qrcodeRecode.setReportType(this.baseReportTemplate.getReportType());
+            qrcodeRecode.setProjectDocumentId(projectDocumentDto.getId());
+            qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
+            projectQrcodeRecordService.saveProjectQrcodeRecode(qrcodeRecode);
+            qrCode = projectDocumentDto.getQrcode();
         }
         FileUtils.base64ToImage(qrCode, imageFullPath);
-        builder.insertImage(localPath);
+        builder.insertImage(imageFullPath,100L,100L);
         document.save(localPath);
         return localPath;
     }
@@ -5216,7 +5226,7 @@ public class GenerateBaseDataService {
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
         this.projectQrcodeRecordService = SpringContextUtils.getBean(ProjectQrcodeRecordService.class);
         this.erpRpcToolsService = SpringContextUtils.getBean(ErpRpcToolsService.class);
-        this.applicationConstant=SpringContextUtils.getBean(ApplicationConstant.class);
+        this.applicationConstant = SpringContextUtils.getBean(ApplicationConstant.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {
