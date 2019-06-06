@@ -76,7 +76,7 @@
 <script type="text/javascript">
     var memberChangeObj = {
         projectId: "${projectInfo.id}",
-        processInsId: "0",
+        processInsId: "${processInsId}"==null?"0":"${processInsId}",
         member_change_table: $("#member_change_table"),
         member_change_form: $("#member_change_form")
     };
@@ -86,7 +86,8 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/member.change/memberList",
             data: {
-                projectId: memberChangeObj.projectId
+                projectId: memberChangeObj.projectId,
+                processInsId: memberChangeObj.processInsId
             },
             type: "post",
             dataType: "json",

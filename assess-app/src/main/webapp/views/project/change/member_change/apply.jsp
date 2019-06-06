@@ -96,7 +96,7 @@
 <script type="text/javascript">
     var memberChangeObj = {
         projectId: "${projectInfo.id}",
-        processInsId: "0",
+        processInsId: "${processInsId}"==null?"0":"${processInsId}",
         member_change_table: $("#member_change_table"),
         member_change_form: $("#member_change_form")
     };
@@ -106,7 +106,8 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/member.change/memberList",
             data: {
-                projectId: memberChangeObj.projectId
+                projectId: memberChangeObj.projectId,
+                processInsId: memberChangeObj.processInsId
             },
             type: "post",
             dataType: "json",
@@ -331,32 +332,13 @@
             currOrgId:'${projectInfo.departmentId}',
             value: oldManager,
             onSelected: function (data) {
-                if (data.base) {
+                console.log("+===========");
+                console.log(data.account);
+                if (data.account) {
+                    console.log("1")
                     var selectUser = data.account;
-
-                    console.debug(selectUser);
-
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/member.change/replaceManage",
-                        data: {
-                            projectId: memberChangeObj.projectId,
-                            processInsId: memberChangeObj.processInsId,
-                            oldManager:oldManagerAccount,
-                            newManage: selectUser
-                        },
-                        type: "post",
-                        dataType: "json",
-                        success: function (result) {
-                            if (result.ret) {
-                                memberChangeObj.getMemberList();
-                            } else {
-                                Alert("替换项目经理失败，失败原因:" + result.errmsg, 1, null, null);
-                            }
-                        },
-                        error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                        }
-                    });
+                    console.log("2")
+                    memberChangeObj.replaceManageAccount(oldManagerAccount,selectUser);
                 } else {
                     Alert("未选择成员!");
                 }
@@ -364,6 +346,29 @@
         });
     };
 
+    memberChangeObj.replaceManageAccount = function (oldManagerAccount,selectUser) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/member.change/replaceManage",
+            data: {
+                projectId: memberChangeObj.projectId,
+                processInsId: memberChangeObj.processInsId,
+                oldManager:oldManagerAccount,
+                newManage: selectUser
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    memberChangeObj.getMemberList();
+                } else {
+                    Alert("替换项目经理失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
 
     /**
      * 提交数据

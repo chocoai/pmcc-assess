@@ -91,6 +91,7 @@ public class ProjectMemberChangeService {
      * @return
      */
     private ProjectMember getMemberChangeLog(Integer projectId, String processInsId) {
+        if(processInsId==null)processInsId = "0";
         ProjectChangeLog costsProjectChangeLog = projectChangeLogDao.getProjectChangeLog(projectId, processInsId, ProjectChangeTypeEnum.MEMBER_CHANGE);
 
         if (costsProjectChangeLog != null && StringUtils.isNotBlank(costsProjectChangeLog.getNewRecord())) {
