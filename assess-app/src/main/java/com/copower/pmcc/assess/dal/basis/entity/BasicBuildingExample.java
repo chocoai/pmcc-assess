@@ -2576,6 +2576,426 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andVStructuraIsNull() {
+            addCriterion("v_structura is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraIsNotNull() {
+            addCriterion("v_structura is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraEqualTo(String value) {
+            addCriterion("v_structura =", value, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraNotEqualTo(String value) {
+            addCriterion("v_structura <>", value, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraGreaterThan(String value) {
+            addCriterion("v_structura >", value, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraGreaterThanOrEqualTo(String value) {
+            addCriterion("v_structura >=", value, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraLessThan(String value) {
+            addCriterion("v_structura <", value, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraLessThanOrEqualTo(String value) {
+            addCriterion("v_structura <=", value, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraLike(String value) {
+            addCriterion("v_structura like", value, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraNotLike(String value) {
+            addCriterion("v_structura not like", value, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraIn(List<String> values) {
+            addCriterion("v_structura in", values, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraNotIn(List<String> values) {
+            addCriterion("v_structura not in", values, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraBetween(String value1, String value2) {
+            addCriterion("v_structura between", value1, value2, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuraNotBetween(String value1, String value2) {
+            addCriterion("v_structura not between", value1, value2, "vStructura");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsIsNull() {
+            addCriterion("v_specifications is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsIsNotNull() {
+            addCriterion("v_specifications is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsEqualTo(String value) {
+            addCriterion("v_specifications =", value, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsNotEqualTo(String value) {
+            addCriterion("v_specifications <>", value, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsGreaterThan(String value) {
+            addCriterion("v_specifications >", value, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsGreaterThanOrEqualTo(String value) {
+            addCriterion("v_specifications >=", value, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsLessThan(String value) {
+            addCriterion("v_specifications <", value, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsLessThanOrEqualTo(String value) {
+            addCriterion("v_specifications <=", value, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsLike(String value) {
+            addCriterion("v_specifications like", value, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsNotLike(String value) {
+            addCriterion("v_specifications not like", value, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsIn(List<String> values) {
+            addCriterion("v_specifications in", values, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsNotIn(List<String> values) {
+            addCriterion("v_specifications not in", values, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsBetween(String value1, String value2) {
+            addCriterion("v_specifications between", value1, value2, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVSpecificationsNotBetween(String value1, String value2) {
+            addCriterion("v_specifications not between", value1, value2, "vSpecifications");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionIsNull() {
+            addCriterion("v_structural_construction is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionIsNotNull() {
+            addCriterion("v_structural_construction is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionEqualTo(String value) {
+            addCriterion("v_structural_construction =", value, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionNotEqualTo(String value) {
+            addCriterion("v_structural_construction <>", value, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionGreaterThan(String value) {
+            addCriterion("v_structural_construction >", value, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionGreaterThanOrEqualTo(String value) {
+            addCriterion("v_structural_construction >=", value, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionLessThan(String value) {
+            addCriterion("v_structural_construction <", value, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionLessThanOrEqualTo(String value) {
+            addCriterion("v_structural_construction <=", value, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionLike(String value) {
+            addCriterion("v_structural_construction like", value, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionNotLike(String value) {
+            addCriterion("v_structural_construction not like", value, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionIn(List<String> values) {
+            addCriterion("v_structural_construction in", values, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionNotIn(List<String> values) {
+            addCriterion("v_structural_construction not in", values, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionBetween(String value1, String value2) {
+            addCriterion("v_structural_construction between", value1, value2, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralConstructionNotBetween(String value1, String value2) {
+            addCriterion("v_structural_construction not between", value1, value2, "vStructuralConstruction");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeIsNull() {
+            addCriterion("v_basic_practice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeIsNotNull() {
+            addCriterion("v_basic_practice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeEqualTo(String value) {
+            addCriterion("v_basic_practice =", value, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeNotEqualTo(String value) {
+            addCriterion("v_basic_practice <>", value, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeGreaterThan(String value) {
+            addCriterion("v_basic_practice >", value, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeGreaterThanOrEqualTo(String value) {
+            addCriterion("v_basic_practice >=", value, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeLessThan(String value) {
+            addCriterion("v_basic_practice <", value, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeLessThanOrEqualTo(String value) {
+            addCriterion("v_basic_practice <=", value, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeLike(String value) {
+            addCriterion("v_basic_practice like", value, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeNotLike(String value) {
+            addCriterion("v_basic_practice not like", value, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeIn(List<String> values) {
+            addCriterion("v_basic_practice in", values, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeNotIn(List<String> values) {
+            addCriterion("v_basic_practice not in", values, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeBetween(String value1, String value2) {
+            addCriterion("v_basic_practice between", value1, value2, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVBasicPracticeNotBetween(String value1, String value2) {
+            addCriterion("v_basic_practice not between", value1, value2, "vBasicPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeIsNull() {
+            addCriterion("v_structural_practice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeIsNotNull() {
+            addCriterion("v_structural_practice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeEqualTo(String value) {
+            addCriterion("v_structural_practice =", value, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeNotEqualTo(String value) {
+            addCriterion("v_structural_practice <>", value, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeGreaterThan(String value) {
+            addCriterion("v_structural_practice >", value, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeGreaterThanOrEqualTo(String value) {
+            addCriterion("v_structural_practice >=", value, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeLessThan(String value) {
+            addCriterion("v_structural_practice <", value, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeLessThanOrEqualTo(String value) {
+            addCriterion("v_structural_practice <=", value, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeLike(String value) {
+            addCriterion("v_structural_practice like", value, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeNotLike(String value) {
+            addCriterion("v_structural_practice not like", value, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeIn(List<String> values) {
+            addCriterion("v_structural_practice in", values, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeNotIn(List<String> values) {
+            addCriterion("v_structural_practice not in", values, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeBetween(String value1, String value2) {
+            addCriterion("v_structural_practice between", value1, value2, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andVStructuralPracticeNotBetween(String value1, String value2) {
+            addCriterion("v_structural_practice not between", value1, value2, "vStructuralPractice");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

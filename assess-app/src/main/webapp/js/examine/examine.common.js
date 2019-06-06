@@ -232,6 +232,18 @@ basicCommon.getFormData = function () {
         if (buildingCommon) {
             if (buildingCommon.buildingForm.size() >= 1) {
                 item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
+                item.basicBuilding.vSpecifications = [];
+                buildingCommon.buildingForm.find('.form-group').each(function () {
+                    var vSpecification = {};
+                    var specificationName = $(this).find('[name^=specificationName]').val();
+                    var specificationContent = $(this).find('[name^=specificationContent]').val();
+                    if (specificationName && specificationContent) {
+                        vSpecification.specificationName = specificationName;
+                        vSpecification.specificationContent = specificationContent;
+                        item.basicBuilding.vSpecifications.push(vSpecification);
+                    }
+
+                });
             }
         }
     } catch (e) {

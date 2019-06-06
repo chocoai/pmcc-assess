@@ -175,6 +175,15 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingHoldOn, data.land.holdOn, function (html, data) {
             estateCommon.estateLandStateForm.find("select[name='holdOn']").empty().html(html).trigger('change');
         });
+        if (estateCommon.isNotBlank(data.estate.greeningRate)) {
+            var greeningRateVal = AssessCommon.pointToPercent(data.estate.greeningRate);
+            estateCommon.estateForm.find("input[name='greeningRate']").val(greeningRateVal);
+        }
+
+        if (estateCommon.isNotBlank(data.estate.greeningRate)) {
+            var greeningRateVal = AssessCommon.pointToPercent(data.estate.greeningRate);
+            estateCommon.estateForm.find("input[name='greeningRate']").val(greeningRateVal);
+        }
         if (estateCommon.isNotBlank(data.land.landLevelContent)) {
             var obj = {};
             try {
