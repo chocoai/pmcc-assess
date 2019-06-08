@@ -3892,9 +3892,28 @@ public class GenerateBaseDataService {
         LinkedHashMap<String, String> map = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList = schemeLiquidationAnalysisService.getAnalysisItemListByAreaId(areaId);
+        BigDecimal buyTaxAmount = new BigDecimal("0");//买方
+        BigDecimal saleTaxAmount = new BigDecimal("0");//卖方
+        if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
+            for (SchemeLiquidationAnalysisItem analysisItem : liquidationAnalysisItemList) {
+                if(analysisItem.getTaxesBurden().contains("买方")){
+                    buyTaxAmount.add(analysisItem.getPrice());
+                }
+                if(analysisItem.getTaxesBurden().contains("卖方")){
+                    saleTaxAmount.add(analysisItem.getPrice());
+                }
+                if(analysisItem.getTaxesBurden().contains("双方")){
+                    buyTaxAmount.add(analysisItem.getPrice());
+                    saleTaxAmount.add(analysisItem.getPrice());
+                }
+            }
+        }
+        BigDecimal totalEvaluationArea=new BigDecimal("0");
+        schemeJudgeObjectList.forEach(o->totalEvaluationArea.add(o.getEvaluationArea()));
+
         for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
-            String documentPath = getCCB_Pre_Evaluation_Data_FormWriteWord(schemeJudgeObject, liquidationAnalysisItemList, schemeJudgeObjectList.size(), i);
+            String documentPath = getCCB_Pre_Evaluation_Data_FormWriteWord(schemeJudgeObject, buyTaxAmount,saleTaxAmount,totalEvaluationArea, schemeJudgeObjectList.size(), i);
             if (StringUtils.isNotEmpty(documentPath)) {
                 String title = generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject) + "</div>");
                 map.put(title, documentPath);
@@ -3927,11 +3946,8 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, int size, int i) throws Exception {
+    private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, BigDecimal buyTaxAmount,BigDecimal saleTaxAmount,BigDecimal totalEvaluationArea, int size, int i) throws Exception {
         String localPath = getLocalPath();
-        final String sellerPayment = "卖方";
-        final String tradingParties = "双方";
-        final String buyerPayment = "买方";
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         LinkedList<String> stringLinkedList = Lists.newLinkedList();
         String value = "";
@@ -4098,36 +4114,14 @@ public class GenerateBaseDataService {
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
+
             {
                 stringLinkedList.add("抵押净值1(元/㎡)");
-                if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
-                    List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-                        if (StringUtils.contains(oo.getTaxesBurden(), buyerPayment)) {
-                            return true;
-                        }
-                        if (StringUtils.contains(oo.getTaxesBurden(), tradingParties)) {
-                            return true;
-                        }
-                        return false;
-                    }).collect(Collectors.toList());
-                    if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisItemList)) {
-                        BigDecimal bigDecimal = new BigDecimal(0);
-                        for (SchemeLiquidationAnalysisItem analysisItem : schemeLiquidationAnalysisItemList) {
-                            if (analysisItem.getPrice() == null) {
-                                continue;
-                            }
-                            bigDecimal = bigDecimal.add(analysisItem.getPrice());
-                        }
-                        if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                            BigDecimal bigDecimal2 = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-                            bigDecimal = bigDecimal2.subtract(bigDecimal);
-                            if (generateCommonMethod.isInteger(bigDecimal)) {
-                                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 0, false));
-                            } else {
-                                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
-                            }
-                        }
-                    }
+                BigDecimal mortgage1 = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, BigDecimal.ROUND_HALF_UP).multiply(buyTaxAmount);
+                if (generateCommonMethod.isInteger(mortgage1)) {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage1, 0, false));
+                } else {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage1, 2, false));
                 }
                 if (stringLinkedList.size() == 1) {
                     stringLinkedList.add("");
@@ -4137,34 +4131,11 @@ public class GenerateBaseDataService {
             }
             {
                 stringLinkedList.add("抵押净值2(元/㎡)");
-                if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
-                    List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-                        if (StringUtils.contains(oo.getTaxesBurden(), sellerPayment)) {
-                            return true;
-                        }
-                        if (StringUtils.contains(oo.getTaxesBurden(), tradingParties)) {
-                            return true;
-                        }
-                        return false;
-                    }).collect(Collectors.toList());
-                    if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisItemList)) {
-                        BigDecimal bigDecimal = new BigDecimal(0);
-                        for (SchemeLiquidationAnalysisItem analysisItem : schemeLiquidationAnalysisItemList) {
-                            if (analysisItem.getPrice() == null) {
-                                continue;
-                            }
-                            bigDecimal = bigDecimal.add(analysisItem.getPrice());
-                        }
-                        if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                            BigDecimal bigDecimal2 = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-                            bigDecimal = bigDecimal2.subtract(bigDecimal);
-                            if (generateCommonMethod.isInteger(bigDecimal)) {
-                                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 0, false));
-                            } else {
-                                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
-                            }
-                        }
-                    }
+                BigDecimal mortgage2 = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, BigDecimal.ROUND_HALF_UP).multiply(saleTaxAmount);
+                if (generateCommonMethod.isInteger(mortgage2)) {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage2, 0, false));
+                } else {
+                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage2, 2, false));
                 }
                 if (stringLinkedList.size() == 1) {
                     stringLinkedList.add("");
@@ -4219,12 +4190,12 @@ public class GenerateBaseDataService {
                 }
             }
             BigDecimal totalEvaluationArea = new BigDecimal("0");
-            schemeJudgeObjectList.forEach(o->totalEvaluationArea.add(o.getEvaluationArea()));
+            schemeJudgeObjectList.forEach(o -> totalEvaluationArea.add(o.getEvaluationArea()));
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     BigDecimal judgeTaxAmount = new BigDecimal("0");
-                    if(totalTaxAmount.intValue()>0){
-                        judgeTaxAmount = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea,2, RoundingMode.HALF_UP).multiply(totalTaxAmount);
+                    if (totalTaxAmount.intValue() > 0) {
+                        judgeTaxAmount = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, RoundingMode.HALF_UP).multiply(totalTaxAmount);
                     }
                     BigDecimal evaluationPrice = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                     BigDecimal mortgageValue = evaluationPrice.subtract(judgeTaxAmount);
