@@ -1317,8 +1317,8 @@ public class GenerateBaseDataService {
             String addressAssetInventory = getActualAddressAssetInventory();
             String certificateAssetInventory = getCertificateAssetInventory();
             if (StringUtils.isNotBlank(addressAssetInventory) && StringUtils.isNotBlank(certificateAssetInventory)) {
-                stringSet.add(String.format("估价对象现场查勘地址为%s，", addressAssetInventory));
-                stringSet.add(String.format("本次评估根据委托方提供的证明文件由证明人%s证明，", certificateAssetInventory));
+                stringSet.add(String.format("估价对象现场查勘地址为%s", addressAssetInventory));
+                stringSet.add(String.format("本次评估根据委托方提供的证明文件由证明人%s证明", certificateAssetInventory));
                 stringSet.add("本次以上地址为同一地址。");
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
                 stringSet.clear();
@@ -1803,7 +1803,7 @@ public class GenerateBaseDataService {
         stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "资质等级", qualificationDto.getOrganizationRank())));
         stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "资质证书编号", qualificationDto.getCertificateNo())));
         stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "资质证书有效期", qualificationDto.getCertificateEffectiveDate())));
-        stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "经营范围", StringUtils.isEmpty(qualificationDto.getBusinessScopeName()) ? "评估房产" : qualificationDto.getBusinessScopeName())));
+        stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "经营范围", StringUtils.isEmpty(qualificationDto.getBusinessScopeName()) ? "" : qualificationDto.getBusinessScopeName())));
         documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
         doc.save(localPath);
         return localPath;
@@ -2265,9 +2265,10 @@ public class GenerateBaseDataService {
                             for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                                 List<SurveyAssetInventoryContent> surveyAssetInventoryContentList = surveyAssetInventoryContentService.getContentListByPlanDetailsId(projectPlanDetails.getId());
                                 if (CollectionUtils.isNotEmpty(surveyAssetInventoryContentList)) {
+                                    List<SurveyAssetInventoryContent> filter = LangUtils.filter(surveyAssetInventoryContentList, o -> "不一致".equals(o.getAreConsistent()));
                                     for (SurveyAssetInventoryContent surveyAssetInventoryContent : surveyAssetInventoryContentList) {
                                         if (Objects.equal("不一致", surveyAssetInventoryContent.getAreConsistent())) {
-                                            if (surveyAssetInventoryContentList.size() > 1)
+                                            if (filter.size() > 1)
                                                 stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObject));
                                             String value = (String) Reflections.getFieldValue(surveyAssetInventoryContent, fieldName);
                                             stringBuilder.append(value);
