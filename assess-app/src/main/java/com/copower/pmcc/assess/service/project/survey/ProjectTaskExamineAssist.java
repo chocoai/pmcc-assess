@@ -338,8 +338,8 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             basicBuilding.setApplyId(basicApply.getId());
             basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
         }
-        if (BasicApplyTypeEnum.RESIDENCE.getId().equals(surveyExamineInfo.getExamineFormType()) ||
-                BasicApplyTypeEnum.INDUSTRY.getId().equals(surveyExamineInfo.getExamineFormType())) {
+        if (BasicApplyTypeEnum.RESIDENCE.getKey().equals(surveyExamineInfo.getExamineFormType()) ||
+                BasicApplyTypeEnum.INDUSTRY.getKey().equals(surveyExamineInfo.getExamineFormType())) {
             if (basicUnit == null) {
                 basicUnit = new BasicUnit();
                 basicUnit.setApplyId(basicApply.getId());

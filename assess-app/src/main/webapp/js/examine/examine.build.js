@@ -112,13 +112,15 @@
     };
 
     buildingCommon.addLableData = function(json) {
-        var jsonarray = eval(json);
-        $.each(jsonarray, function (i, n) {
-            var specificationNameId = 'specificationName'+i;
-            var specificationContentId = 'specificationContent'+i;
-            $("#"+specificationNameId).val(n["specificationName"]);
-            $("#"+specificationContentId).val(n["specificationContent"]);
-        })
+        if(json){
+            var jsonarray = eval(json);
+            $.each(jsonarray, function (i, n) {
+                var specificationNameId = 'specificationName'+i;
+                var specificationContentId = 'specificationContent'+i;
+                $("#"+specificationNameId).val(n["specificationName"]);
+                $("#"+specificationContentId).val(n["specificationContent"]);
+            })
+        }
     }
 
     //楼栋标注
