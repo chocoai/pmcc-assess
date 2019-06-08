@@ -4120,7 +4120,7 @@ public class GenerateBaseDataService {
             }
 
             {
-                stringLinkedList.add("抵押净值1(元/㎡)");
+                stringLinkedList.add("抵押净值1(元)");
                 BigDecimal mortgage1 = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, BigDecimal.ROUND_HALF_UP).multiply(buyTaxAmount);
                 mortgage1 = mortgageValue.subtract(mortgage1);
                 stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage1,  false));
@@ -4131,7 +4131,7 @@ public class GenerateBaseDataService {
                 stringLinkedList.clear();
             }
             {
-                stringLinkedList.add("抵押净值2(元/㎡)");
+                stringLinkedList.add("抵押净值2(元)");
                 BigDecimal mortgage2 = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, BigDecimal.ROUND_HALF_UP).multiply(saleTaxAmount);
                 mortgage2 = mortgageValue.subtract(mortgage2);
                 stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage2, false));
