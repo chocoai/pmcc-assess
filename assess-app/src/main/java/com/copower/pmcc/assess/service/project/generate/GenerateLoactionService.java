@@ -533,21 +533,21 @@ public class GenerateLoactionService {
         List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
         if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
             //交通枢纽
-            stringBuilder.append(this.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "", false));
+            stringBuilder.append(StringUtils.defaultString(this.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "", false)));
             //主要转换
-            stringBuilder.append(this.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainConversion, "", false));
+            stringBuilder.append(StringUtils.defaultString(this.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainConversion, "", false)));
         }
         //购物商场
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-            stringBuilder.append(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "", false));
+            stringBuilder.append(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "", false)));
         }
         //金融服务
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            stringBuilder.append(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null, null, ""));
+            stringBuilder.append(StringUtils.defaultString(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null, null, "")));
         }
         //医疗
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            stringBuilder.append(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList, null, ""));
+            stringBuilder.append(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList, null, "")));
         }
         return stringBuilder.toString();
     }
@@ -568,29 +568,29 @@ public class GenerateLoactionService {
         List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
             //购物商场
-            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET,
-                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":") : "", false));
+            stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET,
+                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":") : "", false)));
             //餐饮
-            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT,
-                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":") : "", false));
+            stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT,
+                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":") : "", false)));
             //休闲娱乐
-            stringArrayList.add(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION,
-                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":") : "", false));
+            stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION,
+                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":") : "", false)));
         }
         //金融服务
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            stringArrayList.add(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null,
-                    null, isShowName ? String.format("%s%s", "金融服务", ":") : ""));
+            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null,
+                    null, isShowName ? String.format("%s%s", "金融服务", ":") : "")));
         }
         //医疗
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            stringArrayList.add(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList,
-                    null, isShowName ? String.format("%s%s", "医疗", ":") : ""));
+            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList,
+                    null, isShowName ? String.format("%s%s", "医疗", ":") : "")));
         }
         //教育
         if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
-            stringArrayList.add(getFinanceAndMedicalAndEducation(null, null,
-                    basicMatchingEducationList, isShowName ? String.format("%s%s", "教育", ":") : ""));
+            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, null,
+                    basicMatchingEducationList, isShowName ? String.format("%s%s", "教育", ":") : "")));
         }
         return stringArrayList;
     }

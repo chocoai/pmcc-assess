@@ -328,7 +328,7 @@ public class GenerateHouseEntityService {
      * @throws Exception
      */
     public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        return getDamagedDegreeBase(judgeObjectList,true) ;
+        return getDamagedDegreeBase(judgeObjectList, true);
     }
 
     public String getDamagedDegreeBase(List<SchemeJudgeObject> judgeObjectList, boolean html) throws Exception {
@@ -362,10 +362,12 @@ public class GenerateHouseEntityService {
                     String s = "";
                     if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                         damagedDegreeVoList.stream().forEach(oo -> {
-                            if (typeList.contains(oo.getTypeName()) && (oo.getCategoryName().contains("其它") || oo.getCategoryName().contains("特种设备"))) {
-                                stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), oo.getEntityConditionName()));
-                            } else {
-                                stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
+                            if (StringUtils.isNotBlank(oo.getCategoryName()) && StringUtils.isNotBlank(oo.getEntityConditionName())) {
+                                if (typeList.contains(oo.getTypeName()) && (oo.getCategoryName().contains("其它") || oo.getCategoryName().contains("特种设备"))) {
+                                    stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), oo.getEntityConditionName()));
+                                } else {
+                                    stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
+                                }
                             }
                         });
                         s = StringUtils.join(stringLinkedHashSet, "、");
@@ -375,7 +377,7 @@ public class GenerateHouseEntityService {
                     }
                     if (html) {
                         stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s: %s。", stringListEntry.getKey(), s)));
-                    }else {
+                    } else {
                         stringBuilder.append(String.format("%s: %s。", stringListEntry.getKey(), s));
                     }
                 });
