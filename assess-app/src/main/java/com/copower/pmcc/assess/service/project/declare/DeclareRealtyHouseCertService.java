@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -399,11 +398,19 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
             //写入土地证的证载用途
-            DeclareRealtyLandCert realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(oo.getPid());
-            if (realtyLandCert != null) {
-                declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
-                declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
-                declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
+            //从中间表获取到土地证信息
+            DeclareBuildEngineeringAndEquipmentCenter centerQuery = new DeclareBuildEngineeringAndEquipmentCenter();
+            centerQuery.setHouseId(oo.getId());
+            centerQuery.setPlanDetailsId(oo.getPlanDetailsId());
+            centerQuery.setType(DeclareRealtyHouseCert.class.getSimpleName());
+            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(centerQuery);
+            if (CollectionUtils.isNotEmpty(centerList)) {
+                DeclareRealtyLandCert realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(centerList.get(0).getLandId());
+                if (realtyLandCert != null) {
+                    declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
+                    declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
+                    declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
+                }
             }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
@@ -414,6 +421,4 @@ public class DeclareRealtyHouseCertService {
             }
         }
     }
-
-
 }

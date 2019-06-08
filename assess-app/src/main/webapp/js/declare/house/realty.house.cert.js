@@ -219,7 +219,7 @@ assessCommonHouse.initLand = function (item) {
  */
 assessCommonHouse.showAddModelLand = function (id) {
     $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).find("#" + commonDeclareApplyModel.config.land.handleId).remove();
-    $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApplyModel.land.getHtml());
+    $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).find(".panel-body").prepend(commonDeclareApplyModel.land.getHtml());
     var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
     if (!declareCommon.isNotBlank(item.centerId)) {
         toastr.success('不合符调整后的数据约定,请联系管理员!');

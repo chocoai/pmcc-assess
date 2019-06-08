@@ -18,6 +18,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -42,7 +43,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -347,8 +347,9 @@ public class DeclareRealtyLandCertService {
         }
         DeclareRealtyLandCertVo vo = new DeclareRealtyLandCertVo();
         BeanUtils.copyProperties(declareRealtyLandCert, vo);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        vo.setTerminationDateFmt(sdf.format(declareRealtyLandCert.getTerminationDate()));
+        if (declareRealtyLandCert.getTerminationDate() != null) {
+            vo.setTerminationDateFmt(DateUtils.formatDate(declareRealtyLandCert.getTerminationDate()));
+        }
         vo.setLandRightTypeName(baseDataDicService.getNameById(declareRealtyLandCert.getLandRightType()));
         vo.setLandRightNatureName(baseDataDicService.getNameById(declareRealtyLandCert.getLandRightNature()));
         vo.setPurposeName(baseDataDicService.getNameById(declareRealtyLandCert.getCertUse()));
