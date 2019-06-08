@@ -317,10 +317,7 @@ public class DataReportAnalysisService {
     public String getReportLiquidity2(ProjectInfo projectInfo, Integer areaGroupId) throws Exception {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
         if (baseDataDic == null) return "";
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
         SchemeLiquidationAnalysis data = schemeLiquidationAnalysisService.getDataByAreaId(areaGroupId);
-        String liquidRatios = data.getLiquidRatios();//变现比率
-        String liquidTime = data.getLiquidTime();//变现时间
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
         if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);//区域下委估对象
@@ -335,26 +332,30 @@ public class DataReportAnalysisService {
 
         for (int i = 0; i < reportAnalysisList.size(); i++) {
             DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, dataReportAnalysis.getName())));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
+
             //估价对象区位分析与估价区位分析 =
             if (AssessReportFieldConstant.ZONE_BIT_ANALYSIS.equals(dataReportAnalysis.getFieldName()) || AssessReportFieldConstant.LOCATION_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getLocationAnalysis(estateGroupMap))));
             }
             //变现能力通用性分析
             if (AssessReportFieldConstant.UNIVERSALITY_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getUniversalityAnalysis(estateGroupMap, projectInfo.getId(), analysisDtoMap))));
             }
             //独立性分析
             if (AssessReportFieldConstant.INDEPENDENCE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getIndependenceAnalysis(judgeObjectList))));
             }
             //可分割分析
             if (AssessReportFieldConstant.DIVISIBLE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getDivisibleAnalysis(judgeObjectList))));
             }
             //价值大小分析
             if (AssessReportFieldConstant.VALUE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getValueAnalysis(judgeObjectList, areaGroupId))));
             }
             //变现能力综述

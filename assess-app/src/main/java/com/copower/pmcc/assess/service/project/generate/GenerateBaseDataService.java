@@ -59,6 +59,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -4207,21 +4208,28 @@ public class GenerateBaseDataService {
                 }
                 return StringUtils.contains(oo.getTaxesBurden(), tradingParties);
             }).collect(Collectors.toList());
+
+            BigDecimal totalTaxAmount = new BigDecimal("0");
+            if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisItemList)) {
+                for (SchemeLiquidationAnalysisItem analysisItem : schemeLiquidationAnalysisItemList) {
+                    if (analysisItem.getPrice() == null) {
+                        continue;
+                    }
+                    totalTaxAmount = totalTaxAmount.add(analysisItem.getPrice());
+                }
+            }
+            BigDecimal totalEvaluationArea = new BigDecimal("0");
+            schemeJudgeObjectList.forEach(o->totalEvaluationArea.add(o.getEvaluationArea()));
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisItemList)) {
-                    BigDecimal bigDecimal = new BigDecimal(0);
-                    for (SchemeLiquidationAnalysisItem analysisItem : schemeLiquidationAnalysisItemList) {
-                        if (analysisItem.getPrice() == null) {
-                            continue;
-                        }
-                        bigDecimal = bigDecimal.add(analysisItem.getPrice());
+                if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
+                    BigDecimal judgeTaxAmount = new BigDecimal("0");
+                    if(totalTaxAmount.intValue()>0){
+                        judgeTaxAmount = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea,2, RoundingMode.HALF_UP).multiply(totalTaxAmount);
                     }
-                    if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                        BigDecimal bigDecimal2 = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-                        bigDecimal = bigDecimal2.subtract(bigDecimal);
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())
-                                , String.format("%s元", generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false)));
-                    }
+                    BigDecimal evaluationPrice = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
+                    BigDecimal mortgageValue = evaluationPrice.subtract(judgeTaxAmount);
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())
+                            , String.format("%s元", generateCommonMethod.getBigDecimalRound(mortgageValue, 2, false)));
                 }
             }
         }
