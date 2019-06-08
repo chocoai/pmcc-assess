@@ -859,7 +859,7 @@ public class GenerateBaseDataService {
             if (declareRecord == null || declareRecord.getFloorArea() == null) {
                 continue;
             }
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), false));
+            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(),2, false));
         }
         String value = "";
         if (!map.isEmpty()) {
@@ -5173,7 +5173,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        return generateCommonMethod.getBigDecimalRound(bigDecimal,4, true);
+        return generateCommonMethod.getBigDecimalRound(bigDecimal,2, true);
     }
 
     /**
@@ -5193,7 +5193,7 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     BigDecimal bigDecimal = new BigDecimal(0);
                     bigDecimal = bigDecimal.add(schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea()));
-                    map.put(schemeJudgeObject, generateCommonMethod.getBigDecimalRound(bigDecimal,4, true));
+                    map.put(schemeJudgeObject, generateCommonMethod.getBigDecimalRound(bigDecimal,2, true));
                 }
             }
         }
