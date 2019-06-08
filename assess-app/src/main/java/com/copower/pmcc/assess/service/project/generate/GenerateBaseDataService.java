@@ -1218,7 +1218,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalRealEstatePrice() {
-        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), true);
+        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(),2, true);
     }
 
     /**
@@ -3896,24 +3896,26 @@ public class GenerateBaseDataService {
         BigDecimal saleTaxAmount = new BigDecimal("0");//卖方
         if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
             for (SchemeLiquidationAnalysisItem analysisItem : liquidationAnalysisItemList) {
-                if(analysisItem.getTaxesBurden().contains("买方")){
-                    buyTaxAmount.add(analysisItem.getPrice());
+                if (analysisItem.getTaxesBurden().contains("买方")) {
+                    buyTaxAmount = buyTaxAmount.add(analysisItem.getPrice());
                 }
-                if(analysisItem.getTaxesBurden().contains("卖方")){
-                    saleTaxAmount.add(analysisItem.getPrice());
+                if (analysisItem.getTaxesBurden().contains("卖方")) {
+                    saleTaxAmount = saleTaxAmount.add(analysisItem.getPrice());
                 }
-                if(analysisItem.getTaxesBurden().contains("双方")){
-                    buyTaxAmount.add(analysisItem.getPrice());
-                    saleTaxAmount.add(analysisItem.getPrice());
+                if (analysisItem.getTaxesBurden().contains("双方")) {
+                    buyTaxAmount = buyTaxAmount.add(analysisItem.getPrice());
+                    saleTaxAmount = saleTaxAmount.add(analysisItem.getPrice());
                 }
             }
         }
-        BigDecimal totalEvaluationArea=new BigDecimal("0");
-        schemeJudgeObjectList.forEach(o->totalEvaluationArea.add(o.getEvaluationArea()));
+        BigDecimal totalEvaluationArea = new BigDecimal("0");
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            totalEvaluationArea = totalEvaluationArea.add(schemeJudgeObject.getEvaluationArea());
+        }
 
         for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
-            String documentPath = getCCB_Pre_Evaluation_Data_FormWriteWord(schemeJudgeObject, buyTaxAmount,saleTaxAmount,totalEvaluationArea, schemeJudgeObjectList.size(), i);
+            String documentPath = getCCB_Pre_Evaluation_Data_FormWriteWord(schemeJudgeObject, buyTaxAmount, saleTaxAmount, totalEvaluationArea, schemeJudgeObjectList.size(), i);
             if (StringUtils.isNotEmpty(documentPath)) {
                 String title = generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject) + "</div>");
                 map.put(title, documentPath);
@@ -3946,7 +3948,7 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, BigDecimal buyTaxAmount,BigDecimal saleTaxAmount,BigDecimal totalEvaluationArea, int size, int i) throws Exception {
+    private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, BigDecimal buyTaxAmount, BigDecimal saleTaxAmount, BigDecimal totalEvaluationArea, int size, int i) throws Exception {
         String localPath = getLocalPath();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         LinkedList<String> stringLinkedList = Lists.newLinkedList();
@@ -4099,14 +4101,16 @@ public class GenerateBaseDataService {
                 generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
                 stringLinkedList.clear();
             }
+
+            BigDecimal mortgageValue = new BigDecimal("0");
             {
                 stringLinkedList.add("抵押价值(元/㎡)");
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    BigDecimal bigDecimal = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-                    if (generateCommonMethod.isInteger(bigDecimal)) {
-                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 0, false));
+                    mortgageValue = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
+                    if (generateCommonMethod.isInteger(mortgageValue)) {
+                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false));
                     } else {
-                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(bigDecimal, 2, false));
+                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgageValue, 2, false));
                     }
                 } else {
                     stringLinkedList.add("");
@@ -4118,11 +4122,8 @@ public class GenerateBaseDataService {
             {
                 stringLinkedList.add("抵押净值1(元/㎡)");
                 BigDecimal mortgage1 = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, BigDecimal.ROUND_HALF_UP).multiply(buyTaxAmount);
-                if (generateCommonMethod.isInteger(mortgage1)) {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage1, 0, false));
-                } else {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage1, 2, false));
-                }
+                mortgage1 = mortgageValue.subtract(mortgage1);
+                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage1,  false));
                 if (stringLinkedList.size() == 1) {
                     stringLinkedList.add("");
                 }
@@ -4132,11 +4133,8 @@ public class GenerateBaseDataService {
             {
                 stringLinkedList.add("抵押净值2(元/㎡)");
                 BigDecimal mortgage2 = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, BigDecimal.ROUND_HALF_UP).multiply(saleTaxAmount);
-                if (generateCommonMethod.isInteger(mortgage2)) {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage2, 0, false));
-                } else {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage2, 2, false));
-                }
+                mortgage2 = mortgageValue.subtract(mortgage2);
+                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage2, false));
                 if (stringLinkedList.size() == 1) {
                     stringLinkedList.add("");
                 }
@@ -4190,7 +4188,9 @@ public class GenerateBaseDataService {
                 }
             }
             BigDecimal totalEvaluationArea = new BigDecimal("0");
-            schemeJudgeObjectList.forEach(o -> totalEvaluationArea.add(o.getEvaluationArea()));
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                totalEvaluationArea = totalEvaluationArea.add(schemeJudgeObject.getEvaluationArea());
+            }
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     BigDecimal judgeTaxAmount = new BigDecimal("0");
@@ -4200,7 +4200,7 @@ public class GenerateBaseDataService {
                     BigDecimal evaluationPrice = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                     BigDecimal mortgageValue = evaluationPrice.subtract(judgeTaxAmount);
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())
-                            , String.format("%s元", generateCommonMethod.getBigDecimalRound(mortgageValue, 2, false)));
+                            , String.format("%s元", generateCommonMethod.getBigDecimalRound(mortgageValue, false)));
                 }
             }
         }
@@ -5015,7 +5015,7 @@ public class GenerateBaseDataService {
                 if (declareRecord.getFloorArea() != null) {
                     stringBuilder
                             .append("建筑面积:")
-                            .append(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), false))
+                            .append(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(),2, false))
                             .append("㎡");
                     stringBuilder.append(",及其分摊的");
                 }
@@ -5031,7 +5031,7 @@ public class GenerateBaseDataService {
                 if (declareRecord.getPracticalArea() != null) {
                     stringBuilder
                             .append("土地使用权面积:")
-                            .append(generateCommonMethod.getBigDecimalRound(declareRecord.getPracticalArea(), false))
+                            .append(generateCommonMethod.getBigDecimalRound(declareRecord.getLandUseRightArea(),2, false))
                             .append("㎡");
                 }
                 stringBuilder.append(")");
@@ -5134,7 +5134,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getEvaluationArea() != null) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getEvaluationArea(), false));
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getEvaluationArea(),2, false));
                 }
             }
         }
@@ -5173,7 +5173,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        return generateCommonMethod.getBigDecimalRound(bigDecimal, true);
+        return generateCommonMethod.getBigDecimalRound(bigDecimal,4, true);
     }
 
     /**
@@ -5193,7 +5193,7 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     BigDecimal bigDecimal = new BigDecimal(0);
                     bigDecimal = bigDecimal.add(schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea()));
-                    map.put(schemeJudgeObject, generateCommonMethod.getBigDecimalRound(bigDecimal, true));
+                    map.put(schemeJudgeObject, generateCommonMethod.getBigDecimalRound(bigDecimal,4, true));
                 }
             }
         }

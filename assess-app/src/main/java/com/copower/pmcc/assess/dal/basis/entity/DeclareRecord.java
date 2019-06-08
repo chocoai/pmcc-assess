@@ -62,6 +62,8 @@ public class DeclareRecord {
 
     private String landRightNature;
 
+    private BigDecimal landUseRightArea;
+
     private String housingStructure;
 
     private Integer areaGroupId;
@@ -316,6 +318,14 @@ public class DeclareRecord {
 
     public void setLandRightNature(String landRightNature) {
         this.landRightNature = landRightNature == null ? null : landRightNature.trim();
+    }
+
+    public BigDecimal getLandUseRightArea() {
+        return landUseRightArea;
+    }
+
+    public void setLandUseRightArea(BigDecimal landUseRightArea) {
+        this.landUseRightArea = landUseRightArea;
     }
 
     public String getHousingStructure() {

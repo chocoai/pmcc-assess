@@ -262,24 +262,26 @@ public class GenerateCommonMethod {
     }
 
     public String getBigDecimalRound(final BigDecimal bigDecimal, int newScale, boolean tenThousand) {
+        if (bigDecimal == null) return "";
         //四舍五入,并且取到约定的位数
         BigDecimal setScale = bigDecimal.setScale(newScale, BigDecimal.ROUND_UP);
         if (tenThousand) {
             setScale = setScale.divide(new BigDecimal(10000));
         }
-        return setScale.abs().toString();
+        return setScale.abs().setScale(newScale, BigDecimal.ROUND_UP).toString();
     }
 
     /**
      * 判断是否为整数 仅仅判断是否是整数
+     *
      * @param bigDecimal
      * @return
      */
-    public  boolean isInteger(BigDecimal bigDecimal){
-        if (bigDecimal == null){
+    public boolean isInteger(BigDecimal bigDecimal) {
+        if (bigDecimal == null) {
             return false;
         }
-        return bigDecimal.abs().toBigInteger().intValue() == bigDecimal.abs().doubleValue() ;
+        return bigDecimal.abs().toBigInteger().intValue() == bigDecimal.abs().doubleValue();
     }
 
     /**
@@ -764,17 +766,17 @@ public class GenerateCommonMethod {
             return "";
         }
         boolean one = false;
-        if (map.size() == 1){
+        if (map.size() == 1) {
             one = true;
         }
-        if (!one){
+        if (!one) {
             Set<String> stringSet = Sets.newHashSet();
             map.entrySet().forEach(integerStringEntry -> stringSet.add(integerStringEntry.getValue()));
-            if (stringSet.size() == 1){
+            if (stringSet.size() == 1) {
                 one = true;
             }
         }
-        if (one){
+        if (one) {
             StringBuilder stringBuilder = new StringBuilder(8);
             if (isShowJudgeNumBer.equals(Boolean.FALSE)) {
                 stringBuilder.append(StringUtils.defaultString(explain)).append(map.entrySet().stream().findFirst().get().getValue());
@@ -782,7 +784,7 @@ public class GenerateCommonMethod {
                 stringBuilder.append(StringUtils.defaultString(explain)).append(map.entrySet().stream().findFirst().get().getValue()).append(symbol);
             }
             return stringBuilder.toString();
-        }else {
+        } else {
             return judgeEachDesc(map, explain, symbol, isShowJudgeNumBer);
         }
     }

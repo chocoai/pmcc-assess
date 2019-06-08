@@ -2076,6 +2076,66 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandUseRightAreaIsNull() {
+            addCriterion("land_use_right_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaIsNotNull() {
+            addCriterion("land_use_right_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaEqualTo(BigDecimal value) {
+            addCriterion("land_use_right_area =", value, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaNotEqualTo(BigDecimal value) {
+            addCriterion("land_use_right_area <>", value, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaGreaterThan(BigDecimal value) {
+            addCriterion("land_use_right_area >", value, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_use_right_area >=", value, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaLessThan(BigDecimal value) {
+            addCriterion("land_use_right_area <", value, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_use_right_area <=", value, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaIn(List<BigDecimal> values) {
+            addCriterion("land_use_right_area in", values, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaNotIn(List<BigDecimal> values) {
+            addCriterion("land_use_right_area not in", values, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_use_right_area between", value1, value2, "landUseRightArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseRightAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_use_right_area not between", value1, value2, "landUseRightArea");
+            return (Criteria) this;
+        }
+
         public Criteria andHousingStructureIsNull() {
             addCriterion("housing_structure is null");
             return (Criteria) this;

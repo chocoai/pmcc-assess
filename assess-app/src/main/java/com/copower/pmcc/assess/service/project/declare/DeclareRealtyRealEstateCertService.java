@@ -283,6 +283,7 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
             declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
+            declareRecord.setLandUseRightArea(oo.getUseRightArea());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);

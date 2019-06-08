@@ -410,6 +410,7 @@ public class DeclareRealtyHouseCertService {
                     declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
                     declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
                     declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
+                    declareRecord.setLandUseRightArea(realtyLandCert.getUseRightArea());
                 }
             }
             try {
