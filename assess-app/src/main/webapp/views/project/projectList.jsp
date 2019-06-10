@@ -72,6 +72,7 @@
         loadProjectList();
 
     })
+
     function loadProjectList() {
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称'});
@@ -118,15 +119,23 @@
             }
         });
         cols.push({
-            field: 'opation', title: '操作', formatter: function (value, row, index) {
-                var str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = "";
+                if (row.projectStatus) {
+                    console.log(row.projectStatus) ;
+                    if (row.projectStatus == '草稿') {
+                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectInfoEdit?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='重新申请' class='btn btn-xs btn-success tooltips' ><i class='fa fa-flag '></i></a>";
+                    } else {
+                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                    }
+                }
                 return str;
             }
         });
         $("#tb_projectList").bootstrapTable('destroy');
         TableInit("tb_projectList", "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {
             queryName: $("#queryName").val(),
-            projectStatus:$("#status").val()
+            projectStatus: $("#status").val()
         }, {
             showColumns: false,
             showRefresh: false,

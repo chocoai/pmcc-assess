@@ -314,6 +314,7 @@
      */
     objProject.info = {
         loadInit: function (item) {
+            $("#" + objProject.config.info.frm).initForm(item);
             $.each(objProject.config.info.files, function (i, n) {
                 objProject.showFile(n, AssessDBKey.ProjectInfo, objProject.isNotBlank(item.id) ? item.id : "0");
                 objProject.uploadFile(n, AssessDBKey.ProjectInfo, objProject.isNotBlank(item.id) ? item.id : "0");
@@ -463,6 +464,7 @@
 
                 }
             });
+
         }
     };
 
@@ -976,32 +978,26 @@
 
     objProject.loadInit = function () {
         $(function () {
-
             objProject.consignor.contactsShow();
             objProject.possessor.contactsShow();
             objProject.unit_information.contactsShow();
-
-            objProject.info.loadInit({
-                province: objProject.isNotBlank("${projectInfo.province}") ? "${projectInfo.province}" : null,
-                city: objProject.isNotBlank("${projectInfo.city}") ? "${projectInfo.city}" : null,
-                district: objProject.isNotBlank("${projectInfo.district}") ? "${projectInfo.district}" : null,
-                valueType: objProject.isNotBlank("${projectInfo.valueType}") ? "${projectInfo.valueType}" : null,
-                entrustPurpose: objProject.isNotBlank("${projectInfo.entrustPurpose}") ? "${projectInfo.entrustPurpose}" : null,
-                urgency: objProject.isNotBlank("${projectInfo.urgency}") ? "${projectInfo.urgency}" : null,
-                entrustAimType: objProject.isNotBlank("${projectInfo.entrustAimType}") ? "${projectInfo.entrustAimType}" : null,
-                loanType: objProject.isNotBlank("${projectInfo.loanType}") ? "${projectInfo.loanType}" : null,
-                propertyScope: objProject.isNotBlank("${projectInfo.propertyScope}") ? "${projectInfo.propertyScope}" : null,
-                id: objProject.isNotBlank("${projectInfo.id}") ? "${projectInfo.id}" : null
-            });
-            objProject.consignor.loadInit({
-                id: objProject.isNotBlank("${projectInfo.consignorVo.id}") ? "${projectInfo.consignorVo.id}" : null,
-                csType: objProject.isNotBlank("${projectInfo.consignorVo.csType}") ? "${projectInfo.consignorVo.csType}" : null,
-            });
-            objProject.possessor.loadInit({
-                id: objProject.isNotBlank("${projectInfo.possessorVo.id}") ? "${projectInfo.possessorVo.id}" : null,
-                pType: objProject.isNotBlank("${projectInfo.possessorVo.pType}") ? "${projectInfo.possessorVo.pType}" : null
-            });
-            objProject.unit_information.loadInit({id: objProject.isNotBlank("${projectInfo.unitInformationVo.id}") ? "${projectInfo.unitInformationVo.id}" : null});
+            if (objProject.isNotBlank('${projectInfoVoJson}')){
+                var str = $("#projectInfoVoJson").val() ;
+                if (objProject.isNotBlank(str)){
+                    var data = {} ;
+                    try {
+                        data = JSON.parse(str) ;
+                    } catch (e) {
+                        console.log(e) ;
+                    }
+                    if (objProject.isNotBlankObjectProperty(data)){
+                        objProject.info.loadInit(data) ;
+                        objProject.consignor.loadInit(data.consignorVo) ;
+                        objProject.possessor.loadInit(data.possessorVo) ;
+                        objProject.unit_information.loadInit(data.unitInformationVo) ;
+                    }
+                }
+            }
         });
     };
 

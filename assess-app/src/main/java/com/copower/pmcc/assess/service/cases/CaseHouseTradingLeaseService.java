@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingLeaseDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
@@ -9,6 +8,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -109,10 +109,10 @@ public class CaseHouseTradingLeaseService {
         CaseHouseTradingLeaseVo vo = new CaseHouseTradingLeaseVo();
         BeanUtils.copyProperties(caseHouseTradingLease,vo);
         if (caseHouseTradingLease.getRentPaymentTimeEnd() != null){
-            vo.setRentPaymentTimeEndName(DateHelp.getDateHelp().printDate(caseHouseTradingLease.getRentPaymentTimeEnd()));
+            vo.setRentPaymentTimeEndName(DateUtils.format(caseHouseTradingLease.getRentPaymentTimeEnd(),DateUtils.DATE_CHINESE_PATTERN));
         }
         if (caseHouseTradingLease.getRentPaymentTimeStart() != null){
-            vo.setRentPaymentTimeStartName(DateHelp.getDateHelp().printDate(caseHouseTradingLease.getRentPaymentTimeStart()));
+            vo.setRentPaymentTimeStartName(DateUtils.format(caseHouseTradingLease.getRentPaymentTimeStart() , DateUtils.DATE_CHINESE_PATTERN));
         }
         return vo;
     }

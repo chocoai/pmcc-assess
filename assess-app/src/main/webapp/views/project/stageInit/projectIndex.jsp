@@ -17,6 +17,7 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2>
+                        <input type="hidden" name="projectInfoVoJson" id="projectInfoVoJson" value='${projectInfoVoJson}'>
                         项目信息
                         <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
                     </h2>
@@ -76,6 +77,10 @@
                                 取消
                             </button>
 
+                            <button id="draft_btn" class="btn btn-success" onclick="projectApplyDraft();">
+                                草稿<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            </button>
+
                             <button id="commit_btn" class="btn btn-success" onclick="projectApply();">
                                 提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
@@ -103,9 +108,44 @@
 
 
     $(document).ready(function () {
-        objProject.loadInit();
+        try {
+            objProject.loadInit();
+        } catch (e) {
+            console.log(e) ;
+        }
     });
 
+    //保存草稿
+    function projectApplyDraft() {
+        if (!objProject.valid()) {
+            return false;
+        }
+        var data = {};
+        data.formData = JSON.stringify(objProject.getFormData());
+        var url = "${pageContext.request.contextPath}/projectInfo/projectApplyDraft";
+        Loading.progressShow();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    //保存完后其他动作
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
+                } else {
+                    Alert("保存失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    }
+
+    //项目提交立项
     function projectApply() {
         if (!objProject.valid()) {
             return false;

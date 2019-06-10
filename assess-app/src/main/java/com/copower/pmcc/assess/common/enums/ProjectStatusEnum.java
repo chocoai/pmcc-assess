@@ -14,6 +14,7 @@ import java.util.List;
  */
 public enum ProjectStatusEnum {
     PAUSEAPPLY("pauseapply", "暂停申请"),
+    DRAFT("draft", "草稿"),
     PAUSE("pause", "暂停"),
     WAIT("wait", "待处理"),
     STARTAPPLY("startapply", "启动申请"),

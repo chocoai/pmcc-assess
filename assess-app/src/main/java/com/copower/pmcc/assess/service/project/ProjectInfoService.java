@@ -144,23 +144,28 @@ public class ProjectInfoService {
      * 项目立项申请
      *
      * @param projectDto
+     * @param init 是否立项与草稿
      */
-    public boolean projectApply(InitiateProjectDto projectDto, Boolean bisNextUser) throws BusinessException {
+    public boolean projectApply(InitiateProjectDto projectDto,boolean init) throws BusinessException {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
         projectMember.setBisEnable(true);
-        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), projectMember, projectDto.getProjectInfo(), bisNextUser);
+        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), projectMember, projectDto.getProjectInfo(), init);
     }
 
     @Transactional(rollbackFor = {Exception.class})
     public boolean projectApplyChange(InitiateConsignor consignor, InitiateUnitInformation unitInformation, InitiatePossessor possessor, ProjectMember projectMember,
-                                      ProjectInfoDto projectInfoDto, Boolean bisNextUser) {
+                                      ProjectInfoDto projectInfoDto,boolean init) {
         boolean flag = true;
         try {
             ProjectInfo projectInfo = change(projectInfoDto);
             if (org.apache.commons.lang3.StringUtils.isEmpty(projectInfo.getCreator())) {
                 projectInfo.setCreator(commonService.thisUserAccount());
+            }
+            if (!init){
+                projectInfo.setStatus(ProjectStatusEnum.DRAFT.getKey());
+                projectInfo.setProjectStatus(ProjectStatusEnum.DRAFT.getKey());
             }
             int projectId = projectInfoDao.saveProjectInfo_returnID(projectInfo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectId);
@@ -174,12 +179,14 @@ public class ProjectInfoService {
             projectMember.setProjectId(projectId);
             projectMember.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMember);
-            //如果没有设置项目经理，则由部门领导分派项目经理
-            if (StringUtils.isBlank(projectMember.getUserAccountManager())) {
-                allocateProjectManager(projectMember, projectInfo);
-            } else {
-                //初始化项目信息
-                initProjectInfo(projectInfo);
+            if (init){
+                //如果没有设置项目经理，则由部门领导分派项目经理
+                if (StringUtils.isBlank(projectMember.getUserAccountManager())) {
+                    allocateProjectManager(projectMember, projectInfo);
+                } else {
+                    //初始化项目信息
+                    initProjectInfo(projectInfo);
+                }
             }
         } catch (Exception e) {
             flag = false;
@@ -406,8 +413,11 @@ public class ProjectInfoService {
      */
     public List<ProjectPlanVo> getProjectPlanList(Integer projectId) {
         List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
-        projectPlanList.remove(0);//去除立项阶段
-        List<ProjectPlanVo> projectPlanVos = LangUtils.transform(projectPlanList, projectPlan -> getProjectPlanVo(projectPlan));
+        List<ProjectPlanVo> projectPlanVos = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(projectPlanList)){
+            projectPlanList.remove(0);//去除立项阶段
+            projectPlanVos = LangUtils.transform(projectPlanList, projectPlan -> getProjectPlanVo(projectPlan));
+        }
         return projectPlanVos;
     }
 

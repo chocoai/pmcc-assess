@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataInfrastructureDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
@@ -12,6 +11,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -141,10 +141,10 @@ public class DataInfrastructureService {
             vo.setDistrictName(erpAreaService.getSysAreaName(infrastructure.getDistrict()));
         }
         if (!ObjectUtils.isEmpty(infrastructure.getEndDate())) {
-            vo.setEndDateName(DateHelp.getDateHelp().printDate(infrastructure.getEndDate()));
+            vo.setEndDateName(DateUtils.format(infrastructure.getEndDate(),DateUtils.DATE_CHINESE_PATTERN));
         }
         if (!ObjectUtils.isEmpty(infrastructure.getStartDate())) {
-            vo.setStartDateName(DateHelp.getDateHelp().printDate(infrastructure.getStartDate()));
+            vo.setStartDateName(DateUtils.format(infrastructure.getStartDate(),DateUtils.DATE_CHINESE_PATTERN));
         }
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(infrastructure.getId(), null, "tb_data_infrastructure");
         StringBuilder builder = new StringBuilder();

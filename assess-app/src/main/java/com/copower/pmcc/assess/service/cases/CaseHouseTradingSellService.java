@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingSellDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
@@ -9,6 +8,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -94,10 +94,10 @@ public class CaseHouseTradingSellService {
         CaseHouseTradingSellVo vo = new CaseHouseTradingSellVo();
         BeanUtils.copyProperties(caseHouseTradingSell,vo);
         if (caseHouseTradingSell.getInstalmentPeriodStart() != null){
-            vo.setInstalmentPeriodStartName(DateHelp.getDateHelp().printDate(caseHouseTradingSell.getInstalmentPeriodStart()));
+            vo.setInstalmentPeriodStartName(DateUtils.format(caseHouseTradingSell.getInstalmentPeriodStart() , DateUtils.DATE_CHINESE_PATTERN));
         }
         if (caseHouseTradingSell.getInstalmentPeriodEnd() != null){
-            vo.setInstalmentPeriodEndName(DateHelp.getDateHelp().printDate(caseHouseTradingSell.getInstalmentPeriodEnd()));
+            vo.setInstalmentPeriodEndName(DateUtils.format(caseHouseTradingSell.getInstalmentPeriodEnd(), DateUtils.DATE_CHINESE_PATTERN));
         }
         return vo;
     }
