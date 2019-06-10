@@ -556,8 +556,10 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
                 console.log(landAcquisitionData.name)
                 if (landAcquisitionData.name == "划拨") {
                     frm.find("input[name='useEndDate']").parent().parent().hide();
+                    frm.find("input[name='useStartDate']").attr("required",true);
                 } else {
                     frm.find("input[name='useEndDate']").parent().parent().show();
+                    frm.find("input[name='useStartDate']").attr("required",false);
                 }
             });
         }
@@ -568,9 +570,11 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
             if (landAcquisitionData.name == "划拨") {
                 $("#useEndDate_d").parent().parent().hide();
                 frm.find("input[name='useEndDate']").parent().parent().hide();
+                frm.find("input[name='useStartDate']").attr("required",true);
             } else {
                 $("#useEndDate_d").parent().parent().show();
                 frm.find("input[name='useEndDate']").parent().parent().show();
+                frm.find("input[name='useStartDate']").attr("required",false);
             }
         });
     }
@@ -730,8 +734,10 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
                 console.log(landRightNatureData.name)
                 if (landRightNatureData.name == "划拨") {
                     frm.find("input[name='useEndDate']").parent().parent().hide();
+                    frm.find("input[name='useStartDate']").attr("required",true);
                 } else {
                     frm.find("input[name='useEndDate']").parent().parent().show();
+                    frm.find("input[name='useStartDate']").attr("required",false);
                 }
             });
         }
@@ -742,9 +748,11 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
             if (landRightNatureData.name == "划拨") {
                 $("#useEndDateFmt_d").parent().parent().hide();
                 frm.find("input[name='useEndDate']").parent().parent().hide();
+                frm.find("input[name='useStartDate']").attr("required",true);
             } else {
                 $("#useEndDateFmt_d").parent().parent().show();
                 frm.find("input[name='useEndDate']").parent().parent().show();
+                frm.find("input[name='useStartDate']").attr("required",false);
             }
         });
     }
