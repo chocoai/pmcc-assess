@@ -1406,6 +1406,7 @@ var houseRoom;
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ',\'tb_List\')"><i class="fa fa-save fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="装修情况" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-gavel fa-white"></i></a>';
                     str += '</div>';
                     return str;
@@ -1558,7 +1559,6 @@ var houseRoom;
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.subclassGetAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.subclassCopy(' + row.id + ',\'tb_List\')"><i class="fa fa-save fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.subclassRemoveData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '</div>';
                     return str;
@@ -1636,16 +1636,16 @@ var houseRoom;
                 }
             })
         },
-        subclassCopy: function (id) {
+        dataCopy: function (id) {
             $.ajax({
-                url: getContextPath() + "/basicHouseRoom/copyBasicHouseRoomDecorate",
+                url: getContextPath() + "/basicHouseRoom/copyBasicHouseRoom",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('复制成功');
-                        houseRoom.prototype.subclassLoadList(result.data);
+                        houseRoom.prototype.loadDataDicList();
                     }
                 },
                 error: function (result) {
