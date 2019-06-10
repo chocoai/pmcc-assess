@@ -62,12 +62,6 @@ public class CaseBuilding {
 
     private Integer version;
 
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private BigDecimal useArea;
 
     private Integer completedTimeType;
@@ -87,6 +81,28 @@ public class CaseBuilding {
     private Integer firstFloor;
 
     private Integer constructionQuality;
+
+    private Integer betweenDistance;
+
+    private String betweenDistanceDescription;
+
+    private String vStructura;
+
+    private String vSpecifications;
+
+    private String vStructuralConstruction;
+
+    private String vBasicPractice;
+
+    private String vStructuralPractice;
+
+    private String remark;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -320,30 +336,6 @@ public class CaseBuilding {
         this.version = version;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public BigDecimal getUseArea() {
         return useArea;
     }
@@ -422,5 +414,93 @@ public class CaseBuilding {
 
     public void setConstructionQuality(Integer constructionQuality) {
         this.constructionQuality = constructionQuality;
+    }
+
+    public Integer getBetweenDistance() {
+        return betweenDistance;
+    }
+
+    public void setBetweenDistance(Integer betweenDistance) {
+        this.betweenDistance = betweenDistance;
+    }
+
+    public String getBetweenDistanceDescription() {
+        return betweenDistanceDescription;
+    }
+
+    public void setBetweenDistanceDescription(String betweenDistanceDescription) {
+        this.betweenDistanceDescription = betweenDistanceDescription == null ? null : betweenDistanceDescription.trim();
+    }
+
+    public String getvStructura() {
+        return vStructura;
+    }
+
+    public void setvStructura(String vStructura) {
+        this.vStructura = vStructura == null ? null : vStructura.trim();
+    }
+
+    public String getvSpecifications() {
+        return vSpecifications;
+    }
+
+    public void setvSpecifications(String vSpecifications) {
+        this.vSpecifications = vSpecifications == null ? null : vSpecifications.trim();
+    }
+
+    public String getvStructuralConstruction() {
+        return vStructuralConstruction;
+    }
+
+    public void setvStructuralConstruction(String vStructuralConstruction) {
+        this.vStructuralConstruction = vStructuralConstruction == null ? null : vStructuralConstruction.trim();
+    }
+
+    public String getvBasicPractice() {
+        return vBasicPractice;
+    }
+
+    public void setvBasicPractice(String vBasicPractice) {
+        this.vBasicPractice = vBasicPractice == null ? null : vBasicPractice.trim();
+    }
+
+    public String getvStructuralPractice() {
+        return vStructuralPractice;
+    }
+
+    public void setvStructuralPractice(String vStructuralPractice) {
+        this.vStructuralPractice = vStructuralPractice == null ? null : vStructuralPractice.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

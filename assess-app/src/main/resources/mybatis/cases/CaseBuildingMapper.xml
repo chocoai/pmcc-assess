@@ -31,9 +31,6 @@
     <result column="building_structure_type" property="buildingStructureType" jdbcType="INTEGER" />
     <result column="building_structure_category" property="buildingStructureCategory" jdbcType="INTEGER" />
     <result column="version" property="version" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="use_area" property="useArea" jdbcType="DECIMAL" />
     <result column="completed_time_type" property="completedTimeType" jdbcType="INTEGER" />
     <result column="in_jacket_area" property="inJacketArea" jdbcType="DECIMAL" />
@@ -44,6 +41,17 @@
     <result column="appearance_style" property="appearanceStyle" jdbcType="INTEGER" />
     <result column="first_floor" property="firstFloor" jdbcType="INTEGER" />
     <result column="construction_quality" property="constructionQuality" jdbcType="INTEGER" />
+    <result column="between_distance" property="betweenDistance" jdbcType="INTEGER" />
+    <result column="between_distance_description" property="betweenDistanceDescription" jdbcType="VARCHAR" />
+    <result column="v_structura" property="vStructura" jdbcType="VARCHAR" />
+    <result column="v_specifications" property="vSpecifications" jdbcType="VARCHAR" />
+    <result column="v_structural_construction" property="vStructuralConstruction" jdbcType="VARCHAR" />
+    <result column="v_basic_practice" property="vBasicPractice" jdbcType="VARCHAR" />
+    <result column="v_structural_practice" property="vStructuralPractice" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -108,9 +116,11 @@
     floor_count, location, builder, property, unit_interval, property_fee, facilities_use_fee, 
     building_height, building_area, cover_an_area, property_type, property_category, 
     open_time, room_time, be_completed_time, floor_height, diameter_depth, land_use_year, 
-    net_height, building_structure_type, building_structure_category, version, creator, 
-    gmt_created, gmt_modified, use_area, completed_time_type, in_jacket_area, property_name, 
-    appearance_new_and_old, builder_name, max_floor, appearance_style, first_floor, construction_quality
+    net_height, building_structure_type, building_structure_category, version, use_area, 
+    completed_time_type, in_jacket_area, property_name, appearance_new_and_old, builder_name, 
+    max_floor, appearance_style, first_floor, construction_quality, between_distance, 
+    between_distance_description, v_structura, v_specifications, v_structural_construction, 
+    v_basic_practice, v_structural_practice, remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" >
     select
@@ -155,11 +165,15 @@
       open_time, room_time, be_completed_time, 
       floor_height, diameter_depth, land_use_year, 
       net_height, building_structure_type, building_structure_category, 
-      version, creator, gmt_created, 
-      gmt_modified, use_area, completed_time_type, 
+      version, use_area, completed_time_type, 
       in_jacket_area, property_name, appearance_new_and_old, 
       builder_name, max_floor, appearance_style, 
-      first_floor, construction_quality)
+      first_floor, construction_quality, between_distance, 
+      between_distance_description, v_structura, 
+      v_specifications, v_structural_construction, 
+      v_basic_practice, v_structural_practice, remark, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, #{industryUseYear,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
       #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=VARCHAR}, 
@@ -169,11 +183,15 @@
       #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
       #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
       #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
-      #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{useArea,jdbcType=DECIMAL}, #{completedTimeType,jdbcType=INTEGER}, 
+      #{version,jdbcType=INTEGER}, #{useArea,jdbcType=DECIMAL}, #{completedTimeType,jdbcType=INTEGER}, 
       #{inJacketArea,jdbcType=DECIMAL}, #{propertyName,jdbcType=VARCHAR}, #{appearanceNewAndOld,jdbcType=INTEGER}, 
       #{builderName,jdbcType=VARCHAR}, #{maxFloor,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
-      #{firstFloor,jdbcType=INTEGER}, #{constructionQuality,jdbcType=INTEGER})
+      #{firstFloor,jdbcType=INTEGER}, #{constructionQuality,jdbcType=INTEGER}, #{betweenDistance,jdbcType=INTEGER}, 
+      #{betweenDistanceDescription,jdbcType=VARCHAR}, #{vStructura,jdbcType=VARCHAR}, 
+      #{vSpecifications,jdbcType=VARCHAR}, #{vStructuralConstruction,jdbcType=VARCHAR}, 
+      #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -265,15 +283,6 @@
       <if test="version != null" >
         version,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
       <if test="useArea != null" >
         use_area,
       </if>
@@ -303,6 +312,39 @@
       </if>
       <if test="constructionQuality != null" >
         construction_quality,
+      </if>
+      <if test="betweenDistance != null" >
+        between_distance,
+      </if>
+      <if test="betweenDistanceDescription != null" >
+        between_distance_description,
+      </if>
+      <if test="vStructura != null" >
+        v_structura,
+      </if>
+      <if test="vSpecifications != null" >
+        v_specifications,
+      </if>
+      <if test="vStructuralConstruction != null" >
+        v_structural_construction,
+      </if>
+      <if test="vBasicPractice != null" >
+        v_basic_practice,
+      </if>
+      <if test="vStructuralPractice != null" >
+        v_structural_practice,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -390,15 +432,6 @@
       <if test="version != null" >
         #{version,jdbcType=INTEGER},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="useArea != null" >
         #{useArea,jdbcType=DECIMAL},
       </if>
@@ -428,6 +461,39 @@
       </if>
       <if test="constructionQuality != null" >
         #{constructionQuality,jdbcType=INTEGER},
+      </if>
+      <if test="betweenDistance != null" >
+        #{betweenDistance,jdbcType=INTEGER},
+      </if>
+      <if test="betweenDistanceDescription != null" >
+        #{betweenDistanceDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="vStructura != null" >
+        #{vStructura,jdbcType=VARCHAR},
+      </if>
+      <if test="vSpecifications != null" >
+        #{vSpecifications,jdbcType=VARCHAR},
+      </if>
+      <if test="vStructuralConstruction != null" >
+        #{vStructuralConstruction,jdbcType=VARCHAR},
+      </if>
+      <if test="vBasicPractice != null" >
+        #{vBasicPractice,jdbcType=VARCHAR},
+      </if>
+      <if test="vStructuralPractice != null" >
+        #{vStructuralPractice,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -527,15 +593,6 @@
       <if test="record.version != null" >
         version = #{record.version,jdbcType=INTEGER},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.useArea != null" >
         use_area = #{record.useArea,jdbcType=DECIMAL},
       </if>
@@ -565,6 +622,39 @@
       </if>
       <if test="record.constructionQuality != null" >
         construction_quality = #{record.constructionQuality,jdbcType=INTEGER},
+      </if>
+      <if test="record.betweenDistance != null" >
+        between_distance = #{record.betweenDistance,jdbcType=INTEGER},
+      </if>
+      <if test="record.betweenDistanceDescription != null" >
+        between_distance_description = #{record.betweenDistanceDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vStructura != null" >
+        v_structura = #{record.vStructura,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vSpecifications != null" >
+        v_specifications = #{record.vSpecifications,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vStructuralConstruction != null" >
+        v_structural_construction = #{record.vStructuralConstruction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vBasicPractice != null" >
+        v_basic_practice = #{record.vBasicPractice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vStructuralPractice != null" >
+        v_structural_practice = #{record.vStructuralPractice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -602,9 +692,6 @@
       building_structure_type = #{record.buildingStructureType,jdbcType=INTEGER},
       building_structure_category = #{record.buildingStructureCategory,jdbcType=INTEGER},
       version = #{record.version,jdbcType=INTEGER},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       use_area = #{record.useArea,jdbcType=DECIMAL},
       completed_time_type = #{record.completedTimeType,jdbcType=INTEGER},
       in_jacket_area = #{record.inJacketArea,jdbcType=DECIMAL},
@@ -614,7 +701,18 @@
       max_floor = #{record.maxFloor,jdbcType=INTEGER},
       appearance_style = #{record.appearanceStyle,jdbcType=INTEGER},
       first_floor = #{record.firstFloor,jdbcType=INTEGER},
-      construction_quality = #{record.constructionQuality,jdbcType=INTEGER}
+      construction_quality = #{record.constructionQuality,jdbcType=INTEGER},
+      between_distance = #{record.betweenDistance,jdbcType=INTEGER},
+      between_distance_description = #{record.betweenDistanceDescription,jdbcType=VARCHAR},
+      v_structura = #{record.vStructura,jdbcType=VARCHAR},
+      v_specifications = #{record.vSpecifications,jdbcType=VARCHAR},
+      v_structural_construction = #{record.vStructuralConstruction,jdbcType=VARCHAR},
+      v_basic_practice = #{record.vBasicPractice,jdbcType=VARCHAR},
+      v_structural_practice = #{record.vStructuralPractice,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -706,15 +804,6 @@
       <if test="version != null" >
         version = #{version,jdbcType=INTEGER},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="useArea != null" >
         use_area = #{useArea,jdbcType=DECIMAL},
       </if>
@@ -744,6 +833,39 @@
       </if>
       <if test="constructionQuality != null" >
         construction_quality = #{constructionQuality,jdbcType=INTEGER},
+      </if>
+      <if test="betweenDistance != null" >
+        between_distance = #{betweenDistance,jdbcType=INTEGER},
+      </if>
+      <if test="betweenDistanceDescription != null" >
+        between_distance_description = #{betweenDistanceDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="vStructura != null" >
+        v_structura = #{vStructura,jdbcType=VARCHAR},
+      </if>
+      <if test="vSpecifications != null" >
+        v_specifications = #{vSpecifications,jdbcType=VARCHAR},
+      </if>
+      <if test="vStructuralConstruction != null" >
+        v_structural_construction = #{vStructuralConstruction,jdbcType=VARCHAR},
+      </if>
+      <if test="vBasicPractice != null" >
+        v_basic_practice = #{vBasicPractice,jdbcType=VARCHAR},
+      </if>
+      <if test="vStructuralPractice != null" >
+        v_structural_practice = #{vStructuralPractice,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -778,9 +900,6 @@
       building_structure_type = #{buildingStructureType,jdbcType=INTEGER},
       building_structure_category = #{buildingStructureCategory,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       use_area = #{useArea,jdbcType=DECIMAL},
       completed_time_type = #{completedTimeType,jdbcType=INTEGER},
       in_jacket_area = #{inJacketArea,jdbcType=DECIMAL},
@@ -790,7 +909,18 @@
       max_floor = #{maxFloor,jdbcType=INTEGER},
       appearance_style = #{appearanceStyle,jdbcType=INTEGER},
       first_floor = #{firstFloor,jdbcType=INTEGER},
-      construction_quality = #{constructionQuality,jdbcType=INTEGER}
+      construction_quality = #{constructionQuality,jdbcType=INTEGER},
+      between_distance = #{betweenDistance,jdbcType=INTEGER},
+      between_distance_description = #{betweenDistanceDescription,jdbcType=VARCHAR},
+      v_structura = #{vStructura,jdbcType=VARCHAR},
+      v_specifications = #{vSpecifications,jdbcType=VARCHAR},
+      v_structural_construction = #{vStructuralConstruction,jdbcType=VARCHAR},
+      v_basic_practice = #{vBasicPractice,jdbcType=VARCHAR},
+      v_structural_practice = #{vStructuralPractice,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
