@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -95,15 +96,31 @@ public class ProjectInfoController {
     }
 
     @RequestMapping(value = "/projectInfoEdit", name = "项目返回修改 页面")
-    public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectIndex", processInsId, boxId, taskId, agentUserAccount);
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
-        modelAndView.addObject("projectInfo", projectInfoVo);
-        modelAndView.addObject("projectId", projectInfoVo.getId());
-        //单位性质 crm中获取
-        modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());
-        return modelAndView;
+    public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount, Integer projectId) {
+        ModelAndView modelAndView = null;
+        ProjectInfo projectInfo = null;
+        if (StringUtils.isNotEmpty(processInsId)) {
+            projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
+            modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectIndex", processInsId, boxId, taskId, agentUserAccount);
+        }
+        if (projectId != null) {
+            projectInfo = projectInfoService.getProjectInfoById(projectId);
+            modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectIndex", "0", 0, "0", "");
+        }
+        if (projectInfo != null) {
+            if (modelAndView != null) {
+                ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo) ;
+                modelAndView.addObject("projectInfo", projectInfoVo);
+                modelAndView.addObject("projectInfoVoJson", JSONObject.toJSONString(projectInfoVo));
+                modelAndView.addObject("projectId", projectInfo.getId());
+            }
+        }
+        if (modelAndView != null) {
+            modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
+            //单位性质 crm中获取
+            modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());
+        }
+        return modelAndView != null ? modelAndView : new ModelAndView();
     }
 
     @RequestMapping(value = "/projectApproval", name = "项目审批页面")
@@ -132,7 +149,18 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectApplySubmit", name = "项目立项", method = RequestMethod.POST)
     public HttpResult projectApplySubmit(String formData, Boolean bisNextUser) {
         try {
-            projectInfoService.projectApply(projectInfoService.format(formData), bisNextUser);
+            projectInfoService.projectApply(projectInfoService.format(formData), true);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/projectApplyDraft", name = "项目草稿", method = RequestMethod.POST)
+    public HttpResult projectApplyDraft(String formData, Boolean bisNextUser) {
+        try {
+            projectInfoService.projectApply(projectInfoService.format(formData), false);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

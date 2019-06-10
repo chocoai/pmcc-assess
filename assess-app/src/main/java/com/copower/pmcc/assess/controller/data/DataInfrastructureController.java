@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -9,6 +8,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,10 +120,10 @@ public class DataInfrastructureController {
                 infrastructure.setDistrict(district);
             }
             if (org.apache.commons.lang.StringUtils.isNotBlank(startDate)){
-                infrastructure.setStartDate(DateHelp.getDateHelp().parse(startDate,null));
+                infrastructure.setStartDate(DateUtils.convertDate(startDate));
             }
             if (org.apache.commons.lang.StringUtils.isNotBlank(endDate)){
-                infrastructure.setEndDate(DateHelp.getDateHelp().parse(endDate,null));
+                infrastructure.setEndDate(DateUtils.convertDate(endDate,null));
             }
             if (!StringUtils.isEmpty(projectType)){
                 infrastructure.setProjectType(projectType);
