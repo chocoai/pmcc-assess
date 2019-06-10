@@ -1374,6 +1374,12 @@ var houseRoom;
 
     };
     houseRoom.prototype = {
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
         isEmpty: function (item) {
             if (item) {
                 return true;
@@ -1390,6 +1396,7 @@ var houseRoom;
             data.boxSubclassSaveView = "boxSubclassSaveViewHouseRoom";
             data.frmSubclass = "SubclassFrmHouseRoom";
             data.type = "null";//
+            data.fileIDName = "house_room_file";
             return data;
         },
         loadDataDicList: function () {
@@ -1523,12 +1530,35 @@ var houseRoom;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_part, item.part, function (html, data) {
                 $("#" + houseRoom.prototype.config().frmSubclass).find('select.part').empty().html(html).trigger('change');
             });
+
+            FileUtils.uploadFiles({
+                target: houseRoom.prototype.config().fileIDName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: houseRoom.prototype.config().fileIDName,
+                    tableName: AssessDBKey.BasicHouseRoomDecorate,
+                    tableId: houseRoom.prototype.isNotBlank(item.id) ? item.id : "0"
+                },
+                deleteFlag: true
+            });
+
+            FileUtils.getFileShows({
+                target: houseRoom.prototype.config().fileIDName,
+                formData: {
+                    fieldsName: houseRoom.prototype.config().fileIDName,
+                    tableName: AssessDBKey.BasicHouseRoomDecorate,
+                    tableId: houseRoom.prototype.isNotBlank(item.id) ? item.id : "0"
+                },
+                deleteFlag: true
+            })
         },
         subclassLoadList: function (id) {
             var cols = commonColumn.houseRoomDecorateColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.subclassGetAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.subclassCopy(' + row.id + ',\'tb_List\')"><i class="fa fa-save fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.subclassRemoveData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '</div>';
                     return str;
@@ -1582,6 +1612,40 @@ var houseRoom;
                     if (result.ret) {
                         houseRoom.prototype.init(result.data);
                         $('#' + houseRoom.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        subclassGetAndInit: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoom/getBasicHouseRoomDecorateById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        houseRoom.prototype.subclassInit(result.data);
+                        $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        subclassCopy: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoom/copyBasicHouseRoomDecorate",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('复制成功');
+                        houseRoom.prototype.subclassLoadList(result.data);
                     }
                 },
                 error: function (result) {

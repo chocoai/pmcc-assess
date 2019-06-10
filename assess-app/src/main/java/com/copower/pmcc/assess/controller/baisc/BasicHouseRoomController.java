@@ -97,6 +97,18 @@ public class BasicHouseRoomController {
     //-------------------||----------------------//
 
     @ResponseBody
+    @RequestMapping(value = "/getBasicHouseRoomDecorateById", method = {RequestMethod.GET}, name = "房间子类 获取")
+    public HttpResult getBasicHouseRoomDecorateById(Integer id) {
+        try {
+            BasicHouseRoomDecorate basicHouseRoomDecorateById = basicHouseRoomDecorateService.getBasicHouseRoomDecorateById(id);
+            return HttpResult.newCorrectResult(200,basicHouseRoomDecorateById);
+        } catch (Exception e) {
+            logger.error(String.format("exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500,"异常");
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicHouseRoomDecorate", method = {RequestMethod.POST}, name = "房间子类 更新或者新增")
     public HttpResult saveAndUpdateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) {
         try {
@@ -130,6 +142,20 @@ public class BasicHouseRoomController {
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
             return null;
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/copyBasicHouseRoomDecorate", method = {RequestMethod.GET}, name = "房间子类 复制")
+    public HttpResult copyBasicHouseRoomDecorate(Integer id) {
+        try {
+            BasicHouseRoomDecorate basicHouseRoomDecorateById = basicHouseRoomDecorateService.getBasicHouseRoomDecorateById(id);
+            basicHouseRoomDecorateById.setId(null);
+            basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorateById);
+            return HttpResult.newCorrectResult(200,basicHouseRoomDecorateById.getRoomId());
+        } catch (Exception e) {
+            logger.error(String.format("exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500,"异常");
         }
     }
 

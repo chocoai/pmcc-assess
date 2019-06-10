@@ -12,6 +12,15 @@ public class BasicHouseRoomDecorateVo extends BasicHouseRoomDecorate {
     private String constructionTechnologyName;
     private String partName;
     private String materialPriceName;
+    private String fileViewName;
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
+    }
 
     public String getMaterialName() {
         return materialName;
