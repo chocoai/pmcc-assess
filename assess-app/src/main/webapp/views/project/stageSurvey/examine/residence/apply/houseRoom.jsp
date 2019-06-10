@@ -99,36 +99,36 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            通风
+                                            通风<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input type="text" placeholder="通风" name="aeration" class="form-control">
+                                            <input type="text" placeholder="通风" name="aeration" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            日照
+                                            日照<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input type="text" placeholder="日照" name="sunshine" class="form-control">
+                                            <input type="text" placeholder="日照" name="sunshine" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            采光
+                                            采光<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input type="text" placeholder="采光" name="lighting" class="form-control">
+                                            <input type="text" placeholder="采光" name="lighting" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            隔音
+                                            隔音<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input type="text" placeholder="隔音" name="soundInsulation" class="form-control">
+                                            <input type="text" placeholder="隔音" name="soundInsulation" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>

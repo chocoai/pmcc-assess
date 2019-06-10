@@ -2156,52 +2156,62 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaEqualTo(BigDecimal value) {
+        public Criteria andInJacketAreaEqualTo(String value) {
             addCriterion("in_jacket_area =", value, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaNotEqualTo(BigDecimal value) {
+        public Criteria andInJacketAreaNotEqualTo(String value) {
             addCriterion("in_jacket_area <>", value, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaGreaterThan(BigDecimal value) {
+        public Criteria andInJacketAreaGreaterThan(String value) {
             addCriterion("in_jacket_area >", value, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andInJacketAreaGreaterThanOrEqualTo(String value) {
             addCriterion("in_jacket_area >=", value, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaLessThan(BigDecimal value) {
+        public Criteria andInJacketAreaLessThan(String value) {
             addCriterion("in_jacket_area <", value, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andInJacketAreaLessThanOrEqualTo(String value) {
             addCriterion("in_jacket_area <=", value, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaIn(List<BigDecimal> values) {
+        public Criteria andInJacketAreaLike(String value) {
+            addCriterion("in_jacket_area like", value, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaNotLike(String value) {
+            addCriterion("in_jacket_area not like", value, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaIn(List<String> values) {
             addCriterion("in_jacket_area in", values, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaNotIn(List<BigDecimal> values) {
+        public Criteria andInJacketAreaNotIn(List<String> values) {
             addCriterion("in_jacket_area not in", values, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andInJacketAreaBetween(String value1, String value2) {
             addCriterion("in_jacket_area between", value1, value2, "inJacketArea");
             return (Criteria) this;
         }
 
-        public Criteria andInJacketAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andInJacketAreaNotBetween(String value1, String value2) {
             addCriterion("in_jacket_area not between", value1, value2, "inJacketArea");
             return (Criteria) this;
         }
@@ -2216,52 +2226,62 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaEqualTo(BigDecimal value) {
+        public Criteria andUseAreaEqualTo(String value) {
             addCriterion("use_area =", value, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaNotEqualTo(BigDecimal value) {
+        public Criteria andUseAreaNotEqualTo(String value) {
             addCriterion("use_area <>", value, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaGreaterThan(BigDecimal value) {
+        public Criteria andUseAreaGreaterThan(String value) {
             addCriterion("use_area >", value, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andUseAreaGreaterThanOrEqualTo(String value) {
             addCriterion("use_area >=", value, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaLessThan(BigDecimal value) {
+        public Criteria andUseAreaLessThan(String value) {
             addCriterion("use_area <", value, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andUseAreaLessThanOrEqualTo(String value) {
             addCriterion("use_area <=", value, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaIn(List<BigDecimal> values) {
+        public Criteria andUseAreaLike(String value) {
+            addCriterion("use_area like", value, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaNotLike(String value) {
+            addCriterion("use_area not like", value, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaIn(List<String> values) {
             addCriterion("use_area in", values, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaNotIn(List<BigDecimal> values) {
+        public Criteria andUseAreaNotIn(List<String> values) {
             addCriterion("use_area not in", values, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andUseAreaBetween(String value1, String value2) {
             addCriterion("use_area between", value1, value2, "useArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andUseAreaNotBetween(String value1, String value2) {
             addCriterion("use_area not between", value1, value2, "useArea");
             return (Criteria) this;
         }

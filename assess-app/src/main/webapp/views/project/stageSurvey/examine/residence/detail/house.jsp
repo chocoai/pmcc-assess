@@ -123,15 +123,16 @@
                     <label class="form-control">${basicHouse.practicalUseName}</label>
                 </div>
             </div>
+
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权益限制</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼面地价</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicHouse.rightInterestsRestriction}</label>
+                    <label class="form-control">${basicHouse.floorPrice}</label>
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="replenishLand">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块位置</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -147,9 +148,9 @@
             </div>
 
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼面地价</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权益限制</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicHouse.floorPrice}</label>
+                    <label class="form-control">${basicHouse.rightInterestsRestriction}</label>
                 </div>
             </div>
         </div>

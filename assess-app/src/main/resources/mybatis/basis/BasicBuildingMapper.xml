@@ -35,8 +35,8 @@
     <result column="building_structure_category" property="buildingStructureCategory" jdbcType="INTEGER" />
     <result column="first_floor" property="firstFloor" jdbcType="INTEGER" />
     <result column="max_floor" property="maxFloor" jdbcType="INTEGER" />
-    <result column="in_jacket_area" property="inJacketArea" jdbcType="DECIMAL" />
-    <result column="use_area" property="useArea" jdbcType="DECIMAL" />
+    <result column="in_jacket_area" property="inJacketArea" jdbcType="VARCHAR" />
+    <result column="use_area" property="useArea" jdbcType="VARCHAR" />
     <result column="construction_quality" property="constructionQuality" jdbcType="INTEGER" />
     <result column="appearance_style" property="appearanceStyle" jdbcType="INTEGER" />
     <result column="appearance_new_and_old" property="appearanceNewAndOld" jdbcType="INTEGER" />
@@ -182,8 +182,8 @@
       #{roomTime,jdbcType=TIMESTAMP}, #{completedTimeType,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
       #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
       #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
-      #{firstFloor,jdbcType=INTEGER}, #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=DECIMAL}, 
-      #{useArea,jdbcType=DECIMAL}, #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
+      #{firstFloor,jdbcType=INTEGER}, #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=VARCHAR}, 
+      #{useArea,jdbcType=VARCHAR}, #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
       #{appearanceNewAndOld,jdbcType=INTEGER}, #{betweenDistance,jdbcType=INTEGER}, #{betweenDistanceDescription,jdbcType=VARCHAR}, 
       #{vStructura,jdbcType=VARCHAR}, #{vSpecifications,jdbcType=VARCHAR}, #{vStructuralConstruction,jdbcType=VARCHAR}, 
       #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
@@ -439,10 +439,10 @@
         #{maxFloor,jdbcType=INTEGER},
       </if>
       <if test="inJacketArea != null" >
-        #{inJacketArea,jdbcType=DECIMAL},
+        #{inJacketArea,jdbcType=VARCHAR},
       </if>
       <if test="useArea != null" >
-        #{useArea,jdbcType=DECIMAL},
+        #{useArea,jdbcType=VARCHAR},
       </if>
       <if test="constructionQuality != null" >
         #{constructionQuality,jdbcType=INTEGER},
@@ -597,10 +597,10 @@
         max_floor = #{record.maxFloor,jdbcType=INTEGER},
       </if>
       <if test="record.inJacketArea != null" >
-        in_jacket_area = #{record.inJacketArea,jdbcType=DECIMAL},
+        in_jacket_area = #{record.inJacketArea,jdbcType=VARCHAR},
       </if>
       <if test="record.useArea != null" >
-        use_area = #{record.useArea,jdbcType=DECIMAL},
+        use_area = #{record.useArea,jdbcType=VARCHAR},
       </if>
       <if test="record.constructionQuality != null" >
         construction_quality = #{record.constructionQuality,jdbcType=INTEGER},
@@ -684,8 +684,8 @@
       building_structure_category = #{record.buildingStructureCategory,jdbcType=INTEGER},
       first_floor = #{record.firstFloor,jdbcType=INTEGER},
       max_floor = #{record.maxFloor,jdbcType=INTEGER},
-      in_jacket_area = #{record.inJacketArea,jdbcType=DECIMAL},
-      use_area = #{record.useArea,jdbcType=DECIMAL},
+      in_jacket_area = #{record.inJacketArea,jdbcType=VARCHAR},
+      use_area = #{record.useArea,jdbcType=VARCHAR},
       construction_quality = #{record.constructionQuality,jdbcType=INTEGER},
       appearance_style = #{record.appearanceStyle,jdbcType=INTEGER},
       appearance_new_and_old = #{record.appearanceNewAndOld,jdbcType=INTEGER},
@@ -804,10 +804,10 @@
         max_floor = #{maxFloor,jdbcType=INTEGER},
       </if>
       <if test="inJacketArea != null" >
-        in_jacket_area = #{inJacketArea,jdbcType=DECIMAL},
+        in_jacket_area = #{inJacketArea,jdbcType=VARCHAR},
       </if>
       <if test="useArea != null" >
-        use_area = #{useArea,jdbcType=DECIMAL},
+        use_area = #{useArea,jdbcType=VARCHAR},
       </if>
       <if test="constructionQuality != null" >
         construction_quality = #{constructionQuality,jdbcType=INTEGER},
@@ -888,8 +888,8 @@
       building_structure_category = #{buildingStructureCategory,jdbcType=INTEGER},
       first_floor = #{firstFloor,jdbcType=INTEGER},
       max_floor = #{maxFloor,jdbcType=INTEGER},
-      in_jacket_area = #{inJacketArea,jdbcType=DECIMAL},
-      use_area = #{useArea,jdbcType=DECIMAL},
+      in_jacket_area = #{inJacketArea,jdbcType=VARCHAR},
+      use_area = #{useArea,jdbcType=VARCHAR},
       construction_quality = #{constructionQuality,jdbcType=INTEGER},
       appearance_style = #{appearanceStyle,jdbcType=INTEGER},
       appearance_new_and_old = #{appearanceNewAndOld,jdbcType=INTEGER},

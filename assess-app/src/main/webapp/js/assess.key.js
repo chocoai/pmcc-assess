@@ -80,6 +80,9 @@ AssessProjectClassifyKey.singleHousePropertyCertificateType = "single.house.prop
 AssessProjectClassifyKey.singleHouseBuildingCertificateType = "single.house.building.certificate.type";//在建工程
 AssessProjectClassifyKey.singleHousetaskRightCategory = "single.house.property.taskRight.category";//	他项权类别
 
+AssessProjectClassifyKey.singleHousePropertyCertificateTypeSimple = "single.house.property.certificate.type.simple";//	他项权类别
+AssessProjectClassifyKey.singleHouseLandCertificateTypeSimple = "single.house.land.certificate.type.simple";//	他项权类别
+
 /**
  * 数据字典key
  */

@@ -102,7 +102,7 @@
                     套内面积
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="套内面积(数字)" data-rule-number='true'
+                    <input type="text" placeholder="套内面积"
                            name="inJacketArea" class="form-control" value="${basicBuilding.inJacketArea}">
                 </div>
             </div>
@@ -111,7 +111,7 @@
                     使用面积
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="使用面积(数字)" data-rule-number='true'
+                    <input type="text" placeholder="使用面积"
                            name="useArea" class="form-control" value="${basicBuilding.useArea}">
                 </div>
             </div>

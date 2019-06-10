@@ -302,6 +302,7 @@ commonColumn.houseRoomColumn = function () {
     cols.push({field: 'sunshine', title: '日照'});
     cols.push({field: 'lighting', title: '采光'});
     cols.push({field: 'aeration', title: '通风'});
+    cols.push({field: 'soundInsulation', title: '隔音'});
     return cols;
 }
 

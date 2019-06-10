@@ -220,6 +220,27 @@
         });
     };
 
+    //显示土地位置等字段
+    houseCommon.showReplenishLand = function (projectTypeId) {
+        AssessCommon.getProjectClassifyInfo(projectTypeId, function (data) {
+            var projectTypeField = data.fieldName;
+            switch (projectTypeField) {
+                //房产
+                case AssessProjectClassifyKey.singleHousePropertyCertificateTypeSimple: {
+                    $("#replenishLand").hide();
+                    break;
+                }
+                //土地
+                case AssessProjectClassifyKey.singleHouseLandCertificateTypeSimple: {
+
+                    break;
+                }
+
+            }
+
+        });
+    };
+
     //附件显示
     houseCommon.fileShow = function (fieldsName, deleteFlag) {
         FileUtils.getFileShows({

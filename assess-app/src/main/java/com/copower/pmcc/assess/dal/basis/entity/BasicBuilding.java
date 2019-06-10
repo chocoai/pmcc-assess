@@ -70,9 +70,9 @@ public class BasicBuilding {
 
     private Integer maxFloor;
 
-    private BigDecimal inJacketArea;
+    private String inJacketArea;
 
-    private BigDecimal useArea;
+    private String useArea;
 
     private Integer constructionQuality;
 
@@ -366,20 +366,20 @@ public class BasicBuilding {
         this.maxFloor = maxFloor;
     }
 
-    public BigDecimal getInJacketArea() {
+    public String getInJacketArea() {
         return inJacketArea;
     }
 
-    public void setInJacketArea(BigDecimal inJacketArea) {
-        this.inJacketArea = inJacketArea;
+    public void setInJacketArea(String inJacketArea) {
+        this.inJacketArea = inJacketArea == null ? null : inJacketArea.trim();
     }
 
-    public BigDecimal getUseArea() {
+    public String getUseArea() {
         return useArea;
     }
 
-    public void setUseArea(BigDecimal useArea) {
-        this.useArea = useArea;
+    public void setUseArea(String useArea) {
+        this.useArea = useArea == null ? null : useArea.trim();
     }
 
     public Integer getConstructionQuality() {

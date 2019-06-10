@@ -162,6 +162,8 @@
                 houseCommon.showUseCondition(data);
             });
         }
+        //显示土地位置等字段
+        houseCommon.showReplenishLand("${projectInfo.projectCategoryId}");
     });
 
     //审批提交
