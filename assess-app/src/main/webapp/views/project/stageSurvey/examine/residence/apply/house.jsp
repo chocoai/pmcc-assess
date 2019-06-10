@@ -155,17 +155,18 @@
                     </select>
                 </div>
             </div>
+
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权益限制</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼面地价</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="255" placeholder="权益限制"
-                           name="rightInterestsRestriction"
-                           class="form-control" value="${basicHouse.rightInterestsRestriction}">
+                    <input type="text" data-rule-maxlength="255" data-role-number="true" placeholder="楼面地价"
+                           name="floorPrice"
+                           class="form-control" value="${basicHouse.floorPrice}">
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="replenishLand">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块位置</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -185,11 +186,11 @@
             </div>
 
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼面地价</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权益限制</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="255" data-role-number="true" placeholder="楼面地价"
-                           name="floorPrice"
-                           class="form-control" value="${basicHouse.floorPrice}">
+                    <input type="text" data-rule-maxlength="255" placeholder="权益限制"
+                           name="rightInterestsRestriction"
+                           class="form-control" value="${basicHouse.rightInterestsRestriction}">
                 </div>
             </div>
         </div>
@@ -204,7 +205,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="x-valid">
+            <div class="x-valid" style="display: none;">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况描述<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
@@ -249,4 +250,3 @@
         </div>
     </form>
 </div>
-

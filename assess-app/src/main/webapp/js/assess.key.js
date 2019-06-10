@@ -36,6 +36,7 @@ AssessDBKey.BasicHouseTrading = "tb_basic_house_trading";
 AssessDBKey.BasicUnitHuxing = "tb_basic_unit_huxing";
 AssessDBKey.BasicEstateParking = "tb_basic_estate_parking";
 AssessDBKey.BasicHouseCorollaryEquipment = "tb_basic_house_corollary_equipment";
+AssessDBKey.BasicHouseRoomDecorate = "tb_basic_house_room_decorate";
 
 AssessDBKey.SurveyExaminePurenessLand = "tb_survey_examine_pureness_land";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
@@ -78,6 +79,9 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
 AssessProjectClassifyKey.singleHousePropertyCertificateType = "single.house.property.certificate.type";//房产证书类型
 AssessProjectClassifyKey.singleHouseBuildingCertificateType = "single.house.building.certificate.type";//在建工程
 AssessProjectClassifyKey.singleHousetaskRightCategory = "single.house.property.taskRight.category";//	他项权类别
+
+AssessProjectClassifyKey.singleHousePropertyCertificateTypeSimple = "single.house.property.certificate.type.simple";//	他项权类别
+AssessProjectClassifyKey.singleHouseLandCertificateTypeSimple = "single.house.land.certificate.type.simple";//	他项权类别
 
 /**
  * 数据字典key

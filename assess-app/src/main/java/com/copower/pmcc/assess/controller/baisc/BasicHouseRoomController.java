@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseRoomDecorateDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
 import com.copower.pmcc.assess.service.basic.BasicHouseRoomDecorateService;
@@ -30,16 +31,18 @@ public class BasicHouseRoomController {
     private CommonService commonService;
     @Autowired
     private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
+    @Autowired
+    private BasicHouseRoomDecorateDao basicHouseRoomDecorateDao;
 
     @ResponseBody
     @RequestMapping(value = "/getBasicHouseRoomById", method = {RequestMethod.GET}, name = "房间 获取")
     public HttpResult getBasicHouseRoomById(Integer id) {
         try {
             BasicHouseRoom basicHouseRoom = basicHouseRoomService.getBasicHouseRoomById(id);
-            return HttpResult.newCorrectResult(200,basicHouseRoom);
+            return HttpResult.newCorrectResult(200, basicHouseRoom);
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,"异常");
+            return HttpResult.newErrorResult(500, "异常");
         }
     }
 
@@ -48,10 +51,10 @@ public class BasicHouseRoomController {
     public HttpResult deleteBasicHouseRoom(Integer id) {
         try {
             basicHouseRoomService.deleteBasicHouseRoom(id);
-            return HttpResult.newCorrectResult(200,"success!");
+            return HttpResult.newCorrectResult(200, "success!");
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,"异常");
+            return HttpResult.newErrorResult(500, "异常");
         }
     }
 
@@ -60,18 +63,18 @@ public class BasicHouseRoomController {
     public HttpResult basicHouseRoomList(BasicHouseRoom basicHouseRoom) {
         try {
             List<BasicHouseRoom> basicHouseRooms = basicHouseRoomService.basicHouseRoomList(basicHouseRoom);
-            return HttpResult.newCorrectResult(200,basicHouseRooms);
+            return HttpResult.newCorrectResult(200, basicHouseRooms);
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,"异常");
+            return HttpResult.newErrorResult(500, "异常");
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "房间 列表")
-    public BootstrapTableVo getBootstrapTableVo(BasicHouseRoom basicHouseRoom, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseRoom basicHouseRoom, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
-            if (basicHouseRoom==null){
+            if (basicHouseRoom == null) {
                 basicHouseRoom = new BasicHouseRoom();
             }
             BootstrapTableVo vo = basicHouseRoomService.getBootstrapTableVo(basicHouseRoom);
@@ -87,24 +90,60 @@ public class BasicHouseRoomController {
     public HttpResult saveAndUpdateBasicHouseRoom(BasicHouseRoom basicHouseRoom) {
         try {
             basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoom);
-            return HttpResult.newCorrectResult(200,"success!");
+            return HttpResult.newCorrectResult(200, "success!");
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,"异常");
+            return HttpResult.newErrorResult(500, "异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/copyBasicHouseRoom", method = {RequestMethod.GET}, name = "房间 复制")
+    public HttpResult copyBasicHouseRoom(Integer id) {
+        try {
+            BasicHouseRoom basicHouseRoomById = basicHouseRoomService.getBasicHouseRoomById(id);
+            BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
+            basicHouseRoomDecorate.setRoomId(basicHouseRoomById.getId());
+            List<BasicHouseRoomDecorate> roomDecorates = basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
+            //复制主表
+            basicHouseRoomById.setId(null);
+            Integer integer = basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoomById);
+            //复制子表
+            for (BasicHouseRoomDecorate item : roomDecorates) {
+                item.setId(null);
+                item.setRoomId(integer);
+                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(item);
+            }
+            return HttpResult.newCorrectResult(200, "success!");
+        } catch (Exception e) {
+            logger.error(String.format("exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, "异常");
         }
     }
 
     //-------------------||----------------------//
 
     @ResponseBody
+    @RequestMapping(value = "/getBasicHouseRoomDecorateById", method = {RequestMethod.GET}, name = "房间子类 获取")
+    public HttpResult getBasicHouseRoomDecorateById(Integer id) {
+        try {
+            BasicHouseRoomDecorate basicHouseRoomDecorateById = basicHouseRoomDecorateService.getBasicHouseRoomDecorateById(id);
+            return HttpResult.newCorrectResult(200, basicHouseRoomDecorateById);
+        } catch (Exception e) {
+            logger.error(String.format("exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, "异常");
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicHouseRoomDecorate", method = {RequestMethod.POST}, name = "房间子类 更新或者新增")
     public HttpResult saveAndUpdateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) {
         try {
             basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
-            return HttpResult.newCorrectResult(200,basicHouseRoomDecorate.getRoomId());
+            return HttpResult.newCorrectResult(200, basicHouseRoomDecorate.getRoomId());
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,"异常");
+            return HttpResult.newErrorResult(500, "异常");
         }
     }
 
@@ -114,16 +153,16 @@ public class BasicHouseRoomController {
         try {
             BasicHouseRoomDecorate basicHouseRoomDecorate = basicHouseRoomDecorateService.getBasicHouseRoomDecorateById(id);
             basicHouseRoomDecorateService.deleteBasicHouseRoomDecorate(id);
-            return HttpResult.newCorrectResult(200,basicHouseRoomDecorate.getRoomId());
+            return HttpResult.newCorrectResult(200, basicHouseRoomDecorate.getRoomId());
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,"异常");
+            return HttpResult.newErrorResult(500, "异常");
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getRoomDecorateBootstrapTableVo", method = {RequestMethod.GET}, name = "房间子类 列表")
-    public BootstrapTableVo getRoomDecorateBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
+    public BootstrapTableVo getRoomDecorateBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
             BootstrapTableVo vo = basicHouseRoomDecorateService.getBootstrapTableVo(basicHouseRoomDecorate);
             return vo;
@@ -132,6 +171,7 @@ public class BasicHouseRoomController {
             return null;
         }
     }
+
 
     /**
      * 获取字典列表数据

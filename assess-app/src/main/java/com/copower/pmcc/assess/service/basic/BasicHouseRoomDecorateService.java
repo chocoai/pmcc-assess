@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomDecorateVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -128,6 +129,19 @@ public class BasicHouseRoomDecorateService {
         vo.setMaterialName(baseDataDicService.getNameById(basicHouseRoomDecorate.getMaterial()));
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicHouseRoomDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(basicHouseRoomDecorate.getMaterialPrice()));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseRoomDecorate.getId(), "house_room_file", "tb_basic_house_room_decorate");
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                        builder.append(" ");
+                    }
+                }
+            }
+            vo.setFileViewName(builder.toString());
+        }
         return vo;
     }
 }

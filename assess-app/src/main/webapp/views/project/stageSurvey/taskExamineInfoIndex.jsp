@@ -244,6 +244,9 @@
         //房屋自动填充插件
         houseCommon.autocompleteStart();
 
+        //显示土地位置等字段
+        houseCommon.showReplenishLand("${projectInfo.projectCategoryId}");
+
     });
 
     function saveData() {

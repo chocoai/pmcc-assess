@@ -250,7 +250,10 @@ assessCommonHouse.showAddModelLand = function (id) {
                     floor: item.floor,
                     province: item.province,
                     city: item.city,
-                    district: item.district
+                    district: item.district,
+                    landRightNature: item.landAcquisition,
+                    registrationAuthority: item.registrationAuthority,
+                    apportionmentArea: item.apportionmentArea
                 };
                 assessCommonHouse.initLand(data);
             }

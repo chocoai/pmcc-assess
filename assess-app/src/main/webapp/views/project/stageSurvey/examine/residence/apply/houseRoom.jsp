@@ -99,36 +99,36 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            通风
+                                            通风<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input type="text" placeholder="通风" name="aeration" class="form-control">
+                                            <input type="text" placeholder="通风" name="aeration" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            日照
+                                            日照<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input type="text" placeholder="日照" name="sunshine" class="form-control">
+                                            <input type="text" placeholder="日照" name="sunshine" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            采光
+                                            采光<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input type="text" placeholder="采光" name="lighting" class="form-control">
+                                            <input type="text" placeholder="采光" name="lighting" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            隔音
+                                            隔音<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input type="text" placeholder="隔音" name="soundInsulation" class="form-control">
+                                            <input type="text" placeholder="隔音" name="soundInsulation" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -248,7 +248,19 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                            附件
+                                        </label>
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                            <input id="house_room_file" name="house_estateParking"
+                                                   placeholder="上传附件" class="form-control"
+                                                   type="file">
+                                            <div id="_house_room_file"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

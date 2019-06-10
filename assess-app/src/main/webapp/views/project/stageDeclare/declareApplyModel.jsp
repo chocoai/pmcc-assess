@@ -2465,8 +2465,7 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼层</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="楼层(数字)" name="floor" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                           placeholder="楼层" name="floor" class="form-control"
                            onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
                 </div>
             </div>
@@ -2549,15 +2548,6 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
-                           data-rule-maxlength="100"
-                           data-rule-number='true'>
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总层数</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
@@ -2583,11 +2573,20 @@
                            placeholder="登记机关" name="registrationAuthority" class="form-control">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text"
+                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    土地使用年限起<span class="symbol required"></span>
+                    土地使用年限起
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input placeholder="土地使用年限起"

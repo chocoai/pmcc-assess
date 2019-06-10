@@ -302,6 +302,7 @@ commonColumn.houseRoomColumn = function () {
     cols.push({field: 'sunshine', title: '日照'});
     cols.push({field: 'lighting', title: '采光'});
     cols.push({field: 'aeration', title: '通风'});
+    cols.push({field: 'soundInsulation', title: '隔音'});
     return cols;
 }
 
@@ -313,6 +314,7 @@ commonColumn.houseRoomDecorateColumn = function () {
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
     cols.push({field: 'remark', title: '部位描述'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
 

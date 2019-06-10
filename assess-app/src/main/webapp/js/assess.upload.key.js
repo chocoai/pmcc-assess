@@ -24,6 +24,7 @@ AssessUploadKey.HOUSE_NEW_HUXING_PLAN = "house_new_huxing_plan";//新户型图
 AssessUploadKey.HOUSE_IMG_PLAN = "house_img_plan";//房屋平面图
 AssessUploadKey.HOUSE_DECORATE = "house_decorate";//房屋装饰图
 AssessUploadKey.HOUSE_FILE = "house_file";//房屋附件
+AssessUploadKey.HOUSE_ROOM_FILE = "house_room_file";//房间附件
 
 AssessUploadKey.BUILDING_FLOOR_PLAN = "building_floor_plan";//平面图 (楼栋)
 AssessUploadKey.BUILDING_FIGURE_OUTSIDE = "building_figure_outside";//外装图(楼栋)

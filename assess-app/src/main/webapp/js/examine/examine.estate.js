@@ -240,12 +240,53 @@
                             resultHtml += ' id="developmentDegreeContent' + item.id + '" name="developmentDegreeContent" value="' + item.id + '">';
                             resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
                         })
+                        resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+                        resultHtml += "<input type='radio' onclick='estateCommon.checkedFun(this,true)'>";
+                        resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+                        resultHtml += "<input type='radio' onclick='estateCommon.checkedFun(this,false)'>";
                         $("#developmentDegreeContentContainer").html(resultHtml);
                     }
                 });
                 estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().hide();
             }
         });
+    };
+
+    estateCommon.checkedFun = function (that, flag) {
+        var form = estateCommon.estateLandStateForm;
+        if (flag) {//全选或者全不选
+            var number = 1;
+            form.find(":checkbox").each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    number++;
+                }
+            });
+            if (number == 1) {
+                form.find(":checkbox").prop("checked", true);
+            } else {
+                form.find(":checkbox").prop("checked", false);
+            }
+        } else {
+            //首先让选中的失效
+            form.find(":checkbox").each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    $(this).prop("disabled", true);
+                }
+            });
+            //然后让没有选中的元素设置为选中
+            form.find(":checkbox").each(function (i, n) {
+                if (!$(this).prop("checked")) {
+                    $(this).prop("checked", true);
+                }
+            });
+            //最后是让失效的元素恢复,并且使其不选中
+            form.find(":checkbox").each(function (i, n) {
+                if ($(this).prop("disabled")) {
+                    $(this).prop("disabled", false);
+                    $(this).prop("checked", false);
+                }
+            });
+        }
     };
 
     /**

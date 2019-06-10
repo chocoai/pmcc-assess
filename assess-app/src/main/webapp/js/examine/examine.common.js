@@ -77,8 +77,8 @@ basicCommon.landLevelSelect = function (this_) {
     var $form = $(this_).closest('form');
     var formGroup = $(this_).closest('.form-group');
     assessLandLevel.select({
-        province: $form.find('[name=province]').val(),
-        city: $form.find('[name=city]').val(),
+        province: estateCommon.estateForm.find('[name=province]').val(),
+        city: estateCommon.estateForm.find('[name=city]').val(),
         success: function (data) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
