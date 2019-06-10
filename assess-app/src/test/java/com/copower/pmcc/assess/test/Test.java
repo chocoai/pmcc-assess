@@ -31,6 +31,16 @@ import java.util.List;
  * @date: 2017/12/14 17:30
  */
 public class Test {
+
+    @org.junit.Test
+    public void intersection(){
+        List<Integer> a = Arrays.asList() ;
+        List<Integer> b = Arrays.asList() ;
+
+        Collection<Integer> intersection = CollectionUtils.intersection(a ,b ) ;
+        System.out.println(StringUtils.join(intersection,"、"));
+    }
+
     public  boolean isInteger(BigDecimal bigDecimal){
         if (bigDecimal == null){
             return false;

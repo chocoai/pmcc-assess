@@ -859,7 +859,7 @@ public class GenerateBaseDataService {
             if (declareRecord == null || declareRecord.getFloorArea() == null) {
                 continue;
             }
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(),2, false));
+            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 2, false));
         }
         String value = "";
         if (!map.isEmpty()) {
@@ -1218,7 +1218,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalRealEstatePrice() {
-        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(),2, true);
+        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 2, true);
     }
 
     /**
@@ -3941,6 +3941,22 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    private void ccb_Pre_Evaluation_Data_FormWriteWord2(DocumentBuilder documentBuilder, LinkedList<String> stringLinkedList, String title, String valueB) throws Exception {
+        stringLinkedList.clear();
+        if (StringUtils.isNotEmpty(title)) {
+            stringLinkedList.add(title);
+        } else {
+            stringLinkedList.add(" ");
+        }
+        if (StringUtils.isNotEmpty(valueB)) {
+            stringLinkedList.add(valueB);
+        } else {
+            stringLinkedList.add(" ");
+        }
+        AsposeUtils.writeWordTitle(documentBuilder, stringLinkedList);
+        stringLinkedList.clear();
+    }
+
     /**
      * 建社银行预评数据表格
      *
@@ -3965,103 +3981,61 @@ public class GenerateBaseDataService {
             String huxingName = generateBaseExamineService.getBasicHouse().getHuxingName();
             documentBuilder.startTable();
             //start
-            stringLinkedList.add("项目名称");
-            stringLinkedList.add(StringUtils.isNotBlank(projectInfo.getProjectName()) ? projectInfo.getProjectName() : value);
-            generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-            stringLinkedList.clear();
-            stringLinkedList.add("城市");
-            stringLinkedList.add(StringUtils.isNotBlank(basicEstate.getCityName()) ? basicEstate.getCityName() : value);
-            generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-            stringLinkedList.clear();
-            stringLinkedList.add("行政区");
-            stringLinkedList.add(StringUtils.isNotBlank(basicEstate.getDistrictName()) ? basicEstate.getDistrictName() : value);
-            generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-            stringLinkedList.clear();
-            stringLinkedList.add("楼盘");
-            stringLinkedList.add(StringUtils.isNotBlank(basicEstate.getName()) ? basicEstate.getName() : value);
-            generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-            stringLinkedList.clear();
-            stringLinkedList.add("楼栋号");
-            stringLinkedList.add(StringUtils.isNotBlank(basicBuildingVo.getBuildingNumber()) ? basicBuildingVo.getBuildingNumber() : value);
-            generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-            stringLinkedList.clear();
-            stringLinkedList.add("单元号");
-            stringLinkedList.add(StringUtils.isNotBlank(generateBaseExamineService.getBasicUnit().getUnitNumber()) ? generateBaseExamineService.getBasicUnit().getUnitNumber() : value);
-            generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-            stringLinkedList.clear();
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "项目名称", projectInfo.getProjectName());
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "城市", basicEstate.getCityName());
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "行政区", basicEstate.getDistrictName());
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "楼盘", basicEstate.getName());
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "楼栋号", basicBuildingVo.getBuildingNumber());
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "单元号", generateBaseExamineService.getBasicUnit().getUnitNumber());
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord != null && StringUtils.isNotEmpty(declareRecord.getRoomNumber())) {
-                stringLinkedList.add("户号");
-                stringLinkedList.add(declareRecord.getRoomNumber());
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
-            }
-            if (declareRecord != null && StringUtils.isNotEmpty(declareRecord.getName())) {
-                stringLinkedList.add("产权证号");
-                stringLinkedList.add(declareRecord.getName());
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
-            }
-            if (declareRecord != null && StringUtils.isNotEmpty(declareRecord.getSeat())) {
-                stringLinkedList.add("证载地址");
-                stringLinkedList.add(declareRecord.getSeat());
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
-            }
-            if (declareRecord != null && StringUtils.isNotEmpty(declareRecord.getCertUse())) {
-                stringLinkedList.add("房屋证载用途");
-                stringLinkedList.add(declareRecord.getCertUse());
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
-            }
-            if (declareRecord != null && declareRecord.getFloorArea() != null) {
-                stringLinkedList.add("建筑面积(㎡)");
-                if (generateCommonMethod.isInteger(declareRecord.getFloorArea())) {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 0, false));
-                } else {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 2, false));
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "户号", declareRecord.getRoomNumber());
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "产权证号", declareRecord.getName());
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "证载地址", declareRecord.getSeat());
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "房屋证载用途", declareRecord.getCertUse());
+            {
+                String val = "";
+                if (declareRecord != null && declareRecord.getFloorArea() != null) {
+                    if (generateCommonMethod.isInteger(declareRecord.getFloorArea())) {
+                        val = generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 0, false);
+                    } else {
+                        val = generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 2, false);
+                    }
                 }
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "建筑面积(㎡)", val);
             }
-            if (declareRecord != null && declareRecord.getPrice() != null) {
-                stringLinkedList.add("登记价(元)");
-                if (generateCommonMethod.isInteger(declareRecord.getPrice())) {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), 0, false));
-                } else {
-                    stringLinkedList.add(generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), 2, false));
+            {
+                String val = "";
+                if (declareRecord != null && declareRecord.getPrice() != null) {
+                    if (generateCommonMethod.isInteger(declareRecord.getPrice())) {
+                        val = generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), 0, false);
+                    } else {
+                        val = generateCommonMethod.getBigDecimalRound(declareRecord.getPrice(), 2, false);
+                    }
                 }
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "登记价(元)", val);
             }
-            if (basicBuildingVo != null && basicBuildingVo.getBeCompletedTime() != null) {
-                stringLinkedList.add("竣工日期");
-                stringLinkedList.add(DateUtils.format(basicBuildingVo.getBeCompletedTime(), DateUtils.DATE_SHORT_PATTERN));
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
+            {
+                String val = "";
+                if (basicBuildingVo != null && basicBuildingVo.getBeCompletedTime() != null) {
+                    val = DateUtils.format(basicBuildingVo.getBeCompletedTime(), DateUtils.DATE_SHORT_PATTERN);
+                }
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "竣工日期", val);
             }
+            String v1 = "室";
+            String v2 = "厅";
+            String v3 = "厨";
+            String v4 = "卫";
+            LinkedHashMap<String, String> linkedHashMap = Maps.newLinkedHashMap();
             if (StringUtils.isNotEmpty(huxingName)) {
-                String v1 = "室";
-                String v2 = "厅";
-                String v3 = "厨";
-                String v4 = "卫";
-                String v5 = "花园";
-                String v6 = "阳台";
                 if (org.apache.commons.lang.StringUtils.contains(huxingName, v1)) {
-                    stringLinkedList.add("居室");
-                    stringLinkedList.add(org.apache.commons.lang.StringUtils.substringBefore(huxingName, v1));
-                    generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                    stringLinkedList.clear();
+                    linkedHashMap.put(v1, org.apache.commons.lang.StringUtils.substringBefore(huxingName, v1));
                 }
                 Pattern pattern = Pattern.compile(String.format("\\d%s", v2));
                 Matcher matcher = pattern.matcher(huxingName);
                 if (matcher.find()) {
                     String s = generateCommonMethod.getNumber(matcher.group());
                     if (StringUtils.isNotEmpty(s)) {
-                        stringLinkedList.add("厅");
-                        stringLinkedList.add(s);
-                        generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                        stringLinkedList.clear();
+                        linkedHashMap.put(v2, s);
                     }
                 }
                 pattern = Pattern.compile(String.format("\\d%s", v3));
@@ -4069,10 +4043,7 @@ public class GenerateBaseDataService {
                 if (matcher.find()) {
                     String s = generateCommonMethod.getNumber(matcher.group());
                     if (StringUtils.isNotEmpty(s)) {
-                        stringLinkedList.add("厨房");
-                        stringLinkedList.add(s);
-                        generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                        stringLinkedList.clear();
+                        linkedHashMap.put(v3, s);
                     }
                 }
                 pattern = Pattern.compile(String.format("\\d%s", v4));
@@ -4080,66 +4051,62 @@ public class GenerateBaseDataService {
                 if (matcher.find()) {
                     String s = generateCommonMethod.getNumber(matcher.group());
                     if (StringUtils.isNotEmpty(s)) {
-                        stringLinkedList.add("卫生间");
-                        stringLinkedList.add(s);
-                        generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                        stringLinkedList.clear();
+                        linkedHashMap.put(v4, s);
                     }
                 }
             }
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "居室", StringUtils.isNotBlank(linkedHashMap.get(v1)) ? linkedHashMap.get(v1) : "");
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "厅", StringUtils.isNotBlank(linkedHashMap.get(v2)) ? linkedHashMap.get(v2) : "");
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "厨房", StringUtils.isNotBlank(linkedHashMap.get(v3)) ? linkedHashMap.get(v3) : "");
+            ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "卫生间", StringUtils.isNotBlank(linkedHashMap.get(v4)) ? linkedHashMap.get(v4) : "");
             {
-                stringLinkedList.add("抵押价值单价(元/㎡)");
+                String val = "";
                 if (schemeJudgeObject.getPrice() != null) {
                     if (generateCommonMethod.isInteger(schemeJudgeObject.getPrice())) {
-                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 0, false));
+                        val = generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 0, false);
                     } else {
-                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 2, false));
+                        val = generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 2, false);
                     }
-                } else {
-                    stringLinkedList.add("");
                 }
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值单价(元/㎡)", val);
             }
 
             BigDecimal mortgageValue = new BigDecimal("0");
             {
+                String val = "";
                 stringLinkedList.add("抵押价值(元/㎡)");
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     mortgageValue = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                     if (generateCommonMethod.isInteger(mortgageValue)) {
-                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false));
+                        val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
                     } else {
-                        stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgageValue, 2, false));
+                        val = generateCommonMethod.getBigDecimalRound(mortgageValue, 2, false);
                     }
-                } else {
-                    stringLinkedList.add("");
                 }
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值(元/㎡)", val);
             }
 
             {
-                stringLinkedList.add("抵押净值1(元)");
+                String val = "";
                 BigDecimal mortgage1 = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, BigDecimal.ROUND_HALF_UP).multiply(buyTaxAmount);
                 mortgage1 = mortgageValue.subtract(mortgage1);
-                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage1,  false));
-                if (stringLinkedList.size() == 1) {
-                    stringLinkedList.add("");
+                if (generateCommonMethod.isInteger(mortgage1)) {
+                    val = generateCommonMethod.getBigDecimalRound(mortgage1, 0, false);
+                } else {
+                    val = generateCommonMethod.getBigDecimalRound(mortgage1, 2, false);
                 }
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值1(元)", val);
             }
             {
-                stringLinkedList.add("抵押净值2(元)");
+                String val = "";
                 BigDecimal mortgage2 = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, BigDecimal.ROUND_HALF_UP).multiply(saleTaxAmount);
                 mortgage2 = mortgageValue.subtract(mortgage2);
-                stringLinkedList.add(generateCommonMethod.getBigDecimalRound(mortgage2, false));
-                if (stringLinkedList.size() == 1) {
-                    stringLinkedList.add("");
+                if (generateCommonMethod.isInteger(mortgage2)) {
+                    val = generateCommonMethod.getBigDecimalRound(mortgage2, 0, false);
+                } else {
+                    val = generateCommonMethod.getBigDecimalRound(mortgage2, 2, false);
                 }
-                generateCommonMethod.writeWordTitle(documentBuilder, stringLinkedList);
-                stringLinkedList.clear();
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值2(元)", val);
             }
             documentBuilder.endTable();
             if (i != size - 1) {
@@ -5015,7 +4982,7 @@ public class GenerateBaseDataService {
                 if (declareRecord.getFloorArea() != null) {
                     stringBuilder
                             .append("建筑面积:")
-                            .append(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(),2, false))
+                            .append(generateCommonMethod.getBigDecimalRound(declareRecord.getFloorArea(), 2, false))
                             .append("㎡");
                     stringBuilder.append(",及其分摊的");
                 }
@@ -5031,7 +4998,7 @@ public class GenerateBaseDataService {
                 if (declareRecord.getPracticalArea() != null) {
                     stringBuilder
                             .append("土地使用权面积:")
-                            .append(generateCommonMethod.getBigDecimalRound(declareRecord.getLandUseRightArea(),2, false))
+                            .append(generateCommonMethod.getBigDecimalRound(declareRecord.getLandUseRightArea(), 2, false))
                             .append("㎡");
                 }
                 stringBuilder.append(")");
@@ -5134,7 +5101,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getEvaluationArea() != null) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getEvaluationArea(),2, false));
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getEvaluationArea(), 2, false));
                 }
             }
         }
@@ -5173,7 +5140,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        return generateCommonMethod.getBigDecimalRound(bigDecimal,2, true);
+        return generateCommonMethod.getBigDecimalRound(bigDecimal, 2, true);
     }
 
     /**
@@ -5193,7 +5160,7 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     BigDecimal bigDecimal = new BigDecimal(0);
                     bigDecimal = bigDecimal.add(schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea()));
-                    map.put(schemeJudgeObject, generateCommonMethod.getBigDecimalRound(bigDecimal,2, true));
+                    map.put(schemeJudgeObject, generateCommonMethod.getBigDecimalRound(bigDecimal, 2, true));
                 }
             }
         }

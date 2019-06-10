@@ -4,6 +4,7 @@ import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
@@ -26,6 +27,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -38,6 +40,9 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2018-5-23.
@@ -247,62 +252,148 @@ public class GenerateReportService {
      * @throws Exception
      */
     private String fullReportPath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
-        String tempDir = null;
+        String dir = null;
         SysAttachmentDto query = new SysAttachmentDto();
         query.setTableId(baseReportTemplate.getId());
         query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            tempDir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.get(0).getId());
-            Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
-            Document document = new Document(tempDir);
-            //获取待替换文本的集合
-            List<String> regexS = generateCommonMethod.specialTreatment(AsposeUtils.getRegexList(document, null));
-            //获取所有书签集合
-            BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
-            if (bookmarkCollection.getCount() >= 1) {
-                for (int i = 0; i < bookmarkCollection.getCount(); i++) {
-                    BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                    String name = AsposeUtils.getChinese(bookmarkCollection.get(i).getName());
-                    if (StringUtils.isEmpty(name)) {
-                        name = bookmarkCollection.get(i).getName();
-                    }
-                    regexDto.setName(name).setChineseName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
-                    bookmarkAndRegexDtoHashSet.add(regexDto);
+            dir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
+        }
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
+        //计数器,防止  枚举虽然定义了，但是没有写对应的方法，因此递归设置最多的次数
+        int count = 0;
+        generateCompareFile2(dir, generateBaseDataService, generateReportInfo, reportType, count);
+        return dir;
+    }
+
+    /**
+     * 循环替换操作
+     *
+     * @param tempDir
+     * @param generateBaseDataService
+     * @param generateReportInfo
+     * @param reportType
+     * @param count
+     * @return
+     * @throws Exception
+     */
+    private String generateCompareFile2(String tempDir, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, String reportType, int count) throws Exception {
+        //最大递归次数
+        final int max = 9;
+        List<String> names = Lists.newArrayList();
+        for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
+            names.add(baseReportFieldEnum.getName());
+        }
+        Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = getBookmarkAndRegexDtoHashSet(tempDir);
+        Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet2 = Sets.newHashSet();
+        if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet)) {
+            bookmarkAndRegexDtoHashSet.forEach(bookmarkAndRegex -> {
+                String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
+                //必须在枚举中存在的我们才收集
+                if (names.stream().anyMatch(s -> Objects.equal(s, name))) {
+                    bookmarkAndRegexDtoHashSet2.add(bookmarkAndRegex);
                 }
+            });
+        }
+        if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet2)) {
+            count++;
+            //替换
+            generateCompareFile(bookmarkAndRegexDtoHashSet2, generateBaseDataService, tempDir, generateReportInfo, reportType);
+            System.gc();
+            if (count >= max) {
+                return tempDir;
             }
-            if (CollectionUtils.isNotEmpty(regexS)) {
-                for (String name : regexS) {
-                    BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                    regexDto.setName(name).setChineseName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
-                    bookmarkAndRegexDtoHashSet.add(regexDto);
+            //递归回去 判断是否可以跳出循环
+            return generateCompareFile2(tempDir, generateBaseDataService, generateReportInfo, reportType, count);
+        } else {
+            return tempDir;
+        }
+    }
+
+    private Set<BookmarkAndRegexDto> getBookmarkAndRegexDtoHashSet(String tempDir) throws Exception {
+        Document document = new Document(tempDir);
+        Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
+        List<String> stringList = Lists.newArrayList();
+        //取出word中表格数据
+        List<org.apache.poi.hwpf.usermodel.Table> tableList = PoiUtils.getWordTable(tempDir);
+        if (CollectionUtils.isNotEmpty(tableList)) {
+            tableList.forEach(table -> {
+                List<org.apache.poi.hwpf.usermodel.TableRow> tableRowList = PoiUtils.getWordTableRow(table);
+                if (CollectionUtils.isNotEmpty(tableRowList)){
+                    tableRowList.forEach(tableRow ->{
+                        List<org.apache.poi.hwpf.usermodel.TableCell> tableCellList = PoiUtils.getWordTableCell(tableRow) ;
+                        if (CollectionUtils.isNotEmpty(tableCellList)){
+                            tableCellList.forEach(cell ->{
+                                List<org.apache.poi.hwpf.usermodel.Paragraph> paragraphList = PoiUtils.getWordParagraph(cell) ;
+                                if (CollectionUtils.isNotEmpty(paragraphList)){
+                                    paragraphList.forEach(paragraph -> {
+                                        Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(paragraph.text());
+                                        while (m.find()) {
+                                            stringList.add(m.group());
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 }
+            });
+        }
+        //获取普通段落
+        List<String> regexList = AsposeUtils.getRegexList(document, null);
+        if (CollectionUtils.isNotEmpty(regexList)) {
+            stringList.addAll(regexList);
+        }
+        if (CollectionUtils.isNotEmpty(stringList)){
+            //去除重复
+            List<String> strings = stringList.stream().distinct().collect(Collectors.toList());
+            stringList.clear();
+            stringList.addAll(strings) ;
+        }
+        //获取待替换文本的集合
+        List<String> regexS = generateCommonMethod.specialTreatment(stringList);
+        //获取所有书签集合
+        BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
+        if (bookmarkCollection.getCount() >= 1) {
+            for (int i = 0; i < bookmarkCollection.getCount(); i++) {
+                BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
+                String name = AsposeUtils.getChinese(bookmarkCollection.get(i).getName());
+                if (StringUtils.isEmpty(name)) {
+                    name = bookmarkCollection.get(i).getName();
+                }
+                regexDto.setName(name).setChineseName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
+                bookmarkAndRegexDtoHashSet.add(regexDto);
             }
-            //由于模板变动某些数据提取不到,直接再次把枚举的所有数据填充一次(必须的特别市2019-03-12之后描述委估对象方式变化了,变为后台直接整段话描述)
+        }
+        if (CollectionUtils.isNotEmpty(regexS)) {
+            for (String name : regexS) {
+                BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
+                regexDto.setName(name).setChineseName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
+                bookmarkAndRegexDtoHashSet.add(regexDto);
+            }
+        }
+        if (false) {
             for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
                 BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
                 regexDto.setName(baseReportFieldEnum.getName()).setChineseName(baseReportFieldEnum.getName()).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
-            ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
-            ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
-            GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
-            if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet)) {
-                tempDir = generateCompareFile(bookmarkAndRegexDtoHashSet, generateBaseDataService, tempDir, generateReportInfo, reportType);
-            }
         }
-        return tempDir;
+        return bookmarkAndRegexDtoHashSet;
     }
 
 
     /**
-     * 获取报告模板替换后的模板
+     * 替换报告中的关键字
      *
      * @param localPath
-     * @param generateReportGeneration
+     * @param generateBaseDataService
      * @throws Exception
      */
-    public String generateCompareFile(Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet, GenerateBaseDataService generateBaseDataService, String localPath, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
+    public void generateCompareFile(Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet, GenerateBaseDataService generateBaseDataService, String localPath, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         Map<String, String> textMap = Maps.newHashMap();
         Map<String, String> preMap = Maps.newHashMap();
         Map<String, String> bookmarkMap = Maps.newHashMap();
@@ -324,7 +415,7 @@ public class GenerateReportService {
                 //报告二维码
                 if (Objects.equal(BaseReportFieldEnum.ReportQrcode.getName(), name)) {
                     generateCommonMethod.putValue(true, true, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType));
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo,reportType));
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType));
                 }
                 //报告类别
                 if (Objects.equal(BaseReportFieldEnum.ReportingCategories.getName(), name)) {
@@ -974,10 +1065,10 @@ public class GenerateReportService {
                 logger.error(e.getMessage(), e);
             }
         }
-        return replaceWord(localPath, textMap, preMap, bookmarkMap, fileMap);
+        replaceWord(localPath, textMap, preMap, bookmarkMap, fileMap);
     }
 
-    private String replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
+    private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
         if (!preMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, preMap);
             if (!textMap.isEmpty()) {
@@ -999,8 +1090,6 @@ public class GenerateReportService {
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
         }
-        System.gc();
-        return localPath;
     }
 
 }

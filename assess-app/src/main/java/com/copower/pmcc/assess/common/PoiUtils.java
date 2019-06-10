@@ -99,6 +99,7 @@ public class PoiUtils {
         return paragraphList;
     }
 
+
     public static String getCellValue(Cell cell) {
         SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         DecimalFormat decimalFormat = new DecimalFormat("#.####");

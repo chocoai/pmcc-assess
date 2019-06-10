@@ -13,7 +13,9 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 联系人
@@ -58,7 +63,7 @@ public class InitiateContactsService {
             }
             List<InitiateContacts> initiateContactsList = dao.getByIds(ids);
             if (!ObjectUtils.isEmpty(initiateContactsList)) {
-                for (InitiateContacts contacts:initiateContactsList){
+                for (InitiateContacts contacts : initiateContactsList) {
                     contacts.setcType(initiateContacts.getcType());
                     contacts.setcPid(initiateContacts.getcPid());
                     contacts.setCustomerId(initiateContacts.getCustomerId());
@@ -161,52 +166,56 @@ public class InitiateContactsService {
      * @param cType
      */
     public void writeCrmCustomerDto(Integer projectID, Integer cType) {
-        if (!ObjectUtils.isEmpty(cType)) {
-            //只有报告使用单位才能回写
-            if (cType.equals(InitiateContactsEnum.UNIT_INFORMATION.getId())) {
-                //CRM中暂时没有提供方法
-                InitiateUnitInformationVo unitInformationVo = unitInformationService.getDataByProjectId(projectID);
-                if (unitInformationVo != null) {
-                    InitiateContacts query = new InitiateContacts();
-                    query.setcType(cType);
-                    query.setcPid(unitInformationVo.getId());
-                    List<InitiateContacts> contactsVos = initiateContactsList(query);
-                    for (InitiateContacts contacts : contactsVos) {
-                        String tempString = contacts.getCrmId();
-                        String uUseUnit = unitInformationVo.getuUseUnit();
-                        if (!StringUtils.isEmpty(uUseUnit)) {
-                            //标记一下这里容易出现问题 ==>  customerID
-                            try {
-                                Integer customerID = Integer.parseInt(uUseUnit);
-                                CrmCustomerLinkmanDto crmCustomer = new CrmCustomerLinkmanDto();
-                                crmCustomer.setPhoneNumber(contacts.getcPhone());
-                                crmCustomer.setEmail(contacts.getcEmail());
-                                crmCustomer.setName(contacts.getcName());
-                                crmCustomer.setDepartment(contacts.getcDept());
-                                crmCustomer.setCustomerId(customerID);
-                                crmCustomer.setCustomerManager(null);
-                                crmCustomer.setOtherContact(null);
-                                //需要更新的crm
-                                if (!StringUtils.isEmpty(tempString)) {
-                                    Integer crmID = Integer.parseInt(tempString);
-                                    crmCustomerService.updateCrmCustomer(crmCustomer);
-                                } else {
-                                    //需要添加进去的crm
-                                    crmCustomerService.saveCrmCustomer(crmCustomer);
-                                }
-                            } catch (Exception e) {
-                                try {
-                                    logger.error(String.format("exception: ======> ", e.getMessage()), e);
-                                    throw e;
-                                } catch (Exception e1) {
-
-                                }
-                            }
-
-                        }
-
-                    }
-                }
+        if (cType == null) {
+            return;
+        }
+        if (projectID == null) {
+            return;
+        }
+        if (!Objects.equal(InitiateContactsEnum.UNIT_INFORMATION.getId(), cType)) {
+            return;
+        }
+        InitiateUnitInformationVo unitInformationVo = unitInformationService.getDataByProjectId(projectID);
+        if (unitInformationVo == null) {
+            return;
+        }
+        if (StringUtils.isEmpty(unitInformationVo.getuUseUnit())) {
+            return;
+        }
+        InitiateContacts query = new InitiateContacts();
+        query.setcType(cType);
+        query.setcPid(unitInformationVo.getId());
+        List<InitiateContacts> contactsVos = initiateContactsList(query);
+        if (CollectionUtils.isEmpty(contactsVos)) {
+            return;
+        }
+        for (InitiateContacts contacts : contactsVos) {
+            CrmCustomerLinkmanDto crmCustomer = new CrmCustomerLinkmanDto();
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(contacts.getcPhone())) {
+                crmCustomer.setPhoneNumber(contacts.getcPhone());
+            }
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(contacts.getcEmail())) {
+                crmCustomer.setEmail(contacts.getcEmail());
+            }
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(contacts.getcName())) {
+                crmCustomer.setName(contacts.getcName());
+            }
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(contacts.getcDept())) {
+                crmCustomer.setDepartment(contacts.getcDept());
+            }
+            crmCustomer.setCustomerId(Integer.parseInt(unitInformationVo.getuUseUnit()));
+            crmCustomer.setCustomerManager(null);
+            crmCustomer.setOtherContact(null);
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(contacts.getCrmId())) {
+                crmCustomer.setId(Integer.parseInt(contacts.getCrmId()));
+            }
+            if (crmCustomer.getId() == null) {
+                //需要添加进去的crm
+                crmCustomerService.saveCrmCustomer(crmCustomer);
+            }
+            if (crmCustomer.getId() != null) {
+                //需要更新的crm
+                crmCustomerService.updateCrmCustomer(crmCustomer);
             }
         }
     }
