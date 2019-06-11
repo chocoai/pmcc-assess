@@ -28,8 +28,8 @@ public class InitiateCrmCustomerController {
     private InitiateContactsService initiateContactsService;
 
     @GetMapping(value = "/getCrmCustomerDto")
-    public HttpResult getCrmCustomerDto(Integer crmId){
-        CrmCustomerDto crmCustomerDto = crmCustomerService.getCustomer(crmId);
+    public HttpResult getCrmCustomerDto(Integer customerId){
+        CrmCustomerDto crmCustomerDto = crmCustomerService.getCustomer(customerId);
         if (crmCustomerDto != null){
             return HttpResult.newCorrectResult(200,crmCustomerDto);
         }else {

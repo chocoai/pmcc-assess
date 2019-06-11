@@ -174,6 +174,17 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/projectDataUpdate", name = "项目更新  注意这个方法不是和任何流程相关的方法", method = RequestMethod.POST)
+    public HttpResult projectDataUpdate(ProjectInfo projectInfo) {
+        try {
+            projectInfoService.saveProjectInfo(projectInfo) ;
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/projectEditSubmit", name = "项目立项返回修改", method = RequestMethod.POST)
     public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) {
         try {

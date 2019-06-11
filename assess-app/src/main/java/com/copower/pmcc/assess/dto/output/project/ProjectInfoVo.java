@@ -6,7 +6,9 @@ import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +43,11 @@ public class ProjectInfoVo extends ProjectInfo {
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
     private List<ProjectResponsibilityDto> taskAllWorkStages;
+
+    /**
+     * 合同
+     */
+    private List<KeyValueDto> contractList = new ArrayList<>() ;
 
     public String getProjectClassName() {
         return projectClassName;
@@ -232,5 +239,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setLoanTypeName(String loanTypeName) {
         this.loanTypeName = loanTypeName;
+    }
+
+    public List<KeyValueDto> getContractList() {
+        return contractList;
+    }
+
+    public void setContractList(List<KeyValueDto> contractList) {
+        this.contractList = contractList;
     }
 }

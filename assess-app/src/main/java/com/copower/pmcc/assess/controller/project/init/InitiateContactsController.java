@@ -1,14 +1,18 @@
 package com.copower.pmcc.assess.controller.project.init;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
 import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -66,6 +70,22 @@ public class InitiateContactsController {
     public HttpResult saveAndUpdate(InitiateContacts initiateContacts) {
         try {
             initiateContactsService.saveUpdateInitiateContacts(initiateContacts);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @PostMapping(value = "/saveAndUpdateList", name = "新增或者修改")
+    public HttpResult saveAndUpdate(String formData) {
+        try {
+            List<InitiateContacts> initiateContactsList = JSON.parseArray(formData ,InitiateContacts.class ) ;
+            if (CollectionUtils.isNotEmpty(initiateContactsList)){
+                initiateContactsList.forEach(initiateContacts -> {
+                    initiateContactsService.saveUpdateInitiateContacts(initiateContacts);
+                });
+            }
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(500, e.getMessage());

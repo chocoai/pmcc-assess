@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn_project" %>
 <html lang="en" class="no-js">
 <div class="x_panel">
     <div class="x_title collapse-link">
@@ -110,18 +111,52 @@
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目合同</label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control"><a href="http://dev.pmcc.com/pmcc-contract/contractCurrency/details/${projectInfo.contractId}" target="_blank">${projectInfo.contractName}</a> </label>
-                    </div>
-                </div>
-                <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">合同金额</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${projectInfo.contractPrice}</label>
                     </div>
                 </div>
+
             </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目合同</label>
+                    <c:if test="${!empty projectInfo.contractId}">
+                        <c:forEach var="item" items="${projectInfo.contractList}">
+                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <label class="form-control">
+                                    <a href="http://dev.pmcc.com/pmcc-contract/contractCurrency/details/${item.key}"
+                                       target="_blank">${item.value}</a>
+                                </label>
+                            </div>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${empty projectInfo.contractId}">
+                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                            <div class="input-group">
+                                <input type="hidden" name="contractId" value="${projectInfo.contractId}">
+                                <input type="text" class="form-control" readonly="readonly" name="contractName"
+                                       onclick="selectContract(this);"
+                                       value="${projectInfo.contractName}">
+                                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="selectContract(this);">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                            </div>
+                        </div>
+                    </c:if>
+                </div>
+            </div>
+
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目说明</label>
@@ -493,16 +528,54 @@
         </table>
     </div>
 </div>
-
+<script src="/pmcc-contract/js/cms_contract_utils.js"></script>
 
 <script>
+
+    function selectContract(this_) {
+        cmsContract.select({
+            multi: true,//是否允许多选
+            appkey: "pmcc-assess",
+            onSelected: function (data) {
+                var uuids = [];
+                var names = [];
+                data.forEach(function (node, i) {
+                    if (node.uuid) {
+                        uuids.push(node.uuid);
+                    }
+                    if (node.name) {
+                        names.push(node.name);
+                    }
+                });
+                if (uuids.length == 0) {
+                    Alert('有效合同为0');
+                    return false;
+                }
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/projectInfo/projectDataUpdate",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: '${projectInfo.id}' , contractId : uuids.join(",") , contractName : names.join(",")},
+                    success: function (result) {
+                        if (result.ret) {
+                            window.location.reload();
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            }
+        });
+    }
+
     $(function () {
         //---------
         FileUtils.getFileShows({
             target: "attachmentProjectInfoId",
             formData: {
                 tableName: AssessDBKey.ProjectInfo,
-                fieldsName:"attachmentProjectInfoId",
+                fieldsName: "attachmentProjectInfoId",
                 tableId: ${projectInfo.id}
             },
             deleteFlag: false
