@@ -1,19 +1,13 @@
 package com.copower.pmcc.assess.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.PublicService;
-import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.bpm.api.dto.BpmProcessMapDto;
 import com.copower.pmcc.bpm.api.dto.ProcessGroupDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessMapService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.dto.SysWorkPredictDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
@@ -22,7 +16,6 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,19 +45,13 @@ public class HomeController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
     private ErpRpcToolsService erpRpcToolsService;
     @Autowired
     private ErpRpcProjectService erpRpcProjectService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private ProjectMemberService projectMemberService;
-    @Autowired
     private PublicService publicService;
-    @Autowired
-    private ApplicationConstant applicationConstant;
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public ModelAndView homeMain() {
@@ -113,21 +100,7 @@ public class HomeController {
     public HttpResult writeToErpProject(Integer projectId) {
         try {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-            ProjectMemberVo projectMember = projectMemberService.getProjectMember(projectId);
-            SysProjectDto sysProjectDto=new SysProjectDto();
-            sysProjectDto.setId(0);
-            sysProjectDto.setProjectId(projectId);
-            sysProjectDto.setProjectName(projectInfo.getProjectName());
-            sysProjectDto.setProjectManager(projectMember.getUserAccountManager());
-            sysProjectDto.setProjectMember(projectMember.getUserAccountMember());
-            sysProjectDto.setProjectJson(JSON.toJSONString(projectInfo));
-            sysProjectDto.setProjectCompanyId(publicService.getCurrentCompany().getCompanyId());
-            sysProjectDto.setProjectDepartmentId(publicService.getCurrentCompany().getCompanyId());
-            sysProjectDto.setAppKey(applicationConstant.getAppKey());
-            sysProjectDto.setStatus(ProjectStatusEnum.NORMAL.getKey());
-            erpRpcProjectService.saveProject(sysProjectDto);
-            projectInfo.setPublicProjectId(sysProjectDto.getId());
-            projectInfoService.updateProjectInfo(projectInfo);
+            publicService.writeToErpProject(projectInfo);
         } catch (Exception e) {
             return HttpResult.newErrorResult("写入异常，请联系管理员处理");
         }

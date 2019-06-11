@@ -70,9 +70,11 @@ public class InitiateUnitInformationService {
             Integer id = dao.add(initiateUnitInformation);
             initiateContactsService.update(id, InitiateContactsEnum.UNIT_INFORMATION.getId());
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateUnitInformation.class),id);
+            initiateContactsService.writeCrmCustomerDto(initiateUnitInformation.getProjectId(),InitiateContactsEnum.UNIT_INFORMATION.getId()) ;
             return  id ;
         }else {
             dao.update(initiateUnitInformation);
+            initiateContactsService.writeCrmCustomerDto(initiateUnitInformation.getProjectId(),InitiateContactsEnum.UNIT_INFORMATION.getId()) ;
             return initiateUnitInformation.getId();
         }
     }

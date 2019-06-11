@@ -76,7 +76,7 @@
         })
     };
 
-    objProject.getCategory = function(pid, value) {
+    objProject.getCategory = function (pid, value) {
         if (!pid) {
             var option = "<option value=''>-请先选择委托目的-</option>";
             $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
@@ -266,6 +266,7 @@
             var data = {customerId: id, searchCrm: text};
             if (id) {
                 var cols = [];
+                cols.push({field: 'ckeckbox', checkbox: true, title: '客户经理勾选'});//多选
                 cols.push({field: 'name', title: '姓名', searchable: true});
                 cols.push({field: 'department', title: '部门'});
                 cols.push({field: 'phoneNumber', title: '电话号码'});
@@ -289,6 +290,42 @@
             } else {
                 Alert("还未选择报告使用单位");
             }
+        },
+        selectCRMContacts: function () {
+            var rows = $("#tb_ListCRMContacts").bootstrapTable('getSelections');
+            if (rows.length == 0) {
+                toastr.warning("至少选择一个客户!");
+                return false;
+            }
+            var data = [];
+            rows.forEach(function (item, i) {
+                data.push({
+                    cType: objProject.config.unit_information.contacts.nodeKey,
+                    cPid: objProject.isNotBlank('${projectInfo.unitInformationVo.id}') ? '${projectInfo.unitInformationVo.id}' : '0',
+                    crmId: item.id,
+                    customerId: item.customerId,
+                    cName: item.name,
+                    cEmail: item.email,
+                    cDept: item.department,
+                    cPhone: item.phoneNumber
+                });
+            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/initiateContacts/saveAndUpdateList",
+                type: "post",
+                dataType: "json",
+                data: {formData: JSON.stringify(data)},
+                success: function (result) {
+                    if (result.ret) {
+                        objProject.unit_information.loadContactList();
+                        $('#divBoxCRMContacts').modal("hide");
+                    }
+                },
+                error: function (result) {
+                    toastr.warning("调用服务端方法失败，失败!");
+                    console.log(result);
+                }
+            })
         },
         copyContacts: function (data, callback) {
             $.ajax({
@@ -394,7 +431,7 @@
                 var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
 
                 if (item.entrustAimType) {
-                    objProject.getCategory(entrustPurpose,item.entrustAimType);
+                    objProject.getCategory(entrustPurpose, item.entrustAimType);
                     item.entrustAimType = "";
                 } else {
                     objProject.getCategory(entrustPurpose, false);
@@ -834,47 +871,85 @@
         });
     };
 
+    /*选择合同*/
+    objProject.selectContract = function (this_) {
+        cmsContract.select({
+            multi: true,//是否允许多选
+            appkey: "pmcc-assess",
+            onSelected: function (data) {
+                var uuids = [];
+                var names = [];
+                data.forEach(function (node, i) {
+                    if (node.uuid) {
+                        uuids.push(node.uuid);
+                    }
+                    if (node.name) {
+                        names.push(node.name);
+                    }
+                });
+                if (uuids.length == 0) {
+                    Alert('有效合同为0');
+                    return false;
+                }
+                if (uuids.length >= 1) {
+                    $(this_).closest('.input-group').find("input[name='contractId']").val(uuids.join(","));
+                }
+                if (names.length >= 1) {
+                    $(this_).closest('.input-group').find("input[name='contractName']").val(names.join(","));
+                }
+            }
+        });
+    };
+
     objProject.selectCustomer = function (this_) {
         //选择客户
         crmCustomer.select({
             multi: false,//是否允许多选
             companyId:${companyId},
             onSelected: function (nodes) {
-                $(this_).closest('.input-group').find("input[name='uUseUnit']").val(nodes[0].id);
-                $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(nodes[0].name);
-                $.ajax({
-                    type: "get",
-                    url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
-                    data: "crmId=" + nodes[0].id,
-                    success: function (msg) {
-                        var item = {
-                            uLegalRepresentative: msg.data.legalRepresentative,
-                            uAddress: msg.data.address,
-                            uScopeOperation: msg.data.businessScope,
-                            uCertificateNumber: msg.data.certificateNumber,
-                            uUnitProperties: msg.data.unitProperties
-                        };
-                        $("#" + objProject.config.unit_information.frm).initForm(item);
-                        $("#" + objProject.config.unit_information.frm).find("select[name='uUnitProperties']").val(msg.data.unitProperties).trigger("selected");
-                        var query = {
-                            cType: objProject.config.unit_information.contacts.nodeKey,
-                            cPid: objProject.isNotBlank('${projectInfo.unitInformationVo.id}') ? '${projectInfo.unitInformationVo.id}' : '0'
-                        };
-                        //清除报告使用单位写入的联系人
-                        objProject.commonContacts.clear(
-                            query,
-                            function () {
-                                query.customerId = msg.data.id;
-                                //crm数据库获取联系人并且在本地数据库写入联系人
-                                objProject.commonContacts.writeCustomerLinkmanInContacts(query, function () {
-                                    //把本地数据库写入的联系人展示出来
-                                    objProject.unit_information.loadContactList();
-                                });
+                if (nodes.length == 0){
+                    return false;
+                }
+                nodes.forEach(function (node,i) {
+                    $(this_).closest('.input-group').find("input[name='uUseUnit']").val(node.id);
+                    $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(node.name);
+                    $.ajax({
+                        type: "get",
+                        url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
+                        data: {customerId:node.id},
+                        success: function (msg) {
+                            var item = {
+                                uLegalRepresentative: msg.data.legalRepresentative,
+                                uAddress: msg.data.address,
+                                uScopeOperation: msg.data.businessScope,
+                                uCertificateNumber: msg.data.certificateNumber,
+                                uUnitProperties: msg.data.unitProperties
+                            };
+                            $("#" + objProject.config.unit_information.frm).initForm(item);
+                            $("#" + objProject.config.unit_information.frm).find("select[name='uUnitProperties']").val(msg.data.unitProperties).trigger("selected");
+                            objProject.loadCustomerFieldList(node.id, node.name);
+                            //2019-06-11之后不再写入数据了 , 并且也不再清除了 ,待删除数据
+                            if (false) {
+                                var query = {
+                                    cType: objProject.config.unit_information.contacts.nodeKey,
+                                    cPid: objProject.isNotBlank('${projectInfo.unitInformationVo.id}') ? '${projectInfo.unitInformationVo.id}' : '0'
+                                };
+                                //清除报告使用单位写入的联系人
+                                objProject.commonContacts.clear(
+                                    query,
+                                    function () {
+                                        query.customerId = msg.data.id;
+                                        //crm数据库获取联系人并且在本地数据库写入联系人
+                                        objProject.commonContacts.writeCustomerLinkmanInContacts(query, function () {
+                                            //把本地数据库写入的联系人展示出来
+                                            objProject.unit_information.loadContactList();
+                                        });
+                                    }
+                                );
                             }
-                        );
-                        objProject.loadCustomerFieldList(nodes[0].id, nodes[0].name);
-                    }
-                });
+                        }
+                    });
+                }) ;
             }
         });
     };
@@ -886,7 +961,7 @@
             data: {customerId: id, customerName: name},
             success: function (result) {
                 $("#" + objProject.config.unit_information.frm).find("select.assessType").empty();
-                $("#" + objProject.config.unit_information.frm).find("select.businessType").empty() ;
+                $("#" + objProject.config.unit_information.frm).find("select.businessType").empty();
                 if (result.ret && result.data) {
                     if (result.data.length >= 1) {
                         var businessType = result.data[0].businessType;
@@ -908,7 +983,7 @@
                         $("#" + objProject.config.unit_information.frm).find("select.assessType").empty().html(retHtml).trigger('change');
                         $("#businessType").show();
                         $("#assessType").show();
-                    }else {
+                    } else {
                         $("#businessType").hide();
                         $("#assessType").hide();
                     }
@@ -983,21 +1058,21 @@
             objProject.consignor.contactsShow();
             objProject.possessor.contactsShow();
             objProject.unit_information.contactsShow();
-            if (objProject.isNotBlank('${projectInfoVoJson}')){
-                var str = $("#projectInfoVoJson").val() ;
-                if (objProject.isNotBlank(str)){
-                    var data = {} ;
+            if (objProject.isNotBlank('${projectInfoVoJson}')) {
+                var str = $("#projectInfoVoJson").val();
+                if (objProject.isNotBlank(str)) {
+                    var data = {};
                     try {
-                        data = JSON.parse(str) ;
+                        data = JSON.parse(str);
                     } catch (e) {
-                        console.log(e) ;
+                        console.log(e);
                     }
-                    if (objProject.isNotBlankObjectProperty(data)){
+                    if (objProject.isNotBlankObjectProperty(data)) {
                         console.log(data)
-                        objProject.info.loadInit(data) ;
-                        objProject.consignor.loadInit(data.consignorVo) ;
-                        objProject.possessor.loadInit(data.possessorVo) ;
-                        objProject.unit_information.loadInit(data.unitInformationVo) ;
+                        objProject.info.loadInit(data);
+                        objProject.consignor.loadInit(data.consignorVo);
+                        objProject.possessor.loadInit(data.possessorVo);
+                        objProject.unit_information.loadInit(data.unitInformationVo);
                     }
                 }
             }
@@ -1048,7 +1123,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
+                        取消
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary"
+                            onclick="objProject.commonContacts.selectCRMContacts(this)">
+                        确定
                     </button>
                 </div>
             </form>

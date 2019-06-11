@@ -47,6 +47,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
@@ -68,10 +69,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 描述:项目基础信息
@@ -144,9 +147,9 @@ public class ProjectInfoService {
      * 项目立项申请
      *
      * @param projectDto
-     * @param init 是否立项与草稿
+     * @param init       是否立项
      */
-    public boolean projectApply(InitiateProjectDto projectDto,boolean init) throws BusinessException {
+    public boolean projectApply(InitiateProjectDto projectDto, boolean init) throws BusinessException {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
@@ -156,14 +159,14 @@ public class ProjectInfoService {
 
     @Transactional(rollbackFor = {Exception.class})
     public boolean projectApplyChange(InitiateConsignor consignor, InitiateUnitInformation unitInformation, InitiatePossessor possessor, ProjectMember projectMember,
-                                      ProjectInfoDto projectInfoDto,boolean init) {
+                                      ProjectInfoDto projectInfoDto, boolean init) {
         boolean flag = true;
         try {
             ProjectInfo projectInfo = change(projectInfoDto);
             if (org.apache.commons.lang3.StringUtils.isEmpty(projectInfo.getCreator())) {
                 projectInfo.setCreator(commonService.thisUserAccount());
             }
-            if (!init){
+            if (!init) {
                 projectInfo.setStatus(ProjectStatusEnum.DRAFT.getKey());
                 projectInfo.setProjectStatus(ProjectStatusEnum.DRAFT.getKey());
             }
@@ -179,14 +182,17 @@ public class ProjectInfoService {
             projectMember.setProjectId(projectId);
             projectMember.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMember);
-            if (init){
-                //如果没有设置项目经理，则由部门领导分派项目经理
-                if (StringUtils.isBlank(projectMember.getUserAccountManager())) {
+            //发起项目
+            if (init) {
+                //如果没有设置项目经理，则由部门领导分派项目经理 (第一种方式立项)
+                if (StringUtils.isNotEmpty(projectMember.getUserAccountManager())) {
                     allocateProjectManager(projectMember, projectInfo);
-                } else {
-                    //初始化项目信息
+                }
+                if (StringUtils.isEmpty(projectMember.getUserAccountManager())) {
+                    //初始化项目信息 (第二种方式立项)
                     initProjectInfo(projectInfo);
                 }
+                publicService.writeToErpProject(projectInfo);
             }
         } catch (Exception e) {
             flag = false;
@@ -414,7 +420,7 @@ public class ProjectInfoService {
     public List<ProjectPlanVo> getProjectPlanList(Integer projectId) {
         List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
         List<ProjectPlanVo> projectPlanVos = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(projectPlanList)){
+        if (CollectionUtils.isNotEmpty(projectPlanList)) {
             projectPlanList.remove(0);//去除立项阶段
             projectPlanVos = LangUtils.transform(projectPlanList, projectPlan -> getProjectPlanVo(projectPlan));
         }
@@ -515,7 +521,14 @@ public class ProjectInfoService {
             return projectInfoVo;
         }
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
-
+        if (StringUtils.isNotEmpty(projectInfo.getContractId()) && StringUtils.isNotEmpty(projectInfo.getContractId())) {
+            List<String> contractIds = FormatUtils.transformString2List(projectInfo.getContractId());
+            List<String> contractName = FormatUtils.transformString2List(projectInfo.getContractName()) ;
+            Integer size = Stream.of(contractIds.size(),contractName.size()).mapToInt(Integer::intValue).min().getAsInt() ;
+            for (int i = 0; i < size; i++) {
+                projectInfoVo.getContractList().add(new KeyValueDto(contractIds.get(i),contractName.get(i)));
+            }
+        }
         //项目类型
         if (projectInfo.getProjectClassId() != null) {
             BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectClassId());

@@ -3,24 +3,28 @@ package com.copower.pmcc.assess.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
+import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -63,6 +67,16 @@ public class PublicService {
     private CommonService commonService;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private ProjectMemberService projectMemberService;
+    @Autowired
+    private PublicService publicService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
+    private ErpRpcProjectService erpRpcProjectService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     /**
      * 获取当前公司
@@ -373,5 +387,23 @@ public class PublicService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public void writeToErpProject(ProjectInfo projectInfo){
+        ProjectMemberVo projectMember = projectMemberService.getProjectMember(projectInfo.getId());
+        SysProjectDto sysProjectDto=new SysProjectDto();
+        sysProjectDto.setId(0);
+        sysProjectDto.setProjectId(projectInfo.getId());
+        sysProjectDto.setProjectName(projectInfo.getProjectName());
+        sysProjectDto.setProjectManager(projectMember.getUserAccountManager());
+        sysProjectDto.setProjectMember(projectMember.getUserAccountMember());
+        sysProjectDto.setProjectJson(JSON.toJSONString(projectInfo));
+        sysProjectDto.setProjectCompanyId(publicService.getCurrentCompany().getCompanyId());
+        sysProjectDto.setProjectDepartmentId(publicService.getCurrentCompany().getCompanyId());
+        sysProjectDto.setAppKey(applicationConstant.getAppKey());
+        sysProjectDto.setStatus(ProjectStatusEnum.NORMAL.getKey());
+        erpRpcProjectService.saveProject(sysProjectDto);
+        projectInfo.setPublicProjectId(sysProjectDto.getId());
+        projectInfoService.updateProjectInfo(projectInfo);
     }
 }

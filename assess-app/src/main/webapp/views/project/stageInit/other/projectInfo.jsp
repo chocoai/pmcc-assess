@@ -55,7 +55,7 @@
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="valueType" class="form-control search-select select2 valueType" required="required"
-                           >
+                    >
                     </select>
                 </div>
             </div>
@@ -97,23 +97,22 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估范围</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="propertyScope" class="form-control search-select select2 propertyScope"
-                            required="required">
+                    <select name="propertyScope" class="form-control search-select select2 propertyScope">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估包括</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估包括<span  class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input name="scopeInclude"
+                    <input name="scopeInclude" required
                            class="form-control"
                            placeholder="评估包括" value="${projectInfo.scopeInclude}"/>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估不包括</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估不包括<span  class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input name="scopeNotInclude"
+                    <input name="scopeNotInclude" required
                            class="form-control"
                            placeholder="评估不包括" value="${projectInfo.scopeNotInclude}"/>
                 </div>
@@ -184,9 +183,10 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="loanType" class="form-control search-select select2 loanType">
+                    <select name="loanType" required class="form-control search-select select2 loanType">
                     </select>
                 </div>
             </div>
@@ -196,13 +196,13 @@
                     <div class="input-group">
                         <input type="hidden" name="contractId" value="${projectInfo.contractId}">
                         <input type="text" class="form-control" readonly="readonly" name="contractName"
-                               onclick="selectContract();"
+                               onclick="objProject.selectContract(this);"
                                value="${projectInfo.contractName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="selectContract();">
+                                onclick="objProject.selectContract(this);">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -244,19 +244,3 @@
     </form>
 </div>
 <script src="/pmcc-contract/js/cms_contract_utils.js"></script>
-<script type="text/javascript">
-    /*选择合同*/
-    function selectContract() {
-        cmsContract.select({
-            multi: true,//是否允许多选
-            appkey: "pmcc-assess",
-            onSelected: function (data) {
-                console.log(data);
-                $("#" + objProject.config.info.frm).find("[name=contractId]").val(data.uuid);
-                $("#" + objProject.config.info.frm).find("[name=contractName]").val(data.name);
-            }
-        });
-    }
-
-
-</script>
