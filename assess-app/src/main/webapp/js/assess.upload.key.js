@@ -11,6 +11,7 @@ AssessUploadKey.JUDGE_OBJECT_REFERENCE = "judge_object_reference";//估价中引
 
 AssessUploadKey.INVENTORY_CHECK_ORIGINAL = "inventory_check_original";//资产清查证明文件
 AssessUploadKey.INVENTORY_SPECIAL_CASE = "inventory_special_case";//资产清查特殊情况附件
+AssessUploadKey.INVENTORY_PAYMENT_STATUS = "inventory_payment_status";//资产清缴纳情况附件
 
 AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN = "estate_floor_total_plan";//楼盘总平面图
 AssessUploadKey.ESTATE_FLOOR_APPEARANCE_FIGURE = "estate_floor_Appearance_figure";//楼盘外观图

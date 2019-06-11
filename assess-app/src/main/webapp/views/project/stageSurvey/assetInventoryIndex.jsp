@@ -326,7 +326,19 @@
                         <div class="paymentItem">
 
                         </div>
-
+                        <div class="form-group" id="showUploadFile" style="display: none">
+                            <div class="x-valid">
+                                <label class=" ol-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    附件
+                                </label>
+                                <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                    <input id="paymentStatusFile" name="house_estateParking"
+                                           placeholder="上传附件" class="form-control"
+                                           type="file">
+                                    <div id="_paymentStatusFile"></div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -509,40 +521,27 @@
         })
 
         FileUtils.uploadFiles({
-            target: "specialCaseFile",
+            target: "paymentStatusFile",
             disabledTarget: "btn_submit",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_SPECIAL_CASE,
+                fieldsName: AssessUploadKey.INVENTORY_PAYMENT_STATUS,
                 tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
             },
             deleteFlag: true
         });
 
         FileUtils.getFileShows({
-            target: "specialCaseFile",
+            target: "paymentStatusFile",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_SPECIAL_CASE,
+                fieldsName: AssessUploadKey.INVENTORY_PAYMENT_STATUS,
                 tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
             },
             deleteFlag: true
         })
 
-        FileUtils.uploadFiles({
-            target: "inventoryRightFile",
-            showFileList: false,
-            onUpload: function (file) {//上传之前触发
-                var formData = {
-                    tableName: AssessDBKey.SurveyAssetInventoryRight,
-                    tableId: $("#frm_inventory_right").find('[name=id]').val()
-                };
-                return formData;
-            },
-            onUploadComplete: function () {
-                loadInventoryRightFile($("#frm_inventory_right").find('[name=id]').val());
-            }
-        });
+
         if ("${surveyAssetInventory}") {
             if ("${surveyAssetInventory.segmentationLimit}") {
                 $("#segmentationLimit").val("${surveyAssetInventory.segmentationLimit}");
@@ -589,18 +588,6 @@
     }
 
 
-    //加载他项权利附件
-    function loadInventoryRightFile(tableId) {
-        FileUtils.getFileShows({
-            target: "inventoryRightFile",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventoryRight,
-                creater: "${currUserAccount}",
-                tableId: tableId
-            },
-            deleteFlag: true
-        });
-    }
 
     //上传附件通用
     function uploadFileCommon(tableId) {
@@ -990,9 +977,11 @@
         }
         if ($("#paymentStatus").val() == "不正常") {
             $("#showPaymentAdd").show();
+            $("#showUploadFile").show();
         } else {
             $(".paymentItem").empty();
             $("#showPaymentAdd").hide();
+            $("#showUploadFile").hide();
         }
     }
 

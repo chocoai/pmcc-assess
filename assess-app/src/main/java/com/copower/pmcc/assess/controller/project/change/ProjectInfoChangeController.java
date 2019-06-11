@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project.change;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectChangeTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
@@ -61,7 +62,9 @@ public class ProjectInfoChangeController {
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/information_change/apply", boxReDto.getId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo) ;
+        modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("projectInfoVoJson", JSONObject.toJSONString(projectInfoVo));
         modelAndView.addObject("projectId", projectInfo.getId());
         modelAndView.addObject("ProjectAFFILIATED", crmRpcBaseDataDicService.getUnitPropertiesList());
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
@@ -128,8 +131,8 @@ public class ProjectInfoChangeController {
         ProjectInfoChangeVo projectInfoChangeVo = JSON.parseObject(costsProjectChangeLog.getNewRecord(), ProjectInfoChangeVo.class);
         ProjectInfoVo simpleProjectInfoVo = stateChangeService.getSimpleProjectInfoVo(projectInfoChangeVo);
         modelAndView.addObject("projectInfo", simpleProjectInfoVo);
+        modelAndView.addObject("projectInfoVoJson", JSONObject.toJSONString(simpleProjectInfoVo));
         modelAndView.addObject("projectId", simpleProjectInfoVo.getId());
-
         modelAndView.addObject("ProjectAFFILIATED", crmRpcBaseDataDicService.getUnitPropertiesList());
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
 
