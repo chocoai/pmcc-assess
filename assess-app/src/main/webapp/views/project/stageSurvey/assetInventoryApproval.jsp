@@ -202,6 +202,16 @@
                         <div class="paymentItem">
 
                         </div>
+                        <div class="form-group" id="showUploadFile" style="display: none">
+                            <div class="x-valid">
+                                <label class=" ol-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    附件
+                                </label>
+                                <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                    <div id="_paymentStatusFile"></div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -310,10 +320,10 @@
         })
 
         FileUtils.getFileShows({
-            target: "specialCaseFile",
+            target: "paymentStatusFile",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_SPECIAL_CASE,
+                fieldsName: AssessUploadKey.INVENTORY_PAYMENT_STATUS,
                 tableId: '${surveyAssetInventory.id}'
             },
             deleteFlag: false
@@ -429,6 +439,12 @@
         } else {
             $("#showCertificate").hide();
             $("#showUse").hide();
+
+        }
+        if ("${surveyAssetInventory.paymentStatus}" == "不正常") {
+            $("#showUploadFile").show();
+        } else {
+            $("#showUploadFile").hide();
         }
     }
 
