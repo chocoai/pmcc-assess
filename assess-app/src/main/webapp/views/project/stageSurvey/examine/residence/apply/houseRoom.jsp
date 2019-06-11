@@ -248,19 +248,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            附件
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input id="house_room_file" name="house_estateParking"
-                                                   placeholder="上传附件" class="form-control"
-                                                   type="file">
-                                            <div id="_house_room_file"></div>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
