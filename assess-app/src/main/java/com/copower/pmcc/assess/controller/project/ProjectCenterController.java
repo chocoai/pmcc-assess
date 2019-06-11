@@ -44,7 +44,7 @@ public class ProjectCenterController {
     @RequestMapping(value = "/myProject", name = "我的立项")
     public ModelAndView myProject() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myProject");
-        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.RUNING.getKey(),
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
                 ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;
@@ -58,7 +58,7 @@ public class ProjectCenterController {
     @RequestMapping(value = "/myParticipation", name = "我的参与")
     public ModelAndView myParticipation() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myParticipation");
-        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.RUNING.getKey(),
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
                 ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;
@@ -73,7 +73,7 @@ public class ProjectCenterController {
     @RequestMapping(value = "/projectList", name = "所有项目")
     public ModelAndView projectList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectList");
-        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.RUNING.getKey(),
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
                 ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;

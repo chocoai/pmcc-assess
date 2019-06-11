@@ -1532,7 +1532,7 @@ public class GenerateBaseDataService {
                                 builder.writeln("税费负担方");
                                 break;
                             case 5:
-                                builder.writeln("商业");
+                                builder.writeln("");
                                 break;
                             case 6:
                                 builder.endRow();

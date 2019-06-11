@@ -1,15 +1,16 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,6 +40,12 @@ public class ProjectPlanSurveyService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private CommonService commonService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
 
     /**
      * 初始化阶段任务
@@ -82,6 +90,7 @@ public class ProjectPlanSurveyService {
     private void generatePlanDetails(Integer planId, Integer projectId, Integer workStageId, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords) {
         int i = 1;
         ProjectPlanDetails projectPlanDetails = null;
+        String projectManager = projectMemberService.getProjectManager(projectId);
         for (DeclareRecord declareRecord : declareRecords) {
             projectPlanDetails = new ProjectPlanDetails();
             projectPlanDetails.setProjectWorkStageId(workStageId);
@@ -108,6 +117,17 @@ public class ProjectPlanSurveyService {
                 projectPlanDetail.setFirstPid(projectPlanDetails.getId());
                 projectPlanDetail.setProjectPhaseId(projectPhase.getId());
                 projectPlanDetail.setSorting(j++);
+                projectPlanDetails.setExecuteUserAccount(projectManager);
+                SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
+                if (sysUser != null) {
+                    projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+                }
+                projectPlanDetails.setPlanStartDate(new Date());
+                projectPlanDetails.setPlanEndDate(new Date());
+                projectPlanDetails.setBisEnable(true);
+                projectPlanDetails.setProcessInsId("0");
+                projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
+                projectPlanDetails.setCreator(commonService.thisUserAccount());
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
             }
             declareRecord.setBisGenerate(true);

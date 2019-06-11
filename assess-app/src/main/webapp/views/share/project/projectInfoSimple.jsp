@@ -132,7 +132,7 @@
                             </div>
                         </c:forEach>
                     </c:if>
-                    <c:if test="${empty projectInfo.contractId}">
+
                         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                             <div class="input-group">
                                 <input type="hidden" name="contractId" value="${projectInfo.contractId}">
@@ -154,7 +154,6 @@
                         </span>
                             </div>
                         </div>
-                    </c:if>
                 </div>
             </div>
             <div class="form-group">

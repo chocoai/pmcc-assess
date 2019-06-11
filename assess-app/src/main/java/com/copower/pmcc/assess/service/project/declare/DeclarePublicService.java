@@ -9,7 +9,9 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.survey.ProjectPlanSurveyService;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -46,6 +48,10 @@ public class DeclarePublicService {
     private DeclareApplyDao declareApplyDao;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectPlanSurveyService projectPlanSurveyService;
 
     private final String UNIT = "单元";
     private final String FLOOR = "层";
@@ -1018,6 +1024,11 @@ public class DeclarePublicService {
         declareApplyService.saveDeclareApply(declareApply);
         if (org.apache.commons.lang3.StringUtils.isBlank(processInsId)) {
             declareApplyService.writeToDeclareRecord(declareApply);
+            if (projectPlanDetails.getBisRestart() == Boolean.TRUE) {
+                ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+                if (projectPlan != null)
+                    projectPlanSurveyService.appendPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
+            }
         } else {
             //修改监听器
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());

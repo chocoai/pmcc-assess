@@ -49,7 +49,7 @@
                             <th class="hidden-xs">税费负担方</th>
 
                             <th class="hidden-xs">备注</th>
-                            <th class="hidden-xs">商业</th>
+                            <th class="hidden-xs"></th>
                             <th class="hidden-xs">操作</th>
                         </tr>
                         </thead>
