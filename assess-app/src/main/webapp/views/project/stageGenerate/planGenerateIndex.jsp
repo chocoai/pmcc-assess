@@ -213,6 +213,7 @@
                 tableName: AssessDBKey.GenerateReportInfo,
                 tableId: id == undefined ? 0 : id
             },
+            editFlag: true,
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
         })
     }

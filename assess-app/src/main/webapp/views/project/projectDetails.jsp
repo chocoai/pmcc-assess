@@ -30,20 +30,12 @@
                 <div class="title_right">
                     <div class="col-md-12 col-sm-12 col-xs-12 pull-right" style="margin: 0px">
                         <div class="btn-group">
-                            <a id="btn_followProject" class="btn btn-warning"
-                               style="display: ${projectFollowFlog ne '0'?'none':''}"
-                               href="javascript://" onclick="projectDetails.followProject()"><i
-                                    class="fa fa-eye">&nbsp;</i>关注</a>
-                            <a id="btn_cancelFollowProject" class="btn btn-warning"
-                               style="display: ${projectFollowFlog ne '1'?'none':''}"
-                               href="javascript://" onclick="projectDetails.cancelFollowProject()"><i
-                                    class="fa fa-eye-slash">&nbsp;</i>取消关注</a>
-
+                            <a class="btn btn-primary" href="javascript://" onclick="writeToErpProject()"><i
+                                    class="fa fa-add">&nbsp;</i>写入外勤项目</a>
                             <c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
                                 <a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i
                                         class="fa fa-pause">&nbsp;</i>暂停</a>
                             </c:if>
-
                             <c:if test="${projectStatusEnum=='pause'}">
                                 <a class="btn btn-success" href="javascript://"
                                    onclick="projectDetails.restartProject()"><i class="fa fa-reply">&nbsp;</i>重启</a>
@@ -234,7 +226,24 @@
         setInterval(function () {
             projectDetails.loadPlanItem(projectDetails.getActiveTab().closest('li').attr('plan-id'));
         }, 30 * 1000)
+
+
     })
+
+    function writeToErpProject() {
+        $.ajax({
+            url:'${pageContext.request.contextPath}/home/writeToErpProject',
+            data:{projectId:'${projectInfo.id}'},
+            type:'post',
+            success:function (result) {
+                if(result.ret){
+                    Alert("写入成功");
+                }else{
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
 </script>
 <script type="application/javascript">
     var projectDetails = {

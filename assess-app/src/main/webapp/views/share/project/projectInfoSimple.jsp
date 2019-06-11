@@ -67,12 +67,6 @@
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价值类型描述</label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control">${projectInfo.remarkValueType}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${projectInfo.departmentName}</label>

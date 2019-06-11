@@ -4,9 +4,12 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -33,7 +36,9 @@
                                         报告出具日期<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <label class="form-control"><fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/></label>
+                                        <label class="form-control"><fmt:formatDate
+                                                value='${generationVo.investigationsStartDate}'
+                                                pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -41,7 +46,9 @@
                                         作业结束时间<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <label class="form-control"><fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/></label>
+                                        <label class="form-control"><fmt:formatDate
+                                                value='${generationVo.investigationsStartDate}'
+                                                pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -61,7 +68,9 @@
                                         现场查勘开始日期
                                     </label>
                                     <div class="col-sm-3">
-                                        <label class="form-control"><fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/></label>
+                                        <label class="form-control"><fmt:formatDate
+                                                value='${generationVo.investigationsStartDate}'
+                                                pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -69,7 +78,9 @@
                                         现场查勘结束日期
                                     </label>
                                     <div class="col-sm-3">
-                                        <label class="form-control"><fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/></label>
+                                        <label class="form-control"><fmt:formatDate
+                                                value='${generationVo.investigationsStartDate}'
+                                                pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -83,12 +94,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            <a class="btn-dark btn btn-xs"
-                                               onclick="generateReport('${areaGroup.id}','${reportType.id}',this)">生成${reportType.name}
-                                                <i class="fa fa-file-word-o"></i></a>
+                                                ${reportType.name}
                                         </label>
                                         <div class="col-sm-3">
-                                            <div id="_${reportType.fieldName}${areaGroup.id}"></div>
+                                            <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -117,8 +126,6 @@
 
 
 <script type="text/javascript">
-
-
     function fileShow(fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({
             target: fieldsName,
@@ -128,6 +135,7 @@
                 tableName: AssessDBKey.GenerateReportGeneration,
                 tableId: id == undefined ? 0 : id
             },
+            signatureFlag: '${activityCnName}'.indexOf("盖章") > -1,
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
         })
     }
@@ -161,7 +169,6 @@
             }
         });
     }
-
 
 
     function saveform() {

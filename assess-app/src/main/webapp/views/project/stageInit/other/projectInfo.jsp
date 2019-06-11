@@ -248,7 +248,7 @@
     /*选择合同*/
     function selectContract() {
         cmsContract.select({
-            multi: false,//是否允许多选
+            multi: true,//是否允许多选
             appkey: "pmcc-assess",
             onSelected: function (data) {
                 console.log(data);

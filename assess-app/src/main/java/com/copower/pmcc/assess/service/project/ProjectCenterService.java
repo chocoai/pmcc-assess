@@ -33,6 +33,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,7 @@ import java.util.List;
  */
 @Service
 public class ProjectCenterService {
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProjectPlanDao projectPlanDao;
     @Autowired
@@ -102,37 +104,46 @@ public class ProjectCenterService {
             for (ProjectInfo item : projectInfoList) {
                 projectInfoVo = new ProjectInfoVo();
                 BeanUtils.copyProperties(item, projectInfoVo);
-                projectInfoVo.setId(item.getId());
-                projectInfoVo.setProjectName(item.getProjectName());
-                ProjectMemberVo projectMember = projectMemberService.getProjectMember(item.getId());
-                projectInfoVo.setUserAccountManagerName(projectMember.getUserAccountManagerName());
-                projectInfoVo.setUserAccountMemberName(projectMember.getUserAccountMemberName());
-                projectInfoVo.setProjectClassName(baseProjectClassifyService.getNameById(item.getProjectClassId()));
-                projectInfoVo.setProjectTypeName(baseProjectClassifyService.getNameById(item.getProjectTypeId()));
-                projectInfoVo.setProjectCategoryName(baseProjectClassifyService.getNameById(item.getProjectCategoryId()));
-                projectInfoVo.setProjectStatus(ProjectStatusEnum.getNameByKey(item.getProjectStatus()));
+                try {
+                    projectInfoVo.setId(item.getId());
+                    projectInfoVo.setProjectName(item.getProjectName());
+                    ProjectMemberVo projectMember = projectMemberService.getProjectMember(item.getId());
+                    if (projectMember != null) {
+                        projectInfoVo.setUserAccountManagerName(projectMember.getUserAccountManagerName());
+                        projectInfoVo.setUserAccountMemberName(projectMember.getUserAccountMemberName());
+                    }
+                    projectInfoVo.setProjectClassName(baseProjectClassifyService.getNameById(item.getProjectClassId()));
+                    projectInfoVo.setProjectTypeName(baseProjectClassifyService.getNameById(item.getProjectTypeId()));
+                    projectInfoVo.setProjectCategoryName(baseProjectClassifyService.getNameById(item.getProjectCategoryId()));
+                    if (item.getProjectStatus() != null)
+                        projectInfoVo.setProjectStatus(ProjectStatusEnum.getNameByKey(item.getProjectStatus()));
 
-                List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
-                    return o.getProjectId().equals(item.getId());
-                });
-                if (CollectionUtils.isNotEmpty(filter)) {
-                    int finishCount = 0;
-                    double finishWeight = 0L;
-                    double totalWeight = 0L;
-                    for (ProjectPlan plan : filter) {
-                        if (plan.getProjectStatus().equals(ProjectStatusEnum.FINISH.getKey())) {
-                            finishCount++;
-                            finishWeight += plan.getSpecificGravity();
+                    if(CollectionUtils.isNotEmpty(projectPlans)){
+                        List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
+                            return o.getProjectId().equals(item.getId());
+                        });
+                        if (CollectionUtils.isNotEmpty(filter)) {
+                            int finishCount = 0;
+                            double finishWeight = 0L;
+                            double totalWeight = 0L;
+                            for (ProjectPlan plan : filter) {
+                                if (plan.getProjectStatus().equals(ProjectStatusEnum.FINISH.getKey())) {
+                                    finishCount++;
+                                    finishWeight += plan.getSpecificGravity();
+                                }
+                                totalWeight += plan.getSpecificGravity();
+                            }
+                            if (totalWeight <= 0) {
+                                projectInfoVo.setFinishPre(finishCount / filter.size() * 100);
+                            } else {
+                                projectInfoVo.setFinishPre((int) (finishWeight / totalWeight * 100));
+                            }
+                        } else {
+                            projectInfoVo.setFinishPre(0);
                         }
-                        totalWeight += plan.getSpecificGravity();
                     }
-                    if (totalWeight <= 0) {
-                        projectInfoVo.setFinishPre(finishCount/filter.size() * 100);
-                    } else {
-                        projectInfoVo.setFinishPre((int)(finishWeight/totalWeight * 100));
-                    }
-                } else {
-                    projectInfoVo.setFinishPre(0);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(),e);
                 }
                 projectInfoVos.add(projectInfoVo);
             }
