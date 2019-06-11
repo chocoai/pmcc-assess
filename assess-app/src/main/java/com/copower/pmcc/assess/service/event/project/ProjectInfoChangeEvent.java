@@ -51,7 +51,6 @@ public class ProjectInfoChangeEvent extends BaseProcessEvent {
         projectChangeLogDao.modifyProjectChangeLog(costsProjectChangeLog);
 
         ProjectInfo projectInfo = JSON.parseObject(projectInfoChangeVo.getProjectInfo(), ProjectInfo.class);
-        projectInfo.setProjectStatus(ProjectStatusEnum.CLOSE.getKey());
         projectInfoService.saveProjectInfo(projectInfo);
 
         InitiateConsignor initiateConsignor = JSON.parseObject(projectInfoChangeVo.getConsignor(), InitiateConsignor.class);

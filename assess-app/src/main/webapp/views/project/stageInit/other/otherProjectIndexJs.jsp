@@ -392,10 +392,12 @@
             $("#" + objProject.config.info.frm).find("select.entrustPurpose").change(function () {
                 var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
                 var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
-                if (entrustAimType) {
-                    objProject.getCategory(entrustPurpose,false);
+
+                if (item.entrustAimType) {
+                    objProject.getCategory(entrustPurpose,item.entrustAimType);
+                    item.entrustAimType = "";
                 } else {
-                    objProject.getCategory(entrustPurpose, "${projectInfo.entrustAimType}");
+                    objProject.getCategory(entrustPurpose, false);
                 }
                 var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
 
@@ -991,6 +993,7 @@
                         console.log(e) ;
                     }
                     if (objProject.isNotBlankObjectProperty(data)){
+                        console.log(data)
                         objProject.info.loadInit(data) ;
                         objProject.consignor.loadInit(data.consignorVo) ;
                         objProject.possessor.loadInit(data.possessorVo) ;

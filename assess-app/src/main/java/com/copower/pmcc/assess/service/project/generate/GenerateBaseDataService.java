@@ -572,7 +572,10 @@ public class GenerateBaseDataService {
         return value;
     }
 
-    //填发单位
+    /**
+     * 填发单位
+     * @return
+     */
     public String getFillingUnit() {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
@@ -592,6 +595,15 @@ public class GenerateBaseDataService {
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), declareRealtyRealEstateCert.getRegistrationAuthority());
                 }
             }
+            if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+                DeclareRealtyHouseCert realtyHouseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(declareRecord.getDataTableId());
+                if (realtyHouseCertById == null) {
+                    continue;
+                }
+                if (StringUtils.isNotEmpty(realtyHouseCertById.getRegistrationAuthority())) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), realtyHouseCertById.getRegistrationAuthority());
+                }
+            }
         }
         String value = "/";
         if (!map.isEmpty()) {
@@ -600,7 +612,10 @@ public class GenerateBaseDataService {
         return value;
     }
 
-    //附记 , 附记其它
+    /**
+     * 附记其它
+     * @return
+     */
     public String getAttachmentReark() {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
@@ -618,6 +633,15 @@ public class GenerateBaseDataService {
                 }
                 if (StringUtils.isNotEmpty(declareRealtyRealEstateCert.getOtherNote())) {
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), declareRealtyRealEstateCert.getOtherNote());
+                }
+            }
+            if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+                DeclareRealtyHouseCert realtyHouseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(declareRecord.getDataTableId());
+                if (realtyHouseCertById == null) {
+                    continue;
+                }
+                if (StringUtils.isNotEmpty(realtyHouseCertById.getOtherNote())) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), realtyHouseCertById.getOtherNote());
                 }
             }
         }
@@ -694,6 +718,83 @@ public class GenerateBaseDataService {
                     break;
                 default:
                     break;
+            }
+        }
+        String value = "/";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", false);
+        }
+        return value;
+    }
+
+    /**
+     * 小微贷丘地号
+     * @return
+     */
+    public String getNetAssessmentGroundNum(){
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
+            if (schemeJudgeObject.getDeclareRecordId() == null) {
+                continue;
+            }
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null || declareRecord.getDataTableId() == null) {
+                continue;
+            }
+            if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+                DeclareRealtyHouseCert realtyHouseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(declareRecord.getDataTableId());
+                if (realtyHouseCertById == null) {
+                    continue;
+                }
+                if (StringUtils.isNotEmpty(realtyHouseCertById.getGroundNum())) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), realtyHouseCertById.getGroundNum());
+                }
+            }
+        }
+        String value = "/";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", false);
+        }
+        return value;
+    }
+
+    /**
+     * 小微贷其它
+     * @return
+     */
+    public String getNetAssessmentOther(){
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
+            if (schemeJudgeObject.getDeclareRecordId() == null) {
+                continue;
+            }
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null || declareRecord.getDataTableId() == null) {
+                continue;
+            }
+            if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
+                DeclareRealtyRealEstateCert declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(declareRecord.getDataTableId());
+                if (declareRealtyRealEstateCert == null) {
+                    continue;
+                }
+                if (StringUtils.isNotEmpty(declareRealtyRealEstateCert.getOther())) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), declareRealtyRealEstateCert.getOther());
+                }
+                if (StringUtils.isEmpty(declareRealtyRealEstateCert.getOther()) && StringUtils.isNotEmpty(declareRealtyRealEstateCert.getOtherNote())){
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), declareRealtyRealEstateCert.getOtherNote());
+                }
+            }
+            if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+                DeclareRealtyHouseCert realtyHouseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(declareRecord.getDataTableId());
+                if (realtyHouseCertById == null) {
+                    continue;
+                }
+                if (StringUtils.isNotEmpty(realtyHouseCertById.getOther())) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), realtyHouseCertById.getOther());
+                }
+                if (StringUtils.isEmpty(realtyHouseCertById.getOther()) && StringUtils.isNotEmpty(realtyHouseCertById.getOtherNote())){
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), realtyHouseCertById.getOtherNote());
+                }
             }
         }
         String value = "/";
@@ -866,11 +967,6 @@ public class GenerateBaseDataService {
             value = generateCommonMethod.judgeEachDesc2(map, "", "", false);
         }
         return value;
-    }
-
-    //档案保管号
-    public String getArchivesDepositNumber() {
-        return "/";
     }
 
     /**
@@ -1267,11 +1363,17 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getHotTip(List<KeyValueDto> keyValueDtoList) throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(16);
         Document doc = new Document();
-        LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         String localPath = getLocalPath();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(getHotTip(), keyValueDtoList), false);
+        doc.save(localPath);
+        return localPath;
+    }
+
+    public String getHotTip() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(16);
+        LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         int row = 0;
         {
             stringSet.add("本函内容摘自估价报告");
@@ -1341,9 +1443,7 @@ public class GenerateBaseDataService {
                 stringSet.clear();
             }
         }
-        documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(stringBuilder.toString(), keyValueDtoList), true);
-        doc.save(localPath);
-        return localPath;
+        return stringBuilder.toString();
     }
 
     /**
@@ -3393,6 +3493,9 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getJudgeObjectDamagedDegreeField(BaseReportFieldEnum reportFieldEnum) throws Exception {
+        List<String> typeList = Arrays.asList("卧室","主卧" ,"客厅","大厅" ) ;
+        List<BaseReportFieldEnum> baseReportFieldEnumList = Arrays.asList(BaseReportFieldEnum.JudgeObjectDamagedDegreeField1,BaseReportFieldEnum.JudgeObjectDamagedDegreeField5 ,
+                BaseReportFieldEnum.JudgeObjectDamagedDegreeField2 ,BaseReportFieldEnum.JudgeObjectDamagedDegreeField3,BaseReportFieldEnum.JudgeObjectDamagedDegreeField4   ) ;
         String name = null;
         switch (reportFieldEnum) {
             case JudgeObjectDamagedDegreeField1: {
@@ -3452,10 +3555,18 @@ public class GenerateBaseDataService {
             houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
                 basicHouseRoomDecorateVos.forEach(oo -> {
                     if (StringUtils.contains(oo.getPartName(), nameValue)) {
-                        if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                            multimap.put(nameValue, oo.getMaterialName());
+                        if (baseReportFieldEnumList.stream().anyMatch(baseReportFieldEnum -> Objects.equal(reportFieldEnum.name(),baseReportFieldEnum.name()))){
+                            if (typeList.stream().anyMatch(s -> StringUtils.contains(basicHouseRoom.getRoomType(),s))){
+                                if (StringUtils.isNotEmpty(oo.getRemark())) {
+                                    multimap.put(nameValue, String.format("%s%s", typeList.stream().filter(s -> StringUtils.contains(basicHouseRoom.getRoomType(),s)).findFirst().get(), oo.getRemark()));
+                                }
+                            }
+                        }else {
                             if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                multimap.put(nameValue, String.format("%s%s", oo.getMaterialName(), oo.getRemark()));
+                                multimap.put(nameValue, String.format("%s",  oo.getRemark()));
+                            }
+                            if (StringUtils.isEmpty(oo.getRemark()) && StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                multimap.put(nameValue, oo.getMaterialName());
                             }
                         }
                     }
@@ -3464,7 +3575,7 @@ public class GenerateBaseDataService {
             if (!multimap.isEmpty()) {
                 Collection<String> stringList = multimap.get(name);
                 String string = StringUtils.join(stringList, "、");
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s:%s", name, string));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s",  string));
             }
         }
         String value = "/";
@@ -3890,7 +4001,15 @@ public class GenerateBaseDataService {
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
         String localPath = getLocalPath();
         LinkedHashMap<String, String> map = Maps.newLinkedHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
+        schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
+            if (schemeJudgeObject.getDeclareRecordId() != null){
+                schemeJudgeObjectList.add(schemeJudgeObject);
+            }
+        });
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
+            generateCommonMethod.getSortSchemeJudgeObject(schemeJudgeObjectList) ;
+        }
         List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList = schemeLiquidationAnalysisService.getAnalysisItemListByAreaId(areaId);
         BigDecimal buyTaxAmount = new BigDecimal("0");//买方
         BigDecimal saleTaxAmount = new BigDecimal("0");//卖方

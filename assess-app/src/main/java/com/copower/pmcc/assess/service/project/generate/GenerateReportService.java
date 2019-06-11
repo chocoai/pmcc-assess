@@ -497,7 +497,7 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.HotTip2.getName(), name)) {
                     List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
                 }
@@ -727,7 +727,7 @@ public class GenerateReportService {
                 }
                 //档案保管号
                 if (Objects.equal(BaseReportFieldEnum.ArchivesDepositNumber.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getArchivesDepositNumber());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFillingUnit());
                 }
                 //层户数
                 if (Objects.equal(BaseReportFieldEnum.LayerNumber.getName(), name)) {
@@ -739,6 +739,14 @@ public class GenerateReportService {
                 }
                 if (Objects.equal(BaseReportFieldEnum.StoreyHeight.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStoreyHeight());
+                }
+                //小微贷其它
+                if (Objects.equal(BaseReportFieldEnum.NetAssessmentOther.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentOther());
+                }
+                //小微贷丘地号
+                if (Objects.equal(BaseReportFieldEnum.NetAssessmentGroundNum.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentGroundNum());
                 }
                 if (Objects.equal(BaseReportFieldEnum.exteriorWallDecorate.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOutfitDecorate(BaseReportFieldEnum.exteriorWallDecorate));

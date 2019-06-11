@@ -20,6 +20,7 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2>
+                        <input type="hidden" name="projectInfoVoJson" id="projectInfoVoJson" value='${projectInfoVoJson}'>
                         项目信息
                         <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
                     </h2>
