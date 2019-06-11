@@ -50,6 +50,7 @@ public enum BaseReportFieldEnum implements Serializable {
     NetAssessmentOne("小微贷评估净值one"),
     NetAssessmentTwo("小微贷评估净值two"),
     NetAssessmentOther("小微贷其它"),
+    NetAssessmentGroundNum("小微贷丘地号"),
     AssessPriceClassification("评估总价分述"),
     surveyExamineDate("现场查勘期"),
     surveyExamineCreate("现场查勘人员"),
