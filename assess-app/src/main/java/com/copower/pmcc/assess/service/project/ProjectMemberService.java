@@ -58,7 +58,7 @@ public class ProjectMemberService {
 
     public void saveProjectMemeber(ProjectMember projectMember) throws BusinessException {
         if (projectMember == null)
-            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+            return;
         if (projectMember.getId() != null && projectMember.getId() > 0) {
             projectMemberDao.updateProjectMember(projectMember);
         } else {
