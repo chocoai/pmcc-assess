@@ -10,6 +10,15 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom;
 public class BasicHouseRoomVo extends BasicHouseRoom {
     private String roomTypeName;
     private String orientationName;
+    private String fileViewName;
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
+    }
 
     public String getOrientationName() {
         return orientationName;
