@@ -5,10 +5,7 @@ import com.aspose.words.Document;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
-import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
-import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
-import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
+import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
@@ -265,51 +262,64 @@ public class GenerateReportService {
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
-        //计数器,防止  枚举虽然定义了，但是没有写对应的方法，因此递归设置最多的次数
+        //count 计数器,防止  枚举虽然定义了，但是没有写对应的方法，因此递归设置最多的次数
         int count = 0;
-        generateCompareFile2(dir, generateBaseDataService, generateReportInfo, reportType, count);
+        //最大递归次数 , 最好是不要过大 (ps max-count 就是递归次数)
+        final int max = 4;
+        generateReplaceWord(dir, generateBaseDataService, generateReportInfo, reportType, count, max);
         return dir;
     }
 
     /**
      * 循环替换操作
-     *
      * @param tempDir
      * @param generateBaseDataService
      * @param generateReportInfo
      * @param reportType
      * @param count
+     * @param max
      * @return
      * @throws Exception
      */
-    private String generateCompareFile2(String tempDir, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, String reportType, int count) throws Exception {
-        //最大递归次数
-        final int max = 9;
+    private String generateReplaceWord(String tempDir, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, String reportType, int count , final int max) throws Exception {
         List<String> names = Lists.newArrayList();
+        //基础报告
         for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
             names.add(baseReportFieldEnum.getName());
         }
+        //收益法
+        Arrays.asList(BaseReportFieldMdIncomeEnum.values()).forEach(oo -> {
+            names.add(oo.getName());
+        });
+        //基准地
+        Arrays.asList(BaseReportFieldMdBaseLandPriceEnum.values()).forEach(oo -> {
+            names.add(oo.getName());
+        });
+        //比较法
+        Arrays.asList(BaseReportFieldCompareEnum.values()).forEach(oo -> {
+            names.add(oo.getName());
+        });
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = getBookmarkAndRegexDtoHashSet(tempDir);
-        Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet2 = Sets.newHashSet();
+        Set<BookmarkAndRegexDto> compareHashSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet)) {
             bookmarkAndRegexDtoHashSet.forEach(bookmarkAndRegex -> {
                 String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
                 //必须在枚举中存在的我们才收集
                 if (names.stream().anyMatch(s -> Objects.equal(s, name))) {
-                    bookmarkAndRegexDtoHashSet2.add(bookmarkAndRegex);
+                    compareHashSet.add(bookmarkAndRegex);
                 }
             });
         }
-        if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet2)) {
+        if (CollectionUtils.isNotEmpty(compareHashSet)) {
             count++;
             //替换
-            generateCompareFile(bookmarkAndRegexDtoHashSet2, generateBaseDataService, tempDir, generateReportInfo, reportType);
+            generateReplaceMethod(compareHashSet, generateBaseDataService, tempDir, generateReportInfo, reportType);
             System.gc();
             if (count >= max) {
                 return tempDir;
             }
             //递归回去 判断是否可以跳出循环
-            return generateCompareFile2(tempDir, generateBaseDataService, generateReportInfo, reportType, count);
+            return generateReplaceWord(tempDir, generateBaseDataService, generateReportInfo, reportType, count , max);
         } else {
             return tempDir;
         }
@@ -377,13 +387,6 @@ public class GenerateReportService {
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
         }
-        if (false) {
-            for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
-                BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                regexDto.setName(baseReportFieldEnum.getName()).setChineseName(baseReportFieldEnum.getName()).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
-                bookmarkAndRegexDtoHashSet.add(regexDto);
-            }
-        }
         return bookmarkAndRegexDtoHashSet;
     }
 
@@ -395,7 +398,7 @@ public class GenerateReportService {
      * @param generateBaseDataService
      * @throws Exception
      */
-    public void generateCompareFile(Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet, GenerateBaseDataService generateBaseDataService, String localPath, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
+    private void generateReplaceMethod(Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet, GenerateBaseDataService generateBaseDataService, String localPath, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         Map<String, String> textMap = Maps.newHashMap();
         Map<String, String> preMap = Maps.newHashMap();
         Map<String, String> bookmarkMap = Maps.newHashMap();
