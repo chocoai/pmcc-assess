@@ -30,8 +30,6 @@
                 <div class="title_right">
                     <div class="col-md-12 col-sm-12 col-xs-12 pull-right" style="margin: 0px">
                         <div class="btn-group">
-                            <a class="btn btn-primary" href="javascript://" onclick="writeToErpProject()"><i
-                                    class="fa fa-add">&nbsp;</i>写入外勤项目</a>
                             <c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
                                 <a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i
                                         class="fa fa-pause">&nbsp;</i>暂停</a>
