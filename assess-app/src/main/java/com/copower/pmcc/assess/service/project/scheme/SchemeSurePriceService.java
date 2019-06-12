@@ -99,6 +99,21 @@ public class SchemeSurePriceService {
         }
     }
 
+    public void deleteSurePriceAll(Integer projectId){
+        SchemeSurePrice where = new SchemeSurePrice();
+        where.setProjectId(projectId);
+        List<SchemeSurePrice> schemeSurePriceList = schemeSurePriceDao.getSurePriceList(where);
+        if(CollectionUtils.isNotEmpty(schemeSurePriceList)){
+            for (SchemeSurePrice schemeSurePrice : schemeSurePriceList) {
+                SchemeSurePriceItem whereItem = new SchemeSurePriceItem();
+                where.setJudgeObjectId(schemeSurePrice.getJudgeObjectId());
+                List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(whereItem);
+                if(CollectionUtils.isNotEmpty(surePriceItemList))
+                    surePriceItemList.forEach(o->schemeSurePriceItemDao.deleteSurePriceItem(o.getId()));
+                schemeSurePriceDao.deleteSurePrice(schemeSurePrice.getId());
+            }
+        }
+    }
 
     /**
      * 获取单价确定明细数据
@@ -144,25 +159,8 @@ public class SchemeSurePriceService {
         }
 
         List<SchemeSurePriceItem> priceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
-        //单价为空的时候处理
-        if (CollectionUtils.isNotEmpty(priceItemList)) {
-            //当单价中有某一个为null ,那么所有的单价取单价不为null的集合中的第一个
-            if (priceItemList.stream().anyMatch(oo -> oo.getTrialPrice() == null || oo.getTrialPrice().intValue() == 0)) {
-                BigDecimal price = priceItemList.stream().filter(oo -> oo.getTrialPrice() != null && oo.getTrialPrice().intValue() != 0).findFirst().get().getTrialPrice();
-                priceItemList.forEach(oo -> {
-                    if (oo.getTrialPrice() == null || oo.getTrialPrice().intValue() == 0) {
-                        oo.setTrialPrice(new BigDecimal(price.toString()));
-                    }
-                });
-            }
-            //当所有的单价都为null时，price都设置为zero
-            if (priceItemList.stream().allMatch(oo -> oo.getTrialPrice() == null || oo.getTrialPrice().intValue() == 0)) {
-                priceItemList.forEach(oo -> {
-                    if (oo.getTrialPrice() == null) {
-                        oo.setTrialPrice(new BigDecimal(0));
-                    }
-                });
-            }
+        if (CollectionUtils.isEmpty(priceItemList)) {
+           return null;
         }
         //如果价格差异小于等于10% 自动设置对应权重 求取平均价
         List<BigDecimal> decimalList = LangUtils.transform(priceItemList, o -> o.getTrialPrice());
@@ -211,7 +209,7 @@ public class SchemeSurePriceService {
         where.setJudgeObjectId(judgeObjectId);
         where.setMethodType(methodType);
         SchemeInfo schemeInfo = schemeInfoDao.getSchemeInfo(where);
-        if (schemeInfo == null) return null;
+        if (schemeInfo == null) return new BigDecimal("0");
         Integer methodDataId = schemeInfo.getMethodDataId();
         String methTypeKey = baseDataDicService.getDataDicById(methodType).getFieldName();
         BigDecimal price = null;
@@ -237,7 +235,7 @@ public class SchemeSurePriceService {
                     price = mdDevelopment.getPrice();
                 break;
         }
-        return price;
+        return price == null ? new BigDecimal("0") : price;
     }
 
     /**

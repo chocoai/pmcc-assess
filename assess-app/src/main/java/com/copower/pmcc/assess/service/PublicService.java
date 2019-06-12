@@ -357,7 +357,7 @@ public class PublicService {
      */
     public int computeDifference(BigDecimal var1, BigDecimal var2) {
         if (var1 == null || var2 == null) return -1;//表示错误数据
-        if (var1.equals(0) || var2.equals(0)) return -1;
+        if (var1.intValue() <= 0 || var2.intValue() <= 0) return -1;
         if (var1.compareTo(var2) == 0) return 0;
         BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
         BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
@@ -389,9 +389,9 @@ public class PublicService {
         }
     }
 
-    public void writeToErpProject(ProjectInfo projectInfo){
+    public void writeToErpProject(ProjectInfo projectInfo) {
         ProjectMemberVo projectMember = projectMemberService.getProjectMember(projectInfo.getId());
-        SysProjectDto sysProjectDto=new SysProjectDto();
+        SysProjectDto sysProjectDto = new SysProjectDto();
         sysProjectDto.setId(0);
         sysProjectDto.setProjectId(projectInfo.getId());
         sysProjectDto.setProjectName(projectInfo.getProjectName());

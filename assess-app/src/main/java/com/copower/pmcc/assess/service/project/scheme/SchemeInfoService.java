@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * 方案主表
@@ -39,12 +42,25 @@ public class SchemeInfoService {
         }
     }
 
-    public SchemeInfo getSchemeInfo(Integer judgeObjectId,Integer methodType) {
+    public SchemeInfo getSchemeInfo(Integer judgeObjectId, Integer methodType) {
         SchemeInfo examle = new SchemeInfo();
         examle.setJudgeObjectId(judgeObjectId);
         examle.setMethodType(methodType);
         SchemeInfo schemeInfo = schemeInfoDao.getSchemeInfo(examle);
         return schemeInfo;
+    }
+
+    public List<SchemeInfo> getSchemeInfoList(Integer projectId) {
+        SchemeInfo examle = new SchemeInfo();
+        examle.setProjectId(projectId);
+        return schemeInfoDao.getInfoList(examle);
+    }
+
+    public void deleteSchemeInfoByProjectId(Integer projectId) {
+        List<SchemeInfo> schemeInfoList = getSchemeInfoList(projectId);
+        if (!CollectionUtils.isEmpty(schemeInfoList)) {
+            schemeInfoList.forEach(o -> schemeInfoDao.deleteInfo(o.getId()));
+        }
     }
 
     public SchemeInfo getSchemeInfo(Integer planDetailsId) {

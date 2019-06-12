@@ -107,6 +107,10 @@ public class SchemeJudgeObjectService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private SchemeInfoService schemeInfoService;
+    @Autowired
+    private SchemeSurePriceService schemeSurePriceService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -555,6 +559,8 @@ public class SchemeJudgeObjectService {
             }
         }
         projectPlanDetailsService.deletePlanDetailsByPlanId(planId);
+        schemeInfoService.deleteSchemeInfoByProjectId(projectId);
+        schemeSurePriceService.deleteSurePriceAll(projectId);
     }
 
     /**
