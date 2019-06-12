@@ -175,12 +175,16 @@ public class ProjectInfoService {
             consignor.setProjectId(projectId);
             unitInformation.setProjectId(projectId);
             possessor.setProjectId(projectId);
+            logger.error("init!"+init);
+            logger.error("saveAndUpdateInitiateConsignor!");
             consignorService.saveAndUpdateInitiateConsignor(consignor);
+            logger.error("saveAndUpdate!");
             unitInformationService.saveAndUpdate(unitInformation);
             possessorService.saveAndUpdate(possessor);
             //保存项目成员
             projectMember.setProjectId(projectId);
             projectMember.setCreator(commonService.thisUserAccount());
+            logger.error("projectMember!");
             projectMemberService.saveProjectMemeber(projectMember);
             //发起项目
             if (init) {
@@ -188,6 +192,7 @@ public class ProjectInfoService {
                 if (StringUtils.isNotEmpty(projectMember.getUserAccountManager())) {
                     allocateProjectManager(projectMember, projectInfo);
                 }
+                logger.error("initProjectInfo!");
                 //初始化项目信息
                 initProjectInfo(projectInfo);
                 publicService.writeToErpProject(projectInfo);
