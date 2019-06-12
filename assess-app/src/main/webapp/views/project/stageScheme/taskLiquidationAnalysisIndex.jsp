@@ -246,7 +246,6 @@
     }
 
     function getAnalysisItemList() {
-        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getAnalysisItemList",
             data: {
@@ -255,7 +254,6 @@
             type: "post",
             dataType: "json",
             success: function (result) {
-                Loading.progressHide();
                 $("#tbody_data_section").empty();
                 if (result.ret) {
                     console.log(result.data)
@@ -313,14 +311,12 @@
 
     function cleanHTMLData(_this, id) {
         Alert("确认要删除么？", 2, null, function () {
-            Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/deleteItem",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
                 success: function (result) {
-                    Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
                         $(_this).parent().parent().parent().empty();
