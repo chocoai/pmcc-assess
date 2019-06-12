@@ -141,7 +141,9 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_between_distance, data.betweenDistance, function (html, data) {
                 buildingCommon.buildingForm.find('select.betweenDistance').empty().html(html).trigger('change');
             });
-
+            if(data.vSpecifications) {
+                buildingCommon.addLableData(data.vSpecifications);
+            }
             $.ajax({
                 url: getContextPath() + '/architecture/dataBuildingNewRateList',
                 type: 'get',
@@ -173,6 +175,15 @@
         });
     }
 
+    buildingCommon.addLableData = function(json) {
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var specificationNameId = 'specificationName'+i;
+            var specificationContentId = 'specificationContent'+i;
+            $("#"+specificationNameId).val(n["specificationName"]);
+            $("#"+specificationContentId).val(n["specificationContent"]);
+        })
+    }
     //显示楼栋对应部分信息
     buildingCommon.showBuildingDetail = function (id) {
         $.ajax({

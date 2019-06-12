@@ -37,7 +37,7 @@
 
                             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <div class="btn btn-primary"
-                                        onclick="dataObjFun.loadDataList()">
+                                     onclick="dataObjFun.loadDataList()">
                                     查询
                                 </div>
                             </div>
@@ -120,14 +120,7 @@
         var cols = [];
         cols.push({field: 'fullName', title: '名称'});
         cols.push({
-            field: 'type', title: '类型', formatter: function (value, row, index) {
-                if (value == 0) {
-                    return "非工业交通仓储";
-                }
-                if (value == 1) {
-                    return "工业交通仓储";
-                }
-            }
+            field: 'typeName', title: '类型'
         });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {

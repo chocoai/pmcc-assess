@@ -1,95 +1,80 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
- 楼栋基础信息
---%>
-<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_content">
-    <div class="x_title">
-        <h3>
-            构筑物评估查看
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <form class="form-horizontal" id="basicBuildingFrm">
-        <input type="hidden" name="id">
-        <div  class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    构造特征
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="构造特征" name="vStructura"
-                           class="form-control"  value="${basicBuilding.vStructura}">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    结构构造
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="构造特征" name="vStructuralConstruction"
-                           class="form-control" value="${basicBuilding.vStructuralConstruction}">
-                </div>
-            </div>
-        </div>
-        <div class="form-group ">
-            <label class=" col-md-1 col-sm-1 col-xs-12 control-label">
-                添加规格<span class="symbol required"></span>
-            </label>
-            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                <div class="btn btn-xs btn-success"
-                     onclick="appendHTML(this)"><i
-                        class="fa fa-plus"></i></div>
-            </div>
-        </div>
-        <div class="vSpecifications">
+<%--
+构筑物字段基础信息
+--%>
 
+
+<div class="form-group">
+    <div class="x-valid">
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+            构造特征
+        </label>
+        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+            <input type="text" placeholder="构造特征" name="vStructura"
+                   class="form-control" value="${basicBuilding.vStructura}">
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础作法</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+    </div>
+    <div class="x-valid">
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+            结构构造
+        </label>
+        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+            <input type="text" placeholder="构造特征" name="vStructuralConstruction"
+                   class="form-control" value="${basicBuilding.vStructuralConstruction}">
+        </div>
+    </div>
+</div>
+<div class="form-group ">
+    <label class=" col-md-1 col-sm-1 col-xs-12 control-label">
+        添加规格<span class="symbol required"></span>
+    </label>
+    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+        <div class="btn btn-xs btn-success"
+             onclick="appendHTML(this)"><i
+                class="fa fa-plus"></i></div>
+    </div>
+</div>
+<div class="vSpecifications">
+
+</div>
+<div class="form-group">
+    <div class="x-valid">
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础作法</label>
+        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <textarea class="form-control" name="vBasicPractice"
                                   placeholder="基础作法">${basicBuilding.vBasicPractice}</textarea>
-                </div>
-            </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">结构作法</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+    </div>
+</div>
+<div class="form-group">
+    <div class="x-valid">
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">结构作法</label>
+        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <textarea class="form-control" name="vStructuralPractice"
                                   placeholder="结构作法">${basicBuilding.vStructuralPractice}</textarea>
-                </div>
-            </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">备注</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+    </div>
+</div>
+<div class="form-group">
+    <div class="x-valid">
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">备注</label>
+        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <textarea class="form-control" name="remark"
                                   placeholder="备注">${basicBuilding.remark}</textarea>
-                </div>
-            </div>
         </div>
-
-
-    </form>
+    </div>
 </div>
 
 
 
-
-</html>
-
 <script type="application/javascript">
-    $(function(){
+    $(function () {
         if ('${basicBuilding}') {
             writeSpecificationsHTMLData(${basicBuilding.vSpecifications});
         }
     })
-    
+
     var num = 0;
 
     function appendHTML(this_) {

@@ -938,7 +938,7 @@ public class PublicBasicService {
                 throw new BusinessException("楼盘位置信息还未标注");
             }
         }
-        if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode())) {
+        if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode())&&basicApply.getType()!=2) {
             if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.BUILDING)) {
                 throw new BusinessException("楼栋位置信息还未标注");
             }
