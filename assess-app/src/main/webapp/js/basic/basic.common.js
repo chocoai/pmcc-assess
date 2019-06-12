@@ -220,7 +220,8 @@ basicCommon.isComplete = function (applyForm, isDraft) {
             return false;
         }
     }
-    if (applyForm.buildingPartInMode) {
+
+    if (applyForm.buildingPartInMode&&applyForm.type != 2) {
         basicCommon.showBuildingTab();
         options.msg = '请检查楼栋信息';
         if (!buildingCommon.buildingForm.valid(options.msg)) {
@@ -328,10 +329,10 @@ basicCommon.getFormData = function () {
                 var obj = JSON.parse($(n).val());
                 var dataObject = [] ;
                 obj.forEach(function (value, index) {
-                    if (value.id == dataLandLevelAchievement){
-                        value.modelStr = "update" ;
+                    if (value.id == dataLandLevelAchievement) {
+                        value.modelStr = "update";
                     }
-                    dataObject.push(value) ;
+                    dataObject.push(value);
                 });
                 landLevelContent.push(dataObject);
             });
@@ -343,6 +344,17 @@ basicCommon.getFormData = function () {
     }
     if (basicApply.buildingPartInMode) {
         item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
+        item.basicBuilding.vSpecifications = [];
+        buildingCommon.buildingForm.find('.form-group').each(function () {
+            var vSpecification = {};
+            var specificationName = $(this).find('[name^=specificationName]').val();
+            var specificationContent = $(this).find('[name^=specificationContent]').val();
+            if (specificationName && specificationContent) {
+                vSpecification.specificationName = specificationName;
+                vSpecification.specificationContent = specificationContent;
+                item.basicBuilding.vSpecifications.push(vSpecification);
+            }
+        });
     }
     if (basicApply.unitPartInMode) {
         item.basicUnit = formSerializeArray(unitCommon.unitForm);

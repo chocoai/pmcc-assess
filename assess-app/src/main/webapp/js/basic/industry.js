@@ -15,8 +15,12 @@ industry.config = {
     id: "industry",
     notIndustry: {key: 0, name: "非工业交通仓储"},
     industry: {key: 1, name: "工业交通仓储"},
+    structuresProspect: {key: 2, name: "构筑物"},
     defaultKey: "0",
     build: {
+        buildContent:"basicBuildContent",//楼栋表
+        basicBuildSonContent:"basicBuildSonContent",//楼栋子表
+        structuresProspectContent:"structuresProspectContent",//构筑物表
         surface: "industrySurface",//屋面结构
         maintenance: "industryMaintenance",//围护结构
         residenceUseYear: "residenceUseYearModel_A",//建筑使用年限
@@ -76,6 +80,9 @@ industry.industryOne = {
         this.house();
     },
     build: function () {
+        $("#" + industry.config.build.buildContent).show();
+        $("#" + industry.config.build.basicBuildSonContent).show();
+        $("#" + industry.config.build.structuresProspectContent).hide();
         $("#" + industry.config.build.maintenance).hide();
         $("#" + industry.config.build.surface).hide();
         $("#" + industry.config.build.residenceUseYear).show();
@@ -127,6 +134,9 @@ industry.industryTwo = {
         this.house();
     },
     build: function () {
+        $("#" + industry.config.build.buildContent).show();
+        $("#" + industry.config.build.basicBuildSonContent).show();
+        $("#" + industry.config.build.structuresProspectContent).hide();
         $("#" + industry.config.build.maintenance).show();
         $("#" + industry.config.build.surface).show();
         $("#" + industry.config.build.residenceUseYear).hide();
@@ -166,6 +176,37 @@ industry.industryTwo = {
     }
 };
 
+/**
+ * 构筑物
+ * @type {{init: industry.industryOne.init, build: industry.industryOne.build}}
+ */
+industry.industryThree = {
+    init: function () {
+        this.build();
+        this.estate();
+    },
+    build: function () {
+        $("#" + industry.config.build.buildContent).hide();
+        $("#" + industry.config.build.basicBuildSonContent).hide();
+        $("#" + industry.config.build.structuresProspectContent).show();
+    },
+    estate: function () {
+        $("#" + industry.config.estate.supplyGas).hide();
+        $("#" + industry.config.estate.supplyHeating).hide();
+        $("#" + industry.config.estate.supplyPower).hide();
+        $("#" + industry.config.estate.supplyWater).hide();
+        $("#" + industry.config.estate.drainWater).hide();
+        $("#" + industry.config.estate.material).hide();
+        $("#" + industry.config.estate.water_supply_plan).hide();
+        $("#" + industry.config.estate.power_supply_plan).hide();
+        $("#" + industry.config.estate.air_supply_plan).hide();
+        $("#" + industry.config.estate.heating_plan).hide();
+
+        $("#" + industry.config.estate.supply).show();
+        $("#" + industry.config.estate.matchingInfo).show();
+    }
+};
+
 industry.changeEvent = function () {
     basicCommon.basicApplyForm.find("input[type='radio']").change(function () {
         var item = $(this).val();
@@ -174,6 +215,9 @@ industry.changeEvent = function () {
         }
         if (item == industry.config.industry.key) {
             industry.industryTwo.init();
+        }
+        if (item == industry.config.structuresProspect.key) {
+            industry.industryThree.init();
         }
     });
 };
@@ -188,6 +232,9 @@ industry.firstEvent = function () {
     if (industry.config.defaultKey == industry.config.industry.key) {
         industry.industryTwo.init();
     }
+    if (industry.config.defaultKey == industry.config.structuresProspect.key) {
+        industry.industryThree.init();
+    }
 };
 
 industry.keyApp = function (key) {
@@ -196,6 +243,9 @@ industry.keyApp = function (key) {
     }
     if (key == industry.config.industry.key) {
         industry.industryTwo.init();
+    }
+    if (key == industry.config.structuresProspect.key) {
+        industry.industryThree.init();
     }
 };
 

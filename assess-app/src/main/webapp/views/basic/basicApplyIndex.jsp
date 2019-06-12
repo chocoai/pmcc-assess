@@ -52,6 +52,8 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
                             <span class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 checkbox-inline">
                                 <input type="radio" id="applyFormType0" name="type" value="0">
                                 <label for="applyFormType0">非工业交通仓储</label>
@@ -60,6 +62,10 @@
                             <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
                                 <input type="radio" id="applyFormType1" name="type" value="1">
                                 <label for="applyFormType1">工业交通仓储</label>
+                            </span>
+                            <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
+                                <input type="radio" id="applyFormType2" name="type" value="2">
+                                <label for="applyFormType2">构筑物</label>
                             </span>
                         </div>
                         <div class="form-group">
@@ -126,66 +132,67 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    单元编号
-                                </label>
-                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                    <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
-                                    <input type="text" class="form-control" name="unitNumber" placeholder="单元编号"
-                                           value="${basicApply.unitNumber}">
+                        <div id="unitAndHouseInfo">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        单元编号
+                                    </label>
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
+                                        <input type="text" class="form-control" name="unitNumber" placeholder="单元编号"
+                                               value="${basicApply.unitNumber}">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="button" class="btn btn-success" data-mode="add"
+                                               onclick="unitCommon.add(this,basicCommon.showUnitTab);"
+                                               value="添加">
+                                    </div>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="button" class="btn btn-warning btn-reference" data-mode="reference"
+                                               style="display: none;"
+                                               onclick="unitCommon.upgrade(this,basicCommon.showUnitTab);"
+                                               value="引用">
+                                    </div>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="button" class="btn btn-warning btn-upgrade" data-mode="upgrade"
+                                               style="display: none;"
+                                               onclick="unitCommon.upgrade(this,basicCommon.showUnitTab);"
+                                               value="升版本">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-success" data-mode="add"
-                                           onclick="unitCommon.add(this,basicCommon.showUnitTab);"
-                                           value="添加">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        房屋编号
+                                    </label>
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                        <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
+                                        <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号"
+                                               value="${basicApply.houseNumber}">
+                                    </div>
                                 </div>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-warning btn-reference" data-mode="reference"
-                                           style="display: none;"
-                                           onclick="unitCommon.upgrade(this,basicCommon.showUnitTab);"
-                                           value="引用">
-                                </div>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-warning btn-upgrade" data-mode="upgrade"
-                                           style="display: none;"
-                                           onclick="unitCommon.upgrade(this,basicCommon.showUnitTab);"
-                                           value="升版本">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    房屋编号
-                                </label>
-                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                    <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
-                                    <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号"
-                                           value="${basicApply.houseNumber}">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-success" data-mode="add"
-                                           value="添加"
-                                           onclick="houseCommon.add(this,basicCommon.showHouseTab);">
-                                </div>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-warning btn-reference" data-mode="reference"
-                                           style="display: none;"
-                                           value="引用"
-                                           onclick="houseCommon.upgrade(this,basicCommon.showHouseTab);">
-                                </div>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-warning btn-upgrade" data-mode="upgrade"
-                                           style="display: none;"
-                                           value="升版本"
-                                           onclick="houseCommon.upgrade(this,basicCommon.showHouseTab);">
+                                <div class="x-valid">
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="button" class="btn btn-success" data-mode="add"
+                                               value="添加"
+                                               onclick="houseCommon.add(this,basicCommon.showHouseTab);">
+                                    </div>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="button" class="btn btn-warning btn-reference" data-mode="reference"
+                                               style="display: none;"
+                                               value="引用"
+                                               onclick="houseCommon.upgrade(this,basicCommon.showHouseTab);">
+                                    </div>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="button" class="btn btn-warning btn-upgrade" data-mode="upgrade"
+                                               style="display: none;"
+                                               value="升版本"
+                                               onclick="houseCommon.upgrade(this,basicCommon.showHouseTab);">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -496,14 +503,14 @@
 
     $(function () {
         basicApplyIndex.startApply();
-        if("${province}"&&"${city}"){
+        if ("${province}" && "${city}") {
             AssessCommon.initAreaInfo({
                 provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
                 cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
                 provinceValue: '${province}',
                 cityValue: '${city}'
             });
-        }else {
+        } else {
             //定位成功回调方法
             mapPosition.getCurrentCity(function (province, city) {
                 AssessCommon.initAreaInfo({
@@ -514,6 +521,15 @@
                 });
             });
         }
+
+        $("#basicApplyFrm").find("input[type='radio'][name='type']").change(function () {
+            var v = $("#basicApplyFrm").find(":radio:checked").val();
+            if (v == 2) {
+                $("#unitAndHouseInfo").hide();
+            } else {
+                $("#unitAndHouseInfo").show();
+            }
+        })
     });
 
 </script>
@@ -553,6 +569,7 @@
         }
         Loading.progressShow();
         var formData = JSON.stringify(basicCommon.getFormData());
+        console.log(formData);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/saveDraft",
             type: "post",
