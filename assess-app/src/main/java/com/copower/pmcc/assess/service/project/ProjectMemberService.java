@@ -93,7 +93,7 @@ public class ProjectMemberService {
 
     private void upateProjectMemeberToErp(Integer projectId, String projectManager, String projectMember) {
         SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectId, applicationConstant.getAppKey());
-        if (sysProjectDto.getId() > 0) {
+        if (sysProjectDto != null && sysProjectDto.getId() != null && sysProjectDto.getId() > 0) {
             sysProjectDto.setProjectManager(projectManager);
             sysProjectDto.setProjectMember(projectMember);
             erpRpcProjectService.saveProject(sysProjectDto);

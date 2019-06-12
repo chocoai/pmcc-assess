@@ -186,6 +186,7 @@ public class ProjectInfoService {
             projectMember.setCreator(commonService.thisUserAccount());
             logger.error("projectMember!");
             projectMemberService.saveProjectMemeber(projectMember);
+            logger.error("projectMember-end!");
             //发起项目
             if (init) {
                 logger.error("initProjectInfo!");
