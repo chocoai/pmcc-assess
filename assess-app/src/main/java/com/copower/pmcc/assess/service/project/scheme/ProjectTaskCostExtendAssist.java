@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -44,6 +45,12 @@ public class ProjectTaskCostExtendAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostExtendIndex", "", 0, "0", "");
+        applyInit(projectPlanDetails,modelAndView);
+        return modelAndView;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView){
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         if (info == null) {
@@ -63,7 +70,6 @@ public class ProjectTaskCostExtendAssist implements ProjectTaskInterface {
             }
         }
         setViewParam(projectPlanDetails,modelAndView);
-        return modelAndView;
     }
 
     /**

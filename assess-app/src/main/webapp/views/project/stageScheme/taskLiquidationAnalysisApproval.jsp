@@ -113,7 +113,6 @@
     });
 
     function getAnalysisItemList() {
-        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getAnalysisItemList",
             data: {
@@ -122,7 +121,6 @@
             type: "post",
             dataType: "json",
             success: function (result) {
-                Loading.progressHide();
                 $("#tbody_data_section").empty();
                 if (result.ret) {
                     var html = "";
@@ -164,8 +162,6 @@
             }
         });
     }
-
-
     //格式化金额
     function fmoney(s, n) {
         if(!AssessCommon.isNumber(s)) return s;

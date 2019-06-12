@@ -3,8 +3,6 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
@@ -22,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
@@ -65,7 +64,12 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskIncomeIndex", 0);
-        setViewParam(projectPlanDetails, modelAndView);
+        applyInit(projectPlanDetails,modelAndView);
+        return modelAndView;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView){
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         if (info == null) {
             MdIncome mdIncome = new MdIncome();
@@ -85,7 +89,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
                 logger.error("saveSchemeInfo error ", e);
             }
         }
-        return modelAndView;
+        setViewParam(projectPlanDetails, modelAndView);
     }
 
 

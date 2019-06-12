@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -50,10 +51,16 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareIndex", "", 0, "0", "");
+        applyInit(projectPlanDetails, modelAndView);
+        return modelAndView;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         if (info == null) {
-            MdMarketCompare marketCompare = mdMarketCompareService.initExplore(judgeObject,false);
+            MdMarketCompare marketCompare = mdMarketCompareService.initExplore(judgeObject, false);
             if (marketCompare != null) {
                 SchemeInfo schemeInfo = new SchemeInfo();
                 schemeInfo.setProjectId(projectPlanDetails.getProjectId());
@@ -69,26 +76,26 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
                 }
             }
         }
-        setViewParam(projectPlanDetails, info,judgeObject, modelAndView);
-        return modelAndView;
+        setViewParam(projectPlanDetails, info, judgeObject, modelAndView);
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareApproval", processInsId, boxId, taskId, agentUserAccount);
+        return getView(projectPlanDetails, modelAndView);
+    }
+
+    private ModelAndView getView(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        setViewParam(projectPlanDetails,info,judgeObject, modelAndView);
+        setViewParam(projectPlanDetails, info, judgeObject, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareIndex", processInsId, boxId, taskId, agentUserAccount);
-        SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        setViewParam(projectPlanDetails,info,judgeObject, modelAndView);
-        return modelAndView;
+        return getView(projectPlanDetails, modelAndView);
     }
 
     @Override
@@ -99,10 +106,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        setViewParam(projectPlanDetails,info,judgeObject, modelAndView);
-        return modelAndView;
+        return getView(projectPlanDetails, modelAndView);
     }
 
     /**
@@ -110,7 +114,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
      *
      * @param modelAndView
      */
-    private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info,SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
+    private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info, SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
         //市场比较法相关
         List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(projectPlanDetails.getProjectId());
         modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));

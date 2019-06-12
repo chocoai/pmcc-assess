@@ -135,6 +135,7 @@
                 tableName: AssessDBKey.GenerateReportGeneration,
                 tableId: id == undefined ? 0 : id
             },
+            editFlag: true,
             signatureFlag: '${activityCnName}'.indexOf("盖章") > -1,
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
         })
