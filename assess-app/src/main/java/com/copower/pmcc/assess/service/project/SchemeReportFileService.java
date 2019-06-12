@@ -10,10 +10,7 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicBuildingService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.basic.BasicHouseService;
-import com.copower.pmcc.assess.service.basic.BasicUnitService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
@@ -76,6 +73,8 @@ public class SchemeReportFileService extends BaseService {
     private BasicHouseService basicHouseService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BasicHouseRoomService basicHouseRoomService;
 
     /**
      * 保存数据
@@ -166,6 +165,19 @@ public class SchemeReportFileService extends BaseService {
                     });
                 }
             }
+
+            List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
+            if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
+                for (BasicHouseRoom item: basicHouseRoomList) {
+                    dtoList = baseAttachmentService.getByField_tableId(item.getId(), AssessUploadEnum.HOUSE_ROOM_FILE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class));
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(String.format("%s",item.getRoomType()));
+                            attachmentDtoList.add(o);
+                        });
+                    }
+                }
+            }
         }
         return attachmentDtoList;
     }
@@ -232,6 +244,18 @@ public class SchemeReportFileService extends BaseService {
         where.setJudgeObjectId(judgeObjectId);
         where.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
         return schemeReportFileItemDao.getReportFileItemList(where);
+    }
+
+    /**
+     * 选择的图片修改名称
+     *
+     * @param id
+     * @return
+     */
+    public boolean reportFileEditName(Integer id,String name) {
+        SchemeReportFileItem reportFileItemById = schemeReportFileItemDao.getReportFileItemById(id);
+        reportFileItemById.setFileName(name);
+        return schemeReportFileItemDao.updateReportFileItem(reportFileItemById);
     }
 
     /**

@@ -378,7 +378,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    var html = '<tr><td>' + fileName + '</td><td><input type="text" data-id="' + result.data + '" data-name="sorting" value="' + sorting + '"></td><td>' +
+                    var html = '<tr><td><input type="text" value="' + fileName + '"  onblur="reportFileEditName(' + result.data + ',this);"></td><td><input type="text" data-id="' + result.data + '" data-name="sorting" value="' + sorting + '"></td><td>' +
                         '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + attachmentId + ',\'' + fileName + '\');">' +
                         '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + result.data + ',this)"></td></tr>';
                     $('tbody[data-id=' + judgeObjectId + '][data-name=live_situation_select]').append(html);
@@ -417,7 +417,8 @@
                 if (result.ret) {
                     var html = '';
                     $.each(result.data, function (i, item) {
-                        html += '<tr><td>' + item.fileName + '</td><td><input type="text" data-id="' + item.id + '" data-name="sorting" value="' + AssessCommon.toString(item.sorting) + '"></td><td>' +
+                        html += '<tr><td><input type="text" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
+                            '<td><input type="text" data-id="' + item.id + '" data-name="sorting" value="' + AssessCommon.toString(item.sorting) + '"></td><td>' +
                             '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.attachmentId + ',\'' + item.fileName + '\');">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
                     })
@@ -429,6 +430,26 @@
         })
     }
 
+    function reportFileEditName(id,_this) {
+        var newName = $(_this).val();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/reportFileEditName',
+            data: {
+                id: id,
+                newName: newName
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $('.report-file-custom').empty();
+                    $.each(result.data, function (i, item) {
+                        appendCustomHtml(item.id, item.name);
+                    })
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
     //加载自定义附件
     function loadReportFileCustomList() {
         $.ajax({

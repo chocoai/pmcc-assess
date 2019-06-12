@@ -66,6 +66,17 @@ public class SchemeController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/reportFileEditName", name = "选择的图片修改名称 ", method = RequestMethod.POST)
+    public HttpResult reportFileEditName(Integer id,String newName) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.reportFileEditName(id,newName));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/selectLiveSituation", name = "选择实况图片 ", method = RequestMethod.POST)
     public HttpResult selectLiveSituation(SchemeReportFileItem schemeReportFileItem) {
         try {

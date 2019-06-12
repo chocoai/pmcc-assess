@@ -4762,8 +4762,10 @@ public class GenerateBaseDataService {
             String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
             if (FileUtils.checkImgSuffix(imgPath)) {
                 String imgSuffixName = sysAttachmentDto.getFileName();
-                String imgName = sysAttachmentDto.getFileName().substring(0, imgSuffixName.lastIndexOf("."));
-                imgMap.put(imgPath, imgName);
+                if(imgSuffixName.contains(".")) {
+                    imgSuffixName = sysAttachmentDto.getFileName().substring(0, imgSuffixName.lastIndexOf("."));
+                }
+                imgMap.put(imgPath, imgSuffixName);
                 imgList.add(imgMap);
             }
         }
@@ -4771,7 +4773,7 @@ public class GenerateBaseDataService {
             AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
         }
         if (imgList.size() > 1) {
-            AsposeUtils.imageInsertToWrod2(imgList, 2, builder);
+            AsposeUtils.imageInsertToWrod2(imgList, 3, builder);
         }
     }
 
