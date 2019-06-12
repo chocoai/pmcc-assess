@@ -144,12 +144,34 @@ public class SchemeSurePriceService {
         }
 
         List<SchemeSurePriceItem> priceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
+        //单价为空的时候处理
+        if (CollectionUtils.isNotEmpty(priceItemList)) {
+            //当单价中有某一个为null ,那么所有的单价取单价不为null的集合中的第一个
+            if (priceItemList.stream().anyMatch(oo -> oo.getTrialPrice() == null || oo.getTrialPrice().intValue() == 0)) {
+                BigDecimal price = priceItemList.stream().filter(oo -> oo.getTrialPrice() != null && oo.getTrialPrice().intValue() != 0).findFirst().get().getTrialPrice();
+                priceItemList.forEach(oo -> {
+                    if (oo.getTrialPrice() == null || oo.getTrialPrice().intValue() == 0) {
+                        oo.setTrialPrice(new BigDecimal(price.toString()));
+                    }
+                });
+            }
+            //当所有的单价都为null时，price都设置为zero
+            if (priceItemList.stream().allMatch(oo -> oo.getTrialPrice() == null || oo.getTrialPrice().intValue() == 0)) {
+                priceItemList.forEach(oo -> {
+                    if (oo.getTrialPrice() == null) {
+                        oo.setTrialPrice(new BigDecimal(0));
+                    }
+                });
+            }
+        }
         //如果价格差异小于等于10% 自动设置对应权重 求取平均价
         List<BigDecimal> decimalList = LangUtils.transform(priceItemList, o -> o.getTrialPrice());
-        if(CollectionUtils.isEmpty(decimalList))
+        if (CollectionUtils.isEmpty(decimalList)) {
             throw new BusinessException("未获取到方法试算价格");
+        }
         Collections.sort(decimalList);
-        if (publicService.computeDifference(decimalList.get(0), decimalList.get(decimalList.size() - 1)) <= 10) {
+        int equ = publicService.computeDifference(decimalList.stream().findFirst().get(), decimalList.get(decimalList.size() - 1));
+        if (equ <= 10) {
             BigDecimal averageWeight = new BigDecimal("1").divide(new BigDecimal(priceItemList.size()), 4, BigDecimal.ROUND_HALF_DOWN);
             for (int i = 0; i < priceItemList.size(); i++) {
                 if (i == priceItemList.size() - 1) {

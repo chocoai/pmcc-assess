@@ -1532,26 +1532,6 @@ var houseRoom;
                 $("#" + houseRoom.prototype.config().frmSubclass).find('select.part').empty().html(html).trigger('change');
             });
 
-            FileUtils.uploadFiles({
-                target: houseRoom.prototype.config().fileIDName,
-                disabledTarget: "btn_submit",
-                formData: {
-                    fieldsName: houseRoom.prototype.config().fileIDName,
-                    tableName: AssessDBKey.BasicHouseRoomDecorate,
-                    tableId: houseRoom.prototype.isNotBlank(item.id) ? item.id : "0"
-                },
-                deleteFlag: true
-            });
-
-            FileUtils.getFileShows({
-                target: houseRoom.prototype.config().fileIDName,
-                formData: {
-                    fieldsName: houseRoom.prototype.config().fileIDName,
-                    tableName: AssessDBKey.BasicHouseRoomDecorate,
-                    tableId: houseRoom.prototype.isNotBlank(item.id) ? item.id : "0"
-                },
-                deleteFlag: true
-            })
         },
         subclassLoadList: function (id) {
             var cols = commonColumn.houseRoomDecorateColumn();
@@ -1668,6 +1648,26 @@ var houseRoom;
                 Alert("请先选择房屋下的实际用途");
             }
 
+            FileUtils.uploadFiles({
+                target: houseRoom.prototype.config().fileIDName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: houseRoom.prototype.config().fileIDName,
+                    tableName: AssessDBKey.BasicHouseRoom,
+                    tableId: houseRoom.prototype.isNotBlank(item.id) ? item.id : "0"
+                },
+                deleteFlag: true
+            });
+
+            FileUtils.getFileShows({
+                target: houseRoom.prototype.config().fileIDName,
+                formData: {
+                    fieldsName: houseRoom.prototype.config().fileIDName,
+                    tableName: AssessDBKey.BasicHouseRoom,
+                    tableId: houseRoom.prototype.isNotBlank(item.id) ? item.id : "0"
+                },
+                deleteFlag: true
+            })
         }
     }
 

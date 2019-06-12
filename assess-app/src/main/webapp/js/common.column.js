@@ -303,6 +303,7 @@ commonColumn.houseRoomColumn = function () {
     cols.push({field: 'lighting', title: '采光'});
     cols.push({field: 'aeration', title: '通风'});
     cols.push({field: 'soundInsulation', title: '隔音'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
 

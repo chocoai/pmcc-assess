@@ -108,7 +108,9 @@
             buildingCommon.fileShow(item);
         });
         buildingModelView.prototype.viewInit();
-        buildingCommon.addLableData(data.vSpecifications);
+        if(data.vSpecifications) {
+            buildingCommon.addLableData(data.vSpecifications);
+        }
     };
 
     buildingCommon.addLableData = function(json) {

@@ -152,7 +152,12 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUseCondition, data.basicHouse.useCondition, function (html, data) {
                 houseCommon.houseForm.find("select.useCondition").empty().html(html).trigger('change');
             });
-
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, data.basicHouse.spatialDistribution, function (html, data) {
+                houseCommon.houseForm.find("select.spatialDistribution").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseResearchType, data.basicHouse.researchType, function (html, data) {
+                houseCommon.houseForm.find("select.researchType").empty().html(html).trigger('change');
+            });
             houseCommon.showUseCondition(data);
 
 

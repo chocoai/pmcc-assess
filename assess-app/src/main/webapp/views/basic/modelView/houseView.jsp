@@ -38,6 +38,7 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
+                        <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
                         <input type="text" readonly="readonly" onclick="houseCommon.selectHuxing(this);"
                                placeholder="户型" class="form-control" name="huxingName"
                                value="${basicHouse.huxingName}">
@@ -96,19 +97,49 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">朝向<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">空间布局</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select class="form-control spatialDistribution" name="spatialDistribution" >
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">空间布局描述</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" data-rule-maxlength="255" placeholder="空间布局描述"
+                           name="spatialDistributionDesc"
+                           class="form-control" value="${basicHouse.spatialDistributionDesc}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">朝向<span class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select class="form-control search-select select2 orientation" name="orientation" required>
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" placeholder="面积" name="area" data-rule-number="true" required
                            class="form-control" value="${basicHouse.area}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积描述</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" data-rule-maxlength="255" placeholder="面积描述"
+                           name="areaDesc" class="form-control" value="${basicHouse.areaDesc}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">调查方式<span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select class="form-control search-select select2 researchType" name="researchType" required>
+                    </select>
                 </div>
             </div>
         </div>
@@ -131,35 +162,6 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权益限制</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="100" placeholder="权益限制"
-                           name="rightInterestsRestriction"
-                           class="form-control" value="${basicHouse.rightInterestsRestriction}">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块位置</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="255" placeholder="地块位置"
-                           name="landLocation"
-                           class="form-control" value="${basicHouse.landLocation}">
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用年限</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="255" data-role-number="true" placeholder="使用年限"
-                           name="useYear"
-                           class="form-control" value="${basicHouse.useYear}">
-                </div>
-            </div>
-
-            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼面地价</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" data-rule-maxlength="255" data-role-number="true" placeholder="楼面地价"
@@ -168,6 +170,8 @@
                 </div>
             </div>
         </div>
+
+
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况<span
@@ -179,7 +183,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="x-valid">
+            <div class="x-valid" style="display: none;">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况描述<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
