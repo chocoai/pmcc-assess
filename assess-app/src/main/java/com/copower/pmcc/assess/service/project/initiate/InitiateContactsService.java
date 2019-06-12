@@ -203,17 +203,19 @@ public class InitiateContactsService {
             if (org.apache.commons.lang3.StringUtils.isNotEmpty(contacts.getcDept())) {
                 crmCustomer.setDepartment(contacts.getcDept());
             }
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(contacts.getCreator())) {
+
+            }
             crmCustomer.setCustomerId(Integer.parseInt(unitInformationVo.getuUseUnit()));
             crmCustomer.setCustomerManager(null);
             crmCustomer.setOtherContact(null);
             if (org.apache.commons.lang3.StringUtils.isNotEmpty(contacts.getCrmId())) {
                 crmCustomer.setId(Integer.parseInt(contacts.getCrmId()));
             }
-            if (crmCustomer.getId() == null) {
+            if (crmCustomer.getId() == null || crmCustomer.getId() == 0) {
                 //需要添加进去的crm
                 crmCustomerService.saveCrmCustomer(crmCustomer);
-            }
-            if (crmCustomer.getId() != null) {
+            } else {
                 //需要更新的crm
                 crmCustomerService.updateCrmCustomer(crmCustomer);
             }
