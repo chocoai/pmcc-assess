@@ -188,10 +188,6 @@ public class ProjectInfoService {
             projectMemberService.saveProjectMemeber(projectMember);
             //发起项目
             if (init) {
-                //如果没有设置项目经理，则由部门领导分派项目经理
-                if (StringUtils.isNotEmpty(projectMember.getUserAccountManager())) {
-                    allocateProjectManager(projectMember, projectInfo);
-                }
                 logger.error("initProjectInfo!");
                 //初始化项目信息
                 initProjectInfo(projectInfo);
