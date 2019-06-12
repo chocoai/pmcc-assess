@@ -76,22 +76,21 @@ public class GenerateLoactionService {
                     continue;
                 }
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
-                if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
-                    //主干道
-                    List<BasicMatchingTrafficVo> mainRoadList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
-                        if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainRoad.getName())) {
-                            return true;
+                List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList() ;
+                if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)){
+                    List<String> stringList = Lists.newArrayList();
+                    basicHouseFaceStreetVoList.forEach(oo ->{
+                        if (StringUtils.isNotEmpty(oo.getStreetName())){
+                            if (StringUtils.isNotEmpty(oo.getPositionName())){
+                                stringList.add(String.format("%s%s",oo.getStreetName(),oo.getPositionName()));
+                            }
                         }
-                        return false;
-                    }).collect(Collectors.toList());
-                    if (CollectionUtils.isNotEmpty(mainRoadList)) {
-                        mainRoadList.stream()
-                                .filter(oo -> StringUtils.isNotBlank(oo.getPositionName()) && StringUtils.isNotBlank(oo.getName()))
-                                .forEach(oo -> contentBuilder.append(oo.getName()).append(oo.getPositionName()));
-                        if (contentBuilder.length() > 0) {
-                            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
-                        }
+                    });
+                    if (CollectionUtils.isNotEmpty(stringList)){
+                        contentBuilder.append(StringUtils.join(stringList,",")) ;
+                    }
+                    if (contentBuilder.length() > 0) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
                     }
                 }
                 contentBuilder.delete(0, contentBuilder.toString().length());
