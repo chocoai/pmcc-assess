@@ -102,10 +102,11 @@
                 return s;
             }
         });
-        cols.push({field: 'projectStatus', title: '项目状态'});
         cols.push({
             field: 'finishPre', width: '20%', title: '项目进度', formatter: function (value, row, index) {
-                var s = "<div class='progress progress_sm' style='margin-bottom: 0px;'>";
+                var s = "";
+
+                s = "<div class='progress progress_sm' style='margin-bottom: 0px;'>";
                 if (value == "100") {
                     s += "<div class='progress-bar progress-bar-success' role='progressbar'  style='width: " + value + "%;'></div>";
                 }
@@ -118,8 +119,15 @@
             }
         });
         cols.push({
-            field: 'opation', title: '操作', formatter: function (value, row, index) {
-                var str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = "";
+                if (row.projectStatus) {
+                    if (row.projectStatus == '草稿') {
+                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectInfoEdit?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='重新申请' class='btn btn-xs btn-success tooltips' ><i class='fa fa-flag '></i></a>";
+                    } else {
+                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                    }
+                }
                 return str;
             }
         });
