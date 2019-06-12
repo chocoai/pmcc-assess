@@ -5,10 +5,10 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseRoomDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
-import com.copower.pmcc.assess.dal.basis.entity.DataSetUseField;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -59,7 +59,7 @@ public class BasicHouseRoomService {
      * @throws Exception
      */
     public BasicHouseRoom getBasicHouseRoomById(Integer id) throws Exception {
-        return basicHouseRoomDao.getBasicHouseRoomById(id);
+        return getBasicHouseRoomVo(basicHouseRoomDao.getBasicHouseRoomById(id));
     }
 
     /**
@@ -147,6 +147,19 @@ public class BasicHouseRoomService {
         BeanUtils.copyProperties(basicHouseRoom, vo);
         vo.setRoomTypeName(basicHouseRoom.getRoomType());
         vo.setOrientationName(baseDataDicService.getNameById(basicHouseRoom.getOrientation()));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseRoom.getId(), "house_room_file", "tb_basic_house_room");
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                        builder.append(" ");
+                    }
+                }
+            }
+            vo.setFileViewName(builder.toString());
+        }
         return vo;
     }
 
