@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -55,27 +54,28 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
         return modelAndView;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     private void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        if (info == null) {
-            MdMarketCompare marketCompare = mdMarketCompareService.initExplore(judgeObject, false);
-            if (marketCompare != null) {
+        SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
+        try {
+            if (info == null) {
                 SchemeInfo schemeInfo = new SchemeInfo();
                 schemeInfo.setProjectId(projectPlanDetails.getProjectId());
                 schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
                 schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
                 schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE).getId());
-                schemeInfo.setMethodDataId(marketCompare.getId());
-                try {
+                schemeInfoService.saveSchemeInfo(schemeInfo);
+                MdMarketCompare marketCompare = mdMarketCompareService.initExplore(judgeObject, false);
+                if (marketCompare != null) {
+                    schemeInfo.setMethodDataId(marketCompare.getId());
                     schemeInfoService.saveSchemeInfo(schemeInfo);
-                    info = schemeInfo;
-                } catch (BusinessException e) {
-                    logger.error(e.getMessage(), e);
                 }
+                info = schemeInfo;
             }
+        } catch (BusinessException e) {
+            logger.error(e.getMessage(), e);
         }
+
         setViewParam(projectPlanDetails, info, judgeObject, modelAndView);
     }
 
