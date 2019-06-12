@@ -30,10 +30,10 @@ public class ProjectInfoVo extends ProjectInfo {
     private String urgencyName;
     private String userAccountManagerName;
     private String userAccountMemberName;
-    private InitiatePossessorVo possessorVo;
-    private InitiateConsignorVo consignorVo;
-    private InitiateUnitInformationVo unitInformationVo;
-    private ProjectMemberVo projectMemberVo;
+    private InitiatePossessorVo possessorVo = new InitiatePossessorVo();
+    private InitiateConsignorVo consignorVo = new InitiateConsignorVo();
+    private InitiateUnitInformationVo unitInformationVo = new InitiateUnitInformationVo();
+    private ProjectMemberVo projectMemberVo = new ProjectMemberVo();
     private BaseProjectClassify baseProjectClassify;
     private String departmentName;
     private String valueTypeName;

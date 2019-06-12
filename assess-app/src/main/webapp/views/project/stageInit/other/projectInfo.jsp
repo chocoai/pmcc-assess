@@ -54,18 +54,24 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价值类型<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="valueType" class="form-control search-select select2 valueType" required="required"
-                    >
+                    <select name="valueType" class="form-control search-select select2 valueType" required="required">
                     </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价值定义</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input name="remarkValueType" class="form-control"
+                    <input type="hidden" name="remarkValueType" class="form-control"
                            placeholder="价值定义" value="${projectInfo.remarkValueType}"/>
                 </div>
             </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input required="required" placeholder="评估基准日"
+                           name="valuationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate" readonly="readonly"
+                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
+                </div>
+            </div>
+
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门<span
                         class="symbol required"></span></label>
@@ -120,16 +126,6 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input required="required" placeholder="评估基准日"
-                           name="valuationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate" readonly="readonly"
-                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目经理<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -180,8 +176,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
+
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型<span
                         class="symbol required"></span></label>
@@ -190,6 +185,8 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目合同</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">

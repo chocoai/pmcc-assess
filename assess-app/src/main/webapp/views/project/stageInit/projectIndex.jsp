@@ -117,9 +117,13 @@
 
     //保存草稿
     function projectApplyDraft() {
-        if (!objProject.valid()) {
+        var projectInfo = formParams(objProject.config.info.frm);//projectName
+        var html = "<span class='help-block' for='for'>" + "该字段为必填项" + "</span>";
+        if (!objProject.isNotBlank(projectInfo.projectName)){
+            $("#" + objProject.config.info.frm).find("input[name='projectName']").after(html.replace(/for/g, "projectName"));
             return false;
         }
+
         var data = {};
         data.formData = JSON.stringify(objProject.getFormData());
         var url = "${pageContext.request.contextPath}/projectInfo/projectApplyDraft";

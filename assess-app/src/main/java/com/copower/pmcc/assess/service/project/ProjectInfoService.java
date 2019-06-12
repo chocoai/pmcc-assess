@@ -170,7 +170,7 @@ public class ProjectInfoService {
                 projectInfo.setStatus(ProjectStatusEnum.DRAFT.getKey());
                 projectInfo.setProjectStatus(ProjectStatusEnum.DRAFT.getKey());
             }
-            int projectId = projectInfoDao.saveProjectInfo_returnID(projectInfo);
+            int projectId = saveProjectInfo(projectInfo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectId);
             consignor.setProjectId(projectId);
             unitInformation.setProjectId(projectId);
@@ -184,14 +184,12 @@ public class ProjectInfoService {
             projectMemberService.saveReturnId(projectMember);
             //发起项目
             if (init) {
-                //如果没有设置项目经理，则由部门领导分派项目经理 (第一种方式立项)
+                //如果没有设置项目经理，则由部门领导分派项目经理
                 if (StringUtils.isNotEmpty(projectMember.getUserAccountManager())) {
                     allocateProjectManager(projectMember, projectInfo);
                 }
-                if (StringUtils.isEmpty(projectMember.getUserAccountManager())) {
-                    //初始化项目信息 (第二种方式立项)
-                    initProjectInfo(projectInfo);
-                }
+                //初始化项目信息
+                initProjectInfo(projectInfo);
                 publicService.writeToErpProject(projectInfo);
             }
         } catch (Exception e) {
