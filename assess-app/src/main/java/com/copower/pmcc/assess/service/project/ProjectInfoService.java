@@ -181,7 +181,7 @@ public class ProjectInfoService {
             //保存项目成员
             projectMember.setProjectId(projectId);
             projectMember.setCreator(commonService.thisUserAccount());
-            projectMemberService.saveReturnId(projectMember);
+            projectMemberService.saveProjectMemeber(projectMember);
             //发起项目
             if (init) {
                 //如果没有设置项目经理，则由部门领导分派项目经理
