@@ -74,10 +74,10 @@
 
     //任务提交
     function submit(mustUseBox) {
-        if (!taskExploreIndex.isAllFinish()) {
-            Alert("还有未完成的任务，请检查！");
-            return false;
-        }
+//        if (!taskExploreIndex.isAllFinish()) {
+//            Alert("还有未完成的任务，请检查！");
+//            return false;
+//        }
         var formData = {};
         formData.id = "${surveySceneExplore.id}";
         formData.jsonContent = taskExploreIndex.getDeclareCertData();
