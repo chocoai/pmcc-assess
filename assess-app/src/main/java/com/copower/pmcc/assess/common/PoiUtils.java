@@ -1,14 +1,18 @@
 package com.copower.pmcc.assess.common;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -27,13 +31,112 @@ import java.util.regex.Pattern;
 public class PoiUtils {
 
     /**
+     * 获取word中表格内容
+     *
+     * @param path
+     * @return
+     * @throws Exception
+     */
+    public static String getWordTableContent(String path) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        if (isWord2007(path)) {
+            List<org.apache.poi.xwpf.usermodel.XWPFTable> xwpfTableList = getWordXWPFTable(path);
+            if (CollectionUtils.isNotEmpty(xwpfTableList)) {
+                xwpfTableList.forEach(table -> {
+                    List<org.apache.poi.xwpf.usermodel.XWPFTableRow> xwpfTableRows = getWordXWPFRow(table);
+                    if (CollectionUtils.isNotEmpty(xwpfTableRows)) {
+                        xwpfTableRows.forEach(row -> {
+                            List<org.apache.poi.xwpf.usermodel.XWPFTableCell> xwpfTableCellList = getWordXWPFCell(row);
+                            if (CollectionUtils.isNotEmpty(xwpfTableCellList)) {
+                                xwpfTableCellList.forEach(cell -> {
+                                    List<org.apache.poi.xwpf.usermodel.XWPFParagraph> xwpfParagraphList = getWordXWPFParagraph(cell);
+                                    if (CollectionUtils.isNotEmpty(xwpfParagraphList)) {
+                                        xwpfParagraphList.forEach(paragraph -> {
+                                            if (StringUtils.isNotEmpty(paragraph.getText())) {
+                                                stringBuilder.append(paragraph.getText());
+                                            }else {
+                                                paragraph.getRuns().forEach(xwpfRun -> {
+                                                    try {
+                                                        stringBuilder.append(xwpfRun.getText(0)) ;
+                                                    } catch (Exception e) {
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        if (isWord2003(path)) {
+            List<org.apache.poi.hwpf.usermodel.Table> tableList = PoiUtils.getWordHwpfTable(path);
+            if (CollectionUtils.isNotEmpty(tableList)) {
+                tableList.forEach(table -> {
+                    List<org.apache.poi.hwpf.usermodel.TableRow> tableRowList = PoiUtils.getWordHwpfRow(table);
+                    if (CollectionUtils.isNotEmpty(tableRowList)) {
+                        tableRowList.forEach(tableRow -> {
+                            List<org.apache.poi.hwpf.usermodel.TableCell> tableCellList = PoiUtils.getWordHwpfCell(tableRow);
+                            if (CollectionUtils.isNotEmpty(tableCellList)) {
+                                tableCellList.forEach(cell -> {
+                                    List<org.apache.poi.hwpf.usermodel.Paragraph> paragraphList = PoiUtils.getWordHwpfParagraph(cell);
+                                    if (CollectionUtils.isNotEmpty(paragraphList)) {
+                                        paragraphList.forEach(paragraph -> {
+                                            stringBuilder.append(paragraph.text());
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 获取word内容 ,注意的是获取的是word 当中 所有也就是其中就算是有表格同样可以获取
+     *
+     * @param path
+     * @return
+     * @throws Exception
+     */
+    public static String getWordContent(String path) throws Exception {
+        File file = new File(path);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        if (isWord2007(path)) {
+            XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
+            XWPFWordExtractor extractor = new XWPFWordExtractor(xwpfDocument);
+            return extractor.getText();
+        }
+        if (isWord2003(path)) {
+            HWPFDocument hwpfDocument = new HWPFDocument(fileInputStream);
+            StringBuilder stringBuilder = hwpfDocument.getText();
+            String text = stringBuilder.toString();
+            if (StringUtils.isEmpty(text)) {
+                text = hwpfDocument.getDocumentText();
+            }
+            if (StringUtils.isNotEmpty(text)) {
+                return text;
+            }
+        }
+        return "";
+    }
+
+
+    /**
      * 获取word中的所有表格
+     * 2003
+     * doc 后缀 Microsoft Office2003 版本 和 xls对应
      *
      * @param path
      * @return
      * @throws IOException
      */
-    public static List<org.apache.poi.hwpf.usermodel.Table> getWordTable(String path) throws IOException {
+    public static List<org.apache.poi.hwpf.usermodel.Table> getWordHwpfTable(String path) throws IOException {
         org.apache.poi.poifs.filesystem.POIFSFileSystem pfs = new org.apache.poi.poifs.filesystem.POIFSFileSystem(new FileInputStream(new File(path)));
         org.apache.poi.hwpf.HWPFDocument hwpf = new org.apache.poi.hwpf.HWPFDocument(pfs);
         org.apache.poi.hwpf.usermodel.Range range = hwpf.getRange();
@@ -49,12 +152,40 @@ public class PoiUtils {
     }
 
     /**
+     * 获取word中的所有表格
+     * 2007
+     * docx 后缀 Microsoft Office2007 版本 和 xlsx对应
+     *
+     * @param path
+     * @return
+     * @throws IOException
+     */
+    public static List<org.apache.poi.xwpf.usermodel.XWPFTable> getWordXWPFTable(String path) throws IOException {
+        org.apache.poi.xwpf.usermodel.XWPFDocument xwpf = new org.apache.poi.xwpf.usermodel.XWPFDocument(new FileInputStream(path));
+        return xwpf.getTables();
+    }
+
+    /**
      * 获取word中一个表格的所有行
+     * 2007
+     * docx 后缀 Microsoft Office2007 版本 和 xlsx对应
+     *
+     * @param xwpfTable
+     * @return
+     */
+    public static List<org.apache.poi.xwpf.usermodel.XWPFTableRow> getWordXWPFRow(org.apache.poi.xwpf.usermodel.XWPFTable xwpfTable) {
+        return xwpfTable.getRows();
+    }
+
+    /**
+     * 获取word中一个表格的所有行
+     * 2003
+     * doc 后缀 Microsoft Office2003 版本 和 xls对应
      *
      * @param table
      * @return
      */
-    public static List<org.apache.poi.hwpf.usermodel.TableRow> getWordTableRow(org.apache.poi.hwpf.usermodel.Table table) {
+    public static List<org.apache.poi.hwpf.usermodel.TableRow> getWordHwpfRow(org.apache.poi.hwpf.usermodel.Table table) {
         List<org.apache.poi.hwpf.usermodel.TableRow> tableRowList = Lists.newArrayList();
         for (int i = 0; i < table.numRows(); i++) {
             org.apache.poi.hwpf.usermodel.TableRow tableRow = table.getRow(i);
@@ -67,11 +198,25 @@ public class PoiUtils {
 
     /**
      * 获取一个word中的一行的所有单元格
+     * 2007
+     * docx 后缀 Microsoft Office2007 版本 和 xlsx对应
+     *
+     * @param xwpfTableRow
+     * @return
+     */
+    public static List<org.apache.poi.xwpf.usermodel.XWPFTableCell> getWordXWPFCell(org.apache.poi.xwpf.usermodel.XWPFTableRow xwpfTableRow) {
+        return xwpfTableRow.getTableCells();
+    }
+
+    /**
+     * 获取一个word中的一行的所有单元格
+     * 2003
+     * doc 后缀 Microsoft Office2003 版本 和 xls对应
      *
      * @param tableRow
      * @return
      */
-    public static List<org.apache.poi.hwpf.usermodel.TableCell> getWordTableCell(org.apache.poi.hwpf.usermodel.TableRow tableRow) {
+    public static List<org.apache.poi.hwpf.usermodel.TableCell> getWordHwpfCell(org.apache.poi.hwpf.usermodel.TableRow tableRow) {
         List<org.apache.poi.hwpf.usermodel.TableCell> tableCellList = Lists.newArrayList();
         for (int j = 0; j < tableRow.numCells(); j++) {
             org.apache.poi.hwpf.usermodel.TableCell tableCell = tableRow.getCell(j);
@@ -84,11 +229,25 @@ public class PoiUtils {
 
     /**
      * 获取word中一个单元格的所有段落
+     * 2007
+     * docx 后缀 Microsoft Office2007 版本 和 xlsx对应
+     *
+     * @param xwpfTableCell
+     * @return
+     */
+    public static List<org.apache.poi.xwpf.usermodel.XWPFParagraph> getWordXWPFParagraph(org.apache.poi.xwpf.usermodel.XWPFTableCell xwpfTableCell) {
+        return xwpfTableCell.getParagraphs();
+    }
+
+    /**
+     * 获取word中一个单元格的所有段落
+     * 2003
+     * doc 后缀 Microsoft Office2003 版本 和 xls对应
      *
      * @param tableCell
      * @return
      */
-    public static List<org.apache.poi.hwpf.usermodel.Paragraph> getWordParagraph(org.apache.poi.hwpf.usermodel.TableCell tableCell) {
+    public static List<org.apache.poi.hwpf.usermodel.Paragraph> getWordHwpfParagraph(org.apache.poi.hwpf.usermodel.TableCell tableCell) {
         List<org.apache.poi.hwpf.usermodel.Paragraph> paragraphList = Lists.newArrayList();
         for (int k = 0; k < tableCell.numParagraphs(); k++) {
             org.apache.poi.hwpf.usermodel.Paragraph paragraph = tableCell.getParagraph(k);
@@ -155,6 +314,26 @@ public class PoiUtils {
      */
     public static boolean isExcel2007(String filePath) {
         return filePath.matches("^.+\\.(?i)(xlsx)$");
+    }
+
+    /**
+     * 2003 word
+     *
+     * @param path
+     * @return
+     */
+    public static boolean isWord2003(String path) {
+        return path.matches("^.+\\.(?i)(doc)$");
+    }
+
+    /**
+     * 2007 word
+     *
+     * @param path
+     * @return
+     */
+    public static boolean isWord2007(String path) {
+        return path.matches("^.+\\.(?i)(docx)$");
     }
 
 

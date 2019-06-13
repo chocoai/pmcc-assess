@@ -74,6 +74,7 @@ public class GenerateCommonMethod {
     public final String errorStr = "无";
 
 
+
     //房地产总价
     public BigDecimal getTotalRealEstate(Integer areId) {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areId);

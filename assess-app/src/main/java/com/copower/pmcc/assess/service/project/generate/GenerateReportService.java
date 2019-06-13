@@ -329,30 +329,11 @@ public class GenerateReportService {
         Document document = new Document(tempDir);
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
         List<String> stringList = Lists.newArrayList();
+        String text = PoiUtils.getWordTableContent(tempDir) ;
         //取出word中表格数据
-        List<org.apache.poi.hwpf.usermodel.Table> tableList = PoiUtils.getWordTable(tempDir);
-        if (CollectionUtils.isNotEmpty(tableList)) {
-            tableList.forEach(table -> {
-                List<org.apache.poi.hwpf.usermodel.TableRow> tableRowList = PoiUtils.getWordTableRow(table);
-                if (CollectionUtils.isNotEmpty(tableRowList)){
-                    tableRowList.forEach(tableRow ->{
-                        List<org.apache.poi.hwpf.usermodel.TableCell> tableCellList = PoiUtils.getWordTableCell(tableRow) ;
-                        if (CollectionUtils.isNotEmpty(tableCellList)){
-                            tableCellList.forEach(cell ->{
-                                List<org.apache.poi.hwpf.usermodel.Paragraph> paragraphList = PoiUtils.getWordParagraph(cell) ;
-                                if (CollectionUtils.isNotEmpty(paragraphList)){
-                                    paragraphList.forEach(paragraph -> {
-                                        Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(paragraph.text());
-                                        while (m.find()) {
-                                            stringList.add(m.group());
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
+        Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(text);
+        while (m.find()) {
+            stringList.add(m.group());
         }
         //获取普通段落
         List<String> regexList = AsposeUtils.getRegexList(document, null);
@@ -462,7 +443,7 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName(), name)) {
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk(SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_LIQUIDITY));
                 }
-                //变现能力分析小微快贷
+                //建行个贷变现能力分析
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY2.getName(), name)) {
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk2());
                 }
@@ -498,7 +479,7 @@ public class GenerateReportService {
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
                 }
-                //特别提示小微快贷
+                //建行个贷特别提示
                 if (Objects.equal(BaseReportFieldEnum.HotTip2.getName(), name)) {
                     List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
@@ -674,8 +655,14 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.housingStructure.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBuildingStructureCategory());
                 }
+                if (Objects.equal(BaseReportFieldEnum.housingStructure2.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBuildingStructureCategory());
+                }
                 //总层数
                 if (Objects.equal(BaseReportFieldEnum.floorCount.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFloorCount());
+                }
+                if (Objects.equal(BaseReportFieldEnum.floorCount2.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFloorCount());
                 }
                 //楼盘名称
@@ -714,6 +701,9 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.floor.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordFloor());
                 }
+                if (Objects.equal(BaseReportFieldEnum.floor2.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordFloor());
+                }
                 //当前年份
                 if (Objects.equal(BaseReportFieldEnum.ThisYear.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getThisYear());
@@ -732,7 +722,7 @@ public class GenerateReportService {
                 }
                 //档案保管号
                 if (Objects.equal(BaseReportFieldEnum.ArchivesDepositNumber.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFillingUnit());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentGroundNum());
                 }
                 //层户数
                 if (Objects.equal(BaseReportFieldEnum.LayerNumber.getName(), name)) {
@@ -745,11 +735,11 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.StoreyHeight.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStoreyHeight());
                 }
-                //小微贷其它
+                //建行个贷其它
                 if (Objects.equal(BaseReportFieldEnum.NetAssessmentOther.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentOther());
                 }
-                //小微贷丘地号
+                //建行个贷丘地号
                 if (Objects.equal(BaseReportFieldEnum.NetAssessmentGroundNum.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentGroundNum());
                 }
@@ -765,6 +755,9 @@ public class GenerateReportService {
                 }
                 //使用状况
                 if (Objects.equal(BaseReportFieldEnum.UsageStatus.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUsageStatus());
+                }
+                if (Objects.equal(BaseReportFieldEnum.UsageStatus2.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUsageStatus());
                 }
                 //委托目的
@@ -1035,7 +1028,6 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField8.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldValue());
                 }
-
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField1.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField1));
                 }
@@ -1084,21 +1076,15 @@ public class GenerateReportService {
     private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
         if (!preMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, preMap);
-            if (!textMap.isEmpty()) {
-                for (Map.Entry<String, String> entry : textMap.entrySet()) {
-                    preMap.put(entry.getKey(), entry.getValue());
-                }
-            }
-            AsposeUtils.replaceText(localPath, preMap);
         }
         if (!fileMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, fileMap);
-            if (!textMap.isEmpty()) {
-                AsposeUtils.replaceText(localPath, textMap);
-            }
         }
         if (!textMap.isEmpty()) {
-            AsposeUtils.replaceText(localPath, textMap);
+            Map<String,String>  errorMap = AsposeUtils.replaceText(localPath, textMap);
+            if (!errorMap.isEmpty()){
+                //暂时不处理,准备使用 apache poi 处理
+            }
         }
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);

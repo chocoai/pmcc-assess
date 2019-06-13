@@ -17,9 +17,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.List;
 
 /**
  * Created by kings on 2018-6-6.
@@ -105,14 +105,15 @@ public class AsposeUtils {
 
     /**
      * 获取word文本
+     *
      * @param document
      * @return
      */
-    public static String getDocumentText(Document document){
-        StringBuilder stringBuilder = new StringBuilder(8) ;
+    public static String getDocumentText(Document document) {
+        StringBuilder stringBuilder = new StringBuilder(8);
         ParagraphCollection paragraphs = document.getFirstSection().getBody().getParagraphs();
         for (int i = 0; i < paragraphs.toArray().length; i++) {
-            stringBuilder.append(paragraphs.get(i).getText()) ;
+            stringBuilder.append(paragraphs.get(i).getText());
         }
         return stringBuilder.toString();
     }
@@ -269,24 +270,26 @@ public class AsposeUtils {
      * @param map      key为被替换内容 value为替换内容
      * @throws Exception
      */
-    public static void replaceText(String filePath, Map<String, String> map) throws Exception {
+    public static Map<String,String> replaceText(String filePath, Map<String, String> map) throws Exception {
         if (StringUtils.isBlank(filePath)) {
             throw new Exception("error: empty file path");
         }
         if (map == null || map.isEmpty()) {
             throw new Exception("error: empty map");
         }
+        Map<String,String> stringMap = Maps.newLinkedHashMap();
         Document doc = new Document(filePath);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
             if (StringUtils.isNotBlank(stringStringEntry.getKey())) {
                 try {
                     doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
                 } catch (Exception e) {
-
+                    stringMap.put(stringStringEntry.getKey(),stringStringEntry.getValue()) ;
                 }
             }
         }
         doc.save(filePath);
+        return stringMap ;
     }
 
     /**
@@ -585,13 +588,14 @@ public class AsposeUtils {
     /**
      * stringMap key是标题 value 是待插入word路径 , path是源word路径也是最终的路径
      * 参考 com.copower.pmcc.assess.service.project.generate.GenerateBaseDataService#getCCB_Pre_Evaluation_Data_FormSheet() 方法
+     *
      * @param stringMap key title ,value:word path
      * @param path      word path
      * @throws Exception
      */
     public static void insertBreakDocumentHandle(LinkedHashMap<String, String> stringMap, String path, String nextPage, String lastPage) throws Exception {
-        LinkedHashMap<String, String> stringMap1 = Maps.newLinkedHashMap() ;
-        LinkedHashMap<String, String> stringMap2 = Maps.newLinkedHashMap() ;
+        LinkedHashMap<String, String> stringMap1 = Maps.newLinkedHashMap();
+        LinkedHashMap<String, String> stringMap2 = Maps.newLinkedHashMap();
         if (!stringMap.isEmpty()) {
             stringMap.entrySet().forEach(entry -> {
                 String key = String.format("${%s}", RandomStringUtils.randomAlphabetic(9));
@@ -599,7 +603,7 @@ public class AsposeUtils {
                 stringMap2.put(entry.getKey(), key);
             });
         }
-        AsposeUtils.insertBreakDocument(path, nextPage, lastPage, stringMap2 );
+        AsposeUtils.insertBreakDocument(path, nextPage, lastPage, stringMap2);
         AsposeUtils.replaceTextToFile(path, stringMap1);
     }
 
@@ -655,7 +659,7 @@ public class AsposeUtils {
         }
     }
 
-    public  static void writeWordTitle(DocumentBuilder builder, LinkedList<Double> doubleLinkedList, LinkedList<String> linkedLists) throws Exception {
+    public static void writeWordTitle(DocumentBuilder builder, LinkedList<Double> doubleLinkedList, LinkedList<String> linkedLists) throws Exception {
         if (CollectionUtils.isNotEmpty(linkedLists) && CollectionUtils.isNotEmpty(doubleLinkedList)) {
             if (linkedLists.size() != doubleLinkedList.size()) {
                 return;
@@ -671,6 +675,7 @@ public class AsposeUtils {
 
     /**
      * <div style='font-family:仿宋_GB2312;font-size:14pt;line-height:100%;'>html</div>
+     *
      * @param html
      * @param keyValueDtoList
      * @return
@@ -700,18 +705,18 @@ public class AsposeUtils {
         return stringBuilder.toString();
     }
 
-    public static String getWarpCssHtml(String html, String key,String value) {
-        List<KeyValueDto> keyValueDtoList = new ArrayList<>(1) ;
-        keyValueDtoList.add(new KeyValueDto(key,value)) ;
-        return getWarpCssHtml(html,keyValueDtoList);
+    public static String getWarpCssHtml(String html, String key, String value) {
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(1);
+        keyValueDtoList.add(new KeyValueDto(key, value));
+        return getWarpCssHtml(html, keyValueDtoList);
     }
 
-    public static List<KeyValueDto> getKeyValueDtoList(){
-        List<KeyValueDto> keyValueDtoList = new ArrayList<>(4) ;
-        keyValueDtoList.add(new KeyValueDto("font-family","仿宋_GB2312")) ;
-        keyValueDtoList.add(new KeyValueDto("font-size","14pt")) ;
-        keyValueDtoList.add(new KeyValueDto("line-height","100%")) ;
-        keyValueDtoList.add(new KeyValueDto("text-indent","2em")) ;
+    public static List<KeyValueDto> getKeyValueDtoList() {
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(4);
+        keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
+        keyValueDtoList.add(new KeyValueDto("font-size", "14pt"));
+        keyValueDtoList.add(new KeyValueDto("line-height", "100%"));
+        keyValueDtoList.add(new KeyValueDto("text-indent", "2em"));
         return keyValueDtoList;
     }
 }

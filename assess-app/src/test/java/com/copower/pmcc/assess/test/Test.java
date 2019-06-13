@@ -33,6 +33,18 @@ import java.util.List;
 public class Test {
 
     @org.junit.Test
+    public void testggg(){
+        BigDecimal bigDecimal = new BigDecimal(23595.232) ;
+        int num = bigDecimal.intValue() ;
+
+        int d = num/10 ;
+        d *= 10 ;
+        System.out.println(d);
+        int k = (num/10)%10 ;
+        System.out.println(k);
+    }
+
+    @org.junit.Test
     public void intersection(){
         List<Integer> a = Arrays.asList() ;
         List<Integer> b = Arrays.asList() ;
