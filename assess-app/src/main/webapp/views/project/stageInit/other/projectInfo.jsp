@@ -178,10 +178,9 @@
             </div>
 
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="loanType" required class="form-control search-select select2 loanType">
+                    <select name="loanType" class="form-control search-select select2 loanType">
                     </select>
                 </div>
             </div>

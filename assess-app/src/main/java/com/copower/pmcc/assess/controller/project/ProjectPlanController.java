@@ -318,8 +318,8 @@ public class ProjectPlanController {
         modelAndView.addObject("reviewMark", viewUrl);
         //显示数据
         modelAndView.addObject("boxCnName", projectPlan.getPlanName() + "-" + "计划详情");
-
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
+        ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfo);
         return modelAndView;
     }
 

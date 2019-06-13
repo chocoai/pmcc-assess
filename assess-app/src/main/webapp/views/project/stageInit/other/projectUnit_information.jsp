@@ -128,7 +128,7 @@
     </form>
     <div style="display: none">
         <div class="x_title">
-            <h3> 联系人
+            <h3> 客户经理
                 <small>
 
                 </small>
@@ -138,7 +138,7 @@
         </div>
         <div class="x_content">
             <button class="btn btn-success" data-toggle="modal"
-                    onclick="objProject.unit_information.showContactModel()">新增联系人
+                    onclick="objProject.unit_information.showContactModel()">新增客户经理
             </button>
             <button class="btn btn-primary" data-toggle="modal"
                     onclick="objProject.commonContacts.findCRMContactShow()">
@@ -159,7 +159,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">联系人</h3>
+                <h3 class="modal-title">客户经理</h3>
             </div>
             <form id="frmUNIT_INFORMATIONContacts" class="form-horizontal">
                 <div class="modal-footer">

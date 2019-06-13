@@ -64,7 +64,7 @@
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <div class="input-group">
                 <input type="hidden" name="blockId" value="${basicEstate.blockId}">
-                <input type="text"
+                <input type="text" onchange="$(this).closest('.input-group').find('[name=blockId]').val('0');"
                        placeholder="基础版块" class="form-control" name="blockName"
                        value="${basicEstate.blockName}">
                 <span class="input-group-btn">

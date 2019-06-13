@@ -123,6 +123,7 @@
     }
 
     function writeSpecificationsHTMLData(json) {
+        if (!json)return;
         $(".vSpecifications").empty();
         var jsonarray = eval(json);
         $.each(jsonarray, function (i, n) {

@@ -708,18 +708,16 @@ public class SurveyExamineTaskService {
             if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
                 surveyCaseStudy = JSONObject.parseObject(survey, SurveyCaseStudy.class);
                 surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
-                surveyCaseStudy.setJsonContent(formData);
                 surveyCaseStudyService.updateSurveyCaseStudy(surveyCaseStudy);
             }
             //查勘
             if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
                 surveySceneExplore = JSONObject.parseObject(survey, SurveySceneExplore.class);
                 surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
-                surveySceneExplore.setJsonContent(formData);
                 surveySceneExploreService.updateSurveySceneExplore(surveySceneExplore);
             }
         }
-        //需将土地实际用途、房屋证载用途、实际用途、楼层、房号反写到申报记录表中
+        //需将土地实际用途、房屋实际用途、楼层、房号反写到申报记录表中
         if (projectPlanDetails.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
             if (declareRecord != null) {
@@ -727,10 +725,7 @@ public class SurveyExamineTaskService {
                     declareRecord.setLandPracticalUse(baseDataDicService.getNameById(basicEstateLandState.getLandUseType()));
                 }
                 if (basicHouse != null) {
-                    declareRecord.setCertUse(baseDataDicService.getNameById(basicHouse.getCertUse()));
                     declareRecord.setPracticalUse(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
-                    declareRecord.setFloor(basicHouse.getFloor());
-                    declareRecord.setRoomNumber(basicHouse.getHouseNumber());
                 }
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             }

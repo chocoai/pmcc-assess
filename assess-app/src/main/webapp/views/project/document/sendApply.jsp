@@ -39,7 +39,8 @@
                                         发文标题<span class="symbol required"></span>
                                     </label>
                                     <div class='col-sm-11'>
-                                        <input type="text" id="title" name="title" value="${documentSend.title}" required class='form-control'>
+                                        <input type="text" id="title" name="title" value="${documentSend.title}"
+                                               required class='form-control'>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +104,7 @@
                 contractType:${documentSend.contractType},
                 projectId:${documentSend.projectId},
                 id: $("#id").val(),
-                title:$("#title").val()
+                title: $("#title").val()
             },
             type: "post",
             dataType: "json",
@@ -132,6 +133,7 @@
                 tableId: $("#id").val(),
                 proectId:${documentSend.projectId}
             },
+            edit: true,
             deleteFlag: true
         });
     }
@@ -206,7 +208,7 @@
                 contractType:${documentSend.contractType},
                 projectId:${documentSend.projectId},
                 id: $("#id").val(),
-                title:$("#title").val()
+                title: $("#title").val()
             },
             type: "post",
             dataType: "json",

@@ -77,8 +77,8 @@
                                 取消
                             </button>
 
-                            <button id="draft_btn" class="btn btn-success" onclick="projectApplyDraft();">
-                                草稿<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            <button id="draft_btn" class="btn btn-warning" onclick="projectApplyDraft();">
+                                草稿<i style="margin-left: 10px" class="fa fa-save"></i>
                             </button>
 
                             <button id="commit_btn" class="btn btn-success" onclick="projectApply();">

@@ -11,7 +11,7 @@
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
                     <h3>
-                       估价委托书及相关证明-${areaGroup.areaName}
+                        估价委托书及相关证明-${areaGroup.areaName}
                     </h3>
                 </div>
             </div>
@@ -203,7 +203,8 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <c:forEach items="${inventoryAddressFileList.get(judgeObject.id)}" var="item" varStatus="i">
+                                                    <c:forEach items="${inventoryAddressFileList.get(judgeObject.id)}"
+                                                               var="item" varStatus="i">
                                                         <tr>
                                                             <th>${i.index+1}</th>
                                                             <td>${item.fileName}</td>
@@ -378,7 +379,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    var html = '<tr><td><input type="text" value="' + fileName + '"  onblur="reportFileEditName(' + result.data + ',this);"></td><td><input type="text" data-id="' + result.data + '" data-name="sorting" value="' + sorting + '"></td><td>' +
+                    var html = '<tr><td><input type="text" value="' + AssessCommon.getFileName(fileName) + '"  onblur="reportFileEditName(' + result.data + ',this);"></td><td><input type="text" data-id="' + result.data + '" data-name="sorting" value="' + sorting + '"></td><td>' +
                         '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + attachmentId + ',\'' + fileName + '\');">' +
                         '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + result.data + ',this)"></td></tr>';
                     $('tbody[data-id=' + judgeObjectId + '][data-name=live_situation_select]').append(html);
@@ -430,7 +431,7 @@
         })
     }
 
-    function reportFileEditName(id,_this) {
+    function reportFileEditName(id, _this) {
         var newName = $(_this).val();
         $.ajax({
             url: '${pageContext.request.contextPath}/scheme/reportFileEditName',
@@ -529,14 +530,14 @@
             data.reportFileItemList.push(reportFileItem);
         })
         $.ajax({
-            url:'${pageContext.request.contextPath}/projectReportFile/saveReprotFile',
-            data:{formData:JSON.stringify(data)},
-            success:function (result) {
-                if(result.ret){
-                    Alert("保存成功",1,null,function () {
+            url: '${pageContext.request.contextPath}/projectReportFile/saveReprotFile',
+            data: {formData: JSON.stringify(data)},
+            success: function (result) {
+                if (result.ret) {
+                    Alert("保存成功", 1, null, function () {
                         window.close();
                     })
-                }else{
+                } else {
                     Alert(result.errmsg);
                 }
             }

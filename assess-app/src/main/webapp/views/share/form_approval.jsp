@@ -162,7 +162,6 @@
         },
 
         loadOpation: function () {
-            formApproval.chkbisNextClick();
             var opation = "";
             if ("${approvalReview}" == "1") {
                 var objs = $(".approvalFlog");
@@ -180,6 +179,7 @@
         },
 
         getFormData: function () {
+            formApproval.chkbisNextClick();
             var formData = formParams("frm_approval");
             formData.opinions = formApproval.loadOpation();
             return formData;
@@ -196,6 +196,7 @@
             disabledTarget: "btn_submit",
             formData: {
                 tableName: AssessDBKey.BoxApprovalLog,
+                projectId: "${projectId}",
                 processInsId: "${processInsId}",
                 reActivityName: "${activityReName}",
                 fieldsName: "log",

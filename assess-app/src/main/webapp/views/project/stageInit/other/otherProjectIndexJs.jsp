@@ -1089,18 +1089,17 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">crm联系人</h3>
+                <h3 class="modal-title">客户经理</h3>
             </div>
             <form class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                            <input type="text" name="name" placeholder="联系人名字、电话"
+                                            <input type="text" name="name" placeholder="客户经理名字、电话"
                                                    class="form-control">
                                         </div>
                                     </div>
