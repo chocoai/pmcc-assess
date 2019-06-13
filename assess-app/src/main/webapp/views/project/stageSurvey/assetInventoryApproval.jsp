@@ -343,7 +343,7 @@
     function checkRealEstate() {
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/getRealEstateId",
+            url: "${pageContext.request.contextPath}/declareRecord/getCertificateId",
             type: "get",
             dataType: "json",
             data: {declareRecordId: "${projectPlanDetails.declareRecordId}"},
