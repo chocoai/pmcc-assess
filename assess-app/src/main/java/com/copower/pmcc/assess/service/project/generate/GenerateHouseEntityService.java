@@ -103,7 +103,7 @@ public class GenerateHouseEntityService {
     /**
      * 获取建筑结构
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
     public String getBuildingStructure(List<SchemeJudgeObject> judgeObjectList) {
@@ -113,11 +113,14 @@ public class GenerateHouseEntityService {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
             if (basicBuilding != null) {
-                if (basicBuilding.getBuildingStructureType() != null) {
-                    builder.append(String.format("%s", baseDataDicService.getNameById(basicBuilding.getBuildingStructureType())));
-                }
-                if (basicBuilding.getBuildingStructureCategory() != null) {
-                    builder.append(String.format("%s", baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory())));
+                String v1 = baseDataDicService.getNameById(basicBuilding.getBuildingStructureType());
+                String v2 = baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory());
+                if (basicBuilding.getBuildingStructureType() != null && basicBuilding.getBuildingStructureCategory() != null) {
+                    builder.append(v1).append("划分").append(v2);
+                } else if (basicBuilding.getBuildingStructureType() != null) {
+                    builder.append(v1);
+                } else if (basicBuilding.getBuildingStructureCategory() != null) {
+                    builder.append(v2);
                 }
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), builder.toString());
                 builder.delete(0, builder.toString().length());

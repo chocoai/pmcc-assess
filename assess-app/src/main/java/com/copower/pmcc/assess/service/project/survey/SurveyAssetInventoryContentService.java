@@ -183,6 +183,7 @@ public class SurveyAssetInventoryContentService {
                         }
                     }
                 }
+                surveyAssetInventoryContent.setDeclareId(declareRecord.getId());
                 surveyAssetInventoryContentDao.save(surveyAssetInventoryContent);
             }
             list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());

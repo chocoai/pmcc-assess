@@ -66,6 +66,8 @@ public class DeclareRealtyHouseCertService {
     private DeclarePublicService declarePoiHelp;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
+    @Autowired
+    private DeclareRecordExtendService declareRecordExtendService;
 
     /**
      * 功能描述: 导入土地证 并且和房产证关联
@@ -157,7 +159,7 @@ public class DeclareRealtyHouseCertService {
                 for (DeclareRealtyHouseCert po : declareRealtyHouseCertList) {
                     DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
                     center.setHouseId(po.getId());
-                    center.setPlanDetailsId(center.getPlanDetailsId());
+                    center.setPlanDetailsId(po.getPlanDetailsId());
                     List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(center);
                     if (CollectionUtils.isNotEmpty(centerList)) {
                         if (centerList.stream().anyMatch(oo -> oo.getLandId() == null)) {
@@ -397,6 +399,8 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
+
+            DeclareRealtyLandCert realtyLandCert = null;
             //写入土地证的证载用途
             //从中间表获取到土地证信息
             DeclareBuildEngineeringAndEquipmentCenter centerQuery = new DeclareBuildEngineeringAndEquipmentCenter();
@@ -405,16 +409,26 @@ public class DeclareRealtyHouseCertService {
             centerQuery.setType(DeclareRealtyHouseCert.class.getSimpleName());
             List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(centerQuery);
             if (CollectionUtils.isNotEmpty(centerList)) {
-                DeclareRealtyLandCert realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(centerList.get(0).getLandId());
-                if (realtyLandCert != null) {
-                    declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
-                    declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
-                    declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
-                    declareRecord.setLandUseRightArea(realtyLandCert.getUseRightArea());
+                if (centerList.stream().anyMatch(obj -> obj.getLandId() != null)) {
+                    realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(centerList.stream().filter(obj -> obj.getLandId() != null).findFirst().get().getLandId());
                 }
             }
+            if (oo.getPid() != null && oo.getPid() != 0) {
+                realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(oo.getPid());
+            }
+            if (realtyLandCert != null) {
+                declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
+                declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
+                declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
+                declareRecord.setLandUseRightArea(realtyLandCert.getUseRightArea());
+            }
             try {
-                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord) ;
+                DeclareRecordExtend declareRecordExtend = new DeclareRecordExtend();
+                declareRecordExtend.setCreator(commonService.thisUserAccount());
+                declareRecordExtend.setRegistrationAuthority(oo.getRegistrationAuthority());
+                declareRecordExtend.setDeclareId(declareId);
+                declareRecordExtendService.addDeclareRecord(declareRecordExtend) ;
                 oo.setBisRecord(true);
                 declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(oo);
             } catch (Exception e1) {

@@ -7,6 +7,8 @@ public class SurveyAssetInventoryContent {
 
     private Integer projectId;
 
+    private Integer declareId;
+
     private Integer planDetailsId;
 
     private Integer inventoryContent;
@@ -49,6 +51,14 @@ public class SurveyAssetInventoryContent {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
     }
 
     public Integer getPlanDetailsId() {

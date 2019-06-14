@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -330,10 +331,12 @@ public class GenerateReportService {
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
         List<String> stringList = Lists.newArrayList();
         String text = PoiUtils.getWordTableContent(tempDir) ;
-        //取出word中表格数据
-        Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(text);
-        while (m.find()) {
-            stringList.add(m.group());
+        if(StringUtils.isNotEmpty(text)){
+            //取出word中表格数据
+            Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(text);
+            while (m.find()) {
+                stringList.add(m.group());
+            }
         }
         //获取普通段落
         List<String> regexList = AsposeUtils.getRegexList(document, null);
@@ -612,9 +615,20 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.Seat.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectSeatList(false));
                 }
-                //权证号
-                if (Objects.equal(BaseReportFieldEnum.CERT_NAME.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList());
+                //建行个贷权证号
+                if (Objects.equal(BaseReportFieldEnum.CERT_NAME1.getName(), name)) {
+                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList(keyValueDtoList));
+                }
+                if (Objects.equal(BaseReportFieldEnum.CERT_NAME2.getName(), name)) {
+                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "10.0pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList(keyValueDtoList));
                 }
                 //证载用途
                 if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
@@ -1075,7 +1089,12 @@ public class GenerateReportService {
 
     private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
         if (!preMap.isEmpty()) {
-            AsposeUtils.replaceText(localPath, preMap);
+            Map<String,String>  errorMap = AsposeUtils.replaceText(localPath, preMap);
+            if (!errorMap.isEmpty()){
+                if (false){
+                    replaceHandleError(errorMap,localPath) ;
+                }
+            }
         }
         if (!fileMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, fileMap);
@@ -1083,11 +1102,29 @@ public class GenerateReportService {
         if (!textMap.isEmpty()) {
             Map<String,String>  errorMap = AsposeUtils.replaceText(localPath, textMap);
             if (!errorMap.isEmpty()){
-                //暂时不处理,准备使用 apache poi 处理
+                if (false){
+                    replaceHandleError(errorMap,localPath) ;
+                }
             }
         }
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
+        }
+    }
+
+
+    private void replaceHandleError(Map<String,String>  errorMap,String localPath)throws Exception{
+        if (!errorMap.isEmpty()){
+            Map<String,String> changeMap = Maps.newHashMap();
+            Map<String,String> transMap = Maps.newHashMap();
+            errorMap.forEach((key, value) -> {
+                String text = RandomStringUtils.randomAlphabetic(6) ;
+                changeMap.put(key, text) ;
+                transMap.put(text,value) ;
+            });
+            //暂时不处理,准备使用 apache poi 处理
+            AsposeUtils.replaceText(localPath, changeMap);
+            PoiUtils.replaceText(transMap,localPath) ;
         }
     }
 

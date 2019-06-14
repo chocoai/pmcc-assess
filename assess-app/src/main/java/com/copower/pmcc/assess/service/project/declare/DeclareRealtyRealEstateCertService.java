@@ -69,6 +69,8 @@ public class DeclareRealtyRealEstateCertService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private DeclareRecordExtendService declareRecordExtendService;
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -302,7 +304,12 @@ public class DeclareRealtyRealEstateCertService {
                 declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_TRANSACTION).getId().toString());
             }
             try {
-                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord) ;
+                DeclareRecordExtend declareRecordExtend = new DeclareRecordExtend();
+                declareRecordExtend.setCreator(commonService.thisUserAccount());
+                declareRecordExtend.setRegistrationAuthority(oo.getRegistrationAuthority());
+                declareRecordExtend.setDeclareId(declareId);
+                declareRecordExtendService.addDeclareRecord(declareRecordExtend) ;
                 oo.setBisRecord(true);
                 declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(oo);
             } catch (Exception e1) {

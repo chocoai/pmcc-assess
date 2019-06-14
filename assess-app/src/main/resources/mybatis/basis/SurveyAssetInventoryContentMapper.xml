@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="inventory_content" property="inventoryContent" jdbcType="INTEGER" />
     <result column="are_consistent" property="areConsistent" jdbcType="VARCHAR" />
@@ -78,7 +79,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, inventory_content, are_consistent, registration, 
+    id, project_id, declare_id, plan_details_id, inventory_content, are_consistent, registration, 
     actual, difference_reason, credential, credential_accessory, voucher, survey_time, 
     sure_consistent, creator, gmt_created, gmt_modified
   </sql>
@@ -116,18 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_asset_inventory_content (project_id, plan_details_id, inventory_content, 
-      are_consistent, registration, actual, 
-      difference_reason, credential, credential_accessory, 
-      voucher, survey_time, sure_consistent, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{inventoryContent,jdbcType=INTEGER}, 
-      #{areConsistent,jdbcType=VARCHAR}, #{registration,jdbcType=VARCHAR}, #{actual,jdbcType=VARCHAR}, 
-      #{differenceReason,jdbcType=VARCHAR}, #{credential,jdbcType=VARCHAR}, #{credentialAccessory,jdbcType=VARCHAR}, 
-      #{voucher,jdbcType=VARCHAR}, #{surveyTime,jdbcType=TIMESTAMP}, #{sureConsistent,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_survey_asset_inventory_content (project_id, declare_id, plan_details_id, 
+      inventory_content, are_consistent, registration, 
+      actual, difference_reason, credential, 
+      credential_accessory, voucher, survey_time, 
+      sure_consistent, creator, gmt_created, 
+      gmt_modified)
+    values (#{projectId,jdbcType=INTEGER}, #{declareId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
+      #{inventoryContent,jdbcType=INTEGER}, #{areConsistent,jdbcType=VARCHAR}, #{registration,jdbcType=VARCHAR}, 
+      #{actual,jdbcType=VARCHAR}, #{differenceReason,jdbcType=VARCHAR}, #{credential,jdbcType=VARCHAR}, 
+      #{credentialAccessory,jdbcType=VARCHAR}, #{voucher,jdbcType=VARCHAR}, #{surveyTime,jdbcType=TIMESTAMP}, 
+      #{sureConsistent,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +138,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="declareId != null" >
+        declare_id,
       </if>
       <if test="planDetailsId != null" >
         plan_details_id,
@@ -184,6 +188,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
       </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
@@ -244,6 +251,9 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
@@ -295,6 +305,7 @@
     update tb_survey_asset_inventory_content
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       inventory_content = #{record.inventoryContent,jdbcType=INTEGER},
       are_consistent = #{record.areConsistent,jdbcType=VARCHAR},
@@ -318,6 +329,9 @@
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
       </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
@@ -367,6 +381,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent" >
     update tb_survey_asset_inventory_content
     set project_id = #{projectId,jdbcType=INTEGER},
+      declare_id = #{declareId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       inventory_content = #{inventoryContent,jdbcType=INTEGER},
       are_consistent = #{areConsistent,jdbcType=VARCHAR},

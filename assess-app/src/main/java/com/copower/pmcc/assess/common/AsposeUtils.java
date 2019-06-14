@@ -719,4 +719,16 @@ public class AsposeUtils {
         keyValueDtoList.add(new KeyValueDto("text-indent", "2em"));
         return keyValueDtoList;
     }
+
+    public static void insertHtml(DocumentBuilder builder,String html, boolean useBuilderFormatting){
+        try {
+            builder.insertHtml(html, useBuilderFormatting);
+        } catch (Exception e) {
+            try {
+                throw e;
+            } catch (Exception e1) {
+
+            }
+        }
+    }
 }

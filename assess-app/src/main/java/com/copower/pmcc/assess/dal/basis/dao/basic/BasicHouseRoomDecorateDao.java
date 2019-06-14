@@ -20,25 +20,25 @@ public class BasicHouseRoomDecorateDao {
     @Autowired
     private BasicHouseRoomDecorateMapper basicHouseRoomDecorateMapper;
 
-    public BasicHouseRoomDecorate getBasicHouseRoomDecorateById(Integer id) throws SQLException {
+    public BasicHouseRoomDecorate getBasicHouseRoomDecorateById(Integer id)  {
         return basicHouseRoomDecorateMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) throws SQLException {
+    public Integer saveBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) {
         basicHouseRoomDecorateMapper.insertSelective(basicHouseRoomDecorate);
         return basicHouseRoomDecorate.getId();
     }
 
-    public boolean updateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) throws SQLException {
+    public boolean updateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate)  {
         return basicHouseRoomDecorateMapper.updateByPrimaryKeySelective(basicHouseRoomDecorate) == 1;
     }
 
-    public boolean deleteBasicHouseRoomDecorate(Integer id) throws SQLException {
+    public boolean deleteBasicHouseRoomDecorate(Integer id) {
         return basicHouseRoomDecorateMapper.deleteByPrimaryKey(id) == 1;
     }
 
 
-    public List<BasicHouseRoomDecorate> basicHouseRoomDecorateList(BasicHouseRoomDecorate basicHouseRoomDecorate) throws SQLException {
+    public List<BasicHouseRoomDecorate> basicHouseRoomDecorateList(BasicHouseRoomDecorate basicHouseRoomDecorate)  {
         BasicHouseRoomDecorateExample example = new BasicHouseRoomDecorateExample();
         MybatisUtils.convertObj2Example(basicHouseRoomDecorate, example);
         return basicHouseRoomDecorateMapper.selectByExample(example);

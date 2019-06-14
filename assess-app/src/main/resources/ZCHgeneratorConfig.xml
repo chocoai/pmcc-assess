@@ -48,7 +48,11 @@
             <!--<columnOverride column="path_array" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_build_engineering_and_equipment_center" domainObjectName="DeclareBuildEngineeringAndEquipmentCenter">
+        <table tableName="tb_declare_record_extend" domainObjectName="DeclareRecordExtend">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_survey_asset_inventory_content" domainObjectName="SurveyAssetInventoryContent">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

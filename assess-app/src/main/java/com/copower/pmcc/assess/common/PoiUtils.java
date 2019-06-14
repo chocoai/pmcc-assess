@@ -30,6 +30,10 @@ import java.util.regex.Pattern;
  */
 public class PoiUtils {
 
+    public static void replaceText(Map<String,String> map,String path){
+
+    }
+
     /**
      * 获取word中表格内容
      *

@@ -146,7 +146,7 @@ public class GenerateBaseExamineService {
         return vo;
     }
 
-    public BasicEstateVo getEstate() throws Exception {
+    public BasicEstateVo getEstate() {
         BasicEstate examineEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         if (examineEstate == null) {
             examineEstate = new BasicEstate();
@@ -252,7 +252,7 @@ public class GenerateBaseExamineService {
         return basicHouseWaterDrainService.getBasicHouseWaterDrainList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseRoomDecorateVo> getBasicHouseRoomDecorateList(Integer roomId) throws Exception {
+    public List<BasicHouseRoomDecorateVo> getBasicHouseRoomDecorateList(Integer roomId)  {
         return basicHouseRoomDecorateService.getHouseRoomDecorateList(roomId);
     }
 

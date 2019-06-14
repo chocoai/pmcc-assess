@@ -98,7 +98,7 @@ public class BasicHouseRoomDecorateService {
         return basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
     }
 
-    public List<BasicHouseRoomDecorateVo> getHouseRoomDecorateList(Integer roomId) throws Exception {
+    public List<BasicHouseRoomDecorateVo> getHouseRoomDecorateList(Integer roomId)  {
         BasicHouseRoomDecorate basicHouseRoomDecorate =new BasicHouseRoomDecorate();
         basicHouseRoomDecorate.setRoomId(roomId);
         List<BasicHouseRoomDecorate> roomDecorates = basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);

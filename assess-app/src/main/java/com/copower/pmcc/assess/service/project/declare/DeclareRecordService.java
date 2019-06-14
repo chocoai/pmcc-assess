@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExtend;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -27,7 +28,27 @@ import java.util.List;
 public class DeclareRecordService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
+    private DeclareRecordExtendService declareRecordExtendService;
+    @Autowired
     private DeclareRecordDao declareRecordDao;
+
+    /**
+     * 获取申报 扩展表
+     * @param declareId
+     * @return
+     */
+    public DeclareRecordExtend getByDeclareRecordExtend(Integer declareId){
+        if (declareId == null){
+            return null;
+        }
+        DeclareRecordExtend query = new DeclareRecordExtend();
+        query.setDeclareId(declareId);
+        List<DeclareRecordExtend> declareRecordExtendList = declareRecordExtendService.getDeclareLandUsePermitList(query) ;
+        if (CollectionUtils.isNotEmpty(declareRecordExtendList)){
+            return declareRecordExtendList.stream().findFirst().get();
+        }
+        return null;
+    }
 
 
     public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) throws BusinessException {
@@ -35,7 +56,8 @@ public class DeclareRecordService {
             throw new BusinessException("null point");
         }
         if (declareRecord.getId() == null || declareRecord.getId().intValue() == 0) {
-            return declareRecordDao.saveReturnId(declareRecord);
+            int id = declareRecordDao.saveReturnId(declareRecord);
+            return id;
         } else {
             declareRecordDao.updateDeclareRecord(declareRecord);
             return declareRecord.getId();
