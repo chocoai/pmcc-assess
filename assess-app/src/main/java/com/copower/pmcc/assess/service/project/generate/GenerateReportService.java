@@ -10,7 +10,6 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
-import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportInfoVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
@@ -21,7 +20,10 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.common.utils.*;
+import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FileUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -67,7 +69,7 @@ public class GenerateReportService {
     @Autowired
     private BaseReportService baseReportService;
     @Autowired
-    private GenerateReportInfoService generateReportGenerationService;
+    private GenerateReportInfoService generateReportInfoService;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -75,23 +77,6 @@ public class GenerateReportService {
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         return schemeAreaGroupService.getAreaGroupList(projectId);
     }
-
-    /**
-     * 获取生成的数据列表
-     *
-     * @param projectId
-     * @return
-     */
-    public List<GenerateReportInfoVo> getGenerateReportGenerationVos(Integer projectId) {
-        GenerateReportInfo where = new GenerateReportInfo();
-        where.setProjectId(projectId);
-        List<GenerateReportInfo> generationList = generateReportGenerationService.generateReportGenerationList(where);
-        if (CollectionUtils.isEmpty(generationList)) {
-            return null;
-        }
-        return LangUtils.transform(generationList, o -> generateReportGenerationService.getGenerateReportInfoVo(o));
-    }
-
 
     /**
      * 创建报告模板
@@ -111,12 +96,7 @@ public class GenerateReportService {
         if (projectPlan == null) {
             return;
         }
-        if (generateReportInfo.getId() == null || generateReportInfo.getId().intValue() == 0) {
-            generateReportInfo.setCreator(processControllerComponent.getThisUser());
-            generateReportGenerationService.addGenerateReportInfo(generateReportInfo);
-        } else {
-            generateReportGenerationService.updateGenerateReportInfo(generateReportInfo);
-        }
+        generateReportInfoService.saveGenerateReportInfo(generateReportInfo);
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(generateReportInfo.getId());
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
@@ -272,6 +252,7 @@ public class GenerateReportService {
 
     /**
      * 循环替换操作
+     *
      * @param tempDir
      * @param generateBaseDataService
      * @param generateReportInfo
@@ -281,7 +262,7 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-    private String generateReplaceWord(String tempDir, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, String reportType, int count , final int max) throws Exception {
+    private String generateReplaceWord(String tempDir, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, String reportType, int count, final int max) throws Exception {
         List<String> names = Lists.newArrayList();
         //基础报告
         for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
@@ -319,7 +300,7 @@ public class GenerateReportService {
                 return tempDir;
             }
             //递归回去 判断是否可以跳出循环
-            return generateReplaceWord(tempDir, generateBaseDataService, generateReportInfo, reportType, count , max);
+            return generateReplaceWord(tempDir, generateBaseDataService, generateReportInfo, reportType, count, max);
         } else {
             return tempDir;
         }
@@ -329,7 +310,7 @@ public class GenerateReportService {
         Document document = new Document(tempDir);
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
         List<String> stringList = Lists.newArrayList();
-        String text = PoiUtils.getWordTableContent(tempDir) ;
+        String text = PoiUtils.getWordTableContent(tempDir);
         //取出word中表格数据
         Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(text);
         while (m.find()) {
@@ -340,11 +321,11 @@ public class GenerateReportService {
         if (CollectionUtils.isNotEmpty(regexList)) {
             stringList.addAll(regexList);
         }
-        if (CollectionUtils.isNotEmpty(stringList)){
+        if (CollectionUtils.isNotEmpty(stringList)) {
             //去除重复
             List<String> strings = stringList.stream().distinct().collect(Collectors.toList());
             stringList.clear();
-            stringList.addAll(strings) ;
+            stringList.addAll(strings);
         }
         //获取待替换文本的集合
         List<String> regexS = generateCommonMethod.specialTreatment(stringList);
@@ -1081,8 +1062,8 @@ public class GenerateReportService {
             AsposeUtils.replaceTextToFile(localPath, fileMap);
         }
         if (!textMap.isEmpty()) {
-            Map<String,String>  errorMap = AsposeUtils.replaceText(localPath, textMap);
-            if (!errorMap.isEmpty()){
+            Map<String, String> errorMap = AsposeUtils.replaceText(localPath, textMap);
+            if (!errorMap.isEmpty()) {
                 //暂时不处理,准备使用 apache poi 处理
             }
         }

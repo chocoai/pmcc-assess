@@ -171,4 +171,21 @@ public class ProjectMemberService {
         ProjectMember projectMember = projectMemberDao.getProjectMemberItem(projectId);
         return getProjectMemberVo(projectMember);
     }
+
+    /**
+     * 是否为项目成员
+     *
+     * @param projectId
+     * @param userAccount
+     * @return
+     */
+    public boolean isProjectMember(Integer projectId, String userAccount) {
+        ProjectMemberVo projectMember = getProjectMember(projectId);
+        if(projectMember==null) return false;
+        if(StringUtils.defaultString(projectMember.getUserAccountManager()).contains(userAccount))
+            return true;
+        if(StringUtils.defaultString(projectMember.getUserAccountMember()).contains(userAccount))
+            return true;
+        return false;
+    }
 }

@@ -76,21 +76,16 @@ public class GenerateService {
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setFolio(folio);//流程描述
-        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
-        processInfo.setTableId(projectInfo.getId());
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlan.class));
+        processInfo.setTableId(planId);
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setProcessEventExecutorName(ProjectPlanApprovalEvent.class.getSimpleName());
         processInfo.setWorkStage(projectWorkStage.getWorkStageName());
         processInfo.setWorkStageId(projectWorkStage.getId());
         processInfo.setAppKey(applicationConstant.getAppKey());
         processInfo.setProcessEventExecutor(GenerateEvent.class);
-
         try {
             processUserDto = processControllerComponent.processStart(processInfo, projectInfo.getCreator(), false);
-            GenerateReportInfo generateReportGeneration = generateReportGenerationService.getGenerateReportInfoByAreaGroupId(areaGroupId,planId);
-            generateReportGeneration.setProcessInsId(processUserDto.getProcessInsId());
-            generateReportGeneration.setStatus(ProjectStatusEnum.RUNING.getKey());
-            generateReportGenerationService.updateGenerateReportInfo(generateReportGeneration);
         } catch (BpmException e) {
             log.info(e.getMessage());
             throw new BusinessException(e.getMessage());
@@ -98,6 +93,7 @@ public class GenerateService {
 
         //更新流程实例id
         projectPlan.setProcessInsId(processUserDto.getProcessInsId());
+        projectPlan.setStatus(ProjectStatusEnum.RUNING.getKey());
         projectPlanService.updateProjectPlan(projectPlan);
     }
 

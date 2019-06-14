@@ -22,12 +22,12 @@ public class GenerateReportInfoDao {
     @Autowired
     private GenerateReportInfoMapper generateReportInfoMapper;
 
-    public boolean updateGenerateReportInfo(GenerateReportInfo generateReportGeneration) throws SQLException {
+    public boolean updateGenerateReportInfo(GenerateReportInfo generateReportGeneration)  {
         int i = generateReportInfoMapper.updateByPrimaryKeySelective(generateReportGeneration);
         return i > 0;
     }
 
-    public GenerateReportInfo getGenerateReportInfoByAreaGroupId(Integer areaGroupId, Integer projectPlanId) throws SQLException {
+    public GenerateReportInfo getGenerateReportInfoByAreaGroupId(Integer areaGroupId, Integer projectPlanId)  {
         GenerateReportInfoExample example = new GenerateReportInfoExample();
         GenerateReportInfoExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -40,17 +40,17 @@ public class GenerateReportInfoDao {
         return null;
     }
 
-    public boolean addGenerateReportInfo(GenerateReportInfo generateReportGeneration) throws SQLException {
+    public boolean addGenerateReportInfo(GenerateReportInfo generateReportGeneration)  {
         int i = generateReportInfoMapper.insertSelective(generateReportGeneration);
         return i > 0;
     }
 
-    public boolean deleteGenerateReportInfo(Integer id) throws SQLException {
+    public boolean deleteGenerateReportInfo(Integer id)  {
         int i = generateReportInfoMapper.deleteByPrimaryKey(id);
         return i > 0;
     }
 
-    public GenerateReportInfo getByGenerateReportInfoId(Integer id) throws SQLException {
+    public GenerateReportInfo getByGenerateReportInfoId(Integer id)  {
         return generateReportInfoMapper.selectByPrimaryKey(id);
     }
 

@@ -674,27 +674,19 @@ public class ProjectInfoService {
     }
 
     /**
-     * 生成报告二维码查看
-     *
-     * @param projectInfo    项目信息
-     * @param reportDate     报告出具日期
-     * @param documentNumber 报告文号
-     * @param reportFileId   报告附件id
+     * 项目是否可操作
+     * @param projectId
      * @return
-     * @throws Exception
      */
-    public ProjectDocumentDto finishProjectDocument(ProjectInfo projectInfo, Date reportDate, String documentNumber, Integer reportFileId) throws Exception {
-        String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
-        InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
-        String customer = InitiateContactsEnum.legalPerson.getId().equals(consignorVo.getCsType()) ? consignorVo.getCsEntrustmentUnitName() : consignorVo.getCsName();
-        AdCompanyQualificationDto qualificationDto = adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
-        ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
-        projectDocumentDto.setProjectName(projectInfo.getProjectName());
-        projectDocumentDto.setCustomer(customer);
-        projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
-        projectDocumentDto.setDocumentNumber(documentNumber);
-        projectDocumentDto.setReportDate(DateUtils.formatDate(reportDate));
-        projectDocumentDto.setReportMember(publicService.getUserNameByAccount(projectManager));
-        return erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+    public boolean isProjectOperable(Integer projectId){
+        ProjectInfo projectInfo = getProjectInfoById(projectId);
+        if(projectInfo==null) return false;
+        if(ProjectStatusEnum.FINISH.getKey().equals(projectInfo.getProjectStatus()))
+            return false;
+        if(ProjectStatusEnum.CLOSE.getKey().equals(projectInfo.getProjectStatus()))
+            return false;
+        if(ProjectStatusEnum.PAUSE.getKey().equals(projectInfo.getProjectStatus()))
+            return false;
+        return true;
     }
 }
