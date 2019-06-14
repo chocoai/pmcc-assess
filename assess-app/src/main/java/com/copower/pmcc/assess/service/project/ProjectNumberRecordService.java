@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +34,13 @@ public class ProjectNumberRecordService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+
+    public List<String> getReportNumberList(Integer projectId, Integer reportType){
+        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getNumberList(projectId, reportType);
+        if(CollectionUtils.isEmpty(numberList)) return null;
+        List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
+        return list;
+    }
 
     /**
      * 获取报告文号
