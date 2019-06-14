@@ -12,6 +12,10 @@ public class SchemeLiquidationAnalysisItem {
 
     private Integer planDetailsId;
 
+    private Integer groupId;
+
+    private String typeKey;
+
     private Integer taxRateId;
 
     private String taxRateValue;
@@ -35,8 +39,6 @@ public class SchemeLiquidationAnalysisItem {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String typeKey;
 
     public Integer getId() {
         return id;
@@ -68,6 +70,22 @@ public class SchemeLiquidationAnalysisItem {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getTypeKey() {
+        return typeKey;
+    }
+
+    public void setTypeKey(String typeKey) {
+        this.typeKey = typeKey == null ? null : typeKey.trim();
     }
 
     public Integer getTaxRateId() {
@@ -164,13 +182,5 @@ public class SchemeLiquidationAnalysisItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getTypeKey() {
-        return typeKey;
-    }
-
-    public void setTypeKey(String typeKey) {
-        this.typeKey = typeKey == null ? null : typeKey.trim();
     }
 }

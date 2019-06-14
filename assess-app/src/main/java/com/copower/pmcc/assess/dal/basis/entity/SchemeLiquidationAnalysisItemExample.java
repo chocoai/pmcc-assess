@@ -346,6 +346,136 @@ public class SchemeLiquidationAnalysisItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andGroupIdIsNull() {
+            addCriterion("group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIsNotNull() {
+            addCriterion("group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdEqualTo(Integer value) {
+            addCriterion("group_id =", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotEqualTo(Integer value) {
+            addCriterion("group_id <>", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdGreaterThan(Integer value) {
+            addCriterion("group_id >", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("group_id >=", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLessThan(Integer value) {
+            addCriterion("group_id <", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("group_id <=", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIn(List<Integer> values) {
+            addCriterion("group_id in", values, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotIn(List<Integer> values) {
+            addCriterion("group_id not in", values, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("group_id between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("group_id not between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyIsNull() {
+            addCriterion("type_key is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyIsNotNull() {
+            addCriterion("type_key is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyEqualTo(String value) {
+            addCriterion("type_key =", value, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyNotEqualTo(String value) {
+            addCriterion("type_key <>", value, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyGreaterThan(String value) {
+            addCriterion("type_key >", value, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("type_key >=", value, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyLessThan(String value) {
+            addCriterion("type_key <", value, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyLessThanOrEqualTo(String value) {
+            addCriterion("type_key <=", value, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyLike(String value) {
+            addCriterion("type_key like", value, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyNotLike(String value) {
+            addCriterion("type_key not like", value, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyIn(List<String> values) {
+            addCriterion("type_key in", values, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyNotIn(List<String> values) {
+            addCriterion("type_key not in", values, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyBetween(String value1, String value2) {
+            addCriterion("type_key between", value1, value2, "typeKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeKeyNotBetween(String value1, String value2) {
+            addCriterion("type_key not between", value1, value2, "typeKey");
+            return (Criteria) this;
+        }
+
         public Criteria andTaxRateIdIsNull() {
             addCriterion("tax_rate_id is null");
             return (Criteria) this;
@@ -1133,76 +1263,6 @@ public class SchemeLiquidationAnalysisItemExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyIsNull() {
-            addCriterion("type_key is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyIsNotNull() {
-            addCriterion("type_key is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyEqualTo(String value) {
-            addCriterion("type_key =", value, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyNotEqualTo(String value) {
-            addCriterion("type_key <>", value, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyGreaterThan(String value) {
-            addCriterion("type_key >", value, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyGreaterThanOrEqualTo(String value) {
-            addCriterion("type_key >=", value, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyLessThan(String value) {
-            addCriterion("type_key <", value, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyLessThanOrEqualTo(String value) {
-            addCriterion("type_key <=", value, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyLike(String value) {
-            addCriterion("type_key like", value, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyNotLike(String value) {
-            addCriterion("type_key not like", value, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyIn(List<String> values) {
-            addCriterion("type_key in", values, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyNotIn(List<String> values) {
-            addCriterion("type_key not in", values, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyBetween(String value1, String value2) {
-            addCriterion("type_key between", value1, value2, "typeKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeKeyNotBetween(String value1, String value2) {
-            addCriterion("type_key not between", value1, value2, "typeKey");
             return (Criteria) this;
         }
     }

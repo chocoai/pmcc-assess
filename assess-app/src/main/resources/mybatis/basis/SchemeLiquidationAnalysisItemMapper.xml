@@ -6,6 +6,8 @@
     <result column="area_id" property="areaId" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="type_key" property="typeKey" jdbcType="VARCHAR" />
     <result column="tax_rate_id" property="taxRateId" jdbcType="INTEGER" />
     <result column="tax_rate_value" property="taxRateValue" jdbcType="VARCHAR" />
     <result column="calculation_method" property="calculationMethod" jdbcType="INTEGER" />
@@ -18,7 +20,6 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="type_key" property="typeKey" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,9 +80,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, area_id, judge_object_id, plan_details_id, tax_rate_id, tax_rate_value, calculation_method, 
-    tax_rate_name, calculate_base, calculation_formula, taxes_burden, price, remark, 
-    creator, gmt_created, gmt_modified, type_key
+    id, area_id, judge_object_id, plan_details_id, group_id, type_key, tax_rate_id, tax_rate_value, 
+    calculation_method, tax_rate_name, calculate_base, calculation_formula, taxes_burden, 
+    price, remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItemExample" >
     select
@@ -118,17 +119,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_liquidation_analysis_item (area_id, judge_object_id, plan_details_id, 
-      tax_rate_id, tax_rate_value, calculation_method, 
-      tax_rate_name, calculate_base, calculation_formula, 
-      taxes_burden, price, remark, 
-      creator, gmt_created, gmt_modified, 
-      type_key)
+      group_id, type_key, tax_rate_id, 
+      tax_rate_value, calculation_method, tax_rate_name, 
+      calculate_base, calculation_formula, taxes_burden, 
+      price, remark, creator, 
+      gmt_created, gmt_modified)
     values (#{areaId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
-      #{taxRateId,jdbcType=INTEGER}, #{taxRateValue,jdbcType=VARCHAR}, #{calculationMethod,jdbcType=INTEGER}, 
-      #{taxRateName,jdbcType=VARCHAR}, #{calculateBase,jdbcType=VARCHAR}, #{calculationFormula,jdbcType=VARCHAR}, 
-      #{taxesBurden,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{typeKey,jdbcType=VARCHAR})
+      #{groupId,jdbcType=INTEGER}, #{typeKey,jdbcType=VARCHAR}, #{taxRateId,jdbcType=INTEGER}, 
+      #{taxRateValue,jdbcType=VARCHAR}, #{calculationMethod,jdbcType=INTEGER}, #{taxRateName,jdbcType=VARCHAR}, 
+      #{calculateBase,jdbcType=VARCHAR}, #{calculationFormula,jdbcType=VARCHAR}, #{taxesBurden,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -144,6 +145,12 @@
       </if>
       <if test="planDetailsId != null" >
         plan_details_id,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="typeKey != null" >
+        type_key,
       </if>
       <if test="taxRateId != null" >
         tax_rate_id,
@@ -181,9 +188,6 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="typeKey != null" >
-        type_key,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="areaId != null" >
@@ -194,6 +198,12 @@
       </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="typeKey != null" >
+        #{typeKey,jdbcType=VARCHAR},
       </if>
       <if test="taxRateId != null" >
         #{taxRateId,jdbcType=INTEGER},
@@ -231,9 +241,6 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="typeKey != null" >
-        #{typeKey,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItemExample" resultType="java.lang.Integer" >
@@ -256,6 +263,12 @@
       </if>
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.groupId != null" >
+        group_id = #{record.groupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.typeKey != null" >
+        type_key = #{record.typeKey,jdbcType=VARCHAR},
       </if>
       <if test="record.taxRateId != null" >
         tax_rate_id = #{record.taxRateId,jdbcType=INTEGER},
@@ -293,9 +306,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.typeKey != null" >
-        type_key = #{record.typeKey,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -307,6 +317,8 @@
       area_id = #{record.areaId,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      group_id = #{record.groupId,jdbcType=INTEGER},
+      type_key = #{record.typeKey,jdbcType=VARCHAR},
       tax_rate_id = #{record.taxRateId,jdbcType=INTEGER},
       tax_rate_value = #{record.taxRateValue,jdbcType=VARCHAR},
       calculation_method = #{record.calculationMethod,jdbcType=INTEGER},
@@ -318,8 +330,7 @@
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      type_key = #{record.typeKey,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -335,6 +346,12 @@
       </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="typeKey != null" >
+        type_key = #{typeKey,jdbcType=VARCHAR},
       </if>
       <if test="taxRateId != null" >
         tax_rate_id = #{taxRateId,jdbcType=INTEGER},
@@ -372,9 +389,6 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="typeKey != null" >
-        type_key = #{typeKey,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -383,6 +397,8 @@
     set area_id = #{areaId,jdbcType=INTEGER},
       judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      group_id = #{groupId,jdbcType=INTEGER},
+      type_key = #{typeKey,jdbcType=VARCHAR},
       tax_rate_id = #{taxRateId,jdbcType=INTEGER},
       tax_rate_value = #{taxRateValue,jdbcType=VARCHAR},
       calculation_method = #{calculationMethod,jdbcType=INTEGER},
@@ -394,8 +410,7 @@
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      type_key = #{typeKey,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
