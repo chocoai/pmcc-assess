@@ -568,8 +568,7 @@ public class GenerateBaseDataService {
                             } else {
                                 val = String.format("%s", basicBuildingVo.getBuildingStructureTypeName());
                             }
-                    if (basicBuildingVo == null) {
-                        continue;
+                        }
                     }
                     if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureTypeName())) {
                         if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureCategoryName())) {
@@ -1562,6 +1561,25 @@ public class GenerateBaseDataService {
     public String getHotTip() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(16);
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
+        BaseDataDic type = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
+        String addressAssetInventory = getActualAddressAssetInventory(type);//现场查勘地址 登记地址与实际地址
+        String certificateAssetInventory = getCertificateAssetInventory(type);//证明人
+        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> hashMap = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
+        BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE);
+        List<Integer> integerList = Lists.newArrayList();
+        if (!hashMap.isEmpty()) {
+            hashMap.entrySet().stream().forEach(entry -> {
+                if (CollectionUtils.isNotEmpty(entry.getValue())) {
+                    entry.getValue().stream().forEach(oo -> {
+                        if (oo.getCategory() != null) {
+                            if (Objects.equal(projectClassify.getId(), oo.getCategory())) {
+                                integerList.add(generateCommonMethod.parseIntJudgeNumber(entry.getKey().getNumber()));
+                            }
+                        }
+                    });
+                }
+            });
+        }
         int row = 0;
         {
             stringSet.add("本函内容摘自估价报告");
@@ -1572,65 +1590,42 @@ public class GenerateBaseDataService {
             stringSet.clear();
             row++;
         }
-        {
-            Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> hashMap = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE);
-            List<Integer> integerList = Lists.newArrayList();
-            if (!hashMap.isEmpty()) {
-                hashMap.entrySet().stream().forEach(entry -> {
-                    if (CollectionUtils.isNotEmpty(entry.getValue())) {
-                        entry.getValue().stream().forEach(oo -> {
-                            if (oo.getCategory() != null) {
-                                if (Objects.equal(projectClassify.getId(), oo.getCategory())) {
-                                    integerList.add(generateCommonMethod.parseIntJudgeNumber(entry.getKey().getNumber()));
-                                }
-                            }
-                        });
-                    }
-                });
+        if (CollectionUtils.isNotEmpty(integerList)) {
+            stringSet.add(String.format("%s号根据委托人介绍及估价人员在", generateCommonMethod.convertNumber(integerList.stream().distinct().collect(Collectors.toList()))));
+            String areaFullName = erpAreaService.getAreaFullName(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
+            DataHisRightInfoPublicity infoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
+            String value = null;
+            if (infoPublicity != null) {
+                value = infoPublicity.getContent();
             }
-            if (CollectionUtils.isNotEmpty(integerList)) {
-                stringSet.add(String.format("%s号根据委托人介绍及估价人员在", generateCommonMethod.convertNumber(integerList.stream().distinct().collect(Collectors.toList()))));
-                String areaFullName = erpAreaService.getAreaFullName(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
-                DataHisRightInfoPublicity infoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
-                String value = null;
-                if (infoPublicity != null) {
-                    value = infoPublicity.getContent();
-                }
-                stringSet.add(String.format("%s%s", areaFullName, StringUtils.defaultString(value, "房地产评估管理服务信息系统（http://fcpg.cdfgj.gov.cn/）")));
-                stringSet.add("上查询了解得知，截止价值时点，估价对象已设定抵押权。");
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
-                stringSet.clear();
-                row++;
-            }
+            stringSet.add(String.format("%s%s", areaFullName, StringUtils.defaultString(value, "房地产评估管理服务信息系统（http://fcpg.cdfgj.gov.cn/）")));
+            stringSet.add("上查询了解得知，截止价值时点，估价对象已设定抵押权。");
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            stringSet.clear();
+            row++;
         }
-        {
-            BaseDataDic type = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
-            String addressAssetInventory = getActualAddressAssetInventory(type);//现场查勘地址 登记地址与实际地址
-            String certificateAssetInventory = getCertificateAssetInventory(type);//证明人
-            if (StringUtils.isNotBlank(addressAssetInventory) && StringUtils.isNotBlank(certificateAssetInventory)) {
-                stringSet.add(String.format("估价对象现场查勘地址为%s", addressAssetInventory));
-                stringSet.add(String.format("本次评估根据委托方提供的证明文件由证明人%s证明", certificateAssetInventory));
-                stringSet.add("本次以上现场查勘地址为同一现场查勘地址。");
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
-                stringSet.clear();
-                row++;
-            }
-            if (CollectionUtils.isNotEmpty(getSchemeReimbursementItemVoList())) {
-                BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
-                stringSet.add("根据估价委托人提供的《法定优先受偿款情况说明》");
-                stringSet.add("估价对象于价值时点已设定抵押权");
-                stringSet.add("本次评估是抵押权存续期间的房地产估价（同行续贷）");
-                stringSet.add("经过沟通");
-                stringSet.add("抵押权人已经知晓法定优先受偿款对估价对象价值的影响");
-                stringSet.add("且并不需要我们在抵押价值中予以扣除法定优先受偿款");
-                stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款合计为%s万元（大写：%s）",
-                        generateCommonMethod.getBigDecimalRound(knowTotalPrice, true),
-                        CnNumberUtils.toUppercaseSubstring(knowTotalPrice.toString())));
-                stringSet.add("在此提请报告使用人加以关注。");
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
-                stringSet.clear();
-            }
+        if (StringUtils.isNotBlank(addressAssetInventory) && StringUtils.isNotBlank(certificateAssetInventory)) {
+            stringSet.add(String.format("估价对象现场查勘地址为%s", addressAssetInventory));
+            stringSet.add(String.format("本次评估根据委托方提供的证明文件由证明人%s证明", certificateAssetInventory));
+            stringSet.add("本次以上现场查勘地址为同一现场查勘地址。");
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            stringSet.clear();
+            row++;
+        }
+        if (CollectionUtils.isNotEmpty(getSchemeReimbursementItemVoList())) {
+            BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
+            stringSet.add("根据估价委托人提供的《法定优先受偿款情况说明》");
+            stringSet.add("估价对象于价值时点已设定抵押权");
+            stringSet.add("本次评估是抵押权存续期间的房地产估价（同行续贷）");
+            stringSet.add("经过沟通");
+            stringSet.add("抵押权人已经知晓法定优先受偿款对估价对象价值的影响");
+            stringSet.add("且并不需要我们在抵押价值中予以扣除法定优先受偿款");
+            stringSet.add(String.format("故本报告假设估价对象在价值时点法定优先受偿款合计为%s万元（大写：%s）",
+                    generateCommonMethod.getBigDecimalRound(knowTotalPrice, true),
+                    CnNumberUtils.toUppercaseSubstring(knowTotalPrice.toString())));
+            stringSet.add("在此提请报告使用人加以关注。");
+            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            stringSet.clear();
         }
         return stringBuilder.toString();
     }

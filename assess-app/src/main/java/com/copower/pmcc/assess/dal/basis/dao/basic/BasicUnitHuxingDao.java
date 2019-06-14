@@ -43,7 +43,7 @@ public class BasicUnitHuxingDao {
         return  basicUnitHuxingMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicUnitHuxing> basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing)throws SQLException{
+    public List<BasicUnitHuxing> basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing){
         BasicUnitHuxingExample example = new BasicUnitHuxingExample();
         MybatisUtils.convertObj2Example(basicUnitHuxing, example);
         return basicUnitHuxingMapper.selectByExample(example);

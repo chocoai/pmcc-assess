@@ -311,18 +311,13 @@ public class GenerateReportService {
         Document document = new Document(tempDir);
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
         List<String> stringList = Lists.newArrayList();
-        String text = PoiUtils.getWordTableContent(tempDir) ;
-        if(StringUtils.isNotEmpty(text)){
+        String text = PoiUtils.getWordTableContent(tempDir);
+        if (StringUtils.isNotEmpty(text)) {
             //取出word中表格数据
             Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(text);
             while (m.find()) {
                 stringList.add(m.group());
             }
-        String text = PoiUtils.getWordTableContent(tempDir);
-        //取出word中表格数据
-        Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(text);
-        while (m.find()) {
-            stringList.add(m.group());
         }
         //获取普通段落
         List<String> regexList = AsposeUtils.getRegexList(document, null);
@@ -1075,10 +1070,10 @@ public class GenerateReportService {
 
     private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
         if (!preMap.isEmpty()) {
-            Map<String,String>  errorMap = AsposeUtils.replaceText(localPath, preMap);
-            if (!errorMap.isEmpty()){
-                if (false){
-                    replaceHandleError(errorMap,localPath) ;
+            Map<String, String> errorMap = AsposeUtils.replaceText(localPath, preMap);
+            if (!errorMap.isEmpty()) {
+                if (false) {
+                    replaceHandleError(errorMap, localPath);
                 }
             }
         }
@@ -1088,11 +1083,8 @@ public class GenerateReportService {
         if (!textMap.isEmpty()) {
             Map<String, String> errorMap = AsposeUtils.replaceText(localPath, textMap);
             if (!errorMap.isEmpty()) {
-                //暂时不处理,准备使用 apache poi 处理
-            Map<String,String>  errorMap = AsposeUtils.replaceText(localPath, textMap);
-            if (!errorMap.isEmpty()){
-                if (false){
-                    replaceHandleError(errorMap,localPath) ;
+                if (false) {
+                    replaceHandleError(errorMap, localPath);
                 }
             }
         }
@@ -1102,18 +1094,18 @@ public class GenerateReportService {
     }
 
 
-    private void replaceHandleError(Map<String,String>  errorMap,String localPath)throws Exception{
-        if (!errorMap.isEmpty()){
-            Map<String,String> changeMap = Maps.newHashMap();
-            Map<String,String> transMap = Maps.newHashMap();
+    private void replaceHandleError(Map<String, String> errorMap, String localPath) throws Exception {
+        if (!errorMap.isEmpty()) {
+            Map<String, String> changeMap = Maps.newHashMap();
+            Map<String, String> transMap = Maps.newHashMap();
             errorMap.forEach((key, value) -> {
-                String text = RandomStringUtils.randomAlphabetic(6) ;
-                changeMap.put(key, text) ;
-                transMap.put(text,value) ;
+                String text = RandomStringUtils.randomAlphabetic(6);
+                changeMap.put(key, text);
+                transMap.put(text, value);
             });
             //暂时不处理,准备使用 apache poi 处理
             AsposeUtils.replaceText(localPath, changeMap);
-            PoiUtils.replaceText(transMap,localPath) ;
+            PoiUtils.replaceText(transMap, localPath);
         }
     }
 

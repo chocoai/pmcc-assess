@@ -38,7 +38,7 @@ public class BasicUnitDao {
         return  basicUnitMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicUnit> basicUnitList(BasicUnit basicUnit)throws SQLException{
+    public List<BasicUnit> basicUnitList(BasicUnit basicUnit){
         BasicUnitExample example = new BasicUnitExample();
         BasicUnitExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();

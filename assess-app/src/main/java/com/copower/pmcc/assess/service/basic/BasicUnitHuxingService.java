@@ -131,7 +131,7 @@ public class BasicUnitHuxingService {
      * @return
      * @throws Exception
      */
-    public List<BasicUnitHuxing> basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing) throws Exception {
+    public List<BasicUnitHuxing> basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing)  {
         return basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
     }
 

@@ -165,7 +165,7 @@ public class BasicUnitService {
      * @return
      * @throws Exception
      */
-    public BasicUnit getBasicUnitByApplyId(Integer applyId) throws Exception {
+    public BasicUnit getBasicUnitByApplyId(Integer applyId)  {
         BasicUnit where = new BasicUnit();
         where.setApplyId(applyId);
         if (applyId == null || applyId == 0) {

@@ -184,7 +184,7 @@ public class GenerateBaseExamineService {
         return basicBuildingSurfaceService.basicBuildingSurfaceList(query);
     }
 
-    public BasicUnit getBasicUnit() throws Exception {
+    public BasicUnit getBasicUnit()  {
         BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
         if (basicUnit == null) {
             basicUnit = new BasicUnit();
@@ -193,7 +193,7 @@ public class GenerateBaseExamineService {
         return basicUnit;
     }
 
-    public List<BasicUnitHuxing> getBasicUnitHuxingList() throws Exception {
+    public List<BasicUnitHuxing> getBasicUnitHuxingList()  {
         BasicUnitHuxing query = new BasicUnitHuxing();
         query.setUnitId(getBasicUnit().getId());
         return basicUnitHuxingService.basicUnitHuxingList(query);
