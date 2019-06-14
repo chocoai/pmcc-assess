@@ -175,24 +175,17 @@ public class ProjectInfoService {
             consignor.setProjectId(projectId);
             unitInformation.setProjectId(projectId);
             possessor.setProjectId(projectId);
-            logger.error("init!"+init);
-            logger.error("saveAndUpdateInitiateConsignor!");
             consignorService.saveAndUpdateInitiateConsignor(consignor);
-            logger.error("saveAndUpdate!");
             unitInformationService.saveAndUpdate(unitInformation);
             possessorService.saveAndUpdate(possessor);
             //保存项目成员
             projectMember.setProjectId(projectId);
             projectMember.setCreator(commonService.thisUserAccount());
-            logger.error("projectMember!");
             projectMemberService.saveProjectMemeber(projectMember);
-            logger.error("projectMember-end!");
             //发起项目
             if (init) {
-                logger.error("initProjectInfo!");
                 //初始化项目信息
                 initProjectInfo(projectInfo);
-                logger.error("writeToErpProject!");
                 publicService.writeToErpProject(projectInfo);
             }
         } catch (Exception e) {
@@ -291,14 +284,11 @@ public class ProjectInfoService {
     public void initProjectInfo(ProjectInfo projectInfo) throws Exception {
         Integer projectTypeId = projectInfo.getProjectTypeId();//项目类别id
         Integer projectCategoryId = projectInfo.getProjectCategoryId();//项目范围id
-        logger.error("projectWorkStages1!");
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);
-        logger.error("projectWorkStages2!");
         if (CollectionUtils.isEmpty(projectWorkStages))
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
-            logger.error("item-1!");
             ProjectPlan projectPlan = new ProjectPlan();
             projectPlan.setProjectId(projectInfo.getId());
             projectPlan.setProcessInsId("-1");
@@ -311,13 +301,11 @@ public class ProjectInfoService {
             projectPlan.setProjectStatus(ProjectStatusEnum.WAIT.getKey());
             projectPlan.setBisRestart(false);
             projectPlan.setStageSort(i);
-            logger.error("item-2!");
             projectPlanDao.addProjectPlan(projectPlan);
             i++;//系统对不同项目进行分别排序，你处理某些阶段不需要执行的问题
         }
 
         ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
-        logger.error("projectWorkStage!");
         if (StringUtils.isNotBlank(projectWorkStage.getReviewBoxName()))//注意是取复核模型，因为第一个阶段没有工作成果提交，所以取复核较为合理
         {
             ProcessUserDto processUserDto = startProjectProcess(projectInfo, projectWorkStage);
@@ -328,7 +316,6 @@ public class ProjectInfoService {
         } else {//直接进入下一阶段
             projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());//更新项目状态
             updateProjectInfo(projectInfo);
-            logger.error("projectInfo!");
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
             projectPlanService.enterNextStage(projectPlans.get(0).getId());
         }

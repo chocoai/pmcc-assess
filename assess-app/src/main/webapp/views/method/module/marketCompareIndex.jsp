@@ -269,6 +269,8 @@
                         $(this).addClass('bg-red');
                 }
             })
+
+
             if (!defaluts.readonly) {
                 setElementEditable();
                 $('#tb_md_mc_item_list').find('tr[data-group="trading.time"][data-name="text"]').each(function () {
@@ -300,8 +302,32 @@
                         }
                     })
                 }
+
+                //文本不一致设置背景颜色
+                $("#tb_md_mc_item_list").find('[data-name="text"]').each(function () {
+                    var tds = $(this).find('td');
+                    var baseText = $(tds.get(0)).find('a').text();
+                    for (var i = 1; i < tds.length; i++) {
+                        var item = $(tds.get(i));
+                        if (baseText != item.find('a').text()) {
+                            item.find('a').css("color", "red");
+                        }
+                    }
+                })
+
                 marketCompare.calculation();//初始化后默认测算一次
             } else {
+                //文本不一致设置背景颜色
+                $("#tb_md_mc_item_list").find('[data-name="text"]').each(function () {
+                    var tds = $(this).find('td');
+                    var baseText = $(tds.get(0)).text();
+                    for (var i = 1; i < tds.length; i++) {
+                        var item = $(tds.get(i));
+                        if (baseText != item.text()) {
+                            item.css("color", "red");
+                        }
+                    }
+                })
                 $("#small_select_case").hide();
             }
         }
