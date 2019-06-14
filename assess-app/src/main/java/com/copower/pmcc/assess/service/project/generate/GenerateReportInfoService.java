@@ -9,14 +9,18 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportInfoVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,30 +38,68 @@ public class GenerateReportInfoService {
     private DataQualificationDao dataQualificationDao;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private CommonService commonService;
 
-    public GenerateReportInfo getGenerateReportInfoByAreaGroupId(Integer areaGroupId, Integer projectPlanId) throws Exception {
+
+    public GenerateReportInfo getGenerateReportInfoByAreaGroupId(Integer areaGroupId, Integer projectPlanId) {
         return generateReportInfoDao.getGenerateReportInfoByAreaGroupId(areaGroupId, projectPlanId);
     }
 
-    public GenerateReportInfo getGenerateReportInfoByProcessInsId(String processInsId) throws Exception {
-        GenerateReportInfo generateReportGeneration = new GenerateReportInfo();
-        generateReportGeneration.setProcessInsId(processInsId);
-        return generateReportInfoDao.getGenerateReportInfo(generateReportGeneration);
+    public void saveGenerateReportInfo(GenerateReportInfo generateReportInfo) {
+        if (generateReportInfo == null) return;
+        if (generateReportInfo.getId() != null && generateReportInfo.getId() > 0) {
+            updateGenerateReportInfo(generateReportInfo);
+        } else {
+            addGenerateReportInfo(generateReportInfo);
+        }
     }
 
-    public boolean updateGenerateReportInfo(GenerateReportInfo generateReportGeneration) throws Exception {
-        return generateReportInfoDao.updateGenerateReportInfo(generateReportGeneration);
+    public boolean updateGenerateReportInfo(GenerateReportInfo generateReportInfo) {
+        return generateReportInfoDao.updateGenerateReportInfo(generateReportInfo);
     }
 
-    public boolean addGenerateReportInfo(GenerateReportInfo generateReportGeneration) throws Exception {
-        return generateReportInfoDao.addGenerateReportInfo(generateReportGeneration);
+    public boolean addGenerateReportInfo(GenerateReportInfo generateReportInfo) {
+        return generateReportInfoDao.addGenerateReportInfo(generateReportInfo);
     }
 
-    public boolean deleteGenerateReportInfo(Integer id) throws Exception {
+    /**
+     * 获取生成的数据列表
+     *
+     * @param projectId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public List<GenerateReportInfoVo> initGenerateReportInfo(Integer projectId, Integer planId) {
+        GenerateReportInfo where = new GenerateReportInfo();
+        where.setProjectId(projectId);
+        List<GenerateReportInfo> generationList = generateReportGenerationList(where);
+        if (org.apache.commons.collections.CollectionUtils.isEmpty(generationList)) {
+            generationList = Lists.newArrayList();
+            List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectId);
+            for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
+                GenerateReportInfo generateReportInfo = new GenerateReportInfo();
+                generateReportInfo.setProjectId(projectId);
+                generateReportInfo.setProjectPlanId(planId);
+                generateReportInfo.setAreaGroupId(schemeAreaGroup.getId());
+                generateReportInfo.setInvestigationsStartDate(new Date());
+                generateReportInfo.setInvestigationsEndDate(new Date());
+                generateReportInfo.setReportIssuanceDate(new Date());
+                generateReportInfo.setHomeWorkEndTime(new Date());
+                generateReportInfo.setCreator(commonService.thisUserAccount());
+                addGenerateReportInfo(generateReportInfo);
+                generationList.add(generateReportInfo);
+            }
+        }
+        return LangUtils.transform(generationList, o -> getGenerateReportInfoVo(o));
+    }
+
+
+    public boolean deleteGenerateReportInfo(Integer id) {
         return generateReportInfoDao.deleteGenerateReportInfo(id);
     }
 
-    public GenerateReportInfo getByGenerateReportInfoId(Integer id) throws Exception {
+    public GenerateReportInfo getByGenerateReportInfoId(Integer id) {
         return generateReportInfoDao.getByGenerateReportInfoId(id);
     }
 
@@ -77,16 +119,16 @@ public class GenerateReportInfoService {
         if (schemeAreaGroup != null)
             vo.setAreaGroupName(schemeAreaGroup.getAreaName());
         //取资质名称
-        if(StringUtils.isNotBlank(generateReportGeneration.getQualificationType())){
+        if (StringUtils.isNotBlank(generateReportGeneration.getQualificationType())) {
             AdPersonalEnum adPersonalEnum = AdPersonalEnum.create(generateReportGeneration.getQualificationType());
-            if(adPersonalEnum!=null)
+            if (adPersonalEnum != null)
                 vo.setQualificationTypeName(adPersonalEnum.getName());
         }
         //取估价师名称
-        if(StringUtils.isNotBlank(generateReportGeneration.getRealEstateAppraiser())){
+        if (StringUtils.isNotBlank(generateReportGeneration.getRealEstateAppraiser())) {
             List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(generateReportGeneration.getRealEstateAppraiser()));
             List<DataQualification> dataQualifications = dataQualificationDao.getDataQualifications(list);
-            if(!CollectionUtils.isEmpty(dataQualifications)){
+            if (!CollectionUtils.isEmpty(dataQualifications)) {
                 String userName = publicService.getUserNameByAccountList(LangUtils.transform(dataQualifications, o -> o.getUserAccount()));
                 vo.setRealEstateAppraiserName(userName);
             }

@@ -27,19 +27,20 @@
             <div class="clearfix"></div>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!--填写表单-->
-            <c:forEach items="${schemeAreaGroupList}" var="areaGroup">
+            <c:forEach items="${generationVos}" var="generationVo">
                 <div class="x_panel area_panel">
                     <div class="x_title collapse-link">
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                         </ul>
-                        <h3>${areaGroup.areaName}</h3>
+                        <h3>${generationVo.areaGroupName}</h3>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <form class="form-horizontal" id="groupForm${areaGroup.id}">
-                            <input type="hidden" id="areaGroupId" name="areaGroupId" value="${areaGroup.id}">
-                            <input type="hidden" name="id">
+                        <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}">
+                            <input type="hidden" id="areaGroupId" name="areaGroupId"
+                                   value="${generationVo.areaGroupId}">
+                            <input type="hidden" name="id" value="${generationVo.id}">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
@@ -48,7 +49,8 @@
                                     <div class="col-sm-3">
                                         <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
                                                class="form-control date-picker dbdate" pattern='yyyy-MM-dd'
-                                               data-date-format="yyyy-mm-dd" required>
+                                               data-date-format="yyyy-mm-dd" required
+                                               value="<fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -59,7 +61,8 @@
                                         <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
                                                class="form-control date-picker dbdate"
                                                data-date-format="yyyy-mm-dd"
-                                               pattern='yyyy-MM-dd' required>
+                                               pattern='yyyy-MM-dd' required
+                                               value="<fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -73,7 +76,13 @@
                                                 <option value="">--请选择--</option>
                                                 <c:if test="${not empty qualificationTypes}">
                                                     <c:forEach items="${qualificationTypes}" var="itemA">
-                                                        <option value="${itemA.key}">${itemA.value}</option>
+                                                        <c:if test="${generationVo.qualificationType eq itemA.key}">
+                                                            <option selected="selected"
+                                                                    value="${itemA.key}">${itemA.value}</option>
+                                                        </c:if>
+                                                        <c:if test="${generationVo.qualificationType ne itemA.key}">
+                                                            <option value="${itemA.key}">${itemA.value}</option>
+                                                        </c:if>
                                                     </c:forEach>
                                                 </c:if>
                                             </select>
@@ -93,7 +102,7 @@
                                                class="form-control date-picker dbdate"
                                                data-date-format="yyyy-mm-dd"
                                                pattern='yyyy-MM-dd'
-                                               value="<fmt:formatDate value='${schemeReportGeneration.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
+                                               value="<fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -105,7 +114,7 @@
                                                class="form-control date-picker dbdate"
                                                data-date-format="yyyy-mm-dd"
                                                pattern='yyyy-MM-dd'
-                                               value="<fmt:formatDate value='${schemeReportGeneration.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
+                                               value="<fmt:formatDate value='${generationVo.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -124,11 +133,11 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
                                             <a class="btn-dark btn btn-xs"
-                                               onclick="generateReport('${areaGroup.id}','${reportType.id}',this)">生成${reportType.name}
+                                               onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">生成${reportType.name}
                                                 <i class="fa fa-file-word-o"></i></a>
                                         </label>
                                         <div class="col-sm-3">
-                                            <div id="_${reportType.fieldName}${areaGroup.id}"></div>
+                                            <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -140,9 +149,9 @@
                     $(function () {
                         getSchemeReportGeneration({
                             projectPlanId: '${projectPlan.id}',
-                            areaGroupId: '${areaGroup.id}'
+                            areaGroupId: '${generationVo.areaGroupId}'
                         }, function (info) {
-                            initFormSchemeReportGeneration(info, $('#groupForm${areaGroup.id}'), '${areaGroup.id}');
+                            initFormSchemeReportGeneration(info, $('#groupForm${generationVo.areaGroupId}'), '${generationVo.areaGroupId}');
                         });
                     })
                 </script>
@@ -266,17 +275,6 @@
     //赋值
     function initFormSchemeReportGeneration(info, frm, areaGroupId) {
         if (info) {
-            $(frm).initForm(info);
-            if (info.investigationsStartDate) {
-                $(frm).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
-            }
-            if (info.investigationsEndDate) {
-                $(frm).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
-            }
-            $(frm).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
-            $(frm).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
-            $(frm).find("select[name='qualificationType']").val(info.qualificationType).attr("selected", true);
-            $(frm).find("input[name='id']").val(info.id);
             getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
                 $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
                     fileShow(n + "" + areaGroupId, true, info.id);

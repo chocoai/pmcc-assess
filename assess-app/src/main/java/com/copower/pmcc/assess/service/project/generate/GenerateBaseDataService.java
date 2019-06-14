@@ -121,6 +121,7 @@ public class GenerateBaseDataService {
     private ProjectQrcodeRecordService projectQrcodeRecordService;
     private ErpRpcToolsService erpRpcToolsService;
     private ApplicationConstant applicationConstant;
+    private DataSetUseFieldService dataSetUseFieldService;
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
     /**
@@ -432,19 +433,30 @@ public class GenerateBaseDataService {
             List<SchemeJudgeObject> judgeObjects = entry.getValue();
             List<DeclareRecord> recordList = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId()));
             List<String> list = Lists.newArrayList();
-            for (DeclareRecord record : recordList) {
-                if (StringUtils.isNotEmpty(record.getStreetNumber())) {
-                    list.add(record.getSeat().replace(record.getStreetNumber(), ""));
+            if (CollectionUtils.isNotEmpty(recordList)) {
+                int size = recordList.size();
+                int eachLength = size > 3 ? 3 : size;
+                for (int i = 0; i < eachLength; i++) {
+                    DeclareRecord record = recordList.get(i);
+                    if (StringUtils.isNotEmpty(record.getStreetNumber())) {
+                        list.add(record.getSeat().replace(record.getStreetNumber(), ""));
+                    } else {
+                        list.add(record.getSeat());
+                    }
+                }
+                if (StringUtils.isNotEmpty(recordList.stream().findFirst().get().getStreetNumber())) {
+                    stringBuilder.append(String.format("%s%s", recordList.stream().findFirst().get().getStreetNumber(), entry.getKey().getName()));
                 } else {
-                    list.add(record.getSeat());
+                    stringBuilder.append(entry.getKey().getName());
+                }
+                stringBuilder.append(publicService.fusinString(list, false)).append("");
+                if (size > 3)
+                    stringBuilder.append(String.format("等%s宗", size));
+                DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(judgeObjects.get(0).getSetUse());
+                if (setUseField != null) {
+                    stringBuilder.append(String.format("%s%s用途房地产", setUseField.getName(), size > 3 ? "等" : ""));
                 }
             }
-            if (StringUtils.isNotEmpty(recordList.stream().findFirst().get().getStreetNumber())) {
-                stringBuilder.append(String.format("%s%s", recordList.stream().findFirst().get().getStreetNumber(), entry.getKey().getName()));
-            } else {
-                stringBuilder.append(entry.getKey().getName());
-            }
-            stringBuilder.append(publicService.fusinString(list, false)).append("");
         }
         if (getSchemeAreaGroup().getEntrustPurpose() != null) {
             stringBuilder.append(baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
@@ -556,6 +568,14 @@ public class GenerateBaseDataService {
                             } else {
                                 val = String.format("%s", basicBuildingVo.getBuildingStructureTypeName());
                             }
+                    if (basicBuildingVo == null) {
+                        continue;
+                    }
+                    if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureTypeName())) {
+                        if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureCategoryName())) {
+                            val = String.format("%s%s", basicBuildingVo.getBuildingStructureTypeName(), basicBuildingVo.getBuildingStructureCategoryName());
+                        } else {
+                            val = String.format("%s", basicBuildingVo.getBuildingStructureTypeName());
                         }
                     }
                 }
@@ -2345,7 +2365,8 @@ public class GenerateBaseDataService {
     public String getSetUse(boolean explainShow) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectDeclareList) {
-            map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
+            DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+            map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), setUseField == null ? "" : setUseField.getName());
         }
         return generateCommonMethod.judgeSummaryDesc(map, explainShow ? "设定用途为" : "", false);
     }
@@ -5610,6 +5631,7 @@ public class GenerateBaseDataService {
         this.erpRpcToolsService = SpringContextUtils.getBean(ErpRpcToolsService.class);
         this.applicationConstant = SpringContextUtils.getBean(ApplicationConstant.class);
         this.declareBuildEngineeringAndEquipmentCenterService = SpringContextUtils.getBean(DeclareBuildEngineeringAndEquipmentCenterService.class);
+        this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

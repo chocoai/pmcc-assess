@@ -112,7 +112,7 @@
                 if (result.ret) {
                     estateCommon.showEstateView(result.data);
                     if (callback) {
-                        callback();
+                        callback(result.data);
                     }
                 }
             }

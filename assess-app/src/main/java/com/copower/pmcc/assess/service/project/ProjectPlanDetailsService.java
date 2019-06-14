@@ -94,6 +94,8 @@ public class ProjectPlanDetailsService {
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
     private SurveyExamineInfoService surveyExamineInfoService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -181,16 +183,16 @@ public class ProjectPlanDetailsService {
         projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
         projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
-        ProjectInfo projectInfo=projectInfoService.getProjectInfoById(projectId);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
 
         //判断任务是否结束，如果结束只能查看详情
         if (CollectionUtils.isNotEmpty(projectPlanDetailsVos)) {
             for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
                 if (StringUtils.equals(projectPlanDetailsVo.getStatus(), SysProjectEnum.FINISH.getValue()))
                     continue;
-                if(StringUtils.equals(projectInfo.getProjectStatus(),ProjectStatusEnum.FINISH.getKey()))
+                if (StringUtils.equals(projectInfo.getProjectStatus(), ProjectStatusEnum.FINISH.getKey()))
                     continue;
-                if(StringUtils.equals(projectInfo.getProjectStatus(),ProjectStatusEnum.CLOSE.getKey()))
+                if (StringUtils.equals(projectInfo.getProjectStatus(), ProjectStatusEnum.CLOSE.getKey()))
                     continue;
                 //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
                 if (projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
@@ -312,17 +314,22 @@ public class ProjectPlanDetailsService {
                     }
                     break;
             }
+            projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
             //设置查看url
-            if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
-                projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
-                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
-                if (projectPhase != null) {
-                    projectPlanDetailsVo.setCanReplay(projectPhase.getBisCanReturn());
+            boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
+            boolean isOperable = projectInfoService.isProjectOperable(projectId);
+
+            if (isMember && isOperable) {
+                if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
+                    ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
+                    if (projectPhase != null) {
+                        projectPlanDetailsVo.setCanReplay(projectPhase.getBisCanReturn());
+                    }
                 }
-            }
-            //设置复制
-            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                projectPlanDetailsVo.setCanCopy(true);
+                //设置复制
+                if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+                    projectPlanDetailsVo.setCanCopy(true);
+                }
             }
         }
         return projectPlanDetailsVos;
@@ -588,13 +595,13 @@ public class ProjectPlanDetailsService {
         if (projectPlanDetails.getProjectPhaseId().equals(projectPhaseExplore.getId()) || projectPlanDetails.getProjectPhaseId().equals(projectPhaseStudy.getId())) {
             //将task任务也移交过去
             ProjectPlanDetails parentDetail = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
-            if(parentDetail!=null){
+            if (parentDetail != null) {
                 parentDetail.setExecuteUserAccount(newExecuteUser);
                 parentDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
                 projectPlanDetailsDao.updateProjectPlanDetails(parentDetail);
             }
             List<SurveyExamineTask> taskList = surveyExamineTaskService.getTaskListByPlanDetailsId(projectPlanDetails.getPid());
-            if(CollectionUtils.isNotEmpty(taskList)){
+            if (CollectionUtils.isNotEmpty(taskList)) {
                 for (SurveyExamineTask surveyExamineTask : taskList) {
                     surveyExamineTask.setUserAccount(newExecuteUser);
                     surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);

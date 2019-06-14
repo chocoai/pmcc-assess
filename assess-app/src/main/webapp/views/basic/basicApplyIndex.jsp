@@ -52,6 +52,13 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="x-valid">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input type="button" class="btn btn-success" data-mode="reference"
+                                           onclick="projectData.prototype.showModel();"
+                                           value="引用项目中的楼盘">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <span class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 checkbox-inline">
@@ -222,6 +229,7 @@
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
+<jsp:include page="/views/basic/modelView/projectHousesData.jsp"></jsp:include>
 </html>
 <script type="text/javascript">
     var basicApplyIndex = new Object();
@@ -500,6 +508,71 @@
         }
     };
 
+    basicApplyIndex.autocompleteData = function (index) {
+        var row = $("#projectCaseItemList").bootstrapTable('getData')[index];
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApply/getCaseBasicApply',
+            data: {
+                id: row.id,
+                projectPhaseId: row.projectPhaseId
+            },
+            type: "get",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    if (result.data != null) {
+                        var type = result.data.type;
+                        $("#basicApplyFrm").find("input[type='radio'][name='type'][value='"+type+"']").prop("checked", "checked");
+                        if (type == 2) {
+                            $("#unitAndHouseInfo").hide();
+                        } else {
+                            $("#unitAndHouseInfo").show();
+                        }
+                        industry.keyApp(type);
+                        basicCommon.hideAllTab();
+                        //初始楼盘信息
+                        estateCommon.init(result.data.id, function (data) {
+                            if(data) {
+                                basicCommon.basicApplyForm.find('[name=estateName]').val(data.basicEstate.name);
+                                basicCommon.showEstateTab("add");
+                                $("#basicEstateFrm").find("input[name=id]").val("0");
+                            }
+                        });
+                        //初始楼栋信息
+                        buildingCommon.init(result.data.id, function (data) {
+                            if(data) {
+                                basicCommon.basicApplyForm.find('[name=buildingNumber]').val(data.buildingNumber);
+                                basicCommon.showBuildingTab("add");
+                                $("#basicBuildingFrm").find("input[name=id]").val("0");
+                            }
+                        });
+                        //初始单元信息
+                        unitCommon.init(result.data.id, function (data) {
+                            if(data) {
+                                basicCommon.basicApplyForm.find('[name=unitNumber]').val(data.unitNumber);
+                                basicCommon.showUnitTab("add");
+                                $("#basicUnitFrm").find("input[name=id]").val("0");
+                            }
+                        });
+                        //初始房屋信息
+                        houseCommon.init(result.data.id, function (data) {
+                            if(data&&data.basicHouse) {
+                                basicCommon.basicApplyForm.find('[name=houseNumber]').val(data.basicHouse.houseNumber);
+                                basicCommon.showHouseTab("add");
+                                $("#basicHouseFrm").find("input[name=id]").val("0");
+                            }
+                        });
+                        $('#divBoxProjectItemData').modal('hide');
+                        $('#divBoxProjectData').modal('hide');
+                    }
+                } else {
+                    Loading.progressHide();
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    };
 
     $(function () {
         basicApplyIndex.startApply();

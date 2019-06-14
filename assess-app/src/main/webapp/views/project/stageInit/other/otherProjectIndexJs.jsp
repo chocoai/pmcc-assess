@@ -428,7 +428,19 @@
             });
             $("#" + objProject.config.info.frm).find("select.entrustPurpose").change(function () {
                 var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
-                var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
+                var strArr = ["抵押评估"];//来自于实体描述1(1).docx中的规则
+                if (entrustPurpose) {
+                    AssessCommon.getDataDicInfo(entrustPurpose, function (entrustPurposeData) {
+                        var str = strArr.join(",");
+                        //当属于数组中的任意一项时显示
+                        if (str.indexOf(entrustPurposeData.name) != -1) {
+                            $("#" + objProject.config.info.frm).find("select.loanType").attr("required","required");
+                        } else {
+                            $("#" + objProject.config.info.frm).find("select.loanType").removeAttr("required");
+
+                        }
+                    });
+                }
 
                 if (item.entrustAimType) {
                     objProject.getCategory(entrustPurpose, item.entrustAimType);
@@ -504,6 +516,22 @@
                 }
             });
 
+            if (objProject.isNotBlank(item.entrustPurpose)) {
+                var strArr = ["抵押评估"];//来自于实体描述1(1).docx中的规则
+                var entrustPurposeId = item.entrustPurpose;
+                if (entrustPurposeId) {
+                    AssessCommon.getDataDicInfo(entrustPurposeId, function (entrustPurposeData) {
+                        var str = strArr.join(",");
+                        //当属于数组中的任意一项时显示
+                        if (str.indexOf(entrustPurposeData.name) != -1) {
+                            $("#" + objProject.config.info.frm).find("select.loanType").attr("required","required");
+                        } else {
+                            $("#" + objProject.config.info.frm).find("select.loanType").removeAttr("required");
+
+                        }
+                    });
+                }
+            }
         }
     };
 

@@ -132,6 +132,18 @@ basicCommon.hideTab = function (_this) {
     return false;
 }
 
+//隐藏所有标签
+basicCommon.hideAllTab = function () {
+    basicCommon.basicApplyForm.find('[name=estatePartInMode]').val('');
+    basicCommon.basicApplyForm.find('[name=buildingPartInMode]').val('');
+    basicCommon.basicApplyForm.find('[name=unitPartInMode]').val('');
+    basicCommon.basicApplyForm.find('[name=housePartInMode]').val('');
+    $("#contentTabPanel").find('[role="tabpanel"]').find('[id="caseEstate"]').removeClass('active');
+    $("#contentTabPanel").find('[role="tabpanel"]').find('[id="caseBuilding"]').removeClass('active');
+    $("#contentTabPanel").find('[role="tabpanel"]').find('[id="caseUnit"]').removeClass('active');
+    $("#contentTabPanel").find('[role="tabpanel"]').find('[id="caseHouse"]').removeClass('active');
+    $("#contentTabPanel").find('li').hide();
+}
 
 //数据验证
 //1.验证是否有申请信息
@@ -221,7 +233,7 @@ basicCommon.isComplete = function (applyForm, isDraft) {
         }
     }
 
-    if (applyForm.buildingPartInMode&&applyForm.type != 2) {
+    if (applyForm.buildingPartInMode && applyForm.type != 2) {
         basicCommon.showBuildingTab();
         options.msg = '请检查楼栋信息';
         if (!buildingCommon.buildingForm.valid(options.msg)) {
@@ -313,7 +325,7 @@ basicCommon.getFormData = function () {
     item.basicApply = basicApply;
     if (basicApply.estatePartInMode) {
         item.basicEstate = formSerializeArray(estateCommon.estateForm);
-        if (estateCommon.estateLandStateForm.size() >= 1){
+        if (estateCommon.estateLandStateForm.size() >= 1) {
             var data = formSerializeArray(estateCommon.estateLandStateForm);
             var landLevelContent = [];
             if (data.landFactorTotalScore) {
@@ -327,7 +339,7 @@ basicCommon.getFormData = function () {
                 var group = $(n).closest(".group");
                 var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
                 var obj = JSON.parse($(n).val());
-                var dataObject = [] ;
+                var dataObject = [];
                 obj.forEach(function (value, index) {
                     if (value.id == dataLandLevelAchievement) {
                         value.modelStr = "update";

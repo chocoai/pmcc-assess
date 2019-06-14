@@ -892,14 +892,17 @@
         html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
         html += "<input type='text' required class='form-control' name='projectName" + num + "'>";
         html += "</div>";
+        html += "</div>";
 
+        html += "<div class='x-valid'>";
         html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "类型" + "</label>";
         html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
-        html += "<select  class='form-control' name='remark " + num + "'>";
+        html += "<select required class='form-control' name='remark " + num + "'>";
         html += "<option value='应缴' selected>" + "应缴" + "</option>";
         html += "<option value='未缴'>" + "未缴" + "</option>";
         html += "<option value='欠缴'>" + "欠缴" + "</option>";
         html += "</select>";
+        html += "</div>";
         html += "</div>";
 
 
@@ -914,7 +917,7 @@
         html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
         html += "</div>";
 
-        html += "</div>";
+
         html += "</div>";
 
         num++;
@@ -932,7 +935,9 @@
             html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<input type='text' required class='form-control' name='projectName " + i + "' value='" + n["projectName"] + "'>";
             html += "</div>";
+            html += "</div>";
 
+            html += "<div class='x-valid'>";
             html += "<label class=' col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "类型" + "</label>";
             html += "<div class=' col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
             html += "<select id='select" + i + "' required class='form-control' name='remark" + i + "' >";
@@ -940,6 +945,7 @@
             html += "<option value='未缴'>" + "未缴" + "</option>";
             html += "<option value='欠缴'>" + "欠缴" + "</option>";
             html += "</select>";
+            html += "</div>";
             html += "</div>";
 
 
@@ -954,7 +960,6 @@
             html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
             html += "</div>";
 
-            html += "</div>";
             html += "</div>";
             $(".paymentItem").append(html);
             var selectId = "select" + i;
