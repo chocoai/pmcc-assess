@@ -72,22 +72,22 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade" id="caseEstate" aria-labelledby="profile-tab1">
                     <div>
-                        <%@include file="/views/basic/modelView/estateView.jsp" %>
+                        <jsp:include page="/views/basic/modelView/estateView.jsp" ></jsp:include>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="caseBuilding" aria-labelledby="profile-tab2">
                     <div>
-                        <%@include file="/views/basic/modelView/buildingView.jsp" %>
+                        <jsp:include page="/views/basic/modelView/buildingView.jsp" ></jsp:include>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
                     <div>
-                        <%@include file="/views/basic/modelView/unitView.jsp" %>
+                        <jsp:include page="/views/basic/modelView/unitView.jsp" ></jsp:include>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
                     <div>
-                        <%@include file="/views/basic/modelView/houseView.jsp" %>
+                        <jsp:include page="/views/basic/modelView/houseView.jsp" ></jsp:include>
                     </div>
                 </div>
             </div>

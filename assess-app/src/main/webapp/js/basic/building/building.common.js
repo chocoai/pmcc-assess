@@ -78,7 +78,7 @@
                 if (result.ret) {
                     buildingCommon.showBuildingView(result.data);
                     if (callback) {
-                        callback();
+                        callback(result.data);
                     }
                 }
             }

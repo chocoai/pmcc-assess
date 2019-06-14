@@ -312,4 +312,25 @@ public class BasicApplyController extends BaseController {
         return HttpResult.newCorrectResult(basicApply);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getProjectCaseItemList", name = "获取项目查勘及案例表", method = {RequestMethod.GET})
+    public BootstrapTableVo getProjectCaseItemList(Integer projectId, Integer projectCategoryId) {
+        BootstrapTableVo vo = basicApplyService.getProjectCaseItemList(projectId, projectCategoryId);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCaseBasicApply", name = "获取案列或查勘详细", method = RequestMethod.GET)
+    public HttpResult getCaseBasicApplyId(Integer id, Integer projectPhaseId) throws Exception {
+        try {
+            return HttpResult.newCorrectResult(basicApplyService.getCaseBasicApply(id, projectPhaseId));
+        } catch (BusinessException e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("获取数据异常");
+        }
+    }
+
 }
