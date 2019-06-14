@@ -77,7 +77,7 @@
                 if (result.ret) {
                     unitCommon.showUnitView(result.data);
                     if (callback) {
-                        callback();
+                        callback(result.data);
                     }
                 }
             }

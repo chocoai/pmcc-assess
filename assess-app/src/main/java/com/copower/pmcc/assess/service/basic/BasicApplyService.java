@@ -3,14 +3,23 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.cases.CaseEstateService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyEvent;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
+import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -27,6 +36,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +76,19 @@ public class BasicApplyService {
     private BasicHouseService basicHouseService;
     @Autowired
     private DataBlockService dataBlockService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectPlanDetailsDao projectPlanDetailsDao;
+    @Autowired
+    private SurveySceneExploreService surveySceneExploreService;
+    @Autowired
+    private SurveyCaseStudyService surveyCaseStudyService;
+    @Autowired
+    private CaseEstateService caseEstateService;
+
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -84,7 +107,7 @@ public class BasicApplyService {
         }
     }
 
-    public BasicApply getBasicApplyByPlanDetailsId(Integer planDetailsId){
+    public BasicApply getBasicApplyByPlanDetailsId(Integer planDetailsId) {
         BasicApply basicApply = new BasicApply();
         basicApply.setPlanDetailsId(planDetailsId);
         List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
@@ -196,7 +219,7 @@ public class BasicApplyService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyListByName(estateName,commonService.thisUserAccount(), draftFlag);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyListByName(estateName, commonService.thisUserAccount(), draftFlag);
         List<BasicApplyVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(basicApplyList)) {
             for (BasicApply basicApply1 : basicApplyList) {
@@ -215,9 +238,9 @@ public class BasicApplyService {
         BasicApplyVo vo = new BasicApplyVo();
         BeanUtils.copyProperties(basicApply, vo);
         vo.setFullName(getFullName(basicApply.getEstateName(), basicApply.getBuildingNumber(), basicApply.getUnitNumber(), basicApply.getHouseNumber()));
-        if (basicApply.getType() != null){
-            for (BasicApplyTypeEnum typeEnum:BasicApplyTypeEnum.values()){
-                if (basicApply.getType().intValue() == typeEnum.getId().intValue()){
+        if (basicApply.getType() != null) {
+            for (BasicApplyTypeEnum typeEnum : BasicApplyTypeEnum.values()) {
+                if (basicApply.getType().intValue() == typeEnum.getId().intValue()) {
                     vo.setTypeName(typeEnum.getName());
                 }
             }
@@ -278,5 +301,65 @@ public class BasicApplyService {
         return basicApplyDao.getBasicApplyCount(basicApply, applyId) > 0;
     }
 
+    //获取项目查勘案例数据
+    public BootstrapTableVo getProjectCaseItemList(Integer projectId, Integer projectCategoryId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        //案列事项
+        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.CASE_STUDY, projectCategoryId);
+        ProjectPlanDetails projectCaseDetails = new ProjectPlanDetails();
+        projectCaseDetails.setProjectId(projectId);
+        projectCaseDetails.setProjectPhaseId(projectCasePhase.getId());
+        List<ProjectPlanDetails> caseLists = projectPlanDetailsService.getProjectDetails(projectCaseDetails);
+        List<ProjectPlanDetails> caseList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(caseLists)) {
+            for (ProjectPlanDetails item : caseLists) {
+                List<ProjectPlanDetails> projectPlanDetailsByPid = projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId());
+                if (CollectionUtils.isNotEmpty(projectPlanDetailsByPid)) {
+                    for (ProjectPlanDetails data : projectPlanDetailsByPid) {
+                        caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId()));
+                    }
+                }
+            }
+        }
+        //查勘事项
+        ProjectPhase projectSurveyPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectCategoryId);
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setProjectId(projectId);
+        projectPlanDetails.setProjectPhaseId(projectSurveyPhase.getId());
+        List<ProjectPlanDetails> projectDetailLists = projectPlanDetailsService.getProjectDetails(projectPlanDetails);
+        if (CollectionUtils.isNotEmpty(projectDetailLists)) {
+            for (ProjectPlanDetails item : projectDetailLists) {
+                caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId()));
+            }
+        }
 
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(caseList) ? new ArrayList<ProjectPlanDetails>(10) : caseList);
+        return vo;
+    }
+
+
+    //获取查勘及案例的BasicApply
+    public BasicApply getCaseBasicApply(Integer id, Integer projectPhaseId) throws Exception {
+        Integer basicApplyId = null;
+        //现场查勘事项调查信息
+        ProjectPhase projectSurveyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
+        if (projectPhaseId.equals(projectSurveyPhase.getId())) {
+            basicApplyId = surveySceneExploreService.getSurveySceneExplore(id).getBasicApplyId();
+
+        }
+        //案例事项调查信息
+        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
+        if (projectPhaseId.equals(projectCasePhase.getId())) {
+            basicApplyId = surveyCaseStudyService.getSurveyCaseStudy(id).getBasicApplyId();
+        }
+        BasicApply basicApply = basicApplyDao.getBasicApplyById(basicApplyId);
+        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApplyId);
+        if (caseEstateService.hasEstateByName(basicEstate.getName(), basicEstate.getProvince(), basicEstate.getCity())) {
+            throw new BusinessException("案例中已存在相同名称楼盘");
+        }
+        return basicApply;
+    }
 }

@@ -100,7 +100,7 @@
                 if (result.ret) {
                     houseCommon.showHouseView(result.data);
                     if (callback) {
-                        callback();
+                        callback(result.data);
                     }
                 }
             }
