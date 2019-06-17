@@ -30,8 +30,55 @@ import java.util.regex.Pattern;
  */
 public class PoiUtils {
 
-    public static void replaceText(Map<String,String> map,String path){
-
+    /**
+     * apache poi word 替换方式
+     * @param map
+     * @param path
+     * @throws Exception
+     */
+    public static void replaceText(Map<String,String> map,String path)throws Exception{
+        if (isWord2003(path)) {
+            org.apache.poi.hwpf.HWPFDocument hwpfDocument = new org.apache.poi.hwpf.HWPFDocument(new FileInputStream(path));
+            org.apache.poi.hwpf.usermodel.Range range = hwpfDocument.getRange();
+            int i = 0;
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                if (StringUtils.contains(range.text(), entry.getKey())) {
+                    i++;
+                    range.replaceText(entry.getKey(), entry.getValue());
+                }
+            }
+            if (i != 0) {
+                hwpfDocument.write(new FileOutputStream(path));
+            }
+        }
+        if (isWord2007(path)) {
+            org.apache.poi.xwpf.usermodel.XWPFDocument document = new org.apache.poi.xwpf.usermodel.XWPFDocument(new FileInputStream(path));
+            /**
+             * 替换段落中的指定文字
+             */
+            Iterator<org.apache.poi.xwpf.usermodel.XWPFParagraph> itPara = document.getParagraphsIterator();
+            while (itPara.hasNext()) {
+                org.apache.poi.xwpf.usermodel.XWPFParagraph paragraph = itPara.next();
+                Set<String> set = map.keySet();
+                Iterator<String> iterator = set.iterator();
+                while (iterator.hasNext()) {
+                    String key = iterator.next();
+                    List<org.apache.poi.xwpf.usermodel.XWPFRun> run = paragraph.getRuns();
+                    for (int i = 0; i < run.size(); i++) {
+                        if (run.get(i).getText(run.get(i).getTextPosition()) != null && run.get(i).getText(run.get(i).getTextPosition()).equals(key)) {
+                            /**
+                             * 参数0表示生成的文字是要从哪一个地方开始放置,设置文字从位置0开始
+                             * 就可以把原来的文字全部替换掉了
+                             */
+                            if (StringUtils.isNotEmpty(map.get(key))) {
+                                run.get(i).setText(map.get(key), 0);
+                            }
+                        }
+                    }
+                }
+            }
+            document.write(new FileOutputStream(path));
+        }
     }
 
     /**

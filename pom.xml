@@ -475,12 +475,12 @@
                 <artifactId>poi-ooxml-schemas</artifactId>
                 <version>${poi.version}</version>
             </dependency>
+            <!-- ooxml-schemas , xmlbeans 解决apache poi word 兼容性问题,特别是老版本问题 -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>ooxml-schemas</artifactId>
                 <version>1.1</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
             <dependency>
                 <groupId>org.apache.xmlbeans</groupId>
                 <artifactId>xmlbeans</artifactId>

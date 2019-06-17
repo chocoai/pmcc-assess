@@ -1072,9 +1072,7 @@ public class GenerateReportService {
         if (!preMap.isEmpty()) {
             Map<String, String> errorMap = AsposeUtils.replaceText(localPath, preMap);
             if (!errorMap.isEmpty()) {
-                if (false) {
-                    replaceHandleError(errorMap, localPath);
-                }
+                replaceHandleError(errorMap, localPath);
             }
         }
         if (!fileMap.isEmpty()) {
@@ -1083,9 +1081,7 @@ public class GenerateReportService {
         if (!textMap.isEmpty()) {
             Map<String, String> errorMap = AsposeUtils.replaceText(localPath, textMap);
             if (!errorMap.isEmpty()) {
-                if (false) {
-                    replaceHandleError(errorMap, localPath);
-                }
+                replaceHandleError(errorMap, localPath);
             }
         }
         if (!bookmarkMap.isEmpty()) {
@@ -1103,7 +1099,7 @@ public class GenerateReportService {
                 changeMap.put(key, text);
                 transMap.put(text, value);
             });
-            //暂时不处理,准备使用 apache poi 处理
+            //使用 apache poi 处理
             AsposeUtils.replaceText(localPath, changeMap);
             PoiUtils.replaceText(transMap, localPath);
         }
