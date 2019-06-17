@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -31,6 +34,8 @@ public class ProjectCenterController {
     private ProjectCenterService projectCenterService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @RequestMapping(value = "/projectNew", name = "新建项目")
     public ModelAndView projectNew() {
@@ -61,13 +66,16 @@ public class ProjectCenterController {
         List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
                 ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
+        //委托目的
+        List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+        modelAndView.addObject("entrustPurposeList", entrustPurposeList);
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
-    public BootstrapTableVo getParticipationProject(String queryName, String projectStatus) {
-        return projectCenterService.getParticipationProject(queryName, projectStatus);
+    public BootstrapTableVo getParticipationProject(String queryName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose) {
+        return projectCenterService.getParticipationProject(queryName, projectStatus,queryCreator,queryMember,entrustPurpose);
     }
 
     @RequestMapping(value = "/projectList", name = "所有项目")
@@ -76,13 +84,16 @@ public class ProjectCenterController {
         List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
                 ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
+        //委托目的
+        List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+        modelAndView.addObject("entrustPurposeList", entrustPurposeList);
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getProjectList", name = "取得所有项目列表", method = RequestMethod.GET)
-    public BootstrapTableVo getProjectList(String queryName, String projectStatus) {
-        return projectCenterService.getProjectList(queryName, projectStatus);
+    public BootstrapTableVo getProjectList(String queryName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose) {
+        return projectCenterService.getProjectList(queryName, projectStatus,queryCreator,queryMember,entrustPurpose);
     }
 
     @ResponseBody

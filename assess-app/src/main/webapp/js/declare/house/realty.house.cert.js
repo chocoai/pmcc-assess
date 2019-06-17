@@ -253,7 +253,8 @@ assessCommonHouse.showAddModelLand = function (id) {
                     district: item.district,
                     landRightNature: item.landAcquisition,
                     registrationAuthority: item.registrationAuthority,
-                    apportionmentArea: item.apportionmentArea
+                    apportionmentArea: item.apportionmentArea,
+                    terminationDate: item.useEndDate
                 };
                 assessCommonHouse.initLand(data);
             }

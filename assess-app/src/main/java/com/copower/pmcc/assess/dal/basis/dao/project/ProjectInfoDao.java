@@ -109,8 +109,8 @@ public class ProjectInfoDao {
         return projectInfoMapper.selectByExample(example);
     }
 
-    public List<ProjectInfo> getProjectListByUserAccount(String userAccount, String projectName, String projectStatus) {
-        return customProjectInfoMapper.getProjectListByUserAccount(userAccount, projectName, projectStatus);
+    public List<ProjectInfo> getProjectListByUserAccount(String userAccount, String projectName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose) {
+        return customProjectInfoMapper.getProjectListByUserAccount(userAccount, projectName, projectStatus,queryCreator,queryMember,entrustPurpose);
     }
 
 
