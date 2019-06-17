@@ -74,7 +74,6 @@ public class GenerateCommonMethod {
     public final String errorStr = "无";
 
 
-
     //房地产总价
     public BigDecimal getTotalRealEstate(Integer areId) {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areId);
@@ -263,13 +262,38 @@ public class GenerateCommonMethod {
     }
 
     public String getBigDecimalRound(final BigDecimal bigDecimal, int newScale, boolean tenThousand) {
-        if (bigDecimal == null) return "";
-        //四舍五入,并且取到约定的位数
-        BigDecimal setScale = bigDecimal.setScale(newScale, BigDecimal.ROUND_UP);
         if (tenThousand) {
-            setScale = setScale.divide(new BigDecimal(10000));
+            return getBigDecimalRound(bigDecimal, newScale, new Double(10000));
+        } else {
+            return getBigDecimalRound(bigDecimal, newScale, null);
         }
+    }
+
+    public String getBigDecimalRound(final BigDecimal bigDecimal, int newScale, Double d) {
+        if (bigDecimal == null) {
+            return "";
+        }
+        BigDecimal setScale = new BigDecimal(0);
+        if (d != null) {
+            setScale = bigDecimal.divide(new BigDecimal(d.doubleValue()));
+        }
+        //四舍五入,并且取到约定的位数
         return setScale.abs().setScale(newScale, BigDecimal.ROUND_UP).toString();
+    }
+
+    /**
+     * 将非整数在约定的位数下取整 如 1515.45 取10 变为 1510
+     * @param bigDecimal
+     * @param number
+     * @return
+     */
+    public String getBigDecimalToInteger(final BigDecimal bigDecimal, int number) {
+        if (bigDecimal == null) {
+            return "";
+        }
+        int num = bigDecimal.intValue() / number;
+        num *= number;
+        return String.valueOf(num);
     }
 
     /**

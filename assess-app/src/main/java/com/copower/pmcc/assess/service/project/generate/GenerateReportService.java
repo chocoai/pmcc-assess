@@ -469,6 +469,13 @@ public class GenerateReportService {
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
                 }
+                if (Objects.equal(BaseReportFieldEnum.Atypism2.getName(), name)) {
+                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "10pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
+                }
                 //作业结束时间
                 if (Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHomeWorkEndTime(generateReportInfo.getHomeWorkEndTime()));
@@ -639,6 +646,10 @@ public class GenerateReportService {
                 //评估总价
                 if (Objects.equal(BaseReportFieldEnum.AssessTotal.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessAssessTotal());
+                }
+                //评估总价大写
+                if (Objects.equal(BaseReportFieldEnum.AssessTotalRMB.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessAssessTotalAssessTotalRMB());
                 }
                 //登记时间
                 if (Objects.equal(BaseReportFieldEnum.RegistrationDate.getName(), name)) {

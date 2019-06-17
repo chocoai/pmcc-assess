@@ -76,18 +76,18 @@ public class GenerateLoactionService {
                     continue;
                 }
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList() ;
-                if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)){
+                List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
+                if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
                     List<String> stringList = Lists.newArrayList();
-                    basicHouseFaceStreetVoList.forEach(oo ->{
-                        if (StringUtils.isNotEmpty(oo.getStreetName())){
-                            if (StringUtils.isNotEmpty(oo.getPositionName())){
-                                stringList.add(String.format("%s%s",oo.getStreetName(),oo.getPositionName()));
+                    basicHouseFaceStreetVoList.forEach(oo -> {
+                        if (StringUtils.isNotEmpty(oo.getStreetName())) {
+                            if (StringUtils.isNotEmpty(oo.getPositionName())) {
+                                stringList.add(String.format("%s%s", oo.getStreetName(), oo.getPositionName()));
                             }
                         }
                     });
-                    if (CollectionUtils.isNotEmpty(stringList)){
-                        contentBuilder.append(StringUtils.join(stringList,",")) ;
+                    if (CollectionUtils.isNotEmpty(stringList)) {
+                        contentBuilder.append(StringUtils.join(stringList, ","));
                     }
                     if (contentBuilder.length() > 0) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
@@ -205,11 +205,17 @@ public class GenerateLoactionService {
         List<BasicEstateSupply> basicEstateSupplyList = generateBaseExamineService.getBasicEstateSupplyList();
         List<BasicEstateNetwork> basicEstateNetworkList = generateBaseExamineService.getBasicEstateNetworkList();
         if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
-            basicHouseFaceStreetVoList.stream().forEach(basicHouseFaceStreetVo -> {
-                String v = null;
-                long a1 = 0;
-                long a2 = 0;
-                long a3 = 0;
+            LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+            String v = null;
+            long a1 = 0;
+            long a2 = 0;
+            long a3 = 0;
+            for (BasicHouseFaceStreetVo basicHouseFaceStreetVo: basicHouseFaceStreetVoList){
+                if (StringUtils.isNotEmpty(basicHouseFaceStreetVo.getStreetName())){
+                    if (StringUtils.isNotEmpty(basicHouseFaceStreetVo.getPositionName())){
+                        linkedHashSet.add(String.format("%s%s",basicHouseFaceStreetVo.getStreetName() , basicHouseFaceStreetVo.getPositionName())) ;
+                    }
+                }
                 if (Objects.equal("主干道", basicHouseFaceStreetVo.getStreetLevelName())) {
                     a1++;
                 }
@@ -219,36 +225,32 @@ public class GenerateLoactionService {
                 if (Objects.equal("支路", basicHouseFaceStreetVo.getStreetLevelName())) {
                     a3++;
                 }
-                if (a1 > 0 && a2 > 0) {
-                    //支路不必判断
-                    v = "道路体系完善";
-                }
-                if (a1 == 0 && a2 > 0 && a3 > 0) {
-                    v = "道路体系相对完善";
-                }
-                if (a1 == 0 && a2 == 0 && a3 > 0) {
-                    v = "道路体系不完善";
-                }
-                if (a1 == 0 && a2 == 0 && a3 == 0) {
-                    v = "无基本的配套道路体系";
-                }
-                //
-                if (a1 > 0 && a2 == 0 && a3 == 0) {
-                    v = "道路体系相对完善";
-                }
-                if (a2 > 0 && a1 == 0 && a3 == 0) {
-                    v = "道路体系相对完善";
-                }
-                if (a3 > 0 && a1 == 0 && a2 == 0) {
-                    v = "道路体系相对完善";
-                }
-                if (Objects.equal("未选定", basicHouseFaceStreetVo.getPositionName())) {
-                    v = "无基本的配套道路体系";
-                }
-                if (StringUtils.isNotBlank(v)) {
-                    stringBuilder.append(v).append("，");
-                }
-            });
+            }
+            if (a1 > 0 && a2 > 0) {
+                //支路不必判断
+                v = "道路体系完善";
+            }
+            if (a1 == 0 && a2 > 0 && a3 > 0) {
+                v = "道路体系相对完善";
+            }
+            if (a1 == 0 && a2 == 0 && a3 > 0) {
+                v = "道路体系不完善";
+            }
+            if (a1 == 0 && a2 == 0 && a3 == 0) {
+                v = "无基本的配套道路体系";
+            }
+            if (a1 > 0 && a2 == 0 && a3 == 0) {
+                v = "道路体系相对完善";
+            }
+            if (a2 > 0 && a1 == 0 && a3 == 0) {
+                v = "道路体系相对完善";
+            }
+            if (a3 > 0 && a1 == 0 && a2 == 0) {
+                v = "道路体系相对完善";
+            }
+            if (StringUtils.isNotBlank(v)) {
+                stringBuilder.append(v).append("，");
+            }
         }
         if (basicApply.getType().intValue() == BasicApplyTypeEnum.RESIDENCE.getId().intValue()) {
             BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
@@ -256,7 +258,6 @@ public class GenerateLoactionService {
                 stringBuilder.append(landStateVo.getDevelopmentDegreeContentName());
             }
         }
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         if (basicApply.getType().intValue() == BasicApplyTypeEnum.INDUSTRY.getId().intValue()) {
             LinkedHashMap<String, Long> map = Maps.newLinkedHashMap();
             long estateNetwork = 0;
@@ -266,14 +267,14 @@ public class GenerateLoactionService {
             long estateDrainWater = 0;
             long estateSupplyPower = 0;
             if (CollectionUtils.isNotEmpty(basicEstateNetworkList)) {
-                estateNetwork = basicEstateNetworkList.stream().filter(oo -> oo.getSupplier() != null).count() > 0 ? 1 : 0;
+                estateNetwork = basicEstateNetworkList.stream().filter(oo -> oo.getSupplier() != null).count();
             }
             if (CollectionUtils.isNotEmpty(basicEstateSupplyList)) {
-                estateSupplyGas = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
-                estateSupplyHeating = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
-                estateSupplyWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
-                estateDrainWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
-                estateSupplyPower = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), basicEstateSupply.getType())).count() > 0 ? 1 : 0;
+                estateSupplyGas = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), basicEstateSupply.getType())).count();
+                estateSupplyHeating = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName(), basicEstateSupply.getType())).count();
+                estateSupplyWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName(), basicEstateSupply.getType())).count();
+                estateDrainWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), basicEstateSupply.getType())).count();
+                estateSupplyPower = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), basicEstateSupply.getType())).count();
             }
             map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), estateSupplyGas);
             map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName(), estateSupplyHeating);
@@ -281,28 +282,26 @@ public class GenerateLoactionService {
             map.put(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), estateDrainWater);
             map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), estateSupplyPower);
             map.put("通讯设施", estateNetwork);
-            long count = estateSupplyGas + estateSupplyHeating + estateSupplyWater + estateDrainWater + estateSupplyPower + estateNetwork;
-            if (count == 6) {
-                //all every good
-                stringBuilder.append("供电、供气、供热、给水排水、通讯设施完善。");
-            }
-            if (count != 6) {
-                if (!map.isEmpty()) {
-                    map.entrySet().stream().forEach(entry -> {
-                        if (entry.getValue().intValue() == 1) {
-                            linkedHashSet.add(entry.getKey());
-                        }
-                    });
-                    stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("完善");
-                    linkedHashSet.clear();
-                    map.entrySet().stream().forEach(entry -> {
-                        if (entry.getValue().intValue() == 0) {
-                            linkedHashSet.add(entry.getKey());
-                        }
-                    });
-                    stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("不完善。");
-                    linkedHashSet.clear();
-                }
+            LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+            if (map.entrySet().stream().allMatch(entry -> entry.getValue().longValue() != 0)) {
+                map.forEach((s, aLong) -> {
+                    linkedHashSet.add(s);
+                });
+                stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("完善。");
+            } else {
+                map.forEach((s, aLong) -> {
+                    if (aLong.longValue() != 0) {
+                        linkedHashSet.add(s);
+                    }
+                });
+                stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("不完善，");
+                linkedHashSet.clear();
+                map.forEach((s, aLong) -> {
+                    if (aLong.longValue() == 0) {
+                        linkedHashSet.add(s);
+                    }
+                });
+                stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("完善。");
             }
         }
         return generateCommonMethod.trim(stringBuilder.toString());
