@@ -8,7 +8,7 @@
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="report_type" property="reportType" jdbcType="INTEGER" />
-    <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
+    <result column="entrust_purpose" property="entrustPurpose" jdbcType="VARCHAR" />
     <result column="loan_type" property="loanType" jdbcType="INTEGER" />
     <result column="insert_row_index" property="insertRowIndex" jdbcType="INTEGER" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
@@ -118,7 +118,7 @@
       creator, gmt_created, gmt_modified
       )
     values (#{name,jdbcType=VARCHAR}, #{useUnit,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{category,jdbcType=INTEGER}, #{reportType,jdbcType=INTEGER}, #{entrustPurpose,jdbcType=INTEGER}, 
+      #{category,jdbcType=INTEGER}, #{reportType,jdbcType=INTEGER}, #{entrustPurpose,jdbcType=VARCHAR}, 
       #{loanType,jdbcType=INTEGER}, #{insertRowIndex,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -183,7 +183,7 @@
         #{reportType,jdbcType=INTEGER},
       </if>
       <if test="entrustPurpose != null" >
-        #{entrustPurpose,jdbcType=INTEGER},
+        #{entrustPurpose,jdbcType=VARCHAR},
       </if>
       <if test="loanType != null" >
         #{loanType,jdbcType=INTEGER},
@@ -233,7 +233,7 @@
         report_type = #{record.reportType,jdbcType=INTEGER},
       </if>
       <if test="record.entrustPurpose != null" >
-        entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+        entrust_purpose = #{record.entrustPurpose,jdbcType=VARCHAR},
       </if>
       <if test="record.loanType != null" >
         loan_type = #{record.loanType,jdbcType=INTEGER},
@@ -266,7 +266,7 @@
       type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=INTEGER},
       report_type = #{record.reportType,jdbcType=INTEGER},
-      entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      entrust_purpose = #{record.entrustPurpose,jdbcType=VARCHAR},
       loan_type = #{record.loanType,jdbcType=INTEGER},
       insert_row_index = #{record.insertRowIndex,jdbcType=INTEGER},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -296,7 +296,7 @@
         report_type = #{reportType,jdbcType=INTEGER},
       </if>
       <if test="entrustPurpose != null" >
-        entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+        entrust_purpose = #{entrustPurpose,jdbcType=VARCHAR},
       </if>
       <if test="loanType != null" >
         loan_type = #{loanType,jdbcType=INTEGER},
@@ -326,7 +326,7 @@
       type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=INTEGER},
       report_type = #{reportType,jdbcType=INTEGER},
-      entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      entrust_purpose = #{entrustPurpose,jdbcType=VARCHAR},
       loan_type = #{loanType,jdbcType=INTEGER},
       insert_row_index = #{insertRowIndex,jdbcType=INTEGER},
       bis_enable = #{bisEnable,jdbcType=BIT},

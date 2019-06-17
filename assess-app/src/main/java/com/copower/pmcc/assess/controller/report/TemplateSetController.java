@@ -116,7 +116,7 @@ public class TemplateSetController {
         baseReportTemplate.setType(type);
         baseReportTemplate.setCategory(category);
         baseReportTemplate.setReportType(reportType);
-        BootstrapTableVo baseReportTemplateByExample = baseReportService.getBaseReportTemplateByExample(baseReportTemplate);
+        BootstrapTableVo baseReportTemplateByExample = baseReportService.getBaseReportTemplateByExample(baseReportTemplate,null);
         return baseReportTemplateByExample;
     }
 

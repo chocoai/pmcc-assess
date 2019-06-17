@@ -107,15 +107,17 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            委托目的
+                                            委托目的<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
-                                            <select name='entrustPurpose' class='form-control  search-select select2'>
-                                                <option value="0">-请选择-</option>
-                                                <c:forEach var="item" items="${entrustPurposeList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
+                                        <div class="col-sm-10" id="entrustmentPurpose">
+                                            <c:forEach items="${entrustPurposeList}" var="item">
+                                                <span class="checkbox-inline">
+                                                <input type="checkbox" required id="entrustmentPurpose${item.id}"
+                                                       name="entrustPurpose" value="${item.id}"
+                                                       class="form-inline">
+                                                    <label for="entrustmentPurpose${item.id}">${item.name}</label>
+                                                </span>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                 </div>
@@ -264,6 +266,7 @@
         $("#frm_files").clearAll();
         var row = $("#tb_files_list").bootstrapTable("getRowByUniqueId", id);
         $("#frm_files").initForm(row);
+        AssessCommon.checkboxToChecked($("#frm_files").find(":checkbox[name='entrustPurpose']"), row.entrustPurpose.split(','));
         loadTemplateAttachment(id);
         $('#modalTemplate').modal({backdrop: 'static', keyboard: false});
     }
@@ -277,6 +280,7 @@
         data["type"] = $("#projectType").val();
         data["category"] = $("#projectCategory").val();
         data["reportType"] = $("#reportType").val();
+        data.entrustPurpose = ',' + data.entrustPurpose + ',';//方便like查询
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/templateSet/saveTemplateData",
