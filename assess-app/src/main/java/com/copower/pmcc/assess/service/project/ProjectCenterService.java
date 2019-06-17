@@ -3,30 +3,18 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectProgressVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectProgressWorkStageVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.csr.CsrProjectInfoService;
-import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.enums.ErpUserDataRoleEnum;
-import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
-import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -40,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,14 +53,14 @@ public class ProjectCenterService {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
-    private ErpRpcDepartmentService erpRpcDepartmentService;
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 获取项目列表
      *
      * @return
      */
-    public BootstrapTableVo getProjectList(String projectName, String projectStatus) {
+    public BootstrapTableVo getProjectList(String queryName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose) {
 
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<Integer> orgIds = null;
@@ -87,7 +74,7 @@ public class ProjectCenterService {
         }
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByOrgIds(orgIds, projectName, projectStatus);
+        List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("",queryName, projectStatus,queryCreator,queryMember,entrustPurpose);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
@@ -114,11 +101,12 @@ public class ProjectCenterService {
                     }
                     projectInfoVo.setProjectClassName(baseProjectClassifyService.getNameById(item.getProjectClassId()));
                     projectInfoVo.setProjectTypeName(baseProjectClassifyService.getNameById(item.getProjectTypeId()));
+                    projectInfoVo.setEntrustPurposeName(baseDataDicService.getNameById(item.getEntrustPurpose()));
                     projectInfoVo.setProjectCategoryName(baseProjectClassifyService.getNameById(item.getProjectCategoryId()));
                     if (item.getProjectStatus() != null)
                         projectInfoVo.setProjectStatus(ProjectStatusEnum.getNameByKey(item.getProjectStatus()));
 
-                    if(CollectionUtils.isNotEmpty(projectPlans)){
+                    if (CollectionUtils.isNotEmpty(projectPlans)) {
                         List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
                             return o.getProjectId().equals(item.getId());
                         });
@@ -143,7 +131,7 @@ public class ProjectCenterService {
                         }
                     }
                 } catch (Exception e) {
-                    logger.error(e.getMessage(),e);
+                    logger.error(e.getMessage(), e);
                 }
                 projectInfoVos.add(projectInfoVo);
             }
@@ -181,11 +169,11 @@ public class ProjectCenterService {
      *
      * @return
      */
-    public BootstrapTableVo getParticipationProject(String projectName, String projectStatus) {
+    public BootstrapTableVo getParticipationProject(String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus);
+        List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus, queryCreator, queryMember, entrustPurpose);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? Lists.newArrayList() : projectInfoVos);

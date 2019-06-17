@@ -34,7 +34,14 @@
 
     <select id="getProjectListByUserAccount" parameterType="map" resultMap="BaseResultMap">
         SELECT A.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id WHERE 1=1
-        <if test="userAccount!=null and userAccount!=''">
+        <if test="queryCreator!='' and queryCreator!=null">
+            AND (B.user_account_manager = #{queryCreator})
+        </if>
+        <if test="queryMember!='' and queryMember!=null">
+            AND (B.user_account_member LIKE
+            CONCAT(CONCAT('%',#{queryMember}), '%'))
+        </if>
+        <if test="userAccount!=null and userAccount!='' ">
             AND (B.user_account_manager = #{userAccount} OR B.user_account_member LIKE
             CONCAT(CONCAT('%',#{userAccount}), '%'))
         </if>
@@ -43,6 +50,9 @@
         </if>
         <if test="projectStatus!=null and projectStatus!=''">
             AND A.project_status = #{projectStatus}
+        </if>
+        <if test="entrustPurpose!=null">
+            AND A.entrust_purpose = #{entrustPurpose}
         </if>
         ORDER BY A.id DESC
     </select>

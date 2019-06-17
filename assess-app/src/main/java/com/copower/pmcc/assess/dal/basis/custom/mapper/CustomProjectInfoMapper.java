@@ -10,5 +10,8 @@ public interface CustomProjectInfoMapper {
     //查询项目
     List<ProjectInfo> getProjectListByUserAccount(@Param("userAccount") String userAccount,
                                                   @Param("projectName") String projectName,
-                                                  @Param("projectStatus") String projectStatus);//查询
+                                                  @Param("projectStatus") String projectStatus,
+                                                  @Param("queryCreator")String queryCreator,
+                                                  @Param("queryMember")String queryMember,
+                                                  @Param("entrustPurpose")Integer entrustPurpose);//查询
 }

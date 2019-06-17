@@ -45,7 +45,43 @@
                                             </select>
                                         </div>
                                     </div>
-
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            项目成员
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input type="hidden" id="queryMember">
+                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectMember()"
+                                                   placeholder="项目成员" id="queryMemberName" name="queryMemberName"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            立项人
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input type="hidden" id="queryCreator">
+                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectCreator()"
+                                                   placeholder="立项人" id="queryCreatorName" name="queryCreatorName"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            委托目的
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <select id="entrustPurpose" class="form-control">
+                                                <option value="">--请选择--</option>
+                                                <c:forEach var="item" items="${entrustPurposeList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <button type="button" class="btn btn-primary"
                                                 onclick="loadProjectList()">
@@ -53,7 +89,6 @@
                                         </button>
                                     </div>
                                 </div>
-
                             </form>
                             <table id="tb_projectList" class="table table-bordered">
                             </table>
@@ -104,6 +139,7 @@
             }
         });
         cols.push({field: 'projectStatus', title: '项目状态'});
+        cols.push({field: 'entrustPurposeName', title: '委托目的'});
         cols.push({
             field: 'finishPre', width: '20%', title: '项目进度', formatter: function (value, row, index) {
                 var s = "<div class='progress progress_sm' style='margin-bottom: 0px;'>";
@@ -135,7 +171,10 @@
         $("#tb_projectList").bootstrapTable('destroy');
         TableInit("tb_projectList", "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {
             queryName: $("#queryName").val(),
-            projectStatus: $("#status").val()
+            projectStatus: $("#status").val(),
+            queryCreator:$("#queryCreator").val(),
+            queryMember:$("#queryMember").val(),
+            entrustPurpose:$("#entrustPurpose").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -146,6 +185,24 @@
         });
     }
 
+    //项目成员选择
+    function selectProjectMember() {
+        erpEmployee.select({
+            onSelected: function (data) {
+                $("#queryMember").val(data.account);
+                $("#queryMemberName").val(data.name);
+            }
+        });
+    }
+    //立项人选择
+    function selectProjectCreator() {
+        erpEmployee.select({
+            onSelected: function (data) {
+                $("#queryCreator").val(data.account);
+                $("#queryCreatorName").val(data.name);
+            }
+        });
+    }
 </script>
 </body>
 </html>
