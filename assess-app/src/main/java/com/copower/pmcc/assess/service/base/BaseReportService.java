@@ -85,15 +85,15 @@ public class BaseReportService {
         baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
     }
 
-    public List<BaseReportTemplate> getBaseReportTemplate(BaseReportTemplate baseReportTemplate) {
-        List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate, "");
+    public List<BaseReportTemplate> getBaseReportTemplate(BaseReportTemplate baseReportTemplate,Integer entrustPurpose) {
+        List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate,entrustPurpose);
         return baseReportTemplates;
     }
 
-    public BootstrapTableVo getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate) {
+    public BootstrapTableVo getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate,Integer entrustPurpose) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate, requestBaseParam.getSearch());
+        List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate,entrustPurpose);
         List<BaseReportTemplateVo> transform = LangUtils.transform(baseReportTemplates, o -> getBaseReportTemplateVo(o));
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setTotal(page.getTotal());
@@ -102,7 +102,6 @@ public class BaseReportService {
     }
 
     private BaseReportTemplateVo getBaseReportTemplateVo(BaseReportTemplate baseReportTemplate) {
-
         BaseReportTemplateVo baseReportTemplateVo = new BaseReportTemplateVo();
         BeanUtils.copyProperties(baseReportTemplate, baseReportTemplateVo);
         baseReportTemplateVo.setEntrustPurposeName(baseDataDicService.getNameById(baseReportTemplate.getEntrustPurpose()));
@@ -131,11 +130,9 @@ public class BaseReportService {
         if (unitInformationVo == null) {
             return null;
         }
-        BaseReportTemplate template = getReportTemplate(Integer.valueOf(unitInformationVo.getuUseUnit()),
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(),
-                reportType, projectInfo.getLoanType());
+        BaseReportTemplate template = getReportTemplate(projectInfo, Integer.valueOf(unitInformationVo.getuUseUnit()), reportType);
         if (template == null) {
-            template = getCompanyTemplate(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), reportType, projectInfo.getLoanType());
+            template = getCompanyTemplate(projectInfo, reportType);
         }
         return template;
     }
@@ -143,13 +140,12 @@ public class BaseReportService {
     /**
      * 根据条件查询报告模板
      *
-     * @param useUnit           报告使用单位
-     * @param projectTypeId     项目类型
-     * @param projectCategoryId 项目类别
-     * @param reportType        报告类型
+     * @param useUnit     报告使用单位
+     * @param projectInfo 项目类型
+     * @param reportType  报告类型
      * @return
      */
-    public BaseReportTemplate getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer loanType) {
+    public BaseReportTemplate getReportTemplate(ProjectInfo projectInfo, Integer useUnit, Integer reportType) {
         //1.根据类型查看当前报告使用单位是否有报告模板
         //2.如果没有报告模板则到上级客户获取
         //3.如何客户配置了模板则获取对应的模板
@@ -157,36 +153,34 @@ public class BaseReportService {
         BaseReportTemplate baseReportTemplateWhere = new BaseReportTemplate();
         baseReportTemplateWhere.setReportType(reportType);
         baseReportTemplateWhere.setUseUnit(useUnit);//报告使用单位
-        baseReportTemplateWhere.setType(projectTypeId);
-        baseReportTemplateWhere.setCategory(projectCategoryId);
+        baseReportTemplateWhere.setType(projectInfo.getProjectTypeId());
+        baseReportTemplateWhere.setCategory(projectInfo.getProjectCategoryId());
         baseReportTemplateWhere.setBisEnable(true);
-        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
+        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere,projectInfo.getEntrustPurpose());
         if (CollectionUtils.isEmpty(reportTemplateList)) {
             CrmCustomerDto customer = crmCustomerService.getCustomer(useUnit);
             if (customer == null) return null;
-            return getReportTemplate(customer.getPid(), projectTypeId, projectCategoryId, reportType, loanType);
+            return getReportTemplate(projectInfo, customer.getPid(), reportType);
         }
-        return getReportTemplateByLoanType(reportTemplateList, loanType);
+        return getReportTemplateByLoanType(reportTemplateList, projectInfo.getLoanType());
     }
 
     /**
      * 获取公司默认模板
      *
-     * @param projectTypeId
-     * @param projectCategoryId
+     * @param projectInfo
      * @param reportType
-     * @param loanType
      * @return
      */
-    public BaseReportTemplate getCompanyTemplate(Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer loanType) {
+    public BaseReportTemplate getCompanyTemplate(ProjectInfo projectInfo, Integer reportType) {
         BaseReportTemplate baseReportTemplateWhere = new BaseReportTemplate();
         baseReportTemplateWhere.setReportType(reportType);
         baseReportTemplateWhere.setUseUnit(0);
-        baseReportTemplateWhere.setType(projectTypeId);
-        baseReportTemplateWhere.setCategory(projectCategoryId);
+        baseReportTemplateWhere.setType(projectInfo.getProjectTypeId());
+        baseReportTemplateWhere.setCategory(projectInfo.getProjectCategoryId());
         baseReportTemplateWhere.setBisEnable(true);
-        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
-        return getReportTemplateByLoanType(reportTemplateList, loanType);
+        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere,projectInfo.getEntrustPurpose());
+        return getReportTemplateByLoanType(reportTemplateList, projectInfo.getLoanType());
     }
 
     /**

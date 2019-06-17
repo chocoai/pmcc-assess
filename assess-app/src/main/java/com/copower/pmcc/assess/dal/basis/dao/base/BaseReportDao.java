@@ -21,18 +21,17 @@ import java.util.List;
 public class BaseReportDao {
     @Autowired
     private BaseReportTemplateMapper baseReportTemplateMapper;
-    
 
-    public List<BaseReportTemplate> getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate, String search) {
+
+    public List<BaseReportTemplate> getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate, Integer entrustPurpose) {
         BaseReportTemplateExample example = new BaseReportTemplateExample();
         BaseReportTemplateExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(search)) {
-           // criteria.andRemarksLike(search);
-        }
         MybatisUtils.convertObj2Criteria(baseReportTemplate, criteria);
+        if (entrustPurpose != null) {
+            criteria.andEntrustPurposeLike(String.format("%%,%s,%%", entrustPurpose));
+        }
         List<BaseReportTemplate> baseReportTemplates = baseReportTemplateMapper.selectByExample(example);
         return baseReportTemplates;
-
     }
 
     public BaseReportTemplate getBaseReportTemplateById(Integer id) {

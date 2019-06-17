@@ -126,10 +126,8 @@ public class GenerateReportService {
             if (baseDataDic == null) {
                 continue;
             }
-            logger.error("baseReportTemplate");
             BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
             if (baseReportTemplate == null) {
-                logger.error("baseReportTemplate-empty");
                 continue;
             }
             //房屋评估价值确认书

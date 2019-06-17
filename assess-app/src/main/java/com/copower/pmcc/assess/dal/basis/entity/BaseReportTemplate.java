@@ -15,7 +15,7 @@ public class BaseReportTemplate {
 
     private Integer reportType;
 
-    private Integer entrustPurpose;
+    private String entrustPurpose;
 
     private Integer loanType;
 
@@ -77,12 +77,12 @@ public class BaseReportTemplate {
         this.reportType = reportType;
     }
 
-    public Integer getEntrustPurpose() {
+    public String getEntrustPurpose() {
         return entrustPurpose;
     }
 
-    public void setEntrustPurpose(Integer entrustPurpose) {
-        this.entrustPurpose = entrustPurpose;
+    public void setEntrustPurpose(String entrustPurpose) {
+        this.entrustPurpose = entrustPurpose == null ? null : entrustPurpose.trim();
     }
 
     public Integer getLoanType() {

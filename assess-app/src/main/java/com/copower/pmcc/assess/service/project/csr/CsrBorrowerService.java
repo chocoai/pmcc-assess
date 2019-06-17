@@ -370,8 +370,7 @@ public class CsrBorrowerService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
         CsrProjectInfo csrProjectInfo = csrProjectInfoService.getById(csrProjectInfoID);
         BaseReportTemplate baseReportTemplate = null;
-        baseReportTemplate = baseReportService.getReportTemplate(csrProjectInfo.getEntrustmentUnitId(), csrProjectInfo.getProjectTypeId(),
-                csrProjectInfo.getProjectCategoryId(), baseDataDic.getId(),null);
+        baseReportTemplate = null;
         responseEntity = toExportFormBorrowers(request, response, baseReportTemplate, csrProjectInfoID);
         return responseEntity;
     }

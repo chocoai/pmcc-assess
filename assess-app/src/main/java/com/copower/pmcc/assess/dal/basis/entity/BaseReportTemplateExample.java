@@ -485,52 +485,62 @@ public class BaseReportTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeEqualTo(Integer value) {
+        public Criteria andEntrustPurposeEqualTo(String value) {
             addCriterion("entrust_purpose =", value, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeNotEqualTo(Integer value) {
+        public Criteria andEntrustPurposeNotEqualTo(String value) {
             addCriterion("entrust_purpose <>", value, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeGreaterThan(Integer value) {
+        public Criteria andEntrustPurposeGreaterThan(String value) {
             addCriterion("entrust_purpose >", value, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andEntrustPurposeGreaterThanOrEqualTo(String value) {
             addCriterion("entrust_purpose >=", value, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeLessThan(Integer value) {
+        public Criteria andEntrustPurposeLessThan(String value) {
             addCriterion("entrust_purpose <", value, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeLessThanOrEqualTo(Integer value) {
+        public Criteria andEntrustPurposeLessThanOrEqualTo(String value) {
             addCriterion("entrust_purpose <=", value, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeIn(List<Integer> values) {
+        public Criteria andEntrustPurposeLike(String value) {
+            addCriterion("entrust_purpose like", value, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNotLike(String value) {
+            addCriterion("entrust_purpose not like", value, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeIn(List<String> values) {
             addCriterion("entrust_purpose in", values, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeNotIn(List<Integer> values) {
+        public Criteria andEntrustPurposeNotIn(List<String> values) {
             addCriterion("entrust_purpose not in", values, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeBetween(Integer value1, Integer value2) {
+        public Criteria andEntrustPurposeBetween(String value1, String value2) {
             addCriterion("entrust_purpose between", value1, value2, "entrustPurpose");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustPurposeNotBetween(Integer value1, Integer value2) {
+        public Criteria andEntrustPurposeNotBetween(String value1, String value2) {
             addCriterion("entrust_purpose not between", value1, value2, "entrustPurpose");
             return (Criteria) this;
         }
