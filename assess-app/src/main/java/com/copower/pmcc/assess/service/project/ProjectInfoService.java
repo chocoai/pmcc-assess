@@ -187,6 +187,7 @@ public class ProjectInfoService {
                 //初始化项目信息
                 initProjectInfo(projectInfo);
                 publicService.writeToErpProject(projectInfo);
+                unitInformationService.roundWrite(unitInformation);
             }
         } catch (Exception e) {
             flag = false;
@@ -272,6 +273,13 @@ public class ProjectInfoService {
         possessorService.saveAndUpdate(initiateProjectDto.getPossessor());
         unitInformationService.saveAndUpdate(initiateProjectDto.getUnitinformation());
         projectMemberService.updateProjectMember(projectMemberVo);
+        ProjectPlan projectPlan = new ProjectPlan();
+        projectPlan.setProjectId(projectInfoId);
+
+        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanList(projectInfoId) ;
+        if (CollectionUtils.isNotEmpty(projectPlans)){
+            unitInformationService.roundWrite(initiateProjectDto.getUnitinformation());
+        }
     }
 
 

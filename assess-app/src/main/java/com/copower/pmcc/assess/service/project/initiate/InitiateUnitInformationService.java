@@ -44,9 +44,14 @@ public class InitiateUnitInformationService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    public Integer saveAndUpdate(InitiateUnitInformation initiateUnitInformation)throws Exception{
+    /**
+     * 回写 crm data
+     * @param initiateUnitInformation
+     * @throws Exception
+     */
+    public void roundWrite(InitiateUnitInformation initiateUnitInformation)throws Exception{
         if (initiateUnitInformation == null){
-            return null;
+            return ;
         }
         CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
         if (NumberUtils.isNumber(initiateUnitInformation.getuUseUnit())) {
@@ -65,16 +70,21 @@ public class InitiateUnitInformationService {
                 }
             }
         }
+        initiateContactsService.writeCrmCustomerDto(initiateUnitInformation.getProjectId(),InitiateContactsEnum.UNIT_INFORMATION.getId()) ;
+    }
+
+    public Integer saveAndUpdate(InitiateUnitInformation initiateUnitInformation)throws Exception{
+        if (initiateUnitInformation == null){
+            return null;
+        }
         if (initiateUnitInformation.getId()==null || initiateUnitInformation.getId().intValue()==0){
             initiateUnitInformation.setCreator(commonService.thisUserAccount());
             Integer id = dao.add(initiateUnitInformation);
             initiateContactsService.update(id, InitiateContactsEnum.UNIT_INFORMATION.getId());
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateUnitInformation.class),id);
-            initiateContactsService.writeCrmCustomerDto(initiateUnitInformation.getProjectId(),InitiateContactsEnum.UNIT_INFORMATION.getId()) ;
             return  id ;
         }else {
             dao.update(initiateUnitInformation);
-            initiateContactsService.writeCrmCustomerDto(initiateUnitInformation.getProjectId(),InitiateContactsEnum.UNIT_INFORMATION.getId()) ;
             return initiateUnitInformation.getId();
         }
     }
