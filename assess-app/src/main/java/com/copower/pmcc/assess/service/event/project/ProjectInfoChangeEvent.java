@@ -59,9 +59,5 @@ public class ProjectInfoChangeEvent extends BaseProcessEvent {
         possessorService.saveAndUpdate(initiatePossessor);
         InitiateUnitInformation initiateUnitInformation = JSON.parseObject(projectInfoChangeVo.getUnitInformation(), InitiateUnitInformation.class);
         unitInformationService.saveAndUpdate(initiateUnitInformation);
-        //删除待提交任务
-        bpmRpcProjectTaskService.deleteProjectTaskByProjectid(applicationConstant.getAppKey(), projectInfo.getId());
-        //关闭流程
-        bpmRpcActivitiProcessManageService.closeProcess(projectInfo.getProcessInsId());
     }
 }
