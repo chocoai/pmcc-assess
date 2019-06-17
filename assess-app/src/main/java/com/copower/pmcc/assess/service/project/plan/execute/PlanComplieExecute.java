@@ -84,7 +84,6 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
             projectPlanDetails.setSorting(i++);
             projectPlanDetails.setAreaId(schemeAreaGroup.getId());
             projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
-            projectPlanDetails.setCreator(commonService.thisUserAccount());
             projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
             projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
         }

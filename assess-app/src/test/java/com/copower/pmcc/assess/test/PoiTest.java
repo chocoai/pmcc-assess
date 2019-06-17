@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.CsrBorrower;
 import com.copower.pmcc.assess.dto.input.project.compile.CompileReportApplyDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApplyDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -44,6 +45,12 @@ import static com.google.common.collect.Lists.newArrayList;
  * Created by kings on 2018-5-31.
  */
 public class PoiTest {
+
+
+    @Test
+    public void diff(){
+       System.out.print( DateUtils.diffDate(DateUtils.convertDate("2019-06-19 09:00:00"),DateUtils.convertDate("2019-06-18 9:00:00")));
+    }
 
     @org.junit.Test
     public void readExcel() {

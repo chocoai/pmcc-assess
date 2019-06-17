@@ -38,8 +38,6 @@ public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private CommonService commonService;
-    @Autowired
     private ProjectPlanSurveyService projectPlanSurveyService;
     @Autowired
     private ProjectMemberService projectMemberService;
@@ -69,7 +67,6 @@ public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
                 projectPlanDetails.setBisEnable(true);
                 projectPlanDetails.setProcessInsId("0");
                 projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
-                projectPlanDetails.setCreator(commonService.thisUserAccount());
                 projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
                 projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
             }

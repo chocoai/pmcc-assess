@@ -1686,7 +1686,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="楼层(数字)" name="floor" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                           data-rule-maxlength="100"
                            onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
@@ -2060,7 +2060,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="楼层(数字)" name="floor" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                           data-rule-maxlength="100"
                            onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
@@ -2780,7 +2780,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="单元(数字)" name="unit" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                           data-rule-maxlength="100"
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
             </div>
@@ -2789,7 +2789,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="楼层(数字)" name="floor" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                           data-rule-maxlength="100"
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
             </div>
@@ -3081,7 +3081,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="单元(数字)" name="unit" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                           data-rule-maxlength="100"
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
             </div>
@@ -3090,7 +3090,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="楼层(数字)" name="floor" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                           data-rule-maxlength="100"
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
             </div>

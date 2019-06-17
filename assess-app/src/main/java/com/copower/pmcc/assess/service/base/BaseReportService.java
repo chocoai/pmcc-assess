@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseReportDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
@@ -20,6 +22,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,12 +107,15 @@ public class BaseReportService {
     private BaseReportTemplateVo getBaseReportTemplateVo(BaseReportTemplate baseReportTemplate) {
         BaseReportTemplateVo baseReportTemplateVo = new BaseReportTemplateVo();
         BeanUtils.copyProperties(baseReportTemplate, baseReportTemplateVo);
-        baseReportTemplateVo.setEntrustPurposeName(baseDataDicService.getNameById(baseReportTemplate.getEntrustPurpose()));
         baseReportTemplateVo.setLoanTypeName(baseDataDicService.getNameById(baseReportTemplate.getLoanType()));
         List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(baseReportTemplate.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         if (CollectionUtils.isNotEmpty(baseAttachments)) {
             List<String> report = LangUtils.transform(baseAttachments, o -> baseAttachmentService.getViewHtml(o));
             baseReportTemplateVo.setReport(report);
+        }
+        if (StringUtils.isNotBlank(baseReportTemplate.getEntrustPurpose())) {
+            List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+            baseReportTemplateVo.setEntrustPurposeName(baseDataDicService.getDataDicName(purposeDicList, baseReportTemplate.getEntrustPurpose()));
         }
         return baseReportTemplateVo;
     }

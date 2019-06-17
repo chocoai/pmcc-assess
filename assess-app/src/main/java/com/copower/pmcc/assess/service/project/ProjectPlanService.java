@@ -46,6 +46,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,7 @@ import java.util.List;
  */
 @Service
 public class ProjectPlanService {
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProjectPlanDao projectPlanDao;
     @Autowired
@@ -505,13 +507,16 @@ public class ProjectPlanService {
         projectPlanResponsibility.setProjectName(projectName);
         projectPlanResponsibility.setUserAccount(item.getExecuteUserAccount());
         projectPlanResponsibility.setModel(responsibileModelEnum.getId());
-        projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
+        try{
+            projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+        }
         projectPlanResponsibility.setConclusion(responsibileModelEnum.getName());//
         projectPlanResponsibility.setPlanEndTime(item.getPlanEndDate());
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
         updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
         bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
-
     }
 
     /**

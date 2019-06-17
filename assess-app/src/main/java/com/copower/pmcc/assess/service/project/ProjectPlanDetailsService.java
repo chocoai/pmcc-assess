@@ -314,8 +314,9 @@ public class ProjectPlanDetailsService {
                     }
                     break;
             }
-            projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
-            //设置查看url
+            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE)
+                projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
+
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 
