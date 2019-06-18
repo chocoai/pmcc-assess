@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
+import com.aspose.words.SaveFormat;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
@@ -237,6 +238,12 @@ public class GenerateReportService {
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             dir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
+        }
+        if (PoiUtils.isWord2003(dir)){
+            Document doc = new Document(dir);
+            Document clone = doc.deepClone();
+//            dir = generateCommonMethod.getLocalPath(null,"docx") ;
+//            clone.save(dir, SaveFormat.DOCX);
         }
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
@@ -1079,6 +1086,25 @@ public class GenerateReportService {
 
     private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
         Map<String, String> errorMap2 = Maps.newHashMap() ;
+        List<String> typeList = Arrays.asList("\r","\n") ;
+        {
+            if (!textMap.isEmpty()){
+                textMap.forEach((key,value) -> {
+                    typeList.forEach(s -> {
+                        if (StringUtils.contains(value,s)){
+                            errorMap2.put(key,value) ;
+                        }
+                    });
+                });
+            }
+            if (!errorMap2.isEmpty()) {
+                try {
+                    replaceHandleError(errorMap2, localPath);
+                } catch (Exception e) {
+                    //docx 结尾的会出错
+                }
+            }
+        }
         if (!preMap.isEmpty()) {
             Map<String, String> errorMap = AsposeUtils.replaceText(localPath, preMap);
             if (!errorMap.isEmpty()) {
@@ -1095,9 +1121,6 @@ public class GenerateReportService {
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
         }
-        if (!errorMap2.isEmpty()) {
-            replaceHandleError(errorMap2, localPath);
-        }
     }
 
 
@@ -1113,7 +1136,7 @@ public class GenerateReportService {
             //使用 apache poi 处理
             AsposeUtils.replaceText(localPath, changeMap);
             //文档无法识别
-//            PoiUtils.replaceText(transMap, localPath);
+            PoiUtils.replaceText(transMap, localPath);
         }
     }
 
