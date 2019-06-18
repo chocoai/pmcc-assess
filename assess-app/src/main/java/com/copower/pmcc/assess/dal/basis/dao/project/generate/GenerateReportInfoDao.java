@@ -22,12 +22,12 @@ public class GenerateReportInfoDao {
     @Autowired
     private GenerateReportInfoMapper generateReportInfoMapper;
 
-    public boolean updateGenerateReportInfo(GenerateReportInfo generateReportGeneration)  {
+    public boolean updateGenerateReportInfo(GenerateReportInfo generateReportGeneration) {
         int i = generateReportInfoMapper.updateByPrimaryKeySelective(generateReportGeneration);
         return i > 0;
     }
 
-    public GenerateReportInfo getGenerateReportInfoByAreaGroupId(Integer areaGroupId, Integer projectPlanId)  {
+    public GenerateReportInfo getGenerateReportInfoByAreaGroupId(Integer areaGroupId, Integer projectPlanId) {
         GenerateReportInfoExample example = new GenerateReportInfoExample();
         GenerateReportInfoExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -40,21 +40,21 @@ public class GenerateReportInfoDao {
         return null;
     }
 
-    public boolean addGenerateReportInfo(GenerateReportInfo generateReportGeneration)  {
+    public boolean addGenerateReportInfo(GenerateReportInfo generateReportGeneration) {
         int i = generateReportInfoMapper.insertSelective(generateReportGeneration);
         return i > 0;
     }
 
-    public boolean deleteGenerateReportInfo(Integer id)  {
+    public boolean deleteGenerateReportInfo(Integer id) {
         int i = generateReportInfoMapper.deleteByPrimaryKey(id);
         return i > 0;
     }
 
-    public GenerateReportInfo getByGenerateReportInfoId(Integer id)  {
+    public GenerateReportInfo getByGenerateReportInfoId(Integer id) {
         return generateReportInfoMapper.selectByPrimaryKey(id);
     }
 
-    public GenerateReportInfo getGenerateReportInfo(GenerateReportInfo generateReportGeneration)  {
+    public GenerateReportInfo getGenerateReportInfo(GenerateReportInfo generateReportGeneration) {
         List<GenerateReportInfo> generateReportGenerations = generateReportGenerationList(generateReportGeneration);
         if (CollectionUtils.isNotEmpty(generateReportGenerations)) {
             return generateReportGenerations.get(0);
@@ -62,7 +62,14 @@ public class GenerateReportInfoDao {
         return null;
     }
 
-    public List<GenerateReportInfo> generateReportGenerationList(GenerateReportInfo generateReportGeneration)  {
+    public List<GenerateReportInfo> getGenerateReportInfoList(Integer projectId) {
+        GenerateReportInfoExample example = new GenerateReportInfoExample();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+        example.setOrderByClause("id desc");
+        return generateReportInfoMapper.selectByExample(example);
+    }
+
+    public List<GenerateReportInfo> generateReportGenerationList(GenerateReportInfo generateReportGeneration) {
         GenerateReportInfoExample example = new GenerateReportInfoExample();
         MybatisUtils.convertObj2Example(generateReportGeneration, example);
         example.setOrderByClause("id desc");

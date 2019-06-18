@@ -55,7 +55,8 @@ mapPosition.getCurrentCityByArea = function (callback) {
     if (areaJson) {
         callback(JSON.parse(areaJson));
     } else {
-        mapPosition.complete(function (data) {
+        callback({province: null, city: null, district: null});
+        /*mapPosition.complete(function (data) {
             try {
                 var province, city, district;
                 if (data && data.addressComponent) {
@@ -122,7 +123,7 @@ mapPosition.getCurrentCityByArea = function (callback) {
             } catch (e) {
                 console.error(e);
             }
-        })
+        })*/
     }
 };
 

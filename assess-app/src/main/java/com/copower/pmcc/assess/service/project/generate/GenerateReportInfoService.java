@@ -99,6 +99,12 @@ public class GenerateReportInfoService {
         return generateReportInfoDao.deleteGenerateReportInfo(id);
     }
 
+    public void deleteGenerateReportInfoByProjectId(Integer projectId) {
+        List<GenerateReportInfo> reportInfoList = generateReportInfoDao.getGenerateReportInfoList(projectId);
+        if (CollectionUtils.isEmpty(reportInfoList)) return;
+        reportInfoList.forEach(o -> deleteGenerateReportInfo(o.getId()));
+    }
+
     public GenerateReportInfo getByGenerateReportInfoId(Integer id) {
         return generateReportInfoDao.getByGenerateReportInfoId(id);
     }

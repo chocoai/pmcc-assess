@@ -139,7 +139,7 @@
                     if (!$.trim(value)) {
                         return '不能为空';
                     }
-                    if (!/^\+?[1-9][0-9]*$/.test(value)) {
+                    if (!/^\d+(?=\.{0,1}\d+$|$)/ .test(value)) {
                         return '只能填数字';
                     }
                     value = parseInt(value);
@@ -495,7 +495,7 @@
                         }
                     }
 
-                    specificPrice = iTofixed(specificPrice, 2);
+                    specificPrice = iTofixed(specificPrice, 0);
                     table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text(specificPrice);
 
                     //修正差额 	修正差额不能大于30%，如果大于30%提示修改案例，修正差额=（比准价格-成交价）/成交价 的绝对值
@@ -559,7 +559,7 @@
                     weight = parseFloat(weight);
                     averagePrice += currSpecificPrice * weight;
                 })
-                averagePrice = iTofixed(averagePrice, 2);
+                averagePrice = iTofixed(averagePrice, 0);
 
             } else {
                 //计算平均价
@@ -569,7 +569,7 @@
                     currSpecificPrice = parseFloat(currSpecificPrice);
                     totalPrice += currSpecificPrice;
                 })
-                averagePrice = iTofixed(totalPrice / caseItemIdArray.length, 2);
+                averagePrice = iTofixed(totalPrice / caseItemIdArray.length, 0);
             }
             table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text(averagePrice);
             if (marketCompare.isLand) {
