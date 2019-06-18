@@ -1357,17 +1357,8 @@ public class GenerateBaseDataService {
                 continue;
             }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
-            List<BasicUnitDecorateVo> unitDecorateVoList = generateBaseExamineService.getBasicUnitDecorateList();
-            Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> houseRoomListMap = Maps.newHashMap();
-            if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
-                for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
-                    List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
-                    if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
-                        houseRoomListMap.put(basicHouseRoom, basicHouseRoomDecorateVos);
-                    }
-                }
-            }
+            List<BasicBuildingOutfitVo> basicBuildingOutfitVoList = generateBaseExamineService.getBasicBuildingOutfitList();
+            List<BasicUnitDecorateVo> basicUnitDecorateVoList = generateBaseExamineService.getBasicUnitDecorateList();
             String name = null;
             switch (reportFieldEnum) {
                 case exteriorWallDecorate: {
@@ -1383,8 +1374,8 @@ public class GenerateBaseDataService {
             }
             String nameValue = name;
             Multimap<String, String> multimap = ArrayListMultimap.create();
-            if (CollectionUtils.isNotEmpty(unitDecorateVoList)) {
-                unitDecorateVoList.forEach(oo -> {
+            if (CollectionUtils.isNotEmpty(basicBuildingOutfitVoList)) {
+                basicBuildingOutfitVoList.forEach(oo -> {
                     if (StringUtils.contains(oo.getDecorationPartName(), nameValue)) {
                         if (StringUtils.isNotEmpty(oo.getDecoratingMaterialName())) {
                             multimap.put(nameValue, oo.getDecoratingMaterialName());
@@ -1392,24 +1383,22 @@ public class GenerateBaseDataService {
                     }
                 });
             }
-            if (!houseRoomListMap.isEmpty()) {
-                houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
-                    basicHouseRoomDecorateVos.forEach(oo -> {
-                        if (StringUtils.contains(oo.getPartName(), nameValue)) {
-                            if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                                multimap.put(nameValue, oo.getMaterialName());
-                                if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                    multimap.put(nameValue, String.format("%s%s", oo.getMaterialName(), oo.getRemark()));
-                                }
-                            }
+            if (CollectionUtils.isNotEmpty(basicUnitDecorateVoList)) {
+                basicUnitDecorateVoList.forEach(oo ->{
+                    if (StringUtils.contains(oo.getDecorationPartName(), nameValue)) {
+                        if (StringUtils.isNotEmpty(oo.getDecoratingMaterialName()) && StringUtils.isEmpty(oo.getMaterialGradeName())) {
+                            multimap.put(nameValue, oo.getDecoratingMaterialName());
                         }
-                    });
+                        if (StringUtils.isNotEmpty(oo.getDecoratingMaterialName()) && StringUtils.isNotEmpty(oo.getMaterialGradeName())) {
+                            multimap.put(nameValue, String.format("%s%s", oo.getMaterialGradeName(),oo.getDecoratingMaterialName()));
+                        }
+                    }
                 });
             }
             if (!multimap.isEmpty()) {
                 Collection<String> stringList = multimap.get(name);
                 String string = StringUtils.join(stringList, "、");
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s:%s", name, string));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()),string );
             }
         }
         String value = "/";
@@ -3226,7 +3215,6 @@ public class GenerateBaseDataService {
     public String getSchemeJudgeObjectCertNameList(List<KeyValueDto> keyValueDtoList) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = getLocalPath();
         List<SchemeJudgeObject> judgeObjectList = getSchemeJudgeObjectList();
         Map<SchemeJudgeObject, String> map = Maps.newHashMap();
@@ -3247,7 +3235,7 @@ public class GenerateBaseDataService {
                     AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), keyValueDtoList), false);
                 }
                 if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
-                    AsposeUtils.insertHtml(builder, generateCommonMethod.getSongWarpCssHtml(s), false);
+                    AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(s,keyValueDtoList), false);
                 }
                 if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
                     DeclareRealtyHouseCert realtyHouseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(declareRecord.getDataTableId());
@@ -3850,29 +3838,50 @@ public class GenerateBaseDataService {
             if (houseRoomListMap.isEmpty()) {
                 continue;
             }
-            Multimap<String, String> multimap = ArrayListMultimap.create();
-            Set<String> stringSet = Sets.newHashSet();
+            Map<String,String> stringMap = Maps.newLinkedHashMap() ;
             StringBuilder stringBuilder = new StringBuilder(8) ;
             houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
                 basicHouseRoomDecorateVos.forEach(oo -> {
                     if (StringUtils.contains(oo.getPartName(), nameValue)) {
-                        if (baseReportFieldEnumList.stream().anyMatch(baseReportFieldEnum -> Objects.equal(reportFieldEnum.name(), baseReportFieldEnum.name()))) {
-                            if (typeList.stream().anyMatch(s -> StringUtils.contains(basicHouseRoom.getRoomType(), s))) {
-                                if (StringUtils.isNotEmpty(oo.getMaterialName())){//装修材料
-                                    stringBuilder.append("装修材料").append(oo.getMaterialName()) ;
-                                }
-                                if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                    stringBuilder.append(oo.getRemark()) ;
-                                }
-                            }
+                        //装修材料
+                        if (StringUtils.isNotEmpty(oo.getMaterialName())){
+                            stringBuilder.append("装修材料").append(oo.getMaterialName()) ;
+                        }
+                        if (StringUtils.isNotEmpty(oo.getRemark())) {
+                            stringBuilder.append(oo.getRemark()) ;
                         }
                     }
+                    if (StringUtils.isNotEmpty(stringBuilder.toString())){
+                        stringMap.put(basicHouseRoom.getRoomType() ,stringBuilder.toString()) ;
+                    }
+                    stringBuilder.delete(0,stringBuilder.toString().length()) ;
                 });
             });
-            if (!multimap.isEmpty()) {
-                Collection<String> stringList = multimap.get(name);
-                String string = StringUtils.join(stringList, "、");
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s", string));
+            if (!stringMap.isEmpty()){
+                Set<String> stringSet = Sets.newHashSet();
+                Set<String> stringSet2 = Sets.newHashSet();
+                stringMap.forEach((key,value) -> {
+                    stringSet.add(value) ;
+                    stringSet2.add(key) ;
+                });
+                boolean flag = baseReportFieldEnumList.stream().anyMatch(baseReportFieldEnum -> Objects.equal(reportFieldEnum.name(), baseReportFieldEnum.name())) ;
+                if (!flag){
+                    if (stringSet.size()==1){
+                        String value = String.format("%s:%s",StringUtils.join(stringSet2,"、"),stringSet.stream().findFirst().get()) ;
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                    if (stringSet.size() != 1){
+                        stringSet.clear();
+                        stringMap.forEach((key,value) -> {
+                            String valueA = String.format("%s:%s",key,value) ;
+                            stringSet.add(valueA) ;
+                        });
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet,"、"));
+                    }
+                }
+                if (flag) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet,"、"));
+                }
             }
         }
         String value = "/";

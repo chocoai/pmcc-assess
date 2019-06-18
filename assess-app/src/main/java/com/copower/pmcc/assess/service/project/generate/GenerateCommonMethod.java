@@ -514,10 +514,14 @@ public class GenerateCommonMethod {
     }
 
     public String getLocalPath(String title) {
+        return getLocalPath(title,"doc");
+    }
+
+    public String getLocalPath(String title,String suffix) {
         if (StringUtils.isEmpty(title)) {
             title = String.format("%s%s", "报告模板", DateUtils.format(new Date(), DateUtils.DATE_CHINESE_PATTERN));
         }
-        return String.format("%s\\%s%s%s", baseAttachmentService.createTempDirPath(), title, UUID.randomUUID().toString(), ".doc");
+        return String.format("%s\\%s%s%s%s", baseAttachmentService.createTempDirPath(), title, UUID.randomUUID().toString(), ".",suffix);
     }
 
     /**
