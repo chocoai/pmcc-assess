@@ -130,58 +130,9 @@ public class GenerateReportService {
             if (baseReportTemplate == null) {
                 continue;
             }
-            //房屋评估价值确认书
-            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_CONFIRMATION_HOUSING_VALUATION)) {
-                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
-                if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
-                }
-            }
-            //预评意见书
-            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT_PROPOSAL)) {
-                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
-                if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
-                }
-            }
-            //预评报告
-            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT)) {
-                //获取替换后得报告文件路径 ==>
-                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
-                if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
-                }
-            }
-            //技术报告
-            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
-                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
-                if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
-                }
-            }
-            //结果报告
-            if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
-                String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
-                Document doc = new Document(path);
-//                        DocumentBuilder builder = new DocumentBuilder(doc);
-//                        //“目录”两个字居中显示、加粗、搜宋体
-//                        builder.getCurrentParagraph().getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-//                        builder.setBold(true);
-//                        builder.writeln("目录");
-//                        //清清除所有样式设置
-//                        builder.getParagraphFormat().clearFormatting();
-//                        //插入目录，这是固定的
-//                        builder.insertTableOfContents("\\o \"1-3\" \\h \\z \\u");
-//
-//                        //将光标移到目录书签
-//                        builder.moveToBookmark("TOC");
-//                        builder.insertBreak(BreakType.PAGE_BREAK);
-
-                doc.updateFields();// 更新域
-                doc.save(path);
-                if (StringUtils.isNotBlank(path)) {
-                    this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
-                }
+            String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
+            if (StringUtils.isNotBlank(path)) {
+                this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
             }
         }
     }
