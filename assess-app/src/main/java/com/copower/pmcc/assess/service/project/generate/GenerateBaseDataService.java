@@ -411,7 +411,9 @@ public class GenerateBaseDataService {
      */
     public String getTotalAmountMortgageValue() throws Exception {
         BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice());
-        return generateCommonMethod.getBigDecimalRound(decimal, true);
+        String value = generateCommonMethod.getBigDecimalToInteger(decimal ,100) ;
+        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_DOWN).toString();
+        return value;
     }
 
     /**
@@ -419,7 +421,9 @@ public class GenerateBaseDataService {
      */
     public String getTotalAmountMortgageValueCapitalization() throws Exception {
         BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice());
-        return CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(decimal, false));
+        String value = generateCommonMethod.getBigDecimalToInteger(decimal ,100) ;
+        String s = CnNumberUtils.toUppercaseSubstring(value);
+        return s;
     }
 
     /**
@@ -1577,7 +1581,10 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalRealEstatePrice() {
-        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 2, true);
+        String value = generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 0, false) ;
+        value = generateCommonMethod.getBigDecimalToInteger(new BigDecimal(value) ,100) ;
+        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_DOWN).toString();
+        return value;
     }
 
     /**
@@ -1586,7 +1593,9 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCapitalizationAmount() {
-        String s = CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), false));
+        String value = generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 0, false) ;
+        value = generateCommonMethod.getBigDecimalToInteger(new BigDecimal(value) ,100) ;
+        String s = CnNumberUtils.toUppercaseSubstring(value);
         return s;
     }
 
@@ -4485,7 +4494,7 @@ public class GenerateBaseDataService {
                     if (generateCommonMethod.isInteger(mortgageValue)) {
                         val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
                     } else {
-                        val = generateCommonMethod.getBigDecimalRound(mortgageValue, 2, false);
+                        val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
                     }
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值(元)", val);
@@ -5610,7 +5619,8 @@ public class GenerateBaseDataService {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
             BigDecimal bigDecimal = new BigDecimal(value);
-            return generateCommonMethod.getBigDecimalRound(bigDecimal,2,10000d) ;
+            value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_DOWN).toString();
+            return value ;
         }
         return "/";
     }
