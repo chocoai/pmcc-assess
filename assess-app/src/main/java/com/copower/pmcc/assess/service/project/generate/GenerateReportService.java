@@ -1078,10 +1078,11 @@ public class GenerateReportService {
     }
 
     private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
+        Map<String, String> errorMap2 = Maps.newHashMap() ;
         if (!preMap.isEmpty()) {
             Map<String, String> errorMap = AsposeUtils.replaceText(localPath, preMap);
             if (!errorMap.isEmpty()) {
-                replaceHandleError(errorMap, localPath);
+                errorMap2.putAll(errorMap);
             }
         }
         if (!fileMap.isEmpty()) {
@@ -1089,12 +1090,13 @@ public class GenerateReportService {
         }
         if (!textMap.isEmpty()) {
             Map<String, String> errorMap = AsposeUtils.replaceText(localPath, textMap);
-            if (!errorMap.isEmpty()) {
-                replaceHandleError(errorMap, localPath);
-            }
+            errorMap2.putAll(errorMap);
         }
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
+        }
+        if (!errorMap2.isEmpty()) {
+            replaceHandleError(errorMap2, localPath);
         }
     }
 
@@ -1110,7 +1112,8 @@ public class GenerateReportService {
             });
             //使用 apache poi 处理
             AsposeUtils.replaceText(localPath, changeMap);
-            PoiUtils.replaceText(transMap, localPath);
+            //文档无法识别
+//            PoiUtils.replaceText(transMap, localPath);
         }
     }
 

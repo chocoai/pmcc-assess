@@ -769,11 +769,11 @@ public class GenerateBaseDataService {
                     }
                     break;
                 case LandCertificateField5:
-                    if (declareRealtyLandCert.getUseRightArea() != null) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRealtyLandCert.getUseRightArea(), false));
+                    if (declareRealtyLandCert.getApportionmentArea() != null) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRealtyLandCert.getApportionmentArea(),2, false));
                     } else {
-                        if (declareRealtyRealEstateCert.getUseRightArea() != null) {
-                            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRealtyRealEstateCert.getUseRightArea(), false));
+                        if (declareRealtyRealEstateCert.getApportionmentArea() != null) {
+                            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRealtyRealEstateCert.getApportionmentArea(), 2,false));
                         }
                     }
                     break;
@@ -3794,7 +3794,7 @@ public class GenerateBaseDataService {
      */
     public String getJudgeObjectDamagedDegreeField(BaseReportFieldEnum reportFieldEnum) throws Exception {
         List<String> typeList = Arrays.asList("卧室", "主卧", "客厅", "大厅");
-        List<BaseReportFieldEnum> baseReportFieldEnumList = Arrays.asList(BaseReportFieldEnum.JudgeObjectDamagedDegreeField1, BaseReportFieldEnum.JudgeObjectDamagedDegreeField2);
+        List<BaseReportFieldEnum> baseReportFieldEnumList = Arrays.asList(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3, BaseReportFieldEnum.JudgeObjectDamagedDegreeField6 , BaseReportFieldEnum.JudgeObjectDamagedDegreeField7);
         String name = null;
         switch (reportFieldEnum) {
             case JudgeObjectDamagedDegreeField1: {
@@ -3851,21 +3851,19 @@ public class GenerateBaseDataService {
                 continue;
             }
             Multimap<String, String> multimap = ArrayListMultimap.create();
+            Set<String> stringSet = Sets.newHashSet();
+            StringBuilder stringBuilder = new StringBuilder(8) ;
             houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
                 basicHouseRoomDecorateVos.forEach(oo -> {
                     if (StringUtils.contains(oo.getPartName(), nameValue)) {
                         if (baseReportFieldEnumList.stream().anyMatch(baseReportFieldEnum -> Objects.equal(reportFieldEnum.name(), baseReportFieldEnum.name()))) {
                             if (typeList.stream().anyMatch(s -> StringUtils.contains(basicHouseRoom.getRoomType(), s))) {
-                                if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                    multimap.put(nameValue, String.format("%s%s", typeList.stream().filter(s -> StringUtils.contains(basicHouseRoom.getRoomType(), s)).findFirst().get(), oo.getRemark()));
+                                if (StringUtils.isNotEmpty(oo.getMaterialName())){//装修材料
+                                    stringBuilder.append("装修材料").append(oo.getMaterialName()) ;
                                 }
-                            }
-                        } else {
-                            if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                multimap.put(nameValue, String.format("%s", oo.getRemark()));
-                            }
-                            if (StringUtils.isEmpty(oo.getRemark()) && StringUtils.isNotEmpty(oo.getMaterialName())) {
-                                multimap.put(nameValue, oo.getMaterialName());
+                                if (StringUtils.isNotEmpty(oo.getRemark())) {
+                                    stringBuilder.append(oo.getRemark()) ;
+                                }
                             }
                         }
                     }
@@ -4413,9 +4411,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 if (schemeJudgeObject.getPrice() != null) {
-                    int num = schemeJudgeObject.getPrice().intValue() / 10;
-                    num *= 10;
-                    val = String.valueOf(num);
+                    val = generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getPrice(), 2, false);
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "登记价(元)", val);
             }
@@ -4467,9 +4463,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 if (schemeJudgeObject.getPrice() != null) {
-                    int num = schemeJudgeObject.getPrice().intValue() / 10;
-                    num *= 10;
-                    val = String.valueOf(num);
+                    val = generateCommonMethod.getBigDecimalToInteger(schemeJudgeObject.getPrice(),10) ;
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值单价(元/㎡)", val);
             }
@@ -4477,7 +4471,6 @@ public class GenerateBaseDataService {
             BigDecimal mortgageValue = new BigDecimal("0");
             {
                 String val = "";
-                stringLinkedList.add("抵押价值(元/㎡)");
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     mortgageValue = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                     if (generateCommonMethod.isInteger(mortgageValue)) {
@@ -4486,7 +4479,7 @@ public class GenerateBaseDataService {
                         val = generateCommonMethod.getBigDecimalRound(mortgageValue, 2, false);
                     }
                 }
-                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值(元/㎡)", val);
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值(元)", val);
             }
 
             {
@@ -5608,7 +5601,7 @@ public class GenerateBaseDataService {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
             BigDecimal bigDecimal = new BigDecimal(value);
-            return generateCommonMethod.getBigDecimalRound(bigDecimal,0,10000d) ;
+            return generateCommonMethod.getBigDecimalRound(bigDecimal,2,10000d) ;
         }
         return "/";
     }

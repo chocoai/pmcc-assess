@@ -277,6 +277,9 @@ public class GenerateCommonMethod {
         if (d != null) {
             setScale = bigDecimal.divide(new BigDecimal(d.doubleValue()));
         }
+        if (d == null){
+            setScale = new BigDecimal(bigDecimal.toString()) ;
+        }
         //四舍五入,并且取到约定的位数
         return setScale.abs().setScale(newScale, BigDecimal.ROUND_UP).toString();
     }

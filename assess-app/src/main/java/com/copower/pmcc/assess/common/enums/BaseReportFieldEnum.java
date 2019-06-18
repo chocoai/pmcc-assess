@@ -98,7 +98,7 @@ public enum BaseReportFieldEnum implements Serializable {
     LandCertificateField2("土地所有权人"),
     LandCertificateField3("土地证载用途"),
     LandCertificateField4("土地权利性质"),
-    LandCertificateField5("土地面积"),
+    LandCertificateField5("土地分摊面积"),
     LandCertificateField6("土地终止日期"),
     LandCertificateField7("土地登记机关"),
     LandCertificateField8("土地登记日期"),
