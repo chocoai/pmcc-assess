@@ -697,4 +697,18 @@ public class ProjectInfoService {
             return false;
         return true;
     }
+
+    /**
+     * 完成项目
+     * @param projectId
+     */
+    public void finishProject(Integer projectId) throws BusinessException {
+        //检查该项目是否还有待提交或待审批的任务
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(applicationConstant.getAppKey(), Lists.newArrayList(projectId));
+        if(CollectionUtils.isNotEmpty(projectTaskList))
+            throw new BusinessException("项目中还有待提交的任务");
+        ProjectInfo projectInfo = getProjectInfoById(projectId);
+        projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
+        updateProjectInfo(projectInfo);
+    }
 }

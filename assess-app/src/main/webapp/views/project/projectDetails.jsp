@@ -25,11 +25,12 @@
                             ${projectInfo.projectStatus}
                         </label></small>
                     </h3>
-
                 </div>
                 <div class="title_right">
                     <div class="col-md-12 col-sm-12 col-xs-12 pull-right" style="margin: 0px">
                         <div class="btn-group">
+                            <a class="btn btn-danger" href="javascript://"
+                               onclick="projectDetails.finishProject()"><i class="fa fa-check">&nbsp;</i>完成</a>
                             <c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
                                 <a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i
                                         class="fa fa-pause">&nbsp;</i>暂停</a>
@@ -515,6 +516,30 @@
                     }
                     else {
                         Alert("变更失败，失败原因：" + result.errmsg, 1, null, null);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            });
+        },
+
+        //完成
+        finishProject: function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/finishProject",
+                data: {
+                    projectId: "${projectInfo.id}",
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        Alert("操作成功，项目正常完成");
+                    }
+                    else {
+                        Alert(result.errmsg);
                     }
                 },
                 error: function (result) {

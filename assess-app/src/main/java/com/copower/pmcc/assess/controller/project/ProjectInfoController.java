@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -12,6 +13,7 @@ import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
@@ -73,6 +75,8 @@ public class ProjectInfoController {
     private PublicService publicService;
     @Autowired
     private DocumentTemplateService documentTemplateService;
+    @Autowired
+    private BaseParameterService baseParameterService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -97,6 +101,7 @@ public class ProjectInfoController {
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("projectInfoVoJson", JSONObject.toJSONString(projectInfoVo));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
+        modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         projectInfoService.clear();
         return modelAndView;
     }
@@ -126,6 +131,7 @@ public class ProjectInfoController {
             //单位性质 crm中获取
             modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());
         }
+        modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         return modelAndView != null ? modelAndView : new ModelAndView();
     }
 
@@ -136,6 +142,7 @@ public class ProjectInfoController {
         ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", vo);
         modelAndView.addObject("projectId", vo.getId());
+        modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         return modelAndView;
     }
 
@@ -236,6 +243,7 @@ public class ProjectInfoController {
         ModelAndView modelAndView = new ModelAndView("/project/projectInfoDetails");
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         return modelAndView;
     }
 
@@ -283,7 +291,7 @@ public class ProjectInfoController {
         //项目发文件
         List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("");
         modelAndView.addObject("documentTemplateList", documentTemplateList);
-
+        modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         return modelAndView;
     }
 
@@ -362,6 +370,21 @@ public class ProjectInfoController {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("取得价值定义信息异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/finishProject", name = "完成项目", method = RequestMethod.POST)
+    public HttpResult finishProject(Integer projectId) {
+        try {
+            projectInfoService.finishProject(projectId);
+            return HttpResult.newCorrectResult();
+        } catch (BusinessException e){
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("完成项目异常");
         }
     }
 }

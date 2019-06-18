@@ -126,7 +126,7 @@
                         <c:forEach var="item" items="${projectInfo.contractList}">
                             <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
                                 <label class="form-control">
-                                    <a href="http://dev.pmcc.com/pmcc-contract/contractCurrency/details/${item.key}"
+                                    <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
                                        target="_blank">${item.value}</a>
                                 </label>
                             </div>

@@ -31,6 +31,7 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -111,6 +112,8 @@ public class SchemeJudgeObjectService {
     private SchemeInfoService schemeInfoService;
     @Autowired
     private SchemeSurePriceService schemeSurePriceService;
+    @Autowired
+    private GenerateReportInfoService generateReportInfoService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -561,6 +564,7 @@ public class SchemeJudgeObjectService {
         projectPlanDetailsService.deletePlanDetailsByPlanId(planId);
         schemeInfoService.deleteSchemeInfoByProjectId(projectId);
         schemeSurePriceService.deleteSurePriceAll(projectId);
+        generateReportInfoService.deleteGenerateReportInfoByProjectId(projectId);
     }
 
     /**
