@@ -1,8 +1,7 @@
 package com.copower.pmcc.assess.dto.input.project.scheme;
 
-import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisGroup;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -10,10 +9,9 @@ import java.util.List;
  */
 public class SchemeLiquidationAnalysisApplyDto {
     private Integer id;
-    private BigDecimal total;
     private String liquidRatios;
     private String liquidTime;
-    private List<SchemeLiquidationAnalysisItem> analysisItemList;
+    private List<SchemeLiquidationAnalysisGroupDto> taskLiquidationAnalysisGroups;
 
     public Integer getId() {
         return id;
@@ -21,22 +19,6 @@ public class SchemeLiquidationAnalysisApplyDto {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public List<SchemeLiquidationAnalysisItem> getAnalysisItemList() {
-        return analysisItemList;
-    }
-
-    public void setAnalysisItemList(List<SchemeLiquidationAnalysisItem> analysisItemList) {
-        this.analysisItemList = analysisItemList;
     }
 
     public String getLiquidRatios() {
@@ -53,5 +35,13 @@ public class SchemeLiquidationAnalysisApplyDto {
 
     public void setLiquidTime(String liquidTime) {
         this.liquidTime = liquidTime;
+    }
+
+    public List<SchemeLiquidationAnalysisGroupDto> getTaskLiquidationAnalysisGroups() {
+        return taskLiquidationAnalysisGroups;
+    }
+
+    public void setTaskLiquidationAnalysisGroups(List<SchemeLiquidationAnalysisGroupDto> taskLiquidationAnalysisGroups) {
+        this.taskLiquidationAnalysisGroups = taskLiquidationAnalysisGroups;
     }
 }
