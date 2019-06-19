@@ -1,12 +1,10 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysis;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -38,18 +36,25 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private DataTaxRateAllocationService dataTaxRateAllocationService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisIndex", "", 0, "0", "");
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         if (schemeLiquidationAnalysis == null) {
-            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(), projectPlanDetails.getId());
             schemeLiquidationAnalysis = new SchemeLiquidationAnalysis();
             schemeLiquidationAnalysis.setProjectId(projectPlanDetails.getProjectId());
             schemeLiquidationAnalysis.setPlanDetailsId(projectPlanDetails.getId());
             schemeLiquidationAnalysis.setAreaId(projectPlanDetails.getAreaId());
             schemeLiquidationAnalysisService.saveLiquidationAnalysis(schemeLiquidationAnalysis);
+            SchemeLiquidationAnalysisGroup schemeLiquidationAnalysisGroup = new SchemeLiquidationAnalysisGroup();
+            schemeLiquidationAnalysisGroup.setProjectId(projectPlanDetails.getProjectId());
+            schemeLiquidationAnalysisGroup.setPlanDetailsId(projectPlanDetails.getId());
+            schemeLiquidationAnalysisGroup.setAreaId(projectPlanDetails.getAreaId());
+            schemeLiquidationAnalysisService.saveLiquidationAnalysisGroup(schemeLiquidationAnalysisGroup);
+            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(), projectPlanDetails.getId(),schemeLiquidationAnalysisGroup.getId());
         }
         modelAndView.addObject("master", schemeLiquidationAnalysis);
         setModelParam(modelAndView, projectPlanDetails);
@@ -124,26 +129,12 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     }
 
     private void setModelParam(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
-        modelAndView.addObject("areaGroup", schemeAreaGroupService.get(projectPlanDetails.getAreaId()));
-        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(projectPlanDetails.getAreaId());
-        BigDecimal groupArea = new BigDecimal("0");
-        BigDecimal groupPrice = new BigDecimal("0");
-        //应该获取最终测算好的价格与面积
-        if (CollectionUtils.isNotEmpty(judgeObjects)) {
-            for (SchemeJudgeObject judgeObject : judgeObjects) {
-                if (judgeObject.getEvaluationArea() != null) {
-                    groupArea = groupArea.add(judgeObject.getEvaluationArea());
-                    if (judgeObject.getPrice() != null) {
-                        groupPrice = groupPrice.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
-                    }
-                }
-            }
-        }
-        modelAndView.addObject("groupArea", groupArea.setScale(2, BigDecimal.ROUND_HALF_UP));
-        modelAndView.addObject("groupPrice", groupPrice.setScale(2, BigDecimal.ROUND_HALF_UP));
         //增值税率
         DataTaxRateAllocation allocationSales = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
         String salesTax = String.valueOf(allocationSales.getTaxRate());
         modelAndView.addObject("salesTax", salesTax);
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId());
+        modelAndView.addObject("declareRecordList",declareRecordList);
+
     }
 }

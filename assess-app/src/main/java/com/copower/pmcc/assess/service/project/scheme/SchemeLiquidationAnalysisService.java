@@ -4,17 +4,24 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisGroupDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisApplyDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisGroupDto;
+import com.copower.pmcc.assess.dto.output.project.scheme.ProjectTaskLiquidationAnalysisGroupAndPriceVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.ProjectTaskLiquidationAnalysisVo;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeLiquidationAnalysisGroupVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.google.common.base.Objects;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +55,10 @@ public class SchemeLiquidationAnalysisService {
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private SchemeLiquidationAnalysisGroupDao schemeLiquidationAnalysisGroupDao;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     public List<SchemeLiquidationAnalysisItem> getAnalysisItemList(Integer planDetailsId) {
         SchemeLiquidationAnalysisItem item = new SchemeLiquidationAnalysisItem();
@@ -65,6 +76,14 @@ public class SchemeLiquidationAnalysisService {
 
     }
 
+    public List<SchemeLiquidationAnalysisItem> getAnalysisItemListByGroupId(Integer groupId) {
+        SchemeLiquidationAnalysisItem item = new SchemeLiquidationAnalysisItem();
+        item.setGroupId(groupId);
+        List<SchemeLiquidationAnalysisItem> list = schemeLiquidationAnalysisItemDao.getObjectList(item);
+        return list;
+
+    }
+
     /**
      * 初始化所有相关税费信息
      *
@@ -72,10 +91,11 @@ public class SchemeLiquidationAnalysisService {
      * @param planDetailsId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initTaxAllocation(Integer areaId, Integer planDetailsId) {
+    public void initTaxAllocation(Integer areaId, Integer planDetailsId, Integer groupId) {
         SchemeLiquidationAnalysisItem analysisItem = new SchemeLiquidationAnalysisItem();
         analysisItem.setAreaId(areaId);
         analysisItem.setPlanDetailsId(planDetailsId);
+        analysisItem.setGroupId(groupId);
         analysisItem.setCreator(commonService.thisUserAccount());
         //增值税
         DataTaxRateAllocation allocationSales = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
@@ -255,24 +275,16 @@ public class SchemeLiquidationAnalysisService {
         }
     }
 
-    public void commit(String formData, String processInsId) throws BusinessException {
+    public void commit(String formData, String processInsId) {
         SchemeLiquidationAnalysisApplyDto analysisApplyDto = JSON.parseObject(formData, SchemeLiquidationAnalysisApplyDto.class);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = this.getSchemeLiquidationAnalysis(analysisApplyDto.getId());
-//        schemeLiquidationAnalysis.setTotal(analysisApplyDto.getTotal());
-//        schemeLiquidationAnalysis.setProcessInsId(processInsId);
         BeanUtils.copyProperties(analysisApplyDto, schemeLiquidationAnalysis);
         schemeLiquidationAnalysisDao.editSchemeLiquidationAnalysis(schemeLiquidationAnalysis);
 
-        //修改子表
-        List<SchemeLiquidationAnalysisItem> analysisItemList = analysisApplyDto.getAnalysisItemList();
-        if (CollectionUtils.isNotEmpty(analysisItemList)) {
-            for (SchemeLiquidationAnalysisItem analysisItem : analysisItemList) {
-                if (analysisItem.getId() != null) {
-                    if (!Objects.equal(analysisItem.getAreaId(), schemeLiquidationAnalysis.getAreaId())) {
-                        analysisItem.setAreaId(schemeLiquidationAnalysis.getAreaId());
-                    }
-                    schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(analysisItem);
-                }
+        List<SchemeLiquidationAnalysisGroupDto> schemeLiquidationAnalysisGroupDtos = analysisApplyDto.getTaskLiquidationAnalysisGroups();
+        if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisGroupDtos)) {
+            for (SchemeLiquidationAnalysisGroupDto groupItem : schemeLiquidationAnalysisGroupDtos) {
+                this.addAnalysisGroupFromDto(groupItem);
             }
         }
     }
@@ -293,5 +305,104 @@ public class SchemeLiquidationAnalysisService {
         return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(id);
     }
 
+    //=========================SchemeLiquidationAnalysisGroup============
 
+    public List<SchemeLiquidationAnalysisGroupVo> getSchemeLiquidationAnalysisGroupList(Integer planDetailsId, Integer projectId) {
+        SchemeLiquidationAnalysisGroup surveyAssetInventoryAnalysisRecord = new SchemeLiquidationAnalysisGroup();
+        surveyAssetInventoryAnalysisRecord.setProjectId(projectId);
+        surveyAssetInventoryAnalysisRecord.setPlanDetailsId(planDetailsId);
+        List<SchemeLiquidationAnalysisGroup> schemeLiquidationAnalysisGroups = schemeLiquidationAnalysisGroupDao.getObjectList(surveyAssetInventoryAnalysisRecord);
+        if (CollectionUtils.isNotEmpty(schemeLiquidationAnalysisGroups))
+            return LangUtils.transform(schemeLiquidationAnalysisGroups, o -> this.getSchemeLiquidationAnalysisGroupVo(o));
+        return null;
+    }
+
+    public void removeLiquidationAnalysisGroup(Integer id) {
+        schemeLiquidationAnalysisGroupDao.deleteSchemeLiquidationAnalysisGroup(id);
+        //删除明细
+        SchemeLiquidationAnalysisItem schemeLiquidationAnalysisItem = new SchemeLiquidationAnalysisItem();
+        schemeLiquidationAnalysisItem.setGroupId(id);
+        List<SchemeLiquidationAnalysisItem> itemList = schemeLiquidationAnalysisItemDao.getObjectList(schemeLiquidationAnalysisItem);
+        itemList.forEach(oo -> schemeLiquidationAnalysisItemDao.deleteSchemeLiquidationAnalysisItem(oo.getId()));
+    }
+
+    public SchemeLiquidationAnalysisGroup getLiquidationAnalysisGroupById(Integer id) {
+        return schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(id);
+    }
+
+    public void saveLiquidationAnalysisGroup(SchemeLiquidationAnalysisGroup schemeLiquidationAnalysisGroup) {
+        if (schemeLiquidationAnalysisGroup.getId() == null || schemeLiquidationAnalysisGroup.getId() <= 0) {
+            schemeLiquidationAnalysisGroup.setCreator(processControllerComponent.getThisUser());
+            schemeLiquidationAnalysisGroupDao.addSchemeLiquidationAnalysisGroup(schemeLiquidationAnalysisGroup);
+        } else {
+            schemeLiquidationAnalysisGroupDao.editSchemeLiquidationAnalysisGroup(schemeLiquidationAnalysisGroup);
+        }
+    }
+
+    public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoByJsonStr(String recordIdsJson) {
+        List<Integer> recordList = JSON.parseArray(recordIdsJson, Integer.class);
+        return this.getGroupAndPriceVoByRecordList(recordList);
+    }
+
+    public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoByString(String recordIds) {
+        List<Integer> recordList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(recordIds));
+        return this.getGroupAndPriceVoByRecordList(recordList);
+    }
+
+    public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoByRecordList(List<Integer> recordList) {
+        if (CollectionUtils.isEmpty(recordList)) return null;
+        List<SchemeJudgeObject> listByDeclareIds = schemeJudgeObjectService.getListByDeclareIds(recordList);
+        ProjectTaskLiquidationAnalysisGroupAndPriceVo groupAndPriceVo = new ProjectTaskLiquidationAnalysisGroupAndPriceVo();
+        BigDecimal groupArea = new BigDecimal("0");
+        BigDecimal groupPrice = new BigDecimal("0");
+        //应该获取最终测算好的价格与面积
+        if (CollectionUtils.isNotEmpty(listByDeclareIds)) {
+            for (SchemeJudgeObject judgeObject : listByDeclareIds) {
+                if (judgeObject.getEvaluationArea() != null) {
+                    groupArea = groupArea.add(judgeObject.getEvaluationArea());
+                    if (judgeObject.getPrice() != null) {
+                        groupPrice = groupPrice.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                    }
+                }
+            }
+        }
+        groupAndPriceVo.setGroupArea(groupArea);
+        groupAndPriceVo.setGroupPrice(groupPrice);
+        return groupAndPriceVo;
+    }
+
+    public void addAnalysisGroupFromDto(SchemeLiquidationAnalysisGroupDto analysisGroupDto) {
+        List<String> records = JSON.parseArray(analysisGroupDto.getRecordIds(), String.class);
+        analysisGroupDto.setRecordIds(String.join(",", records));
+        SchemeLiquidationAnalysisGroup analysisGroup = this.getLiquidationAnalysisGroupById(analysisGroupDto.getId());
+        BeanUtils.copyProperties(analysisGroupDto, analysisGroup);
+        this.saveLiquidationAnalysisGroup(analysisGroup);
+        //修改子表
+        List<SchemeLiquidationAnalysisItem> analysisItemList = analysisGroupDto.getAnalysisItemList();
+        if (CollectionUtils.isNotEmpty(analysisItemList)) {
+            for (SchemeLiquidationAnalysisItem analysisItem : analysisItemList) {
+                if (analysisItem.getId() != null) {
+                    schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(analysisItem);
+                }
+            }
+        }
+    }
+
+    public SchemeLiquidationAnalysisGroupVo getSchemeLiquidationAnalysisGroupVo(SchemeLiquidationAnalysisGroup oo) {
+        SchemeLiquidationAnalysisGroupVo vo = new SchemeLiquidationAnalysisGroupVo();
+        if (oo == null) {
+            return null;
+        }
+        org.springframework.beans.BeanUtils.copyProperties(oo, vo);
+        List<DeclareRecord> declareRecordList = Lists.newArrayList();
+        if (StringUtils.isNotBlank(oo.getRecordIds())) {
+            declareRecordList = declareRecordService.getDeclareRecordListByIds(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(oo.getRecordIds())));
+        }
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
+            StringBuilder stringBuilder = new StringBuilder(8);
+            declareRecordList.forEach(o -> stringBuilder.append(o.getName()).append(","));
+            vo.setRecordNames(StringUtils.strip(stringBuilder.toString(), ","));
+        }
+        return vo;
+    }
 }
