@@ -1409,55 +1409,27 @@ public class GenerateBaseDataService {
             if (CollectionUtils.isEmpty(basicHouseRoomList)) {
                 continue;
             }
-            Map<String, Set<BigDecimal>> setMap = Maps.newHashMap();
+            Map<String, BigDecimal> bigDecimalMap = Maps.newHashMap();
             basicHouseRoomList.forEach(oo -> {
                 String name = StringUtils.isNotBlank(oo.getName()) ? oo.getName() : oo.getRoomType();
                 if (oo.getLayerHeight() != null && StringUtils.isNotEmpty(name)) {
-                    Set<BigDecimal> bigDecimalSet = setMap.get(oo.getName());
-                    if (CollectionUtils.isEmpty(bigDecimalSet)) {
-                        bigDecimalSet = Sets.newHashSet();
-                    }
-                    bigDecimalSet.add(oo.getLayerHeight());
-                    setMap.put(name, bigDecimalSet);
+                    bigDecimalMap.put(name, oo.getLayerHeight());
                 }
             });
-            if (!setMap.isEmpty()) {
-                BigDecimal bigDecimal = setMap.entrySet().stream().findFirst().get().getValue().stream().findFirst().get();
-                //所以的层高都相同的情况
-                StringBuilder stringBuilder = new StringBuilder(8);
-                List<String> stringList = Lists.newArrayList();
-                if (setMap.entrySet().stream().allMatch(oo -> oo.getValue().stream().allMatch(po -> Objects.equal(po, bigDecimal)))) {
-                    setMap.forEach((s, bigDecimals) -> {
-                        stringList.add(s);
+            if (!bigDecimalMap.isEmpty()) {
+                Set<BigDecimal> bigDecimalSet = Sets.newHashSet();
+                bigDecimalMap.forEach((s, bigDecimal) -> {
+                    bigDecimalSet.add(bigDecimal);
+                });
+                if (bigDecimalSet.size() == 1) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), bigDecimalSet.stream().findFirst().get().toString());
+                }
+                if (bigDecimalSet.size() != 1){
+                    List<String> stringList = Lists.newArrayList();
+                    bigDecimalMap.forEach((s, bigDecimal) -> {
+                        stringList.add(String.format("%s:%s",s,bigDecimal.toString())) ;
                     });
-                    stringBuilder.append(StringUtils.join(stringList, "、"));
-                    stringBuilder.append(generateCommonMethod.getBigDecimalRound(bigDecimal, false));
-                    stringBuilder.append("m");
-                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
-                    }
-                } else {
-                    Map<String, String> stringMap = Maps.newLinkedHashMap();
-                    Set<String> stringSet = Sets.newHashSet();
-                    setMap.forEach((s, bigDecimals) -> {
-                        bigDecimals.forEach(bigDecimal1 -> stringList.add(generateCommonMethod.getBigDecimalRound(bigDecimal1, false)));
-                        stringMap.put(s, StringUtils.join(stringList, "、"));
-                        stringSet.add(StringUtils.join(stringList, "、"));
-                        stringList.add(s);
-                    });
-                    if (stringSet.size() == 1) {
-                        stringBuilder.append(StringUtils.join(stringList, "、"));
-                        stringBuilder.append(stringSet.stream().findFirst().get());
-                        stringBuilder.append("m");
-                    }
-                    if (stringSet.size() > 1) {
-                        stringMap.forEach((s, s2) -> {
-                            stringBuilder.append(s).append(s2).append("m");
-                        });
-                    }
-                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
-                    }
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList,"；"));
                 }
             }
         }
@@ -3937,27 +3909,9 @@ public class GenerateBaseDataService {
      * @param reportFieldEnum
      * @return
      */
-    public String getJudgeObjectDamagedDegreeField(BaseReportFieldEnum reportFieldEnum) throws Exception {
-        List<String> typeList = Arrays.asList("卧室", "主卧", "客厅", "大厅");
-        List<BaseReportFieldEnum> baseReportFieldEnumList = Arrays.asList(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3, BaseReportFieldEnum.JudgeObjectDamagedDegreeField6, BaseReportFieldEnum.JudgeObjectDamagedDegreeField7);
+    public String getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum reportFieldEnum) throws Exception {
         String name = null;
         switch (reportFieldEnum) {
-            case JudgeObjectDamagedDegreeField1: {
-                name = "门";
-            }
-            break;
-            case JudgeObjectDamagedDegreeField2: {
-                name = "窗";
-            }
-            break;
-            case JudgeObjectDamagedDegreeField3: {
-                name = "地面";
-            }
-            break;
-            case JudgeObjectDamagedDegreeField4: {
-                name = "墙";
-            }
-            break;
             case JudgeObjectDamagedDegreeField5: {
                 name = "天棚";
             }
@@ -3996,22 +3950,23 @@ public class GenerateBaseDataService {
                 continue;
             }
             Map<String, String> stringMap = Maps.newLinkedHashMap();
-            StringBuilder stringBuilder = new StringBuilder(8);
             houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
                 basicHouseRoomDecorateVos.forEach(oo -> {
                     if (StringUtils.contains(oo.getPartName(), nameValue)) {
+                        String value = null;
                         //装修材料
-                        if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                            stringBuilder.append(oo.getMaterialName());
+                        if (StringUtils.isEmpty(oo.getRemark())) {
+                            if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                value = oo.getMaterialName();
+                            }
                         }
                         if (StringUtils.isNotEmpty(oo.getRemark())) {
-                            stringBuilder.append(oo.getRemark());
+                            value = oo.getRemark();
+                        }
+                        if (StringUtils.isNotEmpty(value)) {
+                            stringMap.put(basicHouseRoom.getRoomType(), String.format("%s:%s", oo.getPartName(), value));
                         }
                     }
-                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
-                        stringMap.put(basicHouseRoom.getRoomType(), stringBuilder.toString());
-                    }
-                    stringBuilder.delete(0, stringBuilder.toString().length());
                 });
             });
             if (!stringMap.isEmpty()) {
@@ -4019,6 +3974,91 @@ public class GenerateBaseDataService {
                 stringMap.forEach((key, value) -> {
                     stringSet.add(value);
                 });
+                if (stringSet.size() == 1) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
+                }
+                if (stringSet.size() != 1) {
+                    List<String> stringList = Lists.newArrayList();
+                    stringMap.forEach((key, value) -> {
+                        stringList.add(String.format("%s%s", key, value));
+                    });
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList, "；"));
+                }
+            }
+        }
+        String value = "/";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", true);
+        }
+        return value;
+    }
+
+    public String getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum reportFieldEnum) throws Exception {
+        String name = null;
+        switch (reportFieldEnum) {
+            case JudgeObjectDamagedDegreeField1: {
+                name = "门";
+            }
+            break;
+            case JudgeObjectDamagedDegreeField2: {
+                name = "窗";
+            }
+            break;
+            case JudgeObjectDamagedDegreeField3: {
+                name = "地面";
+            }
+            break;
+            case JudgeObjectDamagedDegreeField4: {
+                name = "墙";
+            }
+            break;
+            default:
+                break;
+        }
+        String nameValue = name;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply == null || basicApply.getId() == null) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
+            Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> houseRoomListMap = Maps.newHashMap();
+            if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
+                for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
+                    List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
+                    if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
+                        houseRoomListMap.put(basicHouseRoom, basicHouseRoomDecorateVos);
+                    }
+                }
+            }
+            if (houseRoomListMap.isEmpty()) {
+                continue;
+            }
+            Set<String> stringSet = Sets.newHashSet();
+            StringBuilder stringBuilder = new StringBuilder(8);
+            houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
+                basicHouseRoomDecorateVos.forEach(oo -> {
+                    if (StringUtils.contains(oo.getPartName(), nameValue)) {
+                        if (StringUtils.isNotEmpty(oo.getRemark())) {
+                            stringBuilder.append(oo.getRemark());
+                        }
+                        //装修材料
+                        if (StringUtils.isEmpty(oo.getRemark())) {
+                            if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                stringBuilder.append(oo.getMaterialName());
+                            }
+                        }
+                    }
+                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                        stringSet.add(stringBuilder.toString());
+                    }
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                });
+            });
+            if (CollectionUtils.isNotEmpty(stringSet)) {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
             }
         }
@@ -4556,9 +4596,13 @@ public class GenerateBaseDataService {
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "建筑面积(㎡)", val);
             }
             {
+                BigDecimal mortgageValue = new BigDecimal("0");
                 String val = "";
-                if (schemeJudgeObject.getPrice() != null) {
-                    val = generateCommonMethod.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 100);
+                if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
+                    mortgageValue = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
+                    if (generateCommonMethod.isInteger(mortgageValue)) {
+                    }
+                    val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "登记价(元)", val);
             }
@@ -4615,16 +4659,14 @@ public class GenerateBaseDataService {
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值单价(元/㎡)", val);
             }
 
-            BigDecimal mortgageValue = new BigDecimal("0");
             {
+                BigDecimal mortgageValue = new BigDecimal("0");
                 String val = "";
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     mortgageValue = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                     if (generateCommonMethod.isInteger(mortgageValue)) {
-                        val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
-                    } else {
-                        val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
                     }
+                    val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值(元)", val);
             }
@@ -5041,7 +5083,7 @@ public class GenerateBaseDataService {
                             builder.writeln(key);
                         }
                     } catch (Exception e) {
-                        logger.error(e.getMessage(),e);
+                        logger.error(e.getMessage(), e);
                     }
                 }
                 //收益法
@@ -5679,12 +5721,10 @@ public class GenerateBaseDataService {
     public String getAssessArea() {
         String value = "";
         Map<Integer, String> map = new HashMap<>(2);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getEvaluationArea() != null) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getEvaluationArea(), 2, false));
-                }
+        Map<SchemeJudgeObject, KeyValueDto> map2 = getAssessAssessTotalData();
+        if (!map2.isEmpty()) {
+            for (Map.Entry<SchemeJudgeObject, KeyValueDto> entry : map2.entrySet()) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(entry.getKey().getNumber()), entry.getValue().getKey());
             }
         }
         if (!map.isEmpty()) {
@@ -5697,13 +5737,10 @@ public class GenerateBaseDataService {
     public String getAssessPrice() {
         String value = "";
         Map<Integer, String> map = new HashMap<>(2);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getPrice() != null) {
-
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 10));
-                }
+        Map<SchemeJudgeObject, KeyValueDto> map2 = getAssessAssessTotalData();
+        if (!map2.isEmpty()) {
+            for (Map.Entry<SchemeJudgeObject, KeyValueDto> entry : map2.entrySet()) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(entry.getKey().getNumber()), entry.getValue().getValue());
             }
         }
         if (!map.isEmpty()) {
@@ -5720,7 +5757,6 @@ public class GenerateBaseDataService {
     public String getAssessAssessTotal() {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
-            BigDecimal bigDecimal = new BigDecimal(value);
             value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
             return value;
         }
@@ -5743,15 +5779,29 @@ public class GenerateBaseDataService {
 
     private String getAssessAssessTotal2() {
         BigDecimal bigDecimal = new BigDecimal(0);
+        Map<SchemeJudgeObject, KeyValueDto> map = getAssessAssessTotalData();
+        if (!map.isEmpty()) {
+            for (Map.Entry<SchemeJudgeObject, KeyValueDto> entry : map.entrySet()) {
+                BigDecimal one = new BigDecimal(entry.getValue().getKey());
+                BigDecimal two = new BigDecimal(entry.getValue().getValue());
+                bigDecimal = bigDecimal.add(one.multiply(two));
+            }
+        }
+        return generateCommonMethod.getBigDecimalToInteger(bigDecimal, 100);
+    }
+
+    private Map<SchemeJudgeObject, KeyValueDto> getAssessAssessTotalData() {
+        Map<SchemeJudgeObject, KeyValueDto> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    bigDecimal = bigDecimal.add(schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea()));
+                    KeyValueDto keyValueDto = new KeyValueDto(generateCommonMethod.getBigDecimalRound(schemeJudgeObject.getEvaluationArea(), 2, false), generateCommonMethod.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 10));
+                    map.put(schemeJudgeObject, keyValueDto);
                 }
             }
         }
-        return generateCommonMethod.getBigDecimalToInteger(bigDecimal, 100);
+        return map;
     }
 
 
@@ -5766,14 +5816,13 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
         Map<SchemeJudgeObject, String> map = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    BigDecimal bigDecimal = new BigDecimal(0);
-                    bigDecimal = bigDecimal.add(schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea()));
-                    map.put(schemeJudgeObject, generateCommonMethod.getBigDecimalRound(bigDecimal, 2, true));
-                }
+        Map<SchemeJudgeObject, KeyValueDto> map2 = getAssessAssessTotalData();
+        if (!map2.isEmpty()) {
+            for (Map.Entry<SchemeJudgeObject, KeyValueDto> entry : map2.entrySet()) {
+                BigDecimal one = new BigDecimal(entry.getValue().getKey());
+                BigDecimal two = new BigDecimal(entry.getValue().getValue());
+                String value = one.multiply(two).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
+                map.put(entry.getKey(), value);
             }
         }
         if (!map.isEmpty()) {
@@ -5782,11 +5831,7 @@ public class GenerateBaseDataService {
             } else {
                 map.entrySet().forEach(entry -> {
                     String value = String.format("%s%s", generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey()), entry.getValue());
-                    try {
-                        documentBuilder.insertHtml(generateCommonMethod.getSongWarpCssHtml(value), false);
-                    } catch (Exception e) {
-                    }
-
+                    AsposeUtils.insertHtml(documentBuilder, generateCommonMethod.getSongWarpCssHtml(value), false);
                 });
             }
         }

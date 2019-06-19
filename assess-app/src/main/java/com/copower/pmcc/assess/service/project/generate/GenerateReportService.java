@@ -967,25 +967,25 @@ public class GenerateReportService {
                 }
                 //获取房屋的装修情况
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField1.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField1));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField1));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField2.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField2));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField2));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField4.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField4));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField4));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField7.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeField(BaseReportFieldEnum.JudgeObjectDamagedDegreeField7));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum.JudgeObjectDamagedDegreeField7));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField8.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldValue());
