@@ -91,12 +91,12 @@ public class GenerateMdCompareService {
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.dataHousePriceIndexService = SpringContextUtils.getBean(DataHousePriceIndexService.class);
-        getEvaluationItemList();
-        schemeAreaGroup = schemeAreaGroupService.get(areaId);
-        this.valueTimePoint = schemeAreaGroup.getValueTimePoint();
         this.schemeJudgeObjectId = schemeJudgeObjectId;
         this.mcId = mcId;
         this.areaId = areaId;
+        getEvaluationItemList();
+        schemeAreaGroup = schemeAreaGroupService.get(areaId);
+        this.valueTimePoint = schemeAreaGroup.getValueTimePoint();
     }
 
     /**

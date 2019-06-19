@@ -44,7 +44,7 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_base_report_template">
+        <table tableName="tb_initiate_consignor">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

@@ -3939,6 +3939,7 @@ public class GenerateBaseDataService {
      */
     public String getJudgeObjectDamagedDegreeField(BaseReportFieldEnum reportFieldEnum) throws Exception {
         List<String> typeList = Arrays.asList("卧室", "主卧", "客厅", "大厅");
+        List<BaseReportFieldEnum> baseReportFieldEnumList = Arrays.asList(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3, BaseReportFieldEnum.JudgeObjectDamagedDegreeField6, BaseReportFieldEnum.JudgeObjectDamagedDegreeField7);
         String name = null;
         switch (reportFieldEnum) {
             case JudgeObjectDamagedDegreeField1: {
@@ -4808,17 +4809,15 @@ public class GenerateBaseDataService {
         for (int j = 2; j < 2 + schemeJudgeObjectList.size(); j++) {
             MdMarketCompare mdMarketCompare = null;
             MdIncome mdIncome = null;
-            if (true) {
-                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_MARKET_COMPARE, schemeJudgeObjectList.get(j - 2));
-                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    mdMarketCompare = mdMarketCompareService.getMdMarketCompare(schemeInfo.getMethodDataId());
-                }
+            SchemeJudgeObject judgeObject = schemeJudgeObjectList.get(j - 2);
+            SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE).getId());
+            if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                mdMarketCompare = mdMarketCompareService.getMdMarketCompare(schemeInfo.getMethodDataId());
             }
-            if (true) {
-                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObjectList.get(j - 2));
-                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
-                }
+
+            schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME).getId());
+            if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
             }
             int num = j % 2;
             switch (num) {
@@ -4980,7 +4979,7 @@ public class GenerateBaseDataService {
         Multimap<String, String> multimap = ArrayListMultimap.create();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObject);
+                SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME).getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String value = generateMdIncomeService.getTenancyrestrictionReamrk();
@@ -5017,6 +5016,8 @@ public class GenerateBaseDataService {
         Document document = new Document();
         BaseDataDic mdIncome = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
         BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        BaseDataDic mdCost = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
+        BaseDataDic mdDevelopment = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         Map<String, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -5024,7 +5025,7 @@ public class GenerateBaseDataService {
                 List<Integer> numbers = Lists.newArrayList(Lists.newArrayList(schemeJudgeObject.getNumber().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList()));
                 SchemeInfo schemeInfo = null;
                 //市场比较法
-                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_MARKET_COMPARE, schemeJudgeObject);
+                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCompare.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), areaId);
                     try {
@@ -5040,10 +5041,11 @@ public class GenerateBaseDataService {
                             builder.writeln(key);
                         }
                     } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
                     }
                 }
                 //收益法
-                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObject);
+                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdIncome.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String generateCompareFile = generateMdIncomeService.generateCompareFile();
@@ -5060,14 +5062,14 @@ public class GenerateBaseDataService {
                 }
 
                 //成本法
-                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_COST, schemeJudgeObject);
+                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCost.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
                     if (CollectionUtils.isEmpty(attachmentDtos)) continue;
                     String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
                     File file = new File(generateCompareFile);
                     if (file.isFile()) {
-                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdIncome.getName());
+                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdCost.getName());
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
                         //去掉html
                         key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
@@ -5078,14 +5080,14 @@ public class GenerateBaseDataService {
                 }
 
                 //假设开发法
-                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_DEVELOPMENT, schemeJudgeObject);
+                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdDevelopment.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
+                    List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdDevelopment.class));
                     if (CollectionUtils.isEmpty(attachmentDtos)) continue;
                     String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
                     File file = new File(generateCompareFile);
                     if (file.isFile()) {
-                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdIncome.getName());
+                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdDevelopment.getName());
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
                         //去掉html
                         key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
@@ -5375,35 +5377,6 @@ public class GenerateBaseDataService {
         }
         document.save(localPath);
         return localPath;
-    }
-
-
-    /**
-     * 获取如收益法,市场比较法，假设开发法，成本法等的id
-     *
-     * @param fieldName
-     * @param schemeJudgeObject
-     * @return SchemeInfo
-     */
-    private SchemeInfo getSchemeInfoId(String fieldName, SchemeJudgeObject schemeJudgeObject) {
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(fieldName);
-        List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
-        DataEvaluationMethod dataEvaluationMethod = null;
-        SchemeInfo schemeInfo = null;
-        if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
-            if (baseDataDic != null) {
-                if (dataEvaluationMethodList.stream().filter(oo -> Objects.equal(baseDataDic.getName(), oo.getName())).count() >= 1) {
-                    dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> Objects.equal(baseDataDic.getName(), oo.getName())).findFirst().get();
-                }
-            }
-        }
-        if (dataEvaluationMethod != null) {
-            schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
-        }
-        if (schemeInfo != null) {
-            return schemeInfo;
-        }
-        return null;
     }
 
     /**
