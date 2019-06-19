@@ -25,13 +25,20 @@
         </tr>
         <tr>
             <td>
+                <button  onclick="switch3DMap(false,this)">切换3D</button>
+                <button style="display: none" onclick="switch3DMap(true,this)">切换普通地图</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <input id="tipinput"/>
             </td>
         </tr>
     </table>
 </div>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.10&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+        src="https://webapi.amap.com/maps?v=1.4.10&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.PlaceSearch,AMap.MouseTool"></script>
 <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
 
 <script type="text/javascript">
@@ -79,6 +86,7 @@
     //加载所有标注信息
     function loadMarkerList(taggingArray) {
         map.remove(markerArray);
+        markerArray = [] ;
         if (taggingArray && taggingArray.length > 0) {
             var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
             for (var i = 0; i < taggingArray.length; i++) {
@@ -96,6 +104,73 @@
             }
             map.setFitView();
         }
+    }
+
+    function switch3DMap(flag , that) {
+        if (!flag){
+            map = new AMap.Map('container', {
+                resizeEnable: true,
+                viewMode: '3D',
+                pitch: 60,
+                rotation: -35,
+                // 隐藏默认楼块
+                features: ['bg', 'road', 'point'],
+                mapStyle: 'amap://styles/light',
+                layers: [
+                    // 高德默认标准图层
+                    new AMap.TileLayer.Satellite(),
+                    // 楼块图层
+                    new AMap.Buildings({
+                        zooms: [16, 18],
+                        zIndex: 10,
+                        heightFactor: 2//2倍于默认高度，3D下有效
+                    })
+                ],
+                zoom: 16
+            });
+        }
+
+        if (flag){
+            map = new AMap.Map("container", {resizeEnable: true, zoom: 19});
+        }
+
+        var taggingArray = [] ;
+        if (markerArray.length >= 1){
+            markerArray.forEach(function (n,i) {
+               if (n.C){
+                   if (n.C.position){
+                       taggingArray.push(n.C.position) ;
+                   }
+               }
+            }) ;
+        }
+        if (taggingArray.length >= 1){
+            loadMarkerList(taggingArray) ;
+        }
+        if (that){
+            var text = $(that).text() ;
+            $(that).closest("td").find("button").each(function (i,btn) {
+                if (text == $(btn).text()){
+                    $(btn).hide() ;
+                }else {
+                    $(btn).show() ;
+                }
+            }) ;
+        }
+
+        // 地图 加载完成
+        map.on("complete", function () {
+            //地图点击事件
+            //地图点击事件
+            map.on('click', function (e) {
+                if('${click}'){
+                    var excuteString = 'if (parent && parent.${click}) {';
+                    excuteString += 'parent.${click}(e.lnglat.getLng(), e.lnglat.getLat());}';
+                    eval(excuteString);
+                }
+            });
+        });
+
     }
 </script>
 </body>
