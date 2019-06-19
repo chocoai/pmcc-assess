@@ -326,6 +326,14 @@ public class SchemeLiquidationAnalysisService {
         itemList.forEach(oo -> schemeLiquidationAnalysisItemDao.deleteSchemeLiquidationAnalysisItem(oo.getId()));
     }
 
+    public List<SchemeLiquidationAnalysisGroup> getGroupByAreaId(Integer areaId,Integer projectId) {
+        SchemeLiquidationAnalysisGroup surveyAssetInventoryAnalysisRecord = new SchemeLiquidationAnalysisGroup();
+        surveyAssetInventoryAnalysisRecord.setProjectId(projectId);
+        surveyAssetInventoryAnalysisRecord.setAreaId(areaId);
+        List<SchemeLiquidationAnalysisGroup> schemeLiquidationAnalysisGroups = schemeLiquidationAnalysisGroupDao.getObjectList(surveyAssetInventoryAnalysisRecord);
+        return schemeLiquidationAnalysisGroups;
+    }
+
     public SchemeLiquidationAnalysisGroup getLiquidationAnalysisGroupById(Integer id) {
         return schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(id);
     }
