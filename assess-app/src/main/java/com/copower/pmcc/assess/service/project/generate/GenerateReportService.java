@@ -706,10 +706,10 @@ public class GenerateReportService {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentGroundNum());
                 }
                 if (Objects.equal(BaseReportFieldEnum.exteriorWallDecorate.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOutfitDecorate(BaseReportFieldEnum.exteriorWallDecorate));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOutfitDecorate1());
                 }
                 if (Objects.equal(BaseReportFieldEnum.LobbyDecorate.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOutfitDecorate(BaseReportFieldEnum.LobbyDecorate));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOutfitDecorate2());
                 }
                 //地基及墙面
                 if (Objects.equal(BaseReportFieldEnum.FoundationAndWall.getName(), name)) {
@@ -1052,6 +1052,8 @@ public class GenerateReportService {
                 try {
                     replaceHandleError(errorMap2, localPath);
                 } catch (Exception e) {
+                    String error = e.getMessage();
+                    logger.info(error,e);
                     //docx 结尾的会出错
                 }
             }
