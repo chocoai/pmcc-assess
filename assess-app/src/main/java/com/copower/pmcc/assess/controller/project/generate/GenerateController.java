@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project.generate;
 
 import com.copower.pmcc.assess.service.project.generate.GenerateService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +24,13 @@ public class GenerateController {
 
     @ResponseBody
     @RequestMapping(value = "/submitApply", name = "提交申请", method = RequestMethod.POST)
-    public HttpResult submitApply(Integer planId,Integer areaGroupId) {
+    public HttpResult submitApply(Integer planId, Integer areaGroupId) {
         try {
-            generateService.submitApply(planId,areaGroupId);
+            generateService.submitApply(planId);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return HttpResult.newErrorResult("提交申请异常");
         }
         return HttpResult.newCorrectResult();
@@ -39,7 +42,7 @@ public class GenerateController {
         try {
             generateService.submitApproval(approvalModelDto);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return HttpResult.newErrorResult("审批异常");
         }
         return HttpResult.newCorrectResult();
@@ -51,7 +54,7 @@ public class GenerateController {
         try {
             generateService.submitEditApproval(approvalModelDto);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return HttpResult.newErrorResult("返回修改提交异常");
         }
         return HttpResult.newCorrectResult();

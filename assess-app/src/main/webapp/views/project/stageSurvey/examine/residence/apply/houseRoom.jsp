@@ -229,10 +229,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            装修材料<span class="symbol required"></span>
+                                            装修材料
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <select required="required" name="material" class="form-control  material">
+                                            <select name="material" class="form-control  material">
                                             </select>
                                         </div>
                                     </div>
@@ -240,10 +240,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            施工工艺<span class="symbol required"></span>
+                                            施工工艺
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <select required="required" name="constructionTechnology"
+                                            <select name="constructionTechnology"
                                                     class="form-control constructionTechnology">
                                             </select>
                                         </div>
@@ -252,10 +252,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            装修材料价格区间<span class="symbol required"></span>
+                                            装修材料价格区间
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <select required="required" name="materialPrice"
+                                            <select name="materialPrice"
                                                     class="form-control materialPrice">
                                             </select>
                                         </div>

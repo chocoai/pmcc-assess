@@ -132,7 +132,7 @@
             //showMode: 'table',
             formData: {
                 fieldsName: fieldsName,
-                tableName: AssessDBKey.GenerateReportGeneration,
+                tableName: AssessDBKey.GenerateReportInfo,
                 tableId: id == undefined ? 0 : id
             },
             editFlag: true,

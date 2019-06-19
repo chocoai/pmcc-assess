@@ -482,8 +482,10 @@ public class ProjectInfoService {
                             approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
                             String displayUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), boxReDto.getProcessDisplayUrl(), boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
                             projectPlanVo.setPlanExecutor(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
-                            projectPlanVo.setPlanCanExecut(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount()));
-                            projectPlanVo.setPlanExecutUrl(approvalUrl);
+                            if(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())){
+                                projectPlanVo.setPlanCanExecut(true);
+                                projectPlanVo.setPlanExecutUrl(approvalUrl);
+                            }
                             projectPlanVo.setPlanDisplayUrl(displayUrl);
                         }
                     }

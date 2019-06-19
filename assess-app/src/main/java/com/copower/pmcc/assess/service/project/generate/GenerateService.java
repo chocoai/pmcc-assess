@@ -61,8 +61,11 @@ public class GenerateService {
      * @throws BusinessException
      */
     @Transactional(rollbackFor = Exception.class)
-    public void submitApply(Integer planId,Integer areaGroupId) throws Exception {
+    public void submitApply(Integer planId) throws Exception {
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
+        //判断是否已发起流程
+        if(ProjectStatusEnum.RUNING.getKey().equals(projectPlan.getStatus()))
+            throw new BusinessException("审核盖章申请已发起，请不要重复操作");
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         ProcessUserDto processUserDto = null;

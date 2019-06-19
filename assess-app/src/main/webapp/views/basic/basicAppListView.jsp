@@ -40,9 +40,6 @@
                                         onclick="dataObjFun.loadDataList()">
                                     查询
                                 </div>
-                            </div>
-
-                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <a class="btn btn-success" target="_blank"
                                    href="${pageContext.request.contextPath}/basicApply/basicApplyIndex">新增</a>
                             </div>

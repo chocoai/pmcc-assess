@@ -111,19 +111,22 @@
                 <div class="x_content">
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary">估价委托书及相关证明</button>
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <c:forEach items="${areaGroupList}" var="item">
-                                <li><a target="_blank" href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}&areaId=${item.id}">${item.areaName}</a>
+                                <li><a target="_blank"
+                                       href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}&areaId=${item.id}">${item.areaName}</a>
                                 </li>
                             </c:forEach>
                         </ul>
                     </div>
                     <div class="btn-group">
-                        <button type="button" onclick="projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());" class="btn btn-primary">
+                        <button type="button" onclick="projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());"
+                                class="btn btn-primary">
                             <i class='fa fa-refresh fa-white'></i> 刷新
                         </button>
                     </div>
@@ -148,26 +151,26 @@
                                     <div id="plan_item_${plan.id}" class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
                                         <c:if test="${not empty plan.planDisplayUrl and plan.bisAutoComplete eq false}">
                                             <div class="btn-group">
+                                                <div class="btn btn-sm btn-dark">计划编制</div>
+                                                <div class="btn btn-sm btn-default" data-placement="top"
+                                                     data-toggle="tooltip"
+                                                     data-original-title="责任人">${plan.planExecutor}
+                                                </div>
                                                 <c:if test="${empty plan.planExecutUrl}">
-                                                    <div class="btn btn-sm btn-dark">计划编制</div>
-                                                    <div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="重启"
+                                                    <div class="btn btn-sm btn-warning" data-placement="top"
+                                                         data-toggle="tooltip" data-original-title="重启"
                                                          onclick=""><i class="fa fa-reply"></i></div>
-                                                    <div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="查看"
-                                                         onclick="window.open('${plan.planDisplayUrl}')"><i class="fa fa-search"></i></div>
+                                                    <div class="btn btn-sm btn-warning" data-placement="top"
+                                                         data-toggle="tooltip" data-original-title="查看"
+                                                         onclick="window.open('${plan.planDisplayUrl}')"><i
+                                                            class="fa fa-search"></i></div>
                                                 </c:if>
-                                                <c:if test="${not empty plan.planExecutUrl}">
-                                                    <div class="btn btn-sm btn-dark">计划编制</div>
-                                                    <div class="btn btn-sm btn-default" data-placement="top"
+                                                <c:if test="${not empty plan.planExecutUrl and plan.planCanExecut eq true}">
+                                                    <div class="btn btn-sm btn-success" data-placement="top"
                                                          data-toggle="tooltip"
-                                                         data-original-title="责任人">${plan.planExecutor}
+                                                         onclick="projectDetails.taskOpenWin('${plan.planExecutUrl}')"
+                                                         data-original-title="处理"><i class="fa fa-arrow-right"></i>
                                                     </div>
-                                                    <c:if test="${plan.planCanExecut eq true}">
-                                                        <div class="btn btn-sm btn-success" data-placement="top"
-                                                             data-toggle="tooltip"
-                                                             onclick="projectDetails.taskOpenWin('${plan.planExecutUrl}')"
-                                                             data-original-title="处理"><i class="fa fa-arrow-right"></i>
-                                                        </div>
-                                                    </c:if>
                                                 </c:if>
                                             </div>
                                         </c:if>
@@ -189,28 +192,6 @@
 </div>
 </body>
 
-<script type="text/html" id="planItemHtml">
-    <div class="btn-group">
-        <div class="btn btn-sm btn-dark">{planName}</div>
-        <div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip"
-             data-original-title="责任人">{planExecutor}
-        </div>
-        <div class="btn btn-sm btn-{btnClass}" data-placement="top" data-toggle="tooltip"
-             onclick="projectDetails.taskOpenWin('{planExecutUrl}')"
-             data-original-title="处理"><i class="fa fa-arrow-right"></i>
-        </div>
-    </div>
-</script>
-<script type="text/html" id="planItemViewHtml">
-    <div class="btn-group">
-        <div class="btn btn-sm btn-dark">{planName}</div>
-        <div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启"
-             onclick="projectDetails.replyPlan('{planId}');"><i class="fa fa-reply"></i></div>
-        <div class="btn btn-sm btn-warning" data-placement="top"
-             data-toggle="tooltip" data-original-title="查看"
-             onclick="window.open('{planDisplayUrl}')"><i class="fa fa-search"></i></div>
-    </div>
-</script>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
@@ -231,13 +212,13 @@
 
     function writeToErpProject() {
         $.ajax({
-            url:'${pageContext.request.contextPath}/home/writeToErpProject',
-            data:{projectId:'${projectInfo.id}'},
-            type:'post',
-            success:function (result) {
-                if(result.ret){
+            url: '${pageContext.request.contextPath}/home/writeToErpProject',
+            data: {projectId: '${projectInfo.id}'},
+            type: 'post',
+            success: function (result) {
+                if (result.ret) {
                     Alert("写入成功");
-                }else{
+                } else {
                     Alert(result.errmsg);
                 }
             }
@@ -263,16 +244,18 @@
                     $('#plan_item_' + planId).empty();
                     if (result.ret) {
                         if (result.data.planDisplayUrl && result.data.bisAutoComplete == false) {
-                            var html = '';
-                            if (result.data.planExecutUrl) {
-                                html = $('#planItemHtml').html().replace(/{planExecutor}/g, result.data.planExecutor)
-                                    .replace(/{planExecutUrl}/g, result.data.planExecutUrl).replace(/{planName}/g, result.data.planName)
-                                    .replace(/{btnClass}/g, result.data.processInsId == "-1" ? "success" : "primary");
-                            } else {
-                                html = $('#planItemViewHtml').html().replace(/{planId}/g, planId)
-                                    .replace(/{planName}/g, result.data.planName)
-                                    .replace(/{planDisplayUrl}/g, result.data.planDisplayUrl);
+                            var html = '<div class="btn-group">';
+                            html += '<div class="btn btn-sm btn-dark">'+result.data.planName+'</div>';
+                            html += '<div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip" data-original-title="责任人">'+result.data.planExecutor+'</div>';
+                            if(result.data.projectStatus == 'finish'){
+                                html += '<div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启" onclick="projectDetails.replyPlan('+planId+');"><i class="fa fa-reply"></i></div>';
                             }
+                            if (result.data.planExecutUrl){
+                                var btnClass = result.data.processInsId == "-1" ? "success" : "primary";
+                                html += '<div class="btn btn-sm btn-'+btnClass+'" data-placement="top" data-toggle="tooltip" onclick="projectDetails.taskOpenWin(\''+result.data.planExecutUrl+'\')" data-original-title="处理"><i class="fa fa-arrow-right"></i> </div>';
+                            }
+                            html += '<div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="查看" onclick="window.open(\''+result.data.planDisplayUrl+'\')"><i class="fa fa-search"></i></div>';
+                            html += '</div>';
                             $('#plan_item_' + planId).append(html);
                         }
                     }
@@ -376,10 +359,10 @@
                                 s += " <a target='_blank' href='" + row.displayUrl + "' title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                             }
                             if (row.canCopy) {
-                                s += " <a href='javascript://' onclick='projectDetails.taskCopy(this," + row.id + ");' data-planDetailsId='"+row.id+"' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></a>";
+                                s += " <a href='javascript://' onclick='projectDetails.taskCopy(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></a>";
                             }
                             if (row.canPaste) {
-                                s += " <a href='javascript://' onclick='projectDetails.taskPaste(this," + row.id + ");' data-planDetailsId='"+row.id+"' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></a>";
+                                s += " <a href='javascript://' onclick='projectDetails.taskPaste(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></a>";
                             }
                             return s;
                         }
@@ -388,7 +371,7 @@
                 onLoadSuccess: function () {
                     var copyPlanDetailsId = $('#tab_plan_' + defaults.planId).find('[name=copyPlanDetailsId]').val();
                     if (copyPlanDetailsId) {
-                        $('#tab_plan_' + defaults.planId).find('.btn-copy[data-planDetailsId='+copyPlanDetailsId+']').find('span').text('已被复制');
+                        $('#tab_plan_' + defaults.planId).find('.btn-copy[data-planDetailsId=' + copyPlanDetailsId + ']').find('span').text('已被复制');
                     }
                 }
             });
@@ -681,7 +664,7 @@
             var cols = [];
             cols.push({field: 'title', title: '标题'});
             cols.push({
-                field: 'created', title: '创建日期',  formatter: function (value, row, index) {
+                field: 'created', title: '创建日期', formatter: function (value, row, index) {
                     return formatDate(value, true);
                 }
             });
