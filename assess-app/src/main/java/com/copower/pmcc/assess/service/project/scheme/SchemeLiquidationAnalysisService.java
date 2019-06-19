@@ -84,6 +84,35 @@ public class SchemeLiquidationAnalysisService {
 
     }
 
+    //调整原始数据
+    public void adjustLiquidationAnalysis(){
+        //所有变现分析主表
+        List<SchemeLiquidationAnalysis> liquidationAnalysisList = schemeLiquidationAnalysisDao.getObjectList(new SchemeLiquidationAnalysis());
+
+        for (SchemeLiquidationAnalysis liquidationAnalysisItem: liquidationAnalysisList) {
+            List<SchemeLiquidationAnalysisGroupVo> groupList = this.getSchemeLiquidationAnalysisGroupList(liquidationAnalysisItem.getPlanDetailsId(), liquidationAnalysisItem.getAreaId());
+            if(CollectionUtils.isEmpty(groupList)){
+                //添加分组表
+                SchemeLiquidationAnalysisGroup schemeLiquidationAnalysisGroup = new SchemeLiquidationAnalysisGroup();
+                BeanUtils.copyProperties(liquidationAnalysisItem,schemeLiquidationAnalysisGroup);
+                List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(liquidationAnalysisItem.getProjectId());
+                List<Integer> allRecordIds = LangUtils.transform(declareRecordList, p -> p.getId());
+                String records = StringUtils.join(allRecordIds.toArray(), ",");
+                schemeLiquidationAnalysisGroup.setRecordIds(records);
+                schemeLiquidationAnalysisGroupDao.addSchemeLiquidationAnalysisGroup(schemeLiquidationAnalysisGroup);
+                //关联子表
+                List<SchemeLiquidationAnalysisItem> analysisItemList = this.getAnalysisItemList(liquidationAnalysisItem.getPlanDetailsId());
+                if(CollectionUtils.isNotEmpty(analysisItemList)) {
+                    for (SchemeLiquidationAnalysisItem analysisItem : analysisItemList) {
+                        SchemeLiquidationAnalysisItem schemeLiquidationAnalysisItem = schemeLiquidationAnalysisItemDao.getSchemeLiquidationAnalysisItem(analysisItem.getId());
+                        schemeLiquidationAnalysisItem.setGroupId(schemeLiquidationAnalysisGroup.getId());
+                        schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(schemeLiquidationAnalysisItem);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 初始化所有相关税费信息
      *

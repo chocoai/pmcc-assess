@@ -55,6 +55,8 @@
                                 <button type="button" class="btn btn-success" onclick="addData()"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
+
+                                <a href="javascript://;" class="btn btn-xs btn-warning" onclick="adjustLiquidationAnalysis(this)">变现分析税费调整</a>
                             </div>
                         </div>
 
@@ -129,7 +131,6 @@
         </div>
     </div>
 </div>
-
 
 
 <%@include file="/views/share/main_footer.jsp" %>
@@ -266,6 +267,27 @@
         }
     }
 
+    function adjustLiquidationAnalysis() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseFileTemplate/adjustLiquidationAnalysis",
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('调整成功');
+                }
+                else {
+                    toastr.warning(result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
 </script>
 
 

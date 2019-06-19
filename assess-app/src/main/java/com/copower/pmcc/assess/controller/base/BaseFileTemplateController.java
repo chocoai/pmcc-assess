@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.base;
 
 import com.copower.pmcc.assess.dal.basis.entity.BaseFileTemplate;
 import com.copower.pmcc.assess.service.base.BaseFileTemplateService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -26,6 +27,8 @@ public class BaseFileTemplateController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseFileTemplateService baseFileTemplateService;
+    @Autowired
+    private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
 
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -79,5 +82,17 @@ public class BaseFileTemplateController {
     }
 
 
+
+    @ResponseBody
+    @RequestMapping(value = "/adjustLiquidationAnalysis",name = "调整变现分析税费", method = RequestMethod.POST)
+    public HttpResult adjustLiquidationAnalysis(Integer id) {
+        try {
+            schemeLiquidationAnalysisService.adjustLiquidationAnalysis();
+        } catch (Exception e) {
+            LOGGER.error("调整变现分析税费异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 
 }
