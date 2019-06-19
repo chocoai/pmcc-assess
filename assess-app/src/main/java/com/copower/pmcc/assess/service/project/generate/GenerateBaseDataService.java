@@ -411,8 +411,8 @@ public class GenerateBaseDataService {
      */
     public String getTotalAmountMortgageValue() throws Exception {
         BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice());
-        String value = generateCommonMethod.getBigDecimalToInteger(decimal ,100) ;
-        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_DOWN).toString();
+        String value = generateCommonMethod.getBigDecimalToInteger(decimal, 100);
+        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
         return value;
     }
 
@@ -421,7 +421,7 @@ public class GenerateBaseDataService {
      */
     public String getTotalAmountMortgageValueCapitalization() throws Exception {
         BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice());
-        String value = generateCommonMethod.getBigDecimalToInteger(decimal ,100) ;
+        String value = generateCommonMethod.getBigDecimalToInteger(decimal, 100);
         String s = CnNumberUtils.toUppercaseSubstring(value);
         return s;
     }
@@ -774,10 +774,10 @@ public class GenerateBaseDataService {
                     break;
                 case LandCertificateField5:
                     if (declareRealtyLandCert.getApportionmentArea() != null) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRealtyLandCert.getApportionmentArea(),2, false));
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRealtyLandCert.getApportionmentArea(), 2, false));
                     } else {
                         if (declareRealtyRealEstateCert.getApportionmentArea() != null) {
-                            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRealtyRealEstateCert.getApportionmentArea(), 2,false));
+                            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), generateCommonMethod.getBigDecimalRound(declareRealtyRealEstateCert.getApportionmentArea(), 2, false));
                         }
                     }
                     break;
@@ -1388,13 +1388,13 @@ public class GenerateBaseDataService {
                 });
             }
             if (CollectionUtils.isNotEmpty(basicUnitDecorateVoList)) {
-                basicUnitDecorateVoList.forEach(oo ->{
+                basicUnitDecorateVoList.forEach(oo -> {
                     if (StringUtils.contains(oo.getDecorationPartName(), nameValue)) {
                         if (StringUtils.isNotEmpty(oo.getDecoratingMaterialName()) && StringUtils.isEmpty(oo.getMaterialGradeName())) {
                             multimap.put(nameValue, oo.getDecoratingMaterialName());
                         }
                         if (StringUtils.isNotEmpty(oo.getDecoratingMaterialName()) && StringUtils.isNotEmpty(oo.getMaterialGradeName())) {
-                            multimap.put(nameValue, String.format("%s%s", oo.getMaterialGradeName(),oo.getDecoratingMaterialName()));
+                            multimap.put(nameValue, String.format("%s%s", oo.getMaterialGradeName(), oo.getDecoratingMaterialName()));
                         }
                     }
                 });
@@ -1402,7 +1402,7 @@ public class GenerateBaseDataService {
             if (!multimap.isEmpty()) {
                 Collection<String> stringList = multimap.get(name);
                 String string = StringUtils.join(stringList, "、");
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()),string );
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), string);
             }
         }
         String value = "/";
@@ -1581,9 +1581,9 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalRealEstatePrice() {
-        String value = generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 0, false) ;
-        value = generateCommonMethod.getBigDecimalToInteger(new BigDecimal(value) ,100) ;
-        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_DOWN).toString();
+        String value = generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 0, false);
+        value = generateCommonMethod.getBigDecimalToInteger(new BigDecimal(value), 100);
+        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
         return value;
     }
 
@@ -1593,8 +1593,8 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCapitalizationAmount() {
-        String value = generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 0, false) ;
-        value = generateCommonMethod.getBigDecimalToInteger(new BigDecimal(value) ,100) ;
+        String value = generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 0, false);
+        value = generateCommonMethod.getBigDecimalToInteger(new BigDecimal(value), 100);
         String s = CnNumberUtils.toUppercaseSubstring(value);
         return s;
     }
@@ -3244,7 +3244,7 @@ public class GenerateBaseDataService {
                     AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), keyValueDtoList), false);
                 }
                 if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
-                    AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(s,keyValueDtoList), false);
+                    AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(s, keyValueDtoList), false);
                 }
                 if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
                     DeclareRealtyHouseCert realtyHouseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(declareRecord.getDataTableId());
@@ -3791,7 +3791,7 @@ public class GenerateBaseDataService {
      */
     public String getJudgeObjectDamagedDegreeField(BaseReportFieldEnum reportFieldEnum) throws Exception {
         List<String> typeList = Arrays.asList("卧室", "主卧", "客厅", "大厅");
-        List<BaseReportFieldEnum> baseReportFieldEnumList = Arrays.asList(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3, BaseReportFieldEnum.JudgeObjectDamagedDegreeField6 , BaseReportFieldEnum.JudgeObjectDamagedDegreeField7);
+        List<BaseReportFieldEnum> baseReportFieldEnumList = Arrays.asList(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3, BaseReportFieldEnum.JudgeObjectDamagedDegreeField6, BaseReportFieldEnum.JudgeObjectDamagedDegreeField7);
         String name = null;
         switch (reportFieldEnum) {
             case JudgeObjectDamagedDegreeField1: {
@@ -3847,49 +3847,49 @@ public class GenerateBaseDataService {
             if (houseRoomListMap.isEmpty()) {
                 continue;
             }
-            Map<String,String> stringMap = Maps.newLinkedHashMap() ;
-            StringBuilder stringBuilder = new StringBuilder(8) ;
+            Map<String, String> stringMap = Maps.newLinkedHashMap();
+            StringBuilder stringBuilder = new StringBuilder(8);
             houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
                 basicHouseRoomDecorateVos.forEach(oo -> {
                     if (StringUtils.contains(oo.getPartName(), nameValue)) {
                         //装修材料
-                        if (StringUtils.isNotEmpty(oo.getMaterialName())){
-                            stringBuilder.append("装修材料").append(oo.getMaterialName()) ;
+                        if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                            stringBuilder.append("装修材料").append(oo.getMaterialName());
                         }
                         if (StringUtils.isNotEmpty(oo.getRemark())) {
-                            stringBuilder.append(oo.getRemark()) ;
+                            stringBuilder.append(oo.getRemark());
                         }
                     }
-                    if (StringUtils.isNotEmpty(stringBuilder.toString())){
-                        stringMap.put(basicHouseRoom.getRoomType() ,stringBuilder.toString()) ;
+                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                        stringMap.put(basicHouseRoom.getRoomType(), stringBuilder.toString());
                     }
-                    stringBuilder.delete(0,stringBuilder.toString().length()) ;
+                    stringBuilder.delete(0, stringBuilder.toString().length());
                 });
             });
-            if (!stringMap.isEmpty()){
+            if (!stringMap.isEmpty()) {
                 Set<String> stringSet = Sets.newHashSet();
                 Set<String> stringSet2 = Sets.newHashSet();
-                stringMap.forEach((key,value) -> {
-                    stringSet.add(value) ;
-                    stringSet2.add(key) ;
+                stringMap.forEach((key, value) -> {
+                    stringSet.add(value);
+                    stringSet2.add(key);
                 });
-                boolean flag = baseReportFieldEnumList.stream().anyMatch(baseReportFieldEnum -> Objects.equal(reportFieldEnum.name(), baseReportFieldEnum.name())) ;
-                if (!flag){
-                    if (stringSet.size()==1){
-                        String value = String.format("%s:%s",StringUtils.join(stringSet2,"、"),stringSet.stream().findFirst().get()) ;
+                boolean flag = baseReportFieldEnumList.stream().anyMatch(baseReportFieldEnum -> Objects.equal(reportFieldEnum.name(), baseReportFieldEnum.name()));
+                if (!flag) {
+                    if (stringSet.size() == 1) {
+                        String value = String.format("%s:%s", StringUtils.join(stringSet2, "、"), stringSet.stream().findFirst().get());
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
-                    if (stringSet.size() != 1){
+                    if (stringSet.size() != 1) {
                         stringSet.clear();
-                        stringMap.forEach((key,value) -> {
-                            String valueA = String.format("%s:%s",key,value) ;
-                            stringSet.add(valueA) ;
+                        stringMap.forEach((key, value) -> {
+                            String valueA = String.format("%s:%s", key, value);
+                            stringSet.add(valueA);
                         });
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet,"、"));
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
                     }
                 }
                 if (flag) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet,"、"));
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
                 }
             }
         }
@@ -4481,7 +4481,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 if (schemeJudgeObject.getPrice() != null) {
-                    val = generateCommonMethod.getBigDecimalToInteger(schemeJudgeObject.getPrice(),10) ;
+                    val = generateCommonMethod.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 10);
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值单价(元/㎡)", val);
             }
@@ -4680,17 +4680,15 @@ public class GenerateBaseDataService {
         for (int j = 2; j < 2 + schemeJudgeObjectList.size(); j++) {
             MdMarketCompare mdMarketCompare = null;
             MdIncome mdIncome = null;
-            if (true) {
-                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_MARKET_COMPARE, schemeJudgeObjectList.get(j - 2));
-                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    mdMarketCompare = mdMarketCompareService.getMdMarketCompare(schemeInfo.getMethodDataId());
-                }
+            SchemeJudgeObject judgeObject = schemeJudgeObjectList.get(j - 2);
+            SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE).getId());
+            if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                mdMarketCompare = mdMarketCompareService.getMdMarketCompare(schemeInfo.getMethodDataId());
             }
-            if (true) {
-                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObjectList.get(j - 2));
-                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
-                }
+
+            schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME).getId());
+            if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
             }
             int num = j % 2;
             switch (num) {
@@ -4852,7 +4850,7 @@ public class GenerateBaseDataService {
         Multimap<String, String> multimap = ArrayListMultimap.create();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                SchemeInfo schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObject);
+                SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME).getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String value = generateMdIncomeService.getTenancyrestrictionReamrk();
@@ -4889,6 +4887,8 @@ public class GenerateBaseDataService {
         Document document = new Document();
         BaseDataDic mdIncome = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
         BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        BaseDataDic mdCost = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
+        BaseDataDic mdDevelopment = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         Map<String, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -4896,7 +4896,7 @@ public class GenerateBaseDataService {
                 List<Integer> numbers = Lists.newArrayList(Lists.newArrayList(schemeJudgeObject.getNumber().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList()));
                 SchemeInfo schemeInfo = null;
                 //市场比较法
-                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_MARKET_COMPARE, schemeJudgeObject);
+                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCompare.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), areaId);
                     try {
@@ -4912,10 +4912,11 @@ public class GenerateBaseDataService {
                             builder.writeln(key);
                         }
                     } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
                     }
                 }
                 //收益法
-                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_INCOME, schemeJudgeObject);
+                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdIncome.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String generateCompareFile = generateMdIncomeService.generateCompareFile();
@@ -4932,14 +4933,14 @@ public class GenerateBaseDataService {
                 }
 
                 //成本法
-                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_COST, schemeJudgeObject);
+                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCost.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
                     if (CollectionUtils.isEmpty(attachmentDtos)) continue;
                     String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
                     File file = new File(generateCompareFile);
                     if (file.isFile()) {
-                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdIncome.getName());
+                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdCost.getName());
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
                         //去掉html
                         key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
@@ -4950,14 +4951,14 @@ public class GenerateBaseDataService {
                 }
 
                 //假设开发法
-                schemeInfo = getSchemeInfoId(AssessDataDicKeyConstant.MD_DEVELOPMENT, schemeJudgeObject);
+                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdDevelopment.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
+                    List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdDevelopment.class));
                     if (CollectionUtils.isEmpty(attachmentDtos)) continue;
                     String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
                     File file = new File(generateCompareFile);
                     if (file.isFile()) {
-                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdIncome.getName());
+                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdDevelopment.getName());
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
                         //去掉html
                         key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
@@ -5247,35 +5248,6 @@ public class GenerateBaseDataService {
         }
         document.save(localPath);
         return localPath;
-    }
-
-
-    /**
-     * 获取如收益法,市场比较法，假设开发法，成本法等的id
-     *
-     * @param fieldName
-     * @param schemeJudgeObject
-     * @return SchemeInfo
-     */
-    private SchemeInfo getSchemeInfoId(String fieldName, SchemeJudgeObject schemeJudgeObject) {
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(fieldName);
-        List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
-        DataEvaluationMethod dataEvaluationMethod = null;
-        SchemeInfo schemeInfo = null;
-        if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
-            if (baseDataDic != null) {
-                if (dataEvaluationMethodList.stream().filter(oo -> Objects.equal(baseDataDic.getName(), oo.getName())).count() >= 1) {
-                    dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> Objects.equal(baseDataDic.getName(), oo.getName())).findFirst().get();
-                }
-            }
-        }
-        if (dataEvaluationMethod != null) {
-            schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
-        }
-        if (schemeInfo != null) {
-            return schemeInfo;
-        }
-        return null;
     }
 
     /**
@@ -5619,8 +5591,8 @@ public class GenerateBaseDataService {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
             BigDecimal bigDecimal = new BigDecimal(value);
-            value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_DOWN).toString();
-            return value ;
+            value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
+            return value;
         }
         return "/";
     }
@@ -5633,8 +5605,8 @@ public class GenerateBaseDataService {
     public String getAssessAssessTotalAssessTotalRMB() {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
-            value = CnNumberUtils.toUppercase(value) ;
-            return value ;
+            value = CnNumberUtils.toUppercase(value);
+            return value;
         }
         return "/";
     }
