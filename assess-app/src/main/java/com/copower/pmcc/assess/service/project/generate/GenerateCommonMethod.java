@@ -696,6 +696,15 @@ public class GenerateCommonMethod {
         return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
     }
 
+    public String getSongWarpCssHtml3(String html) {
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(4);
+        keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
+        keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
+        keyValueDtoList.add(new KeyValueDto("text-align", "right"));
+        keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
+        return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
+    }
+
     /**
      * 获取缩进后html
      *
