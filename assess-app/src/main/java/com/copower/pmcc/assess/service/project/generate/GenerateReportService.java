@@ -573,6 +573,9 @@ public class GenerateReportService {
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList(keyValueDtoList));
                 }
+                if (Objects.equal(BaseReportFieldEnum.CERT_NAME3.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList2());
+                }
                 //证载用途
                 if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses(true));
@@ -840,6 +843,9 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet2.getName(), name)) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet(false));
                 }
+                if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet3.getName(), name)) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet2());
+                }
                 //相关参数选取与应用
                 if (Objects.equal(BaseReportFieldEnum.SelectionApplicationParameters.getName(), name)) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionApplicationParameters());
@@ -903,6 +909,9 @@ public class GenerateReportService {
                 //估价项目名称
                 if (Objects.equal(BaseReportFieldEnum.ValuationProjectName.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuationProjectName());
+                }
+                if (Objects.equal(BaseReportFieldEnum.ValuationProjectName2.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuationProjectName2());
                 }
                 //户型及布局
                 if (Objects.equal(BaseReportFieldEnum.HuxingLayout.getName(), name)) {
@@ -1026,6 +1035,14 @@ public class GenerateReportService {
                 //报告使用单位
                 if (Objects.equal(BaseReportFieldEnum.ReportUnitString.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportUnitString());
+                }
+                //楼盘区位描述
+                if (Objects.equal(BaseReportFieldEnum.LocationDescriptionBuilding.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLocationDescriptionBuilding());
+                }
+                //工行估价案例情况表
+                if (Objects.equal(BaseReportFieldEnum.ICBCValuationCaseInformationSheet.getName(), name)) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getICBCValuationCaseInformationSheet());
                 }
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
