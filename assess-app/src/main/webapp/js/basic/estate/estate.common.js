@@ -7,6 +7,7 @@
     estateCommon.estateForm = $('#basicEstateFrm');
     estateCommon.estateLandStateForm = $('#basicLandState');
     estateCommon.estateMapiframe = undefined;//地图标注iframe
+    estateCommon.applyId = undefined;
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
         AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN,
@@ -111,6 +112,7 @@
             success: function (result) {
                 if (result.ret) {
                     estateCommon.showEstateView(result.data);
+                    estateCommon.applyId = applyId;
                     if (callback) {
                         callback(result.data);
                     }
@@ -397,7 +399,7 @@
             content: contentUrl,
             success: function (layero) {
                 estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
-                estateCommon.loadMarkerList();
+                estateCommon.loadMarkerList(estateCommon.applyId);
             }
         });
     }
@@ -424,11 +426,11 @@
     }
 
     //加载标注
-    estateCommon.loadMarkerList = function () {
+    estateCommon.loadMarkerList = function (applyId) {
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
             data: {
-                applyId: basicCommon.getApplyId(),
+                applyId: applyId?applyId:basicCommon.getApplyId(),
                 type: 'estate'
             },
             success: function (result) {

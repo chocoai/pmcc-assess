@@ -6,6 +6,7 @@
     var buildingCommon = {};
     buildingCommon.buildingForm = $('#basicBuildingFrm');
     buildingCommon.buildingMapiframe = undefined;
+    buildingCommon.applyId = undefined;
     //附件上传控件id数组
     buildingCommon.buildingFileControlIdArray = [
         AssessUploadKey.BUILDING_FLOOR_PLAN,
@@ -77,6 +78,7 @@
             success: function (result) {
                 if (result.ret) {
                     buildingCommon.showBuildingView(result.data);
+                    buildingCommon.applyId = applyId;
                     if (callback) {
                         callback(result.data);
                     }
@@ -141,7 +143,9 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_between_distance, data.betweenDistance, function (html, data) {
                 buildingCommon.buildingForm.find('select.betweenDistance').empty().html(html).trigger('change');
             });
+            console.log(data.vSpecifications);
             if(data.vSpecifications) {
+                buildingCommon.writeSpecificationsHTMLData(data.vSpecifications);
                 buildingCommon.addLableData(data.vSpecifications);
             }
             $.ajax({
@@ -182,6 +186,38 @@
             var specificationContentId = 'specificationContent'+i;
             $("#"+specificationNameId).val(n["specificationName"]);
             $("#"+specificationContentId).val(n["specificationContent"]);
+        })
+    }
+
+    buildingCommon.writeSpecificationsHTMLData = function(json) {
+        if (!json)return;
+        $(".vSpecifications").empty();
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var html = "<div class='form-group' >";
+
+            html += "<div class='x-valid'>";
+            html += "<label class='col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "规格名称" + "</label>";
+            html += "<div class='col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
+            html += "<input type='text' required class='form-control' id='specificationName" + i + "' name='specificationName" + i + "' >";
+            html += "</div>";
+            html += "</div>";
+
+            html += "<div class='x-valid'>";
+            html += "<label class='col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "规格内容" + "</label>";
+            html += "<div class='col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
+            html += "<input type='text' required class='form-control' id='specificationContent" + i + "' name='specificationContent" + i + "' >";
+            html += "</div>";
+            html += "</div>";
+
+            html += "<div class='x-valid'>";
+            html += " <div class=' col-xs-1  col-sm-1  col-md-1  col-lg-1 '>";
+            html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+            html += "</div>";
+
+            html += "</div>";
+            $(".vSpecifications").append(html);
         })
     }
     //显示楼栋对应部分信息
@@ -247,7 +283,7 @@
             content: contentUrl,
             success: function (layero) {
                 buildingCommon.buildingMapiframe = window[layero.find('iframe')[0]['name']];
-                buildingCommon.loadMarkerList();
+                buildingCommon.loadMarkerList(buildingCommon.applyId);
             }
         });
     }
@@ -274,11 +310,11 @@
     }
 
     //加载标注
-    buildingCommon.loadMarkerList = function () {
+    buildingCommon.loadMarkerList = function (applyId) {
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
             data: {
-                applyId: basicCommon.getApplyId(),
+                applyId: applyId?applyId:basicCommon.getApplyId(),
                 type: 'building'
             },
             success: function (result) {

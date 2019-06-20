@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
@@ -11,6 +12,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by kings on 2018-10-24.
@@ -51,7 +55,7 @@ public class BasicApplyController extends BaseController {
     private BasicApplyTransferService basicApplyTransferService;
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
-    public ModelAndView basicApplyIndex() {
+    public ModelAndView basicApplyIndex(Integer basicApplyTypeId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyIndex", "0", 0, "0", "");
         //删除 所有 与 当前用户相关的临时数据
         try {
@@ -68,6 +72,7 @@ public class BasicApplyController extends BaseController {
         BasicApply basicApply = new BasicApply();
         basicApply.setId(0);
         modelAndView.addObject("basicApply", basicApply);
+        modelAndView.addObject("basicApplyTypeId", basicApplyTypeId);
         return modelAndView;
     }
 
@@ -213,6 +218,8 @@ public class BasicApplyController extends BaseController {
     public ModelAndView basicAppListView() {
         String view = "/basic/basicAppListView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        List<KeyValueDto> basicApplyTypeEnumList = BasicApplyTypeEnum.getBasicApplyTypeEnumList();
+        modelAndView.addObject("basicApplyTypeEnumList", basicApplyTypeEnumList);
         return modelAndView;
     }
 
@@ -314,8 +321,8 @@ public class BasicApplyController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectCaseItemList", name = "获取项目查勘及案例表", method = {RequestMethod.GET})
-    public BootstrapTableVo getProjectCaseItemList(Integer projectId, Integer projectCategoryId) {
-        BootstrapTableVo vo = basicApplyService.getProjectCaseItemList(projectId, projectCategoryId);
+    public BootstrapTableVo getProjectCaseItemList(Integer projectId, Integer projectCategoryId, Integer basicApplyTypeId) {
+        BootstrapTableVo vo = basicApplyService.getProjectCaseItemList(projectId, projectCategoryId, basicApplyTypeId);
         return vo;
     }
 

@@ -40,8 +40,26 @@
                                         onclick="dataObjFun.loadDataList()">
                                     查询
                                 </div>
-                                <a class="btn btn-success" target="_blank"
-                                   href="${pageContext.request.contextPath}/basicApply/basicApplyIndex">新增</a>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-dark">
+                                        新增案列</button>
+                                    <c:if test="${not empty basicApplyTypeEnumList}">
+                                        <button type="button" class="btn btn-dark dropdown-toggle"
+                                                data-toggle="dropdown"
+                                                aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <c:forEach var="item" items="${basicApplyTypeEnumList}">
+                                                <li>
+                                                    <a target="_blank"
+                                                       href="${pageContext.request.contextPath}/basicApply/basicApplyIndex?basicApplyTypeId=${item.key}"><span>${item.value}</span></a>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
 

@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <span class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 checkbox-inline">
                                 <input type="radio" id="applyFormType0" name="type" value="0">
                                 <label for="applyFormType0">非工业交通仓储</label>
@@ -522,16 +522,17 @@
                 Loading.progressHide();
                 if (result.ret) {
                     if (result.data != null) {
-                        var type = result.data.type;
-                        $("#basicApplyFrm").find("input[type='radio'][name='type'][value='"+type+"']").prop("checked", "checked");
-                        if (type == 2) {
-                            $("#unitAndHouseInfo").hide();
-                        } else {
-                            $("#unitAndHouseInfo").show();
-                        }
-                        industry.keyApp(type);
+                       // var type = result.data.type;
+                        //basicCommon.basicApplyForm.find("input[type='radio'][name='type'][value='"+type+"']").trigger('click');
+                        // if (type == 2) {
+                        //     $("#unitAndHouseInfo").hide();
+                        // } else {
+                        //     $("#unitAndHouseInfo").show();
+                        // }
+                        //industry.keyApp(type);
                         basicCommon.hideAllTab();
                         //初始楼盘信息
+                        estateCommon.loadMarkerList(result.data.id);
                         estateCommon.init(result.data.id, function (data) {
                             if(data) {
                                 basicCommon.basicApplyForm.find('[name=estateName]').val(data.basicEstate.name);
@@ -540,6 +541,7 @@
                             }
                         });
                         //初始楼栋信息
+                        buildingCommon.loadMarkerList(result.data.id);
                         buildingCommon.init(result.data.id, function (data) {
                             if(data) {
                                 basicCommon.basicApplyForm.find('[name=buildingNumber]').val(data.buildingNumber);
@@ -548,6 +550,7 @@
                             }
                         });
                         //初始单元信息
+                        unitCommon.loadMarkerList(result.data.id);
                         unitCommon.init(result.data.id, function (data) {
                             if(data) {
                                 basicCommon.basicApplyForm.find('[name=unitNumber]').val(data.unitNumber);
@@ -595,14 +598,13 @@
             });
         }
 
-        $("#basicApplyFrm").find("input[type='radio'][name='type']").change(function () {
-            var v = $("#basicApplyFrm").find(":radio:checked").val();
-            if (v == 2) {
-                $("#unitAndHouseInfo").hide();
-            } else {
-                $("#unitAndHouseInfo").show();
-            }
-        })
+        basicCommon.basicApplyForm.find('[id=applyFormType${basicApplyTypeId}]').prop("checked", "checked");
+        industry.keyApp("${basicApplyTypeId}");
+        if ("${basicApplyTypeId}" == 2) {
+            $("#unitAndHouseInfo").hide();
+        } else {
+            $("#unitAndHouseInfo").show();
+        }
     });
 
 </script>
