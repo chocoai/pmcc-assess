@@ -6,7 +6,7 @@
     var unitCommon = {};
     unitCommon.unitForm = $('#basicUnitFrm');
     unitCommon.unitMapiframe = undefined;
-
+    unitCommon.applyId = undefined;
     //附件上传控件id数组
     unitCommon.unitFileControlIdArray = [
         AssessUploadKey.UNIT_APPEARANCE
@@ -76,6 +76,7 @@
             success: function (result) {
                 if (result.ret) {
                     unitCommon.showUnitView(result.data);
+                    unitCommon.applyId = applyId;
                     if (callback) {
                         callback(result.data);
                     }
@@ -157,7 +158,7 @@
             content: contentUrl,
             success: function (layero) {
                 unitCommon.unitMapiframe = window[layero.find('iframe')[0]['name']];
-                unitCommon.loadMarkerList();
+                unitCommon.loadMarkerList(unitCommon.applyId);
             }
         });
     }
@@ -184,11 +185,11 @@
     }
 
     //加载标注
-    unitCommon.loadMarkerList = function () {
+    unitCommon.loadMarkerList = function (applyId) {
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
             data: {
-                applyId: basicCommon.getApplyId(),
+                applyId: applyId?applyId:basicCommon.getApplyId(),
                 type: 'unit'
             },
             success: function (result) {

@@ -302,7 +302,7 @@ public class BasicApplyService {
     }
 
     //获取项目查勘案例数据
-    public BootstrapTableVo getProjectCaseItemList(Integer projectId, Integer projectCategoryId) {
+    public BootstrapTableVo getProjectCaseItemList(Integer projectId, Integer projectCategoryId,Integer basicApplyTypeId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -318,7 +318,10 @@ public class BasicApplyService {
                 List<ProjectPlanDetails> projectPlanDetailsByPid = projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId());
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsByPid)) {
                     for (ProjectPlanDetails data : projectPlanDetailsByPid) {
-                        caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId()));
+                        BasicApply basicApply = this.getBasicApplyByPlanDetailsId(data.getId());
+                        if(basicApply.getType().equals(basicApplyTypeId)) {
+                            caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId()));
+                        }
                     }
                 }
             }
@@ -331,7 +334,10 @@ public class BasicApplyService {
         List<ProjectPlanDetails> projectDetailLists = projectPlanDetailsService.getProjectDetails(projectPlanDetails);
         if (CollectionUtils.isNotEmpty(projectDetailLists)) {
             for (ProjectPlanDetails item : projectDetailLists) {
-                caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId()));
+                BasicApply basicApply = this.getBasicApplyByPlanDetailsId(item.getId());
+                if(basicApply.getType().equals(basicApplyTypeId)) {
+                    caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId()));
+                }
             }
         }
 
@@ -343,20 +349,22 @@ public class BasicApplyService {
 
     //获取查勘及案例的BasicApply
     public BasicApply getCaseBasicApply(Integer id, Integer projectPhaseId) throws Exception {
-        Integer basicApplyId = null;
+       // Integer basicApplyId = null;
         //现场查勘事项调查信息
-        ProjectPhase projectSurveyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
-        if (projectPhaseId.equals(projectSurveyPhase.getId())) {
-            basicApplyId = surveySceneExploreService.getSurveySceneExplore(id).getBasicApplyId();
-
-        }
-        //案例事项调查信息
-        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        if (projectPhaseId.equals(projectCasePhase.getId())) {
-            basicApplyId = surveyCaseStudyService.getSurveyCaseStudy(id).getBasicApplyId();
-        }
-        BasicApply basicApply = basicApplyDao.getBasicApplyById(basicApplyId);
-        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApplyId);
+//        ProjectPhase projectSurveyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
+//        if (projectPhaseId.equals(projectSurveyPhase.getId())) {
+//            basicApplyId = surveySceneExploreService.getSurveySceneExplore(id).getBasicApplyId();
+//
+//        }
+//        //案例事项调查信息
+//        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
+//        if (projectPhaseId.equals(projectCasePhase.getId())) {
+//            basicApplyId = surveyCaseStudyService.getSurveyCaseStudy(id).getBasicApplyId();
+//        }
+        Integer applyPlanDetailsId = projectPlanDetailsService.getProjectPlanDetailsById(id).getPid();
+        BasicApply basicApply = this.getBasicApplyByPlanDetailsId(applyPlanDetailsId);
+       // BasicApply basicApply = basicApplyDao.getBasicApplyById(basicApplyId);
+        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         if (caseEstateService.hasEstateByName(basicEstate.getName(), basicEstate.getProvince(), basicEstate.getCity())) {
             throw new BusinessException("案例中已存在相同名称楼盘");
         }
