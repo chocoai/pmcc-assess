@@ -57,6 +57,7 @@ public class MarketCompareController {
         modelAndView.addObject("casesJSON", JSON.toJSONString(mdMarketCompareService.getCaseListByMcId(marketCompare.getId())));
         modelAndView.addObject("mcId", marketCompare.getId());
         modelAndView.addObject("judgeObject", judgeObject);
+        modelAndView.addObject("isLand", false);
         return modelAndView;
     }
 

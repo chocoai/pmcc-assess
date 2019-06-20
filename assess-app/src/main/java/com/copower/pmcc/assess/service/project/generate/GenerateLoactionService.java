@@ -210,12 +210,8 @@ public class GenerateLoactionService {
             long a1 = 0;
             long a2 = 0;
             long a3 = 0;
-            for (BasicHouseFaceStreetVo basicHouseFaceStreetVo: basicHouseFaceStreetVoList){
-                if (StringUtils.isNotEmpty(basicHouseFaceStreetVo.getStreetName())){
-                    if (StringUtils.isNotEmpty(basicHouseFaceStreetVo.getPositionName())){
-                        linkedHashSet.add(String.format("%s%s",basicHouseFaceStreetVo.getStreetName() , basicHouseFaceStreetVo.getPositionName())) ;
-                    }
-                }
+            for (BasicHouseFaceStreetVo basicHouseFaceStreetVo : basicHouseFaceStreetVoList) {
+                linkedHashSet.add(String.format("%s%s", StringUtils.defaultString(basicHouseFaceStreetVo.getPositionName()), StringUtils.defaultString(basicHouseFaceStreetVo.getStreetName())));
                 if (Objects.equal("主干道", basicHouseFaceStreetVo.getStreetLevelName())) {
                     a1++;
                 }
@@ -225,6 +221,7 @@ public class GenerateLoactionService {
                 if (Objects.equal("支路", basicHouseFaceStreetVo.getStreetLevelName())) {
                     a3++;
                 }
+
             }
             if (a1 > 0 && a2 > 0) {
                 //支路不必判断
@@ -247,6 +244,9 @@ public class GenerateLoactionService {
             }
             if (a3 > 0 && a1 == 0 && a2 == 0) {
                 v = "道路体系相对完善";
+            }
+            if(CollectionUtils.isNotEmpty(linkedHashSet)){
+                stringBuilder.append(StringUtils.join(linkedHashSet,"，")).append("，");
             }
             if (StringUtils.isNotBlank(v)) {
                 stringBuilder.append(v).append("，");
