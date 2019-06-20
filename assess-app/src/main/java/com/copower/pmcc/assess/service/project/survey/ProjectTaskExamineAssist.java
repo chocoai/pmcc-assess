@@ -157,7 +157,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         try {
             surveyExamineTaskService.saveExamineDataInfo(formData, projectPlanDetails);
         } catch (Exception e1) {
-            logger.error("", e1);
+            logger.error(e1.getMessage(), e1);
         }
     }
 

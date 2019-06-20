@@ -161,10 +161,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
         SurveyCaseStudy surveyCaseStudy = JSON.parseObject(formData, SurveyCaseStudy.class);
         surveyCaseStudy.setProcessInsId(processInsId);
         surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
-        //同步数据到其它相关证书
-        if (StringUtils.isBlank(processInsId)) {
-
-        } else {
+        if (StringUtils.isNotBlank(processInsId)) {
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyCaseStudyEvent.class.getSimpleName());//修改监听器
         }
     }

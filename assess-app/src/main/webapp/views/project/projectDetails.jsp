@@ -206,8 +206,6 @@
         setInterval(function () {
             projectDetails.loadPlanItem(projectDetails.getActiveTab().closest('li').attr('plan-id'));
         }, 30 * 1000)
-
-
     })
 
     function writeToErpProject() {
@@ -245,16 +243,18 @@
                     if (result.ret) {
                         if (result.data.planDisplayUrl && result.data.bisAutoComplete == false) {
                             var html = '<div class="btn-group">';
-                            html += '<div class="btn btn-sm btn-dark">'+result.data.planName+'</div>';
-                            html += '<div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip" data-original-title="责任人">'+result.data.planExecutor+'</div>';
-                            if(result.data.projectStatus == 'finish'){
-                                html += '<div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启" onclick="projectDetails.replyPlan('+planId+');"><i class="fa fa-reply"></i></div>';
+                            html += '<div class="btn btn-sm btn-dark">' + result.data.planName + '</div>';
+                            if (result.data.planExecutor) {
+                                html += '<div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip" data-original-title="责任人">' + result.data.planExecutor + '</div>';
                             }
-                            if (result.data.planExecutUrl){
+                            if (result.data.projectStatus == 'finish') {
+                                html += '<div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启" onclick="projectDetails.replyPlan(' + planId + ');"><i class="fa fa-reply"></i></div>';
+                            }
+                            if (result.data.planExecutUrl) {
                                 var btnClass = result.data.processInsId == "-1" ? "success" : "primary";
-                                html += '<div class="btn btn-sm btn-'+btnClass+'" data-placement="top" data-toggle="tooltip" onclick="projectDetails.taskOpenWin(\''+result.data.planExecutUrl+'\')" data-original-title="处理"><i class="fa fa-arrow-right"></i> </div>';
+                                html += '<div class="btn btn-sm btn-' + btnClass + '" data-placement="top" data-toggle="tooltip" onclick="projectDetails.taskOpenWin(\'' + result.data.planExecutUrl + '\')" data-original-title="处理"><i class="fa fa-arrow-right"></i> </div>';
                             }
-                            html += '<div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="查看" onclick="window.open(\''+result.data.planDisplayUrl+'\')"><i class="fa fa-search"></i></div>';
+                            html += '<div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="查看" onclick="window.open(\'' + result.data.planDisplayUrl + '\')"><i class="fa fa-search"></i></div>';
                             html += '</div>';
                             $('#plan_item_' + planId).append(html);
                         }

@@ -1424,12 +1424,12 @@ public class GenerateBaseDataService {
                 if (bigDecimalSet.size() == 1) {
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), bigDecimalSet.stream().findFirst().get().toString());
                 }
-                if (bigDecimalSet.size() != 1){
+                if (bigDecimalSet.size() != 1) {
                     List<String> stringList = Lists.newArrayList();
                     bigDecimalMap.forEach((s, bigDecimal) -> {
-                        stringList.add(String.format("%s:%s",s,bigDecimal.toString())) ;
+                        stringList.add(String.format("%s:%s", s, bigDecimal.toString()));
                     });
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList,"；"));
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList, "；"));
                 }
             }
         }
@@ -3920,10 +3920,6 @@ public class GenerateBaseDataService {
     public String getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum reportFieldEnum) throws Exception {
         String name = null;
         switch (reportFieldEnum) {
-            case JudgeObjectDamagedDegreeField5: {
-                name = "天棚";
-            }
-            break;
             case JudgeObjectDamagedDegreeField6: {
                 name = "卫生间";
             }
@@ -3945,54 +3941,26 @@ public class GenerateBaseDataService {
             }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
-            Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> houseRoomListMap = Maps.newHashMap();
+            StringBuilder stringBuilder = new StringBuilder(8);
             if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                 for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
-                    List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
-                    if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
-                        houseRoomListMap.put(basicHouseRoom, basicHouseRoomDecorateVos);
-                    }
-                }
-            }
-            if (houseRoomListMap.isEmpty()) {
-                continue;
-            }
-            Map<String, String> stringMap = Maps.newLinkedHashMap();
-            houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
-                basicHouseRoomDecorateVos.forEach(oo -> {
-                    if (StringUtils.contains(oo.getPartName(), nameValue)) {
-                        String value = null;
-                        //装修材料
-                        if (StringUtils.isEmpty(oo.getRemark())) {
-                            if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                                value = oo.getMaterialName();
-                            }
-                        }
-                        if (StringUtils.isNotEmpty(oo.getRemark())) {
-                            value = oo.getRemark();
-                        }
-                        if (StringUtils.isNotEmpty(value)) {
-                            stringMap.put(basicHouseRoom.getRoomType(), String.format("%s:%s", oo.getPartName(), value));
+                    if (basicHouseRoom.getRoomType().contains(nameValue)) {
+                        List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
+                        if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
+                            basicHouseRoomDecorateVos.forEach(oo -> {
+                                stringBuilder.append(oo.getPartName());
+                                if (StringUtils.isNotEmpty(oo.getRemark())) {
+                                    stringBuilder.append(oo.getRemark());
+                                } else if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                    stringBuilder.append(oo.getMaterialName());
+                                }
+                                stringBuilder.append(",");
+                            });
                         }
                     }
-                });
-            });
-            if (!stringMap.isEmpty()) {
-                Set<String> stringSet = Sets.newHashSet();
-                stringMap.forEach((key, value) -> {
-                    stringSet.add(value);
-                });
-                if (stringSet.size() == 1) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
-                }
-                if (stringSet.size() != 1) {
-                    List<String> stringList = Lists.newArrayList();
-                    stringMap.forEach((key, value) -> {
-                        stringList.add(String.format("%s%s", key, value));
-                    });
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList, "；"));
                 }
             }
+            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.strip(stringBuilder.toString()));
         }
         String value = "/";
         if (!map.isEmpty()) {
@@ -4020,6 +3988,10 @@ public class GenerateBaseDataService {
                 name = "墙";
             }
             break;
+            case JudgeObjectDamagedDegreeField5: {
+                name = "天棚";
+            }
+            break;
             default:
                 break;
         }
@@ -4031,41 +4003,39 @@ public class GenerateBaseDataService {
             if (basicApply == null || basicApply.getId() == null) {
                 continue;
             }
+            Set<String> stringSet = Sets.newHashSet();
+            StringBuilder stringBuilder = new StringBuilder(8);
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
-            Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> houseRoomListMap = Maps.newHashMap();
             if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                 for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
+                    StringBuilder stringBuilderDecorate = new StringBuilder(8);
                     List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
                     if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
-                        houseRoomListMap.put(basicHouseRoom, basicHouseRoomDecorateVos);
+                        basicHouseRoomDecorateVos.forEach(oo -> {
+                            if (StringUtils.contains(oo.getPartName(), nameValue)
+                                    && !StringUtils.contains(oo.getPartName(), "卫生间")
+                                    && !StringUtils.contains(oo.getPartName(), "厨房")) {
+                                if (StringUtils.isNotEmpty(oo.getRemark())) {
+                                    stringBuilderDecorate.append(oo.getRemark());
+                                } else {
+                                    if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                        stringBuilderDecorate.append(oo.getMaterialName());
+                                    }
+                                }
+                            }
+
+                        });
+                    }
+                    if (stringBuilderDecorate.length() > 0) {
+                        stringBuilder.append(basicHouseRoom.getRoomType()).append(stringBuilderDecorate.toString()).append(",");
                     }
                 }
             }
-            if (houseRoomListMap.isEmpty()) {
-                continue;
+            if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                stringSet.add(StringUtils.strip(stringBuilder.toString(), ","));
             }
-            Set<String> stringSet = Sets.newHashSet();
-            StringBuilder stringBuilder = new StringBuilder(8);
-            houseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
-                basicHouseRoomDecorateVos.forEach(oo -> {
-                    if (StringUtils.contains(oo.getPartName(), nameValue)) {
-                        if (StringUtils.isNotEmpty(oo.getRemark())) {
-                            stringBuilder.append(oo.getRemark());
-                        }
-                        //装修材料
-                        if (StringUtils.isEmpty(oo.getRemark())) {
-                            if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                                stringBuilder.append(oo.getMaterialName());
-                            }
-                        }
-                    }
-                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
-                        stringSet.add(stringBuilder.toString());
-                    }
-                    stringBuilder.delete(0, stringBuilder.toString().length());
-                });
-            });
+            stringBuilder.delete(0, stringBuilder.toString().length());
             if (CollectionUtils.isNotEmpty(stringSet)) {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
             }
