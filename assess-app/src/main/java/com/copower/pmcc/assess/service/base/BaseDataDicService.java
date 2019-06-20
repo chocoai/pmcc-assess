@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseDataDicDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -380,5 +381,34 @@ public class BaseDataDicService {
             }
         }
         return StringUtils.strip(result.toString(), ",");
+    }
+
+    /**
+     * 通过key获取key-value中value值
+     *
+     * @param key
+     * @param data
+     * @return
+     */
+    public String getValueByKey(String key,BaseDataDic data){
+        List<KeyValueDto> keyValueDtos = JSON.parseArray(data.getKeyValue(), KeyValueDto.class);
+        if(CollectionUtils.isNotEmpty(keyValueDtos)) {
+            for (KeyValueDto dto : keyValueDtos) {
+                if (key.equals(dto.getKey())) {
+                    return dto.getValue();
+                }
+            }
+        }else{
+            BaseDataDic parentData = this.getDataDicById(data.getPid());
+            keyValueDtos = JSON.parseArray(parentData.getKeyValue(), KeyValueDto.class);
+            if(CollectionUtils.isNotEmpty(keyValueDtos)) {
+                for (KeyValueDto dto : keyValueDtos) {
+                    if (key.equals(dto.getKey())) {
+                        return dto.getValue();
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
