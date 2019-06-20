@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
-import com.aspose.words.SaveFormat;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
@@ -979,7 +978,7 @@ public class GenerateReportService {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField4));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5));
                 }
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6));

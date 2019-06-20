@@ -149,7 +149,6 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
         SurveyAssetInventoryRightRecord query = new SurveyAssetInventoryRightRecord();
         query.setProjectId(projectPlanDetails.getProjectId());
         query.setPlanDetailsId(projectPlanDetails.getId());
-        query.setCreator(commonService.thisUserAccount());
         List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.surveyAssetInventoryRightRecordList(query);
         if (CollectionUtils.isEmpty(surveyAssetInventoryRightRecordList)){
             surveyAssetInventoryRightRecordList = Lists.newArrayList();

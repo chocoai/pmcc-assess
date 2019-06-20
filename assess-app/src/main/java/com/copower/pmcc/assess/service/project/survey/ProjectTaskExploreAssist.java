@@ -88,10 +88,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         SurveySceneExplore surveySceneExplore= JSON.parseObject(formData,SurveySceneExplore.class);
         surveySceneExplore.setProcessInsId(processInsId);
         surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
-        surveySceneExploreService.updateDeclareInfo(projectPlanDetails.getId());//更新申报记录相关信息
-        if(StringUtils.isBlank(processInsId)){//同步数据到其它相关证书
-
-        }else{
+        if(StringUtils.isNotBlank(processInsId)){
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveySceneExploreEvent.class.getSimpleName());//修改监听器
         }
     }
