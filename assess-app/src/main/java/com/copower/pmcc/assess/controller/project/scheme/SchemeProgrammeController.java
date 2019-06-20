@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
@@ -94,8 +95,10 @@ public class SchemeProgrammeController {
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
         modelAndView.addObject("inventoryRightTypeList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE));
-
         modelAndView.addObject("planId", planId);
+        BaseDataDic entrustPurposeData = baseDataDicService.getDataDicById(projectInfoVo.getEntrustPurpose());
+        String valueDateExplain = baseDataDicService.getValueByKey("valueDateExplain", entrustPurposeData);
+        modelAndView.addObject("valueDateExplain", valueDateExplain);
         return modelAndView;
     }
 

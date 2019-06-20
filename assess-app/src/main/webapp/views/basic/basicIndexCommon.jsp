@@ -94,6 +94,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/building/building.common.js"></script>

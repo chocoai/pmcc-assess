@@ -87,16 +87,16 @@
 
     };
     projectData.prototype = {
-        config:function () {
+        config: function () {
             var data = {};
-            data.table = "projectDataList" ;
-            data.frm = "frmQuery" ;
+            data.table = "projectDataList";
+            data.frm = "frmQuery";
             data.box = "divBoxProjectData";
             data.itemBox = "divBoxProjectItemData";
             data.itemTable = "projectCaseItemList";
             return data;
         },
-        loadProjectDataList:function () {
+        loadProjectDataList: function () {
             var cols = [];
             cols.push({field: 'projectName', title: '项目名称'});
             cols.push({
@@ -122,7 +122,7 @@
                     return str;
                 }
             });
-            $("#"+projectData.prototype.config().table).bootstrapTable('destroy');
+            $("#" + projectData.prototype.config().table).bootstrapTable('destroy');
             TableInit(projectData.prototype.config().table, "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {
                 queryName: $("#queryName").val(),
             }, {
@@ -134,17 +134,17 @@
                 }
             });
         },
-        showModel:function () {
-            $("#"+projectData.prototype.config().frm).clearAll();
+        showModel: function () {
+            $("#" + projectData.prototype.config().frm).clearAll();
             projectData.prototype.loadProjectDataList();
-            $('#'+projectData.prototype.config().box).modal("show");
+            $('#' + projectData.prototype.config().box).modal("show");
         },
         checkCaseData: function (index) {
             var row = $("#projectDataList").bootstrapTable('getData')[index];
-            projectData.prototype.loadProjectCaseItemList(row.id,row.projectCategoryId);
-            $('#'+projectData.prototype.config().itemBox).modal("show");
+            projectData.prototype.loadProjectCaseItemList(row.id, row.projectCategoryId);
+            $('#' + projectData.prototype.config().itemBox).modal("show");
         },
-        loadProjectCaseItemList:function (projectId,projectCategoryId) {
+        loadProjectCaseItemList: function (projectId, projectCategoryId) {
             var cols = [];
             cols.push({field: 'projectPhaseName', title: '名称'});
             cols.push({
@@ -156,10 +156,11 @@
                     return str;
                 }
             });
-            $("#"+projectData.prototype.config().itemTable).bootstrapTable('destroy');
+            $("#" + projectData.prototype.config().itemTable).bootstrapTable('destroy');
             TableInit(projectData.prototype.config().itemTable, "${pageContext.request.contextPath}/basicApply/getProjectCaseItemList", cols, {
                 projectId: projectId,
-                projectCategoryId: projectCategoryId
+                projectCategoryId: projectCategoryId,
+                basicApplyTypeId:"${basicApplyTypeId}"
             }, {
                 showColumns: false,
                 showRefresh: false,

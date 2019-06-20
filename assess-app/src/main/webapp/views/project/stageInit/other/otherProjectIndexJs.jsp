@@ -15,7 +15,10 @@
         }
         return false;
     };
-
+    //去掉所有空白换行
+    objProject.Trim = function(str) {
+        return str.replace(/(^\s*)|(\s*$)/g, "").replace(/[\r\n]/g,"");
+    }
 
     /**
      * 判断对象 属性
@@ -389,7 +392,8 @@
                 var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
                 AssessCommon.getDataDicInfo(valueType, function (data) {
                     if (data) {
-                        $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val(data.remark);
+                        console.log(objProject.Trim(data.remark));
+                        $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val($.trim(data.remark));
                     }
                 });
                 if (entrustPurpose && valueType) {

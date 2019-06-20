@@ -69,11 +69,6 @@
 
 
 <script type="application/javascript">
-    $(function () {
-        if ('${basicBuilding}') {
-            writeSpecificationsHTMLData(${basicBuilding.vSpecifications});
-        }
-    })
 
     var num = 0;
 
@@ -107,37 +102,7 @@
         $(item).parent().parent().parent().remove();
     }
 
-    function writeSpecificationsHTMLData(json) {
-        if (!json)return;
-        $(".vSpecifications").empty();
-        var jsonarray = eval(json);
-        $.each(jsonarray, function (i, n) {
-            var html = "<div class='form-group' >";
 
-            html += "<div class='x-valid'>";
-            html += "<label class='col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "规格名称" + "</label>";
-            html += "<div class='col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
-            html += "<input type='text' required class='form-control' id='specificationName" + i + "' name='specificationName" + i + "' >";
-            html += "</div>";
-            html += "</div>";
-
-            html += "<div class='x-valid'>";
-            html += "<label class='col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "规格内容" + "</label>";
-            html += "<div class='col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
-            html += "<input type='text' required class='form-control' id='specificationContent" + i + "' name='specificationContent" + i + "' >";
-            html += "</div>";
-            html += "</div>";
-
-            html += "<div class='x-valid'>";
-            html += " <div class=' col-xs-1  col-sm-1  col-md-1  col-lg-1 '>";
-            html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
-            html += "</div>";
-            html += "</div>";
-
-            html += "</div>";
-            $(".vSpecifications").append(html);
-        })
-    }
 
 
 </script>

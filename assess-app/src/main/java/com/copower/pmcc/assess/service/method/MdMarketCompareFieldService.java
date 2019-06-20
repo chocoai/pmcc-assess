@@ -445,7 +445,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             List<BasicUnitDecorateVo> decorateList = basicUnitDecorateService.getBasicUnitDecorateList(examineUnit.getId());
                             if (CollectionUtils.isNotEmpty(decorateList)) {
                                 for (BasicUnitDecorateVo unitDecorate : decorateList) {
-                                    stringBuilder.append(unitDecorate.getDecorationPartName()).append(unitDecorate.getMaterialGradeName()).append(unitDecorate.getDecoratingMaterialName()).append(",");
+                                    stringBuilder.append(unitDecorate.getDecorationPartName()).append(unitDecorate.getMaterialGradeName()).append(unitDecorate.getDecoratingMaterialName()).append("；");
                                 }
                             }
                             if (CollectionUtils.isNotEmpty(roomList)) {//房间内装
@@ -454,7 +454,12 @@ public class MdMarketCompareFieldService extends BaseService {
                                     if (CollectionUtils.isNotEmpty(roomDecorateList)) {
                                         StringBuilder decorate = new StringBuilder();
                                         for (BasicHouseRoomDecorateVo roomDecorate : roomDecorateList) {
-                                            stringBuilder.append(roomDecorate.getPartName()).append(roomDecorate.getMaterialName()).append(",");
+                                            decorate.append(roomDecorate.getPartName());
+                                            if(StringUtils.isNotBlank(roomDecorate.getRemark())){
+                                                decorate.append(roomDecorate.getRemark()).append(",");
+                                            }else if(StringUtils.isNotBlank(roomDecorate.getRemark())){
+                                                decorate.append(roomDecorate.getMaterialName()).append(",");
+                                            }
                                         }
                                         if (decorate.length() > 0) {
                                             stringBuilder.append(String.format("%s:%s；", room.getRoomType(), decorate));

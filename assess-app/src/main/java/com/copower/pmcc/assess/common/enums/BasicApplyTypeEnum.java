@@ -1,5 +1,10 @@
 package com.copower.pmcc.assess.common.enums;
 
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 描述:模板类型表
  *
@@ -20,6 +25,17 @@ public enum BasicApplyTypeEnum {
         this.id = id;
         this.key = key;
         this.name = name;
+    }
+
+    public static List<KeyValueDto> getBasicApplyTypeEnumList() {
+        List<KeyValueDto> keyValueDtos = new ArrayList<>();
+        for (BasicApplyTypeEnum e : BasicApplyTypeEnum.values()) {
+            KeyValueDto keyValueDto = new KeyValueDto();
+            keyValueDto.setKey(String.valueOf(e.getId()));
+            keyValueDto.setValue(e.getName());
+            keyValueDtos.add(keyValueDto);
+        }
+        return keyValueDtos;
     }
 
     public static BasicApplyTypeEnum getEnumById(Integer id) {

@@ -123,7 +123,7 @@
                                     <div class="col-sm-2">
                                         <input type="text" name="timePointExplain" required="required"
                                                placeholder="基准日说明" class="form-control"
-                                               value="${item.timePointExplain}">
+                                               value="${empty item.timePointExplain?valueDateExplain:item.timePointExplain}">
                                     </div>
                                 </div>
                                 <div class="x-valid">
