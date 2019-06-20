@@ -55,8 +55,6 @@
                                 <button type="button" class="btn btn-success" onclick="addData()"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
-
-                                <a href="javascript://;" class="btn btn-xs btn-warning" onclick="adjustLiquidationAnalysis(this)">变现分析税费调整</a>
                             </div>
                         </div>
 

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @time: 10:53
  */
 @Component
-public class SurveyExamineTaskEvent extends BaseProcessEvent {
+public class SurveyExamineTaskEvent extends ProjectTaskEvent {
     @Autowired
     private SurveyCommonService surveyCommonService;
     @Autowired
@@ -28,10 +27,10 @@ public class SurveyExamineTaskEvent extends BaseProcessEvent {
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
-        super.processFinishExecute(processExecution);
         //更新案例任务状态
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processExecution.getProcessInstanceId());
         //更新各项表单任务状态
         surveyCommonService.updateExamineTaskStatus(projectPlanDetails.getPid(), commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
+        super.processFinishExecute(processExecution);
     }
 }
