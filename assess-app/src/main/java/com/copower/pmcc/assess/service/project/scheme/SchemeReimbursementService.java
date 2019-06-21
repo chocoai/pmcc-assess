@@ -159,6 +159,7 @@ public class SchemeReimbursementService {
      * @return
      */
     public List<SchemeReimbursementItemVo> getItemByMasterId(Integer masterId) {
+        if (masterId == null) return null;
         SchemeReimbursementItem schemeReimbursementItem = new SchemeReimbursementItem();
         schemeReimbursementItem.setMasterId(masterId);
         List<SchemeReimbursementItemVo> itemVos = findQueryBySchemeReimbursementItem2(schemeReimbursementItem);

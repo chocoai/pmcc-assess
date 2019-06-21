@@ -3247,7 +3247,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             List<Integer> integerList = Lists.newArrayList();
             schemeJudgeObjectList.stream().forEach(oo -> integerList.add(generateCommonMethod.parseIntJudgeNumber(oo.getNumber())));
-            List<String> stringList = Lists.newArrayList(AssessDataDicKeyConstant.MD_MARKET_COMPARE, AssessDataDicKeyConstant.MD_INCOME, AssessDataDicKeyConstant.MD_COST, AssessDataDicKeyConstant.MD_DEVELOPMENT, AssessDataDicKeyConstant.MD_STANDARD_ADJUSTMENT_PRICE);
+            List<String> stringList = Lists.newArrayList(AssessDataDicKeyConstant.MD_MARKET_COMPARE, AssessDataDicKeyConstant.MD_INCOME, AssessDataDicKeyConstant.MD_COST, AssessDataDicKeyConstant.MD_DEVELOPMENT);
             for (String methodNameEnum : stringList) {
                 String formula = getDataMethodFormula(schemeJudgeObjectList, methodNameEnum, "参数");
                 if (StringUtils.isNotBlank(formula.trim())) {
