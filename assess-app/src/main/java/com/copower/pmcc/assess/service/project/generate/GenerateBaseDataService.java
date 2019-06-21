@@ -1845,12 +1845,12 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         String localPath = getLocalPath();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
-        documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(getHotTip(), keyValueDtoList), false);
+        documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(getHotTip2(true,false), keyValueDtoList), false);
         doc.save(localPath);
         return localPath;
     }
 
-    public String getHotTip() throws Exception {
+    public String getHotTip2(boolean html, boolean blankSpace) throws Exception {
         StringBuilder stringBuilder = new StringBuilder(16);
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         BaseDataDic type = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
@@ -1873,12 +1873,19 @@ public class GenerateBaseDataService {
             });
         }
         int row = 0;
+        final int repeat = 4;
         {
             stringSet.add("本函内容摘自估价报告");
             stringSet.add("欲了解本次估价项目全面情况");
             stringSet.add("请详见估价结果报告");
             stringSet.add("报告使用时请特别关注估价假设和限制条件内容。");
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            if (html) {
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            }
+            if (blankSpace) {
+                stringBuilder.append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，")));
+                stringBuilder.append(StringUtils.repeat(" ", repeat));
+            }
             stringSet.clear();
             row++;
         }
@@ -1892,7 +1899,13 @@ public class GenerateBaseDataService {
             }
             stringSet.add(String.format("%s%s", areaFullName, StringUtils.defaultString(value, "房地产评估管理服务信息系统（http://fcpg.cdfgj.gov.cn/）")));
             stringSet.add("上查询了解得知，截止价值时点，估价对象已设定抵押权。");
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            if (html) {
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            }
+            if (blankSpace) {
+                stringBuilder.append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，")));
+                stringBuilder.append(StringUtils.repeat(" ", repeat));
+            }
             stringSet.clear();
             row++;
         }
@@ -1900,7 +1913,13 @@ public class GenerateBaseDataService {
             stringSet.add(String.format("估价对象现场查勘地址为%s", addressAssetInventory));
             stringSet.add(String.format("本次评估根据委托方提供的证明文件由证明人%s证明", certificateAssetInventory));
             stringSet.add("本次以上现场查勘地址为同一现场查勘地址。");
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            if (html){
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            }
+            if (blankSpace) {
+                stringBuilder.append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，")));
+                stringBuilder.append(StringUtils.repeat(" ", repeat));
+            }
             stringSet.clear();
             row++;
         }
@@ -1916,7 +1935,13 @@ public class GenerateBaseDataService {
                     generateCommonMethod.getBigDecimalRound(knowTotalPrice, true),
                     CnNumberUtils.toUppercaseSubstring(knowTotalPrice.toString())));
             stringSet.add("在此提请报告使用人加以关注。");
-            stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            if (html){
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，"))));
+            }
+            if (blankSpace) {
+                stringBuilder.append(String.format("%s、%s", row + 1, StringUtils.join(stringSet, "，")));
+                stringBuilder.append(StringUtils.repeat(" ", repeat));
+            }
             stringSet.clear();
         }
         return stringBuilder.toString();
@@ -3504,7 +3529,7 @@ public class GenerateBaseDataService {
             map.forEach((schemeJudgeObject, s) -> {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
                 if (map.size() != 1) {
-                    stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
+                    stringBuilder.append(" ").append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
                 }
                 if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
                     stringBuilder.append(s);
@@ -3522,10 +3547,10 @@ public class GenerateBaseDataService {
                         }
                     }
                     if (declareRealtyLandCert != null && StringUtils.isNotEmpty(declareRealtyLandCert.getLandCertName())) {
-                        stringBuilder.append("\r").append(String.format("房屋所有权证号:%s", s));
-                        stringBuilder.append(";").append(String.format("国有土地使用权证号:%s", declareRealtyLandCert.getLandCertName())).append("\r");
+                        stringBuilder.append(String.format("房屋所有权证号:%s", s));
+                        stringBuilder.append(";").append(String.format("国有土地使用权证号:%s", declareRealtyLandCert.getLandCertName()));
                     } else {
-                        stringBuilder.append("\r").append(s);
+                        stringBuilder.append(s);
                     }
                 }
                 stringBuilder.append("\n").append(StringUtils.repeat("\r", 25));
@@ -4132,18 +4157,20 @@ public class GenerateBaseDataService {
             StringBuilder stringBuilder = new StringBuilder(8);
             if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                 for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
-                    if (basicHouseRoom.getRoomType().contains(nameValue)) {
-                        List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
-                        if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
-                            basicHouseRoomDecorateVos.forEach(oo -> {
-                                stringBuilder.append(oo.getPartName());
-                                if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                    stringBuilder.append(oo.getRemark());
-                                } else if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                                    stringBuilder.append(oo.getMaterialName());
-                                }
-                                stringBuilder.append(",");
-                            });
+                    if (StringUtils.isNotBlank(basicHouseRoom.getRoomType())) {
+                        if (basicHouseRoom.getRoomType().contains(nameValue)) {
+                            List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
+                            if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
+                                basicHouseRoomDecorateVos.forEach(oo -> {
+                                    stringBuilder.append(oo.getPartName());
+                                    if (StringUtils.isNotEmpty(oo.getRemark())) {
+                                        stringBuilder.append(oo.getRemark());
+                                    } else if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                        stringBuilder.append(oo.getMaterialName());
+                                    }
+                                    stringBuilder.append(",");
+                                });
+                            }
                         }
                     }
                 }
@@ -4198,22 +4225,22 @@ public class GenerateBaseDataService {
             if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                 for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
                     StringBuilder stringBuilderDecorate = new StringBuilder(8);
-                    List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
-                    if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
-                        basicHouseRoomDecorateVos.forEach(oo -> {
-                            if (StringUtils.contains(oo.getPartName(), nameValue)
-                                    && !StringUtils.contains(oo.getPartName(), "卫生间")
-                                    && !StringUtils.contains(oo.getPartName(), "厨房")) {
-                                if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                    stringBuilderDecorate.append(oo.getRemark());
-                                } else {
-                                    if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                                        stringBuilderDecorate.append(oo.getMaterialName());
+                    if (StringUtils.isNotBlank(basicHouseRoom.getRoomType())) {
+                        List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
+                        if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
+                            basicHouseRoomDecorateVos.forEach(oo -> {
+                                if (StringUtils.contains(oo.getPartName(), nameValue) && !StringUtils.contains(oo.getPartName(), "卫生间") && !StringUtils.contains(oo.getPartName(), "厨房")) {
+                                    if (StringUtils.isNotEmpty(oo.getRemark())) {
+                                        stringBuilderDecorate.append(oo.getRemark());
+                                    } else {
+                                        if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                            stringBuilderDecorate.append(oo.getMaterialName());
+                                        }
                                     }
                                 }
-                            }
 
-                        });
+                            });
+                        }
                     }
                     if (stringBuilderDecorate.length() > 0) {
                         stringBuilder.append(basicHouseRoom.getRoomType()).append(stringBuilderDecorate.toString()).append(",");
@@ -5911,31 +5938,31 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
-        Map<BasicApply,SchemeJudgeObject>  basicApplySchemeJudgeObjectMap = Maps.newHashMap();
+        Map<BasicApply, SchemeJudgeObject> basicApplySchemeJudgeObjectMap = Maps.newHashMap();
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE, projectInfo.getProjectCategoryId());
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && projectPhase != null){
-            for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
-                if (schemeJudgeObject.getDeclareRecordId() != null){
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && projectPhase != null) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (schemeJudgeObject.getDeclareRecordId() != null) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
                     query.setProjectId(projectId);
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     query.setProjectPhaseId(projectPhase.getId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query) ;
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)){
-                        for (ProjectPlanDetails planDetails:projectPlanDetailsList){
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                        for (ProjectPlanDetails planDetails : projectPlanDetailsList) {
                             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
-                            if (basicApply != null){
-                                basicApplySchemeJudgeObjectMap.put(basicApply,schemeJudgeObject) ;
+                            if (basicApply != null) {
+                                basicApplySchemeJudgeObjectMap.put(basicApply, schemeJudgeObject);
                             }
                         }
                     }
                 }
             }
         }
-        if (!basicApplySchemeJudgeObjectMap.isEmpty()){
+        if (!basicApplySchemeJudgeObjectMap.isEmpty()) {
             documentBuilder.startTable();
-            LinkedList<String> stringLinkedList = Lists.newLinkedList(Arrays.asList("序号","名称","位置","所在楼层","面积(㎡)" , "单价(元/㎡)" ,"装修状况" ,"平面布局")) ;
-            AsposeUtils.writeWordTitle(documentBuilder,stringLinkedList);
+            LinkedList<String> stringLinkedList = Lists.newLinkedList(Arrays.asList("序号", "名称", "位置", "所在楼层", "面积(㎡)", "单价(元/㎡)", "装修状况", "平面布局"));
+            AsposeUtils.writeWordTitle(documentBuilder, stringLinkedList);
             documentBuilder.endTable();
         }
         document.save(localPath, SaveFormat.DOC);

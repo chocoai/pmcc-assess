@@ -426,6 +426,9 @@ public class GenerateReportService {
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
                 }
+                if (Objects.equal(BaseReportFieldEnum.HotTip3.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(false,true));
+                }
                 if (Objects.equal(BaseReportFieldEnum.Atypism2.getName(), name)) {
                     List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
