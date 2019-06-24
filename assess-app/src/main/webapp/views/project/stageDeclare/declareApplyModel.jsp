@@ -1693,9 +1693,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="房号(数字)" name="roomNumber" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                    <input type="text" name="roomNumber" class="form-control" placeholder="房号"
                            onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
@@ -2067,9 +2065,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="房号(数字)" name="roomNumber" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                    <input type="text" placeholder="房号" name="roomNumber" class="form-control"
                            onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
@@ -2472,9 +2468,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="房号(数字)" name="roomNumber" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                    <input type="text" placeholder="房号" name="roomNumber" class="form-control"
                            onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
                 </div>
             </div>
@@ -2796,9 +2790,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="房号(数字)" name="roomNumber" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                    <input type="text" placeholder="房号" name="roomNumber" class="form-control"
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
             </div>
@@ -3097,9 +3089,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="房号(数字)" name="roomNumber" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
+                    <input type="text" placeholder="房号" name="roomNumber" class="form-control"
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
             </div>
