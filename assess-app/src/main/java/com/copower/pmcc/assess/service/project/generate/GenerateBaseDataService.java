@@ -2041,7 +2041,7 @@ public class GenerateBaseDataService {
                                     builder.writeln("税费负担方");
                                     break;
                                 case 5:
-                                    builder.writeln("");
+                                    builder.writeln("单位(面积/㎡ 金额/元)");
                                     break;
                                 case 6:
                                     builder.endRow();
