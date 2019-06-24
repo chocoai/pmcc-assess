@@ -677,7 +677,7 @@ public class MdIncomeService {
 
     //更新租赁收入
     @Transactional
-    public void updateLease(MdIncomeLease mdIncomeLease) {
+    public void updateLease(MdIncomeLease mdIncomeLease) throws BusinessException {
         mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease);
 
         //计算总收入 月租金*出租率*月份数+其它收入
@@ -687,6 +687,13 @@ public class MdIncomeService {
         if (incomeDateSection != null) {
             incomeDateSection.setIncomeTotal(total);
             mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
+
+            //同步更新成本
+            MdIncomeLeaseCost where = new MdIncomeLeaseCost();
+            where.setSectionId(incomeDateSection.getId());
+            MdIncomeLeaseCost leaseCost = mdIncomeLeaseCostDao.getLeaseCost(where);
+            if (leaseCost != null)
+                updateLeaseCost(leaseCost);
         }
     }
 
@@ -723,11 +730,19 @@ public class MdIncomeService {
             if (incomeTotal == null) {
                 throw new BusinessException("请先保存毛收入信息");
             }
-            BigDecimal total = incomeTotal.multiply(mdIncomeLeaseCost.getManagementCostRatio());//管理费
-            total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getMaintenanceCostRatio()));//维护保养费
-            total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getAdditionalRatio()));//房产税、增值税及附加
-            total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getInsurancePremiumRatio()));//保险费
-            total = total.add(mdIncomeLeaseCost.getLandUseTax());//土地使用费
+            BigDecimal total = new BigDecimal("0");
+            if (mdIncomeLeaseCost.getManagementCostRatio() != null)
+                total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getManagementCostRatio()));//管理费
+            if (mdIncomeLeaseCost.getReplacementValue() != null && mdIncomeLeaseCost.getMaintenanceCostRatio() != null)
+                total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getMaintenanceCostRatio()));//维护保养费
+            if (mdIncomeLeaseCost.getAdditionalRatio() != null)
+                total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getAdditionalRatio()));//房产税、增值税及附加
+            if (mdIncomeLeaseCost.getReplacementValue() != null && mdIncomeLeaseCost.getInsurancePremiumRatio() != null)
+                total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getInsurancePremiumRatio()));//保险费
+            if (mdIncomeLeaseCost.getLandUseTax() != null)
+                total = total.add(mdIncomeLeaseCost.getLandUseTax());//土地使用费
+            if (mdIncomeLeaseCost.getTransactionTaxeFeeRatio() != null)
+                total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getTransactionTaxeFeeRatio()));//其它相关税费
             incomeDateSection.setCostTotal(total);
             mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
         }
@@ -863,7 +878,6 @@ public class MdIncomeService {
     }
 
 
-
     /**
      * 获取土地剩余使用年限
      *
@@ -889,7 +903,7 @@ public class MdIncomeService {
     public BigDecimal getHouseSurplusYear(Date completedTime, Date valueTimePoint, Integer canUseYear) {
         if (completedTime == null || valueTimePoint == null || canUseYear == null) return null;
         BigDecimal usedYear = new BigDecimal(DateUtils.diffDate(valueTimePoint, completedTime)).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal houseSurplusYear =new BigDecimal(canUseYear).subtract(usedYear);
+        BigDecimal houseSurplusYear = new BigDecimal(canUseYear).subtract(usedYear);
         return houseSurplusYear;
     }
 }

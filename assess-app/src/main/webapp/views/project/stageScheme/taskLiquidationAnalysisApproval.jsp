@@ -41,7 +41,7 @@
                         <th class="hidden-xs">税费负担方</th>
 
                         <th class="hidden-xs">备注</th>
-                        <th class="hidden-xs"></th>
+                        <th class="hidden-xs">单位（面积/m² 金额/元）</th>
                         <th class="hidden-xs">操作</th>
                     </tr>
                     </thead>

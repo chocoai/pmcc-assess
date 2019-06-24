@@ -115,7 +115,7 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                月租金收入(元)
+                                月租金收入(元/m2)
                             </label>
                             <div class="col-sm-4">
                                 <label class="form-control" data-name="rentalIncome"></label>
@@ -151,7 +151,7 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                押金
+                                年押金(元/m2)
                             </label>
                             <div class="col-sm-4">
                                 <label class="form-control" data-name="deposit"></label>
@@ -202,6 +202,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                有效收缴率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" data-name="additionalCapture"></label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                有效收缴率说明
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control" data-name="additionalCaptureRemark"></label>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -237,7 +255,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                重置价格
+                                重置价格(元/m2)
                             </label>
                             <div class="col-sm-4">
                                 <label class="form-control" name="replacementValue"></label>
@@ -265,28 +283,29 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                交易税费率
+                                土地使用税
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control" name="landUseTax"></label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                其它相关税费率
                             </label>
                             <div class="col-sm-4">
                                 <label class="form-control v-percent" name="transactionTaxeFeeRatio"></label>
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                交易税费说明
-                            </label>
-                            <div class="col-sm-4">
-                                <label class="form-control" name="transactionTaxeFeeExplain"></label>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                土地使用税
+                                其它相关税费率说明
                             </label>
-                            <div class="col-sm-4">
-                                <label class="form-control" name="landUseTax"></label>
+                            <div class="col-sm-10">
+                                <label class="form-control" name="transactionTaxeFeeExplain"></label>
                             </div>
                         </div>
                     </div>

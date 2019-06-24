@@ -247,7 +247,7 @@
                             if (result.data.planExecutor) {
                                 html += '<div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip" data-original-title="责任人">' + result.data.planExecutor + '</div>';
                             }
-                            if (result.data.projectStatus == 'finish') {
+                            if (result.data.projectStatus == 'finish' && '${projectInfo.projectStatus}' != 'finish') {
                                 html += '<div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启" onclick="projectDetails.replyPlan(' + planId + ');"><i class="fa fa-reply"></i></div>';
                             }
                             if (result.data.planExecutUrl) {

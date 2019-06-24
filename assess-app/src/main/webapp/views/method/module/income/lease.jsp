@@ -123,11 +123,12 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                月租金收入(元)<span class="symbol required"></span>
+                                月租金收入(元/m2)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" name="rentalIncome" placeholder="月租金收入" data-rule-number="true"
+                                    <input type="text" name="rentalIncome" placeholder="月租金收入(元/m2)"
+                                           data-rule-number="true"
                                            class="form-control" required="required">
                                     <span class="input-group-btn">
                                         <input type="button" class="btn btn-primary" value="市场比较法"
@@ -171,10 +172,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                押金<span class="symbol required"></span>
+                                年押金(元/m2)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="deposit" data-rule-number="true" placeholder="押金"
+                                <input type="text" name="deposit" data-rule-number="true" placeholder="年押金(元/m2)"
                                        onblur="lease.computeOtherIncome(this);" class="form-control"
                                        required="required">
                             </div>
@@ -292,10 +293,10 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                重置价格<span class="symbol required"></span>
+                                重置价格(元/m2)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="replacementValue" placeholder="重置价格"
+                                <input type="text" name="replacementValue" placeholder="重置价格(元/m2)"
                                        data-rule-number="true"
                                        class="form-control " required="required">
                             </div>
@@ -971,6 +972,9 @@
         constructionTaxRatio = AssessCommon.isNumber(constructionTaxRatio) ? parseFloat(constructionTaxRatio) : 0;//城建税率
         localEducationRatio = AssessCommon.isNumber(localEducationRatio) ? parseFloat(localEducationRatio) : 0;//地方教育税附加税率
         educationRatio = AssessCommon.isNumber(educationRatio) ? parseFloat(educationRatio) : 0;//教育费附加税率
+
+        salesTaxRatio = salesTaxRatio / (1 + 0.05);
+        propertyTaxRatio = propertyTaxRatio / (1 + 0.05);
         var result = propertyTaxRatio + stampDutyRatio + salesTaxRatio * (1 + constructionTaxRatio + localEducationRatio + educationRatio);
         AssessCommon.elementParsePercent(form.find('[name=additionalRatio]').attr('data-value', result.toFixed(4)));
     }
@@ -980,11 +984,13 @@
         //押金*押金利率
         var form = $(_this).closest('form');
         var deposit = form.find('[name=deposit]').val();
+        var monthNumber = form.find('[name=monthNumber]').val();
         var depositRate = form.find('[name=depositRate]').attr('data-value');
-        if (AssessCommon.isNumber(deposit) && AssessCommon.isNumber(depositRate)) {
+        if (AssessCommon.isNumber(deposit) && AssessCommon.isNumber(depositRate) && AssessCommon.isNumber(monthNumber)) {
             deposit = parseFloat(deposit);
+            monthNumber = parseFloat(monthNumber);
             depositRate = parseFloat(depositRate);
-            form.find('[name=otherIncome]').val((deposit * depositRate).toFixed(2));
+            form.find('[name=otherIncome]').val((deposit * depositRate / monthNumber).toFixed(2));
         }
     }
 

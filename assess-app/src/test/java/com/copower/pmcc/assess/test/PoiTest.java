@@ -48,6 +48,24 @@ public class PoiTest {
 
 
     @Test
+    public void  testFun(){
+        BigDecimal incomeTotal=new BigDecimal("696.30");
+        BigDecimal getManagementCostRatio=new BigDecimal("0.015");
+        BigDecimal getReplacementValue=new BigDecimal("1500");
+        BigDecimal getMaintenanceCostRatio=new BigDecimal("0.015");
+        BigDecimal getAdditionalRatio=new BigDecimal("0.1165");
+        BigDecimal getInsurancePremiumRatio=new BigDecimal("0.0015");
+        BigDecimal getLandUseTax=new BigDecimal("0");
+
+        BigDecimal total = incomeTotal.multiply(getManagementCostRatio);//管理费
+        total = total.add(getReplacementValue.multiply(getMaintenanceCostRatio));//维护保养费
+        total = total.add(incomeTotal.multiply(getAdditionalRatio));//房产税、增值税及附加
+        total = total.add(incomeTotal.multiply(getInsurancePremiumRatio));//保险费
+        total = total.add(getLandUseTax);//土地使用费
+        System.out.print(total);
+    }
+
+    @Test
     public void diff(){
        System.out.print( DateUtils.diffDate(DateUtils.convertDate("2019-06-19 09:00:00"),DateUtils.convertDate("2019-06-18 9:00:00")));
     }

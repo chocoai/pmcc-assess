@@ -3,10 +3,9 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
@@ -106,6 +105,18 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/basicApplyApproval", name = "审批页面", method = RequestMethod.GET)
     public ModelAndView basicApplyApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, taskId, agentUserAccount);
+        try {
+            BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
+            this.setViewParam(basicApply, modelAndView);
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/basicApplyDetail", name = "详情页面", method = RequestMethod.GET)
+    public ModelAndView basicApplyDetail(String processInsId, String taskId, Integer boxId) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, "-1", null);
         try {
             BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
             this.setViewParam(basicApply, modelAndView);

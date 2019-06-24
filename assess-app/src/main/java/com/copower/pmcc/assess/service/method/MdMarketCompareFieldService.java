@@ -190,6 +190,8 @@ public class MdMarketCompareFieldService extends BaseService {
                                 stringBuilder.append(String.format("%s栋", examineBuilding.getBuildingNumber()));
                             if (examineBuilding.getFloorCount() != null)
                                 stringBuilder.append(String.format("%s层建筑", examineBuilding.getFloorCount()));
+                            if(StringUtils.isNotBlank(examineUnit.getUnitNumber()))
+                                stringBuilder.append(String.format("%s单元", examineUnit.getUnitNumber()));
                             if (StringUtils.isNotBlank(examineHouse.getFloor()))
                                 stringBuilder.append(String.format("第%s层", examineHouse.getFloor()));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), stringBuilder.toString()));

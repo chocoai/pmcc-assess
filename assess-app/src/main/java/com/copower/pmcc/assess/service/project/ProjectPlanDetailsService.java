@@ -316,7 +316,10 @@ public class ProjectPlanDetailsService {
             }
             if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE)
                 projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
-
+            //设置复制
+            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+                projectPlanDetailsVo.setCanCopy(true);
+            }
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 
@@ -326,10 +329,6 @@ public class ProjectPlanDetailsService {
                     if (projectPhase != null) {
                         projectPlanDetailsVo.setCanReplay(projectPhase.getBisCanReturn());
                     }
-                }
-                //设置复制
-                if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                    projectPlanDetailsVo.setCanCopy(true);
                 }
             }
         }
