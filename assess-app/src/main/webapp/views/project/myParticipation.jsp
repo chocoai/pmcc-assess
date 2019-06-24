@@ -58,6 +58,20 @@
                                     </div>
                                     <div>
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            项目经理
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input type="hidden" id="queryManager">
+                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectManager()"
+                                                   placeholder="项目经理" id="queryManagerName" name="queryManagerName"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group ">
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             立项人
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
@@ -67,9 +81,6 @@
                                                    class="form-control">
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="form-group ">
                                     <div>
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             委托目的
@@ -81,6 +92,47 @@
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            开始时间
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input type="text" class="form-control date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" id="queryTimeStart" placeholder="开始时间"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            结束时间
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input type="text" class="form-control date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" id="queryTimeEnd" placeholder="结束时间"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group ">
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            委托人
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input type="text" data-rule-maxlength="50" placeholder="委托人"
+                                                   id="queryConsignor" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            报告使用单位
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input type="hidden" id="queryUseUnit">
+                                            <input type="text" readonly="readonly" required="required"
+                                                   placeholder="单位" class="form-control" id="queryUseUnitName"
+                                                   onclick="selectCustomer(this)">
                                         </div>
                                     </div>
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -104,6 +156,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="application/javascript">
     $(function () {
         loadParticipationList();
@@ -156,6 +209,11 @@
             }
         });
         cols.push({
+            field: 'gmtCreated', title: '立项时间', formatter: function (value, row, index) {
+                return formatDate(row.gmtCreated, false);
+            }
+        });
+        cols.push({
             field: 'opation', title: '操作', formatter: function (value, row, index) {
                 var str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 return str;
@@ -167,7 +225,12 @@
             projectStatus:$("#status").val(),
             queryCreator:$("#queryCreator").val(),
             queryMember:$("#queryMember").val(),
-            entrustPurpose:$("#entrustPurpose").val()
+            queryManager:$("#queryManager").val(),
+            entrustPurpose:$("#entrustPurpose").val(),
+            queryTimeStart:$("#queryTimeStart").val(),
+            queryTimeEnd:$("#queryTimeEnd").val(),
+            queryConsignor:$("#queryConsignor").val(),
+            queryUseUnit:$("#queryUseUnit").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -187,6 +250,15 @@
             }
         });
     }
+    //项目经理选择
+    function selectProjectManager() {
+        erpEmployee.select({
+            onSelected: function (data) {
+                $("#queryManager").val(data.account);
+                $("#queryManagerName").val(data.name);
+            }
+        });
+    }
     //立项人选择
     function selectProjectCreator() {
         erpEmployee.select({
@@ -196,6 +268,26 @@
             }
         });
     }
+
+    function selectCustomer(this_) {
+        //选择客户
+        crmCustomer.select({
+            multi: false,//是否允许多选
+            companyId:"${companyId}",
+            onSelected: function (nodes) {
+                $("#queryUseUnit").val(nodes[0].id);
+                $("#queryUseUnitName").val(nodes[0].name);
+                $.ajax({
+                    type: "get",
+                    url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
+                    data: "crmId=" + nodes[0].id,
+                    success: function (msg) {
+
+                    }
+                });
+            }
+        });
+    };
 </script>
 </body>
 </html>

@@ -33,9 +33,14 @@
     </resultMap>
 
     <select id="getProjectListByUserAccount" parameterType="map" resultMap="BaseResultMap">
-        SELECT A.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id WHERE 1=1
+        SELECT A.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id
+        LEFT JOIN tb_initiate_consignor D on A.id=D.project_id  LEFT JOIN tb_initiate_unit_information E on A.id=E.project_id
+        WHERE 1=1
         <if test="queryCreator!='' and queryCreator!=null">
-            AND (B.user_account_manager = #{queryCreator})
+            AND (A.creator = #{queryCreator})
+        </if>
+        <if test="queryManager!='' and queryManager!=null">
+            AND (B.user_account_manager = #{queryManager})
         </if>
         <if test="queryMember!='' and queryMember!=null">
             AND (B.user_account_member LIKE
@@ -54,6 +59,19 @@
         <if test="entrustPurpose!=null">
             AND A.entrust_purpose = #{entrustPurpose}
         </if>
+        <if test="queryTimeStart!=null">
+            AND A.gmt_created &gt;= #{queryTimeStart}
+        </if>
+        <if test="queryTimeEnd!=null">
+            AND A.gmt_created &lt;= #{queryTimeEnd}
+        </if>
+        <if test="queryConsignor!=null and queryConsignor!=''">
+            AND D.cs_name LIKE CONCAT(CONCAT('%', #{queryConsignor}), '%')
+        </if>
+        <if test="queryUseUnit!=null">
+            AND E.u_use_unit = #{queryUseUnit}
+        </if>
+
         ORDER BY A.id DESC
     </select>
 </mapper>

@@ -19,6 +19,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,7 +63,8 @@ public class ProjectCenterService {
      *
      * @return
      */
-    public BootstrapTableVo getProjectList(String queryName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose) {
+    public BootstrapTableVo getProjectList(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
+                                           String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit) throws Exception {
 
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<Integer> orgIds = null;
@@ -74,7 +78,15 @@ public class ProjectCenterService {
         }
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("",queryName, projectStatus,queryCreator,queryMember,entrustPurpose);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date startTimeParse = null;
+        Date endTimeParse = null;
+        if (StringUtil.isNotEmpty(queryTimeStart))
+            startTimeParse = sdf.parse(queryTimeStart);
+        if (StringUtil.isNotEmpty(queryTimeEnd))
+            endTimeParse = sdf.parse(queryTimeEnd);
+        List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("", queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
+                queryManager, startTimeParse, endTimeParse,queryConsignor,queryUseUnit);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
@@ -169,11 +181,20 @@ public class ProjectCenterService {
      *
      * @return
      */
-    public BootstrapTableVo getParticipationProject(String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose) {
+    public BootstrapTableVo getParticipationProject(String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
+                                                    String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus, queryCreator, queryMember, entrustPurpose);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date startTimeParse = null;
+        Date endTimeParse = null;
+        if (StringUtil.isNotEmpty(queryTimeStart))
+            startTimeParse = sdf.parse(queryTimeStart);
+        if (StringUtil.isNotEmpty(queryTimeEnd))
+            endTimeParse = sdf.parse(queryTimeEnd);
+        List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus, queryCreator, queryMember, entrustPurpose,
+                queryManager, startTimeParse, endTimeParse,queryConsignor,queryUseUnit);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? Lists.newArrayList() : projectInfoVos);
