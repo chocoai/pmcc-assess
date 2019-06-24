@@ -173,9 +173,8 @@ public class GenerateHouseEntityService {
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            BigDecimal floorHeight = basicBuilding.getFloorHeight();
-            if (floorHeight != null) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", floorHeight));
+            if (StringUtils.isNotBlank(basicBuilding.getFloorHeight())) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", basicBuilding.getFloorHeight()));
             }
         }
         return generateCommonMethod.judgeEachDesc(map, "", "，", false);
@@ -184,7 +183,7 @@ public class GenerateHouseEntityService {
     /**
      * 获取空间布局
      *
-     * @param judgeObjectIds
+     * @param judgeObjectList
      * @return
      */
     public String getSpatialDistribution(List<SchemeJudgeObject> judgeObjectList) throws Exception {

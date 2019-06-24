@@ -36,7 +36,7 @@ public class BasicBuilding {
 
     private BigDecimal facilitiesUseFee;
 
-    private BigDecimal buildingHeight;
+    private String buildingHeight;
 
     private BigDecimal buildingArea;
 
@@ -54,7 +54,7 @@ public class BasicBuilding {
 
     private Date beCompletedTime;
 
-    private BigDecimal floorHeight;
+    private String floorHeight;
 
     private BigDecimal diameterDepth;
 
@@ -230,12 +230,12 @@ public class BasicBuilding {
         this.facilitiesUseFee = facilitiesUseFee;
     }
 
-    public BigDecimal getBuildingHeight() {
+    public String getBuildingHeight() {
         return buildingHeight;
     }
 
-    public void setBuildingHeight(BigDecimal buildingHeight) {
-        this.buildingHeight = buildingHeight;
+    public void setBuildingHeight(String buildingHeight) {
+        this.buildingHeight = buildingHeight == null ? null : buildingHeight.trim();
     }
 
     public BigDecimal getBuildingArea() {
@@ -302,12 +302,12 @@ public class BasicBuilding {
         this.beCompletedTime = beCompletedTime;
     }
 
-    public BigDecimal getFloorHeight() {
+    public String getFloorHeight() {
         return floorHeight;
     }
 
-    public void setFloorHeight(BigDecimal floorHeight) {
-        this.floorHeight = floorHeight;
+    public void setFloorHeight(String floorHeight) {
+        this.floorHeight = floorHeight == null ? null : floorHeight.trim();
     }
 
     public BigDecimal getDiameterDepth() {

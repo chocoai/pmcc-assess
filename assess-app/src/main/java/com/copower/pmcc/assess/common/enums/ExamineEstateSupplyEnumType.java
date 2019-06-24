@@ -22,4 +22,8 @@ public enum ExamineEstateSupplyEnumType {
     public String getName() {
         return name;
     }
+
+    public String getDes() {
+        return des;
+    }
 }
