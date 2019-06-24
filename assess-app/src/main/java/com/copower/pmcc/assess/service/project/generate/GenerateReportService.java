@@ -384,7 +384,18 @@ public class GenerateReportService {
                 }
                 //建行个贷变现能力分析
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY2.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk2());
+                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "100%"));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk2(keyValueDtoList));
+                }
+                if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY3.getName(), name)) {
+                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "11pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "100%"));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk2(keyValueDtoList));
                 }
                 //风险提示
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {
@@ -423,6 +434,13 @@ public class GenerateReportService {
                     List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
+                }
+                if (Objects.equal(BaseReportFieldEnum.HotTip4.getName(), name)) {
+                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "10pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
                 }
@@ -921,6 +939,9 @@ public class GenerateReportService {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHuxingLayout());
                 }
                 //获取某些土地证字段信息
+                if (Objects.equal(BaseReportFieldEnum.LandArea.getName(), name)) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandArea));
+                }
                 if (Objects.equal(BaseReportFieldEnum.LandCertificateField1.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField1));
                 }
@@ -1038,10 +1059,6 @@ public class GenerateReportService {
                 //报告使用单位
                 if (Objects.equal(BaseReportFieldEnum.ReportUnitString.getName(), name)) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportUnitString());
-                }
-                //楼盘区位描述
-                if (Objects.equal(BaseReportFieldEnum.LocationDescriptionBuilding.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLocationDescriptionBuilding());
                 }
                 //工行估价案例情况表
                 if (Objects.equal(BaseReportFieldEnum.ICBCValuationCaseInformationSheet.getName(), name)) {

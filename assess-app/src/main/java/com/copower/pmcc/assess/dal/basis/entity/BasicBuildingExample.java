@@ -1136,52 +1136,62 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightEqualTo(BigDecimal value) {
+        public Criteria andBuildingHeightEqualTo(String value) {
             addCriterion("building_height =", value, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightNotEqualTo(BigDecimal value) {
+        public Criteria andBuildingHeightNotEqualTo(String value) {
             addCriterion("building_height <>", value, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightGreaterThan(BigDecimal value) {
+        public Criteria andBuildingHeightGreaterThan(String value) {
             addCriterion("building_height >", value, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andBuildingHeightGreaterThanOrEqualTo(String value) {
             addCriterion("building_height >=", value, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightLessThan(BigDecimal value) {
+        public Criteria andBuildingHeightLessThan(String value) {
             addCriterion("building_height <", value, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andBuildingHeightLessThanOrEqualTo(String value) {
             addCriterion("building_height <=", value, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightIn(List<BigDecimal> values) {
+        public Criteria andBuildingHeightLike(String value) {
+            addCriterion("building_height like", value, "buildingHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightNotLike(String value) {
+            addCriterion("building_height not like", value, "buildingHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingHeightIn(List<String> values) {
             addCriterion("building_height in", values, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightNotIn(List<BigDecimal> values) {
+        public Criteria andBuildingHeightNotIn(List<String> values) {
             addCriterion("building_height not in", values, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andBuildingHeightBetween(String value1, String value2) {
             addCriterion("building_height between", value1, value2, "buildingHeight");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingHeightNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andBuildingHeightNotBetween(String value1, String value2) {
             addCriterion("building_height not between", value1, value2, "buildingHeight");
             return (Criteria) this;
         }
@@ -1676,52 +1686,62 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightEqualTo(BigDecimal value) {
+        public Criteria andFloorHeightEqualTo(String value) {
             addCriterion("floor_height =", value, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightNotEqualTo(BigDecimal value) {
+        public Criteria andFloorHeightNotEqualTo(String value) {
             addCriterion("floor_height <>", value, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightGreaterThan(BigDecimal value) {
+        public Criteria andFloorHeightGreaterThan(String value) {
             addCriterion("floor_height >", value, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andFloorHeightGreaterThanOrEqualTo(String value) {
             addCriterion("floor_height >=", value, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightLessThan(BigDecimal value) {
+        public Criteria andFloorHeightLessThan(String value) {
             addCriterion("floor_height <", value, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andFloorHeightLessThanOrEqualTo(String value) {
             addCriterion("floor_height <=", value, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightIn(List<BigDecimal> values) {
+        public Criteria andFloorHeightLike(String value) {
+            addCriterion("floor_height like", value, "floorHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorHeightNotLike(String value) {
+            addCriterion("floor_height not like", value, "floorHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorHeightIn(List<String> values) {
             addCriterion("floor_height in", values, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightNotIn(List<BigDecimal> values) {
+        public Criteria andFloorHeightNotIn(List<String> values) {
             addCriterion("floor_height not in", values, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andFloorHeightBetween(String value1, String value2) {
             addCriterion("floor_height between", value1, value2, "floorHeight");
             return (Criteria) this;
         }
 
-        public Criteria andFloorHeightNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andFloorHeightNotBetween(String value1, String value2) {
             addCriterion("floor_height not between", value1, value2, "floorHeight");
             return (Criteria) this;
         }

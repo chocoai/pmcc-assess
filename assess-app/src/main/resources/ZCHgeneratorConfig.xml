@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
     <classPathEntry
-            location="D:\lib\mysql-connector-java-5.1.23.jar"/>
+            location="E:\lib\maven\mysql\mysql-connector-java\5.1.9\mysql-connector-Java-5.1.9.jar"/>
 
     <context id="ticket-pms">
 
@@ -48,11 +48,11 @@
             <!--<columnOverride column="path_array" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_record_extend" domainObjectName="DeclareRecordExtend">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_declare_record_extend" domainObjectName="DeclareRecordExtend">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_survey_asset_inventory_content" domainObjectName="SurveyAssetInventoryContent">
+        <table tableName="tb_basic_building" domainObjectName="BasicBuilding">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

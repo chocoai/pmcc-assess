@@ -18,7 +18,7 @@
     <result column="unit_interval" property="unitInterval" jdbcType="VARCHAR" />
     <result column="property_fee" property="propertyFee" jdbcType="DECIMAL" />
     <result column="facilities_use_fee" property="facilitiesUseFee" jdbcType="DECIMAL" />
-    <result column="building_height" property="buildingHeight" jdbcType="DECIMAL" />
+    <result column="building_height" property="buildingHeight" jdbcType="VARCHAR" />
     <result column="building_area" property="buildingArea" jdbcType="DECIMAL" />
     <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
     <result column="property_type" property="propertyType" jdbcType="INTEGER" />
@@ -27,7 +27,7 @@
     <result column="room_time" property="roomTime" jdbcType="TIMESTAMP" />
     <result column="completed_time_type" property="completedTimeType" jdbcType="INTEGER" />
     <result column="be_completed_time" property="beCompletedTime" jdbcType="TIMESTAMP" />
-    <result column="floor_height" property="floorHeight" jdbcType="DECIMAL" />
+    <result column="floor_height" property="floorHeight" jdbcType="VARCHAR" />
     <result column="diameter_depth" property="diameterDepth" jdbcType="DECIMAL" />
     <result column="land_use_year" property="landUseYear" jdbcType="INTEGER" />
     <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
@@ -177,10 +177,10 @@
       #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, 
       #{builderName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, #{propertyName,jdbcType=VARCHAR}, 
       #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
-      #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
+      #{buildingHeight,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
       #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
       #{roomTime,jdbcType=TIMESTAMP}, #{completedTimeType,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
-      #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
+      #{floorHeight,jdbcType=VARCHAR}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
       #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
       #{firstFloor,jdbcType=INTEGER}, #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=VARCHAR}, 
       #{useArea,jdbcType=VARCHAR}, #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
@@ -388,7 +388,7 @@
         #{facilitiesUseFee,jdbcType=DECIMAL},
       </if>
       <if test="buildingHeight != null" >
-        #{buildingHeight,jdbcType=DECIMAL},
+        #{buildingHeight,jdbcType=VARCHAR},
       </if>
       <if test="buildingArea != null" >
         #{buildingArea,jdbcType=DECIMAL},
@@ -415,7 +415,7 @@
         #{beCompletedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="floorHeight != null" >
-        #{floorHeight,jdbcType=DECIMAL},
+        #{floorHeight,jdbcType=VARCHAR},
       </if>
       <if test="diameterDepth != null" >
         #{diameterDepth,jdbcType=DECIMAL},
@@ -546,7 +546,7 @@
         facilities_use_fee = #{record.facilitiesUseFee,jdbcType=DECIMAL},
       </if>
       <if test="record.buildingHeight != null" >
-        building_height = #{record.buildingHeight,jdbcType=DECIMAL},
+        building_height = #{record.buildingHeight,jdbcType=VARCHAR},
       </if>
       <if test="record.buildingArea != null" >
         building_area = #{record.buildingArea,jdbcType=DECIMAL},
@@ -573,7 +573,7 @@
         be_completed_time = #{record.beCompletedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.floorHeight != null" >
-        floor_height = #{record.floorHeight,jdbcType=DECIMAL},
+        floor_height = #{record.floorHeight,jdbcType=VARCHAR},
       </if>
       <if test="record.diameterDepth != null" >
         diameter_depth = #{record.diameterDepth,jdbcType=DECIMAL},
@@ -667,7 +667,7 @@
       unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
       property_fee = #{record.propertyFee,jdbcType=DECIMAL},
       facilities_use_fee = #{record.facilitiesUseFee,jdbcType=DECIMAL},
-      building_height = #{record.buildingHeight,jdbcType=DECIMAL},
+      building_height = #{record.buildingHeight,jdbcType=VARCHAR},
       building_area = #{record.buildingArea,jdbcType=DECIMAL},
       cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
       property_type = #{record.propertyType,jdbcType=INTEGER},
@@ -676,7 +676,7 @@
       room_time = #{record.roomTime,jdbcType=TIMESTAMP},
       completed_time_type = #{record.completedTimeType,jdbcType=INTEGER},
       be_completed_time = #{record.beCompletedTime,jdbcType=TIMESTAMP},
-      floor_height = #{record.floorHeight,jdbcType=DECIMAL},
+      floor_height = #{record.floorHeight,jdbcType=VARCHAR},
       diameter_depth = #{record.diameterDepth,jdbcType=DECIMAL},
       land_use_year = #{record.landUseYear,jdbcType=INTEGER},
       net_height = #{record.netHeight,jdbcType=DECIMAL},
@@ -753,7 +753,7 @@
         facilities_use_fee = #{facilitiesUseFee,jdbcType=DECIMAL},
       </if>
       <if test="buildingHeight != null" >
-        building_height = #{buildingHeight,jdbcType=DECIMAL},
+        building_height = #{buildingHeight,jdbcType=VARCHAR},
       </if>
       <if test="buildingArea != null" >
         building_area = #{buildingArea,jdbcType=DECIMAL},
@@ -780,7 +780,7 @@
         be_completed_time = #{beCompletedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="floorHeight != null" >
-        floor_height = #{floorHeight,jdbcType=DECIMAL},
+        floor_height = #{floorHeight,jdbcType=VARCHAR},
       </if>
       <if test="diameterDepth != null" >
         diameter_depth = #{diameterDepth,jdbcType=DECIMAL},
@@ -871,7 +871,7 @@
       unit_interval = #{unitInterval,jdbcType=VARCHAR},
       property_fee = #{propertyFee,jdbcType=DECIMAL},
       facilities_use_fee = #{facilitiesUseFee,jdbcType=DECIMAL},
-      building_height = #{buildingHeight,jdbcType=DECIMAL},
+      building_height = #{buildingHeight,jdbcType=VARCHAR},
       building_area = #{buildingArea,jdbcType=DECIMAL},
       cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
       property_type = #{propertyType,jdbcType=INTEGER},
@@ -880,7 +880,7 @@
       room_time = #{roomTime,jdbcType=TIMESTAMP},
       completed_time_type = #{completedTimeType,jdbcType=INTEGER},
       be_completed_time = #{beCompletedTime,jdbcType=TIMESTAMP},
-      floor_height = #{floorHeight,jdbcType=DECIMAL},
+      floor_height = #{floorHeight,jdbcType=VARCHAR},
       diameter_depth = #{diameterDepth,jdbcType=DECIMAL},
       land_use_year = #{landUseYear,jdbcType=INTEGER},
       net_height = #{netHeight,jdbcType=DECIMAL},

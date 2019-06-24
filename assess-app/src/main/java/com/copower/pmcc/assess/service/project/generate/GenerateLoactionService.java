@@ -276,11 +276,11 @@ public class GenerateLoactionService {
                 estateDrainWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), basicEstateSupply.getType())).count();
                 estateSupplyPower = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), basicEstateSupply.getType())).count();
             }
-            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), estateSupplyGas);
-            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName(), estateSupplyHeating);
-            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName(), estateSupplyWater);
-            map.put(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), estateDrainWater);
-            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), estateSupplyPower);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getDes(), estateSupplyGas);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getDes(), estateSupplyHeating);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getDes(), estateSupplyWater);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getDes(), estateDrainWater);
+            map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getDes(), estateSupplyPower);
             map.put("通讯设施", estateNetwork);
             LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
             if (map.entrySet().stream().allMatch(entry -> entry.getValue().longValue() != 0)) {
