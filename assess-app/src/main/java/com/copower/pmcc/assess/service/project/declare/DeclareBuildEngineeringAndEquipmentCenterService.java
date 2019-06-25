@@ -56,6 +56,8 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     @Autowired
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     @Autowired
+    private DeclareEconomicIndicatorsHeadService declareEconomicIndicatorsHeadService;
+    @Autowired
     private TaskExecutor executor;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -103,6 +105,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
         types.add(DeclarePreSalePermit.class.getSimpleName());
         types.add(DeclareRealtyLandCert.class.getSimpleName());
         types.add(DeclareRealtyRealEstateCert.class.getSimpleName());
+        types.add(DeclareEconomicIndicatorsHead.class.getSimpleName());
         ids.stream().forEachOrdered(integer -> {
             DeclareBuildEngineeringAndEquipmentCenter center = getDeclareBuildEngineeringAndEquipmentCenterById(integer);
             if (center != null) {
@@ -238,6 +241,25 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private boolean deleteByType2(List<String> types, DeclareBuildEngineeringAndEquipmentCenter equipmentCenter) {
         if (CollectionUtils.isEmpty(types) || equipmentCenter == null) {
             return false;
+        }
+        //新经济指标
+        if (types.contains(DeclareEconomicIndicatorsHead.class.getSimpleName())) {
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            query.setPlanDetailsId(equipmentCenter.getPlanDetailsId());
+            query.setType(equipmentCenter.getType());
+            query.setIndicatorId(equipmentCenter.getIndicatorId());
+            executor.execute(() -> {
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList)) {
+                    //当只存在一个的时候，把中间表包含经济指标的id设为null,并且删除其原表的数据
+                    //当有多个关联关系的时候则把中间表包含经济指标的id设为null
+                    if (centerList.size() == 1) {
+                        declareEconomicIndicatorsHeadService.removeDeclareEconomicIndicatorsHeadById(equipmentCenter.getIndicatorId());
+                    }
+                    equipmentCenter.setIndicatorId(0);
+                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                }
+            });
         }
         //经济指标
         if (types.contains(DeclareBuildEconomicIndicatorsCenter.class.getSimpleName())) {
