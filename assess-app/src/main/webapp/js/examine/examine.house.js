@@ -114,7 +114,16 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUseCondition, data.basicHouse.useCondition, function (html, data) {
                 houseCommon.houseForm.find("select.useCondition").empty().html(html).trigger('change');
             });
-
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDecorateSituation, data.basicHouse.decorateSituation, function (html, data) {
+                houseCommon.houseForm.find("select.decorateSituation").empty().html(html).trigger('change');
+            });
+            //变更
+            houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
+                if($(this).find('option:selected').val()) {
+                    var description = $(this).find('option:selected').text();
+                    houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
+                }
+            });
             houseCommon.showUseCondition(data);
 
             //初始化上传控件

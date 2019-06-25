@@ -2095,6 +2095,136 @@ public class BasicHouseExample {
             addCriterion("price_connotation not between", value1, value2, "priceConnotation");
             return (Criteria) this;
         }
+
+        public Criteria andDecorateSituationIsNull() {
+            addCriterion("decorate_situation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationIsNotNull() {
+            addCriterion("decorate_situation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationEqualTo(Integer value) {
+            addCriterion("decorate_situation =", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationNotEqualTo(Integer value) {
+            addCriterion("decorate_situation <>", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationGreaterThan(Integer value) {
+            addCriterion("decorate_situation >", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("decorate_situation >=", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationLessThan(Integer value) {
+            addCriterion("decorate_situation <", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationLessThanOrEqualTo(Integer value) {
+            addCriterion("decorate_situation <=", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationIn(List<Integer> values) {
+            addCriterion("decorate_situation in", values, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationNotIn(List<Integer> values) {
+            addCriterion("decorate_situation not in", values, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationBetween(Integer value1, Integer value2) {
+            addCriterion("decorate_situation between", value1, value2, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationNotBetween(Integer value1, Integer value2) {
+            addCriterion("decorate_situation not between", value1, value2, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionIsNull() {
+            addCriterion("decorate_situation_description is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionIsNotNull() {
+            addCriterion("decorate_situation_description is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionEqualTo(String value) {
+            addCriterion("decorate_situation_description =", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionNotEqualTo(String value) {
+            addCriterion("decorate_situation_description <>", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionGreaterThan(String value) {
+            addCriterion("decorate_situation_description >", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("decorate_situation_description >=", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionLessThan(String value) {
+            addCriterion("decorate_situation_description <", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("decorate_situation_description <=", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionLike(String value) {
+            addCriterion("decorate_situation_description like", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionNotLike(String value) {
+            addCriterion("decorate_situation_description not like", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionIn(List<String> values) {
+            addCriterion("decorate_situation_description in", values, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionNotIn(List<String> values) {
+            addCriterion("decorate_situation_description not in", values, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionBetween(String value1, String value2) {
+            addCriterion("decorate_situation_description between", value1, value2, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionNotBetween(String value1, String value2) {
+            addCriterion("decorate_situation_description not between", value1, value2, "decorateSituationDescription");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

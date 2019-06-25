@@ -208,6 +208,7 @@ AssessDicKey.examineHouseInformationSourceCategory = "examine.house.information.
 AssessDicKey.examineHouseResearchType = "examine.house.research.type";//调查方式
 AssessDicKey.examineHousePriceConnotation = "examine.house.price.connotation";//单价内涵
 AssessDicKey.examineHouseUseCondition = "examine.house.use.condition";//使用情况
+AssessDicKey.examineHouseDecorateSituation = "examine.house.decorate.situation";//使用情况
 
 AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位
 AssessDicKey.examine_house_room_material = "examine.house.room.material";//房间装修材料

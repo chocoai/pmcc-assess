@@ -66,6 +66,10 @@ public class BasicHouse {
 
     private Integer priceConnotation;
 
+    private Integer decorateSituation;
+
+    private String decorateSituationDescription;
+
     public Integer getId() {
         return id;
     }
@@ -312,5 +316,21 @@ public class BasicHouse {
 
     public void setPriceConnotation(Integer priceConnotation) {
         this.priceConnotation = priceConnotation;
+    }
+
+    public Integer getDecorateSituation() {
+        return decorateSituation;
+    }
+
+    public void setDecorateSituation(Integer decorateSituation) {
+        this.decorateSituation = decorateSituation;
+    }
+
+    public String getDecorateSituationDescription() {
+        return decorateSituationDescription;
+    }
+
+    public void setDecorateSituationDescription(String decorateSituationDescription) {
+        this.decorateSituationDescription = decorateSituationDescription == null ? null : decorateSituationDescription.trim();
     }
 }
