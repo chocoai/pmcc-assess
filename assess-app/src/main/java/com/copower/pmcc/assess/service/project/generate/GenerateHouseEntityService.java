@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -116,7 +115,7 @@ public class GenerateHouseEntityService {
                 String v1 = baseDataDicService.getNameById(basicBuilding.getBuildingStructureType());
                 String v2 = baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory());
                 if (basicBuilding.getBuildingStructureType() != null && basicBuilding.getBuildingStructureCategory() != null) {
-                    builder.append(v1).append("划分").append(v2);
+                    builder.append("按").append(v1).append("划分").append(v2);
                 } else if (basicBuilding.getBuildingStructureType() != null) {
                     builder.append(v1);
                 } else if (basicBuilding.getBuildingStructureCategory() != null) {
@@ -172,9 +171,10 @@ public class GenerateHouseEntityService {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            if (StringUtils.isNotBlank(basicBuilding.getFloorHeight())) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", basicBuilding.getFloorHeight()));
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            List<BasicHouseRoom> houseRoomList = generateBaseExamineService.getBasicHouseRoomList();
+            if (CollectionUtils.isNotEmpty(houseRoomList)) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", houseRoomList.get(0).getLayerHeight()));
             }
         }
         return generateCommonMethod.judgeEachDesc(map, "", "，", false);
@@ -227,11 +227,12 @@ public class GenerateHouseEntityService {
     public String getDecoration(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         Map<Integer, String> outfitMap = Maps.newHashMap();
         Map<Integer, String> unitDecorateMap = Maps.newHashMap();
+        Map<Integer, String> roomDecorateMap = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
             //楼栋外装
-            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            List<BasicBuildingOutfitVo> outfitVos = basicBuildingOutfitService.getBasicBuildingOutfitVos(basicBuilding.getId());
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            List<BasicBuildingOutfitVo> outfitVos = generateBaseExamineService.getBasicBuildingOutfitList();
             StringBuilder outfitBuilder = new StringBuilder();
             if (CollectionUtils.isNotEmpty(outfitVos)) {
                 outfitVos.forEach(o -> {
@@ -240,10 +241,8 @@ public class GenerateHouseEntityService {
                 outfitMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("楼栋外装%s;", StringUtils.strip(outfitBuilder.toString(), ",")));
             }
 
-
             //楼栋内装
-            BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
-            List<BasicUnitDecorateVo> unitDecorates = basicUnitDecorateService.getBasicUnitDecorateList(basicUnit.getId());
+            List<BasicUnitDecorateVo> unitDecorates = generateBaseExamineService.getBasicUnitDecorateList();
             StringBuilder unitDecorateBuilder = new StringBuilder();
             if (CollectionUtils.isNotEmpty(unitDecorates)) {
                 unitDecorates.forEach(o -> {
@@ -251,12 +250,18 @@ public class GenerateHouseEntityService {
                 });
                 unitDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("楼栋内装%s;", StringUtils.strip(unitDecorateBuilder.toString(), ",")));
             }
+
+            BasicHouseVo basicHouse = generateBaseExamineService.getBasicHouse();
+            roomDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("房间装修%s;", basicHouse.getDecorateSituationDescription()));
         }
         String outfitString = generateCommonMethod.judgeEachDesc(outfitMap, "", ";", false);
         String unitDecorateString = generateCommonMethod.judgeEachDesc(unitDecorateMap, "", ";", false);
+        String roomDecorateString = generateCommonMethod.judgeEachDesc(roomDecorateMap, "", ";", false);
         StringBuilder resultBuilder = new StringBuilder(outfitString);
         if (StringUtils.isNotBlank(unitDecorateString))
             resultBuilder.append(";").append(unitDecorateString);
+        if (StringUtils.isNotBlank(roomDecorateString))
+            resultBuilder.append(";").append(roomDecorateString);
         return generateCommonMethod.trim(resultBuilder.toString());
     }
 
@@ -364,9 +369,10 @@ public class GenerateHouseEntityService {
                     String s = "";
                     if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                         damagedDegreeVoList.stream().forEach(oo -> {
-                            if (StringUtils.isNotBlank(oo.getCategoryName()) && StringUtils.isNotBlank(oo.getEntityConditionName())) {
+                            if (StringUtils.isNotBlank(oo.getCategoryName()) && StringUtils.isNotBlank(oo.getEntityConditionName()) && StringUtils.isNotBlank(oo.getEntityConditionContent())) {
                                 if (typeList.contains(oo.getTypeName()) && (oo.getCategoryName().contains("其它") || oo.getCategoryName().contains("特种设备"))) {
-                                    stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), oo.getEntityConditionName()));
+                                    String conditionName = oo.getEntityConditionContent().contains(oo.getEntityConditionName()) ? "" : oo.getEntityConditionName();
+                                    stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), conditionName));
                                 } else {
                                     stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
                                 }

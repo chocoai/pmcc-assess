@@ -1947,7 +1947,7 @@ public class GenerateBaseDataService {
             BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
             stringSet.add("根据估价委托人提供的《法定优先受偿款情况说明》");
             stringSet.add("估价对象于价值时点已设定抵押权");
-            stringSet.add("本次评估是抵押权存续期间的房地产估价（同行续贷）");
+            stringSet.add("本次评估是抵押权存续期间的房地产估价");
             stringSet.add("经过沟通");
             stringSet.add("抵押权人已经知晓法定优先受偿款对估价对象价值的影响");
             stringSet.add("且并不需要我们在抵押价值中予以扣除法定优先受偿款");
@@ -3249,28 +3249,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getComputationProcess() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
-        String localPath = getLocalPath();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
-        StringBuilder stringBuilder = new StringBuilder(8);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            List<Integer> integerList = Lists.newArrayList();
-            schemeJudgeObjectList.stream().forEach(oo -> integerList.add(generateCommonMethod.parseIntJudgeNumber(oo.getNumber())));
-            List<String> stringList = Lists.newArrayList(AssessDataDicKeyConstant.MD_MARKET_COMPARE, AssessDataDicKeyConstant.MD_INCOME, AssessDataDicKeyConstant.MD_COST, AssessDataDicKeyConstant.MD_DEVELOPMENT, AssessDataDicKeyConstant.MD_STANDARD_ADJUSTMENT_PRICE);
-            for (String methodNameEnum : stringList) {
-                String formula = getDataMethodFormula(schemeJudgeObjectList, methodNameEnum, "公式");
-                if (StringUtils.isNotBlank(formula.trim())) {
-                    stringBuilder.append(generateCommonMethod.convertNumber(integerList)).append("号");
-                    stringBuilder.append(StringUtils.trimToEmpty(formula));
-                }
-            }
-            String indentHtml = generateCommonMethod.getIndentHtml(stringBuilder.toString());
-            stringBuilder.delete(0, stringBuilder.toString().length()).append(indentHtml);
-        }
-        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
-        doc.save(localPath);
-        return localPath;
+        return getFormulaString("公式");
     }
 
     /**
@@ -3280,81 +3259,40 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSelectionApplicationParameters() throws Exception {
+        return getFormulaString("参数");
+    }
+
+    private String getFormulaString(String type) throws Exception {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
-        StringBuilder stringBuilder = new StringBuilder(8);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            List<Integer> integerList = Lists.newArrayList();
-            schemeJudgeObjectList.stream().forEach(oo -> integerList.add(generateCommonMethod.parseIntJudgeNumber(oo.getNumber())));
-            List<String> stringList = Lists.newArrayList(AssessDataDicKeyConstant.MD_MARKET_COMPARE, AssessDataDicKeyConstant.MD_INCOME, AssessDataDicKeyConstant.MD_COST, AssessDataDicKeyConstant.MD_DEVELOPMENT);
-            for (String methodNameEnum : stringList) {
-                String formula = getDataMethodFormula(schemeJudgeObjectList, methodNameEnum, "参数");
-                if (StringUtils.isNotBlank(formula.trim())) {
-                    stringBuilder.append(generateCommonMethod.convertNumber(integerList)).append("号");
-                    stringBuilder.append(StringUtils.trimToEmpty(formula));
-                }
-            }
-            String indentHtml = generateCommonMethod.getIndentHtml(stringBuilder.toString());
-            stringBuilder.delete(0, stringBuilder.toString().length()).append(indentHtml);
-        }
-        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
-        doc.save(localPath);
-        return localPath;
-    }
-
-    /**
-     * 获取方法的参数或者公式
-     *
-     * @param schemeJudgeObjectList
-     * @param fieldName
-     * @param name
-     * @return
-     */
-    private String getDataMethodFormula(List<SchemeJudgeObject> schemeJudgeObjectList, String fieldName, String name) {
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        BaseDataDic byFieldName = baseDataDicService.getCacheDataDicByFieldName(fieldName);
-        List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
-        DataEvaluationMethod evaluationMethod = null;
-        DataMethodFormula dataMethodFormula = null;
-        if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
-            if (byFieldName != null) {
-                if (dataEvaluationMethodList.stream().filter(dataEvaluation -> Objects.equal(byFieldName.getName(), dataEvaluation.getName())).count() >= 1) {
-                    evaluationMethod = dataEvaluationMethodList.stream().filter(dataEvaluation -> Objects.equal(byFieldName.getName(), dataEvaluation.getName())).findFirst().get();
-                }
-            }
-        }
-        if (evaluationMethod != null) {
-            List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(evaluationMethod.getMethod());
-            if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
-                dataMethodFormula = dataMethodFormulaList.stream().findFirst().get();
-            }
-        }
+        Map<String, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (byFieldName != null) {
-                            if (Objects.equal(byFieldName.getName(), schemeJudgeFunction.getName())) {
-                                if (dataMethodFormula != null) {
-                                    linkedHashSet.add(byFieldName.getName());
-                                    if ("公式".equals(name)) {
-                                        linkedHashSet.add(dataMethodFormula.getFormula());
-                                    }
-                                    if ("参数".equals(name)) {
-                                        linkedHashSet.add(dataMethodFormula.getRelevantParameter());
-                                    }
-                                }
+                List<SchemeJudgeFunction> functions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+                if (CollectionUtils.isNotEmpty(functions)) {
+                    for (SchemeJudgeFunction function : functions) {
+                        DataMethodFormula formula = dataMethodFormulaService.getDataMethodFormulaByType(function.getMethodType());
+                        if (formula != null) {
+                            switch (type){
+                                case "参数":
+                                    map.put(schemeJudgeObject.getNumber(), formula.getRelevantParameter());
+                                    break;
+                                case "公式":
+                                    map.put(schemeJudgeObject.getNumber(), formula.getFormula());
+                                    break;
                             }
+
                         }
                     }
                 }
             }
         }
-        String s = StringUtils.join(linkedHashSet, "");
-        return StringUtils.isNotBlank(s.trim()) ? s : "";
+        String strResult = generateCommonMethod.judgeEachDescExtend(map, "", "。", false);
+        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(strResult), false);
+        doc.save(localPath);
+        return localPath;
     }
 
     /**
@@ -5252,7 +5190,7 @@ public class GenerateBaseDataService {
             }
         }
         if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
-            stringBuilder.append("不考虑估价对象租赁因素的影响。");
+            stringBuilder.append("");
         }
         return stringBuilder.toString();
     }
@@ -5849,7 +5787,6 @@ public class GenerateBaseDataService {
                     buffer.append(entry.getKey().getName()).append(publicService.fusinString(list, false));
                 }
                 buffer.append(",");
-                Map<Integer, String> heightMap = Maps.newHashMap();
                 Map<Integer, String> certUseMap = Maps.newHashMap();
                 Map<Integer, String> certUseMap2 = Maps.newHashMap();
                 Map<Integer, String> practicalUseMap = Maps.newHashMap();
@@ -5861,22 +5798,6 @@ public class GenerateBaseDataService {
                 for (SchemeJudgeObject schemeJudgeObject : entry.getValue()) {
                     DeclareRecord declareRecord = recordList.stream().filter(o -> o.getId().equals(schemeJudgeObject.getDeclareRecordId())).findFirst().get();
                     Integer number = generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber());
-                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                    if (basicApply != null && basicApply.getId() != null) {
-                        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                        List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
-                        List<String> stringList = Lists.newArrayList();
-                        if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
-                            if (basicHouseRoomList.stream().anyMatch(obj -> obj.getLayerHeight() != null)) {
-                                basicHouseRoomList.stream().filter(obj -> obj.getLayerHeight() != null).forEachOrdered(obj -> {
-                                    stringList.add(generateCommonMethod.getBigDecimalRound(obj.getLayerHeight(), 2, false) + "米");
-                                });
-                            }
-                        }
-                        if (CollectionUtils.isNotEmpty(stringList)) {
-                            heightMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList, "、"));
-                        }
-                    }
                     certUseMap.put(number, schemeJudgeObject.getCertUse());
                     certUseMap2.put(number, declareRecord.getCertUse());
                     if (StringUtils.isNotBlank(declareRecord.getPracticalUse()))
@@ -5889,14 +5810,14 @@ public class GenerateBaseDataService {
                     if (StringUtils.isNotBlank(declareRecord.getHousingStructure()))
                         structureMap.put(number, declareRecord.getHousingStructure());
                 }
-                if (!certUseMap.isEmpty()) {
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(certUseMap, "设定用途", false)).append(",");//设定用途
+                if (!certUseMap2.isEmpty()) {
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(certUseMap2, "证载用途", false)).append(",");//证载用途
                 }
                 if (!practicalUseMap.isEmpty()) {
                     buffer.append(generateCommonMethod.judgeSummaryDesc(practicalUseMap, "实际用途", false)).append(",");//实际用途
                 }
-                if (!certUseMap2.isEmpty()) {
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(certUseMap2, "证载用途", false)).append(",");//证载用途
+                if (!certUseMap.isEmpty()) {
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(certUseMap, "设定用途", false)).append(",");//设定用途
                 }
                 if (!buildAreaMap.isEmpty()) {
                     buffer.append(generateCommonMethod.judgeSummaryDesc(buildAreaMap, "建筑面积", false)).append(",");//建筑面积
@@ -5907,14 +5828,11 @@ public class GenerateBaseDataService {
                 if (!landRightNatureMap.isEmpty()) {
                     buffer.append(generateCommonMethod.judgeSummaryDesc(landRightNatureMap, "权利性质", false)).append(",");//权利性质
                 }
-                if (!ownershipMap.isEmpty()) {
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(ownershipMap, "权利人", false)).append(",");//权利人
-                }
                 if (!structureMap.isEmpty()) {
                     buffer.append(generateCommonMethod.judgeSummaryDesc(structureMap, "房屋结构", false)).append(",");//房屋结构
                 }
-                if (!heightMap.isEmpty()) {
-                    buffer.append(generateCommonMethod.judgeEachDesc2(heightMap, "层高", "", false)).append(",");//层高
+                if (!ownershipMap.isEmpty()) {
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(ownershipMap, "权利人", false)).append(",");//权利人
                 }
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(buffer.toString())));
                 buffer.delete(0, buffer.toString().length());

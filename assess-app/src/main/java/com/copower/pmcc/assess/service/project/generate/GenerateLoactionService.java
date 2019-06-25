@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -82,7 +81,7 @@ public class GenerateLoactionService {
                     basicHouseFaceStreetVoList.forEach(oo -> {
                         if (StringUtils.isNotEmpty(oo.getStreetName())) {
                             if (StringUtils.isNotEmpty(oo.getPositionName())) {
-                                stringList.add(String.format("%s%s", oo.getStreetName(), oo.getPositionName()));
+                                stringList.add(String.format("%s%s", oo.getPositionName(), oo.getStreetName()));
                             }
                         }
                     });
@@ -245,8 +244,8 @@ public class GenerateLoactionService {
             if (a3 > 0 && a1 == 0 && a2 == 0) {
                 v = "道路体系相对完善";
             }
-            if(CollectionUtils.isNotEmpty(linkedHashSet)){
-                stringBuilder.append(StringUtils.join(linkedHashSet,"，")).append("，");
+            if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                stringBuilder.append(StringUtils.join(linkedHashSet, "，")).append("，");
             }
             if (StringUtils.isNotBlank(v)) {
                 stringBuilder.append(v).append("，");
@@ -432,8 +431,9 @@ public class GenerateLoactionService {
             if (CollectionUtils.isNotEmpty(commonParkingList)) {
                 commonParkingList.stream().forEach(basicEstateParking -> {
                     if (basicEstateParking.getNumber() != null) {
-                        builder.append("自有").append(StringUtils.isNotBlank(basicEstateParking.getName()) ? basicEstateParking.getName() : "").append("停车场").append("有");
-                        builder.append(basicEstateParking.getNumber()).append("辆车位");
+                        builder.append("自有").append(StringUtils.isNotBlank(basicEstateParking.getName()) ? basicEstateParking.getName() : "").append("停车场");
+                        if (basicEstateParking.getNumber() != null)
+                            builder.append("有").append(basicEstateParking.getNumber()).append("个车位");
                         stringSet.add(builder.toString());
                         builder.delete(0, builder.toString().length());
                     }
@@ -450,7 +450,7 @@ public class GenerateLoactionService {
                         if (StringUtils.isNotBlank(v)) {
                             builder.append("在").append(baseDataDicService.getNameById(basicEstateParking.getLocation())).append("位置处");
                             builder.append(v).append("有");
-                            builder.append(basicEstateParking.getNumber()).append("辆车位");
+                            builder.append(basicEstateParking.getNumber()).append("个车位");
                             stringSet.add(builder.toString());
                             builder.delete(0, builder.toString().length());
                         }
@@ -664,14 +664,21 @@ public class GenerateLoactionService {
                     }
                     GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                     BasicBuilding basicBuilding = generateBaseExamineService.getBasicBuilding();
+                    BasicUnit basicUnit = generateBaseExamineService.getBasicUnit();
                     BasicHouse basicHouse = generateBaseExamineService.getBasicHouse();
-                    if (basicBuilding == null || basicHouse == null) {
+                    if (basicBuilding == null || basicUnit == null || basicHouse == null) {
                         continue;
                     }
                     stringBuffer.append(basicBuilding.getBuildingNumber()).append("栋");
-                    BigDecimal bigDecimal = new BigDecimal(basicBuilding.getFloorCount() != null ? basicBuilding.getFloorCount() : 0);
-                    stringBuffer.append(bigDecimal.toString()).append("层");
-                    stringBuffer.append("建筑的第").append(basicHouse.getFloor()).append("层");
+                    if (basicBuilding.getFloorCount() != null) {
+                        stringBuffer.append(String.format("%s层建筑", basicBuilding.getFloorCount()));
+                    }
+                    if (StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
+                        stringBuffer.append(String.format("%s单元", basicUnit.getUnitNumber()));
+                    }
+                    if (StringUtils.isNotBlank(basicHouse.getFloor())) {
+                        stringBuffer.append("的第").append(basicHouse.getFloor()).append("层");
+                    }
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuffer.toString());
                     stringBuffer.delete(0, stringBuffer.toString().length());
                 }

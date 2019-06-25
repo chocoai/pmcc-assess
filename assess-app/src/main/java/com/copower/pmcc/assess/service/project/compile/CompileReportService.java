@@ -12,7 +12,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisBackgroundService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -50,7 +50,7 @@ public class CompileReportService {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private ProjectPhaseService projectPhaseService;
+    private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private DataReportAnalysisBackgroundService dataReportAnalysisBackgroundService;
 
@@ -159,9 +159,9 @@ public class CompileReportService {
             compileReportDetail.setReportAnalysisType(analysisType.getId());
             compileReportDetail.setReportAnalysisName(analysisType.getName());
             compileReportDetail.setPlanDetailsId(projectPlanDetails.getId());
+            compileReportDetail.setMarketBackgroundType(baseDataDic.getId());
             compileReportDetail.setBisModifiable(true);
             if (analysis != null) {
-                compileReportDetail.setMarketBackgroundType(analysis.getMarketBackgroundType());
                 compileReportDetail.setContent(tagfilter(analysis.getTemplate()));
             }
             compileReportDetailDao.addReportDetail(compileReportDetail);
@@ -186,7 +186,7 @@ public class CompileReportService {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < reportDetailList.size(); i++) {
             CompileReportDetail reportDetail = reportDetailList.get(i);
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(reportDetail.getContent()).append("</p>");
+            stringBuilder.append(generateCommonMethod.getIndentHtml(reportDetail.getContent()));
         }
         return stringBuilder.toString();
     }

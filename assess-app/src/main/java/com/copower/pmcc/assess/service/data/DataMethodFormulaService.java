@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataMethodFormulaDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataMethodFormula;
@@ -51,8 +50,8 @@ public class DataMethodFormulaService {
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         ArrayList<DataMethodFormulaVo> vos = new ArrayList<>();
         List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaDao.getDataMethodFormulaList(type);
-        if(CollectionUtils.isNotEmpty(dataMethodFormulaList)){
-            for (DataMethodFormula item:dataMethodFormulaList) {
+        if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
+            for (DataMethodFormula item : dataMethodFormulaList) {
                 vos.add(getDataMethodFormulaVo(item));
             }
         }
@@ -61,8 +60,14 @@ public class DataMethodFormulaService {
         return vo;
     }
 
-    public List<DataMethodFormula> getDataMethodFormulaList(Integer type){
+    public List<DataMethodFormula> getDataMethodFormulaList(Integer type) {
         return dataMethodFormulaDao.getDataMethodFormulaList(type);
+    }
+
+    public DataMethodFormula getDataMethodFormulaByType(Integer methodType) {
+        List<DataMethodFormula> list = dataMethodFormulaDao.getDataMethodFormulaList(methodType);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
     }
 
 
@@ -74,6 +79,7 @@ public class DataMethodFormulaService {
         dataMethodFormulaVo.setMethodType(cacheDataDicById.getName());
         return dataMethodFormulaVo;
     }
+
     /**
      * 保存
      *

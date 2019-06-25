@@ -1063,7 +1063,7 @@
             $(this).find('[data-name=incomePrice]').text(incomePrice);//收益价格
         })
         //计算委估对象单价 （单价=收益价格合计\委估对象面积）
-        $("#leaseResult").find('[data-name=price]').text(incomePriceTotal.toFixed(2));
+        $("#leaseResult").find('[data-name=price]').text(incomePriceTotal.toFixed(0));
     }
 </script>
 
