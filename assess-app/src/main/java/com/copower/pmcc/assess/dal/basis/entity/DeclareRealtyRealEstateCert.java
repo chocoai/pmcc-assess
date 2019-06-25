@@ -120,6 +120,8 @@ public class DeclareRealtyRealEstateCert {
 
     private Date gmtModified;
 
+    private BigDecimal landApportionArea;
+
     public Integer getId() {
         return id;
     }
@@ -582,5 +584,13 @@ public class DeclareRealtyRealEstateCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getLandApportionArea() {
+        return landApportionArea;
+    }
+
+    public void setLandApportionArea(BigDecimal landApportionArea) {
+        this.landApportionArea = landApportionArea;
     }
 }

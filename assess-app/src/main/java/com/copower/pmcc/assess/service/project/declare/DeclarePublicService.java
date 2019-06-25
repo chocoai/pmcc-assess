@@ -56,7 +56,7 @@ public class DeclarePublicService {
     private final String UNIT = "单元";
     private final String FLOOR = "层";
     private final String ATTACHED = "附";
-    private final String BUILDING = "栋";
+    private final String BUILDING = "幢";
     private final String STREET = "STREET";
     private final String RoomNumber = "RoomNumber";
     private final String NUMBER = "号";

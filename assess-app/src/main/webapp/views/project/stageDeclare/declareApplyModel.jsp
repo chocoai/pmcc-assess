@@ -171,7 +171,7 @@
                 if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
                     buildingNumber = "";
                 } else {
-                    buildingNumber = buildingNumber + "栋";
+                    buildingNumber = buildingNumber + "幢";
                 }
                 /* if (commonDeclareApplyModel.isNotBlank(district)) {
                      AssessCommon.getAreaById(district, function (data) {
@@ -277,7 +277,7 @@
                 if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
                     buildingNumber = "";
                 } else {
-                    buildingNumber = buildingNumber + "栋";
+                    buildingNumber = buildingNumber + "幢";
                 }
                 /* if (commonDeclareApplyModel.isNotBlank(district)) {
                      AssessCommon.getAreaById(district, function (data) {
@@ -386,7 +386,7 @@
                 if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
                     buildingNumber = "";
                 } else {
-                    buildingNumber = buildingNumber + "栋";
+                    buildingNumber = buildingNumber + "幢";
                 }
                 /* if (commonDeclareApplyModel.isNotBlank(district)) {
                      AssessCommon.getAreaById(district, function (data) {
@@ -1661,10 +1661,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">幢号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="栋号(数字)" name="buildingNumber" class="form-control"
+                           placeholder="幢号(数字)" name="buildingNumber" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'
                            onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
@@ -1885,12 +1885,16 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
-
-
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地分摊面积</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text"
+                           placeholder="土地分摊面积(数字)" name="landApportionArea" class="form-control" data-rule-maxlength="100"
+                           data-rule-number='true'>
+                </div>
+            </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">记事</label>
@@ -2034,10 +2038,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">幢号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="栋号(数字)" name="buildingNumber" class="form-control"
+                           placeholder="幢号(数字)" name="buildingNumber" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'
                            onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
@@ -2437,10 +2441,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">幢号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="栋号(数字)" name="buildingNumber" class="form-control"
+                           placeholder="幢号(数字)" name="buildingNumber" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'
                            onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
                 </div>
@@ -2758,10 +2762,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">幢号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="栋号(数字)" name="buildingNumber" class="form-control"
+                           placeholder="幢号(数字)" name="buildingNumber" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
@@ -3057,10 +3061,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">幢号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="栋号(数字)" name="buildingNumber" class="form-control"
+                           placeholder="幢号(数字)" name="buildingNumber" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>

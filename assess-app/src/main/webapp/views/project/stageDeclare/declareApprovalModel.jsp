@@ -260,7 +260,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">幢号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="buildingNumber"></label>
                 </div>
@@ -524,7 +524,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">幢号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="buildingNumber"></label>
                 </div>
@@ -756,7 +756,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">幢号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="buildingNumber"></label>
                 </div>
@@ -918,6 +918,14 @@
                     <%--<label class="form-control" name="useEndDate"></label>--%>
                     <input type="text" name="useEndDateFmt" id="useEndDateFmt_d" class="form-control"
                            readonly="readonly">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地分摊面积</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="landApportionArea"></label>
                 </div>
             </div>
         </div>
