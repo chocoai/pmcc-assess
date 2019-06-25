@@ -19,6 +19,15 @@ assessCommonHouse.config = {
             table: declareCommon.config.house.son.declareRealtyLandCert.table
         }
     },
+    declareEconomicIndicatorsHead:{
+        frm:  declareCommon.config.declareEconomicIndicatorsHead.frm,
+        name: declareCommon.config.declareEconomicIndicatorsHead.name,
+        box: declareCommon.config.declareEconomicIndicatorsHead.box
+    } ,
+    declareEconomicIndicatorsContent:{
+        frm:  declareCommon.config.declareEconomicIndicatorsContent.frm,
+        name: declareCommon.config.declareEconomicIndicatorsContent.name
+    } ,
     handleCopy: "#houseHandleInputGroup"
 };
 
@@ -203,6 +212,31 @@ assessCommonHouse.pasteAll = function () {
     } else {
         toastr.info("只能选择一行数据进行复制");
     }
+};
+
+/**
+ * 经济指标
+ * @param id
+ */
+assessCommonHouse.showAddModelDeclareEconomicIndicators = function (id) {
+    var element1 = $("#"+assessCommonHouse.config.declareEconomicIndicatorsHead.frm).find(".panel-body") ;
+    var element2 = $("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm).find(".panel-body") ;
+    declareCommon.appendDeclareEconomicIndicators(element1,element2) ;
+    var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
+    declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm), function (area) {
+        $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
+        var tree = $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).find('.tree') ;
+        if (tree.size() >= 1){
+            tree.treegrid();
+        }
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+
+        });
+    });
 };
 
 /**
@@ -508,6 +542,7 @@ assessCommonHouse.loadList = function () {
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
             str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonHouse.showAddModelLand(' + row.id + ');" ><i class="fa fa-eye">土地证</i></a>';
+            str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonHouse.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='assessCommonHouse.houseImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证附件" + "</a>";
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='assessCommonHouse.landImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
             str += '</div>';

@@ -52,7 +52,11 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_basic_building" domainObjectName="BasicBuilding">
+        <table tableName="tb_declare_economic_indicators_content" domainObjectName="DeclareEconomicIndicatorsContent">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_declare_economic_indicators_head" domainObjectName="DeclareEconomicIndicatorsHead">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

@@ -181,3 +181,62 @@
         </div>
     </div>
 </div>
+
+<!-- 经济指标 add -->
+<div id="boxDeclareEconomicIndicatorsHead" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">经济指标</h3>
+            </div>
+            <form id="frmDeclareEconomicIndicatorsHead" class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="centerId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <%--<div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">--%>
+                <%--<hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"--%>
+                    <%--color="#6f5499" size="10"/>--%>
+            <%--</div>--%>
+
+
+            <form id="frmDeclareEconomicIndicatorsContent" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <input type="button" class="btn btn-warning" value="删除"  onclick="">
+                    <button type="button" class="btn btn-primary"
+                            onclick="">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
