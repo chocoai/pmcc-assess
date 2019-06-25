@@ -214,6 +214,11 @@
                 var remark = $(this).find('option:selected').attr('title');
                 estateCommon.estateLandStateForm.find("[name=shapeStateRemark]").val(remark);
             });
+            if (estateCommon.isNotBlank(data.basicEstateLandState.shapeStateRemark)) {
+                setTimeout(function () {
+                    estateCommon.estateLandStateForm.find("[name=shapeStateRemark]").val(data.basicEstateLandState.shapeStateRemark);
+                }, 2000);
+            }
             //土地开发程度为熟地时选择几通几平
             estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change', function () {
                 $("#developmentDegreeContentContainer").empty();
@@ -311,23 +316,6 @@
                 }
             }
 
-            if (estateCommon.isNotBlank(data.basicEstate.greeningRate)) {
-                var greeningRateVal = AssessCommon.pointToPercent(data.basicEstate.greeningRate);
-                estateCommon.estateForm.find("input[name='greeningRate']").val(greeningRateVal);
-                $("#greeningRate_d").text(greeningRateVal);
-            }
-
-            if (estateCommon.isNotBlank(data.basicEstateLandState.greenSpaceRate)) {
-                var greenSpaceRateVal = AssessCommon.pointToPercent(data.basicEstateLandState.greenSpaceRate);
-                estateCommon.estateLandStateForm.find("input[name='greenSpaceRate']").val(greenSpaceRateVal);
-                $("#greenSpaceRate_d").text(greenSpaceRateVal);
-            }
-
-            if (estateCommon.isNotBlank(data.basicEstate.greeningRate)) {
-                var greeningRateVal = AssessCommon.pointToPercent(data.basicEstate.greeningRate);
-                estateCommon.estateForm.find("input[name='greeningRate']").val(greeningRateVal);
-                $("#greeningRate_d").text(greeningRateVal);
-            }
 
             //绑定变更事件
             estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {

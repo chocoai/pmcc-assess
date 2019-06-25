@@ -124,6 +124,11 @@
                     houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
                 }
             });
+            if (houseCommon.isNotBlank(data.basicHouse.decorateSituationDescription)) {
+                setTimeout(function () {
+                    houseCommon.houseForm.find("[name=decorateSituationDescription]").val(data.basicHouse.decorateSituationDescription);
+                }, 1500);
+            }
             houseCommon.showUseCondition(data);
 
             //初始化上传控件

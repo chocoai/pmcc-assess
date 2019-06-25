@@ -133,7 +133,7 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿化率</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="绿化率" name="greeningRate" class="form-control x-percent"
+                           placeholder="绿化率" name="greeningRate" class="form-control"
                            value="${basicEstate.greeningRate}">
                 </div>
             </div>
@@ -483,7 +483,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿地率</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control x-percent" placeholder="绿地率"
+                    <input type="text" class="form-control" placeholder="绿地率"
                            name="greenSpaceRate" value="${basicEstateLandState.greenSpaceRate}">
                 </div>
             </div>
