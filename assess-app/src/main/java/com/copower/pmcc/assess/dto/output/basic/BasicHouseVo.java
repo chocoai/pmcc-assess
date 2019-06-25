@@ -17,6 +17,15 @@ public class BasicHouseVo extends BasicHouse {
     private String researchTypeName;
     private String spatialDistributionName;
     private String useConditionName;
+    private String decorateSituationName;
+
+    public String getDecorateSituationName() {
+        return decorateSituationName;
+    }
+
+    public void setDecorateSituationName(String decorateSituationName) {
+        this.decorateSituationName = decorateSituationName;
+    }
 
     public String getUseConditionName() {
         return useConditionName;

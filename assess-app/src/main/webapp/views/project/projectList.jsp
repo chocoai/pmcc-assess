@@ -139,6 +139,9 @@
                                                 onclick="loadProjectList()">
                                             查询
                                         </button>
+                                        <button type="button" class="btn btn-success" onclick="queryReset()">
+                                            重置
+                                        </button>
                                     </div>
                                 </div>
 
@@ -296,6 +299,12 @@
             }
         });
     };
+
+    //重置查询条件
+    function queryReset() {
+        $("#frmQuery").find("input").val("");
+        $("#frmQuery").find("select").val("");
+    }
 </script>
 </body>
 </html>

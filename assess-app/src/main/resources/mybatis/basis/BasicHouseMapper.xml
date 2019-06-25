@@ -33,6 +33,8 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="price_connotation" property="priceConnotation" jdbcType="INTEGER" />
+    <result column="decorate_situation" property="decorateSituation" jdbcType="INTEGER" />
+    <result column="decorate_situation_description" property="decorateSituationDescription" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -97,7 +99,7 @@
     spatial_distribution, spatial_distribution_desc, cert_use, practical_use, orientation, 
     area, area_desc, research_type, right_interests_restriction, use_environment, description, 
     case_date, use_year, floor_price, land_location, new_degree, use_condition, use_condition_description, 
-    creator, gmt_created, gmt_modified, price_connotation
+    creator, gmt_created, gmt_modified, price_connotation, decorate_situation, decorate_situation_description
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample" >
     select
@@ -143,7 +145,8 @@
       use_year, floor_price, land_location, 
       new_degree, use_condition, use_condition_description, 
       creator, gmt_created, gmt_modified, 
-      price_connotation)
+      price_connotation, decorate_situation, decorate_situation_description
+      )
     values (#{applyId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingId,jdbcType=INTEGER}, 
       #{huxingName,jdbcType=VARCHAR}, #{newHuxingName,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, 
@@ -154,7 +157,8 @@
       #{useYear,jdbcType=INTEGER}, #{floorPrice,jdbcType=DECIMAL}, #{landLocation,jdbcType=VARCHAR}, 
       #{newDegree,jdbcType=VARCHAR}, #{useCondition,jdbcType=INTEGER}, #{useConditionDescription,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{priceConnotation,jdbcType=INTEGER})
+      #{priceConnotation,jdbcType=INTEGER}, #{decorateSituation,jdbcType=INTEGER}, #{decorateSituationDescription,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -252,6 +256,12 @@
       <if test="priceConnotation != null" >
         price_connotation,
       </if>
+      <if test="decorateSituation != null" >
+        decorate_situation,
+      </if>
+      <if test="decorateSituationDescription != null" >
+        decorate_situation_description,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
@@ -343,6 +353,12 @@
       </if>
       <if test="priceConnotation != null" >
         #{priceConnotation,jdbcType=INTEGER},
+      </if>
+      <if test="decorateSituation != null" >
+        #{decorateSituation,jdbcType=INTEGER},
+      </if>
+      <if test="decorateSituationDescription != null" >
+        #{decorateSituationDescription,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -448,6 +464,12 @@
       <if test="record.priceConnotation != null" >
         price_connotation = #{record.priceConnotation,jdbcType=INTEGER},
       </if>
+      <if test="record.decorateSituation != null" >
+        decorate_situation = #{record.decorateSituation,jdbcType=INTEGER},
+      </if>
+      <if test="record.decorateSituationDescription != null" >
+        decorate_situation_description = #{record.decorateSituationDescription,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -485,7 +507,9 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      price_connotation = #{record.priceConnotation,jdbcType=INTEGER}
+      price_connotation = #{record.priceConnotation,jdbcType=INTEGER},
+      decorate_situation = #{record.decorateSituation,jdbcType=INTEGER},
+      decorate_situation_description = #{record.decorateSituationDescription,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -583,6 +607,12 @@
       <if test="priceConnotation != null" >
         price_connotation = #{priceConnotation,jdbcType=INTEGER},
       </if>
+      <if test="decorateSituation != null" >
+        decorate_situation = #{decorateSituation,jdbcType=INTEGER},
+      </if>
+      <if test="decorateSituationDescription != null" >
+        decorate_situation_description = #{decorateSituationDescription,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -617,7 +647,9 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      price_connotation = #{priceConnotation,jdbcType=INTEGER}
+      price_connotation = #{priceConnotation,jdbcType=INTEGER},
+      decorate_situation = #{decorateSituation,jdbcType=INTEGER},
+      decorate_situation_description = #{decorateSituationDescription,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
