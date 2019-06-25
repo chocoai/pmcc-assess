@@ -30,6 +30,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class ProjectCenterService {
      * @return
      */
     public BootstrapTableVo getProjectList(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                           String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit) throws Exception {
+                                           String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit) throws Exception {
 
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<Integer> orgIds = null;
@@ -83,10 +84,15 @@ public class ProjectCenterService {
         Date endTimeParse = null;
         if (StringUtil.isNotEmpty(queryTimeStart))
             startTimeParse = sdf.parse(queryTimeStart);
-        if (StringUtil.isNotEmpty(queryTimeEnd))
-            endTimeParse = sdf.parse(queryTimeEnd);
+        if (StringUtil.isNotEmpty(queryTimeEnd)) {
+            Date temp = sdf.parse(queryTimeEnd);
+            Calendar c = Calendar.getInstance();
+            c.setTime(temp);
+            c.add(Calendar.DATE, 1); // 日期加1天
+            endTimeParse = c.getTime();
+        }
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("", queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse,queryConsignor,queryUseUnit);
+                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
@@ -182,7 +188,7 @@ public class ProjectCenterService {
      * @return
      */
     public BootstrapTableVo getParticipationProject(String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                                    String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit) throws Exception {
+                                                    String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -191,10 +197,15 @@ public class ProjectCenterService {
         Date endTimeParse = null;
         if (StringUtil.isNotEmpty(queryTimeStart))
             startTimeParse = sdf.parse(queryTimeStart);
-        if (StringUtil.isNotEmpty(queryTimeEnd))
-            endTimeParse = sdf.parse(queryTimeEnd);
+        if (StringUtil.isNotEmpty(queryTimeEnd)) {
+            Date temp = sdf.parse(queryTimeEnd);
+            Calendar c = Calendar.getInstance();
+            c.setTime(temp);
+            c.add(Calendar.DATE, 1); // 日期加1天
+            endTimeParse = c.getTime();
+        }
         List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse,queryConsignor,queryUseUnit);
+                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? Lists.newArrayList() : projectInfoVos);
