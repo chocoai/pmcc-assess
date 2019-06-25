@@ -674,6 +674,9 @@ public class DataReportAnalysisService {
             stringBuilder.append(generateCommonMethod.judgeEachDesc(rentMap, "", "。", true));
         if (!otherMap.isEmpty())
             stringBuilder.append(generateCommonMethod.judgeEachDesc(otherMap, "", "。", true));
+        if(pledgeMap.isEmpty()&&rentMap.isEmpty()&&otherMap.isEmpty()){
+            stringBuilder.append("无抵押，无租赁，无典当，无继承，无担保，无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷。");
+        }
         return stringBuilder.toString();
     }
 }
