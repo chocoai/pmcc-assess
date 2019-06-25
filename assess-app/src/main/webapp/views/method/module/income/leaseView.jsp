@@ -45,9 +45,14 @@
                             报酬率
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" required class="form-control x-percent" name="rewardRate"
-                                   placeholder="报酬率" readonly="readonly"
-                                   data-value="${mdIncome.rewardRate}" onblur="lease.computeNetProfit();">
+                            <div class="input-group">
+                                <input type="text" required class="form-control x-percent" name="rewardRate"
+                                       placeholder="报酬率" readonly="readonly"
+                                       data-value="${mdIncome.rewardRate}">
+                                <span class="input-group-btn">
+                                     <input type="button" class="btn btn-primary" value="报酬率" onclick="rewardRateDetail.calculationDetail('${mdIncome.rewardRateId}');"/>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -387,6 +392,8 @@
     </div>
 </div>
 
+
+
 <script type="text/html" id="leaseResultHtml">
     <tr data-id="{id}">
         <td>
@@ -412,9 +419,9 @@
     lease.viewLeaseIncome = function (index) {
         var row = $("#tb_lease_income_list").bootstrapTable('getData')[index];
         $("#frm_lease_income").find('label').each(function () {
-            if($(this).hasClass('v-percent')){
-                $(this).text(AssessCommon.pointToPercent(row[$(this).attr('data-name')]) );
-            }else{
+            if ($(this).hasClass('v-percent')) {
+                $(this).text(AssessCommon.pointToPercent(row[$(this).attr('data-name')]));
+            } else {
                 $(this).text(row[$(this).attr('data-name')]);
             }
         })
@@ -425,9 +432,9 @@
     lease.viewLeaseCost = function (index) {
         var row = $("#tb_lease_cost_list").bootstrapTable('getData')[index];
         $("#frm_lease_cost").find('label').each(function () {
-            if($(this).hasClass('v-percent')){
-                $(this).text(AssessCommon.pointToPercent(row[$(this).attr('name')]) );
-            }else{
+            if ($(this).hasClass('v-percent')) {
+                $(this).text(AssessCommon.pointToPercent(row[$(this).attr('name')]));
+            } else {
                 $(this).text(row[$(this).attr('name')]);
             }
         })
@@ -471,6 +478,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pageSize: 100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -522,6 +530,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pageSize: 100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -563,6 +572,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pageSize: 100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -577,6 +587,7 @@
             dataType: "json",
             data: {
                 incomeId: incomeIndex.getInComeId(),
+                limit: 100,
                 operationMode: incomeIndex.getOperationMode()
             },
             success: function (result) {

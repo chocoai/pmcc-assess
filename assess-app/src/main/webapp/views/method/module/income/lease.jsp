@@ -648,6 +648,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pageSize:100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
                 lease.computeNetProfit();
@@ -790,6 +791,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pageSize:100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
                 lease.computeNetProfit();
@@ -874,6 +876,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pageSize:100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -888,6 +891,7 @@
             dataType: "json",
             data: {
                 incomeId: $("#frm_income").find('[name=id]').val(),
+                limit:100,
                 operationMode: $("#frm_income").find('[name=operationMode]:checked').val()
             },
             success: function (result) {

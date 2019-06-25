@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.service.method.MdIncomeDateSectionService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -144,7 +145,7 @@ public class IncomeController {
         try {
             mdIncomeService.deleteHistory(ids);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("删除历史数据异常");
         }
         return HttpResult.newCorrectResult();
@@ -277,6 +278,19 @@ public class IncomeController {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("保存异常");
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveIncome", method = {RequestMethod.POST}, name = "保存收益法信息")
+    public HttpResult saveIncome(String formData) {
+        try {
+            SchemeIncomeApplyDto schemeIncomeApplyDto = JSON.parseObject(formData, SchemeIncomeApplyDto.class);
+            mdIncomeService.saveResult(schemeIncomeApplyDto.getIncomeInfo());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("保存收益法信息异常");
         }
         return HttpResult.newCorrectResult();
     }

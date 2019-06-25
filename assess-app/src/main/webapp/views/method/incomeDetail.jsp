@@ -116,7 +116,7 @@
 </div>
 <jsp:include page="/views/method/module/income/selfSupport/detail/info.jsp"></jsp:include>
 <jsp:include page="/views/method/module/income/leaseView.jsp"></jsp:include>
-
+<jsp:include page="/views/project/tool/rewardRateDetail.jsp"></jsp:include>
 <script type="text/javascript">
     $(function () {
         if ("${mdIncome.id}" > 0) {
@@ -150,6 +150,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pageSize:100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }

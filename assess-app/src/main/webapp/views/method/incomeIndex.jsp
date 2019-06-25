@@ -272,6 +272,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pageSize:100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
