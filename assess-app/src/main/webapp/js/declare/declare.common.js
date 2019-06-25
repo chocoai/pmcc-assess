@@ -389,7 +389,9 @@ declareCommon.getLandData = function (id, callback,errCallback) {
             if (flag){
                 callback(result.data);
             }else {
-                errCallback("数据异常!") ;
+                if (errCallback){
+                    errCallback("数据异常!") ;
+                }
             }
         },
         error: function (result) {
