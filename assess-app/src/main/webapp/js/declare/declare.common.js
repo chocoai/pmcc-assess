@@ -373,17 +373,23 @@ declareCommon.saveLandData = function (data, callback) {
     });
 };
 
-declareCommon.getLandData = function (id, callback) {
+declareCommon.getLandData = function (id, callback,errCallback) {
     $.ajax({
         url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
         type: "get",
         dataType: "json",
         data: {id: id},
         success: function (result) {
+            var flag = false;
             if (result.ret) {
                 if (result.data) {
-                    callback(result.data);
+                    flag = true;
                 }
+            }
+            if (flag){
+                callback(result.data);
+            }else {
+                errCallback("数据异常!") ;
             }
         },
         error: function (result) {

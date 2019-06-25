@@ -225,6 +225,23 @@ assessCommonHouse.showAddModelLand = function (id) {
         toastr.success('不合符调整后的数据约定,请联系管理员!');
         return false;
     }
+    var data = {
+        centerId: item.centerId,
+        beLocated: item.beLocated,
+        streetNumber: item.streetNumber,
+        attachedNumber: item.attachedNumber,
+        buildingNumber: item.buildingNumber,
+        unit: item.unit,
+        roomNumber: item.roomNumber,
+        floor: item.floor,
+        province: item.province,
+        city: item.city,
+        district: item.district,
+        landRightNature: item.landAcquisition,
+        registrationAuthority: item.registrationAuthority,
+        apportionmentArea: item.apportionmentArea,
+        terminationDate: item.useEndDate
+    };
     declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.son.declareRealtyLandCert.frm), function (area) {
         $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("show");
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
@@ -233,29 +250,12 @@ assessCommonHouse.showAddModelLand = function (id) {
                     if (declareCommon.isNotBlank(data)) {
                         data.centerId = item.centerId;
                         assessCommonHouse.initLand(data);
-                    } else {
-                        toastr.success('关联的土地证数据已经被删除!');
-                        toastr.success('请重新填写!');
                     }
+                },function (text) {
+                    Alert(text) ;
+                    assessCommonHouse.initLand(data);
                 });
             } else {//未关联情况
-                var data = {
-                    centerId: item.centerId,
-                    beLocated: item.beLocated,
-                    streetNumber: item.streetNumber,
-                    attachedNumber: item.attachedNumber,
-                    buildingNumber: item.buildingNumber,
-                    unit: item.unit,
-                    roomNumber: item.roomNumber,
-                    floor: item.floor,
-                    province: item.province,
-                    city: item.city,
-                    district: item.district,
-                    landRightNature: item.landAcquisition,
-                    registrationAuthority: item.registrationAuthority,
-                    apportionmentArea: item.apportionmentArea,
-                    terminationDate: item.useEndDate
-                };
                 assessCommonHouse.initLand(data);
             }
         });
