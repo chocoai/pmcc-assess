@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareEconomicIndicatorsHead;
+import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsContentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsHeadService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -22,12 +24,15 @@ public class DeclareEconomicIndicatorsHeadController {
 
     @Autowired
     private DeclareEconomicIndicatorsHeadService declareEconomicIndicatorsHeadService;
+    @Autowired
+    private DeclareEconomicIndicatorsContentService declareEconomicIndicatorsContentService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping(value = "/saveAndUpdate")
-    public HttpResult saveAndUpdate(DeclareEconomicIndicatorsHead declareEconomicIndicatorsHead) {
+    public HttpResult saveAndUpdate( String formData) {
         try {
+            DeclareEconomicIndicatorsHead declareEconomicIndicatorsHead = JSON.parseObject(formData,DeclareEconomicIndicatorsHead.class);
             if (declareEconomicIndicatorsHead != null) {
                 if (declareEconomicIndicatorsHead.getId() == null || declareEconomicIndicatorsHead.getId() == 0) {
                     declareEconomicIndicatorsHeadService.addDeclareEconomicIndicatorsHead(declareEconomicIndicatorsHead);
@@ -70,6 +75,16 @@ public class DeclareEconomicIndicatorsHeadController {
     public HttpResult removeDeclareEconomicIndicatorsHeadById(Integer id){
         try {
             declareEconomicIndicatorsHeadService.removeDeclareEconomicIndicatorsHeadById(id) ;
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(500, "异常" + e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/removeDeclareEconomicIndicatorsByContent",name = "删除子类  仅仅删除子类而已")
+    public HttpResult removeDeclareEconomicIndicatorsByContent(Integer id){
+        try {
+            declareEconomicIndicatorsContentService.removeDeclareEconomicIndicatorsByContent(id) ;
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             return HttpResult.newErrorResult(500, "异常" + e.getMessage());

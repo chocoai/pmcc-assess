@@ -193,7 +193,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">经济指标</h3>
             </div>
-            <form id="frmDeclareEconomicIndicatorsHead" class="form-horizontal">
+            <form id="frmDeclareEconomicIndicatorsHead" class="form-horizontal" style="display: block;margin-bottom: 0px;padding-bottom: 0px;">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -207,13 +207,7 @@
                 </div>
             </form>
 
-            <%--<div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">--%>
-                <%--<hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"--%>
-                    <%--color="#6f5499" size="10"/>--%>
-            <%--</div>--%>
-
-
-            <form id="frmDeclareEconomicIndicatorsContent" class="form-horizontal">
+            <form id="frmDeclareEconomicIndicatorsContent" class="form-horizontal" style="display: block;margin-top: -4px;padding-top: -4px;">
                 <div class="modal-body">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -230,9 +224,9 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <input type="button" class="btn btn-warning" value="删除"  onclick="">
+                    <input type="button" class="btn btn-warning" value="删除"  onclick="assessCommonHouse.deleteDeclareEconomicIndicatorsCenter()">
                     <button type="button" class="btn btn-primary"
-                            onclick="">
+                            onclick="assessCommonHouse.saveDeclareEconomicIndicatorsData(this)">
                         保存
                     </button>
                 </div>

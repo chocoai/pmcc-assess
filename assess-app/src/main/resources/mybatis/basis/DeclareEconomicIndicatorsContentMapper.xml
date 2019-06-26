@@ -11,6 +11,7 @@
     <result column="assess_salability_number" property="assessSalabilityNumber" jdbcType="VARCHAR" />
     <result column="plan_index" property="planIndex" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="child_data" property="childData" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, indicators_head_id, plan_details_id, name, custom_key, salability_number, assess_salability_number, 
-    plan_index, remark, creator, gmt_created, gmt_modified
+    plan_index, remark, child_data, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareEconomicIndicatorsContentExample" >
     select
@@ -114,13 +115,13 @@
     insert into tb_declare_economic_indicators_content (indicators_head_id, plan_details_id, 
       name, custom_key, salability_number, 
       assess_salability_number, plan_index, remark, 
-      creator, gmt_created, gmt_modified
-      )
+      child_data, creator, gmt_created, 
+      gmt_modified)
     values (#{indicatorsHeadId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{customKey,jdbcType=VARCHAR}, #{salabilityNumber,jdbcType=VARCHAR}, 
       #{assessSalabilityNumber,jdbcType=VARCHAR}, #{planIndex,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{childData,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareEconomicIndicatorsContent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -151,6 +152,9 @@
       </if>
       <if test="remark != null" >
         remark,
+      </if>
+      <if test="childData != null" >
+        child_data,
       </if>
       <if test="creator != null" >
         creator,
@@ -186,6 +190,9 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="childData != null" >
+        #{childData,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -234,6 +241,9 @@
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.childData != null" >
+        child_data = #{record.childData,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -259,6 +269,7 @@
       assess_salability_number = #{record.assessSalabilityNumber,jdbcType=VARCHAR},
       plan_index = #{record.planIndex,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
+      child_data = #{record.childData,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -293,6 +304,9 @@
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="childData != null" >
+        child_data = #{childData,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -315,6 +329,7 @@
       assess_salability_number = #{assessSalabilityNumber,jdbcType=VARCHAR},
       plan_index = #{planIndex,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
+      child_data = #{childData,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

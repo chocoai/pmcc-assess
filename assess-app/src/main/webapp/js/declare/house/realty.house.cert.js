@@ -228,15 +228,50 @@ assessCommonHouse.showAddModelDeclareEconomicIndicators = function (id) {
         return false;
     }
     declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm), function (area) {
-        $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
-        var tree = $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).find('.tree') ;
-        if (tree.size() >= 1){
-            tree.treegrid();
-        }
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
-
+            if (centerData.indicatorId){
+                declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
+                    data.centerId = item.centerId;
+                    declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm) , data , function () {
+                        $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
+                    }) ;
+                }) ;
+            }else {
+                declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm),{centerId: centerData.id} ,function () {
+                    $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
+                }) ;
+            }
         });
     });
+};
+
+/**
+ * 经济指标 保存
+ */
+assessCommonHouse.saveDeclareEconomicIndicatorsData = function () {
+    declareCommon.saveDeclareEconomicIndicators(function () {
+        $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("hide");
+    }) ;
+} ;
+
+/**
+ * 删除中间表得经济指标 注意这得删除不是通过经济指标方法删除得土地证而是中间表删除得经济指标
+ */
+assessCommonHouse.deleteDeclareEconomicIndicatorsCenter = function () {
+    var data = formParams(assessCommonHouse.config.declareEconomicIndicatorsHead.frm);
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.indicatorId.type, function () {
+                    $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("hide");
+                    toastr.success('已经删除!');
+                    assessCommonHouse.loadList();
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
 };
 
 /**
@@ -301,7 +336,6 @@ assessCommonHouse.showAddModelLand = function (id) {
  */
 assessCommonHouse.deleteLandCenter = function () {
     var data = formParams(assessCommonHouse.config.son.declareRealtyLandCert.frm);
-    console.log(data);
     if (declareCommon.isNotBlank(data.centerId)) {
         declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
             if (declareCommon.isNotBlank(centerData.landId)) {//关联情况

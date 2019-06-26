@@ -21,6 +21,8 @@ public class DeclareEconomicIndicatorsContent {
 
     private String remark;
 
+    private String childData;
+
     private String creator;
 
     private Date gmtCreated;
@@ -97,6 +99,14 @@ public class DeclareEconomicIndicatorsContent {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getChildData() {
+        return childData;
+    }
+
+    public void setChildData(String childData) {
+        this.childData = childData == null ? null : childData.trim();
     }
 
     public String getCreator() {

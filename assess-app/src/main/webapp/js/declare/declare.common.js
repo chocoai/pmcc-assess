@@ -374,17 +374,44 @@ declareCommon.appendDeclareEconomicIndicators = function (eleA,eleB) {
     eleB.empty();
     eleA.prepend(commonDeclareApplyModel.declareEconomicIndicators.getHtmlA()) ;
     eleB.prepend(commonDeclareApplyModel.declareEconomicIndicators.getHtmlB()) ;
+    commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse() ;
 } ;
 
 /**
- * 经济指标1 删除
+ * 经济指标1 , 2保存
+ * @param callback
+ */
+declareCommon.saveDeclareEconomicIndicators = function (callback) {
+    var data = commonDeclareApplyModel.declareEconomicIndicators.getFormData(declareCommon.getPlanDetailsId()) ;
+    if (data){
+
+    }else {
+        return false ;
+    }
+    console.log("declareCommon.saveDeclareEconomicIndicators 经济指标1 , 2保存") ;
+    console.log(data) ;
+    declareCommon.saveDeclareEconomicIndicatorsHead(data.head , function (item) {
+        console.log(item) ;
+        declareCommon.clearDeclareEconomicIndicatorsByContent(item.id , function () {
+            //把经济指标的id更新到中间表中去
+            declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: item.id, id: data.head.centerId}, function () {
+                declareCommon.saveDeclareEconomicIndicatorsContent(item.id , data.content , function () {
+                    callback() ;
+                }) ;
+            });
+        }) ;
+    }) ;
+} ;
+
+/**
+ * 经济指标1 清空子数据
  * @param id
  * @param callback
  */
-declareCommon.removeDeclareEconomicIndicatorsHeadById = function (id , callback) {
+declareCommon.clearDeclareEconomicIndicatorsByContent = function (id , callback) {
     $.ajax({
         type: "POST",
-        url: getContextPath() + "/declareEconomicIndicatorsHead/removeDeclareEconomicIndicatorsHeadById",
+        url: getContextPath() + "/declareEconomicIndicatorsHead/removeDeclareEconomicIndicatorsByContent",
         data: {id:id},
         success: function (result) {
             if (result.ret) {
@@ -410,7 +437,7 @@ declareCommon.saveDeclareEconomicIndicatorsHead = function (data, callback) {
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareEconomicIndicatorsHead/saveAndUpdate",
-        data: data,
+        data: {formData:JSON.stringify(data)},
         success: function (result) {
             if (result.ret) {
                 if (callback) {
@@ -427,29 +454,50 @@ declareCommon.saveDeclareEconomicIndicatorsHead = function (data, callback) {
 };
 
 /**
- * 经济指标1 获取
- * @param planDetailsId
+ * 经济指标1 赋值或者初始化
+ * @param data
+ * @param frm
  * @param callback
  */
-declareCommon.getDeclareEconomicIndicatorsHeadList = function (planDetailsId, callback) {
-    if (!declareCommon.isNotBlank(planDetailsId)) {
-        planDetailsId = declareCommon.getPlanDetailsId();
+declareCommon.initDeclareEconomicIndicators = function ( frm , data,callback) {
+    frm.clearAll();
+    frm.initForm(data);
+    frm.find("input[name='planDate']").val(formatDate(data.planDate));
+
+    try {
+        //审批的时候
+        frm.find("label[name='planDate']").html(data(data.planDate));
+    } catch (e) {
     }
+
+    if (this.isNotBlank(data.id)){
+        declareCommon.getDeclareEconomicIndicatorsContentList(data.id , function (arrData) {
+            commonDeclareApplyModel.declareEconomicIndicators.initFormContent(arrData) ;
+        });
+    }
+    if (callback){
+        callback() ;
+    }
+} ;
+
+
+/**
+ * 经济指标1 获取
+ * @param id
+ * @param callback
+ */
+declareCommon.getByDeclareEconomicIndicatorsHeadId = function (id,callback) {
     $.ajax({
-        url: getContextPath() + "/declareEconomicIndicatorsHead/getDeclareEconomicIndicatorsHeadList",
+        url: getContextPath() + "/declareEconomicIndicatorsHead/getByDeclareEconomicIndicatorsHeadId",
         type: "get",
         dataType: "json",
-        data: {planDetailsId: planDetailsId},
+        data: {id: id},
         success: function (result) {
-            var flag = false;
             if (result.ret) {
                 if (result.data) {
-                    flag = true;
-                }
-            }
-            if (flag) {
-                if (callback) {
-                    callback(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
                 }
             }
         },
@@ -457,7 +505,7 @@ declareCommon.getDeclareEconomicIndicatorsHeadList = function (planDetailsId, ca
             Alert("调用服务端方法失败，失败原因:" + result);
         }
     });
-};
+} ;
 
 //经济指标 2 保存或者修改
 declareCommon.saveDeclareEconomicIndicatorsContent = function (indicatorsHeadId, tempArr, callback) {
@@ -492,18 +540,16 @@ declareCommon.saveDeclareEconomicIndicatorsContent = function (indicatorsHeadId,
 declareCommon.getDeclareEconomicIndicatorsContentList = function (indicatorsHeadId, callback) {
     $.ajax({
         url: getContextPath() + "/declareEconomicIndicatorsContent/getDeclareEconomicIndicatorsContentList",
-        type: "get",
+        type: "post",
         dataType: "json",
         data: {indicatorsHeadId: indicatorsHeadId, planDetailsId: declareCommon.getPlanDetailsId()},
         success: function (result) {
-            var flag = false;
             if (result.ret) {
                 if (result.data) {
-                    flag = true;
+                    if (callback){
+                        callback(result.data);
+                    }
                 }
-            }
-            if (flag) {
-                callback(result.data);
             }
         },
         error: function (result) {
@@ -715,10 +761,8 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
     //绑定变更事件
     frm.find("select.landAcquisition").off('change').on('change', function () {
         var landAcquisitionId = frm.find("select.landAcquisition").val();
-        console.log(landAcquisitionId + '==');
         if (landAcquisitionId) {
             AssessCommon.getDataDicInfo(landAcquisitionId, function (landAcquisitionData) {
-                console.log(landAcquisitionData.name)
                 if (landAcquisitionData.name == "划拨") {
                     frm.find("input[name='useEndDate']").parent().parent().hide();
                     frm.find("input[name='useStartDate']").attr("required", true);

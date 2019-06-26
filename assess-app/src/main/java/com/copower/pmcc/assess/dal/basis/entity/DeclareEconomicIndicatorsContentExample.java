@@ -705,6 +705,76 @@ public class DeclareEconomicIndicatorsContentExample {
             return (Criteria) this;
         }
 
+        public Criteria andChildDataIsNull() {
+            addCriterion("child_data is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataIsNotNull() {
+            addCriterion("child_data is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataEqualTo(String value) {
+            addCriterion("child_data =", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataNotEqualTo(String value) {
+            addCriterion("child_data <>", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataGreaterThan(String value) {
+            addCriterion("child_data >", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataGreaterThanOrEqualTo(String value) {
+            addCriterion("child_data >=", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataLessThan(String value) {
+            addCriterion("child_data <", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataLessThanOrEqualTo(String value) {
+            addCriterion("child_data <=", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataLike(String value) {
+            addCriterion("child_data like", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataNotLike(String value) {
+            addCriterion("child_data not like", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataIn(List<String> values) {
+            addCriterion("child_data in", values, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataNotIn(List<String> values) {
+            addCriterion("child_data not in", values, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataBetween(String value1, String value2) {
+            addCriterion("child_data between", value1, value2, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataNotBetween(String value1, String value2) {
+            addCriterion("child_data not between", value1, value2, "childData");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

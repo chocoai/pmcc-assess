@@ -41,16 +41,10 @@ public class DeclareEconomicIndicatorsHeadService {
     }
 
     public void removeDeclareEconomicIndicatorsHeadById(Integer id){
-        DeclareEconomicIndicatorsContent select = new DeclareEconomicIndicatorsContent();
-        select.setIndicatorsHeadId(id);
-        List<DeclareEconomicIndicatorsContent> contentList = declareEconomicIndicatorsContentService.getDeclareEconomicIndicatorsContentList(select) ;
-        dao.deleteDeclareEconomicIndicatorsHead(id);
-        if (CollectionUtils.isNotEmpty(contentList)){
-            List<Integer> ids = contentList.stream().map(oo -> oo.getId()).collect(Collectors.toList());
-            declareEconomicIndicatorsContentService.removeDeclareEconomicIndicatorsContentIds(ids);
-        }
+        declareEconomicIndicatorsContentService.removeDeclareEconomicIndicatorsByContent(id) ;
         deleteDeclareEconomicIndicatorsHead(id) ;
     }
+
 
     public boolean deleteDeclareEconomicIndicatorsHead(Integer id) {
         return dao.deleteDeclareEconomicIndicatorsHead(id);
