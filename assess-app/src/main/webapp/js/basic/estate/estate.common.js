@@ -209,16 +209,7 @@
                 });
                 data.basicEstateLandState.landUseCategory = null;//第一次执行成功后置为空
             });
-            //土地形状变更
-            estateCommon.estateLandStateForm.find("select.shapeState").off('change').on('change', function () {
-                var remark = $(this).find('option:selected').attr('title');
-                estateCommon.estateLandStateForm.find("[name=shapeStateRemark]").val(remark);
-            });
-            if (estateCommon.isNotBlank(data.basicEstateLandState.shapeStateRemark)) {
-                setTimeout(function () {
-                    estateCommon.estateLandStateForm.find("[name=shapeStateRemark]").val(data.basicEstateLandState.shapeStateRemark);
-                }, 2000);
-            }
+
             //土地开发程度为熟地时选择几通几平
             estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change', function () {
                 $("#developmentDegreeContentContainer").empty();
