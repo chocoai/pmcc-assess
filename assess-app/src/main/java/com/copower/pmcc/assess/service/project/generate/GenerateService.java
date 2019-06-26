@@ -1,14 +1,12 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.event.project.GenerateEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanApprovalEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -24,6 +22,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +50,7 @@ public class GenerateService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private GenerateReportInfoService generateReportGenerationService;
+    private ProjectNumberRecordService projectNumberRecordService;
 
 
     /**
@@ -64,7 +63,7 @@ public class GenerateService {
     public void submitApply(Integer planId) throws Exception {
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
         //判断是否已发起流程
-        if(ProjectStatusEnum.RUNING.getKey().equals(projectPlan.getStatus()))
+        if (ProjectStatusEnum.RUNING.getKey().equals(projectPlan.getStatus()))
             throw new BusinessException("审核盖章申请已发起，请不要重复操作");
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
@@ -121,5 +120,22 @@ public class GenerateService {
     @Transactional(rollbackFor = Exception.class)
     public void submitEditApproval(ApprovalModelDto approvalModelDto) throws Exception {
         processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
+    }
+
+
+    /**
+     * 重新拿号
+     *
+     * @param projectId
+     * @param areaId
+     * @param reportType
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void reGetDocumentNumber(Integer projectId, Integer areaId, Integer reportType) {
+        ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(projectId, areaId, reportType);
+        if (numberRecord != null) {
+            numberRecord.setBisDelete(true);
+            projectNumberRecordService.updateProjectNumberRecord(numberRecord);
+        }
     }
 }

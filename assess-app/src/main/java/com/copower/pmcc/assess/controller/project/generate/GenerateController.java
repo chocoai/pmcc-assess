@@ -59,4 +59,16 @@ public class GenerateController {
         }
         return HttpResult.newCorrectResult();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/reGetDocumentNumber", name = "重新拿号", method = RequestMethod.POST)
+    public HttpResult reGetDocumentNumber(Integer projectId, Integer areaId, Integer reportType) {
+        try {
+            generateService.reGetDocumentNumber(projectId, areaId, reportType);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("重新拿号异常");
+        }
+        return HttpResult.newCorrectResult();
+    }
 }
