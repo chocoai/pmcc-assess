@@ -175,16 +175,7 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingHoldOn, data.land.holdOn, function (html, data) {
             estateCommon.estateLandStateForm.find("select[name='holdOn']").empty().html(html).trigger('change');
         });
-        //土地形状变更
-        estateCommon.estateLandStateForm.find("select.shapeState").off('change').on('change', function () {
-            var remark = $(this).find('option:selected').attr('title');
-            estateCommon.estateLandStateForm.find("[name=shapeStateRemark]").val(remark);
-        });
-        if (estateCommon.isNotBlank(data.basicEstateLandState.shapeStateRemark)) {
-            setTimeout(function () {
-                estateCommon.estateLandStateForm.find("[name=shapeStateRemark]").val(data.basicEstateLandState.shapeStateRemark);
-            }, 2000);
-        }
+
 
         if (estateCommon.isNotBlank(data.land.landLevelContent)) {
             var obj = {};

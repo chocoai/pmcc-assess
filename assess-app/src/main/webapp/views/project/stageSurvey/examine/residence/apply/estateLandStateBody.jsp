@@ -93,7 +93,7 @@
     </div>
 </div>
 
-
+<%--
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地形状备注</label>
@@ -101,7 +101,7 @@
             <textarea class="form-control" name="shapeStateRemark"></textarea>
         </div>
     </div>
-</div>
+</div>--%>
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地面积</label>

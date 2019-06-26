@@ -161,17 +161,14 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDecorateSituation, data.basicHouse.decorateSituation, function (html, data) {
                 houseCommon.houseForm.find("select.decorateSituation").empty().html(html).trigger('change');
             });
-            //变更
-            houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
-                if($(this).find('option:selected').val()) {
-                    var description = $(this).find('option:selected').text();
-                    houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
-                }
-            });
-            if (houseCommon.isNotBlank(data.basicHouse.decorateSituationDescription)) {
-                setTimeout(function () {
-                    houseCommon.houseForm.find("[name=decorateSituationDescription]").val(data.basicHouse.decorateSituationDescription);
-                }, 1500);
+            if (!houseCommon.isNotBlank(data.basicHouse.decorateSituationDescription)) {
+                //变更
+                houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
+                    if($(this).find('option:selected').val()) {
+                        var description = $(this).find('option:selected').text();
+                        houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
+                    }
+                });
             }
             houseCommon.showUseCondition(data);
 
