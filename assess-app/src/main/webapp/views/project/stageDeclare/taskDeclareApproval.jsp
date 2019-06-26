@@ -3,6 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -142,6 +143,15 @@
                 name: declareCommon.config.house.son.declareRealtyLandCert.name,
                 table: declareCommon.config.house.son.declareRealtyLandCert.table
             }
+        },
+        declareEconomicIndicatorsHead:{
+            frm:  declareCommon.config.declareEconomicIndicatorsHead.frm,
+            name: declareCommon.config.declareEconomicIndicatorsHead.name,
+            box: declareCommon.config.declareEconomicIndicatorsHead.box
+        } ,
+        declareEconomicIndicatorsContent:{
+            frm:  declareCommon.config.declareEconomicIndicatorsContent.frm,
+            name: declareCommon.config.declareEconomicIndicatorsContent.name
         }
     };
 
@@ -204,6 +214,32 @@
         });
     };
 
+    //房产证关联的经济指标
+    declareApprovalFun.houseRelationDeclareEconomicIndicatorsData = function (id) {
+        var item = $("#" + declareApprovalFun.houseConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        var element1 = $("#"+declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.frm).find(".panel-body") ;
+        var element2 = $("#"+declareApprovalFun.houseConfig.declareEconomicIndicatorsContent.frm).find(".panel-body") ;
+        declareCommon.appendDeclareEconomicIndicatorsApproval(element1,element2) ;
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
+                declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
+                    if (declareCommon.isNotBlank(data)) {
+                        declareCommon.initDeclareEconomicIndicators($("#" + declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.frm) , data , function () {
+                            console.log("test") ;
+                            $('#' + declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.box).modal("show");
+                        }) ;
+                    } else {
+                        toastr.success('关联的经济指标数据已经被删除!');
+                    }
+                }) ;
+            }
+        });
+    };
+
     //房产 table list
     declareApprovalFun.houseLoadList = function () {
         var cols = declareCommon.getHouseColumn();
@@ -212,6 +248,7 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.houseRelationLandData(' + row.id + ');" ><i class="fa fa-eye">土地证</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.houseRelationDeclareEconomicIndicatorsData(' + row.id + ');" ><i class="fa fa-eye">经济指标</i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="declareApprovalFun.houseFindData(' + row.id + ',\'tb_List\')">房产证<i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -329,7 +366,7 @@
         declareCommon.showFile(AssessUploadKey.PROJECT_PROXY, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false);
     });
 </script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="application/javascript">
     //提交审批
     function saveform() {
@@ -338,6 +375,54 @@
 
 </script>
 </body>
+
+<!--  房产证模块 经济指标 -->
+<div id="boxDeclareEconomicIndicatorsHead" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">经济指标</h3>
+            </div>
+            <form id="frmDeclareEconomicIndicatorsHead" class="form-horizontal" style="display: block;margin-bottom: 0px;padding-bottom: 0px;">
+                <input type="hidden" name="id">
+                <input type="hidden" name="centerId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form id="frmDeclareEconomicIndicatorsContent" class="form-horizontal" style="display: block;margin-top: -4px;padding-top: -4px;">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!--  房产证模块 房产证信息 -->
 <div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"

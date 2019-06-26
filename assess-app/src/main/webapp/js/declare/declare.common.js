@@ -377,6 +377,14 @@ declareCommon.appendDeclareEconomicIndicators = function (eleA,eleB) {
     commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse() ;
 } ;
 
+declareCommon.appendDeclareEconomicIndicatorsApproval = function (eleA,eleB) {
+    eleA.empty();
+    eleB.empty();
+    eleA.prepend(commonDeclareApprovalModel.declareEconomicIndicators.getHtmlA()) ;
+    eleB.prepend(commonDeclareApprovalModel.declareEconomicIndicators.getHtmlB()) ;
+    commonDeclareApprovalModel.declareEconomicIndicators.treeGirdParse() ;
+} ;
+
 /**
  * 经济指标1 , 2保存
  * @param callback
@@ -472,7 +480,15 @@ declareCommon.initDeclareEconomicIndicators = function ( frm , data,callback) {
 
     if (this.isNotBlank(data.id)){
         declareCommon.getDeclareEconomicIndicatorsContentList(data.id , function (arrData) {
-            commonDeclareApplyModel.declareEconomicIndicators.initFormContent(arrData) ;
+            try {
+                commonDeclareApplyModel.declareEconomicIndicators.initFormContent(arrData);
+            } catch (e) {
+                try {
+                    commonDeclareApprovalModel.declareEconomicIndicators.initFormContent(arrData);
+                } catch (e) {
+                    console.log(e) ;
+                }
+            }
         });
     }
     if (callback){
