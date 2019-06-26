@@ -238,7 +238,7 @@ public class GenerateHouseEntityService {
                 outfitVos.forEach(o -> {
                     outfitBuilder.append(o.getDecorationPart()).append(o.getMaterialGradeName()).append(o.getDecoratingMaterialName()).append(",");
                 });
-                outfitMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("楼栋外装%s;", StringUtils.strip(outfitBuilder.toString(), ",")));
+                outfitMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s;", StringUtils.strip(outfitBuilder.toString(), ",")));
             }
 
             //楼栋内装
@@ -248,11 +248,11 @@ public class GenerateHouseEntityService {
                 unitDecorates.forEach(o -> {
                     unitDecorateBuilder.append(o.getDecorationPartName()).append(o.getMaterialGradeName()).append(o.getDecoratingMaterialName()).append(",");
                 });
-                unitDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("楼栋内装%s;", StringUtils.strip(unitDecorateBuilder.toString(), ",")));
+                unitDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s;", StringUtils.strip(unitDecorateBuilder.toString(), ",")));
             }
 
             BasicHouseVo basicHouse = generateBaseExamineService.getBasicHouse();
-            roomDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("房间装修%s;", basicHouse.getDecorateSituationDescription()));
+            roomDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("房间%s;", basicHouse.getDecorateSituationDescription()));
         }
         String outfitString = generateCommonMethod.judgeEachDesc(outfitMap, "", ";", false);
         String unitDecorateString = generateCommonMethod.judgeEachDesc(unitDecorateMap, "", ";", false);

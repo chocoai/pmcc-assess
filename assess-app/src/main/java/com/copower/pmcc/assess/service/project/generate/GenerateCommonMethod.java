@@ -277,8 +277,8 @@ public class GenerateCommonMethod {
         if (d != null) {
             setScale = bigDecimal.divide(new BigDecimal(d.doubleValue()));
         }
-        if (d == null){
-            setScale = new BigDecimal(bigDecimal.toString()) ;
+        if (d == null) {
+            setScale = new BigDecimal(bigDecimal.toString());
         }
         //四舍五入,并且取到约定的位数
         return setScale.abs().setScale(newScale, BigDecimal.ROUND_UP).toString();
@@ -286,6 +286,7 @@ public class GenerateCommonMethod {
 
     /**
      * 将非整数在约定的位数下取整 如 1515.45 取10 变为 1510
+     *
      * @param bigDecimal
      * @param number
      * @return
@@ -514,14 +515,14 @@ public class GenerateCommonMethod {
     }
 
     public String getLocalPath(String title) {
-        return getLocalPath(title,"doc");
+        return getLocalPath(title, "doc");
     }
 
-    public String getLocalPath(String title,String suffix) {
+    public String getLocalPath(String title, String suffix) {
         if (StringUtils.isEmpty(title)) {
             title = String.format("%s%s", "报告模板", DateUtils.format(new Date(), DateUtils.DATE_CHINESE_PATTERN));
         }
-        return String.format("%s\\%s%s%s%s", baseAttachmentService.createTempDirPath(), title, UUID.randomUUID().toString(), ".",suffix);
+        return String.format("%s\\%s%s%s%s", baseAttachmentService.createTempDirPath(), title, UUID.randomUUID().toString(), ".", suffix);
     }
 
     /**
@@ -535,7 +536,7 @@ public class GenerateCommonMethod {
      * @param value
      */
     public void putValue(boolean text, boolean bookmark, boolean fileFlag, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, String key, String value) {
-        if (StringUtils.isEmpty(value)) {
+        if (value == null) {
             return;
         }
         if (StringUtils.isEmpty(key)) {
