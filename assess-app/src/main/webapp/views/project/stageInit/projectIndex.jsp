@@ -97,16 +97,11 @@
         </div>
     </div>
 </div>
-
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
 
-
 <script type="text/javascript">
-
-
-
     $(document).ready(function () {
         try {
             objProject.loadInit();
@@ -135,7 +130,7 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    Alert("提交数据成功!", 1, null, function () {
+                    Alert("保存成功!", 1, null, function () {
                         window.close();
                     });
                 } else {
