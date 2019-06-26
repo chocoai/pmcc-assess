@@ -1,9 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassifyExample;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecordExample;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectNumberRecordMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,7 +25,7 @@ public class ProjectNumberRecordDao {
     }
 
     /**
-     * 预评报告编号
+     * 报告编号
      *
      * @param year
      * @param reportType
@@ -45,7 +42,7 @@ public class ProjectNumberRecordDao {
     public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer year, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andProjectIdEqualTo(projectId).andAreaIdEqualTo(areaId).andYearEqualTo(year).andReportTypeEqualTo(reportType);
+        criteria.andBisDeleteEqualTo(false).andProjectIdEqualTo(projectId).andAreaIdEqualTo(areaId).andYearEqualTo(year).andReportTypeEqualTo(reportType);
         example.setOrderByClause("number desc");
         List<ProjectNumberRecord> numberRecordList = projectNumberRecordMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(numberRecordList)) return null;
@@ -66,6 +63,5 @@ public class ProjectNumberRecordDao {
         int i = projectNumberRecordMapper.deleteByPrimaryKey(id);
         return i > 0;
     }
-
 
 }

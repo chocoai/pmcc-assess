@@ -9,6 +9,7 @@
     <result column="number_value" property="numberValue" jdbcType="VARCHAR" />
     <result column="year" property="year" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, report_type, area_id, number_value, year, number, creator, gmt_created, 
-    gmt_modified
+    id, project_id, report_type, area_id, number_value, year, number, bis_delete, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecordExample" >
     select
@@ -111,12 +112,12 @@
     </selectKey>
     insert into tb_project_number_record (project_id, report_type, area_id, 
       number_value, year, number, 
-      creator, gmt_created, gmt_modified
-      )
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{reportType,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
       #{numberValue,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,6 +142,9 @@
       </if>
       <if test="number != null" >
         number,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -170,6 +174,9 @@
       </if>
       <if test="number != null" >
         #{number,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -212,6 +219,9 @@
       <if test="record.number != null" >
         number = #{record.number,jdbcType=INTEGER},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -235,6 +245,7 @@
       number_value = #{record.numberValue,jdbcType=VARCHAR},
       year = #{record.year,jdbcType=INTEGER},
       number = #{record.number,jdbcType=INTEGER},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -263,6 +274,9 @@
       <if test="number != null" >
         number = #{number,jdbcType=INTEGER},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -283,6 +297,7 @@
       number_value = #{numberValue,jdbcType=VARCHAR},
       year = #{year,jdbcType=INTEGER},
       number = #{number,jdbcType=INTEGER},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

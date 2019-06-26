@@ -222,7 +222,7 @@
                 if (row.projectStatus) {
                     console.log(row.projectStatus) ;
                     if (row.projectStatus == '草稿') {
-                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectInfoEdit?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='重新申请' class='btn btn-xs btn-success tooltips' ><i class='fa fa-flag '></i></a>";
+                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectInfoEdit?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='重新申请' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-pencil-square-o '></i></a>";
                     } else {
                         str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
                     }

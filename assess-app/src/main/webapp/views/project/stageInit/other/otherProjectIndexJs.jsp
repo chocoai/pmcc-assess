@@ -16,8 +16,11 @@
         return false;
     };
     //去掉所有空白换行
-    objProject.Trim = function(str) {
-        return str.replace(/(^\s*)|(\s*$)/g, "").replace(/[\r\n]/g,"");
+    objProject.Trim = function (str) {
+        if (str) {
+            return str.replace(/(^\s*)|(\s*$)/g, "").replace(/[\r\n]/g, "");
+        }
+        return str;
     }
 
     /**
@@ -438,7 +441,7 @@
                         var str = strArr.join(",");
                         //当属于数组中的任意一项时显示
                         if (str.indexOf(entrustPurposeData.name) != -1) {
-                            $("#" + objProject.config.info.frm).find("select.loanType").attr("required","required");
+                            $("#" + objProject.config.info.frm).find("select.loanType").attr("required", "required");
                         } else {
                             $("#" + objProject.config.info.frm).find("select.loanType").removeAttr("required");
 
@@ -528,7 +531,7 @@
                         var str = strArr.join(",");
                         //当属于数组中的任意一项时显示
                         if (str.indexOf(entrustPurposeData.name) != -1) {
-                            $("#" + objProject.config.info.frm).find("select.loanType").attr("required","required");
+                            $("#" + objProject.config.info.frm).find("select.loanType").attr("required", "required");
                         } else {
                             $("#" + objProject.config.info.frm).find("select.loanType").removeAttr("required");
 
@@ -939,16 +942,16 @@
             multi: false,//是否允许多选
             companyId:${companyId},
             onSelected: function (nodes) {
-                if (nodes.length == 0){
+                if (nodes.length == 0) {
                     return false;
                 }
-                nodes.forEach(function (node,i) {
+                nodes.forEach(function (node, i) {
                     $(this_).closest('.input-group').find("input[name='uUseUnit']").val(node.id);
                     $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(node.name);
                     $.ajax({
                         type: "get",
                         url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
-                        data: {customerId:node.id},
+                        data: {customerId: node.id},
                         success: function (msg) {
                             var item = {
                                 uLegalRepresentative: msg.data.legalRepresentative,
@@ -958,6 +961,7 @@
                                 uUnitProperties: msg.data.unitProperties
                             };
                             $("#" + objProject.config.unit_information.frm).initForm(item);
+                            $("#" + objProject.config.unit_information.frm).find("input[name='uUseUnitName']").val(msg.data.fullName);
                             $("#" + objProject.config.unit_information.frm).find("select[name='uUnitProperties']").val(msg.data.unitProperties).trigger("selected");
                             objProject.loadCustomerFieldList(node.id, node.name);
                             //2019-06-11之后不再写入数据了 , 并且也不再清除了 ,待删除数据
@@ -981,7 +985,7 @@
                             }
                         }
                     });
-                }) ;
+                });
             }
         });
     };

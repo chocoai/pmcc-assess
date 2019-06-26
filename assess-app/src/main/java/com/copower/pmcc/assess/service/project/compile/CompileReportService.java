@@ -186,7 +186,7 @@ public class CompileReportService {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < reportDetailList.size(); i++) {
             CompileReportDetail reportDetail = reportDetailList.get(i);
-            stringBuilder.append(generateCommonMethod.getIndentHtml(reportDetail.getContent()));
+            stringBuilder.append(reportDetail.getContent());
         }
         return stringBuilder.toString();
     }

@@ -189,6 +189,15 @@
                     </select>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况描述<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" data-rule-maxlength="255" placeholder="装修情况描述"
+                           name="decorateSituationDescription"
+                           class="form-control" value="${basicHouse.decorateSituationDescription}">
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid" style="display: none;">
@@ -200,24 +209,6 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况描述<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <textarea class="form-control" required name="decorateSituationDescription">${basicHouse.decorateSituationDescription}</textarea>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋出租占用情况描述</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <textarea class="form-control" name="description">${basicHouse.description}</textarea>
-                </div>
-            </div>
-        </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋平面图</label>

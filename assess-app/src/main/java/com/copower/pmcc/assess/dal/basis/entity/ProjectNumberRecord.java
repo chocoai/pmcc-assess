@@ -17,6 +17,8 @@ public class ProjectNumberRecord {
 
     private Integer number;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -77,6 +79,14 @@ public class ProjectNumberRecord {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2019-1-14.
@@ -35,11 +36,38 @@ public class ProjectNumberRecordService {
     @Autowired
     private CommonService commonService;
 
-    public List<String> getReportNumberList(Integer projectId, Integer reportType){
+    public List<String> getReportNumberList(Integer projectId, Integer reportType) {
         List<ProjectNumberRecord> numberList = projectNumberRecordDao.getNumberList(projectId, reportType);
-        if(CollectionUtils.isEmpty(numberList)) return null;
-        List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
+        if (CollectionUtils.isEmpty(numberList)) return null;
+        List<String> list = LangUtils.transform(numberList.stream().filter(o -> o.getBisDelete() == Boolean.FALSE).collect(Collectors.toList()), o -> o.getNumberValue());
         return list;
+    }
+
+    /**
+     * 获取文号记录数据
+     *
+     * @param projectId
+     * @param areaId
+     * @param reportType
+     * @return
+     */
+    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer reportType) {
+        ProjectNumberRecord where = new ProjectNumberRecord();
+        where.setProjectId(projectId);
+        where.setAreaId(areaId);
+        where.setReportType(reportType);
+        where.setBisDelete(false);
+        List<ProjectNumberRecord> numberRecordList = projectNumberRecordDao.getProjectNumberRecordList(where);
+        if (CollectionUtils.isNotEmpty(numberRecordList)) return numberRecordList.get(0);
+        return null;
+    }
+
+    public void updateProjectNumberRecord(ProjectNumberRecord projectNumberRecord) {
+        projectNumberRecordDao.editProjectNumberRecord(projectNumberRecord);
+    }
+
+    public void delProjectNumberRecord(Integer id) {
+        projectNumberRecordDao.deleteProjectNumberRecord(id);
     }
 
     /**
@@ -77,7 +105,7 @@ public class ProjectNumberRecordService {
         } else {
             //根据配置判断是否存在同号行为，如技术报告使用结果报告号
             //如果为同号配置，则根据项目区域及报告类型取得对应的报告编号
-            if (numberRule.getSameReportType() != null && numberRule.getSameReportType()>0){
+            if (numberRule.getSameReportType() != null && numberRule.getSameReportType() > 0) {
                 numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectId, areaId, year, numberRule.getSameReportType());
                 if (numberRecord != null) {
                     number = numberRecord.getNumber();
@@ -85,7 +113,7 @@ public class ProjectNumberRecordService {
                 } else {
                     //暂不处理
                 }
-            } else{
+            } else {
                 //直接取最大号
                 reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber).invoke();
                 number = reportNumberService.getNumber();

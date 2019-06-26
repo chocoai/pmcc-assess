@@ -2253,14 +2253,17 @@ public class GenerateBaseDataService {
             for (SchemeJudgeFunction judgeFunction : functionList) {
                 SchemeJudgeObject judgeObject = this.schemeJudgeObjectMap.get(judgeFunction.getJudgeObjectId());
                 if (judgeObject == null) continue;
+                DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(judgeObject.getSetUse());
+                String setUseName = setUseField == null ? "" : StringUtils.defaultString(setUseField.getName());
+                String conent = String.format("作为%s,%s", setUseName, judgeFunction.getApplicableReason());
                 if (mdCommonService.isCompareMethod(judgeFunction.getMethodType()))
-                    compareMap.put(judgeObject.getNumber(), judgeFunction.getApplicableReason());
+                    compareMap.put(judgeObject.getNumber(), conent);
                 if (mdCommonService.isIncomeMethod(judgeFunction.getMethodType()))
-                    incomeMap.put(judgeObject.getNumber(), judgeFunction.getApplicableReason());
+                    incomeMap.put(judgeObject.getNumber(), conent);
                 if (mdCommonService.isCostMethod(judgeFunction.getMethodType()))
-                    costMap.put(judgeObject.getNumber(), judgeFunction.getApplicableReason());
+                    costMap.put(judgeObject.getNumber(), conent);
                 if (mdCommonService.isDevelopmentMethod(judgeFunction.getMethodType()))
-                    developmentMap.put(judgeObject.getNumber(), judgeFunction.getApplicableReason());
+                    developmentMap.put(judgeObject.getNumber(), conent);
             }
             String compareContent = generateCommonMethod.judgeEachDescExtend(compareMap, "", "。", true);
             String incomeContent = generateCommonMethod.judgeEachDescExtend(incomeMap, "", "。", true);
@@ -2296,14 +2299,17 @@ public class GenerateBaseDataService {
             for (SchemeJudgeFunction judgeFunction : functionList) {
                 SchemeJudgeObject judgeObject = this.schemeJudgeObjectMap.get(judgeFunction.getJudgeObjectId());
                 if (judgeObject == null) continue;
+                DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(judgeObject.getSetUse());
+                String setUseName = setUseField == null ? "" : StringUtils.defaultString(setUseField.getName());
+                String conent = String.format("作为%s,%s", setUseName, judgeFunction.getNotApplicableReason());
                 if (mdCommonService.isCompareMethod(judgeFunction.getMethodType()))
-                    compareMap.put(judgeObject.getNumber(), judgeFunction.getNotApplicableReason());
+                    compareMap.put(judgeObject.getNumber(), conent);
                 if (mdCommonService.isIncomeMethod(judgeFunction.getMethodType()))
-                    incomeMap.put(judgeObject.getNumber(), judgeFunction.getNotApplicableReason());
+                    incomeMap.put(judgeObject.getNumber(), conent);
                 if (mdCommonService.isCostMethod(judgeFunction.getMethodType()))
-                    costMap.put(judgeObject.getNumber(), judgeFunction.getNotApplicableReason());
+                    costMap.put(judgeObject.getNumber(), conent);
                 if (mdCommonService.isDevelopmentMethod(judgeFunction.getMethodType()))
-                    developmentMap.put(judgeObject.getNumber(), judgeFunction.getNotApplicableReason());
+                    developmentMap.put(judgeObject.getNumber(), conent);
             }
             String compareContent = generateCommonMethod.judgeEachDescExtend(compareMap, "", "。", true);
             String incomeContent = generateCommonMethod.judgeEachDescExtend(incomeMap, "", "。", true);
@@ -2633,7 +2639,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(compileReportService.getReportCompile(this.areaId, type))), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(compileReportService.getReportCompile(this.areaId, type)))), true);
         document.save(localPath);
         return localPath;
     }
@@ -3275,7 +3281,7 @@ public class GenerateBaseDataService {
                     for (SchemeJudgeFunction function : functions) {
                         DataMethodFormula formula = dataMethodFormulaService.getDataMethodFormulaByType(function.getMethodType());
                         if (formula != null) {
-                            switch (type){
+                            switch (type) {
                                 case "参数":
                                     map.put(schemeJudgeObject.getNumber(), formula.getRelevantParameter());
                                     break;
@@ -3290,7 +3296,7 @@ public class GenerateBaseDataService {
             }
         }
         String strResult = generateCommonMethod.judgeEachDescExtend(map, "", "。", false);
-        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(strResult), false);
+        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(strResult)), false);
         doc.save(localPath);
         return localPath;
     }
@@ -5165,9 +5171,8 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getTenancyrestrictionRemark() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(8);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Multimap<String, String> multimap = ArrayListMultimap.create();
+        Map<String, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME).getId());
@@ -5175,24 +5180,13 @@ public class GenerateBaseDataService {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String value = generateMdIncomeService.getTenancyrestrictionReamrk();
                     if (StringUtils.isNotBlank(value)) {
-                        multimap.put(value, getSchemeJudgeObjectShowName(schemeJudgeObject));
+                        map.put(schemeJudgeObject.getNumber(), value);
                     }
                 }
             }
         }
-        if (!multimap.isEmpty()) {
-            if (multimap.keys().stream().distinct().count() == 1) {
-                stringBuilder.append(multimap.keys().stream().distinct().findFirst().get());
-            } else {
-                Set<String> strings = Sets.newHashSet();
-                multimap.entries().stream().distinct().forEach(oo -> strings.add(String.format("%s%s", oo.getValue(), oo.getKey())));
-                stringBuilder.append(StringUtils.join(strings, "、"));
-            }
-        }
-        if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
-            stringBuilder.append("");
-        }
-        return stringBuilder.toString();
+        if (map.isEmpty()) return "";
+        return generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.judgeEachDescExtend(map, "", "。", false)));
     }
 
     /**

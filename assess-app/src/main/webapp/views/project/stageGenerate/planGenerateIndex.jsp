@@ -89,7 +89,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
@@ -131,8 +130,12 @@
                             <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            <a class="btn-dark btn btn-xs"
+                                        <div class="col-sm-1">
+                                            <a class="btn-primary btn "
+                                               onclick="reGetDocumentNumber('${projectPlan.projectId}','${generationVo.areaGroupId}','${reportType.id}')">重新拿号<i class="fa fa-undo"></i></a>
+                                        </div>
+                                        <label class="col-sm-1">
+                                            <a class="btn-dark btn "
                                                onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">生成${reportType.name}
                                                 <i class="fa fa-file-word-o"></i></a>
                                         </label>
@@ -293,6 +296,29 @@
             success: function (result) {
                 if (result.ret && result.data) {
                     callback(result.data);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
+    //重新拿号
+    function reGetDocumentNumber(projectId, areaId, reportType) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/generate/reGetDocumentNumber",
+            data: {
+                projectId: projectId,
+                areaId: areaId,
+                reportType: reportType
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    Alert("重新拿号成功");
+                }else{
+                    Alert(result.errmsg);
                 }
             },
             error: function (result) {
