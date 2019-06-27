@@ -181,7 +181,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case TEMPORARY_ROAD_CONDITION://临街（路）状况
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateLoactionService.getFaceStreet(Lists.newArrayList(judgeObject)));
+                            stringBuilder.append(generateLoactionService.getFaceStreetExtend(basicApply));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TEMPORARY_ROAD_CONDITION.getKey(), stringBuilder.toString()));
                             break;
                         case FLOOR://楼栋楼层
@@ -201,7 +201,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case TRAFFIC_CONDITIONS://交通条件
                             stringBuilder = new StringBuilder();
-                            String roadCondition = generateLoactionService.getRoadCondition(Lists.newArrayList(judgeObject));//道路状况
+                            String roadCondition = generateLoactionService.getRoadConditionExtend(basicApply);//道路状况
                             String transport = generateLoactionService.getAccessAvailableMeansTransport(basicApply);//出入可利用的交通工具
                             String trafficControl = generateLoactionService.getTrafficControl(basicApply);//交通管制情况
                             String convenience = generateLoactionService.getParkingConvenience(basicApply);//停车方便度
@@ -301,7 +301,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case BUILDING_SCALE://建筑规模
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateHouseEntityService.getBuildingScale(Lists.newArrayList(judgeObject)));
+                            stringBuilder.append(generateHouseEntityService.getBuildingScaleExtend(basicApply));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_SCALE.getKey(), stringBuilder.toString()));
                             break;
                         case BUILDING_STRUCTURE://建筑结构
@@ -319,7 +319,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case APPEARANCE://外观
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateHouseEntityService.getAppearance(Lists.newArrayList(judgeObject)));
+                            stringBuilder.append(generateHouseEntityService.getAppearanceExtend(basicApply));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.APPEARANCE.getKey(), stringBuilder.toString()));
                             break;
                         case AERATION://通风
@@ -459,7 +459,7 @@ public class MdMarketCompareFieldService extends BaseService {
                                             decorate.append(roomDecorate.getPartName());
                                             if(StringUtils.isNotBlank(roomDecorate.getRemark())){
                                                 decorate.append(roomDecorate.getRemark()).append(",");
-                                            }else if(StringUtils.isNotBlank(roomDecorate.getRemark())){
+                                            }else if(StringUtils.isNotBlank(roomDecorate.getMaterialName())){
                                                 decorate.append(roomDecorate.getMaterialName()).append(",");
                                             }
                                         }
@@ -494,7 +494,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case Other://其它
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateHouseEntityService.getOther(Lists.newArrayList(judgeObject)));
+                            stringBuilder.append(generateHouseEntityService.getOtherExtend(basicApply));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.Other.getKey(), stringBuilder.toString()));
                             break;
                         case BUILDING_YEAR://竣工时间

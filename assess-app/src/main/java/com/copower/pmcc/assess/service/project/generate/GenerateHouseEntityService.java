@@ -138,28 +138,36 @@ public class GenerateHouseEntityService {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            StringBuilder builder = new StringBuilder();
-            if (basicBuilding.getBuildingArea() != null)
-                builder.append(String.format("建筑面积%s平方米，", basicBuilding.getBuildingArea()));
-            if (basicBuilding.getInJacketArea() != null)
-                builder.append(String.format("套内面积%s平方米，", basicBuilding.getInJacketArea()));
-            if (basicBuilding.getUseArea() != null)
-                builder.append(String.format("使用面积%s平方米，", basicBuilding.getUseArea()));
-            if (basicBuilding.getBuildingHeight() != null)
-                builder.append(String.format("建筑高度%s米，", basicBuilding.getBuildingHeight()));
-            if (basicBuilding.getFirstFloor() != null)
-                builder.append(String.format("首层%s至", basicBuilding.getFirstFloor()));
-            if (basicBuilding.getMaxFloor() != null)
-                builder.append(String.format("最高层%s是", basicBuilding.getMaxFloor()));
-            if (basicBuilding.getPropertyType() != null)
-                builder.append(String.format("%s，", baseDataDicService.getNameById(basicBuilding.getPropertyType())));
-            if (basicBuilding.getFloorHeight() != null)
-                builder.append(String.format("层高%s米", basicBuilding.getFloorHeight()));
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), builder.toString());
+            String s = getBuildingScaleExtend(basicApply);
+            if (StringUtils.isNotBlank(s))
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), s);
         }
         return generateCommonMethod.judgeEachDesc(map, "", ";", false);
     }
+
+    public String getBuildingScaleExtend(BasicApply basicApply) {
+        if (basicApply == null) return "";
+        BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+        StringBuilder builder = new StringBuilder();
+        if (basicBuilding.getBuildingArea() != null)
+            builder.append(String.format("建筑面积%s平方米，", basicBuilding.getBuildingArea()));
+        if (basicBuilding.getInJacketArea() != null)
+            builder.append(String.format("套内面积%s平方米，", basicBuilding.getInJacketArea()));
+        if (basicBuilding.getUseArea() != null)
+            builder.append(String.format("使用面积%s平方米，", basicBuilding.getUseArea()));
+        if (basicBuilding.getBuildingHeight() != null)
+            builder.append(String.format("建筑高度%s米，", basicBuilding.getBuildingHeight()));
+        if (basicBuilding.getFirstFloor() != null)
+            builder.append(String.format("首层%s至", basicBuilding.getFirstFloor()));
+        if (basicBuilding.getMaxFloor() != null)
+            builder.append(String.format("最高层%s是", basicBuilding.getMaxFloor()));
+        if (basicBuilding.getPropertyType() != null)
+            builder.append(String.format("%s，", baseDataDicService.getNameById(basicBuilding.getPropertyType())));
+        if (basicBuilding.getFloorHeight() != null)
+            builder.append(String.format("层高%s米", basicBuilding.getFloorHeight()));
+        return builder.toString();
+    }
+
 
     /**
      * 获取层高
@@ -275,15 +283,24 @@ public class GenerateHouseEntityService {
         Map<String, List<Integer>> map = groupByBuilding(judgeObjectList);
         Map<Integer, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
-            StringBuilder stringBuilder = new StringBuilder();
             SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            stringBuilder.append(String.format("%s风格,", baseDataDicService.getNameById(basicBuilding.getAppearanceStyle())));
-            stringBuilder.append(String.format("外观%s;", baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld())));
-            stringMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), stringBuilder.toString());
+            String s = getAppearanceExtend(basicApply);
+            if (StringUtils.isNotBlank(s))
+                stringMap.put(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()), s);
         }
         return StringUtils.strip(generateCommonMethod.judgeEachDesc(stringMap, "", ";", false), ";");
+    }
+
+    public String getAppearanceExtend(BasicApply basicApply) {
+        if (basicApply == null) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+        if (basicBuilding.getAppearanceStyle() != null)
+            stringBuilder.append(String.format("%s风格,", baseDataDicService.getNameById(basicBuilding.getAppearanceStyle())));
+        if (basicBuilding.getAppearanceNewAndOld() != null)
+            stringBuilder.append(String.format("外观%s;", baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld())));
+        return stringBuilder.toString();
     }
 
     /**
@@ -294,38 +311,40 @@ public class GenerateHouseEntityService {
      * @throws Exception
      */
     public String getOther(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        Map<Integer, String> builderMap = Maps.newHashMap();
-        Map<Integer, String> developerMap = Maps.newHashMap();
+        Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
             if (basicApply == null || basicApply.getId() == 0) {
                 continue;
             }
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
-            BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingVo(generateBaseExamineService.getBasicBuilding());
-            if (basicBuilding != null && basicBuilding.getId() != null) {
-                StringBuilder builderString = new StringBuilder();
-                StringBuilder developerString = new StringBuilder();
-                if (basicBuilding.getDataBuilder() != null) {
-                    builderString.append("建造商").append(basicBuilding.getDataBuilder().getName()).append("，")
-                            .append(basicBuilding.getDataBuilder().getCompanyNatureName()).append("，");
-                    builderString.append(StringUtils.isNotBlank(basicBuilding.getDataBuilder().getSocialPrestigeName()) ? String.format("社会信誉%s;", basicBuilding.getDataBuilder().getSocialPrestigeName()) : "");
-                    builderMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), builderString.toString());
-                }
-                if (basicEstate.getDataDeveloper() != null) {
-                    developerString.append("开发商").append(basicEstate.getDataDeveloper().getName()).append("，")
-                            .append(basicEstate.getDataDeveloper().getCompanyNatureName()).append("，");
-                    developerString.append(StringUtils.isNotBlank(basicEstate.getDataDeveloper().getSocialPrestigeName()) ? String.format("社会信誉%s;", basicEstate.getDataDeveloper().getSocialPrestigeName()) : "");
-                    developerMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), developerString.toString());
-                }
-            }
+            String s = getOtherExtend(basicApply);
+            if (StringUtils.isNotBlank(s))
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), s);
         }
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(generateCommonMethod.judgeEachDesc(builderMap, "", ";", false));
-        stringBuilder.append(generateCommonMethod.judgeEachDesc(developerMap, "", ";", false));
+        stringBuilder.append(generateCommonMethod.judgeEachDesc(map, "", ";", false));
         return StringUtils.strip(stringBuilder.toString(), ";");
     }
+
+    public String getOtherExtend(BasicApply basicApply) throws Exception {
+        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+        BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
+        BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingVo(generateBaseExamineService.getBasicBuilding());
+        StringBuilder builder = new StringBuilder();
+        if (basicBuilding != null && basicBuilding.getDataBuilder() != null) {
+            builder.append("建造商").append(basicBuilding.getDataBuilder().getName()).append("，")
+                    .append(basicBuilding.getDataBuilder().getCompanyNatureName()).append("，");
+            builder.append(StringUtils.isNotBlank(basicBuilding.getDataBuilder().getSocialPrestigeName()) ? String.format("社会信誉%s;", basicBuilding.getDataBuilder().getSocialPrestigeName()) : ";");
+        }
+
+        if (basicEstate != null && basicEstate.getDataDeveloper() != null) {
+            builder.append("开发商").append(basicEstate.getDataDeveloper().getName()).append("，")
+                    .append(basicEstate.getDataDeveloper().getCompanyNatureName()).append("，");
+            builder.append(StringUtils.isNotBlank(basicEstate.getDataDeveloper().getSocialPrestigeName()) ? String.format("社会信誉%s;", basicEstate.getDataDeveloper().getSocialPrestigeName()) : "");
+        }
+        return builder.toString();
+    }
+
 
     /**
      * 较好新旧程度及维护使用情况

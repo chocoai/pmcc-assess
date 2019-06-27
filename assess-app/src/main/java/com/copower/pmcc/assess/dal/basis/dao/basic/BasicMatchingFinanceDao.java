@@ -47,6 +47,7 @@ public class BasicMatchingFinanceDao {
     public List<BasicMatchingFinance> basicMatchingFinanceList(BasicMatchingFinance basicMatchingFinance) {
         BasicMatchingFinanceExample example = new BasicMatchingFinanceExample();
         MybatisUtils.convertObj2Example(basicMatchingFinance, example);
+        example.setOrderByClause("id");
         return basicMatchingFinanceMapper.selectByExample(example);
     }
 

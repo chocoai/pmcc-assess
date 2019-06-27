@@ -139,7 +139,7 @@
                     if (!$.trim(value)) {
                         return '不能为空';
                     }
-                    if (!/^\d+(?=\.{0,1}\d+$|$)/ .test(value)) {
+                    if (!/^\d+(?=\.{0,1}\d+$|$)/.test(value)) {
                         return '只能填数字';
                     }
                     value = parseInt(value);
@@ -283,7 +283,7 @@
                         $(this).find('a').after('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.callResidueRatio(this,' + defaluts.readonly + ');" value="成新率">');
                     })
                 })
-                if (marketCompare.isLand) {
+                if (marketCompare.isLand == true) {
                     var eleAnnualCoefficient = $('#tb_md_mc_item_list').find('tr[data-name="annualCoefficient"]').find('td:eq(1)');
                     $.ajax({
                         url: '${pageContext.request.contextPath}/marketCompare/getMarketCompareById',
@@ -445,7 +445,7 @@
             resultHtml = resultHtml.replace(/{averagePrice}/g, toString(defaluts.evaluation.averagePrice)).replace(/{caseWeightDescription}/g, toString(caseWeightDescription));
             resultHtml = resultHtml.replace(/{deveDegree}/g, toString(defaluts.evaluation.deveDegree)).replace(/{evaluatePrice}/g, toString(defaluts.evaluation.evaluatePrice));
             $("#tb_md_mc_item_list").append(resultHtml);
-            if (marketCompare.isLand) {
+            if (marketCompare.isLand == true) {
                 $("#tb_md_mc_item_list").find('.forLand').show();
             }
         }

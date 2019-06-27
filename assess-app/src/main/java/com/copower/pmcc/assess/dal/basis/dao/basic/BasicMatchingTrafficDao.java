@@ -48,6 +48,7 @@ public class BasicMatchingTrafficDao {
     public List<BasicMatchingTraffic> basicMatchingTrafficList(BasicMatchingTraffic basicMatchingTraffic){
         BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
         MybatisUtils.convertObj2Example(basicMatchingTraffic, example);
+        example.setOrderByClause("id");
         return basicMatchingTrafficMapper.selectByExample(example);
     }
 
