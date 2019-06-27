@@ -11,7 +11,7 @@
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
                     <h3>
-                        估价委托书及相关证明-${areaGroup.areaName}
+                        估价委托书及相关证明
                     </h3>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>估价对象位置示意图</h3>
+                    <h3>位置示意图</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
@@ -44,24 +44,24 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>估价对象</th>
+                                <th>权证对象</th>
                                 <th>位置图</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${judgeObjectList}" var="judgeObject">
+                            <c:forEach items="${declareRecordList}" var="declareRecord">
                                 <tr>
-                                    <td>${judgeObject.name} </td>
+                                    <td>${declareRecord.name} </td>
                                     <td>
-                                        <input id="judge_object_position${judgeObject.id}" name="project_proxy"
+                                        <input id="judge_object_position${declareRecord.id}" name="project_proxy"
                                                type="file" multiple="false">
-                                        <div id="_judge_object_position${judgeObject.id}"></div>
+                                        <div id="_judge_object_position${declareRecord.id}"></div>
                                     </td>
                                 </tr>
                                 <script type="text/javascript">
                                     $(function () {
-                                        uploadFiles(AssessDBKey.SchemeJudgeObject, "${judgeObject.id}", AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position${judgeObject.id}");
-                                        loadUploadFiles(AssessDBKey.SchemeJudgeObject, "${judgeObject.id}", AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position${judgeObject.id}");
+                                        uploadFiles(AssessDBKey.DeclareRecord, "${declareRecord.id}", AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position${declareRecord.id}");
+                                        loadUploadFiles(AssessDBKey.DeclareRecord, "${declareRecord.id}", AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position${declareRecord.id}");
                                     })
                                 </script>
                             </c:forEach>
@@ -75,45 +75,36 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>估价对象实况照片</h3>
+                    <h3>实况照片</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <c:forEach items="${judgeObjectList}" var="judgeObject">
+                    <c:forEach items="${declareRecordList}" var="declareRecord">
                         <div class="row">
-                            <input type="hidden" name="judgeObjectId" value="${judgeObject.id}">
+                            <input type="hidden" name="declareRecordId" value="${declareRecord.id}">
                             <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
                                 <div class="x_panel">
-                                    <div class="x_title"><h4><strong>${judgeObject.name}-全部</strong></h4></div>
-                                    <div class="">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>序号</th>
-                                                <th>文件名称</th>
-                                                <th>来源</th>
-                                                <th>操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody data-id="${judgeObject.id}" data-name="live_situation_all">
-                                            </tbody>
-                                        </table>
+                                    <div class="x_title">
+                                        <h4><strong>${declareRecord.name}</strong>
+                                            <small>
+                                                <input type="button" class="btn btn-success btn-xs"
+                                                       onclick="addLiveSituationFile(${declareRecord.id})"
+                                                       value="新增实况照片">
+                                            </small>
+                                        </h4>
+
                                     </div>
-                                </div>
-                            </div>
-                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
-                                <div class="x_panel">
-                                    <div class="x_title"><h4><strong>${judgeObject.name}-已选</strong></h4></div>
                                     <div class="">
                                         <table class="table">
                                             <thead>
                                             <tr>
                                                 <th>文件名称</th>
                                                 <th>排序</th>
+                                                <th>附件</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
-                                            <tbody data-id="${judgeObject.id}" data-name="live_situation_select">
+                                            <tbody data-id="${declareRecord.id}" data-name="live_situation_select">
                                             </tbody>
                                         </table>
                                     </div>
@@ -123,8 +114,7 @@
                         <script type="text/javascript">
                             $(function () {
                                 //1.加载该委估对象所有相关实况照片 2.加载该委估对象已选择的实况照片
-                                loadLiveSituationAll($('tbody[data-id=${judgeObject.id}][data-name=live_situation_all]'), ${judgeObject.id});
-                                loadLiveSituationSelect($('tbody[data-id=${judgeObject.id}][data-name=live_situation_select]'), ${judgeObject.id});
+                                loadLiveSituation($('tbody[data-id=${declareRecord.id}][data-name=live_situation_select]'), ${declareRecord.id});
                             })
                         </script>
                     </c:forEach>
@@ -135,15 +125,15 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>估价对象权属证明复印件</h3>
+                    <h3>权属证明复印件</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <c:forEach items="${judgeObjectList}" var="judgeObject">
+                    <c:forEach items="${declareRecordList}" var="declareRecord">
                         <div class="row">
                             <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
                                 <div class="x_panel">
-                                    <div class="x_title"><h4><strong>${judgeObject.name}</strong></h4></div>
+                                    <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
                                     <table class="table table-hover">
                                         <thead>
                                         <tr>
@@ -153,7 +143,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${ownershipCertFileList.get(judgeObject.id)}" var="item"
+                                        <c:forEach items="${ownershipCertFileList.get(declareRecord.id)}" var="item"
                                                    varStatus="i">
                                             <tr>
                                                 <th>${i.index+1}</th>
@@ -186,11 +176,11 @@
                 </div>
                 <div class="x_content collapse">
                     <div class="row">
-                        <c:forEach items="${judgeObjectList}" var="judgeObject">
-                            <c:if test="${not empty inventoryAddressFileList.get(judgeObject.id)}">
+                        <c:forEach items="${declareRecordList}" var="declareRecord">
+                            <c:if test="${not empty inventoryAddressFileList.get(declareRecord.id)}">
                                 <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                                     <div class="x_panel">
-                                        <div class="x_title"><h4><strong>${judgeObject.name}</strong></h4></div>
+                                        <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
                                         <div class="x_panel">
                                             <div class="x_title">登记与实际地址不一致附件</div>
                                             <div>
@@ -203,7 +193,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <c:forEach items="${inventoryAddressFileList.get(judgeObject.id)}"
+                                                    <c:forEach items="${inventoryAddressFileList.get(declareRecord.id)}"
                                                                var="item" varStatus="i">
                                                         <tr>
                                                             <th>${i.index+1}</th>
@@ -227,44 +217,7 @@
                             </c:if>
                         </c:forEach>
                     </div>
-                    <c:if test="${not empty reimbursementFileList}">
-                        <div class="row">
-                            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                <div class="x_panel">
-                                    <div class="x_title"><h4><strong>法定优先受偿款附件</strong></h4></div>
-                                    <div>
-                                        <table class="table table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>序号</th>
-                                                <th>文件名称</th>
-                                                <th>操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach items="${reimbursementFileList.get(judgeObject.id)}"
-                                                       var="item" varStatus="i">
-                                                <tr>
-                                                    <th>${i.index+1}</th>
-                                                    <td>${item.fileName}</td>
-                                                    <td>
-                                                        <input type="button" class="btn btn-xs btn-primary"
-                                                               value="编辑"
-                                                               onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                                        <input type="button" class="btn btn-xs btn-warning"
-                                                               value="查看"
-                                                               onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </c:if>
-                    <input type="button" class="btn btn-success" value="添加" onclick="addReportFileCustom();">
+                    <input type="button" class="btn btn-success" value="添加" onclick="">
                     <div class="row report-file-custom">
                     </div>
                 </div>
@@ -287,6 +240,75 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<div id="addItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">添加照片</h3>
+            </div>
+            <form id="frmItemFile" class="form-horizontal">
+                <input type="hidden" name="declareRecordId">
+                <input type="hidden" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">名称</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control"
+                                                   name="fileName" placeholder="名称">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">排序</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control"
+                                                   name="sorting" placeholder="排序">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">排序</label>
+                                        <div class="col-sm-10">
+                                    <textarea placeholder="备注" id="subRemark" name="remark"
+                                              class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">附件</label>
+                                        <div class="col-sm-10">
+                                            <input id="uploadSupplementFile" placeholder="上传附件" class="form-control"
+                                                   type="file">
+                                            <div id="_uploadSupplementFile"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                    <button type="button" onclick="saveItemFileData()" class="btn btn-default">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script type="text/html" id="reportFileCustomHtml">
     <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
         <div class="x_panel">
@@ -307,150 +329,11 @@
     $(function () {
         uploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
-        loadReportFileCustomList();
+        //loadReportFileCustomList();
     });
 
-    //初始化上传控件
-    function uploadFiles(tableName, tableId, fieldsName, target) {
-        FileUtils.uploadFiles({
-            target: target == undefined ? fieldsName : target,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: tableName,
-                tableId: tableId,
-                fieldsName: fieldsName,
-                projectId: "${projectInfo.id}"
-            },
-            editFlag: true,
-            deleteFlag: true
-        });
-    }
 
-    //显示附件
-    function loadUploadFiles(tableName, tableId, fieldsName, target) {
-        FileUtils.getFileShows({
-            target: target == undefined ? fieldsName : target,
-            formData: {
-                tableName: tableName,
-                tableId: tableId,
-                fieldsName: fieldsName
-            },
-            editFlag: true,
-            deleteFlag: true
-        })
-    }
 
-    //加载委估对象下所有实况照片
-    function loadLiveSituationAll(tbody, judgeObjectId) {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/scheme/getLiveSituationAll',
-            data: {
-                judgeObjectId: judgeObjectId,
-                projectId: '${projectInfo.id}'
-            },
-            success: function (result) {
-                if (result.ret) {
-                    var html = '';
-                    $.each(result.data, function (i, item) {
-                        ++i;
-                        html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' + item.reName + '</td><td>' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituation(' + item.id + ',' + judgeObjectId + ',\'' + item.fileName + '\');"></td></tr>';
-                    })
-                    tbody.empty().append(html);
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
-    }
-
-    //选择估价对象实况照片
-    function selectLiveSituation(attachmentId, judgeObjectId, fileName) {
-        var tbody = $('tbody[data-id=' + judgeObjectId + '][data-name=live_situation_select]');
-        var sorting = tbody.find('tr').length + 1;
-        $.ajax({
-            url: '${pageContext.request.contextPath}/scheme/selectLiveSituation',
-            data: {
-                attachmentId: attachmentId,
-                judgeObjectId: judgeObjectId,
-                fileName: fileName,
-                sorting: sorting
-            },
-            success: function (result) {
-                if (result.ret) {
-                    var html = '<tr><td><input type="text" value="' + AssessCommon.getFileName(fileName) + '"  onblur="reportFileEditName(' + result.data + ',this);"></td><td><input type="text" data-id="' + result.data + '" data-name="sorting" value="' + sorting + '"></td><td>' +
-                        '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + attachmentId + ',\'' + fileName + '\');">' +
-                        '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + result.data + ',this)"></td></tr>';
-                    $('tbody[data-id=' + judgeObjectId + '][data-name=live_situation_select]').append(html);
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
-    }
-
-    //移除实况照片
-    function removeLiveSituation(id, _this) {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/scheme/removeLiveSituation',
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result.ret) {
-                    $(_this).closest('tr').remove();
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
-    }
-
-    //加载委估对象下已选实况照片
-    function loadLiveSituationSelect(tbody, judgeObjectId) {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/scheme/getLiveSituationSelect',
-            data: {
-                judgeObjectId: judgeObjectId
-            },
-            success: function (result) {
-                if (result.ret) {
-                    var html = '';
-                    $.each(result.data, function (i, item) {
-                        html += '<tr><td><input type="text" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
-                            '<td><input type="text" data-id="' + item.id + '" data-name="sorting" value="' + AssessCommon.toString(item.sorting) + '"></td><td>' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.attachmentId + ',\'' + item.fileName + '\');">' +
-                            '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
-                    })
-                    tbody.empty().append(html);
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
-    }
-
-    function reportFileEditName(id, _this) {
-        var newName = $(_this).val();
-        $.ajax({
-            url: '${pageContext.request.contextPath}/scheme/reportFileEditName',
-            data: {
-                id: id,
-                newName: newName
-            },
-            success: function (result) {
-                if (result.ret) {
-                    $('.report-file-custom').empty();
-                    $.each(result.data, function (i, item) {
-                        appendCustomHtml(item.id, item.name);
-                    })
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
-    }
     //加载自定义附件
     function loadReportFileCustomList() {
         $.ajax({
@@ -541,6 +424,154 @@
                     Alert(result.errmsg);
                 }
             }
+        })
+    }
+
+    //加载实况照片
+    function loadLiveSituation(tbody, declareRecordId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/getListByDeclareRecordId',
+            data: {
+                declareRecordId: declareRecordId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var html = '';
+                    $.each(result.data, function (i, item) {
+                        html += '<tr><td><input type="text" name="fileName" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
+                            '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this);" ></td>' +
+                            '<td>' + item.fileViewName +'</td><td>' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="getAndInit(' + item.id + ');">' +
+                            '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
+                    })
+                    tbody.empty().append(html);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+    //移除实况照片
+    function removeLiveSituation(id, _this) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/removeLiveSituation',
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $(_this).closest('tr').remove();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    function addLiveSituationFile(declareRecordId) {
+        $("#frmItemFile").clearAll();
+        $("#frmItemFile").find("input[name='declareRecordId']").val(declareRecordId);
+        uploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement","uploadSupplementFile");
+        loadUploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement","uploadSupplementFile");
+        $("#addItemModal").modal("show");
+
+    }
+    //修改实况照片
+    function getAndInit(id) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/scheme/getSchemeReportFileItemById",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    $("#frmItemFile").clearAll();
+                    $("#frmItemFile").initForm(result.data);
+                    console.log(result.data);
+                    uploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement","uploadSupplementFile");
+                    loadUploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement","uploadSupplementFile");
+                    $('#addItemModal').modal("show");
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+    //保存实况照片
+    function saveItemFileData() {
+        if (!$("#frmItemFile").valid()) {
+            return false;
+        }
+        var data = formParams("frmItemFile");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/scheme/saveToReportFileItem",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    $('#addItemModal').modal('hide');
+                    loadLiveSituation($('tbody[data-id="'+data.declareRecordId+'"][data-name=live_situation_select]'), data.declareRecordId);
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+    //实况照片改名
+    function reportFileEditName(id, _this) {
+        var newName = $(_this).closest("tr").find("input[name='fileName']").val();
+        var newSorting = $(_this).closest("tr").find("input[name='sorting']").val();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/reportFileEditName',
+            data: {
+                id: id,
+                newName: newName,
+                newSorting: newSorting
+            },
+            success: function (result) {
+                if (result.ret) {
+
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //初始化上传控件
+    function uploadFiles(tableName, tableId, fieldsName, target) {
+        FileUtils.uploadFiles({
+            target: target == undefined ? fieldsName : target,
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: tableId,
+                fieldsName: fieldsName,
+                projectId: "${projectInfo.id}"
+            },
+            editFlag: true,
+            deleteFlag: true
+        });
+    }
+
+    //显示附件
+    function loadUploadFiles(tableName, tableId, fieldsName, target) {
+        FileUtils.getFileShows({
+            target: target == undefined ? fieldsName : target,
+            formData: {
+                tableName: tableName,
+                tableId: tableId,
+                fieldsName: fieldsName
+            },
+            editFlag: true,
+            deleteFlag: true
         })
     }
 </script>

@@ -5299,7 +5299,7 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObjectList.size() > 1) {
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                 }
-                List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
+                List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getDeclareRecordId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     this.imgComposingByAttachmentDtoList(sysAttachmentDtoList, builder);
                 }
@@ -5318,7 +5318,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
-                List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
+                List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {
@@ -5364,7 +5364,7 @@ public class GenerateBaseDataService {
         Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(areaId);
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
-                List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getId());
+                List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getDeclareRecordId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {

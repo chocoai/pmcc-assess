@@ -1,22 +1,16 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 
-import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
-import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
-import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFactorDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -34,7 +28,6 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -59,7 +52,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 估价对象
@@ -681,38 +676,7 @@ public class SchemeJudgeObjectService {
         return map;
     }
 
-    /**
-     * 生成委估对象的位置示意图
-     *
-     * @param judgeObjectIds
-     */
-    public void makeJudgeObjectPosition(List<Integer> judgeObjectIds) {
-        if (CollectionUtils.isEmpty(judgeObjectIds)) return;
-        for (Integer judgeObjectId : judgeObjectIds) {
-            SchemeJudgeObject judgeObject = this.getSchemeJudgeObject(judgeObjectId);
-            //清除原数据
-            SysAttachmentDto delExample = new SysAttachmentDto();
-            delExample.setProjectId(judgeObject.getProjectId());
-            delExample.setTableId(judgeObject.getId());
-            delExample.setTableName(FormatUtils.entityNameConvertToTableName(SchemeJudgeObject.class));
-            delExample.setFieldsName(AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey());
-            baseAttachmentService.deleteAttachmentByDto(delExample);
 
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-            if (basicApply == null) continue;
-            List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getEstateTaggingList(basicApply.getId(), EstateTaggingTypeEnum.UNIT.getKey());
-            if (CollectionUtils.isNotEmpty(taggingList)) {
-                BasicEstateTagging tagging = taggingList.get(0);
-                SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-                sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SchemeJudgeObject.class));
-                sysAttachmentDto.setTableId(judgeObject.getId());
-                sysAttachmentDto.setProjectId(judgeObject.getProjectId());
-                sysAttachmentDto.setFieldsName(AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey());
-                sysAttachmentDto.setFileName("位置示意图.jpg");
-                publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
-            }
-        }
-    }
 
     /**
      * 根据权证id获取估价对象编号

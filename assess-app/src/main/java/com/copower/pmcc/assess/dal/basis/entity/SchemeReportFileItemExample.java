@@ -804,6 +804,66 @@ public class SchemeReportFileItemExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andDeclareRecordIdIsNull() {
+            addCriterion("declare_record_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdIsNotNull() {
+            addCriterion("declare_record_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdEqualTo(Integer value) {
+            addCriterion("declare_record_id =", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdNotEqualTo(Integer value) {
+            addCriterion("declare_record_id <>", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdGreaterThan(Integer value) {
+            addCriterion("declare_record_id >", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_record_id >=", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdLessThan(Integer value) {
+            addCriterion("declare_record_id <", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_record_id <=", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdIn(List<Integer> values) {
+            addCriterion("declare_record_id in", values, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdNotIn(List<Integer> values) {
+            addCriterion("declare_record_id not in", values, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_record_id between", value1, value2, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_record_id not between", value1, value2, "declareRecordId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
