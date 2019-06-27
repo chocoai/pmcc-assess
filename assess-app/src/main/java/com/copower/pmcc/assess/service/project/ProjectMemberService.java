@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +58,13 @@ public class ProjectMemberService {
     }
 
     public void saveProjectMemeber(ProjectMember projectMember) throws BusinessException {
-        if (projectMember == null)
+        if (projectMember == null){
             return;
+        }
+        List<ProjectMember> projectMemberList = projectMemberDao.getProjectMemberList(projectMember.getProjectId()) ;
+        if (CollectionUtils.isNotEmpty(projectMemberList)){
+            projectMember.setId(projectMemberList.get(0).getId());
+        }
         if (projectMember.getId() != null && projectMember.getId() > 0) {
             projectMemberDao.updateProjectMember(projectMember);
         } else {
