@@ -74,23 +74,9 @@ public class GenerateLoactionService {
                 if (basicApply == null || basicApply.getId() == 0) {
                     continue;
                 }
-                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
-                if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
-                    List<String> stringList = Lists.newArrayList();
-                    basicHouseFaceStreetVoList.forEach(oo -> {
-                        if (StringUtils.isNotEmpty(oo.getStreetName())) {
-                            if (StringUtils.isNotEmpty(oo.getPositionName())) {
-                                stringList.add(String.format("%s%s", oo.getPositionName(), oo.getStreetName()));
-                            }
-                        }
-                    });
-                    if (CollectionUtils.isNotEmpty(stringList)) {
-                        contentBuilder.append(StringUtils.join(stringList, ","));
-                    }
-                    if (contentBuilder.length() > 0) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
-                    }
+                contentBuilder.append(getFaceStreetExtend(basicApply));
+                if (contentBuilder.length() > 0) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
                 }
                 contentBuilder.delete(0, contentBuilder.toString().length());
             }
@@ -100,6 +86,26 @@ public class GenerateLoactionService {
             logger.error(ex.getMessage(), ex);
             return "";
         }
+    }
+
+    public String getFaceStreetExtend(BasicApply basicApply) throws Exception {
+        if (basicApply == null || basicApply.getId() == 0) {
+            return "";
+        }
+        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
+        if (CollectionUtils.isEmpty(basicHouseFaceStreetVoList)) {
+            return "";
+        }
+        List<String> stringList = Lists.newArrayList();
+        basicHouseFaceStreetVoList.forEach(oo -> {
+            if (StringUtils.isNotEmpty(oo.getStreetName())) {
+                if (StringUtils.isNotEmpty(oo.getPositionName())) {
+                    stringList.add(String.format("%s%s", oo.getPositionName(), oo.getStreetName()));
+                }
+            }
+        });
+        return StringUtils.join(stringList, ",");
     }
 
 
@@ -316,42 +322,49 @@ public class GenerateLoactionService {
      */
     public String getRoadCondition(List<SchemeJudgeObject> judgeObjectList) throws Exception {
         Map<Integer, String> map = Maps.newHashMap();
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
+
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            if (basicApply == null || basicApply.getId() == 0) {
-                continue;
-            }
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
-            if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
-                for (int i = 0; i < basicHouseFaceStreetVoList.size(); i++) {
-                    BasicHouseFaceStreetVo basicHouseFaceStreetVo = basicHouseFaceStreetVoList.get(i);
-                    if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getPositionName())) {
-                        linkedHashSet.add(basicHouseFaceStreetVo.getPositionName());
-                    }
-                    if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetLevelName())) {
-                        linkedHashSet.add(basicHouseFaceStreetVo.getStreetLevelName());
-                    }
-                    if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetName())) {
-                        linkedHashSet.add(basicHouseFaceStreetVo.getStreetName());
-                    }
-                    if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getTrafficFlowName())) {
-                        linkedHashSet.add(String.format("交通流量%s 、", basicHouseFaceStreetVo.getTrafficFlowName()));
-                    }
-                    if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getVisitorsFlowrateName())) {
-                        linkedHashSet.add(String.format("人流量%s", basicHouseFaceStreetVo.getVisitorsFlowrateName()));
-                    }
-                    hashSet.add(StringUtils.join(linkedHashSet, ""));
-                    linkedHashSet.clear();
-                }
-            }
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(hashSet, "；"));
-            hashSet.clear();
+            String s = getRoadConditionExtend(basicApply);
+            if (StringUtils.isNotBlank(s))
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), s);
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", "。", false);
         return StringUtils.strip(s, "。");
+    }
+
+    public String getRoadConditionExtend(BasicApply basicApply) throws Exception {
+        if (basicApply == null || basicApply.getId() == 0) {
+            return "";
+        }
+        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
+        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
+        if (CollectionUtils.isEmpty(basicHouseFaceStreetVoList)) {
+            return "";
+        }
+        for (int i = 0; i < basicHouseFaceStreetVoList.size(); i++) {
+            BasicHouseFaceStreetVo basicHouseFaceStreetVo = basicHouseFaceStreetVoList.get(i);
+            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getPositionName())) {
+                linkedHashSet.add(basicHouseFaceStreetVo.getPositionName());
+            }
+            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetLevelName())) {
+                linkedHashSet.add(basicHouseFaceStreetVo.getStreetLevelName());
+            }
+            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetName())) {
+                linkedHashSet.add(basicHouseFaceStreetVo.getStreetName());
+            }
+            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getTrafficFlowName())) {
+                linkedHashSet.add(String.format("交通流量%s 、", basicHouseFaceStreetVo.getTrafficFlowName()));
+            }
+            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getVisitorsFlowrateName())) {
+                linkedHashSet.add(String.format("人流量%s", basicHouseFaceStreetVo.getVisitorsFlowrateName()));
+            }
+            hashSet.add(StringUtils.join(linkedHashSet, ""));
+            linkedHashSet.clear();
+        }
+        return StringUtils.join(hashSet, "；");
     }
 
     /**

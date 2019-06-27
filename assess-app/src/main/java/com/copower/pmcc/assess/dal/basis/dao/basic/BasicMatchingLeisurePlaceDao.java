@@ -47,6 +47,7 @@ public class BasicMatchingLeisurePlaceDao {
     public List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList(BasicMatchingLeisurePlace basicMatchingLeisurePlace) {
         BasicMatchingLeisurePlaceExample example = new BasicMatchingLeisurePlaceExample();
         MybatisUtils.convertObj2Example(basicMatchingLeisurePlace, example);
+        example.setOrderByClause("id");
         return basicMatchingLeisurePlaceMapper.selectByExample(example);
     }
 

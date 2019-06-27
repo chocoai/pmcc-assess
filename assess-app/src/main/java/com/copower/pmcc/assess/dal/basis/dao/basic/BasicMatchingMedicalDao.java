@@ -47,6 +47,7 @@ public class BasicMatchingMedicalDao {
     public List<BasicMatchingMedical> basicMatchingMedicalList(BasicMatchingMedical basicMatchingMedical){
         BasicMatchingMedicalExample example = new BasicMatchingMedicalExample();
         MybatisUtils.convertObj2Example(basicMatchingMedical, example);
+        example.setOrderByClause("id");
         return basicMatchingMedicalMapper.selectByExample(example);
     }
 
