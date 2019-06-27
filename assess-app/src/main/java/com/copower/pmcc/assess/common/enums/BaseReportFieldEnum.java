@@ -65,7 +65,6 @@ public enum BaseReportFieldEnum implements Serializable {
     Seat("坐落"),
     SetUse2("小微贷设定用途"),
     Seat2("小微贷坐落"),
-    Atypism2("小微贷不一致"),
     CERT_NAME2("小微贷权证号"),
     floor2("小微贷楼层"),
     floorCount2("小微贷总层数"),
@@ -153,8 +152,9 @@ public enum BaseReportFieldEnum implements Serializable {
     DeterminationMarketValueValuationObject("估价对象市场价值的确定"),
     HotTip("特别提示"),
     HotTip2("建行个贷特别提示"),
-    HotTip3("金融机构特别提示"),
+    HotTipBank("金融机构特别提示"),
     HotTip4("工商银行特别提示"),
+    Atypism2("小微贷不一致"),
 
     RegisteredRealEstateValuerAndNumber("注册房产估价师及注册号"),
     XIEHE_organizationInfo("房地产估价机构信息"),

@@ -323,6 +323,7 @@ public class GenerateReportService {
         Map<String, String> preMap = Maps.newHashMap();
         Map<String, String> bookmarkMap = Maps.newHashMap();
         Map<String, String> fileMap = Maps.newHashMap();
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>();
         for (BookmarkAndRegexDto bookmarkAndRegex : bookmarkAndRegexDtoHashSet) {
             try {
                 String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
@@ -384,14 +385,12 @@ public class GenerateReportService {
                 }
                 //建行个贷变现能力分析
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY2.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "100%"));
                     generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk2(keyValueDtoList));
                 }
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY3.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "11pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "100%"));
@@ -423,36 +422,35 @@ public class GenerateReportService {
                 }
                 //特别提示
                 if (Objects.equal(BaseReportFieldEnum.HotTip.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,""));
                 }
                 //建行个贷特别提示
                 if (Objects.equal(BaseReportFieldEnum.HotTip2.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,BaseReportFieldEnum.HotTipBank.name()));
                 }
                 if (Objects.equal(BaseReportFieldEnum.HotTip4.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
+                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
+                    keyValueDtoList.add(new KeyValueDto("font-size", "11pt"));
+                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,BaseReportFieldEnum.HotTipBank.name()));
+                }
+                if (Objects.equal(BaseReportFieldEnum.HotTipBank.getName(), name)) {
                     keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "10pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
-                }
-                if (Objects.equal(BaseReportFieldEnum.HotTip3.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(false,true));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,BaseReportFieldEnum.HotTipBank.name()));
                 }
                 if (Objects.equal(BaseReportFieldEnum.Atypism2.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "10pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,BaseReportFieldEnum.HotTipBank.name()));
                 }
                 //作业结束时间
                 if (Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), name)) {
@@ -581,14 +579,12 @@ public class GenerateReportService {
                 }
                 //建行个贷权证号
                 if (Objects.equal(BaseReportFieldEnum.CERT_NAME1.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList(keyValueDtoList));
                 }
                 if (Objects.equal(BaseReportFieldEnum.CERT_NAME2.getName(), name)) {
-                    List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
                     keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "10.0pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));

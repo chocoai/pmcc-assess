@@ -731,4 +731,29 @@ public class AsposeUtils {
             }
         }
     }
+
+    public static void insertHtml(DocumentBuilder builder,String html){
+        try {
+            builder.insertHtml(html);
+        } catch (Exception e) {
+            try {
+                throw e;
+            } catch (Exception e1) {
+
+            }
+        }
+    }
+
+    public Node insertDocument2(DocumentBuilder builder ,Document srcDoc, int importFormatMode){
+        try {
+            return builder.insertDocument(srcDoc, importFormatMode);
+        } catch (Exception e) {
+            try {
+                throw e;
+            } catch (Exception e1) {
+
+            }
+        }
+        return null;
+    }
 }
