@@ -287,9 +287,9 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">排序</label>
+                                        <label class="col-sm-1 control-label">备注</label>
                                         <div class="col-sm-10">
-                                    <textarea placeholder="备注" id="subRemark" name="remark"
+                                    <textarea placeholder="备注" name="remark"
                                               class="form-control"></textarea>
                                         </div>
                                     </div>
