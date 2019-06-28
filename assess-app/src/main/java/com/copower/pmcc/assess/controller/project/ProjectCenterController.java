@@ -84,7 +84,7 @@ public class ProjectCenterController {
     public ModelAndView projectList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectList");
         List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
-                ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
+                ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey(),ProjectStatusEnum.DRAFT.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         //委托目的
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);

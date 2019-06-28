@@ -26,6 +26,10 @@ public class ProjectMemberDao {
     @Autowired
     private ProjectMemberHistoryMapper projectMemberHistoryMapper;
 
+    public boolean deleteProjectMemberById(Integer id){
+        return projectMemberMapper.deleteByPrimaryKey(id)==1 ;
+    }
+
 
     public List<ProjectMember> getProjectMemberList(Integer projectId) {
         ProjectMemberExample example = new ProjectMemberExample();

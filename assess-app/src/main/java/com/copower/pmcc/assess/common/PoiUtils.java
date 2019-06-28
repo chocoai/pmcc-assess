@@ -156,25 +156,77 @@ public class PoiUtils {
      * @throws Exception
      */
     public static String getWordContent(String path) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(8);
         File file = new File(path);
         FileInputStream fileInputStream = new FileInputStream(file);
         if (isWord2007(path)) {
             XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
             XWPFWordExtractor extractor = new XWPFWordExtractor(xwpfDocument);
-            return extractor.getText();
+            stringBuilder.append(extractor.getText()) ;
+            List<org.apache.poi.xwpf.usermodel.XWPFTable> xwpfTableList = getWordXWPFTable(path);
+            if (CollectionUtils.isNotEmpty(xwpfTableList)) {
+                xwpfTableList.forEach(table -> {
+                    List<org.apache.poi.xwpf.usermodel.XWPFTableRow> xwpfTableRows = getWordXWPFRow(table);
+                    if (CollectionUtils.isNotEmpty(xwpfTableRows)) {
+                        xwpfTableRows.forEach(row -> {
+                            List<org.apache.poi.xwpf.usermodel.XWPFTableCell> xwpfTableCellList = getWordXWPFCell(row);
+                            if (CollectionUtils.isNotEmpty(xwpfTableCellList)) {
+                                xwpfTableCellList.forEach(cell -> {
+                                    List<org.apache.poi.xwpf.usermodel.XWPFParagraph> xwpfParagraphList = getWordXWPFParagraph(cell);
+                                    if (CollectionUtils.isNotEmpty(xwpfParagraphList)) {
+                                        xwpfParagraphList.forEach(paragraph -> {
+                                            if (StringUtils.isNotEmpty(paragraph.getText())) {
+                                                stringBuilder.append(paragraph.getText());
+                                            }else {
+                                                paragraph.getRuns().forEach(xwpfRun -> {
+                                                    try {
+                                                        stringBuilder.append(xwpfRun.getText(0)) ;
+                                                    } catch (Exception e) {
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
         }
         if (isWord2003(path)) {
             HWPFDocument hwpfDocument = new HWPFDocument(fileInputStream);
-            StringBuilder stringBuilder = hwpfDocument.getText();
-            String text = stringBuilder.toString();
+            StringBuilder builder1 = hwpfDocument.getText();
+            String text = builder1.toString();
             if (StringUtils.isEmpty(text)) {
                 text = hwpfDocument.getDocumentText();
             }
             if (StringUtils.isNotEmpty(text)) {
-                return text;
+                stringBuilder.append(text) ;
+            }
+            List<org.apache.poi.hwpf.usermodel.Table> tableList = PoiUtils.getWordHwpfTable(path);
+            if (CollectionUtils.isNotEmpty(tableList)) {
+                tableList.forEach(table -> {
+                    List<org.apache.poi.hwpf.usermodel.TableRow> tableRowList = PoiUtils.getWordHwpfRow(table);
+                    if (CollectionUtils.isNotEmpty(tableRowList)) {
+                        tableRowList.forEach(tableRow -> {
+                            List<org.apache.poi.hwpf.usermodel.TableCell> tableCellList = PoiUtils.getWordHwpfCell(tableRow);
+                            if (CollectionUtils.isNotEmpty(tableCellList)) {
+                                tableCellList.forEach(cell -> {
+                                    List<org.apache.poi.hwpf.usermodel.Paragraph> paragraphList = PoiUtils.getWordHwpfParagraph(cell);
+                                    if (CollectionUtils.isNotEmpty(paragraphList)) {
+                                        paragraphList.forEach(paragraph -> {
+                                            stringBuilder.append(paragraph.text());
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             }
         }
-        return "";
+        return stringBuilder.toString();
     }
 
 

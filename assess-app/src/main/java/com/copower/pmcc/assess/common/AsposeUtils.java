@@ -444,7 +444,7 @@ public class AsposeUtils {
         int rowLength = imgPathList.size() % colCount > 0 ? (imgPathList.size() / colCount) + 1 : imgPathList.size() / colCount;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
-        int maxWidth = 560;
+        int maxWidth = 435;
         int cellWidth = maxWidth / colCount;
         int imageMaxWidth = cellWidth - (60 / colCount);
         for (int j = 0; j < rowLength; j++) {
@@ -455,13 +455,13 @@ public class AsposeUtils {
                     String imgPath = imgPathList.get(index);
                     File file = new File(imgPath);
                     BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
-                    int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
-                    int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
+                    int width = maxWidth/colCount;
+                    int height = maxWidth/colCount;
                     if (imgPathList.size() == 1) {
-                        targeHeight = 250;
+                        height = 250;
                     }
                     builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
-                            RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
+                            RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
                     //设置样式
                     builder.getCellFormat().getBorders().setColor(Color.white);
                     builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);

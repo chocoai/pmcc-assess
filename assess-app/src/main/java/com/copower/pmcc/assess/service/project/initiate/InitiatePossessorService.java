@@ -98,6 +98,7 @@ public class InitiatePossessorService {
     }
 
     public boolean remove(Integer id) {
+        initiateContactsService.remove(id, InitiateContactsEnum.POSSESSOR.getId());
         return dao.remove(id);
     }
 

@@ -56,6 +56,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -5318,13 +5319,17 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
-                List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                List<SchemeReportFileItem> schemeReportFileItemList = schemeReportFileService.getListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                if (CollectionUtils.isNotEmpty(schemeReportFileItemList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     }
-                    this.imgComposing(sysAttachmentDtoList, builder);
+                    if(schemeReportFileItemList.size()>1) {
+                        this.imageInsertToWrod3(schemeReportFileItemList, 3, builder);
+                    }else{
+                        this.imageInsertToWrod3(schemeReportFileItemList, 1, builder);
+                    }
                 }
             }
         }
@@ -5332,25 +5337,68 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    public void imgComposing(List<SchemeReportFileItem> sysAttachmentDtoList, DocumentBuilder builder) throws Exception {
-        List<Map<String, String>> imgList = Lists.newArrayList();
-        for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
-            Map<String, String> imgMap = Maps.newHashMap();
-            String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
-            if (FileUtils.checkImgSuffix(imgPath)) {
-                String imgSuffixName = sysAttachmentDto.getFileName();
-                if (imgSuffixName.contains(".")) {
-                    imgSuffixName = sysAttachmentDto.getFileName().substring(0, imgSuffixName.lastIndexOf("."));
+    public void imageInsertToWrod3(List<SchemeReportFileItem> schemeReportFileList, Integer colCount, DocumentBuilder builder) throws Exception {
+        if (CollectionUtils.isEmpty(schemeReportFileList)) throw new RuntimeException("imgPathList empty");
+        if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
+        if (builder == null) throw new RuntimeException("builder empty");
+        Table table = builder.startTable();
+        int rowLength = (schemeReportFileList.size() % colCount > 0 ? (schemeReportFileList.size() / colCount) + 1 : schemeReportFileList.size() / colCount) *2;//行数
+        Integer index = 0;
+        //根据不同列数设置 表格与图片的宽度 总宽度为560
+        int maxWidth = 435;
+        int cellWidth = maxWidth / colCount;
+        for (int j = 0; j < rowLength; j++) {
+            //插入图片
+            if (j % 2 == 0) {
+                for (int k = 0; k < colCount; k++) {
+                    index = j / 2 * colCount + k;
+                    if (index < schemeReportFileList.size()) {
+                        SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
+                        List<SysAttachmentDto> attachmentList = schemeReportFileService.getAttachmentListBySchemeReportFile(schemeReportFileItem);
+                        builder.insertCell();
+                        String imgPath = "";
+                        if (attachmentList.size() == 1) {
+                            imgPath = baseAttachmentService.downloadFtpFileToLocal(attachmentList.get(0).getId());
+                        } else if (attachmentList.size() > 1) {
+                            List<String> paths = Lists.newArrayList();
+                            for (SysAttachmentDto item : attachmentList) {
+                                paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
+                            }
+                            imgPath = generateCommonMethod.getCombinationOfhead(paths);
+                        }
+                        int width = maxWidth/colCount;
+                        int height = maxWidth/colCount;
+                        if(schemeReportFileList.size()==1){
+                            height = 250;
+                        }
+                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
+                                RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
+                        //设置样式
+                        builder.getCellFormat().getBorders().setColor(Color.white);
+                        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+                        builder.getCellFormat().setWidth(cellWidth);
+                        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+                        builder.getRowFormat().setAlignment(RowAlignment.LEFT);
+                        // builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    }
                 }
-                imgMap.put(imgPath, imgSuffixName);
-                imgList.add(imgMap);
+                builder.endRow();
             }
-        }
-        if (imgList.size() == 1) {
-            AsposeUtils.imageInsertToWrod2(imgList, 1, builder);
-        }
-        if (imgList.size() > 1) {
-            AsposeUtils.imageInsertToWrod2(imgList, 3, builder);
+            //插入名称
+            if (j % 2 != 0) {
+                for (int k = 0; k < colCount; k++) {
+                    index = j / 2 * colCount + k;
+                    if (index < schemeReportFileList.size()) {
+                        SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
+                        builder.insertCell();
+                        builder.write(schemeReportFileItem.getFileName());
+                    }
+                }
+                builder.endRow();
+            }
         }
     }
 
@@ -5361,7 +5409,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(areaId);
+        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(projectId);
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getDeclareRecordId());
@@ -5389,10 +5437,10 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         List<String> imgPathList = null;
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
-            Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(areaId);
+            Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(projectId);
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 //1.先取地址不一致附件
-                List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getId());
+                List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getDeclareRecordId());
                 if (CollectionUtils.isNotEmpty(addressFileList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {
@@ -5404,7 +5452,7 @@ public class GenerateBaseDataService {
         }
 
         //2.法定优先受偿款附件
-        Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(areaId);
+        Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(projectId);
         List<SysAttachmentDto> reimFileList = reimbursementFileList.get(1);
         if (CollectionUtils.isNotEmpty(reimFileList)) {
             builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
@@ -5419,14 +5467,19 @@ public class GenerateBaseDataService {
         }
 
         //3.取得自定义的附件
-        List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(areaId);
-        if (CollectionUtils.isNotEmpty(reportFileCustomList)) {
-            for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
-                List<SysAttachmentDto> fileList = schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId());
-                if (CollectionUtils.isNotEmpty(fileList)) {
-                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeReportFileCustom.getName())), true);
-                    this.imgComposingByAttachmentDtoList(fileList, builder);
+        if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
+            for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
+                List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(schemeJudgeObject.getDeclareRecordId());
+                if (CollectionUtils.isNotEmpty(reportFileCustomList)) {
+                    List<SysAttachmentDto> fileList = Lists.newArrayList();
+                    for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
+                        fileList.addAll(schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId()));
+                    }
+                    if (CollectionUtils.isNotEmpty(fileList)) {
+                        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
+                        this.imgComposingByAttachmentDtoList(fileList, builder);
+                    }
                 }
             }
         }

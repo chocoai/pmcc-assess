@@ -206,6 +206,17 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/projectClearData", name = "项目清除所属项目的数据  仅仅限于草稿这样做", method = RequestMethod.POST)
+    public HttpResult projectClearData(Integer id) {
+        try {
+            projectInfoService.projectClearData(id) ;
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/projectEditSubmit", name = "项目立项返回修改", method = RequestMethod.POST)
     public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) {
         try {

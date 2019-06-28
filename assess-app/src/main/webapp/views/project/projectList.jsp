@@ -220,11 +220,11 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = "";
                 if (row.projectStatus) {
-                    console.log(row.projectStatus) ;
                     if (row.projectStatus == '草稿') {
-                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectInfoEdit?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='重新申请' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-pencil-square-o '></i></a>";
+                        str += "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectInfoEdit?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='重新申请' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-pencil-square-o '></i></a>";
+                        str += '<a class="btn btn-xs btn-success"  href="javascript:projectClearData(' + row.id + ');" ><i class="fa fa-times">删除立项数据</i></a>';
                     } else {
-                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                        str += "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
                     }
                 }
                 return str;
@@ -299,6 +299,30 @@
             }
         });
     };
+
+    //项目清除
+    function projectClearData(id) {
+        Alert("确认删除!", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/projectClearData",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadProjectList();
+                    }
+                    else {
+                        Alert("失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    }
 
     //重置查询条件
     function queryReset() {

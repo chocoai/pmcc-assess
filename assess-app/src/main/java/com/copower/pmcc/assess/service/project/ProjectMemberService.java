@@ -49,6 +49,10 @@ public class ProjectMemberService {
     @Autowired
     private PublicService publicService;
 
+    public boolean deleteProjectMemberById(Integer id){
+        return projectMemberDao.deleteProjectMemberById(id) ;
+    }
+
     public Map<String, SysUserDto> relationUserMap(List<SysUserDto> sysUserList) {
         Map<String, SysUserDto> map = Maps.newHashMap();
         for (SysUserDto dto : sysUserList) {

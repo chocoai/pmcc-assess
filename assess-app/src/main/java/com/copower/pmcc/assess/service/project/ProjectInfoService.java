@@ -667,6 +667,9 @@ public class ProjectInfoService {
         return crmBaseDataDicDtos;
     }
 
+    /**
+     * 仅仅是联系人清楚
+     */
     public void clear() {
         consignorService.clear();
         possessorService.clear();
@@ -679,6 +682,38 @@ public class ProjectInfoService {
         if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
                 baseAttachmentService.deleteAttachmentByDto(attachmentDto);
+            }
+        }
+    }
+
+    public void projectClearData(Integer id){
+        if (id == null){
+            return;
+        }
+        ProjectInfo projectInfo = getProjectInfoById(id) ;
+        if (projectInfo == null){
+            return;
+        }
+        ProjectInfoVo projectInfoVo = getSimpleProjectInfoVo(projectInfo) ;
+        projectInfoDao.deleteByProjectInfoId(id) ;
+        if (projectInfoVo.getConsignorVo() != null){
+            if (projectInfoVo.getConsignorVo().getId() != null){
+                consignorService.remove(projectInfoVo.getConsignorVo().getId()) ;
+            }
+        }
+        if (projectInfoVo.getUnitInformationVo() != null){
+            if (projectInfoVo.getUnitInformationVo().getId() != null){
+                unitInformationService.remove(projectInfoVo.getUnitInformationVo().getId()) ;
+            }
+        }
+        if (projectInfoVo.getPossessorVo() != null){
+            if (projectInfoVo.getPossessorVo().getId() != null){
+                possessorService.remove(projectInfoVo.getPossessorVo().getId()) ;
+            }
+        }
+        if (projectInfoVo.getProjectMemberVo() != null){
+            if (projectInfoVo.getProjectMemberVo().getId() != null){
+                projectMemberService.deleteProjectMemberById(projectInfoVo.getProjectMemberVo().getId()) ;
             }
         }
     }

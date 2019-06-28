@@ -28,6 +28,10 @@ public class ProjectInfoDao {
     @Autowired
     private CustomProjectInfoMapper customProjectInfoMapper;
 
+    public boolean deleteByProjectInfoId(Integer id){
+        return projectInfoMapper.deleteByPrimaryKey(id) == 1;
+    }
+
     public Boolean addProjectInfo(ProjectInfo projectInfo) {
         return projectInfoMapper.insertSelective(projectInfo) > 0;
     }

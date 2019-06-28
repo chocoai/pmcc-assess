@@ -108,6 +108,7 @@ public class InitiateUnitInformationService {
     }
 
     public boolean remove(Integer id) {
+        initiateContactsService.remove(id, InitiateContactsEnum.UNIT_INFORMATION.getId());
         return dao.remove(id);
     }
 
