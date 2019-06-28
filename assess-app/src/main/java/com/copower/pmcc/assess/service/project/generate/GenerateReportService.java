@@ -266,7 +266,7 @@ public class GenerateReportService {
         Document document = new Document(tempDir);
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
         List<String> stringList = Lists.newArrayList();
-        String text = PoiUtils.getWordTableContent(tempDir);
+        String text = PoiUtils.getWordContent(tempDir);
         if (StringUtils.isNotEmpty(text)) {
             //取出word中表格数据
             Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(text);
