@@ -1,13 +1,12 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeReportFileDto;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.SchemeReportFileService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -27,27 +26,27 @@ import java.util.List;
 @Controller
 @RequestMapping("/projectReportFile")
 public class ProjectReportFileController {
-    private final Logger logger= LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private SchemeReportFileService schemeReportFileService;
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
-    @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private SchemeAreaGroupService schemeAreaGroupService;
+    private DeclareRecordService declareRecordService;
+
 
     @RequestMapping(value = "/index", name = "委托书及证明文件")
-    public ModelAndView index(Integer projectId,Integer areaId) {
+    public ModelAndView index(Integer projectId) throws Exception {
         ModelAndView modelAndView = new ModelAndView("/project/projectReportFileIndex");
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)));
-        modelAndView.addObject("areaId", areaId);
-        modelAndView.addObject("areaGroup", schemeAreaGroupService.get(areaId));
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);//该区域下的所有委估对象
-        modelAndView.addObject("judgeObjectList", judgeObjectList);
-        modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(areaId));
-        modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(areaId));
-        modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(areaId));
+        modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(projectId));
+        modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(projectId));
+        modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(projectId));
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
+        modelAndView.addObject("declareRecordList", declareRecordList);
+        //生成位置图
+        schemeReportFileService.makeJudgeObjectPosition(declareRecordList);
+
         return modelAndView;
     }
 
@@ -64,8 +63,10 @@ public class ProjectReportFileController {
             }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("取得计划编制信息异常");
         }
     }
+
+
 }

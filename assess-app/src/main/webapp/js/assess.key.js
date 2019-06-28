@@ -52,6 +52,7 @@ AssessDBKey.BaseFileTemplate = "tb_base_file_template";
 AssessDBKey.GenerateReportInfo = "tb_generate_report_info";
 
 
+AssessDBKey.DeclareRecord = "tb_declare_record";
 AssessDBKey.DeclareRealtyHouseCert = "tb_declare_realty_house_cert";
 AssessDBKey.DeclareRealtyLandCert = "tb_declare_realty_land_cert";
 AssessDBKey.DeclareRealtyRealEstateCert = "tb_declare_realty_real_estate_cert";

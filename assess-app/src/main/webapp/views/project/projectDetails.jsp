@@ -110,19 +110,8 @@
                 </div>
                 <div class="x_content">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary">估价委托书及相关证明</button>
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <c:forEach items="${areaGroupList}" var="item">
-                                <li><a target="_blank"
-                                       href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}&areaId=${item.id}">${item.areaName}</a>
-                                </li>
-                            </c:forEach>
-                        </ul>
+                        <a target="_blank" class="btn btn-primary"
+                           href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}">估价委托书及相关证明</a>
                     </div>
                     <div class="btn-group">
                         <button type="button" onclick="projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());"

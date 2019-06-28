@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileCustom;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.SchemeReportFileService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +44,10 @@ public class SchemeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getLiveSituationAll", name = "获取委估对象下所有的实况图片 ", method = RequestMethod.POST)
-    public HttpResult getLiveSituationAll(Integer judgeObjectId,Integer projectId) {
+    @RequestMapping(value = "/getListByDeclareRecordId", name = "获取实况图片", method = RequestMethod.POST)
+    public HttpResult getListByDeclareRecordId(Integer declareRecordId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationAll(judgeObjectId,projectId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getListByDeclareRecordId(declareRecordId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -55,10 +55,10 @@ public class SchemeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getLiveSituationSelect", name = "获取选择的实况图片 ", method = RequestMethod.POST)
-    public HttpResult getLiveSituationSelect(Integer judgeObjectId) {
+    @RequestMapping(value = "/getSchemeReportFileItemById", name = "获取一个实况图片 ", method = RequestMethod.GET)
+    public HttpResult getSchemeReportFileItemById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationSelect(judgeObjectId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getSchemeReportFileItemById(id));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -67,9 +67,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/reportFileEditName", name = "选择的图片修改名称 ", method = RequestMethod.POST)
-    public HttpResult reportFileEditName(Integer id,String newName) {
+    public HttpResult reportFileEditName(Integer id,String newName,Integer newSorting) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.reportFileEditName(id,newName));
+            return HttpResult.newCorrectResult(schemeReportFileService.reportFileEditName(id,newName,newSorting));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -77,10 +77,11 @@ public class SchemeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/selectLiveSituation", name = "选择实况图片 ", method = RequestMethod.POST)
-    public HttpResult selectLiveSituation(SchemeReportFileItem schemeReportFileItem) {
+    @RequestMapping(value = "/saveToReportFileItem", name = "添加实况图片 ", method = RequestMethod.POST)
+    public HttpResult saveToReportFileItem(SchemeReportFileItem schemeReportFileItem) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.selectLiveSituation(schemeReportFileItem));
+            schemeReportFileService.saveToReportFileItem(schemeReportFileItem);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

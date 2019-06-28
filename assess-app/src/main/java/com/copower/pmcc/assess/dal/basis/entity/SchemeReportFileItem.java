@@ -25,6 +25,8 @@ public class SchemeReportFileItem {
 
     private Date gmtModified;
 
+    private Integer declareRecordId;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class SchemeReportFileItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
+    }
+
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
     }
 }
