@@ -99,6 +99,7 @@ public class InitiateConsignorService {
     }
 
     public boolean remove(Integer id) {
+        initiateContactsService.remove(id, InitiateContactsEnum.CONSIGNOR.getId());
         return dao.remove(id);
     }
 
