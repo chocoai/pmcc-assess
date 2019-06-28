@@ -102,9 +102,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/getReportFileCustomList", name = "获取自定义块 ", method = RequestMethod.POST)
-    public HttpResult getReportFileCustomList(Integer areaId) {
+    public HttpResult getReportFileCustomList(Integer declareRecordId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getReportFileCustomList(areaId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getReportFileCustomList(declareRecordId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

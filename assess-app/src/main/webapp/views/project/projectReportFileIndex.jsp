@@ -130,6 +130,7 @@
                 </div>
                 <div class="x_content collapse">
                     <c:forEach items="${declareRecordList}" var="declareRecord">
+                        <c:if test="${not empty ownershipCertFileList.get(declareRecord.id)}">
                         <div class="row">
                             <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
                                 <div class="x_panel">
@@ -161,6 +162,7 @@
                                 </div>
                             </div>
                         </div>
+                        </c:if>
                     </c:forEach>
                 </div>
             </div>
@@ -177,10 +179,10 @@
                 <div class="x_content collapse">
                     <div class="row">
                         <c:forEach items="${declareRecordList}" var="declareRecord">
-                            <c:if test="${not empty inventoryAddressFileList.get(declareRecord.id)}">
-                                <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                    <div class="x_panel">
-                                        <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
+                            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+                                <div class="x_panel">
+                                    <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
+                                    <c:if test="${not empty inventoryAddressFileList.get(declareRecord.id)}">
                                         <div class="x_panel">
                                             <div class="x_title">登记与实际地址不一致附件</div>
                                             <div>
@@ -212,16 +214,26 @@
                                                 </table>
                                             </div>
                                         </div>
+                                    </c:if>
+                                    <input type="button" class="btn btn-success" value="自定义添加"
+                                           onclick="addReportFileCustom(${declareRecord.id});">
+                                    <div class="row report-file-custom${declareRecord.id}">
                                     </div>
                                 </div>
-                            </c:if>
+                            </div>
+
+                            <script type="text/javascript">
+                                $(function () {
+                                    //1.加载该委估对象所有相关实况照片 2.加载该委估对象已选择的实况照片
+                                    loadReportFileCustomList(${declareRecord.id});
+                                })
+                            </script>
                         </c:forEach>
                     </div>
-                    <input type="button" class="btn btn-success" value="添加" onclick="">
-                    <div class="row report-file-custom">
-                    </div>
+
                 </div>
             </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
@@ -329,23 +341,21 @@
     $(function () {
         uploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
-        //loadReportFileCustomList();
     });
 
 
-
     //加载自定义附件
-    function loadReportFileCustomList() {
+    function loadReportFileCustomList(declareRecordId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/scheme/getReportFileCustomList',
             data: {
-                areaId: '${areaId}'
+                declareRecordId: declareRecordId
             },
             success: function (result) {
                 if (result.ret) {
                     $('.report-file-custom').empty();
                     $.each(result.data, function (i, item) {
-                        appendCustomHtml(item.id, item.name);
+                        appendCustomHtml(item.id, item.name, declareRecordId);
                     })
                 } else {
                     Alert(result.errmsg);
@@ -355,26 +365,26 @@
     }
 
     //添加html
-    function appendCustomHtml(id, name) {
+    function appendCustomHtml(id, name, declareRecordId) {
         var html = $("#reportFileCustomHtml").html();
         html = html.replace(/{id}/g, id).replace(/{name}/g, name);
-        $('.report-file-custom').append(html);
+        $('.report-file-custom' + declareRecordId).append(html);
         uploadFiles(AssessDBKey.SchemeReportFileCustom, id, "reportFileCustom" + id);
         loadUploadFiles(AssessDBKey.SchemeReportFileCustom, id, "reportFileCustom" + id);
     }
 
     //添加自定义块
-    function addReportFileCustom() {
+    function addReportFileCustom(declareRecordId) {
         layer.prompt(function (value, index, elem) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/scheme/addReportFileCustom',
                 data: {
                     name: value,
-                    areaId: '${areaId}'
+                    declareRecordId: declareRecordId
                 },
                 success: function (result) {
                     if (result.ret) {
-                        appendCustomHtml(result.data.id, result.data.name);
+                        appendCustomHtml(result.data.id, result.data.name, declareRecordId);
                         layer.close(index);
                     } else {
                         Alert(result.errmsg);
@@ -440,7 +450,7 @@
                     $.each(result.data, function (i, item) {
                         html += '<tr><td><input type="text" name="fileName" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
                             '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this);" ></td>' +
-                            '<td>' + item.fileViewName +'</td><td>' +
+                            '<td>' + item.fileViewName + '</td><td>' +
                             '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="getAndInit(' + item.id + ');">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
                     })
@@ -451,6 +461,7 @@
             }
         })
     }
+
     //移除实况照片
     function removeLiveSituation(id, _this) {
         $.ajax({
@@ -471,11 +482,12 @@
     function addLiveSituationFile(declareRecordId) {
         $("#frmItemFile").clearAll();
         $("#frmItemFile").find("input[name='declareRecordId']").val(declareRecordId);
-        uploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement","uploadSupplementFile");
-        loadUploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement","uploadSupplementFile");
+        uploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement", "uploadSupplementFile");
+        loadUploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement", "uploadSupplementFile");
         $("#addItemModal").modal("show");
 
     }
+
     //修改实况照片
     function getAndInit(id) {
         $.ajax({
@@ -488,8 +500,8 @@
                     $("#frmItemFile").clearAll();
                     $("#frmItemFile").initForm(result.data);
                     console.log(result.data);
-                    uploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement","uploadSupplementFile");
-                    loadUploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement","uploadSupplementFile");
+                    uploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
+                    loadUploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
                     $('#addItemModal').modal("show");
                 }
             },
@@ -498,6 +510,7 @@
             }
         })
     }
+
     //保存实况照片
     function saveItemFileData() {
         if (!$("#frmItemFile").valid()) {
@@ -513,7 +526,7 @@
                 if (result.ret) {
                     toastr.success('保存成功');
                     $('#addItemModal').modal('hide');
-                    loadLiveSituation($('tbody[data-id="'+data.declareRecordId+'"][data-name=live_situation_select]'), data.declareRecordId);
+                    loadLiveSituation($('tbody[data-id="' + data.declareRecordId + '"][data-name=live_situation_select]'), data.declareRecordId);
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -524,6 +537,7 @@
             }
         })
     }
+
     //实况照片改名
     function reportFileEditName(id, _this) {
         var newName = $(_this).closest("tr").find("input[name='fileName']").val();

@@ -5361,7 +5361,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(areaId);
+        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(projectId);
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getDeclareRecordId());
@@ -5389,10 +5389,10 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         List<String> imgPathList = null;
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
-            Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(areaId);
+            Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(projectId);
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 //1.先取地址不一致附件
-                List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getId());
+                List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getDeclareRecordId());
                 if (CollectionUtils.isNotEmpty(addressFileList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {
@@ -5404,7 +5404,7 @@ public class GenerateBaseDataService {
         }
 
         //2.法定优先受偿款附件
-        Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(areaId);
+        Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(projectId);
         List<SysAttachmentDto> reimFileList = reimbursementFileList.get(1);
         if (CollectionUtils.isNotEmpty(reimFileList)) {
             builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
@@ -5419,14 +5419,19 @@ public class GenerateBaseDataService {
         }
 
         //3.取得自定义的附件
-        List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(areaId);
-        if (CollectionUtils.isNotEmpty(reportFileCustomList)) {
-            for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
-                List<SysAttachmentDto> fileList = schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId());
-                if (CollectionUtils.isNotEmpty(fileList)) {
-                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeReportFileCustom.getName())), true);
-                    this.imgComposingByAttachmentDtoList(fileList, builder);
+        if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
+            for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
+                List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(schemeJudgeObject.getDeclareRecordId());
+                if (CollectionUtils.isNotEmpty(reportFileCustomList)) {
+                    List<SysAttachmentDto> fileList = Lists.newArrayList();
+                    for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
+                        fileList.addAll(schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId()));
+                    }
+                    if (CollectionUtils.isNotEmpty(fileList)) {
+                        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
+                        this.imgComposingByAttachmentDtoList(fileList, builder);
+                    }
                 }
             }
         }
