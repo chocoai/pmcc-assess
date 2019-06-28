@@ -51,15 +51,24 @@ public class ProjectWorkStageService {
         //   return  queryWorkStageById(id);
     }
 
-    public List<ProjectWorkStage> queryWorkStageByClassIdAndTypeId(int typeId,Boolean formCache) {
-        if(formCache==Boolean.TRUE){
+    public ProjectWorkStage getProjectWorkStageFirst(Integer projectClassId, Integer projectTypeId) {
+        ProjectWorkStage where = new ProjectWorkStage();
+        where.setProjectClassId(projectClassId);
+        where.setProjectTypeId(projectTypeId);
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageDao.getProjectWorkStage(where);
+        if (CollectionUtils.isEmpty(projectWorkStages)) return null;
+        return projectWorkStages.get(0);
+    }
+
+    public List<ProjectWorkStage> queryWorkStageByClassIdAndTypeId(int typeId, Boolean formCache) {
+        if (formCache == Boolean.TRUE) {
             String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE_TYPEID, String.valueOf(typeId));
             try {
                 return LangUtils.listCache(rdsKey, typeId, ProjectWorkStage.class, o -> projectWorkStageDao.getWorkStageByTypeId(o));
             } catch (Exception e) {
                 return projectWorkStageDao.getWorkStageByTypeId(typeId);
             }
-        }else {
+        } else {
             return projectWorkStageDao.getWorkStageByTypeId(typeId);
         }
     }
@@ -85,18 +94,17 @@ public class ProjectWorkStageService {
                 projectWorkStage.setBisLoadDefalut(Boolean.FALSE);
             projectWorkStageDao.updateWorkStageById(projectWorkStage);
         }
-        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE,"");
+        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE, "");
     }
 
     public boolean updateWorkStage(ProjectWorkStage projectWorkStage) {
-        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE,"");
+        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE, "");
         return projectWorkStageDao.updateWorkStageById(projectWorkStage);
     }
 
     public String getWorkStageUserAccounts(Integer stageId, Integer projectId) {
         ProjectWorkStage projectWorkStage = cacheProjectWorkStage(stageId);
-        if(projectWorkStage==null)
-        {
+        if (projectWorkStage == null) {
             return "";
         }
         String boxRoleType = projectWorkStage.getBoxRoleType();

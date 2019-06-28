@@ -33,9 +33,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
@@ -69,6 +72,8 @@ public class GenerateCommonMethod {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ServletContext servletContext;
 
     public final String SchemeJudgeObjectName = "委估对象";
     public final String errorStr = "无";
@@ -1119,4 +1124,87 @@ public class GenerateCommonMethod {
             return String.format("%s%d", StringUtils.join(FieldsName, "_"), areaId);
     }
 
+    //拼接2-4张图片
+    public String getCombinationOfhead(List<String> paths) throws IOException {
+        List<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
+        // 压缩图片所有的图片生成尺寸 250x250
+        for (int i = 0; i < paths.size(); i++) {
+            bufferedImages.add(resize2(paths.get(i), 250, 250, true));
+        }
+        int width = 510; // 这是画板的宽高
+        int height = 510; // 这是画板的高度
+        BufferedImage outImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        // 生成画布
+        Graphics g = outImage.getGraphics();
+        Graphics2D g2d = (Graphics2D) g;
+        // 设置背景色 白色
+        g2d.setBackground(new Color(255,255,255));
+        // 通过使用当前绘图表面的背景色进行填充来清除指定的矩形。
+        g2d.clearRect(0, 0, width, height);
+        // 开始拼凑 根据图片的数量判断该生成那种样式的组合头像目前为4中
+        int j = 1;
+        for (int i = 1; i <= bufferedImages.size(); i++) {
+            if (bufferedImages.size() <= 4) {
+                if (i <= 2) {
+                    g2d.drawImage(bufferedImages.get(i - 1), 250 * i + 10 * i
+                            - 260, 0, null);
+                } else {
+                    g2d.drawImage(bufferedImages.get(i - 1), 250 * j + 10 * j
+                            - 260, 260, null);
+                    j++;
+                }
+            }
+        }
+        String replace = UUID.randomUUID().toString().replace("-", "");
+        String strDayTempDirName = DateUtils.formatNowToYMD();
+        String basePath = "/temporary";
+        String localDirPath = this.servletContext.getRealPath(basePath + "/" + strDayTempDirName);
+        String localFileName = String.format("%s.%s", replace, "jpg");
+        String localFullPath = localDirPath + File.separator + localFileName;
+        ImageIO.write(outImage, "JPG", new File(localFullPath));
+        return localFullPath;
+    }
+
+    /**
+     * 图片缩放
+     *
+     * @param filePath
+     *            图片路径
+     * @param height
+     *            高度
+     * @param width
+     *            宽度
+     * @param bb
+     *            比例不对时是否需要补白
+     */
+    public static BufferedImage resize2(String filePath, int height, int width,
+                                        boolean bb) {
+        try {
+            File f = new File(filePath);
+            BufferedImage bi = ImageIO.read(f);
+            Image itemp = bi.getScaledInstance(width, height,
+                    Image.SCALE_SMOOTH);
+            if (bb) {
+                BufferedImage image = new BufferedImage(width, height,
+                        BufferedImage.TYPE_INT_RGB);
+                Graphics2D g = image.createGraphics();
+                g.setColor(Color.white);
+                g.fillRect(0, 0, width, height);
+                if (width == itemp.getWidth(null))
+                    g.drawImage(itemp, 0, (height - itemp.getHeight(null)) / 2,
+                            itemp.getWidth(null), itemp.getHeight(null),
+                            Color.white, null);
+                else
+                    g.drawImage(itemp, (width - itemp.getWidth(null)) / 2, 0,
+                            itemp.getWidth(null), itemp.getHeight(null),
+                            Color.white, null);
+                g.dispose();
+                itemp = image;
+            }
+            return (BufferedImage) itemp;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

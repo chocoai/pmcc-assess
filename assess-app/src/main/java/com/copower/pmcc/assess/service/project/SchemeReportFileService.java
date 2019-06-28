@@ -21,10 +21,8 @@ import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryServic
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -163,7 +161,7 @@ public class SchemeReportFileService extends BaseService {
                 sysAttachmentDto.setFileName("位置示意图.jpg");
                 // 已存在则不生成
                 List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-                if(CollectionUtils.isNotEmpty(attachmentList)) continue;
+                if (CollectionUtils.isNotEmpty(attachmentList)) continue;
                 publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
             }
         }
@@ -192,7 +190,7 @@ public class SchemeReportFileService extends BaseService {
         where.setDeclareRecordId(declareRecordId);
         where.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
         List<SchemeReportFileItem> reportFileItemList = schemeReportFileItemDao.getReportFileItemList(where);
-        return LangUtils.transform(reportFileItemList,o->getSchemeReportFileItemVo(o));
+        return LangUtils.transform(reportFileItemList, o -> getSchemeReportFileItemVo(o));
     }
 
 
@@ -222,8 +220,8 @@ public class SchemeReportFileService extends BaseService {
     public Map<Integer, List<SysAttachmentDto>> getOwnershipCertFileList(Integer projectId) {
         Map<Integer, List<SysAttachmentDto>> map = Maps.newHashMap();
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
-        if(CollectionUtils.isNotEmpty(declareRecordList)) {
-            for (DeclareRecord declareRecord:declareRecordList){
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
+            for (DeclareRecord declareRecord : declareRecordList) {
                 List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
                 map.put(declareRecord.getId(), attachmentDtoList);
             }
@@ -240,7 +238,7 @@ public class SchemeReportFileService extends BaseService {
     public Map<Integer, List<SysAttachmentDto>> getInventoryAddressFileList(Integer projectId) {
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
         Map<Integer, List<SysAttachmentDto>> map = Maps.newHashMap();
-        if(CollectionUtils.isNotEmpty(declareRecordList)) {
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
             for (DeclareRecord declareRecord : declareRecordList) {
                 List<SysAttachmentDto> attachmentDtoList = getInventoryContentFile(declareRecord);
                 map.put(declareRecord.getId(), attachmentDtoList);
@@ -292,12 +290,12 @@ public class SchemeReportFileService extends BaseService {
     /**
      * 获取自定义块
      *
-     * @param areaId
+     * @param declareRecordId
      * @return
      */
-    public List<SchemeReportFileCustom> getReportFileCustomList(Integer areaId) {
+    public List<SchemeReportFileCustom> getReportFileCustomList(Integer declareRecordId) {
         SchemeReportFileCustom where = new SchemeReportFileCustom();
-        where.setAreaId(areaId);
+        where.setDeclareRecordId(declareRecordId);
         return schemeReportFileCustomDao.getReportFileCustomList(where);
     }
 
@@ -356,9 +354,9 @@ public class SchemeReportFileService extends BaseService {
         }
     }
 
-    public SchemeReportFileItemVo getSchemeReportFileItemVo(SchemeReportFileItem schemeReportFileItem){
+    public SchemeReportFileItemVo getSchemeReportFileItemVo(SchemeReportFileItem schemeReportFileItem) {
         SchemeReportFileItemVo vo = new SchemeReportFileItemVo();
-        BeanUtils.copyProperties(schemeReportFileItem,vo);
+        BeanUtils.copyProperties(schemeReportFileItem, vo);
         //获取附件
         SysAttachmentDto reportAttachment = new SysAttachmentDto();
         reportAttachment.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRecord.class));
@@ -366,8 +364,8 @@ public class SchemeReportFileService extends BaseService {
         reportAttachment.setTableId(schemeReportFileItem.getId());
 
         List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(reportAttachment);
-        if(!org.springframework.util.CollectionUtils.isEmpty(attachmentList)){
-            StringBuilder stringBuilder=new StringBuilder();
+        if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
+            StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentList) {
                 stringBuilder.append(baseAttachmentService.getViewHtml(attachmentDto));
             }
@@ -377,7 +375,7 @@ public class SchemeReportFileService extends BaseService {
     }
 
 
-    public List<SysAttachmentDto> getAttachmentListBySchemeReportFile(SchemeReportFileItem schemeReportFileItem){
+    public List<SysAttachmentDto> getAttachmentListBySchemeReportFile(SchemeReportFileItem schemeReportFileItem) {
         SysAttachmentDto reportAttachment = new SysAttachmentDto();
         reportAttachment.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRecord.class));
         reportAttachment.setFieldsName("live_situation_select_supplement");

@@ -3,6 +3,8 @@ package com.copower.pmcc.assess.dal.basis.dao.project;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectWorkStageMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,9 +23,16 @@ public class ProjectWorkStageDao {
     private ProjectWorkStageMapper projectWorkStageMapper;
 
 
-
     public ProjectWorkStage getProjectWorkStageById(Integer id) {
         return projectWorkStageMapper.selectByPrimaryKey(id);
+    }
+
+    public List<ProjectWorkStage> getProjectWorkStage(ProjectWorkStage projectWorkStage) {
+        ProjectWorkStageExample example = new ProjectWorkStageExample();
+        MybatisUtils.convertObj2Example(projectWorkStage, example);
+        example.setOrderByClause("stage_sort");
+        List<ProjectWorkStage> workStages = projectWorkStageMapper.selectByExample(example);
+        return workStages;
     }
 
 

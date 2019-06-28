@@ -133,7 +133,7 @@
                 tableId: $("#id").val(),
                 proectId:${documentSend.projectId}
             },
-            edit: true,
+            editFlag: true,
             deleteFlag: true
         });
     }

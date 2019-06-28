@@ -69,7 +69,7 @@
                 tableId: ${documentSend.id},
                 proectId:${documentSend.projectId}
             },
-            edit: true,
+            editFlag: true,
             deleteFlag: false
         });
     })

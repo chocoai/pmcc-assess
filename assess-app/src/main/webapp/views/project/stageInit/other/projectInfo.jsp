@@ -7,7 +7,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目名称<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input required placeholder="项目名称" name="projectName"
                            value="${projectInfo.projectName}" class="form-control">
                 </div>
@@ -18,6 +18,12 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="urgency" class="form-control search-select select2 urgency" required="required">
                     </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label"></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <div id="_projectPhaseWorkTemp"></div>
                 </div>
             </div>
         </div>

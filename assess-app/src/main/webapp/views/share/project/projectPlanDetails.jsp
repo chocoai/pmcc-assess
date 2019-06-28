@@ -42,15 +42,8 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     工作程序模板
                 </label>
-                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                    <c:forEach var="item" items="${projectPhaseProcessTemplate}">
-                        <div class='alert alert-success'
-                             style='width: 18%;float: left;padding: 5px;margin-bottom: 10px;margin-left: 10px;'>
-                            <i class='fa fa-download' onclick='downAttachments(${item.id})'
-                               style='margin-right: 5px;font-size: 15px;cursor: pointer;'></i>
-                            <a onclick='showAttachment(${item.id},"${item.fileExtension}")'>${item.fileName}</a>
-                        </div>
-                    </c:forEach>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <div id="_projectPhaseWorkTemp"></div>
                 </div>
             </div>
             <c:if test="${not empty projectPlanDetails.returnDetailsReason}">
@@ -67,6 +60,17 @@
     </div>
 </div>
 <script type="application/javascript">
+    $(function () {
+        FileUtils.getFileShows({
+            target: "projectPhaseWorkTemp",
+            formData: {
+                tableName: AssessDBKey.ProjectPhase,
+                fieldsName: AssessUploadKey.PROJECT_PHASE_WORK_TEMP,
+                tableId: '${projectPlanDetails.projectPhaseId}'
+            },
+            deleteFlag: false
+        })
+    })
 
     //提交标识，业务数据JSON串，提交成果描述，实际工时,工作成果选择复核人
     function submitToServer(data, mustUseBox) {
