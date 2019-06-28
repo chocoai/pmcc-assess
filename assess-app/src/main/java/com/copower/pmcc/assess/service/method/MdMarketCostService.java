@@ -10,8 +10,6 @@ import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
-import com.copower.pmcc.assess.service.data.DataInfrastructureCostService;
-import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -48,10 +46,6 @@ public class MdMarketCostService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private DataInfrastructureCostService dataDataInfrastructureCostService;
-    @Autowired
-    private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
     @Autowired
@@ -148,37 +142,6 @@ public class MdMarketCostService {
         return dataBuildingNewRateService.dataBuildingNewRateList();
     }
 
-    public List<DataInfrastructureCost> infrastructureCostList() {
-        List<DataInfrastructureCost> infrastructureCosts = dataDataInfrastructureCostService.infrastructureCostList();
-        Ordering<DataInfrastructureCost> firstOrdering = Ordering.from(new Comparator<DataInfrastructureCost>() {
-            @Override
-            public int compare(DataInfrastructureCost o1, DataInfrastructureCost o2) {
-                return o1.getGmtCreated().compareTo(o2.getGmtCreated());
-            }
-        }).reverse();//排序 并且反转
-        Collections.sort(infrastructureCosts, firstOrdering);
-        List<DataInfrastructureCost> costList = Lists.newArrayList();
-        if (!ObjectUtils.isEmpty(infrastructureCosts)) {
-            costList.add(infrastructureCosts.get(0));
-        }
-        return costList;
-    }
-
-    public List<DataInfrastructureMatchingCost> infrastructureMatchingCosts() {
-        List<DataInfrastructureMatchingCost> infrastructureMatchingCosts = dataInfrastructureMatchingCostService.infrastructureMatchingCosts();
-        Ordering<DataInfrastructureMatchingCost> firstOrdering = Ordering.from(new Comparator<DataInfrastructureMatchingCost>() {
-            @Override
-            public int compare(DataInfrastructureMatchingCost o1, DataInfrastructureMatchingCost o2) {
-                return o1.getGmtCreated().compareTo(o2.getGmtCreated());
-            }
-        }).reverse();//排序 并且反转
-        Collections.sort(infrastructureMatchingCosts, firstOrdering);
-        List<DataInfrastructureMatchingCost> costList = Lists.newArrayList();
-        if (!ObjectUtils.isEmpty(infrastructureMatchingCosts)) {
-            costList.add(infrastructureMatchingCosts.get(0));
-        }
-        return costList;
-    }
 
     public List<BaseDataDic> getAddedValueAdditionalTaxRate() {
         return baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_ADDEDVALUEADDITIONALTAXRATE);

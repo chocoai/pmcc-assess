@@ -1,17 +1,12 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
-import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureCost;
-import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureMatchingCost;
 import com.copower.pmcc.assess.dal.basis.entity.MdCostAndDevelopmentOther;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdCostAndDevelopmentOtherService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,16 +60,8 @@ public class ProjectTaskMarketCostController {
     @ResponseBody
     @RequestMapping(value = "/listCostAndMatchingCost", name = "获取基础设施费用列表和公共配套设施费用以及基础设施维护", method = RequestMethod.GET)
     public HttpResult listDataInfrastructureCostAndInfrastructureMatchingCost(String province,String city,String district) {
-        Map<Object, Object> map = Maps.newHashMap();
-        map.put(DataInfrastructureCost.class.getSimpleName(), mdMarketCostService.infrastructureCostList());
-        map.put(DataInfrastructureMatchingCost.class.getSimpleName(), mdMarketCostService.infrastructureMatchingCosts());
 
-        ProjectInfo projectInfo = new ProjectInfo();
-        projectInfo.setProvince(province);
-        projectInfo.setCity(city);
-        projectInfo.setDistrict(district);
-        map.put(InfrastructureVo.class.getSimpleName(), mdMarketCostService.infrastructureList(projectInfo));
-        return HttpResult.newCorrectResult(map);
+        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody

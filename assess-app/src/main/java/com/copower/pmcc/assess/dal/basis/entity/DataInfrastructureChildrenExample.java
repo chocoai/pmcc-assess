@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DataInfrastructureMatchingCostExample {
+public class DataInfrastructureChildrenExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public DataInfrastructureMatchingCostExample() {
+    public DataInfrastructureChildrenExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -293,6 +293,136 @@ public class DataInfrastructureMatchingCostExample {
 
         public Criteria andNumberNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("number not between", value1, value2, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(String value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(String value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(String value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(String value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(String value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLike(String value) {
+            addCriterion("type like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotLike(String value) {
+            addCriterion("type not like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<String> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<String> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(String value1, String value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(String value1, String value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIsNull() {
+            addCriterion("tax is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIsNotNull() {
+            addCriterion("tax is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxEqualTo(BigDecimal value) {
+            addCriterion("tax =", value, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxNotEqualTo(BigDecimal value) {
+            addCriterion("tax <>", value, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxGreaterThan(BigDecimal value) {
+            addCriterion("tax >", value, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("tax >=", value, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxLessThan(BigDecimal value) {
+            addCriterion("tax <", value, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("tax <=", value, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIn(List<BigDecimal> values) {
+            addCriterion("tax in", values, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxNotIn(List<BigDecimal> values) {
+            addCriterion("tax not in", values, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("tax between", value1, value2, "tax");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("tax not between", value1, value2, "tax");
             return (Criteria) this;
         }
 

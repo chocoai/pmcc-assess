@@ -3,12 +3,16 @@ package com.copower.pmcc.assess.dal.basis.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class DataInfrastructureCost {
+public class DataInfrastructureChildren {
     private Integer id;
 
     private String name;
 
     private BigDecimal number;
+
+    private String type;
+
+    private BigDecimal tax;
 
     private String creator;
 
@@ -40,6 +44,22 @@ public class DataInfrastructureCost {
 
     public void setNumber(BigDecimal number) {
         this.number = number;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
     }
 
     public String getCreator() {
