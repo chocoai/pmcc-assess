@@ -12,12 +12,13 @@
             <%@include file="/views/share/form_head.jsp" %>
 
             <div class="x_panel">
-                <div class="x_title collapse-link">
+                <div class="x_title">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2>
-                        <input type="hidden" name="projectInfoVoJson" id="projectInfoVoJson" value='${projectInfoVoJson}'>
+                        <input type="hidden" name="projectInfoVoJson" id="projectInfoVoJson"
+                               value='${projectInfoVoJson}'>
                         项目信息
                         <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
                     </h2>
@@ -31,7 +32,7 @@
             </div>
             <div class="x_panel">
                 <div class="x_title collapse-link">
-                    <h2> 委托人</h2>
+                    <h2>委托人</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
@@ -41,7 +42,6 @@
                 <%@include file="/views/project/stageInit/other/projectConsignor.jsp" %>
                 <!-- 委托人 end -->
             </div>
-
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <h2> 占有人</h2>
@@ -106,15 +106,26 @@
         try {
             objProject.loadInit();
         } catch (e) {
-            console.log(e) ;
+            console.log(e);
         }
+
+        FileUtils.getFileShows({
+            target: "projectPhaseWorkTemp",
+            showMode: "table",
+            formData: {
+                tableName: AssessDBKey.ProjectPhase,
+                fieldsName: AssessUploadKey.PROJECT_PHASE_WORK_TEMP,
+                tableId: '${projectPhaseId}'
+            },
+            deleteFlag: false
+        })
     });
 
     //保存草稿
     function projectApplyDraft() {
         var projectInfo = formParams(objProject.config.info.frm);//projectName
         var html = "<span class='help-block' for='for'>" + "该字段为必填项" + "</span>";
-        if (!objProject.isNotBlank(projectInfo.projectName)){
+        if (!objProject.isNotBlank(projectInfo.projectName)) {
             $("#" + objProject.config.info.frm).find("input[name='projectName']").after(html.replace(/for/g, "projectName"));
             return false;
         }
@@ -156,7 +167,7 @@
         if ("${empty processInsId?"0":processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/projectInfo/projectEditSubmit";
             var approvalData = formParams("frm_approval");
-            data.projectInfoId = '${projectInfo.id}' ;
+            data.projectInfoId = '${projectInfo.id}';
             data = $.extend(data, approvalData);
         }
         Loading.progressShow();

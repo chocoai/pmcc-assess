@@ -4,6 +4,7 @@
 var AssessUploadKey = {}
 
 AssessUploadKey.PROJECT_PROXY = "project_proxy";//估计委托书
+AssessUploadKey.PROJECT_PHASE_WORK_TEMP = "workTemp";//事项工作模板
 AssessUploadKey.JUDGE_OBJECT_POSITION = "judge_object_position";//估价对象位置示意图
 AssessUploadKey.JUDGE_OBJECT_LIVE_SITUATION = "judge_object_live_situation";//估价对象实况照片
 AssessUploadKey.JUDGE_OBJECT_OWNERSHIP = "judge_object_ownership";//估价对象权属证明

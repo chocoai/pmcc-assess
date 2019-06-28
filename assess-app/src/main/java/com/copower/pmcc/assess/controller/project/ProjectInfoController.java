@@ -19,14 +19,17 @@ import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +80,10 @@ public class ProjectInfoController {
     private DocumentTemplateService documentTemplateService;
     @Autowired
     private BaseParameterService baseParameterService;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -103,6 +110,13 @@ public class ProjectInfoController {
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         projectInfoService.clear();
+        //获取立项事项
+        ProjectWorkStage workStage = projectWorkStageService.getProjectWorkStageFirst(projectClassId, projectTypeId);
+        if (workStage != null) {
+            List<ProjectPhase> projectPhases = projectPhaseService.getCacheProjectPhaseByCategoryId(projectCategoryId, workStage.getId());
+            if (CollectionUtils.isNotEmpty(projectPhases))
+                modelAndView.addObject("projectPhaseId", projectPhases.get(0).getId());
+        }
         return modelAndView;
     }
 
@@ -120,7 +134,7 @@ public class ProjectInfoController {
         }
         if (projectInfo != null) {
             if (modelAndView != null) {
-                ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo) ;
+                ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
                 modelAndView.addObject("projectInfo", projectInfoVo);
                 modelAndView.addObject("projectInfoVoJson", JSONObject.toJSONString(projectInfoVo));
                 modelAndView.addObject("projectId", projectInfo.getId());
@@ -184,7 +198,7 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectDataUpdate", name = "项目更新  注意这个方法不是和任何流程相关的方法", method = RequestMethod.POST)
     public HttpResult projectDataUpdate(ProjectInfo projectInfo) {
         try {
-            projectInfoService.saveProjectInfo(projectInfo) ;
+            projectInfoService.saveProjectInfo(projectInfo);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -379,10 +393,9 @@ public class ProjectInfoController {
         try {
             projectInfoService.finishProject(projectId);
             return HttpResult.newCorrectResult();
-        } catch (BusinessException e){
+        } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("完成项目异常");
         }
