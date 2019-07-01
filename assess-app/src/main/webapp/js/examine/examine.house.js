@@ -117,7 +117,7 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDecorateSituation, data.basicHouse.decorateSituation, function (html, data) {
                 houseCommon.houseForm.find("select.decorateSituation").empty().html(html).trigger('change');
             });
-            if (houseCommon.isNotBlank(data.basicHouse.decorateSituationDescription)) {
+            if (!houseCommon.isNotBlank(data.basicHouse.decorateSituationDescription)) {
                 //变更
                 houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
                     if($(this).find('option:selected').val()) {
