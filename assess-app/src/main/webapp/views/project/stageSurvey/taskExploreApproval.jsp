@@ -54,7 +54,6 @@
 <script type="application/javascript">
     $(function () {
         taskExploreIndex.getExploreTaskList();
-        taskExploreIndex.loadDeclareCert();
     })
     function saveform() {
         saveApprovalform("");
@@ -68,7 +67,7 @@
     //加载现场查勘数据
     taskExploreIndex.getExploreTaskList = function () {
         $("#explore_list").treegrid({
-                url: '${pageContext.request.contextPath}/surveyCaseStudy/getPlanTaskExamineList?planDetailsId=${projectPlanDetails.id}',
+            url: '${pageContext.request.contextPath}/surveySceneExplore/getSceneExploreList?projectId=${projectPlanDetails.projectId}&pid=${projectPlanDetails.pid}',
                 method: 'get',
                 idField: 'id',
                 treeField: 'projectPhaseName',
@@ -141,24 +140,6 @@
         );
     }
 
-    //加载申报权证
-    taskExploreIndex.loadDeclareCert = function () {
-        var jsonContent = $("#jsonContentExplore").val();
-        if (jsonContent) {
-            jsonContent = JSON.parse(jsonContent);
-            var html = '';
-            $.each(jsonContent, function (i, item) {
-                html += '<span class="checkbox-inline">';
-                html += '<input type="checkbox" id="declareCert' + item.key + '" disabled="disabled"';
-                if (item.isChecked) {
-                    html += ' checked="checked" ';
-                }
-                html += 'name="declareCert" value="' + item.value + '" class="form-inline">';
-                html += '<label for="declareCert' + item.key + '">' + item.value + '</label></span>';
-            })
-            $('#declareCertContent').append(html);
-        }
-    }
 </script>
 </body>
 </html>
