@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
@@ -36,6 +37,8 @@ public class ProjectCenterController {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private PublicService publicService;
 
     @RequestMapping(value = "/projectNew", name = "新建项目")
     public ModelAndView projectNew() {
@@ -65,6 +68,7 @@ public class ProjectCenterController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myParticipation");
         List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
                 ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         modelAndView.addObject("statusEnumList", statusEnumList);
         //委托目的
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
@@ -89,6 +93,7 @@ public class ProjectCenterController {
         //委托目的
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         modelAndView.addObject("entrustPurposeList", entrustPurposeList);
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
 

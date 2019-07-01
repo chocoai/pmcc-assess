@@ -111,7 +111,6 @@
 
         FileUtils.getFileShows({
             target: "projectPhaseWorkTemp",
-            showMode: "table",
             formData: {
                 tableName: AssessDBKey.ProjectPhase,
                 fieldsName: AssessUploadKey.PROJECT_PHASE_WORK_TEMP,
