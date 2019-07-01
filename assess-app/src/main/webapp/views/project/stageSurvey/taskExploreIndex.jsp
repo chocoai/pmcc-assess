@@ -28,6 +28,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <input type="button" class="btn btn-success" value="新增" onclick="addExamineItem();">
                     <table id="explore_list" class="table table-bordered" style="max-height: auto;"></table>
                 </div>
             </div>
@@ -39,15 +40,18 @@
                         </button>
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-success" onclick="taskExploreIndex.checkAssignmentTask(false);">
+                                <button id="btn_submit" class="btn btn-success"
+                                        onclick="taskExploreIndex.checkAssignmentTask(false);">
                                     直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
-                                <button id="btn_submit" class="btn btn-primary" onclick="taskExploreIndex.checkAssignmentTask(true);">
+                                <button id="btn_submit" class="btn btn-primary"
+                                        onclick="taskExploreIndex.checkAssignmentTask(true);">
                                     提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button id="btn_submit" class="btn btn-success" onclick="taskExploreIndex.checkAssignmentTask();">
+                                <button id="btn_submit" class="btn btn-success"
+                                        onclick="taskExploreIndex.checkAssignmentTask();">
                                     提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:otherwise>
@@ -61,15 +65,14 @@
 </div>
 </body>
 
+
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
     $(function () {
         taskExploreIndex.getExploreTaskList();
-        taskExploreIndex.loadDeclareCert();
     });
-
 
 
     //任务提交
@@ -119,7 +122,7 @@
     //加载现场查勘数据
     taskExploreIndex.getExploreTaskList = function () {
         $("#explore_list").treegrid({
-                url: '${pageContext.request.contextPath}/surveyCaseStudy/getPlanTaskExamineList?planDetailsId=${projectPlanDetails.id}',
+                url: '${pageContext.request.contextPath}/surveySceneExplore/getSceneExploreList?projectId=${projectPlanDetails.projectId}&pid=${projectPlanDetails.pid}',
                 method: 'get',
                 idField: 'id',
                 treeField: 'projectPhaseName',
@@ -130,7 +133,6 @@
                 onLoadSuccess: function () {
                     $(".tooltips").tooltip();
                 },
-
                 columns: [[
                     {
                         field: "projectPhaseName",
@@ -190,6 +192,8 @@
                             var s = "";
                             if (row.id == '${projectPlanDetails.id}') {
                                 s += taskExploreIndex.getExamineFormTypeHtml(row.status, row.id);
+                            }else if(!row.projectPhaseId){
+                                s += "<a data-placement='top' href='javascript://' data-original-title='删除' class='btn btn-xs btn-warning tooltips'  onclick='deleteExamineItem(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
                             } else {
                                 //只用于处理任务
                                 if (row.excuteUrl) {
@@ -228,25 +232,23 @@
     };
 
     taskExploreIndex.getExamineFormTypeHtml = function (status, id) {
-        var html = "<a  data-placement='top' data-original-title='工业与非工业选择' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.showModel(" + id + ")'>选择<i class='fa'></i></a>";
+        var html = "<a  data-placement='top' data-original-title='工业与非工业选择' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.showModel()'>选择<i class='fa'></i></a>";
         return html;
     };
 
-    taskExploreIndex.showModel = function (pid) {
-        var node = $("#explore_list").treegrid('find', pid);
-        $("#pid").val(node.id);
+    taskExploreIndex.showModel = function () {
+        $('#plan_details_modal').find('[name=operationType]').val("select");
         $('#plan_details_modal').modal('show');
     };
 
     taskExploreIndex.assignmentTask = function () {
         var data = formParams('frm_planDetails');
-        console.log(data);
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyExamine/examineTaskAssignment",
             data: {
                 planDetailsId: "${projectPlanDetails.id}",
-                formData: JSON.stringify(data),
+                operationType: data.operationType,
                 examineFormType: data.examineFormType
             },
             type: "post",
@@ -313,6 +315,38 @@
         return JSON.stringify(keyValueArray);
     }
 
+    //新增现场查勘内容项
+    function addExamineItem() {
+        $('#plan_details_modal').find('[name=operationType]').val("add");
+        $('#plan_details_modal').modal('show');
+    }
+
+    //删除添加的查勘任务
+    function deleteExamineItem(id) {
+        Alert("确认要删除么？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/surveyCaseStudy/deleteCaseTask",
+                data: {
+                    id: id
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success("删除成功");
+                        taskExploreIndex.getExploreTaskList();
+                    } else {
+                        Alert("删除失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            });
+        })
+    }
 </script>
 
 <div id="plan_details_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
@@ -329,7 +363,7 @@
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="panel-body">
                             <form id="frm_planDetails" class="form-horizontal">
-                                <input type="hidden" id="pid" name="pid"/>
+                                <input type="hidden" name="operationType"/>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <c:forEach var="item" items="${examineFormTypeList}">
@@ -346,7 +380,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消

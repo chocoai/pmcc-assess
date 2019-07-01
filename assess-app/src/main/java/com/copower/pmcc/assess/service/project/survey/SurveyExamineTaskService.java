@@ -401,7 +401,6 @@ public class SurveyExamineTaskService {
         if (this.checkAssignmentTask(planDetailsId)) {
             throw new BusinessException("请不要重复添加");
         }
-        ;
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
