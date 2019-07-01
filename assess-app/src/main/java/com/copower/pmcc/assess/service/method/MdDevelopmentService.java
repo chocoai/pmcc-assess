@@ -1,13 +1,12 @@
 package com.copower.pmcc.assess.service.method;
 
-import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentArchitecturalDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentHypothesisDao;
-import com.copower.pmcc.assess.dal.basis.entity.MdDevelopment;
-import com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitectural;
-import com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentHypothesis;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentEngineeringDao;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentLandDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsContentService;
 import com.copower.pmcc.erp.common.CommonService;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,13 @@ public class MdDevelopmentService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private MdDevelopmentArchitecturalDao mdDevelopmentArchitecturalDao;
-    @Autowired
     private MdDevelopmentDao mdDevelopmentDao;
     @Autowired
-    private MdDevelopmentHypothesisDao mdDevelopmentHypothesisDao;
+    private MdDevelopmentLandDao mdDevelopmentLandDao;
+    @Autowired
+    private MdDevelopmentEngineeringDao mdDevelopmentEngineeringDao;
+    @Autowired
+    private DeclareEconomicIndicatorsContentService declareEconomicIndicatorsContentService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public MdDevelopment initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -41,56 +42,77 @@ public class MdDevelopmentService {
         return mdDevelopment;
     }
 
-    public MdDevelopment getMdDevelopmentById(Integer id){
+    public MdDevelopment getMdDevelopmentById(Integer id) {
         return mdDevelopmentDao.getMdDevelopmentById(id);
     }
 
-    public MdDevelopmentHypothesis getMdDevelopmentHypothesis(Integer id){
-        return mdDevelopmentHypothesisDao.getMdDevelopmentHypothesisById(id);
+    public MdDevelopmentEngineering getByMdDevelopmentEngineeringId(Integer id) {
+        return mdDevelopmentEngineeringDao.getByMdDevelopmentEngineeringId(id);
     }
 
-    public MdDevelopmentArchitectural getMdDevelopmentArchitectural(Integer id){
-        return mdDevelopmentArchitecturalDao.getMdDevelopmentArchitecturalById(id);
+    public MdDevelopmentLand getByMdDevelopmentLandId(Integer id) {
+        return mdDevelopmentLandDao.getByMdDevelopmentLandId(id);
     }
 
-    public Integer saveAndUpdateMdDevelopmentHypothesis(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
-        if (mdDevelopmentHypothesis.getId() == null) {
-            mdDevelopmentHypothesis.setCreator(commonService.thisUserAccount());
-            Integer id = mdDevelopmentHypothesisDao.addMdDevelopmentHypothesis(mdDevelopmentHypothesis);
-            return id;
+    public void saveAndUpdateMdDevelopment(MdDevelopment oo) {
+        if (oo.getId() == null || oo.getId() == 0) {
+            oo.setCreator(commonService.thisUserAccount());
+            mdDevelopmentDao.addMdDevelopment(oo);
         } else {
-            mdDevelopmentHypothesisDao.updateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
-            return null;
+            mdDevelopmentDao.updateMdDevelopment(oo);
         }
     }
 
-    public Integer saveAndUpdateMdDevelopment(MdDevelopment mdDevelopment) {
-        if (mdDevelopment.getId() == null) {
-            mdDevelopment.setCreator(commonService.thisUserAccount());
-            Integer id = mdDevelopmentDao.addMdDevelopment(mdDevelopment);
-            return id;
-        } else {
-            mdDevelopmentDao.updateMdDevelopment(mdDevelopment);
-            return null;
+    public void deleteMdDevelopmentEngineering(Integer id, Integer planDetailsId) {
+        mdDevelopmentEngineeringDao.deleteMdDevelopmentEngineering(id);
+        DeclareEconomicIndicatorsContent select = new DeclareEconomicIndicatorsContent();
+        select.setPlanDetailsId(planDetailsId);
+        select.setIndicatorsHeadId(id);
+        List<DeclareEconomicIndicatorsContent> contentList = declareEconomicIndicatorsContentService.getDeclareEconomicIndicatorsContentList(select);
+        if (CollectionUtils.isNotEmpty(contentList)) {
+            for (DeclareEconomicIndicatorsContent oo : contentList) {
+                declareEconomicIndicatorsContentService.deleteDeclareEconomicIndicatorsContent(oo.getId());
+            }
         }
     }
 
-    public Integer saveAndUpdateMdDevelopmentArchitectural(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
-        if (mdDevelopmentArchitectural.getId() == null) {
-            mdDevelopmentArchitectural.setCreator(commonService.thisUserAccount());
-            Integer id = mdDevelopmentArchitecturalDao.addMdDevelopmentArchitectural(mdDevelopmentArchitectural);
-            return  id;
+    public List<MdDevelopmentEngineering> getMdDevelopmentEngineeringList(MdDevelopmentEngineering oo) {
+        return mdDevelopmentEngineeringDao.getMdDevelopmentEngineeringList(oo);
+    }
+
+    public void saveAndUpdateMdDevelopmentEngineering(MdDevelopmentEngineering oo) {
+        if (oo.getId() == null || oo.getId() == 0) {
+            oo.setCreator(commonService.thisUserAccount());
+            mdDevelopmentEngineeringDao.addMdDevelopmentEngineering(oo);
         } else {
-            mdDevelopmentArchitecturalDao.updateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
-            return null;
+            mdDevelopmentEngineeringDao.updateMdDevelopmentEngineering(oo);
         }
     }
 
-    public List<MdDevelopmentArchitectural> getMdDevelopmentArchitecturalList(MdDevelopmentArchitectural mdDevelopmentArchitectural){
-        return mdDevelopmentArchitecturalDao.getMdDevelopmentArchitecturalList(mdDevelopmentArchitectural);
+    public void saveAndUpdateMdDevelopmentLand(MdDevelopmentLand oo) {
+        if (oo.getId() == null || oo.getId() == 0) {
+            oo.setCreator(commonService.thisUserAccount());
+            mdDevelopmentLandDao.addMdDevelopmentLand(oo);
+        } else {
+            mdDevelopmentLandDao.updateMdDevelopmentLand(oo);
+        }
     }
 
-    public List<MdDevelopmentHypothesis> getMdDevelopmentHypothesisList(MdDevelopmentHypothesis mdDevelopmentHypothesis){
-        return mdDevelopmentHypothesisDao.getMdDevelopmentHypothesisList(mdDevelopmentHypothesis);
+    public List<MdDevelopmentLand> getMdDevelopmentLandList(MdDevelopmentLand mdDevelopmentLand) {
+        return mdDevelopmentLandDao.getMdDevelopmentLandList(mdDevelopmentLand);
     }
+
+    public void deleteMdDevelopmentLand(Integer id, Integer planDetailsId) {
+        mdDevelopmentLandDao.deleteMdDevelopmentLand(id);
+        DeclareEconomicIndicatorsContent select = new DeclareEconomicIndicatorsContent();
+        select.setPlanDetailsId(planDetailsId);
+        select.setIndicatorsHeadId(id);
+        List<DeclareEconomicIndicatorsContent> contentList = declareEconomicIndicatorsContentService.getDeclareEconomicIndicatorsContentList(select);
+        if (CollectionUtils.isNotEmpty(contentList)) {
+            for (DeclareEconomicIndicatorsContent oo : contentList) {
+                declareEconomicIndicatorsContentService.deleteDeclareEconomicIndicatorsContent(oo.getId());
+            }
+        }
+    }
+
 }

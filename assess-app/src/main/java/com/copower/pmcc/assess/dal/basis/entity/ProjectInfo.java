@@ -60,6 +60,8 @@ public class ProjectInfo {
 
     private BigDecimal contractPrice;
 
+    private String serviceComeFrom;
+
     private String status;
 
     private String projectStatus;
@@ -298,6 +300,14 @@ public class ProjectInfo {
 
     public void setContractPrice(BigDecimal contractPrice) {
         this.contractPrice = contractPrice;
+    }
+
+    public String getServiceComeFrom() {
+        return serviceComeFrom;
+    }
+
+    public void setServiceComeFrom(String serviceComeFrom) {
+        this.serviceComeFrom = serviceComeFrom == null ? null : serviceComeFrom.trim();
     }
 
     public String getStatus() {

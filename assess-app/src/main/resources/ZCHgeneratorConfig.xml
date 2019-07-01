@@ -57,7 +57,11 @@
             <!--<columnOverride column="child_data" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_data_infrastructure_children" domainObjectName="DataInfrastructureChildren">
+        <table tableName="tb_md_development_engineering" domainObjectName="MdDevelopmentEngineering">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_md_development_land" domainObjectName="MdDevelopmentLand">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

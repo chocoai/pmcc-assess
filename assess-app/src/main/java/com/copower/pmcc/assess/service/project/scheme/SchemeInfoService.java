@@ -56,6 +56,10 @@ public class SchemeInfoService {
         return schemeInfoDao.getInfoList(examle);
     }
 
+    public List<SchemeInfo> getInfoList(SchemeInfo oo){
+        return schemeInfoDao.getInfoList(oo) ;
+    }
+
     public void deleteSchemeInfoByProjectId(Integer projectId) {
         List<SchemeInfo> schemeInfoList = getSchemeInfoList(projectId);
         if (!CollectionUtils.isEmpty(schemeInfoList)) {

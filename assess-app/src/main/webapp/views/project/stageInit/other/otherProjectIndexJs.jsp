@@ -373,6 +373,10 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.value_type, item.valueType, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.valueType").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.serviceComeFrom, item.serviceComeFrom, function (html, data) {
+                console.log(html) ;
+                $("#" + objProject.config.info.frm).find("select[name='serviceComeFrom']").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.property_scope, item.propertyScope, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.propertyScope").empty().html(html).trigger('change');
             });
@@ -1104,7 +1108,6 @@
                         console.log(e);
                     }
                     if (objProject.isNotBlankObjectProperty(data)) {
-                        console.log(data)
                         objProject.info.loadInit(data);
                         objProject.consignor.loadInit(data.consignorVo);
                         objProject.possessor.loadInit(data.possessorVo);

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdDevelopmentArchitecturalMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitectural" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdDevelopmentEngineeringMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineering" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="estimateUnitPriceLandC33" property="estimateunitpricelandc33" jdbcType="VARCHAR" />
     <result column="landPriceCorrecting" property="landpricecorrecting" jdbcType="VARCHAR" />
     <result column="investmentProfit" property="investmentprofit" jdbcType="VARCHAR" />
-    <result column="unforeseenExpenses" property="unforeseenexpenses" jdbcType="VARCHAR" />
     <result column="constructionCostSubtotal" property="constructioncostsubtotal" jdbcType="VARCHAR" />
     <result column="totalGrossFloorArea" property="totalgrossfloorarea" jdbcType="VARCHAR" />
     <result column="estimateSaleTotal" property="estimatesaletotal" jdbcType="VARCHAR" />
-    <result column="json_content" property="jsonContent" jdbcType="CHAR" />
     <result column="engineering_id" property="engineeringId" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineering" extends="BaseResultMap" >
+    <result column="json_content" property="jsonContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,17 +77,22 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estimateUnitPriceLandC33, landPriceCorrecting, investmentProfit, unforeseenExpenses, 
-    constructionCostSubtotal, totalGrossFloorArea, estimateSaleTotal, json_content, engineering_id, 
-    pid, creator, gmt_created, gmt_modified
+    id, estimateUnitPriceLandC33, landPriceCorrecting, investmentProfit, constructionCostSubtotal, 
+    totalGrossFloorArea, estimateSaleTotal, engineering_id, pid, creator, gmt_modified, 
+    gmt_created
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitecturalExample" >
+  <sql id="Blob_Column_List" >
+    json_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineeringExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_md_development_architectural
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_md_development_engineering
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,44 +100,60 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineeringExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_md_development_engineering
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_md_development_architectural
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_md_development_engineering
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_md_development_architectural
+    delete from tb_md_development_engineering
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitecturalExample" >
-    delete from tb_md_development_architectural
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineeringExample" >
+    delete from tb_md_development_engineering
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitectural" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineering" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_development_architectural (estimateUnitPriceLandC33, landPriceCorrecting, 
-      investmentProfit, unforeseenExpenses, constructionCostSubtotal, 
+    insert into tb_md_development_engineering (estimateUnitPriceLandC33, landPriceCorrecting, 
+      investmentProfit, constructionCostSubtotal, 
       totalGrossFloorArea, estimateSaleTotal, 
-      json_content, engineering_id, pid, 
-      creator, gmt_created, gmt_modified
+      engineering_id, pid, creator, 
+      gmt_modified, gmt_created, json_content
       )
     values (#{estimateunitpricelandc33,jdbcType=VARCHAR}, #{landpricecorrecting,jdbcType=VARCHAR}, 
-      #{investmentprofit,jdbcType=VARCHAR}, #{unforeseenexpenses,jdbcType=VARCHAR}, #{constructioncostsubtotal,jdbcType=VARCHAR}, 
+      #{investmentprofit,jdbcType=VARCHAR}, #{constructioncostsubtotal,jdbcType=VARCHAR}, 
       #{totalgrossfloorarea,jdbcType=VARCHAR}, #{estimatesaletotal,jdbcType=VARCHAR}, 
-      #{jsonContent,jdbcType=CHAR}, #{engineeringId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      #{engineeringId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, #{jsonContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitectural" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineering" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_development_architectural
+    insert into tb_md_development_engineering
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="estimateunitpricelandc33 != null" >
         estimateUnitPriceLandC33,
@@ -142,9 +164,6 @@
       <if test="investmentprofit != null" >
         investmentProfit,
       </if>
-      <if test="unforeseenexpenses != null" >
-        unforeseenExpenses,
-      </if>
       <if test="constructioncostsubtotal != null" >
         constructionCostSubtotal,
       </if>
@@ -153,9 +172,6 @@
       </if>
       <if test="estimatesaletotal != null" >
         estimateSaleTotal,
-      </if>
-      <if test="jsonContent != null" >
-        json_content,
       </if>
       <if test="engineeringId != null" >
         engineering_id,
@@ -166,11 +182,14 @@
       <if test="creator != null" >
         creator,
       </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
       <if test="gmtCreated != null" >
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
+      <if test="jsonContent != null" >
+        json_content,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -183,9 +202,6 @@
       <if test="investmentprofit != null" >
         #{investmentprofit,jdbcType=VARCHAR},
       </if>
-      <if test="unforeseenexpenses != null" >
-        #{unforeseenexpenses,jdbcType=VARCHAR},
-      </if>
       <if test="constructioncostsubtotal != null" >
         #{constructioncostsubtotal,jdbcType=VARCHAR},
       </if>
@@ -194,9 +210,6 @@
       </if>
       <if test="estimatesaletotal != null" >
         #{estimatesaletotal,jdbcType=VARCHAR},
-      </if>
-      <if test="jsonContent != null" >
-        #{jsonContent,jdbcType=CHAR},
       </if>
       <if test="engineeringId != null" >
         #{engineeringId,jdbcType=INTEGER},
@@ -207,22 +220,25 @@
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jsonContent != null" >
+        #{jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitecturalExample" resultType="java.lang.Integer" >
-    select count(*) from tb_md_development_architectural
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineeringExample" resultType="java.lang.Integer" >
+    select count(*) from tb_md_development_engineering
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_md_development_architectural
+    update tb_md_development_engineering
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -236,9 +252,6 @@
       <if test="record.investmentprofit != null" >
         investmentProfit = #{record.investmentprofit,jdbcType=VARCHAR},
       </if>
-      <if test="record.unforeseenexpenses != null" >
-        unforeseenExpenses = #{record.unforeseenexpenses,jdbcType=VARCHAR},
-      </if>
       <if test="record.constructioncostsubtotal != null" >
         constructionCostSubtotal = #{record.constructioncostsubtotal,jdbcType=VARCHAR},
       </if>
@@ -247,9 +260,6 @@
       </if>
       <if test="record.estimatesaletotal != null" >
         estimateSaleTotal = #{record.estimatesaletotal,jdbcType=VARCHAR},
-      </if>
-      <if test="record.jsonContent != null" >
-        json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
       <if test="record.engineeringId != null" >
         engineering_id = #{record.engineeringId,jdbcType=INTEGER},
@@ -260,39 +270,59 @@
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      <if test="record.jsonContent != null" >
+        json_content = #{record.jsonContent,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
-    update tb_md_development_architectural
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tb_md_development_engineering
     set id = #{record.id,jdbcType=INTEGER},
       estimateUnitPriceLandC33 = #{record.estimateunitpricelandc33,jdbcType=VARCHAR},
       landPriceCorrecting = #{record.landpricecorrecting,jdbcType=VARCHAR},
       investmentProfit = #{record.investmentprofit,jdbcType=VARCHAR},
-      unforeseenExpenses = #{record.unforeseenexpenses,jdbcType=VARCHAR},
       constructionCostSubtotal = #{record.constructioncostsubtotal,jdbcType=VARCHAR},
       totalGrossFloorArea = #{record.totalgrossfloorarea,jdbcType=VARCHAR},
       estimateSaleTotal = #{record.estimatesaletotal,jdbcType=VARCHAR},
-      json_content = #{record.jsonContent,jdbcType=CHAR},
       engineering_id = #{record.engineeringId,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      json_content = #{record.jsonContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitectural" >
-    update tb_md_development_architectural
+  <update id="updateByExample" parameterType="map" >
+    update tb_md_development_engineering
+    set id = #{record.id,jdbcType=INTEGER},
+      estimateUnitPriceLandC33 = #{record.estimateunitpricelandc33,jdbcType=VARCHAR},
+      landPriceCorrecting = #{record.landpricecorrecting,jdbcType=VARCHAR},
+      investmentProfit = #{record.investmentprofit,jdbcType=VARCHAR},
+      constructionCostSubtotal = #{record.constructioncostsubtotal,jdbcType=VARCHAR},
+      totalGrossFloorArea = #{record.totalgrossfloorarea,jdbcType=VARCHAR},
+      estimateSaleTotal = #{record.estimatesaletotal,jdbcType=VARCHAR},
+      engineering_id = #{record.engineeringId,jdbcType=INTEGER},
+      pid = #{record.pid,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineering" >
+    update tb_md_development_engineering
     <set >
       <if test="estimateunitpricelandc33 != null" >
         estimateUnitPriceLandC33 = #{estimateunitpricelandc33,jdbcType=VARCHAR},
@@ -303,9 +333,6 @@
       <if test="investmentprofit != null" >
         investmentProfit = #{investmentprofit,jdbcType=VARCHAR},
       </if>
-      <if test="unforeseenexpenses != null" >
-        unforeseenExpenses = #{unforeseenexpenses,jdbcType=VARCHAR},
-      </if>
       <if test="constructioncostsubtotal != null" >
         constructionCostSubtotal = #{constructioncostsubtotal,jdbcType=VARCHAR},
       </if>
@@ -314,9 +341,6 @@
       </if>
       <if test="estimatesaletotal != null" >
         estimateSaleTotal = #{estimatesaletotal,jdbcType=VARCHAR},
-      </if>
-      <if test="jsonContent != null" >
-        json_content = #{jsonContent,jdbcType=CHAR},
       </if>
       <if test="engineeringId != null" >
         engineering_id = #{engineeringId,jdbcType=INTEGER},
@@ -327,30 +351,47 @@
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      <if test="jsonContent != null" >
+        json_content = #{jsonContent,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentArchitectural" >
-    update tb_md_development_architectural
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineering" >
+    update tb_md_development_engineering
     set estimateUnitPriceLandC33 = #{estimateunitpricelandc33,jdbcType=VARCHAR},
       landPriceCorrecting = #{landpricecorrecting,jdbcType=VARCHAR},
       investmentProfit = #{investmentprofit,jdbcType=VARCHAR},
-      unforeseenExpenses = #{unforeseenexpenses,jdbcType=VARCHAR},
       constructionCostSubtotal = #{constructioncostsubtotal,jdbcType=VARCHAR},
       totalGrossFloorArea = #{totalgrossfloorarea,jdbcType=VARCHAR},
       estimateSaleTotal = #{estimatesaletotal,jdbcType=VARCHAR},
-      json_content = #{jsonContent,jdbcType=CHAR},
       engineering_id = #{engineeringId,jdbcType=INTEGER},
       pid = #{pid,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      json_content = #{jsonContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentEngineering" >
+    update tb_md_development_engineering
+    set estimateUnitPriceLandC33 = #{estimateunitpricelandc33,jdbcType=VARCHAR},
+      landPriceCorrecting = #{landpricecorrecting,jdbcType=VARCHAR},
+      investmentProfit = #{investmentprofit,jdbcType=VARCHAR},
+      constructionCostSubtotal = #{constructioncostsubtotal,jdbcType=VARCHAR},
+      totalGrossFloorArea = #{totalgrossfloorarea,jdbcType=VARCHAR},
+      estimateSaleTotal = #{estimatesaletotal,jdbcType=VARCHAR},
+      engineering_id = #{engineeringId,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

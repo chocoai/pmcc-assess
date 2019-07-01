@@ -31,24 +31,24 @@ public class MdCostAndDevelopmentOtherService {
     }
 
     public void saveAndUpdateMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {
-        if (mdCostAndDevelopmentOther.getId() == null || mdCostAndDevelopmentOther.getId().intValue()==0) {
-            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostBuilding.class.getSimpleName())) {
-                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
-            }
-            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostConstruction.class.getSimpleName())) {
-                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
-            }
-            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentHypothesis.class.getSimpleName())) {
-                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
-            }
-            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentArchitectural.class.getSimpleName())) {
-                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
-            }
-            mdCostAndDevelopmentOther.setPid(0);
-            this.addMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
-        } else {
-            this.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
-        }
+//        if (mdCostAndDevelopmentOther.getId() == null || mdCostAndDevelopmentOther.getId().intValue()==0) {
+//            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostBuilding.class.getSimpleName())) {
+//                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
+//            }
+//            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostConstruction.class.getSimpleName())) {
+//                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
+//            }
+//            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentHypothesis.class.getSimpleName())) {
+//                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
+//            }
+//            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentArchitectural.class.getSimpleName())) {
+//                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
+//            }
+//            mdCostAndDevelopmentOther.setPid(0);
+//            this.addMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+//        } else {
+//            this.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+//        }
     }
 
 

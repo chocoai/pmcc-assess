@@ -1916,6 +1916,76 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andServiceComeFromIsNull() {
+            addCriterion("service_come_from is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromIsNotNull() {
+            addCriterion("service_come_from is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromEqualTo(String value) {
+            addCriterion("service_come_from =", value, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromNotEqualTo(String value) {
+            addCriterion("service_come_from <>", value, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromGreaterThan(String value) {
+            addCriterion("service_come_from >", value, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromGreaterThanOrEqualTo(String value) {
+            addCriterion("service_come_from >=", value, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromLessThan(String value) {
+            addCriterion("service_come_from <", value, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromLessThanOrEqualTo(String value) {
+            addCriterion("service_come_from <=", value, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromLike(String value) {
+            addCriterion("service_come_from like", value, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromNotLike(String value) {
+            addCriterion("service_come_from not like", value, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromIn(List<String> values) {
+            addCriterion("service_come_from in", values, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromNotIn(List<String> values) {
+            addCriterion("service_come_from not in", values, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromBetween(String value1, String value2) {
+            addCriterion("service_come_from between", value1, value2, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceComeFromNotBetween(String value1, String value2) {
+            addCriterion("service_come_from not between", value1, value2, "serviceComeFrom");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="landEngineeringModel">
-    <jsp:include page="../developmentModule/land/parameter.jsp"></jsp:include>
+    <jsp:include page="../developmentModule/commonParameter.jsp"></jsp:include>
     <jsp:include page="../developmentModule/land/cost.jsp"></jsp:include>
     <div>
         <form class="form-horizontal">

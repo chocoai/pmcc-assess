@@ -524,6 +524,9 @@ public class ProjectInfoService {
             return projectInfoVo;
         }
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
+        if (org.apache.commons.lang3.math.NumberUtils.isNumber(projectInfoVo.getServiceComeFrom())){
+            projectInfoVo.setServiceComeFrom(bidBaseDataDicService.getNameById(projectInfoVo.getServiceComeFrom()));
+        }
         if (StringUtils.isNotEmpty(projectInfo.getContractId()) && StringUtils.isNotEmpty(projectInfo.getContractId())) {
             List<String> contractIds = FormatUtils.transformString2List(projectInfo.getContractId());
             List<String> contractName = FormatUtils.transformString2List(projectInfo.getContractName()) ;

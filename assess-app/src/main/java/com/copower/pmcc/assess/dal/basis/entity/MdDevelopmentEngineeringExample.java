@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MdDevelopmentArchitecturalExample {
+public class MdDevelopmentEngineeringExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public MdDevelopmentArchitecturalExample() {
+    public MdDevelopmentEngineeringExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -375,76 +375,6 @@ public class MdDevelopmentArchitecturalExample {
             return (Criteria) this;
         }
 
-        public Criteria andUnforeseenexpensesIsNull() {
-            addCriterion("unforeseenExpenses is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesIsNotNull() {
-            addCriterion("unforeseenExpenses is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesEqualTo(String value) {
-            addCriterion("unforeseenExpenses =", value, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesNotEqualTo(String value) {
-            addCriterion("unforeseenExpenses <>", value, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesGreaterThan(String value) {
-            addCriterion("unforeseenExpenses >", value, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesGreaterThanOrEqualTo(String value) {
-            addCriterion("unforeseenExpenses >=", value, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesLessThan(String value) {
-            addCriterion("unforeseenExpenses <", value, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesLessThanOrEqualTo(String value) {
-            addCriterion("unforeseenExpenses <=", value, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesLike(String value) {
-            addCriterion("unforeseenExpenses like", value, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesNotLike(String value) {
-            addCriterion("unforeseenExpenses not like", value, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesIn(List<String> values) {
-            addCriterion("unforeseenExpenses in", values, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesNotIn(List<String> values) {
-            addCriterion("unforeseenExpenses not in", values, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesBetween(String value1, String value2) {
-            addCriterion("unforeseenExpenses between", value1, value2, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
-        public Criteria andUnforeseenexpensesNotBetween(String value1, String value2) {
-            addCriterion("unforeseenExpenses not between", value1, value2, "unforeseenexpenses");
-            return (Criteria) this;
-        }
-
         public Criteria andConstructioncostsubtotalIsNull() {
             addCriterion("constructionCostSubtotal is null");
             return (Criteria) this;
@@ -655,76 +585,6 @@ public class MdDevelopmentArchitecturalExample {
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIsNull() {
-            addCriterion("json_content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentIsNotNull() {
-            addCriterion("json_content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentEqualTo(String value) {
-            addCriterion("json_content =", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotEqualTo(String value) {
-            addCriterion("json_content <>", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentGreaterThan(String value) {
-            addCriterion("json_content >", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
-            addCriterion("json_content >=", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLessThan(String value) {
-            addCriterion("json_content <", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLessThanOrEqualTo(String value) {
-            addCriterion("json_content <=", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLike(String value) {
-            addCriterion("json_content like", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotLike(String value) {
-            addCriterion("json_content not like", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentIn(List<String> values) {
-            addCriterion("json_content in", values, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotIn(List<String> values) {
-            addCriterion("json_content not in", values, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentBetween(String value1, String value2) {
-            addCriterion("json_content between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotBetween(String value1, String value2) {
-            addCriterion("json_content not between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
         public Criteria andEngineeringIdIsNull() {
             addCriterion("engineering_id is null");
             return (Criteria) this;
@@ -915,66 +775,6 @@ public class MdDevelopmentArchitecturalExample {
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedIsNull() {
-            addCriterion("gmt_created is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedIsNotNull() {
-            addCriterion("gmt_created is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedEqualTo(Date value) {
-            addCriterion("gmt_created =", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotEqualTo(Date value) {
-            addCriterion("gmt_created <>", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedGreaterThan(Date value) {
-            addCriterion("gmt_created >", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
-            addCriterion("gmt_created >=", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedLessThan(Date value) {
-            addCriterion("gmt_created <", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
-            addCriterion("gmt_created <=", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedIn(List<Date> values) {
-            addCriterion("gmt_created in", values, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotIn(List<Date> values) {
-            addCriterion("gmt_created not in", values, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
-            addCriterion("gmt_created between", value1, value2, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
-            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
-            return (Criteria) this;
-        }
-
         public Criteria andGmtModifiedIsNull() {
             addCriterion("gmt_modified is null");
             return (Criteria) this;
@@ -1032,6 +832,66 @@ public class MdDevelopmentArchitecturalExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNull() {
+            addCriterion("gmt_created is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNotNull() {
+            addCriterion("gmt_created is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedEqualTo(Date value) {
+            addCriterion("gmt_created =", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotEqualTo(Date value) {
+            addCriterion("gmt_created <>", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThan(Date value) {
+            addCriterion("gmt_created >", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_created >=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThan(Date value) {
+            addCriterion("gmt_created <", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_created <=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIn(List<Date> values) {
+            addCriterion("gmt_created in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotIn(List<Date> values) {
+            addCriterion("gmt_created not in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
+            addCriterion("gmt_created between", value1, value2, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
             return (Criteria) this;
         }
     }

@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class MdDevelopmentArchitectural {
+public class MdDevelopmentEngineering {
     private Integer id;
 
     private String estimateunitpricelandc33;
@@ -11,15 +11,11 @@ public class MdDevelopmentArchitectural {
 
     private String investmentprofit;
 
-    private String unforeseenexpenses;
-
     private String constructioncostsubtotal;
 
     private String totalgrossfloorarea;
 
     private String estimatesaletotal;
-
-    private String jsonContent;
 
     private Integer engineeringId;
 
@@ -27,9 +23,11 @@ public class MdDevelopmentArchitectural {
 
     private String creator;
 
+    private Date gmtModified;
+
     private Date gmtCreated;
 
-    private Date gmtModified;
+    private String jsonContent;
 
     public Integer getId() {
         return id;
@@ -63,14 +61,6 @@ public class MdDevelopmentArchitectural {
         this.investmentprofit = investmentprofit == null ? null : investmentprofit.trim();
     }
 
-    public String getUnforeseenexpenses() {
-        return unforeseenexpenses;
-    }
-
-    public void setUnforeseenexpenses(String unforeseenexpenses) {
-        this.unforeseenexpenses = unforeseenexpenses == null ? null : unforeseenexpenses.trim();
-    }
-
     public String getConstructioncostsubtotal() {
         return constructioncostsubtotal;
     }
@@ -93,14 +83,6 @@ public class MdDevelopmentArchitectural {
 
     public void setEstimatesaletotal(String estimatesaletotal) {
         this.estimatesaletotal = estimatesaletotal == null ? null : estimatesaletotal.trim();
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
     public Integer getEngineeringId() {
@@ -127,6 +109,14 @@ public class MdDevelopmentArchitectural {
         this.creator = creator == null ? null : creator.trim();
     }
 
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
     public Date getGmtCreated() {
         return gmtCreated;
     }
@@ -135,11 +125,11 @@ public class MdDevelopmentArchitectural {
         this.gmtCreated = gmtCreated;
     }
 
-    public Date getGmtModified() {
-        return gmtModified;
+    public String getJsonContent() {
+        return jsonContent;
     }
 
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 }
