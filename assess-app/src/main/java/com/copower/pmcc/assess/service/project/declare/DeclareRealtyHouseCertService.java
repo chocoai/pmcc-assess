@@ -126,30 +126,18 @@ public class DeclareRealtyHouseCertService {
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
                 continue;
             }
-            //匹配关系  房产证的土地证号和土地证图号的进行匹配 || 房产证的所有权人和土地证使用权人进行匹配   &&   房产证座落和土地证座落匹配
             List<DeclareRealtyHouseCert> declareRealtyHouseCertList = Lists.newArrayList();
             //房产证的土地证号和土地证图号
             DeclareRealtyHouseCert houseCert = new DeclareRealtyHouseCert();
             houseCert.setPlanDetailsId(planDetailsId);
-            if (!org.springframework.util.StringUtils.isEmpty(landCert.getGraphNumber())) {
-                houseCert.setLandNumber(landCert.getGraphNumber());
-                List<DeclareRealtyHouseCert> listA = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(houseCert);
-                if (CollectionUtils.isNotEmpty(listA)) {
-                    declareRealtyHouseCertList.addAll(listA);
-                } else {
-                    houseCert.setLandNumber(null);
-                }
-            }
-            //房产证的所有权人和土地证使用权人进行匹配   &&   房产证座落和土地证座落匹配
+            //  房产证座落和土地证座落匹配
             if (CollectionUtils.isEmpty(declareRealtyHouseCertList)) {
-                if (StringUtils.isNotBlank(landCert.getOwnership()) && StringUtils.isNotBlank(landCert.getBeLocated())) {
-                    houseCert.setOwnership(landCert.getOwnership());
+                if (StringUtils.isNotBlank(landCert.getBeLocated())) {
                     houseCert.setBeLocated(landCert.getBeLocated());
                     List<DeclareRealtyHouseCert> listB = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(houseCert);
                     if (CollectionUtils.isNotEmpty(listB)) {
                         declareRealtyHouseCertList.addAll(listB);
                     } else {
-                        houseCert.setOwnership(null);
                         houseCert.setBeLocated(null);
                     }
                 }
