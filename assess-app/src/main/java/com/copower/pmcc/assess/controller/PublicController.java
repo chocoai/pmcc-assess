@@ -1,9 +1,8 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
-import com.copower.pmcc.assess.service.AdRpcQualificationsAppService;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
@@ -13,6 +12,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -25,14 +25,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,8 +40,6 @@ import java.util.List;
 @RequestMapping("/public")
 public class PublicController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
-    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
@@ -57,11 +52,10 @@ public class PublicController {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-    @Autowired
-    private AdRpcQualificationsAppService adRpcQualificationsAppService;
+
 
     @RequestMapping(value = "/importAjaxFile", name = "导入文件", method = RequestMethod.POST)
-    public HttpResult importAjaxFile(HttpServletRequest request,String tableName,@RequestParam(defaultValue = "0") String tableId,String fieldsName) {
+    public HttpResult importAjaxFile(HttpServletRequest request, String tableName, @RequestParam(defaultValue = "0") String tableId, String fieldsName) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -69,7 +63,7 @@ public class PublicController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            return HttpResult.newCorrectResult(baseAttachmentService.importAjaxFile(multipartFile,tableName,tableId,fieldsName));
+            return HttpResult.newCorrectResult(baseAttachmentService.importAjaxFile(multipartFile, tableName, tableId, fieldsName));
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -228,6 +222,7 @@ public class PublicController {
     }
 
     @RequestMapping(value = "/closeProcess", name = "流程实例关闭")
+    @ResponseBody
     public HttpResult closeProcess(String processInsId) {
         try {
             bpmRpcActivitiProcessManageService.closeProcess(processInsId);

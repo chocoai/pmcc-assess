@@ -58,8 +58,8 @@ public class RpcErpController {
         }
         List<SysUserDto> orgUserListByUserAccounts = null;
         List<String> list = FormatUtils.transformString2List(userList);
-        HashSet<String> hashSet= Sets.newHashSet();
-        if(CollectionUtils.isNotEmpty(list)){
+        HashSet<String> hashSet = Sets.newHashSet();
+        if (CollectionUtils.isNotEmpty(list)) {
             for (String s : list) {
                 hashSet.add(s);
             }
@@ -81,4 +81,15 @@ public class RpcErpController {
         return HttpResult.newCorrectResult();
     }
 
+    @RequestMapping(value = "/getUsersInfoByAccounts", name = "根据账号获取用户信息")
+    @ResponseBody
+    public HttpResult getUsersInfoByAccounts(String accounts) {
+        try {
+            if (StringUtils.isBlank(accounts)) return null;
+            List<SysUserDto> sysUserList = erpRpcUserService.getSysUserList(FormatUtils.transformString2List(accounts));
+            return HttpResult.newCorrectResult(sysUserList);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("根据账号获取用户信息异常");
+        }
+    }
 }

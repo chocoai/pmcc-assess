@@ -129,7 +129,7 @@ projectPlanHistories=new ArrayList<>();
             processInfo.setProcessEventExecutorName(ProjectPlanHistoryEvent.class.getSimpleName());
 
             try {
-                processUserDto = processControllerComponent.processStart(processInfo, "", false);
+                processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, "", false);
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }

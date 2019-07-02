@@ -156,7 +156,7 @@ public class BasicApplyService {
         processInfo.setProcessEventExecutorName(BasicApplyEvent.class.getSimpleName());
         processInfo.setTableId(basicApply.getId());
         try {
-            processUserDto = processControllerComponent.processStart(processInfo, processControllerComponent.getThisUser(), false);
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, processControllerComponent.getThisUser(), false);
             basicApply.setProcessInsId(processUserDto.getProcessInsId());
             basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
             this.updateBasicApply(basicApply);

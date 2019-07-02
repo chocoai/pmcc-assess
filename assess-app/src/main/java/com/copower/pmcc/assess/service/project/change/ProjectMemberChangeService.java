@@ -453,7 +453,7 @@ public class ProjectMemberChangeService {
         ProcessUserDto processUserDto = new ProcessUserDto();
 
         try {
-            processUserDto = processControllerComponent.processStart(processInfo, currentUser, false);
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, currentUser, false);
 
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());

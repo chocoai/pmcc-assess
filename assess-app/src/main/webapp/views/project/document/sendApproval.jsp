@@ -70,6 +70,7 @@
                 proectId:${documentSend.projectId}
             },
             editFlag: true,
+            signatureFlag: '${activityCnName}'.indexOf("盖章") > -1,
             deleteFlag: false
         });
     })

@@ -214,10 +214,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                其他收入<span class="symbol required"></span>
+                                月其他收入<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="otherIncome" placeholder="其他收入" data-rule-number="true"
+                                <input type="text" name="otherIncome" placeholder="月其他收入" data-rule-number="true"
                                        class="form-control" required="required">
                             </div>
                         </div>
@@ -517,6 +517,8 @@
 </script>
 
 <script type="text/javascript">
+    console.log(Math.pow((1 + 0.05), 0.38));
+
     var lease = {};
 
     //调用市场比较法
@@ -648,7 +650,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            pageSize:100,
+            pageSize: 100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
                 lease.computeNetProfit();
@@ -791,7 +793,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            pageSize:100,
+            pageSize: 100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
                 lease.computeNetProfit();
@@ -876,7 +878,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            pageSize:100,
+            pageSize: 100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -891,7 +893,7 @@
             dataType: "json",
             data: {
                 incomeId: $("#frm_income").find('[name=id]').val(),
-                limit:100,
+                limit: 100,
                 operationMode: $("#frm_income").find('[name=operationMode]:checked').val()
             },
             success: function (result) {
@@ -994,7 +996,7 @@
             deposit = parseFloat(deposit);
             monthNumber = parseFloat(monthNumber);
             depositRate = parseFloat(depositRate);
-            form.find('[name=otherIncome]').val((deposit * depositRate / monthNumber).toFixed(2));
+            form.find('[name=otherIncome]').val((deposit * depositRate).toFixed(2));
         }
     }
 
@@ -1028,31 +1030,36 @@
             if (!AssessCommon.isNumber(netProfit)) return false;
             netProfit = parseFloat(netProfit);
             var incomePrice = 0;
+
+            var n = 0;
+            $(this).prevAll().each(function () {
+                var yearCount = $(this).find('[data-name=yearCount]').text();
+                if (AssessCommon.isNumber(yearCount)) {
+                    n += parseFloat(yearCount);
+                }
+            })
             if (endDate) {
-                var n = $(this).find('[data-name=yearCount]').text();
-                if (!AssessCommon.isNumber(n)) return false;
-                n = parseFloat(n);//期限
+                var yc = $(this).find('[data-name=yearCount]').text();
+                if (!AssessCommon.isNumber(yc)) return false;
+                yc = parseFloat(yc);//期限
 
                 var g = $(this).find('[data-name=rentalGrowthRate]').val();
                 if (!AssessCommon.isNumber(g)) return false;
                 g = parseFloat(g);//租金增长率
 
-                var h = (1 - Math.pow((1 + g) / (1 + r), n)).toFixed(6);//年期修正系数
+                var h = (1 - Math.pow((1 + g) / (1 + r), yc)).toFixed(6);//年期修正系数
                 if (h <= 0) return false;
-                var k = (h / (r - g)).toFixed(6);//收益现值系数
-
+                var k = 0;
+                if (n == 0) {
+                    k = (h / (r - g) / (1 + r)).toFixed(6);//收益现值系数
+                } else {
+                    k = (h / (r - g) / Math.pow((1 + r), n)).toFixed(6);//收益现值系数
+                }
                 $(this).find('[data-name=correctionFactor]').text(h);
                 $(this).find('[data-name=presentValueFactor]').text(k);
                 incomePrice = (netProfit * k).toFixed(2);
             } else {
                 //找出前几段的年限总和，如果为0则不参与运算
-                var n = 0;
-                $(this).prevAll().each(function () {
-                    var yearCount = $(this).find('[data-name=yearCount]').text();
-                    if (AssessCommon.isNumber(yearCount)) {
-                        n += parseFloat(yearCount);
-                    }
-                })
                 if (n == 0) {
                     incomePrice = ((netProfit / r) / (1 + r)).toFixed(2);
                 } else {

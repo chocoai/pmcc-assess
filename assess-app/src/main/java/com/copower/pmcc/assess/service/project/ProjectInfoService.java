@@ -358,7 +358,7 @@ public class ProjectInfoService {
         processInfo.setAppKey(applicationConstant.getAppKey());
 
         try {
-            processUserDto = processControllerComponent.processStart(processInfo, projectInfo.getCreator(), false);
+            processUserDto = processControllerComponent.processStart(projectInfo.getCreator(),processInfo, projectInfo.getCreator(), false);
         } catch (BpmException e) {
             logger.info(e.getMessage());
             throw new BusinessException(e.getMessage());

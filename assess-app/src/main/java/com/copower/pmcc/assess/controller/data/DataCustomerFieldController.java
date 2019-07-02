@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataCustomerField;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.data.DataCustomerFieldService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -28,12 +29,15 @@ public class DataCustomerFieldController {
     private DataCustomerFieldService dataCustomerFieldService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private PublicService publicService;
 
 
     @RequestMapping(value = "/index", name = "转到详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) throws Exception {
         String view = "/data/customerField";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
 
@@ -91,9 +95,9 @@ public class DataCustomerFieldController {
 
     @ResponseBody
     @RequestMapping(value = "/getCustomerFieldList", name = "获取查询数据", method = {RequestMethod.GET})
-    public HttpResult getCustomerField(DataCustomerField dataCustomerField) {
+    public HttpResult getCustomerField(Integer customerId) {
         try {
-            return HttpResult.newCorrectResult(200, dataCustomerFieldService.getCustomerField(dataCustomerField));
+            return HttpResult.newCorrectResult(200, dataCustomerFieldService.getCustomerField(customerId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

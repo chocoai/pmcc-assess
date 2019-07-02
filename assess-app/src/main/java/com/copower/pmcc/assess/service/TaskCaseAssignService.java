@@ -243,7 +243,7 @@ public class TaskCaseAssignService {
         processInfo.setProcessEventExecutorName(BaseProcessEvent.class.getSimpleName());
         processInfo.setTableId(assign.getId());
         try {
-            processUserDto = processControllerComponent.processStart(processInfo, processControllerComponent.getThisUser(), false);
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, processControllerComponent.getThisUser(), false);
             assign.setProcessInsId(processUserDto.getProcessInsId());
             assign.setStatus(ProjectStatusEnum.RUNING.getKey());
             this.updateTaskCaseAssign(assign);

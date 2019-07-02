@@ -99,7 +99,7 @@ public class ProjectTaskService {
             processInfo.setWorkStageId(projectWorkStage.getId());
 
             try {
-                processUserDto = processControllerComponent.processStart(processInfo, projectTaskDto.getNextApproval(), false);
+                processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, projectTaskDto.getNextApproval(), false);
 
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());

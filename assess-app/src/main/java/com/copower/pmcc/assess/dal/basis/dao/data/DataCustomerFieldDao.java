@@ -42,6 +42,12 @@ public class DataCustomerFieldDao {
         return dataCustomerFieldMapper.selectByExample(example);
     }
 
+    public List<DataCustomerField> getObjectList(Integer customerId) {
+        DataCustomerFieldExample example = new DataCustomerFieldExample();
+        example.createCriteria().andCustomerIdEqualTo(customerId);
+        return dataCustomerFieldMapper.selectByExample(example);
+    }
+
     public boolean addDataCustomerField(DataCustomerField dataCustomerField) {
         int i = dataCustomerFieldMapper.insert(dataCustomerField);
         return i > 0;

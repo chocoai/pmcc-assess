@@ -374,7 +374,7 @@
                 $("#" + objProject.config.info.frm).find("select.valueType").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.serviceComeFrom, item.serviceComeFrom, function (html, data) {
-                console.log(html) ;
+                console.log(html);
                 $("#" + objProject.config.info.frm).find("select[name='serviceComeFrom']").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.property_scope, item.propertyScope, function (html, data) {
@@ -995,6 +995,7 @@
     };
 
     objProject.loadCustomerFieldList = function (id, name) {
+        $("#businessType,#assessType").hide();
         $.ajax({
             type: "get",
             url: "${pageContext.request.contextPath}/dataCustomerField/getCustomerFieldList",
@@ -1006,26 +1007,30 @@
                     if (result.data.length >= 1) {
                         var businessType = result.data[0].businessType;
                         var assessType = result.data[0].assessType;
-                        businessType = businessType.split(",");
-                        assessType = assessType.split(",");
                         var retHtml = '';
-                        retHtml += '<option value="" selected>-请选择-</option>';
-                        $.each(businessType, function (i, item) {
-                            retHtml += '<option key="' + item + '" title="' + item + '" value="' + item + '"';
-                            retHtml += '>' + item + '</option>';
-                        });
-                        $("#" + objProject.config.unit_information.frm).find("select.businessType").empty().html(retHtml).trigger('change');
-                        retHtml = '<option value="" selected>-请选择-</option>';
-                        $.each(assessType, function (i, item) {
-                            retHtml += '<option key="' + item + '" title="' + item + '" value="' + item + '"';
-                            retHtml += '>' + item + '</option>';
-                        });
-                        $("#" + objProject.config.unit_information.frm).find("select.assessType").empty().html(retHtml).trigger('change');
-                        $("#businessType").show();
-                        $("#assessType").show();
+                        if (businessType) {
+                            businessType = businessType.split(",");
+                            retHtml += '<option value="" selected>-请选择-</option>';
+                            $.each(businessType, function (i, item) {
+                                retHtml += '<option key="' + item + '" title="' + item + '" value="' + item + '"';
+                                retHtml += '>' + item + '</option>';
+                            });
+                            $("#" + objProject.config.unit_information.frm).find("select.businessType").empty().html(retHtml).trigger('change');
+                            $("#businessType").show();
+                        }
+
+                        if (assessType) {
+                            assessType = assessType.split(",");
+                            retHtml = '<option value="" selected>-请选择-</option>';
+                            $.each(assessType, function (i, item) {
+                                retHtml += '<option key="' + item + '" title="' + item + '" value="' + item + '"';
+                                retHtml += '>' + item + '</option>';
+                            });
+                            $("#" + objProject.config.unit_information.frm).find("select.assessType").empty().html(retHtml).trigger('change');
+                            $("#assessType").show();
+                        }
                     } else {
-                        $("#businessType").hide();
-                        $("#assessType").hide();
+                        $("#businessType,#assessType").hide();
                     }
                 }
             }

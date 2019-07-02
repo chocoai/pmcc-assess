@@ -87,7 +87,7 @@ public class GenerateService {
         processInfo.setAppKey(applicationConstant.getAppKey());
         processInfo.setProcessEventExecutor(GenerateEvent.class);
         try {
-            processUserDto = processControllerComponent.processStart(processInfo, projectInfo.getCreator(), false);
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, projectInfo.getCreator(), false);
         } catch (BpmException e) {
             log.info(e.getMessage());
             throw new BusinessException(e.getMessage());

@@ -7,6 +7,7 @@ import com.copower.pmcc.bpm.api.dto.BpmProcessMapDto;
 import com.copower.pmcc.bpm.api.dto.ProcessGroupDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessMapService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysWorkPredictDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -52,6 +53,8 @@ public class HomeController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BpmRpcToolsService bpmRpcToolsService;
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public ModelAndView homeMain() {
@@ -93,6 +96,14 @@ public class HomeController {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo projectInfoByStatus = erpRpcProjectService.getProjectInfoByStatus(requestBaseParam.getOffset(), requestBaseParam.getLimit(), "", requestBaseParam.getSearch());
         return projectInfoByStatus;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getWorkLogByProjectId", name = "取得项目日志信息", method = RequestMethod.GET)
+    public BootstrapTableVo getWorkLogByProjectId(Integer publicProjectId) {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        BootstrapTableVo bootstrapTableVo = bpmRpcToolsService.getWorkLogByProjectId(publicProjectId, requestBaseParam.getOffset(), requestBaseParam.getLimit(), requestBaseParam.getSearch());
+        return bootstrapTableVo;
     }
 
     @ResponseBody

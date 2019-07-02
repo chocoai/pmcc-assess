@@ -261,7 +261,7 @@ public class CsrProjectInfoService {
         processInfo.setProcessEventExecutorName(BaseProcessEvent.class.getSimpleName());
         try {
             processInfo.setTableId(csrProjectInfo.getId());
-            ProcessUserDto processUserDto = processControllerComponent.processStart(processInfo, csrProjectInfo.getDistributionUser(), false);
+            ProcessUserDto processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, csrProjectInfo.getDistributionUser(), false);
 
             csrProjectInfo.setStatus(ProcessStatusEnum.RUN.getValue());
             csrProjectInfo.setProcessInsId(processUserDto.getProcessInsId());

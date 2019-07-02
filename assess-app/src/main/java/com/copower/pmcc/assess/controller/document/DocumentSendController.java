@@ -43,9 +43,6 @@ public class DocumentSendController {
     @Autowired
     private DocumentTemplateService documentTemplateService;
 
-
-
-
     @RequestMapping(value = "/applyIndex/{templateId}&{projectId}", name = "进入发文页面")
     public ModelAndView applyIndex(@PathVariable("templateId") Integer templateId,@PathVariable("projectId") Integer projectId) {
         DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(templateId);
@@ -78,6 +75,7 @@ public class DocumentSendController {
         DocumentSend documentSend = documentSendService.getDocumentSendByProcessInsId(processInsId);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/document/sendApproval", processInsId, boxId, taskId, agentUserAccount);
         modelAndView.addObject("documentSend", documentSend);
+        modelAndView.addObject("projectId", documentSend.getProjectId());
         String fieldsHtml = documentSendService.getFieldsHtml(documentSend.getContractType(), documentSend.getExtendConten().toString(), true);
         modelAndView.addObject("fieldsHtml", fieldsHtml);
         return modelAndView;
@@ -89,6 +87,7 @@ public class DocumentSendController {
         DocumentSend documentSend = documentSendService.getDocumentSendByProcessInsId(processInsId);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/document/sendApply", processInsId, boxId, taskId, agentUserAccount);
         modelAndView.addObject("documentSend", documentSend);
+        modelAndView.addObject("projectId", documentSend.getProjectId());
         String fieldsHtml = documentSendService.getFieldsHtml(documentSend.getContractType(), documentSend.getExtendConten().toString(), false);
         modelAndView.addObject("fieldsHtml", fieldsHtml);
         modelAndView.addObject("bisEdit", 1);
@@ -100,8 +99,9 @@ public class DocumentSendController {
     public ModelAndView detailsIndex(String processInsId) {
         BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
         DocumentSend documentSend = documentSendService.getDocumentSendByProcessInsId(processInsId);
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/cms/contractCurrency/contractCurrencyApply", processInsId, boxRuDto.getBoxId(), "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/document/sendApproval", processInsId, boxRuDto.getBoxId(), "-1", "");
         modelAndView.addObject("documentSend", documentSend);
+        modelAndView.addObject("projectId", documentSend.getProjectId());
         String fieldsHtml = documentSendService.getFieldsHtml(documentSend.getContractType(), documentSend.getExtendConten().toString(), true);
         modelAndView.addObject("fieldsHtml", fieldsHtml);
         return modelAndView;
@@ -117,7 +117,7 @@ public class DocumentSendController {
         }
         documentSend = documentSendList.get(0);
         BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(documentSend.getProcessInsId());
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/cms/contractCurrency/contractCurrencyApply", documentSend.getProcessInsId(), boxRuDto.getBoxId(), "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/document/sendApproval", documentSend.getProcessInsId(), boxRuDto.getBoxId(), "-1", "");
         modelAndView.addObject("documentSend", documentSend);
         String fieldsHtml = documentSendService.getFieldsHtml(documentSend.getContractType(), documentSend.getExtendConten().toString(), true);
         modelAndView.addObject("fieldsHtml", fieldsHtml);

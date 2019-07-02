@@ -250,7 +250,7 @@ public class IncomeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/updateLease", method = {RequestMethod.POST}, name = "修改")
+    @RequestMapping(value = "/updateLease", method = {RequestMethod.POST}, name = "修改毛收入")
     public HttpResult updateLease(MdIncomeLease mdIncomeLease) {
         try {
             mdIncomeService.updateLease(mdIncomeLease);
@@ -269,7 +269,7 @@ public class IncomeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/updateLeaseCost", method = {RequestMethod.POST}, name = "修改")
+    @RequestMapping(value = "/updateLeaseCost", method = {RequestMethod.POST}, name = "修改成本")
     public HttpResult updateLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
         try {
             mdIncomeService.updateLeaseCost(mdIncomeLeaseCost);

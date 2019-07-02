@@ -2,7 +2,9 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataCustomerFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataCustomerField;
+import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -30,9 +32,11 @@ public class DataCustomerFieldService {
     private DataCustomerFieldDao dataCustomerFieldDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    
+    @Autowired
+    private CrmCustomerService crmCustomerService;
+
     //保存信息
-    public DataCustomerField saveDataCustomerField(DataCustomerField customerField){
+    public DataCustomerField saveDataCustomerField(DataCustomerField customerField) {
         if (customerField.getId() != null && customerField.getId() > 0) {
             dataCustomerFieldDao.editDataCustomerField(customerField);
         } else {
@@ -46,7 +50,7 @@ public class DataCustomerFieldService {
 
 
     //删除一条信息
-    public void deleteDataCustomerField(Integer id) throws BusinessException{
+    public void deleteDataCustomerField(Integer id) throws BusinessException {
         dataCustomerFieldDao.deleteDataCustomerField(id);
 
     }
@@ -78,8 +82,22 @@ public class DataCustomerFieldService {
     }
 
 
-    public List<DataCustomerField> getCustomerField(DataCustomerField dataCustomerField) throws Exception {
-        return dataCustomerFieldDao.getObjectList(dataCustomerField);
+    /**
+     * 获取客户公司配置的字段类容
+     *
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
+    public List<DataCustomerField> getCustomerField(Integer customerId) throws Exception {
+        if (customerId == null) return null;
+        List<DataCustomerField> list = dataCustomerFieldDao.getObjectList(customerId);
+        if (CollectionUtils.isEmpty(list)) {//到上一级公司获取对应字段
+            CrmCustomerDto customer = crmCustomerService.getCustomer(customerId);
+            if (customer == null) return null;
+            return getCustomerField(customer.getPid());
+        }
+        return list;
     }
 
 }

@@ -137,7 +137,7 @@ public class ProjectCloseService {
             processInfo.setProcessEventExecutorName(ProjectCloseEvent.class.getSimpleName());
 
             try {
-                processUserDto = processControllerComponent.processStart(processInfo, "", false);
+                processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, "", false);
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }

@@ -19,7 +19,7 @@
             <form id="frm_approval" class="form-horizontal">
                 <div class="form-group">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        审批结论
+                        审批结论<span class="symbol required"></span>
                     </label>
                     <div class="x-valid">
                         <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
@@ -41,40 +41,43 @@
                             </label>
                         </div>
                     </div>
-                    <c:if test="${bisSelectUser!='1'}">
-                        <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
-                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 " id="div_bisNext">
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" id="chk_bisNext" name="chk_bisNext" checked="checked"
-                                           value=""
-                                           class="grey"
-                                           onclick="formApproval.chkbisNextClick()">
-                                    跳过多级审批
-                                </label>
-
-                            </div>
-                        </c:if>
+                    <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
+                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 " id="div_bisNext">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="chk_bisNext" name="chk_bisNext" checked="checked"
+                                       value=""
+                                       class="grey"
+                                       onclick="formApproval.chkbisNextClick();">
+                                跳过多级审批
+                            </label>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                formApproval.chkbisNextClick();
+                            })
+                        </script>
                     </c:if>
                 </div>
                 <c:if test="${bisSelectUser=='1'}">
-                    <div class="form-group">
+                    <div class="form-group" id="div_nextApproval">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                            下级审批人
+                            下级审批人<span class="symbol required"></span>
                         </label>
                         <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                            <input type="hidden" id="nextApproval" name="nextApproval"
-                                   value="${selectNextUser}">
-                            <input type="text" required value="${selectNextUserName}"
-                                   placeholder="下级审批人"
-                                   id="nextApprovalName" name="nextApprovalName"
-                                   class="form-control" readonly="readonly"
-                                   maxlength="200" onclick="nextApprovalSelect()">
+                            <div class="x-valid">
+                                <select id="nextApproval" name="nextApproval" class="form-control" required>
+                                    <option value="">-请选择-</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </c:if>
                 <div class="form-group">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        审批意见
+                        审批意见<span class="symbol required"></span>
+                        <c:forEach items="${nextUserInfo}" var="item">
+                            <label>${item.userAccount}_${item.userNickname}</label>
+                        </c:forEach>
                     </label>
                     <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
 
@@ -142,9 +145,11 @@
         chkbisNextClick: function () {
             if ($("#chk_bisNext").is(":checked")) {
                 $("#bisNext").val(1);
+                $("#div_nextApproval").hide();
             }
             else {
                 $("#bisNext").val(0);
+                $("#div_nextApproval").show();
             }
             if (window.cutomNextClick) {
                 cutomNextClick();
@@ -187,6 +192,21 @@
     };
 
     $(function () {
+        var selectNextUser = "${selectNextUser}";
+        if (selectNextUser) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/RpcErpService/getUsersInfoByAccounts',
+                data: {accounts: selectNextUser},
+                success: function (result) {
+                    if (result.ret && result.data) {
+                        $.each(result.data, function (i, item) {
+                            $("#nextApproval").append('<option value="' + item.userAccount + '">' + item.userName + '</option>');
+                        })
+                    }
+                }
+            })
+        }
+
         if ("${flog}" == "approval") {
             $("#frm_approval").validate();
             $("#opinions").attr("required", false);//审批意见不必填

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample;
 import com.copower.pmcc.assess.dal.basis.mapper.MdIncomeLeaseMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -42,6 +43,14 @@ public class MdIncomeLeaseDao {
         MdIncomeLeaseExample example = new MdIncomeLeaseExample();
         MybatisUtils.convertObj2Example(mdIncomeLease, example);
         return mdIncomeLeaseMapper.selectByExample(example);
+    }
+
+    public MdIncomeLease getIncomeLeaseBySectionId(Integer sectionId) {
+        MdIncomeLeaseExample example = new MdIncomeLeaseExample();
+        example.createCriteria().andSectionIdEqualTo(sectionId);
+        List<MdIncomeLease> leaseList = mdIncomeLeaseMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(leaseList)) return null;
+        return leaseList.get(0);
     }
 
     /**

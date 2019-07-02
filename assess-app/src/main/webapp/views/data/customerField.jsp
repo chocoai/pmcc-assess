@@ -207,7 +207,6 @@
         });
     }
 
-
     //新增
     function addCustomerField() {
         $("#frm").clearAll();
@@ -369,7 +368,7 @@
         //选择客户
         crmCustomer.select({
             multi: false,//是否允许多选
-            companyId:${companyId},
+            companyId:'${companyId}',
             onSelected: function (nodes) {
                 $(this_).closest('.input-group').find("input[name='customerId']").val(nodes[0].id);
                 $(this_).closest('.input-group').find("input[name='customerName']").val(nodes[0].name);

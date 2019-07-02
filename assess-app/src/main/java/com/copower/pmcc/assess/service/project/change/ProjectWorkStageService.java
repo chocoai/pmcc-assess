@@ -1,12 +1,12 @@
 package com.copower.pmcc.assess.service.project.change;
 
 
-import com.copower.pmcc.assess.common.ApprovalUser;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectWorkStageDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.bpm.core.process.support.ApprovalUsersService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -37,7 +37,7 @@ public class ProjectWorkStageService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private ApprovalUser approvalUser;
+    private ApprovalUsersService approvalUser;
 
     public ProjectWorkStage cacheProjectWorkStage(int id) {
 
@@ -127,7 +127,7 @@ public class ProjectWorkStageService {
             case "2": {
                 String boxRoleKey = projectWorkStage.getBoxRoleKey();
                 if (StringUtils.isNotBlank(boxRoleKey)) {
-                    userAccounts = approvalUser.getRoleUserAccountList(boxRoleKey, commonService.thisUserAccount(), projectId);
+                    userAccounts = approvalUser.getRoleUserAccountList(processControllerComponent.getThisUser(),boxRoleKey, commonService.thisUserAccount(), projectId);
                 }
                 break;
             }

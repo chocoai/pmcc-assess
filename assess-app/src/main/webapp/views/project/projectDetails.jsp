@@ -89,21 +89,6 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h3>
-                        项目发文
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content collapse">
-                    <table class="table table-bordered" id="tb_documentSendList">
-                    </table>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h3>
                         工作成果
                     </h3>
                     <div class="clearfix"></div>
@@ -174,13 +159,72 @@
                     </div>
                 </div>
             </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
+                        项目发文
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <table class="table table-bordered" id="tb_documentSendList">
+                    </table>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
+                        项目日志
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <table class="table table-bordered" id="tb_projectLogList">
+                    </table>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
+                        外勤信息
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <table class="table table-bordered" id="tb_projectLegWorkList">
+                    </table>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
+                        开票信息
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <table class="table table-bordered" id="tb_projectInvoiceList">
+                    </table>
+                </div>
+            </div>
             <%@include file="/views/share/form_details.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
 </div>
 </body>
-
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
@@ -192,6 +236,7 @@
 
         projectDetails.getRuningTab().tab('show');
         projectDetails.loadDocumentSend();
+        projectDetails.loadProjectLog();
         setInterval(function () {
             projectDetails.loadPlanItem(projectDetails.getActiveTab().closest('li').attr('plan-id'));
         }, 30 * 1000)
@@ -652,12 +697,12 @@
         loadDocumentSend: function () {
             var cols = [];
             cols.push({field: 'title', title: '标题'});
+            cols.push({field: 'userName', title: '创建人'});
             cols.push({
                 field: 'created', title: '创建日期', formatter: function (value, row, index) {
                     return formatDate(value, true);
                 }
             });
-            cols.push({field: 'userName', title: '创建人'});
             $("#tb_documentSendList").bootstrapTable('destroy');
             TableInit("tb_documentSendList", "${pageContext.request.contextPath}/documentSend/getDocumentSendVoList", cols, {
                 projectId: ${projectInfo.id}
@@ -669,7 +714,35 @@
                     $('.tooltips').tooltip();
                 }
             });
+        },
+
+        //项目日志
+        loadProjectLog: function () {
+            var cols = [];
+            cols.push({field: 'title', title: '标题'});
+            cols.push({
+                field: 'created', title: '创建日期', formatter: function (value, row, index) {
+                    return formatDate(value, true);
+                }
+            });
+            cols.push({field: 'content', title: '内容'});
+            cols.push({field: 'userName', title: '创建人'});
+            $("#tb_projectLogList").bootstrapTable('destroy');
+            TableInit("tb_projectLogList", "${pageContext.request.contextPath}/home/getWorkLogByProjectId", cols, {
+                publicProjectId: ${projectInfo.publicProjectId}
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
         }
+
+        //项目外勤
+
+        //项目开票
     };
 
 </script>

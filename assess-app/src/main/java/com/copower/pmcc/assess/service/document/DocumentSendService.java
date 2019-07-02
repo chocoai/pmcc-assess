@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileInputStream;
 import java.text.MessageFormat;
@@ -111,8 +112,8 @@ public class DocumentSendService {
         return documentSend;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void applySubmit(String appointUserAccount, Integer boxId, DocumentSend documentSend) throws BusinessException {
-
         documentSend = saveDocumentSend(documentSend);//保存数据
         //发起流程
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
@@ -134,7 +135,7 @@ public class DocumentSendService {
             if (StringUtils.isBlank(appointUserAccount)) {
                 appointUserAccount = processControllerComponent.getThisUser();
             }
-            ProcessUserDto processUserDto = processControllerComponent.processStart(processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
+            ProcessUserDto processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
             processInsId = processUserDto.getProcessInsId();
             documentSend.setProcessInsId(processInsId);
             documentSend.setStatus(ProcessStatusEnum.RUN.getValue());

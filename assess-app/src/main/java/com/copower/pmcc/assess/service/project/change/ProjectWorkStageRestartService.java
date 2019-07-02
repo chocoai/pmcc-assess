@@ -119,7 +119,7 @@ public class ProjectWorkStageRestartService {
             //设置其它参数
 
             try {
-                processUserDto = processControllerComponent.processStart(processInfo, "", false);
+                processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, "", false);
                 projectWorkStageRestart.setProcessInsId(processUserDto.getProcessInsId());
                 projectWorkStageRestart.setStatus(ProcessStatusEnum.RUN.getValue());
                 if (!projectWorkStageRestartDao.editProjectWorkStageRestart(projectWorkStageRestart)) {

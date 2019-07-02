@@ -12,7 +12,6 @@ import com.copower.pmcc.assess.dto.input.project.ProjectPlanDetailsDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanSetDto;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanExecuteInterface;
-import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanApprovalEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
@@ -597,7 +596,7 @@ public class ProjectPlanService {
         processInfo.setBisDraftStart(false);
         processInfo.setWorkStageId(projectWorkStage.getId());
         try {
-            processUserDto = processControllerComponent.processStart(processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

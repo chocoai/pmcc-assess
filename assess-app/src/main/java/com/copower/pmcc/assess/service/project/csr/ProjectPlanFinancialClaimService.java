@@ -388,7 +388,7 @@ public class ProjectPlanFinancialClaimService {
                 processInfo.setWorkStageId(projectWorkStage.getId());
 
                 try {
-                    processUserDto = processControllerComponent.processStart(processInfo, commonService.thisUserAccount(), false);
+                    processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, commonService.thisUserAccount(), false);
 
                 } catch (BpmException e) {
                     throw new BusinessException(e.getMessage());
