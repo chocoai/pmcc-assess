@@ -27,14 +27,50 @@
                 </span>
             </div>
 
-            <div id="developmentHeadId" class="form-group">
+            <div  class="form-group">
+                <!-- append html -->
+                <div>
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            项目建设期(年)
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="项目建设期(年)"
+                                   class="form-control" name="projectConstructionPeriod">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            已开发时间(年)
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="已开发时间(年)"
+                                   class="form-control" name="developedTime">
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
 
     <div class="x_content">
-        <form class="form-horizontal">
+        <form class="form-horizontal" id="mdDevelopmentLandFrm">
+            <div id="landParameter" class="x_panel">
+                <!-- append html -->
+            </div>
+            <jsp:include page="/views/method/module/developmentModule/landEngineering.jsp"></jsp:include>
+            <jsp:include page="/views/method/module/developmentModule/landEngineeringJs.jsp"></jsp:include>
+        </form>
+    </div>
 
+    <div class="x_content">
+        <form class="form-horizontal" id="mdDevelopmentEngineeringFrm" style="display: none">
+            <div id="engineeringParameter" class="x_panel">
+                <!-- append html -->
+            </div>
         </form>
     </div>
 
@@ -42,21 +78,20 @@
 
 <jsp:include page="/views/method/module/developmentModule/developmentCommon.jsp"></jsp:include>
 
-<div class="developmentLand">
-
-</div>
-
-<div class="developmentEngineering" style="display: none;">
-
-</div>
-
 <script>
-    var development = {} ;
+    var development = {};
 
     development.config = {
-        headId:"#developmentHeadId",
-        frm:"#developmentFrm"
-    } ;
+        frm: "#developmentFrm",
+        land: {
+            parameter: "#landParameter",
+            frm: "#mdDevelopmentLandFrm"
+        },
+        engineering: {
+            parameter: "#engineeringParameter",
+            frm: "#mdDevelopmentEngineeringFrm"
+        }
+    };
     /**
      * 空字符串检测
      * @param item
@@ -77,24 +112,31 @@
     };
 
     development.initData = function () {
-        var mdDevelopmentJson = $("#mdDevelopmentJson").val() ;
-        var data = undefined ;
-        if (development.isNotBlank(mdDevelopmentJson)){
-            data = JSON.parse(mdDevelopmentJson) ;
+        if ($(development.config.land.frm).find(development.config.land.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
+            $(development.config.land.frm).find(development.config.land.parameter).empty().append(developmentCommon.parameter.getHtml());
         }
-        if (development.isNotBlankObject(data)){
-
+        if ($(development.config.engineering.frm).find(development.config.engineering.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
+            $(development.config.engineering.frm).find(development.config.engineering.parameter).empty().append(developmentCommon.parameter.getHtml());
         }
-        $(development.config.headId).empty().append(developmentCommon.head.getHtml()) ;
+        //开启编辑
+        developmentCommon.parameter.editableInit();
     };
 
     $(document).ready(function () {
-
-
-        development.initData() ;
-
-
-    }) ;
+        development.initData();
+        var frm = $(development.config.frm) ;
+        frm.find("input[type='radio'][name='development']").change(function () {
+            var data = formSerializeArray(frm);
+            if (data.development == '1') {
+                $(development.config.land.frm).show();
+                $(development.config.engineering.frm).hide();
+            }
+            if (data.development == '2') {
+                $(development.config.land.frm).hide();
+                $(development.config.engineering.frm).show();
+            }
+        });
+    });
 
 </script>
 
