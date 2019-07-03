@@ -8,13 +8,10 @@
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="dispatch_unit" property="dispatchUnit" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
-    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
     <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
-    <result column="cost_total" property="costTotal" jdbcType="DECIMAL" />
-    <result column="matching_cost_total" property="matchingCostTotal" jdbcType="DECIMAL" />
-    <result column="dev_tax_total" property="devTaxTotal" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -78,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, province, city, district, dispatch_unit, number, file_name, project_type, start_date, 
-    end_date, cost_total, matching_cost_total, dev_tax_total, creator, gmt_created, gmt_modified
+    id, province, city, district, dispatch_unit, number, project_type, start_date, end_date, 
+    type, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureExample" >
     select
@@ -116,15 +113,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_infrastructure (province, city, district, 
-      dispatch_unit, number, file_name, 
-      project_type, start_date, end_date, 
-      cost_total, matching_cost_total, dev_tax_total, 
+      dispatch_unit, number, project_type, 
+      start_date, end_date, type, 
       creator, gmt_created, gmt_modified
       )
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{dispatchUnit,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
-      #{projectType,jdbcType=VARCHAR}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
-      #{costTotal,jdbcType=DECIMAL}, #{matchingCostTotal,jdbcType=DECIMAL}, #{devTaxTotal,jdbcType=DECIMAL}, 
+      #{dispatchUnit,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -149,9 +144,6 @@
       <if test="number != null" >
         number,
       </if>
-      <if test="fileName != null" >
-        file_name,
-      </if>
       <if test="projectType != null" >
         project_type,
       </if>
@@ -161,14 +153,8 @@
       <if test="endDate != null" >
         end_date,
       </if>
-      <if test="costTotal != null" >
-        cost_total,
-      </if>
-      <if test="matchingCostTotal != null" >
-        matching_cost_total,
-      </if>
-      <if test="devTaxTotal != null" >
-        dev_tax_total,
+      <if test="type != null" >
+        type,
       </if>
       <if test="creator != null" >
         creator,
@@ -196,9 +182,6 @@
       <if test="number != null" >
         #{number,jdbcType=VARCHAR},
       </if>
-      <if test="fileName != null" >
-        #{fileName,jdbcType=VARCHAR},
-      </if>
       <if test="projectType != null" >
         #{projectType,jdbcType=VARCHAR},
       </if>
@@ -208,14 +191,8 @@
       <if test="endDate != null" >
         #{endDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="costTotal != null" >
-        #{costTotal,jdbcType=DECIMAL},
-      </if>
-      <if test="matchingCostTotal != null" >
-        #{matchingCostTotal,jdbcType=DECIMAL},
-      </if>
-      <if test="devTaxTotal != null" >
-        #{devTaxTotal,jdbcType=DECIMAL},
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -255,9 +232,6 @@
       <if test="record.number != null" >
         number = #{record.number,jdbcType=VARCHAR},
       </if>
-      <if test="record.fileName != null" >
-        file_name = #{record.fileName,jdbcType=VARCHAR},
-      </if>
       <if test="record.projectType != null" >
         project_type = #{record.projectType,jdbcType=VARCHAR},
       </if>
@@ -267,14 +241,8 @@
       <if test="record.endDate != null" >
         end_date = #{record.endDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.costTotal != null" >
-        cost_total = #{record.costTotal,jdbcType=DECIMAL},
-      </if>
-      <if test="record.matchingCostTotal != null" >
-        matching_cost_total = #{record.matchingCostTotal,jdbcType=DECIMAL},
-      </if>
-      <if test="record.devTaxTotal != null" >
-        dev_tax_total = #{record.devTaxTotal,jdbcType=DECIMAL},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -298,13 +266,10 @@
       district = #{record.district,jdbcType=VARCHAR},
       dispatch_unit = #{record.dispatchUnit,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=VARCHAR},
-      file_name = #{record.fileName,jdbcType=VARCHAR},
       project_type = #{record.projectType,jdbcType=VARCHAR},
       start_date = #{record.startDate,jdbcType=TIMESTAMP},
       end_date = #{record.endDate,jdbcType=TIMESTAMP},
-      cost_total = #{record.costTotal,jdbcType=DECIMAL},
-      matching_cost_total = #{record.matchingCostTotal,jdbcType=DECIMAL},
-      dev_tax_total = #{record.devTaxTotal,jdbcType=DECIMAL},
+      type = #{record.type,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -330,9 +295,6 @@
       <if test="number != null" >
         number = #{number,jdbcType=VARCHAR},
       </if>
-      <if test="fileName != null" >
-        file_name = #{fileName,jdbcType=VARCHAR},
-      </if>
       <if test="projectType != null" >
         project_type = #{projectType,jdbcType=VARCHAR},
       </if>
@@ -342,14 +304,8 @@
       <if test="endDate != null" >
         end_date = #{endDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="costTotal != null" >
-        cost_total = #{costTotal,jdbcType=DECIMAL},
-      </if>
-      <if test="matchingCostTotal != null" >
-        matching_cost_total = #{matchingCostTotal,jdbcType=DECIMAL},
-      </if>
-      <if test="devTaxTotal != null" >
-        dev_tax_total = #{devTaxTotal,jdbcType=DECIMAL},
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -370,13 +326,10 @@
       district = #{district,jdbcType=VARCHAR},
       dispatch_unit = #{dispatchUnit,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
-      file_name = #{fileName,jdbcType=VARCHAR},
       project_type = #{projectType,jdbcType=VARCHAR},
       start_date = #{startDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
-      cost_total = #{costTotal,jdbcType=DECIMAL},
-      matching_cost_total = #{matchingCostTotal,jdbcType=DECIMAL},
-      dev_tax_total = #{devTaxTotal,jdbcType=DECIMAL},
+      type = #{type,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

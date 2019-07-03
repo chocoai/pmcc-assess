@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="x_panel">
+
+    <input type="text"
+           placeholder="f18" class="form-control" readonly="readonly"
+           name="f18">
+
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -18,7 +24,7 @@
                     <input type="text"
                            placeholder="勘察设计和前期工程费率" class="form-control x-percent" data-rule-number='true'
                            required="required"
-                           name="reconnaissanceDesignTax">
+                           name="f20" onblur="landEngineering.calculationD20()">
                 </div>
             </div>
         </div>
@@ -31,8 +37,9 @@
                 <div class="col-sm-11">
                     <div class="input-group">
                         <input type="text" readonly="readonly"
-                               placeholder="建筑安装工程费" value="0" class="form-control"
-                               name="constructionInstallationEngineeringFeeTax">
+                               placeholder="建筑安装工程费"  class="form-control"
+                               name="f21" onblur="landEngineering.calculationD21()">
+
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
@@ -57,8 +64,14 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
-                    <select name="infrastructureCostTax"
-                            class="form-control search-select select2 infrastructureCostTax">
+                    <select name="f22"
+                            class="form-control search-select select2" onchange="landEngineering.calculationD22(this)">
+                        <option>请选择</option>
+                        <c:forEach items="${dataInfrastructureList}" var="item">
+                            <c:if test="${item.infrastructureSupportingFacilities != 0}">
+                                <option value="${item.infrastructureSupportingFacilities}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
+                            </c:if>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -70,8 +83,14 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
-                    <select name="infrastructureMatchingCostTax"
-                            class="form-control search-select select2 infrastructureMatchingCostTax">
+                    <select name="f23"
+                            class="form-control search-select select2 " onchange="landEngineering.calculationD23(this)">
+                        <option>请选择</option>
+                        <c:forEach items="${dataInfrastructureList}" var="item">
+                            <c:if test="${item.communalFacilities != 0}">
+                                <option value="${item.communalFacilities}">${item.timeSlot} 金额:${item.communalFacilities}</option>
+                            </c:if>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -83,8 +102,14 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
-                    <select name="devDuringTax"
-                            class="form-control search-select select2 devDuringTax">
+                    <select name="f24"
+                            class="form-control search-select select2 " onchange="landEngineering.calculationD24()">
+                        <option>请选择</option>
+                        <c:forEach items="${dataInfrastructureList}" var="item">
+                            <c:if test="${item.devTaxTotal != 0}">
+                                <option value="${item.devTaxTotal}">${item.timeSlot} 金额:${item.devTaxTotal}</option>
+                            </c:if>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -97,7 +122,7 @@
             <div class="x-valid">
                 <div class="col-sm-11">
                     <input type="text"
-                           placeholder="其它工程费率" class="form-control x-percent" name="otherEngineeringCostTax">
+                           placeholder="其它工程费率" class="form-control x-percent" name="f25" onblur="landEngineering.calculationD25()">
                 </div>
             </div>
         </div>
@@ -109,33 +134,41 @@
             <div class="x-valid">
                 <div class="col-sm-11">
                     <input type="text"
-                           placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">
+                           placeholder="不可预见费率" class="form-control x-percent" name="f27" onblur="landEngineering.calculationD27()">
                 </div>
             </div>
         </div>
     </div>
 
-    <input type="hidden"
+    <input type="text"
            placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"
-           name="reconnaissanceDesign">
-    <input type="hidden"
+           name="d20" onblur="landEngineering.calculationD20()">
+
+    <input type="text"
            placeholder="建筑安装工程费" class="form-control" readonly="readonly"
-           name="constructionInstallationEngineeringFee" value="0">
-    <input type="hidden"
+           name="d21"  onblur="landEngineering.calculationD21()">
+
+    <input type="text"
            placeholder="基础设施费用" class="form-control" readonly="readonly"
-           name="infrastructureCost">
-    <input type="hidden"
+           name="d22" >
+
+    <input type="text"
            placeholder="公共配套设施建设费" class="form-control" readonly="readonly"
-           name="infrastructureMatchingCost">
-    <input type="hidden"
+           name="d23">
+
+    <input type="text"
            placeholder="开发期间税费" class="form-control" readonly="readonly"
-           name="devDuring">
-    <input type="hidden"
+           name="d24">
+
+    <input type="text"
            placeholder="其它工程费" class="form-control" readonly="readonly"
-           name="otherEngineeringCost">
-    <input type="hidden"
+           name="d25">
+
+    <input type="text"
            placeholder="不可预见费" class="form-control" readonly="readonly"
-           name="unforeseenExpenses">
+           name="d27">
+
+
 </div>
 
 <div class="x_panel">
@@ -156,7 +189,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="契税率" class="form-control x-percent" data-rule-number='true' required="required"
-                           name="deedTax">
+                           name="f29" onblur="landEngineering.calculationD28()">
                 </div>
             </div>
 
@@ -167,7 +200,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="费率说明" class="form-control"
-                           name="deedTaxExplain">
+                           name="f29Explain">
                 </div>
             </div>
         </div>
@@ -180,7 +213,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="交易费率" class="form-control x-percent" required="required"
-                           name="transactionCostTax">
+                           name="f30" onblur="landEngineering.calculationD28()">
                 </div>
             </div>
             <div class="x-valid">
@@ -190,7 +223,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="费率说明" class="form-control"
-                           name="transactionCostTaxExplain">
+                           name="f30Explain">
                 </div>
             </div>
         </div>
@@ -203,7 +236,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="管理费率" class="form-control x-percent" required="required"
-                           name="managementExpenseTax">
+                           name="g32" onblur="landEngineering.calculationD32()">
                 </div>
             </div>
 
@@ -214,7 +247,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="费率说明" class="form-control"
-                           name="managementExpenseTaxExplain">
+                           name="g32Explain">
                 </div>
             </div>
         </div>
@@ -319,12 +352,15 @@
         </div>
 
     </div>
-    <input type="hidden"
-           placeholder="设计费参数比率" class="form-control" readonly="readonly"
-           name="designFeeParameterRatio">
-    <input type="hidden"
+
+    <input type="text"
+           placeholder="单元格d28" class="form-control" readonly="readonly"
+           name="d28">
+
+    <input type="text"
            placeholder="管理费" class="form-control" readonly="readonly"
-           name="managementExpenseCorrecting">
+           name="d32">
+
     <input type="hidden"
            placeholder="管理费(金额)" class="form-control" readonly="readonly"
            name="managementExpense">
@@ -371,31 +407,31 @@
                     <tbody>
                     <tr>
                         <td>预期销售合计</td>
-                        <td class="estimateSaleTotal">0.00</td>
+                        <td class="estimateSaleTotal"></td>
                     </tr>
                     <tr>
                         <td> 总建筑面积小计（㎡）</td>
-                        <td class="totalGrossFloorArea">0.00</td>
+                        <td class="totalGrossFloorArea"></td>
                     </tr>
                     <tr>
                         <td> 工程建设成本小计</td>
-                        <td class="constructionCostSubtotal">0.00</td>
+                        <td class="d26" onblur="landEngineering.calculationD26()"></td>
                     </tr>
                     <tr>
                         <td> 不可预见费金额</td>
-                        <td class="unforeseenExpenses">0.00</td>
+                        <td class="unforeseenExpenses"></td>
                     </tr>
                     <tr>
                         <td> 投资利润</td>
-                        <td class="investmentProfit">0.00</td>
+                        <td class="investmentProfit"></td>
                     </tr>
                     <tr>
                         <td> 地价</td>
-                        <td class="landPriceCorrecting">0.00</td>
+                        <td class="landPriceCorrecting"></td>
                     </tr>
                     <tr>
                         <td> 委估土地单价</td>
-                        <td class="estimateUnitPriceLandC33">0.00</td>
+                        <td class="estimateUnitPriceLandC33"></td>
                     </tr>
                     </tbody>
                 </table>

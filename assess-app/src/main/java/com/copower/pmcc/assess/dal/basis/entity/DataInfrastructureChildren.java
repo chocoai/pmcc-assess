@@ -10,8 +10,6 @@ public class DataInfrastructureChildren {
 
     private BigDecimal number;
 
-    private String type;
-
     private BigDecimal tax;
 
     private String creator;
@@ -44,14 +42,6 @@ public class DataInfrastructureChildren {
 
     public void setNumber(BigDecimal number) {
         this.number = number;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
     }
 
     public BigDecimal getTax() {

@@ -112,18 +112,30 @@
     };
 
     development.initData = function () {
-        if ($(development.config.land.frm).find(development.config.land.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
-            $(development.config.land.frm).find(development.config.land.parameter).empty().append(developmentCommon.parameter.getHtml());
+        var landFrm = $(development.config.land.frm) ;
+        var engineeringFrm = $(development.config.engineering.frm) ;
+
+        //土地
+        if (landFrm.find(development.config.land.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
+            var html = developmentCommon.parameter.getHtml() ;
+            html = html.replace(/{funA5}/g,"landEngineering.calculationF18()") ;
+            html = html.replace(/{funA3}/g,"landEngineering.calculationF18()") ;
+            landFrm.find(development.config.land.parameter).empty().append(html);
         }
-        if ($(development.config.engineering.frm).find(development.config.engineering.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
-            $(development.config.engineering.frm).find(development.config.engineering.parameter).empty().append(developmentCommon.parameter.getHtml());
+
+        //在建工程
+        if (engineeringFrm.find(development.config.engineering.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
+            engineeringFrm.find(development.config.engineering.parameter).empty().append(developmentCommon.parameter.getHtml());
         }
+
         //开启编辑
         developmentCommon.parameter.editableInit();
     };
 
     $(document).ready(function () {
+
         development.initData();
+
         var frm = $(development.config.frm) ;
         frm.find("input[type='radio'][name='development']").change(function () {
             var data = formSerializeArray(frm);

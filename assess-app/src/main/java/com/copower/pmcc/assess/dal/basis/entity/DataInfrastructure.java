@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class DataInfrastructure {
@@ -16,19 +15,13 @@ public class DataInfrastructure {
 
     private String number;
 
-    private String fileName;
-
     private String projectType;
 
     private Date startDate;
 
     private Date endDate;
 
-    private BigDecimal costTotal;
-
-    private BigDecimal matchingCostTotal;
-
-    private BigDecimal devTaxTotal;
+    private String type;
 
     private String creator;
 
@@ -84,14 +77,6 @@ public class DataInfrastructure {
         this.number = number == null ? null : number.trim();
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName == null ? null : fileName.trim();
-    }
-
     public String getProjectType() {
         return projectType;
     }
@@ -116,28 +101,12 @@ public class DataInfrastructure {
         this.endDate = endDate;
     }
 
-    public BigDecimal getCostTotal() {
-        return costTotal;
+    public String getType() {
+        return type;
     }
 
-    public void setCostTotal(BigDecimal costTotal) {
-        this.costTotal = costTotal;
-    }
-
-    public BigDecimal getMatchingCostTotal() {
-        return matchingCostTotal;
-    }
-
-    public void setMatchingCostTotal(BigDecimal matchingCostTotal) {
-        this.matchingCostTotal = matchingCostTotal;
-    }
-
-    public BigDecimal getDevTaxTotal() {
-        return devTaxTotal;
-    }
-
-    public void setDevTaxTotal(BigDecimal devTaxTotal) {
-        this.devTaxTotal = devTaxTotal;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getCreator() {

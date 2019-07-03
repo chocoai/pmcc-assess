@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="DECIMAL" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="tax" property="tax" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -71,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, number, type, tax, creator, gmt_created, gmt_modified, pid
+    id, name, number, tax, creator, gmt_created, gmt_modified, pid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureChildrenExample" >
     select
@@ -107,12 +106,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_infrastructure_children (name, number, type, 
-      tax, creator, gmt_created, 
-      gmt_modified, pid)
-    values (#{name,jdbcType=VARCHAR}, #{number,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR}, 
-      #{tax,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{pid,jdbcType=INTEGER})
+    insert into tb_data_infrastructure_children (name, number, tax, 
+      creator, gmt_created, gmt_modified, 
+      pid)
+    values (#{name,jdbcType=VARCHAR}, #{number,jdbcType=DECIMAL}, #{tax,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{pid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureChildren" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,9 +124,6 @@
       </if>
       <if test="number != null" >
         number,
-      </if>
-      <if test="type != null" >
-        type,
       </if>
       <if test="tax != null" >
         tax,
@@ -151,9 +147,6 @@
       </if>
       <if test="number != null" >
         #{number,jdbcType=DECIMAL},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
       </if>
       <if test="tax != null" >
         #{tax,jdbcType=DECIMAL},
@@ -190,9 +183,6 @@
       <if test="record.number != null" >
         number = #{record.number,jdbcType=DECIMAL},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
-      </if>
       <if test="record.tax != null" >
         tax = #{record.tax,jdbcType=DECIMAL},
       </if>
@@ -218,7 +208,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=DECIMAL},
-      type = #{record.type,jdbcType=VARCHAR},
       tax = #{record.tax,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -236,9 +225,6 @@
       </if>
       <if test="number != null" >
         number = #{number,jdbcType=DECIMAL},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="tax != null" >
         tax = #{tax,jdbcType=DECIMAL},
@@ -262,7 +248,6 @@
     update tb_data_infrastructure_children
     set name = #{name,jdbcType=VARCHAR},
       number = #{number,jdbcType=DECIMAL},
-      type = #{type,jdbcType=VARCHAR},
       tax = #{tax,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

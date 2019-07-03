@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,9 @@ public class DataInfrastructureDao {
     private DataInfrastructureMapper infrastructureMapper;
 
     public List<DataInfrastructure> getDataInfrastructureListA(DataInfrastructure infrastructure){
+        if (infrastructure == null){
+            return new ArrayList<DataInfrastructure>() ;
+        }
         DataInfrastructureExample example = new DataInfrastructureExample();
         DataInfrastructureExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -31,9 +35,6 @@ public class DataInfrastructureDao {
         if (StringUtils.isNotBlank(infrastructure.getProvince())){
             criteria.andProvinceEqualTo(infrastructure.getProvince());
         }
-        //输入数据 start end
-        //start >
-        //end <
         if (infrastructure.getEndDate()!= null && infrastructure.getStartDate() != null){
             criteria.andEndDateLessThanOrEqualTo(infrastructure.getEndDate());
             criteria.andStartDateGreaterThanOrEqualTo(infrastructure.getStartDate());
@@ -47,27 +48,20 @@ public class DataInfrastructureDao {
         if (StringUtils.isNotBlank(infrastructure.getProjectType())){
             criteria.andProjectTypeEqualTo(infrastructure.getProjectType());
         }
+        if (StringUtils.isNotBlank(infrastructure.getType())){
+            criteria.andTypeEqualTo(infrastructure.getType());
+        }
         return infrastructureMapper.selectByExample(example) ;
     }
 
-    /**查询发文单位*/
     public List<DataInfrastructure> getDataInfrastructureList(DataInfrastructure infrastructure){
         DataInfrastructureExample example = new DataInfrastructureExample();
         MybatisUtils.convertObj2Example(infrastructure, example);
         return infrastructureMapper.selectByExample(example) ;
     }
 
-    /**查询发文单位*/
-    public List<DataInfrastructure> getDataInfrastructureList(String name){
-        DataInfrastructureExample example = new DataInfrastructureExample();
-        DataInfrastructureExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotEmpty(name)) {
-           criteria.andFileNameLike(String.format("%s%s%s", "%", name, "%"));
-        }
-        return infrastructureMapper.selectByExample(example) ;
-    }
 
-    public DataInfrastructure get(Integer id){
+    public DataInfrastructure getDataInfrastructure(Integer id){
         return infrastructureMapper.selectByPrimaryKey(id);
     }
 
@@ -75,21 +69,16 @@ public class DataInfrastructureDao {
         return infrastructureMapper.updateByPrimaryKeySelective(infrastructure)==1;
     }
 
-    /**添加发文单位*/
-    public int addDataInfrastructure(DataInfrastructure infrastructure){
-        infrastructureMapper.insertSelective(infrastructure);
-        return infrastructure.getId();
+    public boolean addDataInfrastructure(DataInfrastructure infrastructure){
+        return infrastructureMapper.insertSelective(infrastructure)==1;
     }
 
-    /**修改发文单位*/
-    public Boolean editDataInfrastructure(DataInfrastructure infrastructure){
+    public boolean editDataInfrastructure(DataInfrastructure infrastructure){
         int result = infrastructureMapper.updateByPrimaryKeySelective(infrastructure);
         return result > 0;
     }
 
-    /**删除发文单位*/
-    public Boolean deleteDataInfrastructure(Integer id){
-        int result = infrastructureMapper.deleteByPrimaryKey(id);
-        return result > 0;
+    public boolean deleteDataInfrastructure(Integer id){
+        return infrastructureMapper.deleteByPrimaryKey(id)==1;
     }
 }

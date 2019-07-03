@@ -57,13 +57,17 @@
             <!--<columnOverride column="child_data" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_md_development_engineering" domainObjectName="MdDevelopmentEngineering">
+        <table tableName="tb_data_infrastructure_children" domainObjectName="DataInfrastructureChildren">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_md_development_land" domainObjectName="MdDevelopmentLand">
+        <table tableName="tb_data_infrastructure" domainObjectName="DataInfrastructure">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <!--<table tableName="tb_md_development_land" domainObjectName="MdDevelopmentLand">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_basic_house" domainObjectName="BasicHouse">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

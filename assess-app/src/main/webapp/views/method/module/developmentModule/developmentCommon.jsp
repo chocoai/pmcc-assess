@@ -365,19 +365,23 @@
                     <tfoot>
                     <tr data-key="estimateSaleTotal">
                         <td>预期销售合计</td>
+
                         <td><input type="text" class="form-control" name="buildArea"
                                    readonly="readonly" value="0.00"
-                                   onblur="developmentCommon.parameter.handleCalculation('{fun}')"></td>
+                                   onblur="developmentCommon.parameter.handleCalculation('{funA1}')"></td>
+
                         <td><input type="text" class="form-control" name="maySaleArea"
                                    readonly="readonly" value="0.00"
-                                   onblur="developmentCommon.parameter.handleCalculation('{fun}')"></td>
+                                   onblur="developmentCommon.parameter.handleCalculation('{funA2}')"></td>
+
                         <td><input type="text" class="form-control" name="maySaleAreaNext"
                                    readonly="readonly" value="0.00"
-                                   onblur="developmentCommon.parameter.handleCalculation('{fun}')"></td>
+                                   onblur="developmentCommon.parameter.handleCalculation('{funA3}')"></td>
+
                         <td><input type="text" class="form-control" name="unitPrice"
                                    readonly="readonly" value="0.00"
-                                   onblur="developmentCommon.parameter.handleCalculation('{fun}')"></td>
-                        <td><input type="text" placeholder="不可售建筑面积" class="form-control"></td>
+                                   onblur="developmentCommon.parameter.handleCalculation('{funA4}')"></td>
+                        <td><input type="text" name="unsaleableBuildingArea" onblur="developmentCommon.parameter.handleCalculation('{funA5}')" placeholder="不可售建筑面积" class="form-control"></td>
                     </tr>
                     </tfoot>
                 </table>

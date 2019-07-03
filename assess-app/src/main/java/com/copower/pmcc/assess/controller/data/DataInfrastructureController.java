@@ -1,29 +1,29 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.DataInfrastructureEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructure;
-import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
-import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysAreaDto;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author liuwei
- * 2018-10-18 重写
+ * @author zch
  */
 @RequestMapping(value = "/infrastructure")
 @Controller
@@ -34,15 +34,15 @@ public class DataInfrastructureController {
     @Autowired
     private DataInfrastructureService dataInfrastructureService;
 
-    @Autowired
-    private ErpAreaService erpAreaService;
-
     @RequestMapping(value = "/Index", name = "发文单位查看")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataInfrastructure");
-        //获取省
-        List<SysAreaDto> provinceList = erpAreaService.getProvinceList();
-        modelAndView.addObject("provinceList", provinceList);
+        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+        Arrays.asList(DataInfrastructureEnum.values()).forEach(oo ->{
+            keyValueDtos.add(new KeyValueDto(oo.getName(),oo.getRemark())) ;
+        });
+        modelAndView.addObject("keyValueDtos",keyValueDtos) ;
+        modelAndView.addObject("JSONkeyValueDtos",JSONObject.toJSONString(keyValueDtos)) ;
         return modelAndView;
     }
 
@@ -51,29 +51,21 @@ public class DataInfrastructureController {
     @RequestMapping(value = "/getInfrastructureById", method = {RequestMethod.GET}, name = "获取基础设施维护")
     public HttpResult getById(Integer id) {
         try {
-            if (id != null) {
-                return HttpResult.newCorrectResult(dataInfrastructureService.get(id));
-            }
+            return HttpResult.newCorrectResult(dataInfrastructureService.getDataInfrastructure(id));
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return HttpResult.newErrorResult(String.format("异常! %s", "null point"));
     }
 
     @ResponseBody
     @RequestMapping(value = "/getInfrastructureList", method = {RequestMethod.GET}, name = "获取基础设施维护列表")
-    public BootstrapTableVo getInfrastructureList(String dispatchUnit) {
-        DataInfrastructure infrastructure = new DataInfrastructure();
-        BootstrapTableVo vo = null;
-        if (!StringUtils.isEmpty(dispatchUnit)) {
-            infrastructure.setDispatchUnit(dispatchUnit);
-        }
+    public BootstrapTableVo getInfrastructureList(DataInfrastructure infrastructure) {
+        BootstrapTableVo vo = new BootstrapTableVo();
         try {
             vo = dataInfrastructureService.getInfrastructure(infrastructure);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
-            return null;
         }
         return vo;
     }
@@ -82,23 +74,21 @@ public class DataInfrastructureController {
     @RequestMapping(value = "/deleteInfrastructureById", method = {RequestMethod.POST}, name = "删除基础设施维护")
     public HttpResult delete(Integer id) {
         try {
-            if (id != null) {
-                dataInfrastructureService.deleteInfrastructure(id);
-                return HttpResult.newCorrectResult();
-            }
+            dataInfrastructureService.deleteInfrastructure(id);
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateInfrastructure", method = {RequestMethod.POST}, name = "更新基础设施维护")
-    public HttpResult saveAndUpdate(InfrastructureDto infrastructureDto) {
+    public HttpResult saveAndUpdate(String formData) {
         try {
-            dataInfrastructureService.saveAndUpdateInfrastructure(infrastructureDto);
-            return HttpResult.newCorrectResult("保存 success!");
+            DataInfrastructure infrastructure = JSONObject.parseObject(formData,DataInfrastructure.class) ;
+            dataInfrastructureService.saveAndUpdateInfrastructure(infrastructure);
+            return HttpResult.newCorrectResult(infrastructure);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
@@ -107,28 +97,22 @@ public class DataInfrastructureController {
 
     @ResponseBody
     @RequestMapping(value = "/listInfrastructure", method = {RequestMethod.GET}, name = "基础设施维护 list")
-    public HttpResult list(String province, String city, String district,String startDate,String endDate,String projectType) {
+    public HttpResult list(String formData) {
         try {
-            DataInfrastructure infrastructure = new DataInfrastructure();
-            if (!StringUtils.isEmpty(province)) {
-                infrastructure.setProvince(province);
-            }
-            if (!StringUtils.isEmpty(city)) {
-                infrastructure.setCity(city);
-            }
-            if (!StringUtils.isEmpty(district)) {
-                infrastructure.setDistrict(district);
-            }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(startDate)){
-                infrastructure.setStartDate(DateUtils.convertDate(startDate));
-            }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(endDate)){
-                infrastructure.setEndDate(DateUtils.convertDate(endDate,null));
-            }
-            if (!StringUtils.isEmpty(projectType)){
-                infrastructure.setProjectType(projectType);
-            }
+            DataInfrastructure infrastructure = JSONObject.parseObject(formData,DataInfrastructure.class) ;
             return HttpResult.newCorrectResult(dataInfrastructureService.infrastructureList(infrastructure));
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/calculatingMethod", method = {RequestMethod.GET}, name = "测算方法使用")
+    public HttpResult calculatingMethod(String province,String city,String district) {
+        try {
+            List<InfrastructureVo> infrastructureVoList = dataInfrastructureService.calculatingMethod(province, city, district) ;
+            return HttpResult.newCorrectResult(infrastructureVoList);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("异常");

@@ -65,7 +65,6 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        dataObjFun.event.father.init();
         dataObjFun.loadDataList();
     });
     var DataObjFun = function () {
@@ -90,37 +89,12 @@
         infrastructureDevTable: "infrastructureDevTable",
         infrastructureDevFrm: "infrastructureDevFrm"
     };
-    DataObjFun.prototype.isEmpty = function (item) {
+
+    DataObjFun.prototype.isNotBlank = function (item) {
         if (item) {
             return true;
         }
         return false;
-    };
-    DataObjFun.prototype.objectWriteSelectData = function (frm, data, name) {
-        if (DataObjFun.prototype.isEmpty(data)) {
-            $("#" + frm + " ." + name).val(data).trigger("change");
-        } else {
-            $("#" + frm + " ." + name).val(null).trigger("change");
-        }
-    };
-    DataObjFun.prototype.event = {
-        father: {
-            select2Load: function () {
-                //使数据校验生效
-                $("#" + dataObjFun.config.father.frm()).validate();
-                AssessCommon.initAreaInfo({
-                    provinceTarget: $("#province"),
-                    cityTarget: $("#city"),
-                    districtTarget: $("#district"),
-                    provinceValue: '',
-                    cityValue: '',
-                    districtValue: ''
-                })
-            },
-            init: function () {
-                DataObjFun.prototype.event.father.select2Load();
-            }
-        }
     };
 
     var dataObjFun = new DataObjFun();
@@ -170,6 +144,21 @@
         cols.push({field: 'provinceName', title: '省'});
         cols.push({field: 'cityName', title: '市'});
         cols.push({field: 'districtName', title: '县'});
+        cols.push({
+            field: 'type', title: '类型', formatter: function (value, row, index) {
+                var str = '';
+                if (row.type){
+                    var data = JSON.parse('${JSONkeyValueDtos}') ;
+                    $.each(data,function (i,item) {
+                        if (row.type == item.key){
+                            str += item.value ;
+                        }
+                    });
+                }
+                return str;
+            }
+        });
+        cols.push({field: 'projectType', title: '项目类型'});
         cols.push({field: 'dispatchUnit', title: '发文单位'});
         cols.push({field: 'number', title: '文号'});
         cols.push({field: 'fileViewName', title: '附件'});
@@ -244,6 +233,7 @@
             cityValue: data.city,
             districtValue: data.district
         });
+        frm.find("select[name='type']").val(data.type).trigger('change');
         frm.find("input[name='startDate']").val(formatDate(data.startDate));
         frm.find("input[name='endDate']").val(formatDate(data.endDate));
         dataObjFun.fileUpload(dataObjFun.config.father.fileId, "tb_data_infrastructure", id);
@@ -265,7 +255,7 @@
             url: "${pageContext.request.contextPath}/infrastructure/saveAndUpdateInfrastructure",
             type: "post",
             dataType: "json",
-            data: data,
+            data: {formData:JSON.stringify(data)},
             success: function (result) {
                 if (result.ret) {
                     toastr.success('保存成功');
@@ -288,8 +278,17 @@
      * @date:
      **/
     dataObjFun.showModel = function () {
-        $("#" + dataObjFun.config.father.frm()).clearAll();
+        var frm = $("#" + dataObjFun.config.father.frm()) ;
+        frm.clearAll();
         $('#' + dataObjFun.config.father.box()).modal("show");
+        AssessCommon.initAreaInfo({
+            provinceTarget: frm.find("select[name='province']"),
+            cityTarget: frm.find("select[name='city']"),
+            districtTarget: frm.find("select[name='district']"),
+            provinceValue: null,
+            cityValue: null,
+            districtValue: null
+        });
         dataObjFun.fileUpload(dataObjFun.config.father.fileId, "tb_data_infrastructure", 0);
         dataObjFun.showFile(dataObjFun.config.father.fileId, "tb_data_infrastructure", 0);
     };
@@ -360,7 +359,6 @@
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'number', title: '金额'});
         cols.push({field: 'tax', title: '税费'});
-        cols.push({field: 'type', title: '类型'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -424,21 +422,6 @@
                             <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                                 <input type="text" name="name" class="form-control" required="required"
                                        placeholder="名称">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                类型<span class="symbol required"></span>
-                            </label>
-                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                <select required="required" class="search-select select2" name="type">
-                                    <option value="1">开发期间税费</option>
-                                    <option value="2">公共配套设施费用</option>
-                                    <option value="3">基础配套设施费用</option>
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -557,11 +540,26 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
-                                            项目类别<span class="symbol required"></span>
+                                            项目类别
                                         </label>
                                         <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                             <input type="text" class="form-control" name="projectType"
-                                                   placeholder="项目类别" required="required">
+                                                   placeholder="项目类别">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
+                                            类型<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                            <select required="required" class="search-select select2" name="type">
+                                                <option>请选择</option>
+                                                <c:forEach var="item" items="${keyValueDtos}">
+                                                    <option value="${item.key}">${item.value}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -579,12 +577,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
-                                            文号<span class="symbol required"></span>
+                                            文号
                                         </label>
                                         <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                             <input type="text" class="form-control" data-rule-number='true'
                                                    name="number"
-                                                   placeholder="文号" required="required">
+                                                   placeholder="文号">
                                         </div>
                                     </div>
                                 </div>

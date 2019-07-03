@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsContentService;
@@ -26,7 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author: Calvin(qiudong @ copowercpa.com)
@@ -36,6 +36,8 @@ import java.util.stream.Collectors;
 @Component
 @WorkFlowAnnotation(desc = "假设开发法成果")
 public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -52,6 +54,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     private DeclareRecordService declareRecordService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
+    @Autowired
+    private DataInfrastructureService dataInfrastructureService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     final String JSON_STRING = "Json";
 
@@ -215,6 +219,14 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         if (judgeObjectId != null) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
             if (schemeJudgeObject != null) {
+                Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
+                if (areaGroupId != null) {
+                    SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
+                    if (schemeAreaGroup != null){
+                        modelAndView.addObject(StringUtils.uncapitalize(SchemeAreaGroup.class.getSimpleName()), schemeAreaGroup);
+                        modelAndView.addObject("dataInfrastructureList", dataInfrastructureService.calculatingMethod(schemeAreaGroup.getProvince(),schemeAreaGroup.getCity(),schemeAreaGroup.getDistrict()));
+                    }
+                }
                 if (schemeJudgeObject.getDeclareRecordId() != null) {
                     DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
                     if (declareRecord != null) {
