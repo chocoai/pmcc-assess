@@ -213,7 +213,7 @@
         });
         cols.push({
             field: 'gmtCreated', title: '立项时间', formatter: function (value, row, index) {
-                return formatDate(row.gmtCreated, false);
+                return formatDate(row.gmtCreated, true);
             }
         });
         cols.push({
@@ -247,6 +247,7 @@
     //项目成员选择
     function selectProjectMember() {
         erpEmployee.select({
+            currOrgId: '${companyId}',
             onSelected: function (data) {
                 $("#queryMember").val(data.account);
                 $("#queryMemberName").val(data.name);
@@ -256,6 +257,7 @@
     //项目经理选择
     function selectProjectManager() {
         erpEmployee.select({
+            currOrgId: '${companyId}',
             onSelected: function (data) {
                 $("#queryManager").val(data.account);
                 $("#queryManagerName").val(data.name);
@@ -265,6 +267,7 @@
     //立项人选择
     function selectProjectCreator() {
         erpEmployee.select({
+            currOrgId: '${companyId}',
             onSelected: function (data) {
                 $("#queryCreator").val(data.account);
                 $("#queryCreatorName").val(data.name);

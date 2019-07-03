@@ -402,8 +402,7 @@ public class PublicService {
         sysProjectDto.setProjectDepartmentId(publicService.getCurrentCompany().getCompanyId());
         sysProjectDto.setAppKey(applicationConstant.getAppKey());
         sysProjectDto.setStatus(ProjectStatusEnum.NORMAL.getKey());
-        erpRpcProjectService.saveProject(sysProjectDto);
-        projectInfo.setPublicProjectId(sysProjectDto.getId());
+        projectInfo.setPublicProjectId(erpRpcProjectService.saveProject(sysProjectDto));
         projectInfoService.updateProjectInfo(projectInfo);
     }
 }

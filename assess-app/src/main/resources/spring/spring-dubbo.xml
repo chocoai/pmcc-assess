@@ -34,13 +34,12 @@
     <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService" id="bpmRpcProjectTaskService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcToolsService" id="bpmRpcToolsService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
     <!-- ======================hr - consumer========================== -->
-    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcUserService" id="hrRpcUserService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
-    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcProfessionalService" id="hrRpcProfessionalService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
-    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcAttachmentService" id="hrRpcAttachmentService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
-    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcDataDicService" id="hrRpcDataDicService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcToolService" id="hrRpcToolService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
     <!-- ======================crm - consumer========================== -->
     <dubbo:reference interface="com.copower.pmcc.crm.api.provider.CrmRpcCustomerService" id="crmRpcCustomerService" check="false" retries="0" timeout="10000" url="${crm.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService" id="crmRpcBaseDataDicService" check="false" retries="0" timeout="10000" url="${crm.api.url}" />
     <!-- ======================ad - consumer========================== -->
     <dubbo:reference interface="com.copower.pmcc.ad.api.provider.AdRpcQualificationsService" id="adRpcQualificationsService" check="false" retries="0" timeout="10000" url="${ad.api.url}" />
+    <!-- ======================finance - consumer========================== -->
+    <dubbo:reference interface="com.copower.pmcc.finance.api.provider.FinanceRpcToolService" id="financeRpcToolService" check="false" retries="0" timeout="10000" url="${finance.api.url}" />
 </beans>

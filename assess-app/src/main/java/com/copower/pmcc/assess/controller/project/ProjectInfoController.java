@@ -317,6 +317,7 @@ public class ProjectInfoController {
         List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("");
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
 
