@@ -213,7 +213,7 @@
         });
         cols.push({
             field: 'gmtCreated', title: '立项时间', formatter: function (value, row, index) {
-                return formatDate(row.gmtCreated, false);
+                return formatDate(row.gmtCreated, true);
             }
         });
         cols.push({
@@ -222,7 +222,7 @@
                 if (row.projectStatus) {
                     if (row.projectStatus == '草稿') {
                         str += "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectInfoEdit?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='重新申请' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-pencil-square-o '></i></a>";
-                        str += '<a class="btn btn-xs btn-success"  href="javascript:projectClearData(' + row.id + ');" ><i class="fa fa-times">删除立项数据</i></a>';
+                        str += '<a class="btn btn-xs btn-warning"  href="javascript:projectClearData(' + row.id + ');" ><i class="fa fa-minus"></i></a>';
                     } else {
                         str += "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
                     }
@@ -255,6 +255,7 @@
     //项目成员选择
     function selectProjectMember() {
         erpEmployee.select({
+            currOrgId: '${companyId}',
             onSelected: function (data) {
                 $("#queryMember").val(data.account);
                 $("#queryMemberName").val(data.name);
@@ -264,6 +265,7 @@
     //项目经理选择
     function selectProjectManager() {
         erpEmployee.select({
+            currOrgId: '${companyId}',
             onSelected: function (data) {
                 $("#queryManager").val(data.account);
                 $("#queryManagerName").val(data.name);
@@ -273,6 +275,7 @@
     //立项人选择
     function selectProjectCreator() {
         erpEmployee.select({
+            currOrgId: '${companyId}',
             onSelected: function (data) {
                 $("#queryCreator").val(data.account);
                 $("#queryCreatorName").val(data.name);

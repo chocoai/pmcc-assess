@@ -892,6 +892,7 @@
     //项目经理
     objProject.selectUserAccountManager = function (this_) {
         erpEmployee.select({
+            currOrgId: '${companyId}',
             onSelected: function (data) {
                 $(this_).closest('.input-group').find("input[name='userAccountManager']").val(data.account);
                 $(this_).closest('.input-group').find("input[name='userAccountManagerName']").val(data.name);
@@ -903,6 +904,7 @@
     objProject.selectUserAccountMember = function (this_) {
         erpEmployee.select({
             multi: true,
+            currOrgId: '${companyId}',
             onSelected: function (data) {
                 $(this_).closest('.input-group').find("input[name='userAccountMember']").val(data.account);
                 $(this_).closest('.input-group').find("input[name='userAccountMemberName']").val(data.name);

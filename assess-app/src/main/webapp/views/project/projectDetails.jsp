@@ -215,7 +215,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <table class="table table-bordered" id="tb_projectInvoiceList">
+                    <table class="table table-bordered" id="tb_projectBillList">
                     </table>
                 </div>
             </div>
@@ -237,6 +237,8 @@
         projectDetails.getRuningTab().tab('show');
         projectDetails.loadDocumentSend();
         projectDetails.loadProjectLog();
+        projectDetails.loadProjectLegwork();
+        projectDetails.loadProjectBill();
         setInterval(function () {
             projectDetails.loadPlanItem(projectDetails.getActiveTab().closest('li').attr('plan-id'));
         }, 30 * 1000)
@@ -630,6 +632,7 @@
         //调整责任人
         updateExecuteUser: function (planDetailsId) {
             erpEmployee.select({
+                currOrgId: '${companyId}',
                 onSelected: function (data) {
                     if (data && data.account) {
                         $.ajax({
@@ -720,16 +723,75 @@
         loadProjectLog: function () {
             var cols = [];
             cols.push({field: 'title', title: '标题'});
+            cols.push({field: 'content', title: '内容'});
+            cols.push({field: 'creator', title: '创建人'});
             cols.push({
                 field: 'created', title: '创建日期', formatter: function (value, row, index) {
                     return formatDate(value, true);
                 }
             });
-            cols.push({field: 'content', title: '内容'});
-            cols.push({field: 'userName', title: '创建人'});
             $("#tb_projectLogList").bootstrapTable('destroy');
             TableInit("tb_projectLogList", "${pageContext.request.contextPath}/home/getWorkLogByProjectId", cols, {
-                publicProjectId: ${projectInfo.publicProjectId}
+                publicProjectId: '${projectInfo.publicProjectId}'
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //项目外勤
+        loadProjectLegwork: function () {
+            var cols = [];
+            cols.push({field: 'legworkContent', title: '内容'});
+            cols.push({field: 'creator', title: '创建人'});
+            cols.push({
+                field: 'created', title: '创建日期', formatter: function (value, row, index) {
+                    return formatDate(value, true);
+                }
+            });
+            cols.push({
+                field: 'opt', title: '操作', formatter: function (value, row, index) {
+                    return "<a target='_blank' href='/pmcc-hr/hrBase/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";;
+                }
+            });
+            $("#tb_projectLegWorkList").bootstrapTable('destroy');
+            TableInit("tb_projectLegWorkList", "${pageContext.request.contextPath}/rpcHrService/getHrLegworkList", cols, {
+                publicProjectId: '${projectInfo.publicProjectId}'
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //项目开票
+        loadProjectBill: function () {
+            var cols = [];
+            cols.push({field: 'billNumber', title: '票号'});
+            cols.push({field: 'amount', title: '开票金额'});
+            cols.push({field: 'company', title: '公司'});
+            cols.push({field: 'billExplain', title: '说明'});
+            cols.push({field: 'applyUserName', title: '申请人'});
+            cols.push({
+                field: 'created', title: '创建日期', formatter: function (value, row, index) {
+                    return formatDate(value, true);
+                }
+            });
+            cols.push({
+                field: 'opt', title: '操作', formatter: function (value, row, index) {
+                    return "<a target='_blank' href='/pmcc-finance/FinancialBase/DetailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";;
+                }
+            });
+            $("#tb_projectBillList").bootstrapTable('destroy');
+            TableInit("tb_projectBillList", "${pageContext.request.contextPath}/rpcFinanceService/getFinancialBillMakeOutList", cols, {
+                publicProjectId: '${projectInfo.publicProjectId}'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -739,10 +801,6 @@
                 }
             });
         }
-
-        //项目外勤
-
-        //项目开票
     };
 
 </script>
