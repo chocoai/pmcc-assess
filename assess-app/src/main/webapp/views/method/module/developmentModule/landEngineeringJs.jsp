@@ -3,6 +3,7 @@
     var landEngineering = {};
     landEngineering.target = $("#mdDevelopmentLandFrm");
     landEngineering.fixed = 2; //小数点保留2位
+    landEngineering.fixedMax = 4; //小数点保留2位
 
 
     //单元格f18
@@ -40,7 +41,7 @@
         if (!AssessCommon.isNumber(f21)) {
             return false;
         }
-        var c = Number(f18) * Number(f21) * Number(f20) / 1000;
+        var c = Number(f18) * Number(f21) * Number(f20) / 10000;
         landEngineering.target.find("input[name='d20']").val(c.toFixed(landEngineering.fixed));
         this.target.find(".d26").trigger('blur');
     };
@@ -50,7 +51,7 @@
         console.log("calculationD21");
         var f21 = landEngineering.target.find("input[name='f21']").val();
         var f18 = this.target.find("input[name='f18']").val();
-        var c = Number(f21) * Number(f18) / 1000;
+        var c = Number(f21) * Number(f18) / 10000;
         landEngineering.target.find("input[name='d21']").val(c.toFixed(landEngineering.fixed));
         this.target.find(".d26").trigger('blur');
     };
@@ -66,7 +67,7 @@
         if (!AssessCommon.isNumber(f22)) {
             return false;
         }
-        var c = Number(f22) * Number(f18) / 1000;
+        var c = Number(f22) * Number(f18) / 10000;
         landEngineering.target.find("input[name='d22']").val(c.toFixed(landEngineering.fixed));
         this.target.find(".d26").trigger('blur');
     };
@@ -82,7 +83,7 @@
         if (!AssessCommon.isNumber(f23)) {
             return false;
         }
-        var c = Number(f23) * Number(f18) / 1000;
+        var c = Number(f23) * Number(f18) / 10000;
         landEngineering.target.find("input[name='d23']").val(c.toFixed(landEngineering.fixed));
         this.target.find(".d26").trigger('blur');
     };
@@ -98,7 +99,7 @@
         if (!AssessCommon.isNumber(f24)) {
             return false;
         }
-        var c = Number(f24) * Number(f18) / 1000;
+        var c = Number(f24) * Number(f18) / 10000;
         landEngineering.target.find("input[name='d24']").val(c.toFixed(landEngineering.fixed));
         this.target.find(".d26").trigger('blur');
     };
@@ -114,7 +115,7 @@
         if (!AssessCommon.isNumber(f25)) {
             return false;
         }
-        var c = Number(f25) * Number(f18) / 1000;
+        var c = Number(f25) * Number(f18) / 10000;
         landEngineering.target.find("input[name='d25']").val(c.toFixed(landEngineering.fixed));
         this.target.find(".d26").trigger('blur');
     };
@@ -156,6 +157,7 @@
         });
         this.target.find(".d26").html(c.toFixed(landEngineering.fixed));
         this.target.find("input[name='f27']").trigger('blur');
+        this.target.find("input[name='f31']").trigger('blur');
 
     };
 
@@ -169,8 +171,10 @@
         if (!AssessCommon.isNumber(f27)) {
             return false;
         }
-        var c = Number(d26) * Number(f27) / 1000;
+        var c = Number(d26) * Number(f27) ;
         landEngineering.target.find("input[name='d27']").val(c.toFixed(landEngineering.fixed));
+        this.target.find("input[name='g34']").trigger('blur');
+        this.target.find("input[name='g35']").trigger('blur');
     };
 
     //单元格D28
@@ -186,6 +190,7 @@
         var c = Number(f29) + Number(f30) +1;
         landEngineering.target.find("input[name='d28']").val(c.toFixed(landEngineering.fixed));
         this.target.find("input[name='g32']").trigger('blur');
+        this.target.find("input[name='d34']").trigger('blur');
     } ;
 
     //单元格D32
@@ -199,7 +204,184 @@
             return false;
         }
         var c = Number(d28) * Number(g32) ;
-        landEngineering.target.find("input[name='d32']").val(c.toFixed(landEngineering.fixed));
+        landEngineering.target.find("input[name='d32']").val(c.toFixed(landEngineering.fixedMax));
+        this.target.find("input[name='g34']").trigger('blur');
+        this.target.find("input[name='d34']").trigger('blur');
+        this.target.find("input[name='g35']").trigger('blur');
+        this.target.find("input[name='h40']").trigger('blur');
+    };
+
+    //单元格F32
+    landEngineering.calculationF32 = function () {
+        //=(SUM(D26+D27)+F31)*G32
+        var f31 = this.target.find("input[name='f31']").val();
+        var g32 = this.target.find("input[name='g32']").attr("data-value");
+        var d26 = this.target.find(".d26").html();
+        var d27 = this.target.find("input[name='d27']").val();
+        if (!AssessCommon.isNumber(f31)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(g32)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d26)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d27)) {
+            return false;
+        }
+        var c = Number(d26) + Number(d27) + Number(f31);
+        c *= Number(g32) ;
+        landEngineering.target.find("input[name='f32']").val(c.toFixed(landEngineering.fixed));
+        this.target.find("input[name='g34']").trigger('blur');
+        this.target.find("input[name='g35']").trigger('blur');
+    };
+
+    //单元格F33
+    landEngineering.calculationF33 = function () {
+        var g33 = this.target.find("input[name='g33']").attr("data-value");
+        var tfoot = this.target.find("table").find("tfoot");
+        var a = tfoot.find("tr").first().find("input[name='maySaleArea']").val();
+        if (!AssessCommon.isNumber(g33)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(a)) {
+            return false;
+        }
+        var c = ( Number(a) * Number(g33) ) ;
+        c = Number(c) ;
+        if (AssessCommon.isNumber(c)) {
+            console.log("f33:"+c) ;
+            landEngineering.target.find("input[name='f33']").val(c.toFixed(landEngineering.fixed));
+            this.target.find("input[name='g34']").trigger('blur');
+            this.target.find("input[name='g35']").trigger('blur');
+        }
+    };
+
+    //单元格F34
+    landEngineering.calculationF34 = function () {
+        //,(D21+D23+D24+D25+D27+F32+F33)  *  ( (1+G34)^(D3/2)-1)   +(SUM(D20+D22)+E31) * (  (1+G34)^(D3)-1 )    )
+        var g34 = this.target.find("input[name='g34']").attr("data-value");
+        var d20 = this.target.find("input[name='d20']").val();
+        var d21 = this.target.find("input[name='d21']").val();
+        var d22 = this.target.find("input[name='d22']").val();
+        var d23 = this.target.find("input[name='d23']").val();
+        var d24 = this.target.find("input[name='d24']").val();
+        var d25 = this.target.find("input[name='d25']").val();
+        var d27 = this.target.find("input[name='d27']").val();
+        var f33 = this.target.find("input[name='f33']").val();
+        var f32 = this.target.find("input[name='f32']").val();
+        var d3 = $(development.config.frm).find("input[name='projectConstructionPeriod']").val() ;
+        var f31 = this.target.find("input[name='f31']").val();
+
+        if (!AssessCommon.isNumber(d3)) {
+            return false
+        }
+        if (!AssessCommon.isNumber(g34)) {
+            return false
+        }
+        var a = Number(d21) + Number(d23) + Number(d24) + Number(d25) + Number(d27)  + Number(f32)  + Number(f33);
+        var b = Math.pow(1 + Number(g34), Number(d3) / 2) - 1 ;
+        var c1 = a *b ;
+        var c2 = (Number(d20) + Number(d22) + Number(f31))   *   ( Math.pow(1 + Number(g34), Number(d3))  - 1)   ;
+        var c = c1 + c2;
+        if (AssessCommon.isNumber(c)) {
+            this.target.find(".f34").html(c.toFixed(landEngineering.fixed));
+        }
+    };
+
+    //单元格D34
+    landEngineering.calculationD34 = function () {
+        //(1+G34)^D3-1)*D28+((1+G34)^(D3/2)-1)*D32
+        var g34 = this.target.find("input[name='g34']").attr("data-value");
+        var d3 = $(development.config.frm).find("input[name='projectConstructionPeriod']").val() ;
+        var d28 = this.target.find("input[name='d28']").val() ;
+        var d32 = this.target.find("input[name='d32']").val() ;
+        if (!AssessCommon.isNumber(g34)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d3)) {
+            return false
+        }
+        var c1 = ( Math.pow(1 + Number(g34),Number(d3)) - 1)  * Number(d28) ;
+        var c2 = (Math.pow(1 + Number(g34),Number(d3)/2) - 1) * Number(d32) ;
+        var c = c1 + c2;
+        if (AssessCommon.isNumber(c)) {
+            landEngineering.target.find("input[name='d34']").val(c.toFixed(landEngineering.fixedMax));
+            this.target.find("input[name='h40']").trigger('blur');
+        }
+    };
+
+    //单元格D35
+    landEngineering.calculationD35 = function () {
+        //=(D28+D32)*G35
+        var g35 = this.target.find("input[name='g35']").attr("data-value");
+        var d28 = this.target.find("input[name='d28']").val();
+        var d32 = this.target.find("input[name='d32']").val() ;
+        if (!AssessCommon.isNumber(g35)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d28)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d32)) {
+            return false;
+        }
+        var c  = (Number(d28) + Number(d32)) * Number(g35) ;
+        landEngineering.target.find("input[name='d35']").val(c.toFixed(landEngineering.fixedMax));
+        this.target.find("input[name='h40']").trigger('blur');
+    } ;
+
+    //单元格F35
+    landEngineering.calculationF35 = function () {
+        //=(D26+D27+F32+F33+E31)*G35
+        var g35 = this.target.find("input[name='g35']").attr("data-value");
+        var d26 = this.target.find(".d26").html();
+        var d27 = this.target.find("input[name='d27']").val();
+        var f32 = this.target.find("input[name='f32']").val();
+        var f33 = this.target.find("input[name='f33']").val();
+        var f31 = this.target.find("input[name='f31']").val();
+        if (!AssessCommon.isNumber(g35)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d26)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d27)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f32)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f33)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f31)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f32)) {
+            return false;
+        }
+        var c = ( Number(d26) + Number(d27)+ Number(f32)+ Number(f33)+ Number(f31) ) * Number(g35) ;
+        this.target.find(".f35").html(c.toFixed(landEngineering.fixed));
+    } ;
+
+    //单元格H40
+    landEngineering.calculationH40 = function () {
+        //=D29+D30+D32+D35+D34
+        var f29 = this.target.find("input[name='f29']").attr("data-value");
+        var f30 = this.target.find("input[name='f30']").attr("data-value");
+        var d32 = this.target.find("input[name='d32']").val();
+        var d34 = this.target.find("input[name='d34']").val();
+        var d35 = this.target.find("input[name='d35']").val();
+        var c = undefined ;
+        try {
+            c = Number(f29) + Number(f30)+ Number(d32)+ Number(d34)+ Number(d35)  ;
+        } catch (e) {
+        }
+        if (AssessCommon.isNumber(c)) {
+            landEngineering.target.find("input[name='h40']").val(c.toFixed(landEngineering.fixedMax));
+        }
     };
 
     //单元格f21

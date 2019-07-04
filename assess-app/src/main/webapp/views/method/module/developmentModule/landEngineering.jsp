@@ -17,12 +17,12 @@
     <div class="x_content">
         <div class="form-group">
             <label class="col-sm-1 control-label">
-                勘察设计和前期工程费率
+                勘察设计和前期工程费率<span class="symbol required"></span>
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
                     <input type="text"
-                           placeholder="勘察设计和前期工程费率" class="form-control x-percent" data-rule-number='true'
+                           placeholder="勘察设计和前期工程费率" class="form-control x-percent"
                            required="required"
                            name="f20" onblur="landEngineering.calculationD20()">
                 </div>
@@ -67,6 +67,7 @@
                     <select name="f22"
                             class="form-control search-select select2" onchange="landEngineering.calculationD22(this)">
                         <option>请选择</option>
+                        <option value="10">2009-2032  金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
                             <c:if test="${item.infrastructureSupportingFacilities != 0}">
                                 <option value="${item.infrastructureSupportingFacilities}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
@@ -86,6 +87,7 @@
                     <select name="f23"
                             class="form-control search-select select2 " onchange="landEngineering.calculationD23(this)">
                         <option>请选择</option>
+                        <option value="10">2009-2032  金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
                             <c:if test="${item.communalFacilities != 0}">
                                 <option value="${item.communalFacilities}">${item.timeSlot} 金额:${item.communalFacilities}</option>
@@ -105,6 +107,7 @@
                     <select name="f24"
                             class="form-control search-select select2 " onchange="landEngineering.calculationD24()">
                         <option>请选择</option>
+                        <option value="10">2009-2032  金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
                             <c:if test="${item.devTaxTotal != 0}">
                                 <option value="${item.devTaxTotal}">${item.timeSlot} 金额:${item.devTaxTotal}</option>
@@ -188,7 +191,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="契税率" class="form-control x-percent" data-rule-number='true' required="required"
+                           placeholder="契税率" class="form-control x-percent"  required="required"
                            name="f29" onblur="landEngineering.calculationD28()">
                 </div>
             </div>
@@ -236,7 +239,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="管理费率" class="form-control x-percent" required="required"
-                           name="g32" onblur="landEngineering.calculationD32()">
+                           name="g32" onblur="landEngineering.calculationD32();landEngineering.calculationF32()">
                 </div>
             </div>
 
@@ -255,12 +258,33 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
+                    土地取得附加成本<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="土地取得附加成本" class="form-control" required="required" data-rule-number='true'
+                           name="f31" onblur="landEngineering.calculationF32();landEngineering.calculationF35()">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地取得附加成本说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="土地取得附加成本说明" class="form-control" name="f31Explain">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
                     销售费用率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="销售费用率" class="form-control x-percent" required="required"
-                           name="salesFeeTax">
+                           name="g33" onblur="landEngineering.calculationF33()">
                 </div>
             </div>
 
@@ -269,7 +293,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="salesFeeTaxExplain">
+                    <input type="text" placeholder="费率说明" class="form-control" name="g33Explain">
                 </div>
             </div>
         </div>
@@ -281,7 +305,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="投资利息率" class="form-control x-percent" required="required"
-                           name="interestInvestmentTax">
+                           name="g34" onblur="landEngineering.calculationD34();landEngineering.calculationF34()">
                 </div>
             </div>
 
@@ -290,7 +314,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="interestInvestmentTaxExplain">
+                    <input type="text" placeholder="费率说明" class="form-control" name="g34Explain">
                 </div>
             </div>
         </div>
@@ -302,7 +326,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="投资利润率" class="form-control x-percent" required="required"
-                           name="investmentProfitTax">
+                           name="g35" onblur="landEngineering.calculationD35();landEngineering.calculationF35()">
                 </div>
             </div>
 
@@ -311,45 +335,12 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="investmentProfitTaxExplain">
+                    <input type="text" placeholder="费率说明" class="form-control" name="g34Explain">
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    营业税金及附加<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="营业税金及附加" class="form-control x-percent" required="required"
-                           name="businessAdditionalTax">
-                </div>
-            </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    费率说明
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="businessAdditionalTaxExplain">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    土地增值税
-                </label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="土地增值税" class="form-control x-percent" readonly="readonly"
-                           data-rule-number='true' required="required"
-                           name="landIncrementTax">
-                </div>
-            </div>
-        </div>
 
     </div>
 
@@ -361,33 +352,26 @@
            placeholder="管理费" class="form-control" readonly="readonly"
            name="d32">
 
-    <input type="hidden"
-           placeholder="管理费(金额)" class="form-control" readonly="readonly"
-           name="managementExpense">
-    <input type="hidden"
-           placeholder="销售费用(金额)" class="form-control" readonly="readonly"
-           name="salesFee">
-    <input type="hidden"
-           placeholder="投资利息(金额)" class="form-control" readonly="readonly"
-           name="interestInvestment">
-    <input type="hidden"
-           placeholder="投资利润(计算率)" class="form-control" readonly="readonly"
-           name="investmentProfitCorrecting">
-    <input type="hidden"
-           placeholder="销售税金及附加(计算率)" class="form-control" readonly="readonly"
-           name="salesTaxAndAdditionalCorrecting">
-    <input type="hidden"
-           placeholder="销售税金及附加(金额)" class="form-control" readonly="readonly"
-           name="salesTaxAndAdditional">
-    <input type="hidden"
-           placeholder="地价(金额)" class="form-control" readonly="readonly"
-           name="landPrice">
-    <input type="hidden"
-           placeholder="单元格 E33" class="form-control" readonly="readonly"
-           name="estimateUnitPriceLandE33">
-    <input type="hidden"
-           placeholder="单元格 F33" class="form-control" readonly="readonly"
-           name="estimateUnitPriceLandF33">
+    <input type="text"
+           placeholder="单元格f32" class="form-control" readonly="readonly"
+           name="f32">
+
+    <input type="text"
+           placeholder="单元格f33" class="form-control" readonly="readonly"
+           name="f33">
+
+    <input type="text"
+           placeholder="单元格d34" class="form-control" readonly="readonly"
+           name="d34" onblur="landEngineering.calculationD34()">
+
+    <input type="text"
+           placeholder="单元格d35" class="form-control" readonly="readonly"
+           name="d35" onblur="landEngineering.calculationD35()">
+
+    <input type="text"
+           placeholder="单元格h40" class="form-control" readonly="readonly"
+           name="h40" onblur="landEngineering.calculationH40()">
+
 </div>
 
 
@@ -406,10 +390,6 @@
                 <table class="table table-bordered">
                     <tbody>
                     <tr>
-                        <td>预期销售合计</td>
-                        <td class="estimateSaleTotal"></td>
-                    </tr>
-                    <tr>
                         <td> 总建筑面积小计（㎡）</td>
                         <td class="totalGrossFloorArea"></td>
                     </tr>
@@ -418,19 +398,19 @@
                         <td class="d26" onblur="landEngineering.calculationD26()"></td>
                     </tr>
                     <tr>
-                        <td> 不可预见费金额</td>
-                        <td class="unforeseenExpenses"></td>
+                        <td> 投资利息</td>
+                        <td class="f34"></td>
                     </tr>
                     <tr>
                         <td> 投资利润</td>
-                        <td class="investmentProfit"></td>
+                        <td class="f35"></td>
                     </tr>
                     <tr>
-                        <td> 地价</td>
+                        <td> 委估土地单价（元/㎡）</td>
                         <td class="landPriceCorrecting"></td>
                     </tr>
                     <tr>
-                        <td> 委估土地单价</td>
+                        <td> 测算单价</td>
                         <td class="estimateUnitPriceLandC33"></td>
                     </tr>
                     </tbody>

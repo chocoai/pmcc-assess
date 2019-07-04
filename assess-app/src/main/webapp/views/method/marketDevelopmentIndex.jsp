@@ -37,7 +37,7 @@
                         <div class="col-sm-3">
                             <input type="text"
                                    placeholder="项目建设期(年)"
-                                   class="form-control" name="projectConstructionPeriod">
+                                   class="form-control" name="projectConstructionPeriod" onblur="landEngineering.calculationF34(); landEngineering.calculationD34()">
                         </div>
                     </div>
 
@@ -120,8 +120,12 @@
             var html = developmentCommon.parameter.getHtml() ;
             html = html.replace(/{funA5}/g,"landEngineering.calculationF18()") ;
             html = html.replace(/{funA3}/g,"landEngineering.calculationF18()") ;
+            html = html.replace(/{funA2}/g,"landEngineering.calculationF33()") ;
             landFrm.find(development.config.land.parameter).empty().append(html);
         }
+
+//        landFrm.validate();
+//        engineeringFrm.validate();
 
         //在建工程
         if (engineeringFrm.find(development.config.engineering.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
