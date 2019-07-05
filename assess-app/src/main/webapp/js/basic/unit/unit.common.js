@@ -85,6 +85,23 @@
         })
     }
 
+    //单元初始化by id
+    unitCommon.initById = function (id, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicUnit/getBasicUnitById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.showUnitView(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
+
     //单元明细
     unitCommon.detail = function (applyId) {
         $.ajax({

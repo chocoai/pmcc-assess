@@ -107,6 +107,23 @@
         })
     }
 
+    //房屋初始化by applyId
+    houseCommon.initById = function (id, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicHouse/getBasicHouseMapById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                houseCommon.showHouseView(result.data);
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
+
     //房屋明细
     houseCommon.detail = function (applyId) {
         $.ajax({
@@ -131,6 +148,7 @@
             }
         })
     }
+
 
     //显示房屋对应部分信息
     houseCommon.showHouseView = function (data) {

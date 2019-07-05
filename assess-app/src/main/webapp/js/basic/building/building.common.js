@@ -87,6 +87,23 @@
         })
     }
 
+    //楼栋初始化by id
+    buildingCommon.initById = function (id, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/getBasicBuildingById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingView(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
+
     //楼栋明细
     buildingCommon.detail = function (applyId) {
         $.ajax({
@@ -100,7 +117,6 @@
             }
         })
     }
-
 
     //显示楼栋对应部分信息
     buildingCommon.showBuildingView = function (data) {

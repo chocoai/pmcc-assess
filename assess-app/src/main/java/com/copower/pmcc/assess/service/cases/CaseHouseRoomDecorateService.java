@@ -1,6 +1,11 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegreeDetail;
+import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDamagedDegreeDao;
+import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDamagedDegreeDetailDao;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseRoomDecorateDao;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegree;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegreeDetail;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoomDecorate;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseRoomDecorateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -34,8 +39,44 @@ public class CaseHouseRoomDecorateService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private CommonService commonService;
+    private CommonService commonService;  
+    @Autowired
+    private CaseHouseDamagedDegreeDao caseHouseDamagedDegreeDao;
+    @Autowired
+    private CaseHouseDamagedDegreeDetailDao caseHouseDamagedDegreeDetailDao;
 
+    /**
+     * 新增或者修改
+     *
+     * @param caseHouseDamagedDegree
+     * @return
+     * @throws Exception
+     */
+    public void saveAndUpdateDamagedDegree(CaseHouseDamagedDegree caseHouseDamagedDegree) throws Exception {
+        if (caseHouseDamagedDegree.getId() == null || caseHouseDamagedDegree.getId().intValue() == 0) {
+            caseHouseDamagedDegree.setCreator(commonService.thisUserAccount());
+            caseHouseDamagedDegreeDao.addCaseHouseDamagedDegree(caseHouseDamagedDegree);
+        } else {
+            caseHouseDamagedDegreeDao.updateCaseHouseDamagedDegree(caseHouseDamagedDegree);
+        }
+    }
+
+    /**
+     * 新增或者修改
+     *
+     * @param caseHouseDamagedDegreeDetail
+     * @return
+     * @throws Exception
+     */
+    public void saveAndUpdateDamagedDegreeDetail(CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail) throws Exception {
+        if (caseHouseDamagedDegreeDetail.getId() == null || caseHouseDamagedDegreeDetail.getId().intValue() == 0) {
+            caseHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
+            caseHouseDamagedDegreeDetailDao.addCaseHouseDamagedDegreeDetail(caseHouseDamagedDegreeDetail);
+        } else {
+            caseHouseDamagedDegreeDetailDao.updateCaseHouseDamagedDegreeDetail(caseHouseDamagedDegreeDetail);
+        }
+    }
+    
     /**
      * 获取数据信息
      *
