@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,21 +159,22 @@ public class BasicApplyBatchDetailService {
     }
 
     //获取楼栋
-    public List<BasicBuilding> getBuildingListByBatchId(Integer id)throws Exception{
+    public List<BasicBuilding> getBuildingListByBatchId(Integer id) throws Exception {
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableName("tb_basic_building");
         basicApplyBatchDetail.setApplyBatchId(id);
         List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
         List<BasicBuilding> basicBuildings = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
-        for (BasicApplyBatchDetail item: infoList) {
-            basicBuildings.add(basicBuildingDao.getBasicBuildingById(item.getTableId()));
-        };
+            for (BasicApplyBatchDetail item : infoList) {
+                basicBuildings.add(basicBuildingDao.getBasicBuildingById(item.getTableId()));
+            }
+        ;
         return basicBuildings;
     }
 
     //获取单元
-    public List<BasicUnit> getBasicUnitListByBatchId(Integer id,BasicBuilding basicBuilding)throws Exception{
+    public List<BasicUnit> getBasicUnitListByBatchId(Integer id, BasicBuilding basicBuilding) throws Exception {
         BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_building", basicBuilding.getId());
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableName("tb_basic_unit");
@@ -183,14 +183,15 @@ public class BasicApplyBatchDetailService {
         List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
         List<BasicUnit> basicUnits = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
-            for (BasicApplyBatchDetail item: infoList) {
+            for (BasicApplyBatchDetail item : infoList) {
                 basicUnits.add(basicUnitService.getBasicUnitById(item.getTableId()));
-            };
+            }
+        ;
         return basicUnits;
     }
 
     //获取房屋
-    public List<BasicHouse> getBasicHouseListByBatchId(Integer id,BasicUnit basicUnit)throws Exception{
+    public List<BasicHouse> getBasicHouseListByBatchId(Integer id, BasicUnit basicUnit) throws Exception {
         BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableName("tb_basic_house");
@@ -199,19 +200,21 @@ public class BasicApplyBatchDetailService {
         List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
         List<BasicHouse> basicHouses = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
-            for (BasicApplyBatchDetail item: infoList) {
+            for (BasicApplyBatchDetail item : infoList) {
                 basicHouses.add(basicHouseService.getBasicHouseById(item.getTableId()));
-            };
+            }
+        ;
         return basicHouses;
     }
 
     //获取房屋交易信息
-    public List<BasicHouseTrading> getBasicHouseTradingsByHouses(List<BasicHouse> houses)throws Exception{
+    public List<BasicHouseTrading> getBasicHouseTradingsByHouses(List<BasicHouse> houses) throws Exception {
         List<BasicHouseTrading> basicHouseTradings = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(houses))
-            for (BasicHouse item: houses) {
+            for (BasicHouse item : houses) {
                 basicHouseTradings.add(basicHouseTradingService.getTradingByHouseId(item.getId()));
-            };
+            }
+        ;
         return basicHouseTradings;
     }
 }
