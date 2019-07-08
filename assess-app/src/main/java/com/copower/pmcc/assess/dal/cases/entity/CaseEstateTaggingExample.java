@@ -505,6 +505,76 @@ public class CaseEstateTaggingExample {
             return (Criteria) this;
         }
 
+        public Criteria andPathArrayIsNull() {
+            addCriterion("path_array is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayIsNotNull() {
+            addCriterion("path_array is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayEqualTo(String value) {
+            addCriterion("path_array =", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayNotEqualTo(String value) {
+            addCriterion("path_array <>", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayGreaterThan(String value) {
+            addCriterion("path_array >", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayGreaterThanOrEqualTo(String value) {
+            addCriterion("path_array >=", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayLessThan(String value) {
+            addCriterion("path_array <", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayLessThanOrEqualTo(String value) {
+            addCriterion("path_array <=", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayLike(String value) {
+            addCriterion("path_array like", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayNotLike(String value) {
+            addCriterion("path_array not like", value, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayIn(List<String> values) {
+            addCriterion("path_array in", values, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayNotIn(List<String> values) {
+            addCriterion("path_array not in", values, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayBetween(String value1, String value2) {
+            addCriterion("path_array between", value1, value2, "pathArray");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathArrayNotBetween(String value1, String value2) {
+            addCriterion("path_array not between", value1, value2, "pathArray");
+            return (Criteria) this;
+        }
+
         public Criteria andAttachmentIdIsNull() {
             addCriterion("attachment_id is null");
             return (Criteria) this;
@@ -882,6 +952,66 @@ public class CaseEstateTaggingExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdIsNull() {
+            addCriterion("table_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdIsNotNull() {
+            addCriterion("table_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdEqualTo(Integer value) {
+            addCriterion("table_id =", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdNotEqualTo(Integer value) {
+            addCriterion("table_id <>", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdGreaterThan(Integer value) {
+            addCriterion("table_id >", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("table_id >=", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdLessThan(Integer value) {
+            addCriterion("table_id <", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdLessThanOrEqualTo(Integer value) {
+            addCriterion("table_id <=", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdIn(List<Integer> values) {
+            addCriterion("table_id in", values, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdNotIn(List<Integer> values) {
+            addCriterion("table_id not in", values, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdBetween(Integer value1, Integer value2) {
+            addCriterion("table_id between", value1, value2, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("table_id not between", value1, value2, "tableId");
             return (Criteria) this;
         }
     }

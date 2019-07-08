@@ -15,8 +15,6 @@ public class BasicEstateTagging {
 
     private String name;
 
-    private String pathArray;
-
     private Integer attachmentId;
 
     private Integer deg;
@@ -28,6 +26,10 @@ public class BasicEstateTagging {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer tableId;
+
+    private String pathArray;
 
     public Integer getId() {
         return id;
@@ -77,14 +79,6 @@ public class BasicEstateTagging {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getPathArray() {
-        return pathArray;
-    }
-
-    public void setPathArray(String pathArray) {
-        this.pathArray = pathArray == null ? null : pathArray.trim();
-    }
-
     public Integer getAttachmentId() {
         return attachmentId;
     }
@@ -131,5 +125,21 @@ public class BasicEstateTagging {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
+    }
+
+    public String getPathArray() {
+        return pathArray;
+    }
+
+    public void setPathArray(String pathArray) {
+        this.pathArray = pathArray == null ? null : pathArray.trim();
     }
 }

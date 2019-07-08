@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
@@ -526,8 +527,8 @@ public class BasicApplyBatchService {
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(CaseMatchingEducation.class));
                 sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//教育信息sql
 
-                //sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.ESTATE, basicEstateOld.getApplyId(), appId));
-                //ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+                sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.ESTATE, basicEstateOld.getId(), caseEstate.getId()));
+                ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
             }
         }
         return caseEstate;
@@ -615,8 +616,8 @@ public class BasicApplyBatchService {
                     synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(CaseBuildingFunction.class));
                     sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
 
-                    //sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.BUILDING, buildingOld.getApplyId(), appId));
-                    //ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+                    sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.BUILDING, buildingOld.getId(), caseBuilding.getId()));
+                    ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
                     //复制对应的单元
                     List<BasicUnit> oldUnits = basicApplyBatchDetailService.getBasicUnitListByBatchId(basicApplyBatch.getId(), buildingOld);
                     this.copyBasicUnit(oldUnits, caseBuilding.getId(), basicApplyBatch);
@@ -683,8 +684,8 @@ public class BasicApplyBatchService {
                     synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(CaseUnitElevator.class));
                     sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
 
-                    //sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, unitOld.getApplyId(), appId));
-                    //ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+                    sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, unitOld.getId(), caseUnit.getId()));
+                    ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
                     //复制房屋
                     List<BasicHouse> oldHouses = basicApplyBatchDetailService.getBasicHouseListByBatchId(basicApplyBatch.getId(), unitOld);
                     copyBasicHouse(oldHouses, caseUnit.getId());
@@ -813,8 +814,8 @@ public class BasicApplyBatchService {
                     synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(CaseHouseEquipment.class));
                     sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
 
-                    //sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, houseOld.getApplyId(), appId));
-                    //ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+                    sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.HOUSE, houseOld.getId(), caseHouse.getId()));
+                    ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
                 }
             }
 
@@ -902,5 +903,29 @@ public class BasicApplyBatchService {
                 }
             }
         }
+    }
+
+    /**
+     * 标记复制
+     *
+     * @param typeEnum
+     * @param tableIdSource
+     * @param tableIdTarget
+     * @throws Exception
+     */
+    private String copyBasicTagging(EstateTaggingTypeEnum typeEnum, Integer tableIdSource, Integer tableIdTarget) throws Exception {
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        synchronousDataDto.setWhereSql(String.format("table_id=%s and type='%s'", tableIdSource, typeEnum.getKey()));
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateTagging.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(CaseEstateTagging.class));
+        synchronousDataDto.setSourceDataBase("pmcc_assess");
+        synchronousDataDto.setTargeDataBase("pmcc_assess_case");
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("table_id", String.valueOf(tableIdTarget));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));
+        return sqlBuilder.toString();
     }
 }

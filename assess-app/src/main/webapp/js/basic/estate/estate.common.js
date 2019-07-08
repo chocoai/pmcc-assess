@@ -8,6 +8,7 @@
     estateCommon.estateLandStateForm = $('#basicLandState');
     estateCommon.estateMapiframe = undefined;//地图标注iframe
     estateCommon.applyId = undefined;
+    estateCommon.tableId = undefined;
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
         AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN,
@@ -443,8 +444,9 @@
     }
 
 
-    //楼盘标注（批量时）
-    estateCommon.mapMarker2 = function (readonly,applyBatchId) {
+    //楼盘标注（通过tableId）
+    estateCommon.mapMarker2 = function (readonly,tableId) {
+        estateCommon.tableId = tableId;
         var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
         if (readonly != true) {
             contentUrl += '&click=estateCommon.addMarker2';
@@ -459,25 +461,25 @@
             content: contentUrl,
             success: function (layero) {
                 estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
-                estateCommon.loadMarkerList2(applyBatchId);
+                estateCommon.loadMarkerList2(tableId);
             }
         });
     }
 
-    //添加标注（批量时）
-    estateCommon.addMarker2 = function (lng, lat,applyBatchId) {
+    //添加标注（通过tableId）
+    estateCommon.addMarker2 = function (lng, lat) {
         $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
             data: {
-                applyBatchId: applyBatchId,
+                tableId: estateCommon.tableId,
                 type: 'estate',
                 lng: lng,
                 lat: lat,
-                name: estateCommon.getEstateName()
+                name: estateCommon.estateForm.find('[name=name]').val()
             },
             success: function (result) {
                 if (result.ret) {//标注成功后，刷新地图上的标注
-                    estateCommon.loadMarkerList(applyBatchId);
+                    estateCommon.loadMarkerList2(estateCommon.tableId);
                 } else {
                     Alert(result.errmsg);
                 }
@@ -485,12 +487,12 @@
         })
     }
 
-    //加载标注（批量时）
-    estateCommon.loadMarkerList2 = function (applyBatchId) {
+    //加载标注（通过tableId）
+    estateCommon.loadMarkerList2 = function (tableId) {
         $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingList',
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
             data: {
-                applyBatchId: applyBatchId,
+                tableId: tableId,
                 type: 'estate'
             },
             success: function (result) {

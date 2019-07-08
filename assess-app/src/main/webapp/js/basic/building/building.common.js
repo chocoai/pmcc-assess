@@ -7,6 +7,7 @@
     buildingCommon.buildingForm = $('#basicBuildingFrm');
     buildingCommon.buildingMapiframe = undefined;
     buildingCommon.applyId = undefined;
+    buildingCommon.tableId = undefined;
     //附件上传控件id数组
     buildingCommon.buildingFileControlIdArray = [
         AssessUploadKey.BUILDING_FLOOR_PLAN,
@@ -336,6 +337,66 @@
             success: function (result) {
                 if (result.ret && buildingCommon.buildingMapiframe) {//标注成功后，刷新地图上的标注
                     buildingCommon.buildingMapiframe.loadMarkerList(result.data);
+                }
+            }
+        })
+    }
+
+    //楼盘标注（通过tableId）
+    buildingCommon.mapMarker2 = function (readonly,tableId) {
+        buildingCommon.tableId = tableId;
+        console.log(tableId+"===");
+        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        if (readonly != true) {
+            contentUrl += '&click=buildingCommon.addMarker2';
+        }
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
+            content: contentUrl,
+            success: function (layero) {
+                buildingCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
+                buildingCommon.loadMarkerList2(tableId);
+            }
+        });
+    }
+
+    //添加标注（通过tableId）
+    buildingCommon.addMarker2 = function (lng, lat) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
+            data: {
+                tableId: buildingCommon.tableId,
+                type: 'building',
+                lng: lng,
+                lat: lat,
+                name: buildingCommon.getBuildingNumber()
+            },
+            success: function (result) {
+                if (result.ret) {//标注成功后，刷新地图上的标注
+                    buildingCommon.loadMarkerList2(buildingCommon.tableId);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //加载标注（通过tableId）
+    buildingCommon.loadMarkerList2 = function (tableId) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
+            data: {
+                tableId: tableId,
+                type: 'building'
+            },
+            success: function (result) {
+                if (result.ret && buildingCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
+                    buildingCommon.estateMapiframe.loadMarkerList(result.data);
                 }
             }
         })

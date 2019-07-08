@@ -8,13 +8,16 @@
     <result column="lng" property="lng" jdbcType="VARCHAR" />
     <result column="lat" property="lat" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="path_array" property="pathArray" jdbcType="VARCHAR" />
     <result column="attachment_id" property="attachmentId" jdbcType="INTEGER" />
     <result column="deg" property="deg" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="table_id" property="tableId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging" extends="BaseResultMap" >
+    <result column="path_array" property="pathArray" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,9 +78,28 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, type, lng, lat, name, path_array, attachment_id, deg, remark, creator, 
-    gmt_created, gmt_modified
+    id, apply_id, type, lng, lat, name, attachment_id, deg, remark, creator, gmt_created, 
+    gmt_modified, table_id
   </sql>
+  <sql id="Blob_Column_List" >
+    path_array
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateTaggingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_basic_estate_tagging
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateTaggingExample" >
     select
     <if test="distinct" >
@@ -92,9 +114,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_basic_estate_tagging
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -113,15 +137,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_tagging (apply_id, type, lng, 
-      lat, name, path_array, 
-      attachment_id, deg, remark, 
-      creator, gmt_created, gmt_modified
-      )
+      lat, name, attachment_id, 
+      deg, remark, creator, 
+      gmt_created, gmt_modified, table_id, 
+      path_array)
     values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, 
-      #{lat,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pathArray,jdbcType=VARCHAR}, 
-      #{attachmentId,jdbcType=INTEGER}, #{deg,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{lat,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{attachmentId,jdbcType=INTEGER}, 
+      #{deg,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{tableId,jdbcType=INTEGER}, 
+      #{pathArray,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -144,9 +168,6 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="pathArray != null" >
-        path_array,
-      </if>
       <if test="attachmentId != null" >
         attachment_id,
       </if>
@@ -165,6 +186,12 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="tableId != null" >
+        table_id,
+      </if>
+      <if test="pathArray != null" >
+        path_array,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
@@ -181,9 +208,6 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="pathArray != null" >
-        #{pathArray,jdbcType=VARCHAR},
       </if>
       <if test="attachmentId != null" >
         #{attachmentId,jdbcType=INTEGER},
@@ -202,6 +226,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tableId != null" >
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="pathArray != null" >
+        #{pathArray,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -232,9 +262,6 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.pathArray != null" >
-        path_array = #{record.pathArray,jdbcType=VARCHAR},
-      </if>
       <if test="record.attachmentId != null" >
         attachment_id = #{record.attachmentId,jdbcType=INTEGER},
       </if>
@@ -253,7 +280,33 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.tableId != null" >
+        table_id = #{record.tableId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pathArray != null" >
+        path_array = #{record.pathArray,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tb_basic_estate_tagging
+    set id = #{record.id,jdbcType=INTEGER},
+      apply_id = #{record.applyId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      lng = #{record.lng,jdbcType=VARCHAR},
+      lat = #{record.lat,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      attachment_id = #{record.attachmentId,jdbcType=INTEGER},
+      deg = #{record.deg,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      table_id = #{record.tableId,jdbcType=INTEGER},
+      path_array = #{record.pathArray,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -266,13 +319,13 @@
       lng = #{record.lng,jdbcType=VARCHAR},
       lat = #{record.lat,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      path_array = #{record.pathArray,jdbcType=VARCHAR},
       attachment_id = #{record.attachmentId,jdbcType=INTEGER},
       deg = #{record.deg,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      table_id = #{record.tableId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -295,9 +348,6 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="pathArray != null" >
-        path_array = #{pathArray,jdbcType=VARCHAR},
-      </if>
       <if test="attachmentId != null" >
         attachment_id = #{attachmentId,jdbcType=INTEGER},
       </if>
@@ -316,7 +366,30 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="tableId != null" >
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="pathArray != null" >
+        path_array = #{pathArray,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging" >
+    update tb_basic_estate_tagging
+    set apply_id = #{applyId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      attachment_id = #{attachmentId,jdbcType=INTEGER},
+      deg = #{deg,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      table_id = #{tableId,jdbcType=INTEGER},
+      path_array = #{pathArray,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging" >
@@ -326,13 +399,13 @@
       lng = #{lng,jdbcType=VARCHAR},
       lat = #{lat,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      path_array = #{pathArray,jdbcType=VARCHAR},
       attachment_id = #{attachmentId,jdbcType=INTEGER},
       deg = #{deg,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      table_id = #{tableId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

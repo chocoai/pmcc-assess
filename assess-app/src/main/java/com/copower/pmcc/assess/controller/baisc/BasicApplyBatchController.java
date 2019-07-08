@@ -39,7 +39,8 @@ public class BasicApplyBatchController extends BaseController {
     private PublicBasicService publicBasicService;
 
     @RequestMapping(value = "/basicBatchApplyIndex", name = "首页", method = RequestMethod.GET)
-    public ModelAndView basicApplyIndex() {
+    public ModelAndView basicApplyIndex()throws Exception {
+        basicApplyBatchService.copy(1655);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
         return modelAndView;
     }
@@ -112,6 +113,7 @@ public class BasicApplyBatchController extends BaseController {
         String view = "/basic/fillInformation";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         this.setViewParam(type, id, buildingType, estateId, modelAndView);
+        modelAndView.addObject("isApplyBatch", "show");
         return modelAndView;
 
     }
