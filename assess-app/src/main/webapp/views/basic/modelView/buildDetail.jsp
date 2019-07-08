@@ -14,7 +14,7 @@
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <div class="input-group">
-                            <label class="form-control" name="buildingNumber"></label>
+                            <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
                             <span class="input-group-btn">
                             <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
@@ -27,7 +27,7 @@
                         楼栋名称
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="buildingName"></label>
+                        <label class="form-control" name="buildingName">${basicBuilding.buildingName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -35,7 +35,7 @@
                         总层数
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="floorCount"></label>
+                        <label class="form-control" name="floorCount">${basicBuilding.floorCount}</label>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                         所在位置
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="location"></label>
+                        <label class="form-control" name="location">${basicBuilding.location}</label>
                     </div>
                 </div>
                 <div class="x-valid">

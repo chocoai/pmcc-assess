@@ -126,4 +126,15 @@ public class BasicHouseController {
             return HttpResult.newErrorResult("拷贝户型图异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicHouseMapById", name = "获取数据", method = {RequestMethod.GET})
+    public HttpResult getBasicHouseMapById(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(basicHouseService.getBasicHouseMapById(id));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }

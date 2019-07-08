@@ -15,6 +15,8 @@ public class CaseEstateTagging {
 
     private String name;
 
+    private String pathArray;
+
     private Integer attachmentId;
 
     private Integer deg;
@@ -26,6 +28,8 @@ public class CaseEstateTagging {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer tableId;
 
     public Integer getId() {
         return id;
@@ -75,6 +79,14 @@ public class CaseEstateTagging {
         this.name = name == null ? null : name.trim();
     }
 
+    public String getPathArray() {
+        return pathArray;
+    }
+
+    public void setPathArray(String pathArray) {
+        this.pathArray = pathArray == null ? null : pathArray.trim();
+    }
+
     public Integer getAttachmentId() {
         return attachmentId;
     }
@@ -121,5 +133,13 @@ public class CaseEstateTagging {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
     }
 }

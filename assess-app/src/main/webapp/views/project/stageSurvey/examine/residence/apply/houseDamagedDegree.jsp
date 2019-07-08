@@ -137,6 +137,7 @@
     <tr class="group">
         <td>
             <input type="hidden" name="id" value="{id}">
+            <input type="hidden" name="category" value="{category}">
             {categoryName}
             <div class="btn btn-xs btn-primary pull-right" {isShow}
                  onclick="damagedDegree.damagedDegreeDetailModalShow('{id}','{category}')">明细内容

@@ -151,7 +151,7 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?planDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' >查看详情</a>";
-                    str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="引用" onclick="basicApplyIndex.autocompleteData(' + index + ');" >引用</a>';
+                    str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="引用" onclick="projectData.prototype.autocompleteData(' + index + ');" >引用</a>';
                     str += '</div>';
                     return str;
                 }
@@ -160,7 +160,7 @@
             TableInit(projectData.prototype.config().itemTable, "${pageContext.request.contextPath}/basicApply/getProjectCaseItemList", cols, {
                 projectId: projectId,
                 projectCategoryId: projectCategoryId,
-                basicApplyTypeId:"${basicApplyTypeId}"
+                basicApplyTypeId:"${empty basicApplyTypeId?type:basicApplyTypeId}"
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -169,6 +169,14 @@
                     $(".tooltips").tooltip();
                 }
             });
+        },
+        autocompleteData:function (index) {
+            if(${!empty basicApplyTypeId}){
+                basicApplyIndex.autocompleteData(index);
+            }
+            if(${!empty type}){
+                fillInformation.autocompleteData(index);
+            }
         }
     }
 </script>

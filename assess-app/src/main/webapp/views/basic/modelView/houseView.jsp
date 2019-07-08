@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="x_content">
     <div class="x_title">
         <h3>
@@ -91,7 +92,12 @@
             <div class="x-valid">
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                     <div id="container"></div>
-                    <div class="btn btn-success" onclick="houseCommon.orientationFun(false,0)">户型图朝向</div>
+                    <c:if test="${empty isApplyBatch}">
+                        <div class="btn btn-success" onclick="houseCommon.orientationFun(false,0)">户型图朝向</div>
+                    </c:if>
+                    <c:if test="${isApplyBatch eq 'show'}">
+                        <div class="btn btn-success" onclick="houseCommon.orientationFun2(false,${tableId})">户型图朝向</div>
+                    </c:if>
                 </div>
             </div>
         </div>

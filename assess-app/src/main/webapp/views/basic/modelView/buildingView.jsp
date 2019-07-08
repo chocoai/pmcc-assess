@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="x_content">
     <div class="x_title">
         <h3>
@@ -21,8 +21,14 @@
                                    name="buildingNumber" class="form-control"
                                    onblur="$(this).val($(this).val().replace('栋',''));">
                             <span class="input-group-btn">
+                            <c:if test="${empty isApplyBatch}">
                             <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
+                            </c:if>
+                                <c:if test="${isApplyBatch eq 'show'}">
+                                 <div onclick="buildingCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
+                                         class="fa fa-map-marker"></i> 标注</div>
+                                </c:if>
                         </span>
                         </div>
                     </div>
@@ -378,6 +384,6 @@
     </form>
 </div>
 <div id="basicBuildSonContent">
-<%@include file="/views/basic/modelView/build/sonBuildView.jsp" %>
+    <%@include file="/views/basic/modelView/build/sonBuildView.jsp" %>
 </div>
 
