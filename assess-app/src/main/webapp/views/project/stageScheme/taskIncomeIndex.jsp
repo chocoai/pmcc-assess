@@ -15,6 +15,17 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/method/incomeIndex.jsp"></jsp:include>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        报告附件<span class="symbol required"></span>
+                    </label>
+                    <div class="col-sm-3">
+                        <input id="report_file" name="report_file" type="file" multiple="false">
+                        <div id="_report_file"></div>
+                    </div>
+                </div>
+            </div>
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -43,8 +54,27 @@
 
 <script type="text/javascript">
     $(function () {
-
-    })
+        FileUtils.uploadFiles({
+            target: "report_file",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_md_income",
+                tableId: '${mdIncome.id}',
+                projectId: "${projectInfo.id}"
+            },
+            editFlag: true,
+            deleteFlag: true
+        });
+        FileUtils.getFileShows({
+            target: "report_file",
+            formData: {
+                tableName: "tb_md_income",
+                tableId: '${mdIncome.id}'
+            },
+            editFlag: true,
+            deleteFlag: true
+        })
+    });
 </script>
 <script type="application/javascript">
     function submit() {

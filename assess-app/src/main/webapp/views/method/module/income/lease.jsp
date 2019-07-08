@@ -1050,11 +1050,7 @@
                 var h = (1 - Math.pow((1 + g) / (1 + r), yc)).toFixed(6);//年期修正系数
                 if (h <= 0) return false;
                 var k = 0;
-                if (n == 0) {
-                    k = (h / (r - g) / (1 + r)).toFixed(6);//收益现值系数
-                } else {
-                    k = (h / (r - g) / Math.pow((1 + r), n)).toFixed(6);//收益现值系数
-                }
+                k = (h / (r - g) / Math.pow((1 + r), n)).toFixed(6);//收益现值系数
                 $(this).find('[data-name=correctionFactor]').text(h);
                 $(this).find('[data-name=presentValueFactor]').text(k);
                 incomePrice = (netProfit * k).toFixed(2);
