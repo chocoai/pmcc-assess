@@ -206,6 +206,7 @@ public class BasicApplyBatchService {
             basicEstate.setId(null);
             basicEstateService.saveAndUpdateBasicEstate(basicEstate);
             basicApplyBatch.setEstateId(basicEstate.getId());
+            basicApplyBatch.setCreator(commonService.thisUserAccount());
             BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
             basicEstateLandState.setEstateId(basicEstate.getId());
             basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);

@@ -339,7 +339,9 @@
             success: function (result) {
                 if (result.ret) {
                     toastr.success('保存成功');
-                    ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
+                    // ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
+                     var node = zTreeObj.getSelectedNodes()[0];
+                    zTreeObj.addNodes(node, {id: result.data.id, pid:data.pid, name:result.data.name});
                     $('#detail_modal').modal('hide');
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -513,4 +515,5 @@
             }
         });
     }
+
 </script>
