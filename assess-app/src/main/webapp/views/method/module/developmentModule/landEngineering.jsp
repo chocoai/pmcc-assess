@@ -271,7 +271,7 @@
                     土地取得附加成本说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="土地取得附加成本说明" class="form-control" name="f31Explain">
+                    <input type="text" placeholder="土地取得成本说明" class="form-control" name="f31Explain">
                 </div>
             </div>
         </div>
@@ -340,8 +340,68 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    销售环节增值税及附加<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="销售环节增值税及附加" class="form-control x-percent" required="required"
+                           name="f37" onblur="landEngineering.calculationD36()">
+                </div>
+            </div>
 
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    费率说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="费率说明" class="form-control" name="f37Explain">
+                </div>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地增值税<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="土地增值税" class="form-control x-percent" required="required"
+                           name="f38" onblur="landEngineering.calculationD36()">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    费率说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="费率说明" class="form-control" name="f38Explain">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    项目开发所得税<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="项目开发所得税" class="form-control x-percent" required="required"
+                           name="f39" onblur="landEngineering.calculationD36()">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    费率说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="费率说明" class="form-control" name="f39Explain">
+                </div>
+            </div>
+        </div>
     </div>
 
     <input type="text"
@@ -369,11 +429,161 @@
            name="d35" onblur="landEngineering.calculationD35()">
 
     <input type="text"
+           placeholder="单元格d36" class="form-control" readonly="readonly"
+           name="d36" onblur="landEngineering.calculationF36()">
+
+    <input type="text"
+           placeholder="单元格f36" class="form-control" readonly="readonly"
+           name="f36" onblur="">
+
+    <input type="text"
            placeholder="单元格h40" class="form-control" readonly="readonly"
            name="h40" onblur="landEngineering.calculationH40()">
 
+    <input type="text"
+           placeholder="单元格f40" class="form-control" readonly="readonly"
+           name="f40" onblur="landEngineering.calculationF40()">
+
+    <input type="text"
+           placeholder="单元格e40" class="form-control" readonly="readonly"
+           name="e40" onblur="landEngineering.calculationE40()">
+
+    <input type="text"
+           placeholder="单元格d41" class="form-control" readonly="readonly"
+           name="d41" onblur="landEngineering.calculationD41()">
+
 </div>
 
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>地价修正</h3>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="x_content">
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地还原率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="土地还原率" class="form-control x-percent" required="required"
+                           name="e43" onblur="">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    费率说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="费率说明" class="form-control" name="e43Explain">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                法定年限<span class="symbol required"></span>
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" placeholder="法定年限" class="form-control" required="required"
+                           name="f43" onblur="landEngineering.calculationD43()">
+                </div>
+            </div>
+
+            <label class="col-sm-1 control-label">
+                剩余年限<span class="symbol required"></span>
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" placeholder="剩余年限" class="form-control" required="required"
+                           name="g43" onblur="landEngineering.calculationD43()">
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    权利状况修正<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="权利状况修正" class="form-control" required="required"
+                           name="d44" onblur="landEngineering.calculationD47()">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="说明" class="form-control" name="d44Explain">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    其他修正<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="其他修正" class="form-control" required="required"
+                           name="d45" onblur="landEngineering.calculationD47()">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="说明" class="form-control" name="d45Explain">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    开发程度修正<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="开发程度修正" class="form-control" required="required"
+                           name="d46" onblur="landEngineering.calculationD47()">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="说明" class="form-control" name="d46Explain">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<input type="text"
+       placeholder="单元格d43" class="form-control" readonly="readonly"
+       name="d43" onblur="landEngineering.calculationD43()">
+
+<input type="text"
+       placeholder="单元格d47" class="form-control" readonly="readonly"
+       name="d47" onblur="landEngineering.calculationD47()">
 
 <div class="x_panel">
     <div class="x_title collapse-link">
@@ -390,10 +600,6 @@
                 <table class="table table-bordered">
                     <tbody>
                     <tr>
-                        <td> 总建筑面积小计（㎡）</td>
-                        <td class="totalGrossFloorArea"></td>
-                    </tr>
-                    <tr>
                         <td> 工程建设成本小计</td>
                         <td class="d26" onblur="landEngineering.calculationD26()"></td>
                     </tr>
@@ -407,11 +613,11 @@
                     </tr>
                     <tr>
                         <td> 委估土地单价（元/㎡）</td>
-                        <td class="landPriceCorrecting"></td>
+                        <td class="d41"></td>
                     </tr>
                     <tr>
                         <td> 测算单价</td>
-                        <td class="estimateUnitPriceLandC33"></td>
+                        <td class="d47"></td>
                     </tr>
                     </tbody>
                 </table>

@@ -37,7 +37,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}">
+                        <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}" enctype="multipart/form-data">
                             <input type="hidden" id="areaGroupId" name="areaGroupId"
                                    value="${generationVo.areaGroupId}">
                             <input type="hidden" name="id" value="${generationVo.id}">
@@ -142,6 +142,15 @@
                                         <div class="col-sm-3">
                                             <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
                                         </div>
+
+                                        <div class="col-sm-3">
+                                            <c:if test="${generationVo != null}">
+                                                <c:if test="${generationVo.id != null}">
+                                                    <input  id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}" name="file" type="file" style="display: none"  onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
+                                                    <div class="btn btn-primary" onclick="$(this).prev().trigger('click')">上传报告</div>
+                                                </c:if>
+                                            </c:if>
+                                        </div>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -183,8 +192,38 @@
 </body>
 </html>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=1.0"></script>
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
 
+    //上传报告 临时添加zch
+    function upFileLoadReport(that,fileId,id , areaGroupId) {
+        var fileElementId = $(that).attr("id") ;
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/public/importAjaxFile",
+            data: {
+                tableName: AssessDBKey.GenerateReportInfo,
+                tableId: id,
+                fieldsName: fileId
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: fileElementId,//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+//                    window.location.reload();
+                    initFormSchemeReportGeneration({id:id} ,$(that).closest('form') ,areaGroupId) ;
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
 
     /**
      * @author:  zch
@@ -215,6 +254,7 @@
             }
         });
     }
+
 
     function fileShow(fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({

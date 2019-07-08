@@ -7,6 +7,14 @@
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="construction_cost_subtotal" property="constructionCostSubtotal" jdbcType="DECIMAL" />
+    <result column="interest_investment" property="interestInvestment" jdbcType="DECIMAL" />
+    <result column="investment_profit" property="investmentProfit" jdbcType="DECIMAL" />
+    <result column="assess_price" property="assessPrice" jdbcType="DECIMAL" />
+    <result column="head_content" property="headContent" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="project_construction_period" property="projectConstructionPeriod" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,7 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, area, price, type, creator, gmt_created, gmt_modified
+    id, name, area, price, type, plan_details_id, construction_cost_subtotal, interest_investment, 
+    investment_profit, assess_price, head_content, content, project_construction_period, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentExample" >
     select
@@ -107,11 +117,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_development (name, area, price, 
-      type, creator, gmt_created, 
-      gmt_modified)
+      type, plan_details_id, construction_cost_subtotal, 
+      interest_investment, investment_profit, assess_price, 
+      head_content, content, project_construction_period, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
-      #{type,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{type,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{constructionCostSubtotal,jdbcType=DECIMAL}, 
+      #{interestInvestment,jdbcType=DECIMAL}, #{investmentProfit,jdbcType=DECIMAL}, #{assessPrice,jdbcType=DECIMAL}, 
+      #{headContent,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{projectConstructionPeriod,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -130,6 +146,30 @@
       </if>
       <if test="type != null" >
         type,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
+      <if test="constructionCostSubtotal != null" >
+        construction_cost_subtotal,
+      </if>
+      <if test="interestInvestment != null" >
+        interest_investment,
+      </if>
+      <if test="investmentProfit != null" >
+        investment_profit,
+      </if>
+      <if test="assessPrice != null" >
+        assess_price,
+      </if>
+      <if test="headContent != null" >
+        head_content,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="projectConstructionPeriod != null" >
+        project_construction_period,
       </if>
       <if test="creator != null" >
         creator,
@@ -153,6 +193,30 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="constructionCostSubtotal != null" >
+        #{constructionCostSubtotal,jdbcType=DECIMAL},
+      </if>
+      <if test="interestInvestment != null" >
+        #{interestInvestment,jdbcType=DECIMAL},
+      </if>
+      <if test="investmentProfit != null" >
+        #{investmentProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="assessPrice != null" >
+        #{assessPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="headContent != null" >
+        #{headContent,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="projectConstructionPeriod != null" >
+        #{projectConstructionPeriod,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -189,6 +253,30 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
       </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.constructionCostSubtotal != null" >
+        construction_cost_subtotal = #{record.constructionCostSubtotal,jdbcType=DECIMAL},
+      </if>
+      <if test="record.interestInvestment != null" >
+        interest_investment = #{record.interestInvestment,jdbcType=DECIMAL},
+      </if>
+      <if test="record.investmentProfit != null" >
+        investment_profit = #{record.investmentProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.assessPrice != null" >
+        assess_price = #{record.assessPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.headContent != null" >
+        head_content = #{record.headContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectConstructionPeriod != null" >
+        project_construction_period = #{record.projectConstructionPeriod,jdbcType=DECIMAL},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -210,6 +298,14 @@
       area = #{record.area,jdbcType=DECIMAL},
       price = #{record.price,jdbcType=DECIMAL},
       type = #{record.type,jdbcType=VARCHAR},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      construction_cost_subtotal = #{record.constructionCostSubtotal,jdbcType=DECIMAL},
+      interest_investment = #{record.interestInvestment,jdbcType=DECIMAL},
+      investment_profit = #{record.investmentProfit,jdbcType=DECIMAL},
+      assess_price = #{record.assessPrice,jdbcType=DECIMAL},
+      head_content = #{record.headContent,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      project_construction_period = #{record.projectConstructionPeriod,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -232,6 +328,30 @@
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
       </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="constructionCostSubtotal != null" >
+        construction_cost_subtotal = #{constructionCostSubtotal,jdbcType=DECIMAL},
+      </if>
+      <if test="interestInvestment != null" >
+        interest_investment = #{interestInvestment,jdbcType=DECIMAL},
+      </if>
+      <if test="investmentProfit != null" >
+        investment_profit = #{investmentProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="assessPrice != null" >
+        assess_price = #{assessPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="headContent != null" >
+        head_content = #{headContent,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="projectConstructionPeriod != null" >
+        project_construction_period = #{projectConstructionPeriod,jdbcType=DECIMAL},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -250,6 +370,14 @@
       area = #{area,jdbcType=DECIMAL},
       price = #{price,jdbcType=DECIMAL},
       type = #{type,jdbcType=VARCHAR},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      construction_cost_subtotal = #{constructionCostSubtotal,jdbcType=DECIMAL},
+      interest_investment = #{interestInvestment,jdbcType=DECIMAL},
+      investment_profit = #{investmentProfit,jdbcType=DECIMAL},
+      assess_price = #{assessPrice,jdbcType=DECIMAL},
+      head_content = #{headContent,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      project_construction_period = #{projectConstructionPeriod,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

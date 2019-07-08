@@ -26,7 +26,135 @@
 
     developmentCommon.config = {
         commonParameter: {id: "commonDevelopmentParameterBase", handle: "commonDevelopmentParameterHandle"},
-        architecturalA: {id: "architecturalA", handle: "architecturalAHandle"}
+        architecturalA: {id: "architecturalA", handle: "architecturalAHandle"},
+        architecturalB: {id: "architecturalB", handle: "architecturalBHandle"},
+    };
+
+    developmentCommon.architecturalB = {
+        totalResult:function (that) {
+            var a = $(that).val();
+            var b = $(that).closest("td").prev().find("input").first().val();
+            if (!developmentCommon.isNotBlank(a)){
+                alert("不能为空!") ;
+                return false;
+            }
+            if (!developmentCommon.isNotBlank(b)){
+                return false;
+            }
+            if (a.indexOf("%") != -1){
+                a =  $(that).attr('data-value') ;
+            }
+            if (b.indexOf("%") != -1){
+                b =  $(that).closest("td").prev().find("input").first().attr('data-value') ;
+            }
+            if (!AssessCommon.isNumber(a)){
+                alert("必须是数字!") ;
+                return false;
+            }
+            if (!AssessCommon.isNumber(b)){
+                return false;
+            }
+            var c = Number(a) * Number(b) ;
+            $(that).closest("td").next().text(c.toFixed(2)) ;
+            var table = $(that).closest("table") ;
+            var result = 0;
+            table.find("tbody").find("tr").each(function (i,item) {
+                var v = $(item).children("td").last().html() ;
+                if (developmentCommon.isNotBlank(v)){
+                    if (AssessCommon.isNumber(v)){
+                        result += Number(v) ;
+                    }
+                }
+            });
+            table.find("tfoot").find("tr").find("input[name='totalPrice']").val(result.toFixed(2)) ;
+        },
+        treeGirdParse:function (target) {
+            target.find("table").treegrid();
+        },
+        getHtml: function () {
+            return $("#" + developmentCommon.config.architecturalB.id).html();
+        },
+        getFomData:function (table) {
+            var tbody = table.find('tbody') ;
+            var data = [] ;
+            tbody.find("tr").each(function (i,tr) {
+                var dataKey = $(tr).attr('data-key') ;
+                var role = $(tr).attr('data-role') ;
+                var name = $(tr).find("td").first().text() ;
+                var value = $(tr).find("input[name='price']").first().val() ;
+                data.push({dataKey:dataKey,role:role,name:name,value:value}) ;
+            }) ;
+            return data;
+        }
+    } ;
+
+    developmentCommon.saveMdArchitecturalObj = function (data,type,callback) {
+        var pid = 0;
+        if (developmentCommon.isNotBlank('${mdDevelopment}')){
+            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                pid = '${mdDevelopment.id}' ;
+            }
+        }
+        var item = {forData:JSON.stringify(data),type:type,planDetailsId:'${projectPlanDetails.id}' ,pid:pid ,databaseName:AssessDBKey.MdDevelopment} ;
+        developmentCommon.removeMdArchitecturalObj(item.type,item.databaseName,item.pid,item.planDetailsId,function () {
+            $.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/mdArchitecturalObj/saveMdArchitecturalObj",
+                data: item,
+                success: function (result) {
+                    if (result.ret) {
+                        if (callback){
+                            callback(result.data) ;
+                        }
+                    } else {
+                        Alert("保存失败:" + result.errmsg);
+                    }
+                },
+                error: function (e) {
+                    Alert("调用服务端方法失败，失败原因:" + e);
+                }
+            });
+        }) ;
+    };
+
+    developmentCommon.removeMdArchitecturalObj = function (type,databaseName,pid,planDetailsId,callback) {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/mdArchitecturalObj/removeMdArchitecturalObj",
+            data: {type:type,databaseName:databaseName,pid:pid , planDetailsId:planDetailsId},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback){
+                        callback(result.data) ;
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    } ;
+
+    developmentCommon.getMdArchitecturalObjList = function (type,databaseName,pid,planDetailsId,callback) {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/mdArchitecturalObj/getMdArchitecturalObjList",
+            data: {type:type,databaseName:databaseName,pid:pid , planDetailsId:planDetailsId},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback){
+                        callback(result.data) ;
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
     };
 
     developmentCommon.architecturalA = {
@@ -37,16 +165,29 @@
                 return false;
             }
             var table = $(that).closest("table") ;
-            var result = 0;
+            var result = math.bignumber(0);
             table.find("tbody").find("tr").find("input[name='price']").each(function () {
                 if (developmentCommon.isNotBlank($(this).val())){
-                    result += Number($(this).val()) ;
+                    result = math.add(result, math.bignumber($(this).val()))
                 }
             });
-            table.find("tfoot").find("tr").find("input[name='totalPrice']").val(result) ;
+            table.find("tfoot").find("tr").find("input[name='totalPrice']").val(result.toString()) ;
         } ,
         treeGirdParse:function (target) {
             target.find("table").treegrid();
+        },
+        getFomData:function (table) {
+            var tbody = table.find('tbody') ;
+            var data = [] ;
+            tbody.find("tr").each(function (i,tr) {
+                var dataKey = $(tr).attr('data-key') ;
+                var role = $(tr).attr('data-role') ;
+                var name = $(tr).find("td").first().text() ;
+                var value = $(tr).find("input[name='price']").first().val() ;
+                var valuationDateDegreeCompletion = $(tr).find("input[name='valuationDateDegreeCompletion']").first().val() ;
+                data.push({dataKey:dataKey,role:role,name:name,value:value,valuationDateDegreeCompletion:valuationDateDegreeCompletion}) ;
+            }) ;
+            return data;
         },
         getHtml: function () {
             return $("#" + developmentCommon.config.architecturalA.id).html();
@@ -73,6 +214,24 @@
                 }
             });
         },
+        getFomData:function (table) {
+            var data = [] ;
+            table.find("tbody").find("tr").each(function (i,tr) {
+                var item = {} ;
+                var dataKey = $(tr).attr('data-key') ;
+                var role = $(tr).attr('data-role') ;
+                item.name = $(tr).find("td").first().text();
+                item.buildArea = $(tr).find("td").eq(1).find("a").text() ;
+                item.maySaleArea = $(tr).find("td").eq(2).find("a").text() ;
+                item.maySaleAreaNext = $(tr).find("td").eq(3).find("a").text() ;
+                item.unitPrice = $(tr).find("td").eq(4).find("a").text() ;
+                item.remark = $(tr).find("td").eq(5).find("a").text() ;
+                item.dataKey = dataKey;
+                item.role = role;
+                data.push(item) ;
+            }) ;
+            return data;
+        },
         editableInit: function () {
             developmentCommon.parameter.getDeclareEconomicIndicatorsContentList(function (data) {
                 $("." + developmentCommon.config.commonParameter.handle).find("table").each(function () {
@@ -82,6 +241,7 @@
                         tr.find("a").each(function (i, item) {
                             var target = $(item);
                             var fun = target.attr("onclick");
+                            var dataKey = target.attr("data-key");
                             target.editable({
                                 type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
                                 disabled: false,             //是否禁用编辑 ,默认 false
@@ -90,12 +250,27 @@
                                 validate: function (value) { //字段验证
                                     if (AssessCommon.isNumber(value)) {
                                         if (developmentCommon.isNotBlank(fun)) {
-                                            fun += "(" + value + ")";
-                                            eval(fun);
+                                            if (fun.indexOf('handleCalculationA') != -1){
+                                                developmentCommon.parameter.handleCalculationA(value) ;
+                                            }
+                                            if (fun.indexOf('handleCalculationB') != -1){
+                                                developmentCommon.parameter.handleCalculationB(value) ;
+                                            }
+                                            if (fun.indexOf('handleCalculationC') != -1){
+                                                developmentCommon.parameter.handleCalculationC(value,target) ;
+                                            }
+                                            if (fun.indexOf('handleCalculationD') != -1){
+                                                developmentCommon.parameter.handleCalculationD(value,target) ;
+                                            }
                                         }
                                     } else {
-                                        return '必须是数字';
+                                        if (dataKey != 'remark'){
+                                            return '必须是数字';
+                                        }
                                     }
+                                },
+                                display:function (value) {
+                                    $(this).text(value);
                                 }
                             });
                         });
@@ -147,14 +322,28 @@
                 that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='maySaleArea']"), value, that.handleCalculationB.name);
             });
         },
-        handleCalculationC: function (value) {
+        handleCalculationC: function (value,target) {
             var that = this;
+            var tr = target.closest("tr") ;
+            var unitPrice = tr.find("a[data-key='unitPrice']").text() ;
+            if (AssessCommon.isNumber(unitPrice)) {
+                var c = math.multiply(math.bignumber(value),math.bignumber(unitPrice)).toString() ;
+                tr.find("a[data-key='maySaleArea']").text(c) ;
+                this.handleCalculationB(null) ;
+            }
             $("." + developmentCommon.config.commonParameter.handle).each(function () {
                 that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='maySaleAreaNext']"), value, that.handleCalculationC.name);
             });
         },
-        handleCalculationD: function (value) {
+        handleCalculationD: function (value,target) {
             var that = this;
+            var tr = target.closest("tr") ;
+            var maySaleAreaNext = tr.find("a[data-key='maySaleAreaNext']").text() ;
+            if (AssessCommon.isNumber(maySaleAreaNext)) {
+                var c = math.multiply(math.bignumber(value),math.bignumber(maySaleAreaNext)).toString() ;
+                tr.find("a[data-key='maySaleArea']").text(c) ;
+                this.handleCalculationB(null) ;
+            }
             $("." + developmentCommon.config.commonParameter.handle).each(function () {
                 that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='unitPrice']"), value, that.handleCalculationD.name);
             });
@@ -168,9 +357,9 @@
                 if (developmentCommon.isNotBlank(funName)) {
                     if (funName.indexOf(fun) != -1) {
                         var className = target.attr("class");
-                        if (className.indexOf("editable-open") != -1) {
+                        if (className.indexOf("open") != -1) {
                             if (developmentCommon.isNotBlank(value)) {
-                                result += value;
+                                result += Number(value);
                             }
                         } else {
                             result += Number(target.html());
@@ -213,7 +402,7 @@
                     <tr>
                         <td>项目名称</td>
                         <td>规划建筑面积（㎡）</td>
-                        <td>可售面积或个数售价(万元)</td>
+                        <td>总可售面积售价(万元)</td>
                         <td>可售面积或个数售价(万元)</td>
                         <td>单位售价（元/㎡）</td>
                         <td>说明</td>
@@ -390,6 +579,216 @@
     </div>
 </script>
 
+<script type="text/html" id="architecturalB" data-title="复杂树">
+    <table class="table tree" id="architecturalBHandle">
+        <thead>
+        <tr>
+            <th>工程名称</th>
+            <th>单方造价(元/㎡)</th>
+            <th>估价时点完工程度</th>
+            <th>估价时点单价(元/㎡)</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr class="treegrid-1" data-key="architecturalEngineering"  data-role="parent">
+            <td>建筑工程 </td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-1-1 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地下基础 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-1-2 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地下室 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-1-3 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地上主体 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+
+        <tr class="treegrid-2" data-key="installationWorks"  data-role="parent">
+            <td>安装工程</td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-1 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 电气工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-2 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 给排水工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-3 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 燃气工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-4 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 消防工程含消防报警 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-5 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 通风空调工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-6 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 智能化系统工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-7 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 电梯工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-8 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 其它工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+
+        <tr class="treegrid-3" data-key="decorationEngineering"  data-role="parent">
+            <td>装饰工程</td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-1 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 楼地面工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-2 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 外墙墙柱面工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-3 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 内墙墙柱面工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-4 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 天棚工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-5 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 门窗工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-6 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 外墙（油漆、涂料、裱糊）工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-7 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 内墙（油漆、涂料、裱糊）工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-8 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 其它工程 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+
+        <tr class="treegrid-4" data-key="ancillaryWorks"  data-role="parent">
+            <td>附属工程</td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-1 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 道路 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-2 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 围墙 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-3 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 大门 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-4 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 绿化 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-5 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 园林 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-6 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 景观 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+
+        <tr class="treegrid-5" data-key="secondInstallationProject"  data-role="parent">
+            <td>二装工程</td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+
+        </tbody>
+
+        <tfoot>
+        <tr class="treegrid-99" data-key="architecturalEngineering"  data-role="parent">
+            <td>合计 </td>
+            <td> <input type="text" readonly="readonly" name="totalPrice"> </td>
+        </tr>
+        </tfoot>
+    </table>
+</script>
+
+
 <script type="text/html" id="architecturalA" data-title="简单树">
     <table class="table tree" id="architecturalAHandle">
         <thead>
@@ -453,6 +852,77 @@
             <tr class="treegrid-2-8 treegrid-parent-2" data-key="installationWorks" data-role="child">
                 <td> 其它工程 </td>
                 <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+
+            <tr class="treegrid-3" data-key="decorationEngineering"  data-role="parent">
+                <td>装饰工程</td>
+                <td>  </td>
+            </tr>
+            <tr class="treegrid-3-1 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+                <td> 楼地面工程 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-3-2 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+                <td> 外墙墙柱面工程 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-3-3 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+                <td> 内墙墙柱面工程 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-3-4 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+                <td> 天棚工程 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-3-5 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+                <td> 门窗工程 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-3-6 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+                <td> 外墙（油漆、涂料、裱糊）工程 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-3-7 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+                <td> 内墙（油漆、涂料、裱糊）工程 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-3-8 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+                <td> 其它工程 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+
+            <tr class="treegrid-4" data-key="ancillaryWorks"  data-role="parent">
+                <td>附属工程</td>
+                <td>  </td>
+            </tr>
+            <tr class="treegrid-4-1 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+                <td> 道路 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-4-2 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+                <td> 围墙 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-4-3 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+                <td> 大门 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-4-4 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+                <td> 绿化 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-4-5 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+                <td> 园林 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+            <tr class="treegrid-4-6 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+                <td> 景观 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
+
+            <tr class="treegrid-5" data-key="secondInstallationProject"  data-role="parent">
+                <td>二装工程</td>
+                <td>  </td>
             </tr>
 
         </tbody>

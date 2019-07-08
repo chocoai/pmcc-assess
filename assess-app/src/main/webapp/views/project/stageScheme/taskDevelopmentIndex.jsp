@@ -3,6 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <script src="${pageContext.request.contextPath}/assets/math/6.0.2/math.js"></script>
     <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
@@ -41,7 +42,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="application/javascript">
     function submit() {
-        var data = {};
+        var data = development.getFomData();
+        console.log(data) ;
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data));
         }
