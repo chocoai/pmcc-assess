@@ -78,6 +78,8 @@ public class ProjectInfo {
 
     private Date gmtModified;
 
+    private String estateName;
+
     public Integer getId() {
         return id;
     }
@@ -372,5 +374,13 @@ public class ProjectInfo {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getEstateName() {
+        return estateName;
+    }
+
+    public void setEstateName(String estateName) {
+        this.estateName = estateName == null ? null : estateName.trim();
     }
 }

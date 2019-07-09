@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.test;
+package com.copower.pmcc.assess.test.zhaiquan;
 
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 

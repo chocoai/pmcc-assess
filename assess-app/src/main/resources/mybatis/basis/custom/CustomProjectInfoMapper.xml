@@ -71,7 +71,9 @@
         <if test="queryUseUnit!=null">
             AND E.u_use_unit = #{queryUseUnit}
         </if>
-
+        <if test="queryEstateName!=null and queryEstateName!=''">
+            AND A.estate_name LIKE CONCAT(CONCAT('%', #{queryEstateName}), '%')
+        </if>
         ORDER BY A.id DESC
     </select>
 </mapper>

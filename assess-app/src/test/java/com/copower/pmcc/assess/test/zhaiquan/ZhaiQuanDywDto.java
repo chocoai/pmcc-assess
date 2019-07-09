@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.test;
+package com.copower.pmcc.assess.test.zhaiquan;
 
 /**
  * Created by kings on 2019-4-12.
