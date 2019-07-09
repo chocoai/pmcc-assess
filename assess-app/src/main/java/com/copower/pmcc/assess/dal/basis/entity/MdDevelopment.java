@@ -14,6 +14,22 @@ public class MdDevelopment {
 
     private String type;
 
+    private Integer planDetailsId;
+
+    private BigDecimal constructionCostSubtotal;
+
+    private BigDecimal interestInvestment;
+
+    private BigDecimal investmentProfit;
+
+    private BigDecimal assessPrice;
+
+    private String headContent;
+
+    private String content;
+
+    private BigDecimal projectConstructionPeriod;
+
     private String creator;
 
     private Date gmtCreated;
@@ -58,6 +74,70 @@ public class MdDevelopment {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
+    public BigDecimal getConstructionCostSubtotal() {
+        return constructionCostSubtotal;
+    }
+
+    public void setConstructionCostSubtotal(BigDecimal constructionCostSubtotal) {
+        this.constructionCostSubtotal = constructionCostSubtotal;
+    }
+
+    public BigDecimal getInterestInvestment() {
+        return interestInvestment;
+    }
+
+    public void setInterestInvestment(BigDecimal interestInvestment) {
+        this.interestInvestment = interestInvestment;
+    }
+
+    public BigDecimal getInvestmentProfit() {
+        return investmentProfit;
+    }
+
+    public void setInvestmentProfit(BigDecimal investmentProfit) {
+        this.investmentProfit = investmentProfit;
+    }
+
+    public BigDecimal getAssessPrice() {
+        return assessPrice;
+    }
+
+    public void setAssessPrice(BigDecimal assessPrice) {
+        this.assessPrice = assessPrice;
+    }
+
+    public String getHeadContent() {
+        return headContent;
+    }
+
+    public void setHeadContent(String headContent) {
+        this.headContent = headContent == null ? null : headContent.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public BigDecimal getProjectConstructionPeriod() {
+        return projectConstructionPeriod;
+    }
+
+    public void setProjectConstructionPeriod(BigDecimal projectConstructionPeriod) {
+        this.projectConstructionPeriod = projectConstructionPeriod;
     }
 
     public String getCreator() {

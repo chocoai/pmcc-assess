@@ -38,7 +38,7 @@
     constructionEngineering.viewInit = function () {
         //1.读取数据 2.将数据初始化成树形结构
         $.ajax({
-            url: '${pageContext.request.contextPath}/marketCost/getTreeView',
+            url: '${pageContext.request.contextPath}/mdArchitecturalObj/getTreeView',
             type: 'get',
             success: function (result) {
                 if (result.ret) {

@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class MdCostAndDevelopmentOther {
+public class MdArchitecturalObj {
     private Integer id;
 
     private String creator;
@@ -14,6 +14,8 @@ public class MdCostAndDevelopmentOther {
     private String jsonContent;
 
     private String databaseName;
+
+    private Integer planDetailsId;
 
     private String type;
 
@@ -65,6 +67,14 @@ public class MdCostAndDevelopmentOther {
 
     public void setDatabaseName(String databaseName) {
         this.databaseName = databaseName == null ? null : databaseName.trim();
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public String getType() {
