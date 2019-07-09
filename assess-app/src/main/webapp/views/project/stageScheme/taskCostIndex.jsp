@@ -4,15 +4,9 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <link href="/pmcc-assess/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/assets/layer/theme/default/layer.css" rel="stylesheet">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
+    <script src="${pageContext.request.contextPath}/assets/math/6.0.2/math.js"></script>
+    <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -22,7 +16,50 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!-- 引入成本法模块 -->
-            <jsp:include page="/views/method/marketCostIndex.jsp"></jsp:include>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>成本法</h3>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                    <form class="form-horizontal" id="costMethodFrm">
+                        <div class="col-sm-12 form-group">
+                            <span class="col-sm-1">
+                                <label>建筑形态</label>
+                            </span>
+                            <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
+                                <input type="radio" id="building" name="type" value="1">
+                                <label for="building">建筑物</label>
+                            </span>
+                            <span class="col-sm-2  checkbox-inline">
+                                <input type="radio" id="construction" name="type" value="2" checked="checked">
+                                <label for="construction">在建工程</label>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="x_content">
+                    <form class="form-horizontal" id="buildingFrm">
+
+                    </form>
+                </div>
+
+
+                <div class="x_content">
+                    <form class="form-horizontal" id="constructionFrm">
+                        <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
+                        <%@include file="/views/method/module/costModule/construction.jsp" %>
+                    </form>
+                </div>
+            </div>
+
+
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -38,30 +75,54 @@
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
-    <input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="${pageContext.request.contextPath}/assets/layer/layer.js"></script>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
-    $(function () {
-    })
+
+    var cost = {} ;
+
+    cost.frm = $("#costMethodFrm") ;
+    cost.buildingFrm = $("#buildingFrm") ;
+    cost.constructionFrm = $("#constructionFrm") ;
+
+    cost.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
+
+    cost.isNotBlankObject = function (obj) {
+        for (var key in obj) {
+            return true;
+        }
+        return false
+    };
+
+    $(document).ready(function () {
+        cost.frm.find("input[type='radio'][name='type']").change(function () {
+            var data = formSerializeArray(cost.frm);
+            if (data.type == '1') {
+                cost.buildingFrm.show() ;
+                cost.constructionFrm.hide() ;
+            }
+            if (data.type == '2') {
+                cost.buildingFrm.hide() ;
+                cost.constructionFrm.show() ;
+            }
+        });
+    });
+
 </script>
 <script type="application/javascript">
-
-    $(function () {
-
-    });
 
     //提交
     function submit() {
         var data = {};
-        data.mdCostBuilding = optionsBuildBox.getMdCostBuilding();
-        data.mdCostConstruction = optionsBuildBox.getMdCostConstruction();
-        data.mdCost = optionsBuildBox.getBuildKey();
-        console.log(data.mdCostConstruction);
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data));
@@ -70,7 +131,6 @@
             submitToServer(JSON.stringify(data));
         }
     }
-
 </script>
 
 </html>

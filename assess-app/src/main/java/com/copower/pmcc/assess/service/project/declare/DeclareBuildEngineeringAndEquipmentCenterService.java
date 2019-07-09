@@ -28,8 +28,6 @@ import java.util.List;
 @Service
 public class DeclareBuildEngineeringAndEquipmentCenterService {
     @Autowired
-    private DeclareBuildEconomicIndicatorsCenterService declareBuildEconomicIndicatorsCenterService;
-    @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterDao declareBuildEngineeringAndEquipmentCenterDao;
     @Autowired
     private CommonService commonService;
@@ -42,21 +40,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     @Autowired
     private DeclareBuildEconomicIndicatorsService declareBuildEconomicIndicatorsService;
     @Autowired
-    private DeclareBuildingConstructionPermitService declareBuildingConstructionPermitService;
-    @Autowired
-    private DeclareBuildingPermitService declareBuildingPermitService;
-    @Autowired
-    private DeclareLandUsePermitService declareLandUsePermitService;
-    @Autowired
-    private DeclarePreSalePermitService declarePreSalePermitService;
-    @Autowired
-    private DeclareRealtyLandCertService declareRealtyLandCertService;
-    @Autowired
-    private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
-    @Autowired
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
-    @Autowired
-    private DeclareEconomicIndicatorsHeadService declareEconomicIndicatorsHeadService;
     @Autowired
     private TaskExecutor executor;
 
@@ -254,7 +238,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                     //当只存在一个的时候，把中间表包含经济指标的id设为null,并且删除其原表的数据
                     //当有多个关联关系的时候则把中间表包含经济指标的id设为null
                     if (centerList.size() == 1) {
-                        declareEconomicIndicatorsHeadService.removeDeclareEconomicIndicatorsHeadById(equipmentCenter.getIndicatorId());
+//                        declareEconomicIndicatorsHeadService.removeDeclareEconomicIndicatorsHeadById(equipmentCenter.getIndicatorId());
                     }
                     equipmentCenter.setIndicatorId(0);
                     saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
@@ -275,7 +259,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                     if (centerList.size() == 1) {
                         DeclareBuildEconomicIndicatorsCenter deleteIndicatorsCenter = new DeclareBuildEconomicIndicatorsCenter();
                         deleteIndicatorsCenter.setId(equipmentCenter.getIndicatorId());
-                        declareBuildEconomicIndicatorsCenterService.removeDeclareBuildEconomicIndicatorsCenter(deleteIndicatorsCenter);
+//                        declareBuildEconomicIndicatorsCenterService.removeDeclareBuildEconomicIndicatorsCenter(deleteIndicatorsCenter);
                     }
                     equipmentCenter.setIndicatorId(0);
                     saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
@@ -294,7 +278,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                     if (centerList.size() == 1) {
                         DeclareBuildingConstructionPermit delete = new DeclareBuildingConstructionPermit();
                         delete.setId(equipmentCenter.getBuildingConstructionPermitId());
-                        declareBuildingConstructionPermitService.removeDeclareBuildingConstructionPermit(delete);
+//                        declareBuildingConstructionPermitService.removeDeclareBuildingConstructionPermit(delete);
                     }
                     equipmentCenter.setBuildingConstructionPermitId(0);
                     saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
@@ -313,7 +297,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                     if (centerList.size() == 1) {
                         DeclareBuildingPermit delete = new DeclareBuildingPermit();
                         delete.setId(equipmentCenter.getBuildingPermitId());
-                        declareBuildingPermitService.removeDeclareBuildingPermit(delete);
+//                        declareBuildingPermitService.removeDeclareBuildingPermit(delete);
                     }
                     equipmentCenter.setBuildingPermitId(0);
                     saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
@@ -332,7 +316,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                     if (centerList.size() == 1) {
                         DeclareLandUsePermit delete = new DeclareLandUsePermit();
                         delete.setId(equipmentCenter.getLandUsePermitId());
-                        declareLandUsePermitService.removeDeclareLandUsePermit(delete);
+//                        declareLandUsePermitService.removeDeclareLandUsePermit(delete);
                     }
                     equipmentCenter.setLandUsePermitId(0);
                     saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
@@ -351,7 +335,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                     if (centerList.size() == 1) {
                         DeclarePreSalePermit delete = new DeclarePreSalePermit();
                         delete.setId(equipmentCenter.getPreSalePermitId());
-                        declarePreSalePermitService.removeDeclarePreSalePermit(delete);
+//                        declarePreSalePermitService.removeDeclarePreSalePermit(delete);
                     }
                     equipmentCenter.setPreSalePermitId(0);
                     saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
@@ -372,7 +356,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                         if (centerList.size() == 1) {
                             DeclareRealtyLandCert delete = new DeclareRealtyLandCert();
                             delete.setId(equipmentCenter.getLandId());
-                            declareRealtyLandCertService.removeDeclareRealtyLandCert(delete);
+//                            declareRealtyLandCertService.removeDeclareRealtyLandCert(delete);
                         }
                         equipmentCenter.setLandId(0);
                         saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
@@ -394,7 +378,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                         if (centerList.size() == 1) {
                             DeclareRealtyRealEstateCert delete = new DeclareRealtyRealEstateCert();
                             delete.setId(equipmentCenter.getRealEstateId());
-                            declareRealtyRealEstateCertService.removeDeclareRealtyRealEstateCert(delete);
+//                            declareRealtyRealEstateCertService.removeDeclareRealtyRealEstateCert(delete);
                         }
                         equipmentCenter.setRealEstateId(0);
                         saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);

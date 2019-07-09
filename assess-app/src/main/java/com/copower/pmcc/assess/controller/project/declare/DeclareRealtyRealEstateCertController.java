@@ -86,9 +86,7 @@ public class DeclareRealtyRealEstateCertController {
             if (org.apache.commons.lang3.StringUtils.isNotBlank(ids)) {
                 for (String id:ids.split(",")){
                     if (NumberUtils.isNumber(id)){
-                        DeclareRealtyRealEstateCert declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
-                        declareRealtyRealEstateCert.setId(Integer.parseInt(id));
-                        declareRealtyRealEstateCertService.removeDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
+                        declareRealtyRealEstateCertService.deleteDeclareRealtyRealEstateCertById(Integer.parseInt(id));
                     }
                 }
                 return HttpResult.newCorrectResult();
