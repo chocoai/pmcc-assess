@@ -27,35 +27,77 @@
     developmentCommon.config = {
         commonParameter: {id: "commonDevelopmentParameterBase", handle: "commonDevelopmentParameterHandle"},
         architecturalA: {id: "architecturalA", handle: "architecturalAHandle"},
-        architecturalB: {id: "architecturalB", handle: "architecturalBHandle"},
+        architecturalB: {id: "architecturalB", handle: "architecturalBHandle"}
     };
 
     developmentCommon.architecturalB = {
+        get:function (type , callback) {
+            var pid = 0;
+            if (developmentCommon.isNotBlank('${mdDevelopment}')){
+                if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                    pid = '${mdDevelopment.id}' ;
+                }
+            }
+            developmentCommon.getMdArchitecturalObjList(type ,AssessDBKey.MdDevelopment , pid ,'${projectPlanDetails.id}' ,callback) ;
+        },
+        initData:function (table,data) {
+            var tbody = table.find('tbody') ;
+            var result = 0;
+            tbody.find("tr").each(function (i,tr) {
+                var dataKey = $(tr).attr('data-key') ;
+                var role = $(tr).attr('data-role') ;
+                var name = $(tr).find("td").first().text() ;
+                var value = $(tr).find("input[name='price']").first().val() ;
+                $.each(data,function (i,item) {
+                    if (item.role == role){
+                        if (dataKey == item.dataKey){
+                            if (name == item.name){
+                                var a = undefined ;
+                                var b = undefined ;
+                                if ($(tr).find("input[name='price']").first().size() != 0){
+                                    if (item.value){
+                                        $(tr).find("input[name='price']").first().val(item.value) ;
+                                        a = item.value ;
+                                    }
+                                }
+                                if ($(tr).find("input[name='valuationDateDegreeCompletion']").first().size() != 0){
+                                    if (item.valuationDateDegreeCompletion){
+                                        var valuationDateDegreeCompletion = parseFloat(item.valuationDateDegreeCompletion) ;
+                                        valuationDateDegreeCompletion /= 100;
+                                        $(tr).find("input[name='valuationDateDegreeCompletion']").first().val(item.valuationDateDegreeCompletion) ;
+                                        $(tr).find("input[name='valuationDateDegreeCompletion']").first().attr('data-value' , valuationDateDegreeCompletion) ;
+                                        b = valuationDateDegreeCompletion ;
+                                    }
+                                }
+                                if (developmentCommon.isNotBlank(a) && developmentCommon.isNotBlank(b)){
+                                    var c = Number(a) * Number(b) ;
+                                    $(tr).find("td").last().text(c.toFixed(2)) ;
+                                    result += c ;
+                                }
+                            }
+                        }
+                    }
+                }) ;
+            }) ;
+            table.find("tfoot").find("tr").find("input[name='totalPrice']").val(result.toFixed(2)) ;
+        },
         totalResult:function (that) {
-            var a = $(that).val();
-            var b = $(that).closest("td").prev().find("input").first().val();
-            if (!developmentCommon.isNotBlank(a)){
+            var tr = $(that).closest("tr") ;
+            var value = $(that).val() ;
+            var a = tr.find("input[name='price']").val() ;
+            var b = tr.find("input[name='valuationDateDegreeCompletion']").attr('data-value');
+            if (!developmentCommon.isNotBlank(value)){
                 alert("不能为空!") ;
                 return false;
             }
-            if (!developmentCommon.isNotBlank(b)){
-                return false;
-            }
-            if (a.indexOf("%") != -1){
-                a =  $(that).attr('data-value') ;
-            }
-            if (b.indexOf("%") != -1){
-                b =  $(that).closest("td").prev().find("input").first().attr('data-value') ;
-            }
             if (!AssessCommon.isNumber(a)){
-                alert("必须是数字!") ;
                 return false;
             }
             if (!AssessCommon.isNumber(b)){
                 return false;
             }
             var c = Number(a) * Number(b) ;
-            $(that).closest("td").next().text(c.toFixed(2)) ;
+            tr.find("td").last().text(c.toFixed(2)) ;
             var table = $(that).closest("table") ;
             var result = 0;
             table.find("tbody").find("tr").each(function (i,item) {
@@ -82,7 +124,8 @@
                 var role = $(tr).attr('data-role') ;
                 var name = $(tr).find("td").first().text() ;
                 var value = $(tr).find("input[name='price']").first().val() ;
-                data.push({dataKey:dataKey,role:role,name:name,value:value}) ;
+                var valuationDateDegreeCompletion = $(tr).find("input[name='valuationDateDegreeCompletion']").first().val() ;
+                data.push({dataKey:dataKey,role:role,name:name,value:value,valuationDateDegreeCompletion:valuationDateDegreeCompletion}) ;
             }) ;
             return data;
         }
@@ -139,7 +182,7 @@
 
     developmentCommon.getMdArchitecturalObjList = function (type,databaseName,pid,planDetailsId,callback) {
         $.ajax({
-            type: "post",
+            type: "get",
             url: "${pageContext.request.contextPath}/mdArchitecturalObj/getMdArchitecturalObjList",
             data: {type:type,databaseName:databaseName,pid:pid , planDetailsId:planDetailsId},
             success: function (result) {
@@ -158,6 +201,15 @@
     };
 
     developmentCommon.architecturalA = {
+        get:function (type , callback) {
+            var pid = 0;
+            if (developmentCommon.isNotBlank('${mdDevelopment}')){
+                if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                    pid = '${mdDevelopment.id}' ;
+                }
+            }
+            developmentCommon.getMdArchitecturalObjList(type ,AssessDBKey.MdDevelopment , pid ,'${projectPlanDetails.id}' ,callback) ;
+        },
         totalResult:function (that) {
             var value = $(that).val() ;
             if (!AssessCommon.isNumber(value)){
@@ -184,10 +236,34 @@
                 var role = $(tr).attr('data-role') ;
                 var name = $(tr).find("td").first().text() ;
                 var value = $(tr).find("input[name='price']").first().val() ;
-                var valuationDateDegreeCompletion = $(tr).find("input[name='valuationDateDegreeCompletion']").first().val() ;
-                data.push({dataKey:dataKey,role:role,name:name,value:value,valuationDateDegreeCompletion:valuationDateDegreeCompletion}) ;
+                data.push({dataKey:dataKey,role:role,name:name,value:value}) ;
             }) ;
             return data;
+        },
+        initData:function (table,data) {
+            var tbody = table.find('tbody') ;
+            var result = 0;
+            tbody.find("tr").each(function (i,tr) {
+                var dataKey = $(tr).attr('data-key') ;
+                var role = $(tr).attr('data-role') ;
+                var name = $(tr).find("td").first().text() ;
+                var value = $(tr).find("input[name='price']").first().val() ;
+                $.each(data,function (i,item) {
+                    if (item.role == role){
+                        if (dataKey == item.dataKey){
+                            if (name == item.name){
+                                if ($(tr).find("input[name='price']").first().size() != 0){
+                                    $(tr).find("input[name='price']").first().val(item.value) ;
+                                    if (AssessCommon.isNumber(item.value)){
+                                        result += Number(item.value) ;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }) ;
+            }) ;
+            table.find("tfoot").find("tr").find("input[name='totalPrice']").val(result) ;
         },
         getHtml: function () {
             return $("#" + developmentCommon.config.architecturalA.id).html();
@@ -214,6 +290,47 @@
                 }
             });
         },
+        initData:function (table,data) {
+            if (table.size() == 0){
+                return false ;
+            }
+            var buildArea = 0;
+            var maySaleArea = 0;
+            var maySaleAreaNext = 0;
+            var unitPrice = 0;
+            table.find("tbody").find("tr").each(function (i,tr) {
+                var dataKey = $(tr).attr('data-key') ;
+                var name = $(tr).find("td").first().text();
+                $.each(data , function (j,item) {
+                    if (item.dataKey == dataKey){
+                        if (item.name == name){
+                            if (AssessCommon.isNumber(item.buildArea)){
+                                buildArea += Number(item.buildArea) ;
+                            }
+                            if (AssessCommon.isNumber(item.maySaleArea)){
+                                maySaleArea += Number(item.maySaleArea) ;
+                            }
+                            if (AssessCommon.isNumber(item.maySaleAreaNext)){
+                                maySaleAreaNext += Number(item.maySaleAreaNext) ;
+                            }
+                            if (AssessCommon.isNumber(item.unitPrice)){
+                                unitPrice += Number(item.unitPrice) ;
+                            }
+                            $(tr).find("td").eq(1).find("a").text(item.buildArea) ;
+                            $(tr).find("td").eq(2).find("a").text(item.maySaleArea) ;
+                            $(tr).find("td").eq(3).find("a").text(item.maySaleAreaNext) ;
+                            $(tr).find("td").eq(4).find("a").text(item.unitPrice) ;
+                            $(tr).find("td").eq(5).find("a").text(item.remark) ;
+                        }
+                    }
+                }) ;
+            }) ;
+            table.find("tfoot").find("input[name='buildArea']").val(buildArea) ;
+            table.find("tfoot").find("input[name='maySaleArea']").val(maySaleArea) ;
+            table.find("tfoot").find("input[name='maySaleAreaNext']").val(maySaleAreaNext) ;
+            table.find("tfoot").find("input[name='unitPrice']").val(unitPrice) ;
+
+        },
         getFomData:function (table) {
             var data = [] ;
             table.find("tbody").find("tr").each(function (i,tr) {
@@ -232,7 +349,7 @@
             }) ;
             return data;
         },
-        editableInit: function () {
+        editableInit: function (callback) {
             developmentCommon.parameter.getDeclareEconomicIndicatorsContentList(function (data) {
                 $("." + developmentCommon.config.commonParameter.handle).find("table").each(function () {
                     var table = $(this);
@@ -308,6 +425,9 @@
                     developmentCommon.parameter.handleCalculationWrite(table.find("tfoot").find("input[name='maySaleArea']"), 0, developmentCommon.parameter.handleCalculationB.name);
                     developmentCommon.parameter.handleCalculationWrite(table.find("tfoot").find("input[name='maySaleAreaNext']"), 0, developmentCommon.parameter.handleCalculationC.name);
                 });
+                if (callback){
+                    callback() ;
+                }
             });
         },
         handleCalculationA: function (value) {
@@ -570,7 +690,7 @@
                         <td><input type="text" class="form-control" name="unitPrice"
                                    readonly="readonly" value="0.00"
                                    onblur="developmentCommon.parameter.handleCalculation('{funA4}')"></td>
-                        <td><input type="text" name="unsaleableBuildingArea" onblur="developmentCommon.parameter.handleCalculation('{funA5}')" placeholder="不可售建筑面积" class="form-control"></td>
+                        <td><input type="text" name="unsaleableBuildingArea" onblur="developmentCommon.parameter.handleCalculation('{funA5}')" placeholder="不可售建筑面积" class="form-control" value="${mdDevelopment.unsaleableBuildingArea}"></td>
                     </tr>
                     </tfoot>
                 </table>

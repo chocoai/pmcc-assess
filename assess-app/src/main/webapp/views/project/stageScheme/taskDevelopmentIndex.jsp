@@ -42,16 +42,15 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="application/javascript">
     function submit() {
-        var data = development.getFomData();
-        console.log(data) ;
-        if ("${processInsId}" != "0") {
-            submitEditToServer(JSON.stringify(data));
-        }
-        else {
-            submitToServer(JSON.stringify(data));
-        }
+        development.valid(function () {
+            var data = development.getFomData();
+            if ("${processInsId}" != "0") {
+                submitEditToServer(JSON.stringify(data));
+            } else {
+                submitToServer(JSON.stringify(data));
+            }
+        });
     }
-
 </script>
 
 </html>

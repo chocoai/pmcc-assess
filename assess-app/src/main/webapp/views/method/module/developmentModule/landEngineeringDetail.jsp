@@ -124,9 +124,7 @@
                     交易费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="交易费率" class="form-control x-percent" required="required"
-                           name="f30" onblur="landEngineering.calculationD28()">
+                    <label class="form-control">${mdDevelopment.f30}%</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -134,9 +132,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="费率说明" class="form-control"
-                           name="f30Explain">
+                    <label class="form-control">${mdDevelopment.f30Explain}</label>
                 </div>
             </div>
         </div>
@@ -147,9 +143,7 @@
                     管理费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="管理费率" class="form-control x-percent" required="required"
-                           name="g32" onblur="landEngineering.calculationD32();landEngineering.calculationF32()">
+                    <label class="form-control">${mdDevelopment.g32}%</label>
                 </div>
             </div>
 
@@ -158,9 +152,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="费率说明" class="form-control"
-                           name="g32Explain">
+                    <label class="form-control">${mdDevelopment.g32Explain}</label>
                 </div>
             </div>
         </div>
@@ -171,8 +163,7 @@
                     土地取得附加成本<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="土地取得附加成本" class="form-control" required="required" data-rule-number='true'
-                           name="f31" onblur="landEngineering.calculationF32();landEngineering.calculationF35()">
+                    <label class="form-control">${mdDevelopment.f31}</label>
                 </div>
             </div>
 
@@ -181,7 +172,7 @@
                     土地取得附加成本说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="土地取得成本说明" class="form-control" name="f31Explain">
+                    <label class="form-control">${mdDevelopment.f31Explain}</label>
                 </div>
             </div>
         </div>
@@ -192,9 +183,7 @@
                     销售费用率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="销售费用率" class="form-control x-percent" required="required"
-                           name="g33" onblur="landEngineering.calculationF33()">
+                    <label class="form-control">${mdDevelopment.g33}%</label>
                 </div>
             </div>
 
@@ -203,7 +192,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="g33Explain">
+                    <label class="form-control">${mdDevelopment.g33Explain}</label>
                 </div>
             </div>
         </div>
@@ -214,8 +203,7 @@
                     投资利息率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="投资利息率" class="form-control x-percent" required="required"
-                           name="g34" onblur="landEngineering.calculationD34();landEngineering.calculationF34()">
+                    <label class="form-control">${mdDevelopment.g34}%</label>
                 </div>
             </div>
 
@@ -224,7 +212,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="g34Explain">
+                    <label class="form-control">${mdDevelopment.g34Explain}</label>
                 </div>
             </div>
         </div>
@@ -235,8 +223,7 @@
                     投资利润率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="投资利润率" class="form-control x-percent" required="required"
-                           name="g35" onblur="landEngineering.calculationD35();landEngineering.calculationF35()">
+                    <label class="form-control">${mdDevelopment.g35}%</label>
                 </div>
             </div>
 
@@ -245,7 +232,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="g34Explain">
+                    <label class="form-control">${mdDevelopment.g35Explain}</label>
                 </div>
             </div>
         </div>
@@ -256,8 +243,8 @@
                     销售环节增值税及附加<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="销售环节增值税及附加" class="form-control x-percent" required="required"
-                           name="f37" onblur="landEngineering.calculationD36()">
+                    <label class="form-control">${mdDevelopment.f37}%</label>
+
                 </div>
             </div>
 
@@ -266,7 +253,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="f37Explain">
+                    <label class="form-control">${mdDevelopment.f37Explain}</label>
                 </div>
             </div>
         </div>
@@ -277,8 +264,8 @@
                     土地增值税<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="土地增值税" class="form-control x-percent" required="required"
-                           name="f38" onblur="landEngineering.calculationD36()">
+                    <label class="form-control">${mdDevelopment.f38}%</label>
+
                 </div>
             </div>
 
@@ -287,7 +274,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="f38Explain">
+                    <label class="form-control">${mdDevelopment.f38Explain}</label>
                 </div>
             </div>
         </div>
@@ -298,8 +285,7 @@
                     项目开发所得税<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="项目开发所得税" class="form-control x-percent" required="required"
-                           name="f39" onblur="landEngineering.calculationD36()">
+                    <label class="form-control">${mdDevelopment.f39}%</label>
                 </div>
             </div>
 
@@ -308,7 +294,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="f39Explain">
+                    <label class="form-control">${mdDevelopment.f39Explain}</label>
                 </div>
             </div>
         </div>
@@ -335,8 +321,7 @@
                     土地还原率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="土地还原率" class="form-control x-percent" required="required"
-                           name="e43" onblur="">
+                    <label class="form-control">${mdDevelopment.e43}%</label>
                 </div>
             </div>
 
@@ -345,7 +330,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="费率说明" class="form-control" name="e43Explain">
+                    <label class="form-control">${mdDevelopment.e43Explain}</label>
                 </div>
             </div>
         </div>
@@ -356,8 +341,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text" placeholder="法定年限" class="form-control" required="required"
-                           name="f43" onblur="landEngineering.calculationD43()">
+                    <label class="form-control">${mdDevelopment.f43}</label>
                 </div>
             </div>
 
@@ -366,8 +350,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text" placeholder="剩余年限" class="form-control" required="required"
-                           name="g43" onblur="landEngineering.calculationD43()">
+                    <label class="form-control">${mdDevelopment.g43}</label>
                 </div>
             </div>
         </div>
@@ -380,8 +363,7 @@
                     权利状况修正<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="权利状况修正" class="form-control" required="required"
-                           name="d44" onblur="landEngineering.calculationD47()">
+                    <label class="form-control">${mdDevelopment.d44}</label>
                 </div>
             </div>
 
@@ -390,7 +372,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="说明" class="form-control" name="d44Explain">
+                    <label class="form-control">${mdDevelopment.d44Explain}</label>
                 </div>
             </div>
         </div>
@@ -401,8 +383,7 @@
                     其他修正<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="其他修正" class="form-control" required="required"
-                           name="d45" onblur="landEngineering.calculationD47()">
+                    <label class="form-control">${mdDevelopment.d45}</label>
                 </div>
             </div>
 
@@ -411,7 +392,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="说明" class="form-control" name="d45Explain">
+                    <label class="form-control">${mdDevelopment.d45Explain}</label>
                 </div>
             </div>
         </div>
@@ -422,8 +403,7 @@
                     开发程度修正<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="开发程度修正" class="form-control" required="required"
-                           name="d46" onblur="landEngineering.calculationD47()">
+                    <label class="form-control">${mdDevelopment.d46}</label>
                 </div>
             </div>
 
@@ -432,7 +412,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="说明" class="form-control" name="d46Explain">
+                    <label class="form-control">${mdDevelopment.d46Explain}</label>
                 </div>
             </div>
         </div>

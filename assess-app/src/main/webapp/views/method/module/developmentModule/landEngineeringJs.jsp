@@ -533,6 +533,22 @@
                 target.find(".panel-body").append(developmentCommon.architecturalA.getHtml());
                 developmentCommon.architecturalA.treeGirdParse(target);
             }
+            developmentCommon.architecturalA.get("land" , function (data) {
+                var item = undefined ;
+                if (data.length >= 1){
+                    var n = data[0] ;
+                    if (n.jsonContent){
+                        try {
+                            item = JSON.parse(n.jsonContent) ;
+                        } catch (e) {
+                            console.log("解析异常!") ;
+                        }
+                    }
+                }
+                if (item){
+                    developmentCommon.architecturalA.initData(target.find("table"),item) ;
+                }
+            }) ;
             target.modal("show");
         },
         save: function () {
@@ -549,6 +565,7 @@
             landEngineering.target.find("input[name='d20']").trigger('blur');
             var data = developmentCommon.architecturalA.getFomData(table);
             developmentCommon.saveMdArchitecturalObj(data , "land" , function () {
+
             }) ;
             target.modal("hide");
         }
