@@ -3,23 +3,24 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseMatchingTrafficMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingTraffic" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="nature" property="nature" jdbcType="INTEGER" />
+    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="distance" property="distance" jdbcType="INTEGER" />
     <result column="line_name" property="lineName" jdbcType="VARCHAR" />
     <result column="the_line" property="theLine" jdbcType="VARCHAR" />
+    <result column="limit_speed" property="limitSpeed" jdbcType="VARCHAR" />
+    <result column="limit_time" property="limitTime" jdbcType="VARCHAR" />
+    <result column="limit_speial" property="limitSpeial" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="BIT" />
+    <result column="cost_standard" property="costStandard" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="traffic_flow" property="trafficFlow" jdbcType="INTEGER" />
+    <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="limit_time" property="limitTime" jdbcType="VARCHAR" />
-    <result column="traffic_flow" property="trafficFlow" jdbcType="INTEGER" />
-    <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="INTEGER" />
-    <result column="position" property="position" jdbcType="INTEGER" />
-    <result column="cost_standard" property="costStandard" jdbcType="VARCHAR" />
-    <result column="limit_speed" property="limitSpeed" jdbcType="VARCHAR" />
-    <result column="limit_speial" property="limitSpeial" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -80,9 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, nature, type, name, distance, line_name, the_line, creator, gmt_created, 
-    gmt_modified, limit_time, traffic_flow, visitors_flowrate, position, cost_standard, 
-    limit_speed, limit_speial
+    id, nature, estate_id, type, name, distance, line_name, the_line, limit_speed, limit_time, 
+    limit_speial, flag, cost_standard, position, traffic_flow, visitors_flowrate, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingTrafficExample" >
     select
@@ -118,18 +119,20 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_matching_traffic (estate_id, nature, type, 
+    insert into tb_case_matching_traffic (nature, estate_id, type, 
       name, distance, line_name, 
-      the_line, creator, gmt_created, 
-      gmt_modified, limit_time, traffic_flow, 
-      visitors_flowrate, position, cost_standard, 
-      limit_speed, limit_speial)
-    values (#{estateId,jdbcType=INTEGER}, #{nature,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      the_line, limit_speed, limit_time, 
+      limit_speial, flag, cost_standard, 
+      position, traffic_flow, visitors_flowrate, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{nature,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{distance,jdbcType=INTEGER}, #{lineName,jdbcType=VARCHAR}, 
-      #{theLine,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{limitTime,jdbcType=VARCHAR}, #{trafficFlow,jdbcType=INTEGER}, 
-      #{visitorsFlowrate,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, #{costStandard,jdbcType=VARCHAR}, 
-      #{limitSpeed,jdbcType=VARCHAR}, #{limitSpeial,jdbcType=INTEGER})
+      #{theLine,jdbcType=VARCHAR}, #{limitSpeed,jdbcType=VARCHAR}, #{limitTime,jdbcType=VARCHAR}, 
+      #{limitSpeial,jdbcType=INTEGER}, #{flag,jdbcType=BIT}, #{costStandard,jdbcType=VARCHAR}, 
+      #{position,jdbcType=INTEGER}, #{trafficFlow,jdbcType=INTEGER}, #{visitorsFlowrate,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingTraffic" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,11 +140,11 @@
     </selectKey>
     insert into tb_case_matching_traffic
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="estateId != null" >
-        estate_id,
-      </if>
       <if test="nature != null" >
         nature,
+      </if>
+      <if test="estateId != null" >
+        estate_id,
       </if>
       <if test="type != null" >
         type,
@@ -158,6 +161,30 @@
       <if test="theLine != null" >
         the_line,
       </if>
+      <if test="limitSpeed != null" >
+        limit_speed,
+      </if>
+      <if test="limitTime != null" >
+        limit_time,
+      </if>
+      <if test="limitSpeial != null" >
+        limit_speial,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="costStandard != null" >
+        cost_standard,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="trafficFlow != null" >
+        traffic_flow,
+      </if>
+      <if test="visitorsFlowrate != null" >
+        visitors_flowrate,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -167,34 +194,13 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="limitTime != null" >
-        limit_time,
-      </if>
-      <if test="trafficFlow != null" >
-        traffic_flow,
-      </if>
-      <if test="visitorsFlowrate != null" >
-        visitors_flowrate,
-      </if>
-      <if test="position != null" >
-        position,
-      </if>
-      <if test="costStandard != null" >
-        cost_standard,
-      </if>
-      <if test="limitSpeed != null" >
-        limit_speed,
-      </if>
-      <if test="limitSpeial != null" >
-        limit_speial,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="estateId != null" >
-        #{estateId,jdbcType=INTEGER},
-      </if>
       <if test="nature != null" >
         #{nature,jdbcType=INTEGER},
+      </if>
+      <if test="estateId != null" >
+        #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
@@ -211,6 +217,30 @@
       <if test="theLine != null" >
         #{theLine,jdbcType=VARCHAR},
       </if>
+      <if test="limitSpeed != null" >
+        #{limitSpeed,jdbcType=VARCHAR},
+      </if>
+      <if test="limitTime != null" >
+        #{limitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="limitSpeial != null" >
+        #{limitSpeial,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=BIT},
+      </if>
+      <if test="costStandard != null" >
+        #{costStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=INTEGER},
+      </if>
+      <if test="trafficFlow != null" >
+        #{trafficFlow,jdbcType=INTEGER},
+      </if>
+      <if test="visitorsFlowrate != null" >
+        #{visitorsFlowrate,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -219,27 +249,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="limitTime != null" >
-        #{limitTime,jdbcType=VARCHAR},
-      </if>
-      <if test="trafficFlow != null" >
-        #{trafficFlow,jdbcType=INTEGER},
-      </if>
-      <if test="visitorsFlowrate != null" >
-        #{visitorsFlowrate,jdbcType=INTEGER},
-      </if>
-      <if test="position != null" >
-        #{position,jdbcType=INTEGER},
-      </if>
-      <if test="costStandard != null" >
-        #{costStandard,jdbcType=VARCHAR},
-      </if>
-      <if test="limitSpeed != null" >
-        #{limitSpeed,jdbcType=VARCHAR},
-      </if>
-      <if test="limitSpeial != null" >
-        #{limitSpeial,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -255,11 +264,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
-        estate_id = #{record.estateId,jdbcType=INTEGER},
-      </if>
       <if test="record.nature != null" >
         nature = #{record.nature,jdbcType=INTEGER},
+      </if>
+      <if test="record.estateId != null" >
+        estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
@@ -276,6 +285,30 @@
       <if test="record.theLine != null" >
         the_line = #{record.theLine,jdbcType=VARCHAR},
       </if>
+      <if test="record.limitSpeed != null" >
+        limit_speed = #{record.limitSpeed,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitTime != null" >
+        limit_time = #{record.limitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitSpeial != null" >
+        limit_speial = #{record.limitSpeial,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=BIT},
+      </if>
+      <if test="record.costStandard != null" >
+        cost_standard = #{record.costStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.position != null" >
+        position = #{record.position,jdbcType=INTEGER},
+      </if>
+      <if test="record.trafficFlow != null" >
+        traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitorsFlowrate != null" >
+        visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -285,27 +318,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.limitTime != null" >
-        limit_time = #{record.limitTime,jdbcType=VARCHAR},
-      </if>
-      <if test="record.trafficFlow != null" >
-        traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
-      </if>
-      <if test="record.visitorsFlowrate != null" >
-        visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
-      </if>
-      <if test="record.position != null" >
-        position = #{record.position,jdbcType=INTEGER},
-      </if>
-      <if test="record.costStandard != null" >
-        cost_standard = #{record.costStandard,jdbcType=VARCHAR},
-      </if>
-      <if test="record.limitSpeed != null" >
-        limit_speed = #{record.limitSpeed,jdbcType=VARCHAR},
-      </if>
-      <if test="record.limitSpeial != null" >
-        limit_speial = #{record.limitSpeial,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -314,23 +326,24 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_matching_traffic
     set id = #{record.id,jdbcType=INTEGER},
-      estate_id = #{record.estateId,jdbcType=INTEGER},
       nature = #{record.nature,jdbcType=INTEGER},
+      estate_id = #{record.estateId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       distance = #{record.distance,jdbcType=INTEGER},
       line_name = #{record.lineName,jdbcType=VARCHAR},
       the_line = #{record.theLine,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      limit_speed = #{record.limitSpeed,jdbcType=VARCHAR},
       limit_time = #{record.limitTime,jdbcType=VARCHAR},
+      limit_speial = #{record.limitSpeial,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=BIT},
+      cost_standard = #{record.costStandard,jdbcType=VARCHAR},
+      position = #{record.position,jdbcType=INTEGER},
       traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
       visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
-      position = #{record.position,jdbcType=INTEGER},
-      cost_standard = #{record.costStandard,jdbcType=VARCHAR},
-      limit_speed = #{record.limitSpeed,jdbcType=VARCHAR},
-      limit_speial = #{record.limitSpeial,jdbcType=INTEGER}
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -338,11 +351,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingTraffic" >
     update tb_case_matching_traffic
     <set >
-      <if test="estateId != null" >
-        estate_id = #{estateId,jdbcType=INTEGER},
-      </if>
       <if test="nature != null" >
         nature = #{nature,jdbcType=INTEGER},
+      </if>
+      <if test="estateId != null" >
+        estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
@@ -359,6 +372,30 @@
       <if test="theLine != null" >
         the_line = #{theLine,jdbcType=VARCHAR},
       </if>
+      <if test="limitSpeed != null" >
+        limit_speed = #{limitSpeed,jdbcType=VARCHAR},
+      </if>
+      <if test="limitTime != null" >
+        limit_time = #{limitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="limitSpeial != null" >
+        limit_speial = #{limitSpeial,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=BIT},
+      </if>
+      <if test="costStandard != null" >
+        cost_standard = #{costStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=INTEGER},
+      </if>
+      <if test="trafficFlow != null" >
+        traffic_flow = #{trafficFlow,jdbcType=INTEGER},
+      </if>
+      <if test="visitorsFlowrate != null" >
+        visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -368,49 +405,29 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="limitTime != null" >
-        limit_time = #{limitTime,jdbcType=VARCHAR},
-      </if>
-      <if test="trafficFlow != null" >
-        traffic_flow = #{trafficFlow,jdbcType=INTEGER},
-      </if>
-      <if test="visitorsFlowrate != null" >
-        visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
-      </if>
-      <if test="position != null" >
-        position = #{position,jdbcType=INTEGER},
-      </if>
-      <if test="costStandard != null" >
-        cost_standard = #{costStandard,jdbcType=VARCHAR},
-      </if>
-      <if test="limitSpeed != null" >
-        limit_speed = #{limitSpeed,jdbcType=VARCHAR},
-      </if>
-      <if test="limitSpeial != null" >
-        limit_speial = #{limitSpeial,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingTraffic" >
     update tb_case_matching_traffic
-    set estate_id = #{estateId,jdbcType=INTEGER},
-      nature = #{nature,jdbcType=INTEGER},
+    set nature = #{nature,jdbcType=INTEGER},
+      estate_id = #{estateId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       distance = #{distance,jdbcType=INTEGER},
       line_name = #{lineName,jdbcType=VARCHAR},
       the_line = #{theLine,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      limit_speed = #{limitSpeed,jdbcType=VARCHAR},
       limit_time = #{limitTime,jdbcType=VARCHAR},
+      limit_speial = #{limitSpeial,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=BIT},
+      cost_standard = #{costStandard,jdbcType=VARCHAR},
+      position = #{position,jdbcType=INTEGER},
       traffic_flow = #{trafficFlow,jdbcType=INTEGER},
       visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
-      position = #{position,jdbcType=INTEGER},
-      cost_standard = #{costStandard,jdbcType=VARCHAR},
-      limit_speed = #{limitSpeed,jdbcType=VARCHAR},
-      limit_speial = #{limitSpeial,jdbcType=INTEGER}
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

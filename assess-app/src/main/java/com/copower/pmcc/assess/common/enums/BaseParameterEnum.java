@@ -27,6 +27,8 @@ public enum BaseParameterEnum {
     PROJECT_DETAILS_DOCUMENT_SEND_PROCESS_KEY("project.details.document.send.process.key", "项目发文审批流程", "box"),
     CASE_BASE_INFO_APPLY_KEY("case.base.info.apply.key", "案例信息申请key", "box"),
 
+    CASE_BASE_INFO_BATCH_APPLY_KEY("case.base.info.batch.apply.key", "案例信息批量申请key", "box"),
+
     CASE_ASSIGN_APPLY_KEY("case.assign.apply.key", "案例信息补充申请key", "box");
 
     private String parameterKey;

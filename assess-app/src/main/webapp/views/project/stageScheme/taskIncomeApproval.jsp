@@ -15,6 +15,16 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/method/incomeDetail.jsp"></jsp:include>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        报告附件
+                    </label>
+                    <div class="col-sm-3">
+                        <div id="_report_file"></div>
+                    </div>
+                </div>
+            </div>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
@@ -27,7 +37,15 @@
 <input type="hidden" id="incomeSelfSupportJSON" value='${incomeSelfSupportJSON}'>
 <script type="text/javascript">
     $(function () {
-
+        FileUtils.getFileShows({
+            target: "report_file",
+            formData: {
+                tableName: "tb_md_income",
+                tableId: '${mdIncome.id}'
+            },
+            editFlag: false,
+            deleteFlag: false
+        })
     })
 </script>
 <script type="application/javascript">

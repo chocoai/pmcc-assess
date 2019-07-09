@@ -16,15 +16,21 @@ public interface BasicEstateTaggingMapper {
 
     int insertSelective(BasicEstateTagging record);
 
+    List<BasicEstateTagging> selectByExampleWithBLOBs(BasicEstateTaggingExample example);
+
     List<BasicEstateTagging> selectByExample(BasicEstateTaggingExample example);
 
     BasicEstateTagging selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") BasicEstateTagging record, @Param("example") BasicEstateTaggingExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") BasicEstateTagging record, @Param("example") BasicEstateTaggingExample example);
+
     int updateByExample(@Param("record") BasicEstateTagging record, @Param("example") BasicEstateTaggingExample example);
 
     int updateByPrimaryKeySelective(BasicEstateTagging record);
+
+    int updateByPrimaryKeyWithBLOBs(BasicEstateTagging record);
 
     int updateByPrimaryKey(BasicEstateTagging record);
 }

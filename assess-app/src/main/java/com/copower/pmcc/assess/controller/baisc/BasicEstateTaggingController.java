@@ -58,10 +58,34 @@ public class BasicEstateTaggingController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/addBasicEstateTaggingByTableId", name = "新增标注", method = {RequestMethod.POST})
+    public HttpResult addBasicEstateTaggingByTableId(BasicEstateTagging basicEstateTagging) {
+        try {
+            basicEstateTaggingService.addBasicEstateTaggingByTableId(basicEstateTagging);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getEstateTaggingList", name = "获取数据列表", method = {RequestMethod.POST})
     public HttpResult getEstateTaggingList(Integer applyId,String type) {
         try {
             return HttpResult.newCorrectResult(200,basicEstateTaggingService.getEstateTaggingList(applyId,type));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getApplyBatchEstateTaggingsByTableId", name = "批量申请时获取数据列表", method = {RequestMethod.POST})
+    public HttpResult getApplyBatchEstateTaggingsByTableId(Integer tableId,String type) {
+        try {
+            return HttpResult.newCorrectResult(200,basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(tableId,type));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500,e.getMessage());
@@ -84,6 +108,17 @@ public class BasicEstateTaggingController {
     public HttpResult getUnitTagging(String unitPartInMode, Integer applyId, Integer caseUnitId) {
         try {
             return HttpResult.newCorrectResult(basicEstateTaggingService.getUnitTagging(unitPartInMode,applyId,caseUnitId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getUnitTaggingByHouseTableId", name = "获取单元下的标注", method = {RequestMethod.POST})
+    public HttpResult getUnitTaggingByHouseTableId(Integer houseTableId) {
+        try {
+            return HttpResult.newCorrectResult(basicEstateTaggingService.getUnitTaggingByHouseTableId(houseTableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

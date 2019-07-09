@@ -143,7 +143,7 @@ public class BasicHouseService {
             return basicHouseDao.addBasicHouse(basicHouse);
         } else {
             basicHouseDao.updateBasicHouse(basicHouse);
-            return null;
+            return basicHouse.getId();
         }
     }
 
@@ -577,5 +577,23 @@ public class BasicHouseService {
         for (SysAttachmentDto sysAttachmentDto : attachmentList) {
             baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
         }
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> getBasicHouseMapById(Integer id) throws Exception {
+        Map<String, Object> objectMap = Maps.newHashMap();
+        BasicHouse basicHouse = this.getBasicHouseById(id);
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
+
+        BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(houseTrading));
+        initDemagedDegree(basicHouse);
+        return objectMap;
     }
 }

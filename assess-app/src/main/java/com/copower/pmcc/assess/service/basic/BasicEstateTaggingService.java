@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingGaoDe;
@@ -37,6 +38,8 @@ public class BasicEstateTaggingService {
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
     private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -66,6 +69,18 @@ public class BasicEstateTaggingService {
         if (basicEstateTagging.getApplyId() == null || basicEstateTagging.getApplyId() == 0)
             where.setCreator(commonService.thisUserAccount());
         where.setApplyId(basicEstateTagging.getApplyId());
+        where.setType(basicEstateTagging.getType());
+        basicEstateTaggingDao.removeBasicEstateTagging(where);
+
+        basicEstateTagging.setCreator(commonService.thisUserAccount());
+        basicEstateTaggingDao.addBasicEstateTagging(basicEstateTagging);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void addBasicEstateTaggingByTableId(BasicEstateTagging basicEstateTagging) throws Exception {
+        //先清除标记
+        BasicEstateTagging where = new BasicEstateTagging();
+        where.setTableId(basicEstateTagging.getTableId());
         where.setType(basicEstateTagging.getType());
         basicEstateTaggingDao.removeBasicEstateTagging(where);
 
@@ -105,6 +120,14 @@ public class BasicEstateTaggingService {
         if (applyId == null || applyId == 0)
             basicEstateTagging.setCreator(commonService.thisUserAccount());
         basicEstateTagging.setApplyId(applyId);
+        basicEstateTagging.setType(type);
+        return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging).stream().map(oo -> getBasicEstateTaggingVo(oo)).collect(Collectors.toList());
+    }
+
+
+    public List<BasicEstateTaggingVo> getApplyBatchEstateTaggingsByTableId(Integer tableId, String type) {
+        BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+        basicEstateTagging.setTableId(tableId);
         basicEstateTagging.setType(type);
         return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging).stream().map(oo -> getBasicEstateTaggingVo(oo)).collect(Collectors.toList());
     }
@@ -149,6 +172,21 @@ public class BasicEstateTaggingService {
         return tagging;
     }
 
+
+    /**
+     * 获取单元下的标注
+     *
+     * @param houseTableId
+     * @return
+     */
+    public BasicEstateTagging getUnitTaggingByHouseTableId(Integer houseTableId) throws Exception {
+        BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", houseTableId);
+        Integer unitTableId = basicApplyBatchDetailService.getParentTableId(basicApplyBatchDetail);
+        List<BasicEstateTaggingVo> taggings = getApplyBatchEstateTaggingsByTableId(unitTableId, "unit");
+        if(CollectionUtils.isEmpty(taggings)) return null;
+        return taggings.get(0);
+    }
+
     /**
      * 删除房屋下标注信息
      *
@@ -186,4 +224,8 @@ public class BasicEstateTaggingService {
         }
         return vo;
     }
+
+//    public List<BasicEstateTagging> getBasicEstateTaggingList(BasicEstateTagging basicEstateTagging) throws Exception {
+//        return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging);
+//    }
 }

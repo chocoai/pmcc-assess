@@ -966,9 +966,24 @@ public class PublicBasicService {
         }
     }
 
+    public BasicEstateVo getBasicEstateById(Integer id) throws Exception {
+        return basicEstateService.getBasicEstateVo(basicEstateService.getBasicEstateById(id));
+    }
+
     public BasicEstateLandStateVo getEstateLandStateByAppId(Integer appId) throws Exception {
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
         basicEstateLandState.setApplyId(appId);
+        List<BasicEstateLandState> basicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(basicEstateLandState);
+        if (!ObjectUtils.isEmpty(basicEstateLandStateList)) {
+            return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateList.get(0));
+        } else {
+            return null;
+        }
+    }
+
+    public BasicEstateLandStateVo getEstateLandStateByEstateId(Integer estateId) throws Exception {
+        BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
+        basicEstateLandState.setEstateId(estateId);
         List<BasicEstateLandState> basicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(basicEstateLandState);
         if (!ObjectUtils.isEmpty(basicEstateLandStateList)) {
             return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateList.get(0));
@@ -988,6 +1003,12 @@ public class PublicBasicService {
         }
     }
 
+
+
+    public BasicBuildingVo getBasicBuildingById(Integer id) throws Exception {
+        return basicBuildingService.getBasicBuildingVo(basicBuildingService.getBasicBuildingById(id));
+    }
+
     public BasicUnit getBasicUnitByAppId(Integer appId) throws Exception {
         BasicUnit basicUnit = new BasicUnit();
         basicUnit.setApplyId(appId);
@@ -997,6 +1018,10 @@ public class PublicBasicService {
         } else {
             return null;
         }
+    }
+
+    public BasicUnit getBasicUnitById(Integer id) throws Exception {
+        return basicUnitService.getBasicUnitById(id);
     }
 
     public BasicHouseTradingVo getBasicHouseTradingByAppId(Integer appId) throws Exception {
@@ -1010,6 +1035,10 @@ public class PublicBasicService {
         }
     }
 
+    public BasicHouseTradingVo getBasicHouseTradingByHouseId(Integer houseId) throws Exception {
+        return basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(houseId));
+    }
+
     public BasicHouseVo getBasicHouseVoByAppId(Integer appId) throws Exception {
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setApplyId(appId);
@@ -1020,6 +1049,10 @@ public class PublicBasicService {
         } else {
             return null;
         }
+    }
+
+    public BasicHouseVo getBasicHouseVoById(Integer id) throws Exception {
+        return basicHouseService.getBasicHouseVo(basicHouseService.getBasicHouseById(id));
     }
 
 

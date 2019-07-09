@@ -28,6 +28,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -59,6 +60,15 @@ public class BasicHouseDamagedDegreeService {
      */
     public BasicHouseDamagedDegree getDamagedDegreeById(Integer id) throws Exception {
         return basicHouseDamagedDegreeDao.getBasicHouseDamagedDegreeById(id);
+    }
+
+    public BasicHouseDamagedDegree getDamagedDegreeByHouseIdAndCategory(Integer houseId,Integer category) throws Exception {
+        BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
+        basicHouseDamagedDegree.setHouseId(houseId);
+        basicHouseDamagedDegree.setCategory(category);
+        List<BasicHouseDamagedDegree> damagedDegreeList = basicHouseDamagedDegreeDao.getDamagedDegreeList(basicHouseDamagedDegree);
+        if(CollectionUtils.isEmpty(damagedDegreeList)) return null;
+        return damagedDegreeList.get(0);
     }
 
     /**
@@ -153,6 +163,8 @@ public class BasicHouseDamagedDegreeService {
     public BasicHouseDamagedDegreeDetail getDamagedDegreeDetailById(Integer id) throws Exception {
         return basicHouseDamagedDegreeDetailDao.getBasicHouseDamagedDegreeDetailById(id);
     }
+
+
 
     /**
      * 新增或者修改

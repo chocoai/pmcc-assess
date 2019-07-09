@@ -1881,6 +1881,7 @@ damagedDegree.getFormData = function () {
     $("#damagedDegreeTabContent").find('.group').each(function () {
         var data = {};
         data.id = $(this).find('[name=id]').val();
+        data.category = $(this).find('[name=category]').val();
         data.entityCondition = $(this).find('[name=entityCondition]').val();
         data.entityConditionContent = $(this).find('[name=entityConditionContent]').val();
         data.score = $(this).find('[name=score]').val();

@@ -494,4 +494,22 @@ public class BasicEstateService {
         sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));
         return sqlBuilder.toString();
     }
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> getBasicEstateMapById(Integer id) throws Exception {
+        Map<String, Object> objectMap = Maps.newHashMap();
+
+        BasicEstate basicEstate = this.getBasicEstateById(id);
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
+
+        BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState));
+        return objectMap;
+    }
 }

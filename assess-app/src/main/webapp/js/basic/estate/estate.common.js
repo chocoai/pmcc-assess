@@ -8,6 +8,7 @@
     estateCommon.estateLandStateForm = $('#basicLandState');
     estateCommon.estateMapiframe = undefined;//地图标注iframe
     estateCommon.applyId = undefined;
+    estateCommon.tableId = undefined;
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
         AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN,
@@ -121,6 +122,22 @@
         })
     }
 
+    //楼盘初始化by applyId
+    estateCommon.initById = function (id, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/getBasicEstateMapById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    estateCommon.showEstateView(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
     //楼盘明细
     estateCommon.detail = function (applyId) {
         $.ajax({
@@ -159,6 +176,7 @@
             }
         })
     }
+
 
     //显示楼盘对应部分信息
     estateCommon.showEstateView = function (data) {
@@ -203,13 +221,18 @@
         });
         estateCommon.estateLandStateForm.initForm(data.basicEstateLandState, function () {
             //绑定变更事件
-            estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
-                AssessCommon.loadDataDicByPid($(this).val(), data.basicEstateLandState.landUseCategory, function (html, data) {
+            if(!estateCommon.isNotBlank(data.basicEstateLandState.landUseCategory)) {
+                estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
+                    AssessCommon.loadDataDicByPid($(this).val(), data.basicEstateLandState.landUseCategory, function (html, data) {
+                        estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
+                    });
+                    data.basicEstateLandState.landUseCategory = null;//第一次执行成功后置为空
+                });
+            }else{
+                AssessCommon.loadDataDicByPid(data.basicEstateLandState.landUseType, data.basicEstateLandState.landUseCategory, function (html, data) {
                     estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
                 });
-                data.basicEstateLandState.landUseCategory = null;//第一次执行成功后置为空
-            });
-
+            }
             //土地开发程度为熟地时选择几通几平
             estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change', function () {
                 $("#developmentDegreeContentContainer").empty();
@@ -238,9 +261,9 @@
                 }
             });
 
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, data.basicEstateLandState.landUseType, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, data.basicEstateLandState.landUseType, function (html, data) {
                 estateCommon.estateLandStateForm.find('select.landUseType').empty().html(html).trigger('change');
-            }, true);
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.estatePlaneness, data.basicEstateLandState.planeness, function (html, data) {
                 estateCommon.estateLandStateForm.find('select.planeness').empty().html(html).trigger('change');
             });
@@ -419,6 +442,67 @@
             }
         })
     }
+
+
+    //楼盘标注（通过tableId）
+    estateCommon.mapMarker2 = function (readonly,tableId) {
+        estateCommon.tableId = tableId;
+        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        if (readonly != true) {
+            contentUrl += '&click=estateCommon.addMarker2';
+        }
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
+            content: contentUrl,
+            success: function (layero) {
+                estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
+                estateCommon.loadMarkerList2(tableId);
+            }
+        });
+    }
+
+    //添加标注（通过tableId）
+    estateCommon.addMarker2 = function (lng, lat) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
+            data: {
+                tableId: estateCommon.tableId,
+                type: 'estate',
+                lng: lng,
+                lat: lat,
+                name: estateCommon.estateForm.find('[name=name]').val()
+            },
+            success: function (result) {
+                if (result.ret) {//标注成功后，刷新地图上的标注
+                    estateCommon.loadMarkerList2(estateCommon.tableId);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //加载标注（通过tableId）
+    estateCommon.loadMarkerList2 = function (tableId) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
+            data: {
+                tableId: tableId,
+                type: 'estate'
+            },
+            success: function (result) {
+                if (result.ret && estateCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
+                    estateCommon.estateMapiframe.loadMarkerList(result.data);
+                }
+            }
+        })
+    }
+
 
     /**
      * 启用自动填充,需要引入
