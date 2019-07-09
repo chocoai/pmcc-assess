@@ -192,7 +192,7 @@
                             var s = "";
                             if (row.id == '${projectPlanDetails.id}') {
                                 s += taskExploreIndex.getExamineFormTypeHtml(row.status, row.id);
-                            }else if(!row.projectPhaseId){
+                            } else if (!row.projectPhaseId && row.pid > 0) {
                                 s += "<a data-placement='top' href='javascript://' data-original-title='删除' class='btn btn-xs btn-warning tooltips'  onclick='deleteExamineItem(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
                             } else {
                                 //只用于处理任务

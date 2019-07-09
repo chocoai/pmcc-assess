@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.test;
+package com.copower.pmcc.assess.test.zhaiquan;
 
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
@@ -27,17 +27,17 @@ import java.util.Map;
  */
 public class ZhaiQuanTest {
     public static void main(String[] args) throws Exception {
-        //绵阳 成都74
-        String area = "巴中";
-        String wordPath = "C:\\Users\\kings\\Desktop\\zhaiquan\\新客户原始报告模板定稿.doc";
-        String excelPath = "";
-        excelPath = "C:\\Users\\kings\\Desktop\\报告生成\\新客户原始报告数据-" + area + ".xlsx";
-        //excelPath = "E:\\报告生成\\新客户原始报告数据-" + area + ".xlsx";
+        String area = "巴中";//生成报告区域
 
-        String newPath = "";
-        newPath = "D:\\zhaiquan\\";
-        //newPath = "E:\\报告生成\\";
-        //读取excel 生成对应替换内容
+        String wordPath = "C:\\Users\\kings\\Desktop\\zhaiquan\\新客户原始报告模板定稿.doc";//报告模板文件
+
+        String excelPath = "C:\\Users\\kings\\Desktop\\报告生成\\新客户原始报告数据-" + area + ".xlsx";//excle数据文件
+
+        String newPath = "D:\\zhaiquan\\";//生成的报告文件输出路径
+
+        /*
+        --------------------------------------------------------
+         */
         InputStream is = new FileInputStream(excelPath);
         Workbook hssfWorkbook = PoiUtils.isExcel2003(excelPath) ? new HSSFWorkbook(is) : new XSSFWorkbook(is);
         Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
