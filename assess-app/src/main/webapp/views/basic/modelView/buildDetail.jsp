@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="x_content">
     <div class="x_title">
         <h3>楼栋基本信息</h3>
@@ -16,8 +17,16 @@
                         <div class="input-group">
                             <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
                             <span class="input-group-btn">
-                            <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
+                                <c:choose>
+                                    <c:when test="${isApplyBatch eq 'show'}">
+                                        <div onclick="buildingCommon.mapMarker2(true,${tableId});" class="btn btn-info"><i
+                                                class="fa fa-map-marker"></i> 标注</div>
+                                    </c:when>
+                                    <c:otherwise>
+                                         <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info"><i
+                                                 class="fa fa-map-marker"></i> 标注</div>
+                                    </c:otherwise>
+                                </c:choose>
                         </span>
                         </div>
                     </div>

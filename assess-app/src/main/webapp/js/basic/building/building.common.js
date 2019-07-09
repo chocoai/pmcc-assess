@@ -8,6 +8,7 @@
     buildingCommon.buildingMapiframe = undefined;
     buildingCommon.applyId = undefined;
     buildingCommon.tableId = undefined;
+    buildingCommon.tableName = 'tb_basic_building';
     //附件上传控件id数组
     buildingCommon.buildingFileControlIdArray = [
         AssessUploadKey.BUILDING_FLOOR_PLAN,
@@ -346,7 +347,7 @@
     buildingCommon.mapMarker2 = function (readonly,tableId) {
         buildingCommon.tableId = tableId;
         console.log(tableId+"===");
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + buildingCommon.tableId+'&tableName='+buildingCommon.tableName;
         if (readonly != true) {
             contentUrl += '&click=buildingCommon.addMarker2';
         }

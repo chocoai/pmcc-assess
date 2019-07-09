@@ -11,6 +11,8 @@ import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +39,10 @@ public class BasicApplyBatchController extends BaseController {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private CommonService commonService;
 
-    @RequestMapping(value = "/basicBatchApplyIndex", name = "首页", method = RequestMethod.GET)
+    @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
         return modelAndView;
@@ -112,7 +116,7 @@ public class BasicApplyBatchController extends BaseController {
         String view = "/basic/fillInformation";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         this.setViewParam(type, id, buildingType, estateId, modelAndView);
-        modelAndView.addObject("isApplyBatch", "show");
+
         return modelAndView;
 
     }
@@ -189,7 +193,6 @@ public class BasicApplyBatchController extends BaseController {
         try {
             BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
             modelAndView.addObject("applyBatch", applyBatch);
-
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
         }
@@ -234,6 +237,55 @@ public class BasicApplyBatchController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/basicBatchAppDraftListView", name = "草稿页面", method = {RequestMethod.GET})
+    public ModelAndView basicAppListView() {
+        String view = "/basic/basicBatchAppDraftListView";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteBasicBatchApply", name = "删除草稿数据")
+    public HttpResult deleteBasicBatchApply(Integer id) {
+        try {
+            basicApplyBatchService.deleteBasicBatchApply(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("删除草稿数据异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicAppBatchDraftList", name = "获取草稿数据列表", method = {RequestMethod.GET})
+    public BootstrapTableVo getBasicAppBatchDraftList(String estateName) throws Exception {
+        return basicApplyBatchService.getBootstrapTableVo(estateName, true);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveApplyDraftInfo", name = "保存", method = {RequestMethod.POST})
+    public HttpResult saveApplyDraftInfo(BasicApplyBatch basicApplyBatch) {
+        try {
+            basicApplyBatch.setDraftFlag(true);
+            return HttpResult.newCorrectResult(basicApplyBatchService.saveApplyInfo(basicApplyBatch));
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("保存数据异常");
+        }
+    }
+
+    @RequestMapping(value = "/applyAgain", name = "重新申请", method = RequestMethod.GET)
+    public ModelAndView applyAgain(Integer id) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
+        try {
+            BasicApplyBatch applyBatch = basicApplyBatchService.getInfoById(id);
+            modelAndView.addObject("applyBatch", applyBatch);
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+        }
+        return modelAndView;
+    }
+
     /**
      * 设置参数
      *
@@ -251,11 +303,17 @@ public class BasicApplyBatchController extends BaseController {
             modelAndView.addObject("buildingType", "house");
 
         if (id == 0) {
-            modelAndView.addObject("tableId", estateId);
+            BasicApplyBatch applyBatch = new BasicApplyBatch();
+            applyBatch.setEstateId(estateId);
+            BasicApplyBatch singleData = basicApplyBatchService.getSingleData(applyBatch);
+            modelAndView.addObject("tableId", singleData.getEstateId());
         } else {
-            BasicApplyBatchDetail detailData = basicApplyBatchDetailService.getDataById(id);
+            BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+            basicApplyBatchDetail.setId(id);
+            BasicApplyBatchDetail detailData = basicApplyBatchDetailService.getSingleData(basicApplyBatchDetail);
             modelAndView.addObject("tableId", detailData.getTableId());
         }
         modelAndView.addObject("type", type);
+        modelAndView.addObject("isApplyBatch", "show");
     }
 }

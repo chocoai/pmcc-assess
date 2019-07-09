@@ -25,6 +25,8 @@ public class BasicApplyBatch {
 
     private Date gmtModified;
 
+    private Boolean draftFlag;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Boolean getDraftFlag() {
+        return draftFlag;
+    }
+
+    public void setDraftFlag(Boolean draftFlag) {
+        this.draftFlag = draftFlag;
     }
 }

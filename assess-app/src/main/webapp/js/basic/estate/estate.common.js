@@ -9,6 +9,7 @@
     estateCommon.estateMapiframe = undefined;//地图标注iframe
     estateCommon.applyId = undefined;
     estateCommon.tableId = undefined;
+    estateCommon.tableName = 'tb_basic_estate';
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
         AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN,
@@ -447,7 +448,7 @@
     //楼盘标注（通过tableId）
     estateCommon.mapMarker2 = function (readonly,tableId) {
         estateCommon.tableId = tableId;
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + estateCommon.tableId+'&tableName='+estateCommon.tableName;
         if (readonly != true) {
             contentUrl += '&click=estateCommon.addMarker2';
         }

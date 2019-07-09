@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="x_content">
     <div class="x_title">
         <h3>
@@ -61,7 +62,14 @@
             </div>
             <div class="x-valid">
                 <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
-                    <div class="btn btn-success" onclick="houseCommon.orientationFun(true);">户型地图朝向</div>
+                    <c:choose>
+                        <c:when test="${isApplyBatch eq 'show'}">
+                            <div class="btn btn-success" onclick="houseCommon.orientationFun2(true,${tableId})">户型图朝向</div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="btn btn-success" onclick="houseCommon.orientationFun(true)">户型图朝向</div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>

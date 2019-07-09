@@ -10,6 +10,24 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 public class BasicApplyBatchVo extends BasicApplyBatch {
     private String provinceName;
     private String cityName;
+    private String fullName;
+    private String typeName;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getProvinceName() {
         return provinceName;

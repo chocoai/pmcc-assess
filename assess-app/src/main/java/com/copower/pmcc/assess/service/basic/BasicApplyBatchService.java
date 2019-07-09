@@ -2,19 +2,14 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
-import com.copower.pmcc.assess.common.enums.BasicApplyFormNameEnum;
-import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDao;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
+import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyBatchVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
@@ -30,8 +25,15 @@ import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -125,6 +127,8 @@ public class BasicApplyBatchService {
     private CaseHouseRoomDecorateService caseHouseRoomDecorateService;
     @Autowired
     private CaseHouseRoomDecorateService caseHouseDamagedDegreeService;
+    @Autowired
+    private BasicBuildingDao basicBuildingDao;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -150,7 +154,7 @@ public class BasicApplyBatchService {
 
     }
 
-    public BasicApplyBatch getBasicApplyBatchByProcessInsId(String processInsId) {
+    public BasicApplyBatch getBasicApplyBatchByProcessInsId(String processInsId) throws Exception {
         BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
         basicApplyBatch.setProcessInsId(processInsId);
         List<BasicApplyBatch> basicApplyBatches = basicApplyBatchDao.getInfoList(basicApplyBatch);
@@ -159,6 +163,40 @@ public class BasicApplyBatchService {
         }
         return null;
     }
+
+
+    public BasicApplyBatch getSingleData(BasicApplyBatch basicApplyBatch) {
+        List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(basicApplyBatch);
+        if (CollectionUtils.isNotEmpty(infoList)) return infoList.get(0);
+        return null;
+    }
+
+
+    public BasicApplyBatch getInfoById(Integer id) {
+        return basicApplyBatchDao.getInfoById(id);
+    }
+    //删除
+    public void deleteBasicBatchApply(Integer id) {
+        basicApplyBatchDao.deleteInfo(id);
+    }
+
+    //获取草稿数据
+    public BootstrapTableVo getBootstrapTableVo(String estateName, Boolean draftFlag) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicApplyBatch> BasicApplyBatchList = basicApplyBatchDao.getBasicApplyBatchListByName(estateName, commonService.thisUserAccount(), draftFlag);
+        List<BasicApplyBatchVo> vos = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(BasicApplyBatchList)) {
+            for (BasicApplyBatch basicApplyBatch : BasicApplyBatchList) {
+                vos.add(getBasicApplyBatchVo(basicApplyBatch));
+            }
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicApplyBatchVo>(10) : vos);
+        return vo;
+    }
+
 
     /**
      * 通过estateId获取
@@ -376,6 +414,7 @@ public class BasicApplyBatchService {
             processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
             applyBatch.setProcessInsId(processUserDto.getProcessInsId());
             applyBatch.setStatus(ProjectStatusEnum.RUNING.getKey());
+            applyBatch.setDraftFlag(false);
             basicApplyBatchDao.updateInfo(applyBatch);
         } catch (Exception e) {
             logger.error(String.format("流程发起失败: %s", e.getMessage()), e);
@@ -384,7 +423,7 @@ public class BasicApplyBatchService {
         return processUserDto;
     }
 
-    public BasicApplyBatchVo getBasicApplyBatchVo(BasicApplyBatch basicApplyBatch) {
+    public BasicApplyBatchVo getBasicApplyBatchVo(BasicApplyBatch basicApplyBatch) throws Exception {
         if (basicApplyBatch == null) {
             return null;
         }
@@ -397,8 +436,70 @@ public class BasicApplyBatchService {
             vo.setCityName(erpAreaService.getSysAreaName(basicApplyBatch.getCity()));
         }
 
+        if (basicApplyBatch.getType() != null) {
+            for (BasicApplyTypeEnum typeEnum : BasicApplyTypeEnum.values()) {
+                if (basicApplyBatch.getType().intValue() == typeEnum.getId().intValue()) {
+                    vo.setTypeName(typeEnum.getName());
+                    break;
+                }
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        //楼栋
+        List<BasicApplyBatchDetail> buildingList = basicApplyBatchDetailService.getBuildingBatchDetailsByBatchId(basicApplyBatch.getId());
+        if (CollectionUtils.isNotEmpty(buildingList)) {
+            for (BasicApplyBatchDetail build : buildingList) {
+                stringBuilder.append(basicApplyBatch.getEstateName()).append(build.getName()).append("栋");
+                //获取单元
+                List<BasicApplyBatchDetail> unitDetails = basicApplyBatchDetailService.getUnitBatchDetailsByBatchId(basicApplyBatch.getId(), basicBuildingDao.getBasicBuildingById(build.getTableId()));
+                if (CollectionUtils.isNotEmpty(unitDetails)) {
+                    for (BasicApplyBatchDetail unit : unitDetails) {
+                        stringBuilder.append(unit.getName()).append("单元");
+                        //获取房屋
+                        List<BasicApplyBatchDetail> houseDetails = basicApplyBatchDetailService.getHouseBatchDetailsByBatchId(basicApplyBatch.getId(), basicUnitService.getBasicUnitById(unit.getTableId()));
+                        if (CollectionUtils.isNotEmpty(houseDetails)) {
+                            StringBuilder houseStr = new StringBuilder();
+                            for (BasicApplyBatchDetail house : houseDetails) {
+                                houseStr.append(house.getName()).append("、");
+                            }
+                            houseStr.deleteCharAt(houseStr.length() - 1).append("号");
+                            stringBuilder.append(houseStr);
+                        }
+                        stringBuilder.append("/");
+                    }
+                } else {
+                    stringBuilder.append("/");
+                }
+            }
+        }else {
+            vo.setFullName(basicApplyBatch.getEstateName());
+        }
+        vo.setFullName(stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString());
         return vo;
     }
+
+    /**
+     * 获取申请完整名称
+     *
+     * @param estateName
+     * @param buildingNumber
+     * @param unitNumber
+     * @param houseNumber
+     * @return
+     */
+    public String getFullName(String estateName, String buildingNumber, String unitNumber, String houseNumber) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(estateName))
+            stringBuilder.append(estateName);
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(buildingNumber))
+            stringBuilder.append(buildingNumber).append("栋");
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(unitNumber))
+            stringBuilder.append(unitNumber).append("单元");
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(houseNumber))
+            stringBuilder.append(houseNumber).append("号");
+        return stringBuilder.toString();
+    }
+
 
     /**
      * 审批
