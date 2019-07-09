@@ -144,6 +144,16 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 </html>
 <script type="text/javascript">
+    $(function () {
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#province"),
+            cityTarget: $("#city"),
+            districtTarget: $("#district"),
+            success: function () {
+                houseSearch.loadDataList();
+            }
+        });
+    });
     var houseSearch = {};
     var houseFrm = $("#frmCaseBaseHouse");
 
@@ -195,39 +205,4 @@
             });
     };
 
-    houseSearch.loadData = function (data) {
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, data.practicalUse, function (html, data) {
-            houseFrm.find("select[name='practicalUse']").empty().html(html).trigger('change');
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, data.tradingType, function (html, data) {
-            houseFrm.find("select[name='tradingType']").empty().html(html).trigger('change');
-        });
-        var province = data.province;
-        var city = data.city;
-        if (province && city) {
-            AssessCommon.initAreaInfo({
-                provinceTarget: $("#province"),
-                cityTarget: $("#city"),
-                districtTarget: $("#district"),
-                provinceDefaultText: province.replace('省', ''),
-                cityDefaultText: city.replace('市', ''),
-                success: function () {
-                    houseSearch.loadDataList();
-                }
-            });
-        }
-    };
-
-
-    $(function () {
-        //定位成功回调方法
-        try {
-            mapPosition.getCurrentCityByArea(function (data) {
-                houseSearch.loadData(data);
-            });
-        } catch (e) {
-            houseSearch.loadDataList();
-        }
-        houseFrm.validate();
-    });
 </script>

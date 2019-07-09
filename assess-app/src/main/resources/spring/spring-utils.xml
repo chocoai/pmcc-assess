@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:redisson="http://redisson.org/schema/redisson"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    		http://www.springframework.org/schema/beans/spring-beans.xsd
+
+
+            http://redisson.org/schema/redisson
+            http://redisson.org/schema/redisson/redisson.xsd"
+       default-autowire="byName">
+    <!--dingding-token-->
+    <bean id="dingTalkTokenService" class="com.copower.pmcc.erp.common.external.dingtalk.DingTalkTokenService">
+        <property name="corpid" value="${ding.api.corpid}"></property>
+        <property name="corpsecret" value="${ding.api.corpsecret}"></property>
+        <property name="agentId" value="${ding.api.agentid}"></property>
+        <property name="simpleRedisStandalone" ref="simpleRedisStandalone"></property>
+    </bean>
+    <!--钉钉消息发送-->
+    <bean id="dingTalkMessageSender" class="com.copower.pmcc.erp.common.external.dingtalk.DingTalkMessageSender">
+        <property name="erpRpcUserService" ref="erpRpcUserService"></property>
+        <property name="dingTalkTokenService" ref="dingTalkTokenService"></property>
+    </bean>
+
+    <redisson:client id="redissonClient">
+        <redisson:single-server address="redis://${redis.standalone.host}:${redis.standalone.port}" database="${redis.standalone.database}"/>
+    </redisson:client>
+</beans>

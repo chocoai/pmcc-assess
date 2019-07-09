@@ -1,17 +1,22 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentEngineeringDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsContentService;
+import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
 import com.copower.pmcc.erp.common.CommonService;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -29,8 +34,6 @@ public class MdDevelopmentService {
     private MdDevelopmentLandDao mdDevelopmentLandDao;
     @Autowired
     private MdDevelopmentEngineeringDao mdDevelopmentEngineeringDao;
-    @Autowired
-    private DeclareEconomicIndicatorsContentService declareEconomicIndicatorsContentService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public MdDevelopment initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -63,18 +66,6 @@ public class MdDevelopmentService {
         }
     }
 
-    public void deleteMdDevelopmentEngineering(Integer id, Integer planDetailsId) {
-        mdDevelopmentEngineeringDao.deleteMdDevelopmentEngineering(id);
-        DeclareEconomicIndicatorsContent select = new DeclareEconomicIndicatorsContent();
-        select.setPlanDetailsId(planDetailsId);
-        select.setIndicatorsHeadId(id);
-        List<DeclareEconomicIndicatorsContent> contentList = declareEconomicIndicatorsContentService.getDeclareEconomicIndicatorsContentList(select);
-        if (CollectionUtils.isNotEmpty(contentList)) {
-            for (DeclareEconomicIndicatorsContent oo : contentList) {
-                declareEconomicIndicatorsContentService.deleteDeclareEconomicIndicatorsContent(oo.getId());
-            }
-        }
-    }
 
     public List<MdDevelopmentEngineering> getMdDevelopmentEngineeringList(MdDevelopmentEngineering oo) {
         return mdDevelopmentEngineeringDao.getMdDevelopmentEngineeringList(oo);
@@ -102,17 +93,147 @@ public class MdDevelopmentService {
         return mdDevelopmentLandDao.getMdDevelopmentLandList(mdDevelopmentLand);
     }
 
-    public void deleteMdDevelopmentLand(Integer id, Integer planDetailsId) {
-        mdDevelopmentLandDao.deleteMdDevelopmentLand(id);
-        DeclareEconomicIndicatorsContent select = new DeclareEconomicIndicatorsContent();
-        select.setPlanDetailsId(planDetailsId);
-        select.setIndicatorsHeadId(id);
-        List<DeclareEconomicIndicatorsContent> contentList = declareEconomicIndicatorsContentService.getDeclareEconomicIndicatorsContentList(select);
-        if (CollectionUtils.isNotEmpty(contentList)) {
-            for (DeclareEconomicIndicatorsContent oo : contentList) {
-                declareEconomicIndicatorsContentService.deleteDeclareEconomicIndicatorsContent(oo.getId());
+    public MdDevelopmentVo getMdDevelopmentVo(MdDevelopment mdDevelopment) {
+        if (mdDevelopment == null) {
+            return null;
+        }
+        MdDevelopmentVo vo = new MdDevelopmentVo();
+        BeanUtils.copyProperties(mdDevelopment, vo);
+        if (StringUtils.isNotEmpty(vo.getContent())) {
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JSON.parseObject(vo.getContent());
+            } catch (Exception e) {
+                logger.error("解析错误", e);
+            }
+            if (jsonObject != null) {
+                if (jsonObject.get("f20") != null) {
+                    vo.setF20(changeHundred((String) jsonObject.get("f20")));
+                }
+                if (jsonObject.get("f21") != null) {
+                    vo.setF21((String) jsonObject.get("f21"));
+                }
+                if (jsonObject.get("f22") != null) {
+                    vo.setF22((String) jsonObject.get("f22"));
+                }
+                if (jsonObject.get("f23") != null) {
+                    vo.setF23((String) jsonObject.get("f23"));
+                }
+                if (jsonObject.get("f24") != null) {
+                    vo.setF24((String) jsonObject.get("f24"));
+                }
+                if (jsonObject.get("f25") != null) {
+                    vo.setF25(changeHundred((String) jsonObject.get("f25")));
+                }
+                if (jsonObject.get("f27") != null) {
+                    vo.setF27(changeHundred((String) jsonObject.get("f27")));
+                }
+                if (jsonObject.get("f29") != null) {
+                    vo.setF29(changeHundred((String) jsonObject.get("f29")));
+                }
+                if (jsonObject.get("f29Explain") != null) {
+                    vo.setF29Explain((String) jsonObject.get("f29Explain"));
+                }
+
+                if (jsonObject.get("f30") != null) {
+                    vo.setF30(changeHundred((String) jsonObject.get("f30")));
+                }
+                if (jsonObject.get("f30Explain") != null) {
+                    vo.setF30Explain((String) jsonObject.get("f30Explain"));
+                }
+                if (jsonObject.get("g32") != null) {
+                    vo.setG32(changeHundred((String) jsonObject.get("g32")));
+                }
+                if (jsonObject.get("g32Explain") != null) {
+                    vo.setG32Explain((String) jsonObject.get("g32Explain"));
+                }
+                if (jsonObject.get("f31") != null) {
+                    vo.setF31((String) jsonObject.get("f31"));
+                }
+                if (jsonObject.get("f31Explain") != null) {
+                    vo.setF31Explain((String) jsonObject.get("f31Explain"));
+                }
+                if (jsonObject.get("g33") != null) {
+                    vo.setG33(changeHundred((String) jsonObject.get("g33")));
+                }
+                if (jsonObject.get("g33Explain") != null) {
+                    vo.setG33Explain((String) jsonObject.get("g33Explain"));
+                }
+                if (jsonObject.get("g34") != null) {
+                    vo.setG34(changeHundred((String) jsonObject.get("g34")));
+                }
+                if (jsonObject.get("g34Explain") != null) {
+                    vo.setG34Explain((String) jsonObject.get("g34Explain"));
+                }
+                if (jsonObject.get("g35") != null) {
+                    vo.setG35(changeHundred((String) jsonObject.get("g35")));
+                }
+                if (jsonObject.get("g35Explain") != null) {
+                    vo.setG35Explain((String) jsonObject.get("g35Explain"));
+                }
+                if (jsonObject.get("f37") != null) {
+                    vo.setF37(changeHundred((String) jsonObject.get("f37")));
+                }
+                if (jsonObject.get("f37Explain") != null) {
+                    vo.setF37Explain((String) jsonObject.get("f37Explain"));
+                }
+                if (jsonObject.get("f38") != null) {
+                    vo.setF38(changeHundred((String) jsonObject.get("f38")));
+                }
+                if (jsonObject.get("f38Explain") != null) {
+                    vo.setF38Explain((String) jsonObject.get("f38Explain"));
+                }
+                if (jsonObject.get("f39") != null) {
+                    vo.setF39(changeHundred((String) jsonObject.get("f39")));
+                }
+                if (jsonObject.get("f39Explain") != null) {
+                    vo.setF39Explain((String) jsonObject.get("f39Explain"));
+                }
+                if (jsonObject.get("e43") != null) {
+                    vo.setE43(changeHundred((String) jsonObject.get("e43")));
+                }
+                if (jsonObject.get("e43Explain") != null) {
+                    vo.setE43Explain((String) jsonObject.get("e43Explain"));
+                }
+
+                if (jsonObject.get("f43") != null) {
+                    vo.setF43(changeHundred((String) jsonObject.get("f43")));
+                }
+                if (jsonObject.get("g43") != null) {
+                    vo.setG43(changeHundred((String) jsonObject.get("g43")));
+                }
+                if (jsonObject.get("d44") != null) {
+                    vo.setD44(changeHundred((String) jsonObject.get("d44")));
+                }
+                if (jsonObject.get("d44Explain") != null) {
+                    vo.setD44Explain(changeHundred((String) jsonObject.get("d44Explain")));
+                }
+                if (jsonObject.get("d45") != null) {
+                    vo.setD45(changeHundred((String) jsonObject.get("d45")));
+                }
+                if (jsonObject.get("d45Explain") != null) {
+                    vo.setD45Explain(changeHundred((String) jsonObject.get("d45Explain")));
+                }
+                if (jsonObject.get("d46") != null) {
+                    vo.setD45(changeHundred((String) jsonObject.get("d46")));
+                }
+                if (jsonObject.get("d46Explain") != null) {
+                    vo.setD46Explain(changeHundred((String) jsonObject.get("d46Explain")));
+                }
+                if (jsonObject.get("unsaleableBuildingArea") != null) {
+                    vo.setUnsaleableBuildingArea(changeHundred((String) jsonObject.get("unsaleableBuildingArea")));
+                }
             }
         }
+        return vo;
+    }
+
+    public String changeHundred(String value){
+        if (NumberUtils.isNumber(value)){
+            BigDecimal bigDecimal = new BigDecimal(value).multiply(new BigDecimal(100));
+            return bigDecimal.setScale(2, BigDecimal.ROUND_UP).toString() ;
+        }
+        return value;
     }
 
 }
