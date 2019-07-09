@@ -133,36 +133,46 @@ public class SurveyAssetInventoryRightRecordService {
 
     public List<SurveyJudgeObjectGroupDto> groupJudgeObject(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
         List<SurveyAssetInventoryRightRecord> rightRecords = getListByProjectId(projectId);
-        if (CollectionUtils.isEmpty(rightRecords)) return null;
         List<SurveyJudgeObjectGroupDto> list = Lists.newArrayList();
         //他权其它
         BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER);
         List<SurveyAssetInventory> inventoryList = surveyAssetInventoryService.getDataByDeclareIds(LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId()));
         Map<Integer, String> transferLimitMap = FormatUtils.mappingSingleEntity(inventoryList, o -> o.getDeclareRecordId(), o -> o.getTransferLimit());
-
-        for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
-            List<Integer> declareIds = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
+        if (CollectionUtils.isEmpty(rightRecords)) {
             for (SchemeJudgeObject judgeObject : judgeObjects) {
-                if (declareIds.contains(judgeObject.getDeclareRecordId())) {
-                    SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto = new SurveyJudgeObjectGroupDto();
-                    surveyJudgeObjectGroupDto.setJudgeObjectNumber(judgeObject.getNumber());
-                    surveyJudgeObjectGroupDto.setJudgeObjectId(judgeObject.getId());
-                    surveyJudgeObjectGroupDto.setDeclareRecordId(judgeObject.getDeclareRecordId());
-                    surveyJudgeObjectGroupDto.setTransferLimit(transferLimitMap.get(judgeObject.getDeclareRecordId()));//取资产清查中的转让限制
-                    List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(rightRecord.getId());
-                    surveyJudgeObjectGroupDto.setRightList(inventoryRights);
-                    Boolean rightOtherEmpty = true;
-                    if (CollectionUtils.isNotEmpty(inventoryRights) && LangUtils.transform(inventoryRights, o -> o.getCategory()).contains(projectClassify.getId())) {
-                        rightOtherEmpty = false;
+                SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto = new SurveyJudgeObjectGroupDto();
+                surveyJudgeObjectGroupDto.setJudgeObjectNumber(judgeObject.getNumber());
+                surveyJudgeObjectGroupDto.setJudgeObjectId(judgeObject.getId());
+                surveyJudgeObjectGroupDto.setDeclareRecordId(judgeObject.getDeclareRecordId());
+                String s = transferLimitMap.get(judgeObject.getDeclareRecordId());
+                surveyJudgeObjectGroupDto.setTransferLimit(s);//取资产清查中的转让限制
+                surveyJudgeObjectGroupDto.setResult(StringUtils.isBlank(s) ? "强" : "一般");
+            }
+        } else {
+            for (SurveyAssetInventoryRightRecord rightRecord : rightRecords) {
+                List<Integer> declareIds = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(rightRecord.getRecordIds()));
+                for (SchemeJudgeObject judgeObject : judgeObjects) {
+                    if (declareIds.contains(judgeObject.getDeclareRecordId())) {
+                        SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto = new SurveyJudgeObjectGroupDto();
+                        surveyJudgeObjectGroupDto.setJudgeObjectNumber(judgeObject.getNumber());
+                        surveyJudgeObjectGroupDto.setJudgeObjectId(judgeObject.getId());
+                        surveyJudgeObjectGroupDto.setDeclareRecordId(judgeObject.getDeclareRecordId());
+                        surveyJudgeObjectGroupDto.setTransferLimit(transferLimitMap.get(judgeObject.getDeclareRecordId()));//取资产清查中的转让限制
+                        List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(rightRecord.getId());
+                        surveyJudgeObjectGroupDto.setRightList(inventoryRights);
+                        Boolean rightOtherEmpty = true;
+                        if (CollectionUtils.isNotEmpty(inventoryRights) && LangUtils.transform(inventoryRights, o -> o.getCategory()).contains(projectClassify.getId())) {
+                            rightOtherEmpty = false;
+                        }
+                        if (rightOtherEmpty == Boolean.TRUE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getTransferLimit())) {
+                            surveyJudgeObjectGroupDto.setResult("一般");
+                        } else if (rightOtherEmpty == Boolean.FALSE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getTransferLimit())) {
+                            surveyJudgeObjectGroupDto.setResult("弱");
+                        } else {
+                            surveyJudgeObjectGroupDto.setResult("强");
+                        }
+                        list.add(surveyJudgeObjectGroupDto);
                     }
-                    if (rightOtherEmpty == Boolean.TRUE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getTransferLimit())) {
-                        surveyJudgeObjectGroupDto.setResult("一般");
-                    } else if (rightOtherEmpty == Boolean.FALSE && StringUtils.isNotBlank(surveyJudgeObjectGroupDto.getTransferLimit())) {
-                        surveyJudgeObjectGroupDto.setResult("弱");
-                    } else {
-                        surveyJudgeObjectGroupDto.setResult("强");
-                    }
-                    list.add(surveyJudgeObjectGroupDto);
                 }
             }
         }
@@ -221,7 +231,6 @@ public class SurveyAssetInventoryRightRecordService {
             list.add(surveyRightGroupDto);
         }
     }
-
 
 
     public boolean addSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) throws Exception {
