@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class BasicApplyBatchDetailService {
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
     private BasicApplyBatchDao basicApplyBatchDao;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
 
 
     /**
@@ -55,7 +58,7 @@ public class BasicApplyBatchDetailService {
      * @param basicApplyBatchDetail
      * @return
      */
-    public boolean addBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
+    public BasicApplyBatchDetail addBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
         if (basicApplyBatchDetail.getId() != null && basicApplyBatchDetail.getId() > 0) {
             switch (basicApplyBatchDetail.getTableName()) {
                 case "tb_basic_building":
@@ -74,8 +77,10 @@ public class BasicApplyBatchDetailService {
                     basicHouseService.saveAndUpdateBasicHouse(house);
                     break;
             }
-            return basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
+            basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
+
         } else {
+            basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
             switch (basicApplyBatchDetail.getTableName()) {
                 case "tb_basic_building":
                     BasicBuilding building = new BasicBuilding();
@@ -102,8 +107,9 @@ public class BasicApplyBatchDetailService {
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading);
                     break;
             }
-            return basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
+            basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
+            return basicApplyBatchDetail;
     }
 
     /**
@@ -160,10 +166,7 @@ public class BasicApplyBatchDetailService {
 
     //获取楼栋
     public List<BasicBuilding> getBuildingListByBatchId(Integer id) throws Exception {
-        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-        basicApplyBatchDetail.setTableName("tb_basic_building");
-        basicApplyBatchDetail.setApplyBatchId(id);
-        List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+        List<BasicApplyBatchDetail> infoList = this.getBuildingBatchDetailsByBatchId(id);
         List<BasicBuilding> basicBuildings = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
             for (BasicApplyBatchDetail item : infoList) {
@@ -173,14 +176,17 @@ public class BasicApplyBatchDetailService {
         return basicBuildings;
     }
 
+    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId(Integer id) throws Exception {
+        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+        basicApplyBatchDetail.setTableName("tb_basic_building");
+        basicApplyBatchDetail.setApplyBatchId(id);
+        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+    }
+
+
     //获取单元
     public List<BasicUnit> getBasicUnitListByBatchId(Integer id, BasicBuilding basicBuilding) throws Exception {
-        BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_building", basicBuilding.getId());
-        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-        basicApplyBatchDetail.setTableName("tb_basic_unit");
-        basicApplyBatchDetail.setApplyBatchId(id);
-        basicApplyBatchDetail.setPid(parent.getId());
-        List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+        List<BasicApplyBatchDetail> infoList = this.getUnitBatchDetailsByBatchId(id,basicBuilding);
         List<BasicUnit> basicUnits = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
             for (BasicApplyBatchDetail item : infoList) {
@@ -190,14 +196,19 @@ public class BasicApplyBatchDetailService {
         return basicUnits;
     }
 
-    //获取房屋
-    public List<BasicHouse> getBasicHouseListByBatchId(Integer id, BasicUnit basicUnit) throws Exception {
-        BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
+    public List<BasicApplyBatchDetail> getUnitBatchDetailsByBatchId(Integer id, BasicBuilding basicBuilding){
+        BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_building", basicBuilding.getId());
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-        basicApplyBatchDetail.setTableName("tb_basic_house");
+        basicApplyBatchDetail.setTableName("tb_basic_unit");
         basicApplyBatchDetail.setApplyBatchId(id);
         basicApplyBatchDetail.setPid(parent.getId());
-        List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+    }
+
+
+    //获取房屋
+    public List<BasicHouse> getBasicHouseListByBatchId(Integer id, BasicUnit basicUnit) throws Exception {
+        List<BasicApplyBatchDetail> infoList = this.getHouseBatchDetailsByBatchId(id,basicUnit);
         List<BasicHouse> basicHouses = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
             for (BasicApplyBatchDetail item : infoList) {
@@ -206,6 +217,16 @@ public class BasicApplyBatchDetailService {
         ;
         return basicHouses;
     }
+
+    public List<BasicApplyBatchDetail> getHouseBatchDetailsByBatchId(Integer id, BasicUnit basicUnit){
+        BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
+        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+        basicApplyBatchDetail.setTableName("tb_basic_house");
+        basicApplyBatchDetail.setApplyBatchId(id);
+        basicApplyBatchDetail.setPid(parent.getId());
+        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+    }
+
 
     //获取房屋交易信息
     public List<BasicHouseTrading> getBasicHouseTradingsByHouses(List<BasicHouse> houses) throws Exception {
@@ -216,5 +237,11 @@ public class BasicApplyBatchDetailService {
             }
         ;
         return basicHouseTradings;
+    }
+
+    public BasicApplyBatchDetail getSingleData(BasicApplyBatchDetail basicApplyBatchDetail) {
+        List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+        if(CollectionUtils.isNotEmpty(infoList)) return infoList.get(0);
+        return null;
     }
 }

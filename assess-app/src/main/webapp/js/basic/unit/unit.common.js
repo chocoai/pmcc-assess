@@ -8,6 +8,7 @@
     unitCommon.unitMapiframe = undefined;
     unitCommon.applyId = undefined;
     unitCommon.tableId = undefined;
+    unitCommon.tableName = 'tb_basic_unit';
     //附件上传控件id数组
     unitCommon.unitFileControlIdArray = [
         AssessUploadKey.UNIT_APPEARANCE
@@ -221,7 +222,7 @@
     //楼盘标注（通过tableId）
     unitCommon.mapMarker2 = function (readonly,tableId) {
         unitCommon.tableId = tableId;
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + unitCommon.tableId+'&tableName='+unitCommon.tableName;
         if (readonly != true) {
             contentUrl += '&click=unitCommon.addMarker2';
         }

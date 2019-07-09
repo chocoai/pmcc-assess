@@ -1,9 +1,13 @@
 package com.copower.pmcc.assess.controller.assess;
 
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
@@ -29,6 +33,11 @@ public class MapController {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/positionPicker", name = "当前位置定位")
@@ -85,6 +94,21 @@ public class MapController {
     public ModelAndView mapMarkerEstate(String estateName, String click) {
         ModelAndView modelAndView = new ModelAndView("base/mapMarkerEstate");
         modelAndView.addObject("estateName", estateName);
+        modelAndView.addObject("click", click);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/mapMarkerEstateByTableId", name = "楼盘地图标注")
+    public ModelAndView mapMarkerEstateByTableId(Integer tableId,String tableName, String click) {
+        ModelAndView modelAndView = new ModelAndView("base/mapMarkerEstate");
+        BasicApplyBatch applyBatch = null;
+        if("tb_basic_estate".equals(tableName)){
+            applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(tableId);
+        }else {
+            BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId);
+            applyBatch = basicApplyBatchService.getInfoById(basicApplyBatchDetail.getApplyBatchId());
+        }
+        modelAndView.addObject("estateName", applyBatch.getEstateName());
         modelAndView.addObject("click", click);
         return modelAndView;
     }

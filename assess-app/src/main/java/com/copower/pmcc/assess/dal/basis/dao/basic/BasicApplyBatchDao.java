@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicApplyBatchMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,26 @@ import java.util.List;
 public class BasicApplyBatchDao {
     @Autowired
     private BasicApplyBatchMapper basicApplyBatchMapper;
+
+    /**
+     * 获取数据列表
+     *
+     * @param estateName
+     * @return
+     */
+    public List<BasicApplyBatch> getBasicApplyBatchListByName(String estateName,String userAccount, Boolean draftFlag) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(estateName)) {
+            criteria.andEstateNameLike(String.format("%s%s%s", "%", estateName, "%"));
+        }
+        if (StringUtils.isNotBlank(userAccount)) {
+            criteria.andCreatorEqualTo(userAccount);
+        }
+        criteria.andDraftFlagEqualTo(draftFlag);
+        example.setOrderByClause("id desc");
+        return basicApplyBatchMapper.selectByExample(example);
+    }
 
     /**
      * 获取数据信息

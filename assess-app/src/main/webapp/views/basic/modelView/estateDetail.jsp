@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <form class="form-horizontal" id="basicEstateFrm">
     <div class="x_content">
         <div class="x_title">
@@ -39,8 +40,16 @@
                     <div class="input-group">
                         <label class="form-control">${basicEstate.name}</label>
                         <span class="input-group-btn">
-                            <div onclick="estateCommon.mapMarker(true);" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
+                             <c:choose>
+                                 <c:when test="${isApplyBatch eq 'show'}">
+                                           <div onclick="estateCommon.mapMarker2(true,${tableId});" class="btn btn-info"><i
+                                                   class="fa fa-map-marker"></i> 标注</div>
+                                 </c:when>
+                                 <c:otherwise>
+                                            <div onclick="estateCommon.mapMarker(true);" class="btn btn-info"><i
+                                                    class="fa fa-map-marker"></i> 标注</div>
+                                 </c:otherwise>
+                             </c:choose>
                         </span>
                     </div>
                 </div>

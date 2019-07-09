@@ -824,6 +824,66 @@ public class BasicApplyBatchExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andDraftFlagIsNull() {
+            addCriterion("draft_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagIsNotNull() {
+            addCriterion("draft_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagEqualTo(Boolean value) {
+            addCriterion("draft_flag =", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagNotEqualTo(Boolean value) {
+            addCriterion("draft_flag <>", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagGreaterThan(Boolean value) {
+            addCriterion("draft_flag >", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("draft_flag >=", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagLessThan(Boolean value) {
+            addCriterion("draft_flag <", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("draft_flag <=", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagIn(List<Boolean> values) {
+            addCriterion("draft_flag in", values, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagNotIn(List<Boolean> values) {
+            addCriterion("draft_flag not in", values, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("draft_flag between", value1, value2, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("draft_flag not between", value1, value2, "draftFlag");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

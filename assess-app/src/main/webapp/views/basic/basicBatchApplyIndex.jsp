@@ -114,6 +114,9 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
+                        <button class="btn btn-default" onclick="saveDraft()">
+                            保存草稿
+                        </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -285,7 +288,7 @@
             case 0: {
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_building");
                 html += "<label class='col-sm-2 control-label'>";
-                html += "楼栋名称";
+                html += "楼栋编号";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required>";
@@ -338,8 +341,11 @@
             data: formData,
             success: function (result) {
                 if (result.ret) {
+                    console.log("id:"+result.data.id+"pid:"+result.data.pid);
                     toastr.success('保存成功');
-                    ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
+                    // ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
+                     var node = zTreeObj.getSelectedNodes()[0];
+                    zTreeObj.addNodes(node, {id: result.data.id, pid:result.data.pid, name:result.data.name});
                     $('#detail_modal').modal('hide');
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -477,7 +483,6 @@
                     Loading.progressHide();
                     if (result.ret) {
                         Alert("提交数据成功!", 1, null, function () {
-                            window.location.href="about:blank";
                             window.close();
                         });
 
@@ -505,6 +510,37 @@
                 Loading.progressHide();
                 if (result.ret) {
                     Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        });
+    }
+
+
+    //保存草稿
+    function saveDraft() {
+        if (!$("#basicBatchApplyFrm").valid()) {
+            return false;
+        }
+        var radioValue = $("#basicBatchApplyFrm").find("input[type='radio']:checked").val();
+        if(!radioValue){
+            Alert("请选择类型");
+            return false;
+        }
+        Loading.progressShow();
+        var formData = formParams("basicBatchApplyFrm");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/saveApplyDraftInfo",
+            type: "post",
+            dataType: "json",
+            data: formData,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("保存草稿成功!", 1, null, function () {
                         window.close();
                     });
                 } else {
