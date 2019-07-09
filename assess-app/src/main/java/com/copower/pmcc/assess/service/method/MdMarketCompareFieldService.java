@@ -95,7 +95,7 @@ public class MdMarketCompareFieldService extends BaseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public String getCompareInfo(SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
+    public String getCompareInfo(SchemeAreaGroup areaGroup,SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             if (basicApply == null) return null;
@@ -156,7 +156,10 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TRANSACTION_SITUATION.getKey(), baseDataDicService.getNameById(houseTrading.getTransactionSituation()), isCase));
                             break;
                         case TRADING_TIME://交易时间
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(houseTrading.getTradingTime()), isCase));
+                            if (isCase)
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(houseTrading.getTradingTime()), isCase));
+                            else
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(areaGroup.getValueTimePoint()), isCase));
                             break;
                         case TRADING_PRICE://交易价格
                             if (houseTrading.getTradingUnitPrice() != null && isCase)
@@ -190,7 +193,7 @@ public class MdMarketCompareFieldService extends BaseService {
                                 stringBuilder.append(String.format("%s栋", examineBuilding.getBuildingNumber()));
                             if (examineBuilding.getFloorCount() != null)
                                 stringBuilder.append(String.format("%s层建筑", examineBuilding.getFloorCount()));
-                            if(StringUtils.isNotBlank(examineUnit.getUnitNumber()))
+                            if (StringUtils.isNotBlank(examineUnit.getUnitNumber()))
                                 stringBuilder.append(String.format("%s单元", examineUnit.getUnitNumber()));
                             if (StringUtils.isNotBlank(examineHouse.getFloor()))
                                 stringBuilder.append(String.format("第%s层", examineHouse.getFloor()));
@@ -457,9 +460,9 @@ public class MdMarketCompareFieldService extends BaseService {
                                         StringBuilder decorate = new StringBuilder();
                                         for (BasicHouseRoomDecorateVo roomDecorate : roomDecorateList) {
                                             decorate.append(roomDecorate.getPartName());
-                                            if(StringUtils.isNotBlank(roomDecorate.getRemark())){
+                                            if (StringUtils.isNotBlank(roomDecorate.getRemark())) {
                                                 decorate.append(roomDecorate.getRemark()).append(",");
-                                            }else if(StringUtils.isNotBlank(roomDecorate.getMaterialName())){
+                                            } else if (StringUtils.isNotBlank(roomDecorate.getMaterialName())) {
                                                 decorate.append(roomDecorate.getMaterialName()).append(",");
                                             }
                                         }

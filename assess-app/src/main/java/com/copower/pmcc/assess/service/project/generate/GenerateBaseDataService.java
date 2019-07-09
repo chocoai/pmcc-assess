@@ -1826,45 +1826,24 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(8);
         BaseDataDic type = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        LinkedHashSet<String> aSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> bSet = Sets.newLinkedHashSet();
-        List<Integer> integerList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
             for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
                 if (schemeJudgeObject.getDeclareRecordId() != null){
                     String registration = getActualRegistration(type,schemeJudgeObject.getDeclareRecordId()) ;//证载地址
                     String addressAssetInventory = getActualAddressAssetInventory(type,schemeJudgeObject.getDeclareRecordId());//现场查勘地址
                     if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)){
-                        aSet.add(registration) ;
-                        bSet.add(addressAssetInventory) ;
-                        integerList.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())) ;
+                        stringBuilder.append(String.format("%s号估价对象证载地址为",generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()))) ;
+                        stringBuilder.append(registration) ;
+                        stringBuilder.append("，") ;
+                        stringBuilder.append("估价人员现场查勘地址为") ;
+                        stringBuilder.append(addressAssetInventory) ;
+                        stringBuilder.append("，") ;
+                        stringBuilder.append(String.format("经%s出具《%s》确认一致。",
+                                getCertificateAssetInventory(type,schemeJudgeObject.getDeclareRecordId()),
+                                getCredentialAssetInventory(type,schemeJudgeObject.getDeclareRecordId()))) ;
                     }
                 }
             }
-        }
-        String registration = null;//证载地址
-        String addressAssetInventory = null;//现场查勘地址
-        if (CollectionUtils.isNotEmpty(integerList)){
-            String numberText = generateCommonMethod.convertNumber(integerList) ;
-            if (aSet.size() == 1){
-                registration = aSet.stream().findFirst().get();
-            }else {
-                registration = String.format("%s%s",numberText,StringUtils.join(aSet,"")) ;
-            }
-            if (bSet.size() == 1){
-                addressAssetInventory = bSet.stream().findFirst().get();
-            }else {
-                addressAssetInventory = String.format("%s%s",numberText,StringUtils.join(bSet,"")) ;
-            }
-        }
-        if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)) {
-            stringBuilder.append("估价对象证载地址为") ;
-            stringBuilder.append(registration) ;
-            stringBuilder.append("，") ;
-            stringBuilder.append("估价人员现场查勘地址为") ;
-            stringBuilder.append(addressAssetInventory) ;
-            stringBuilder.append("，") ;
-            stringBuilder.append("不一致，已出具《证明》。") ;
         }
         return stringBuilder.toString();
     }
@@ -2807,6 +2786,13 @@ public class GenerateBaseDataService {
      */
     public String getCertificateAssetInventory(BaseDataDic type,Integer declareRecordId) throws Exception {
         return getAssetInventoryCommon("voucher", type,declareRecordId);
+    }
+
+    /**
+     * 功能描述: 资产清查证明文件
+     */
+    public String getCredentialAssetInventory(BaseDataDic type,Integer declareRecordId) throws Exception {
+        return getAssetInventoryCommon("credential", type,declareRecordId);
     }
 
     /**
