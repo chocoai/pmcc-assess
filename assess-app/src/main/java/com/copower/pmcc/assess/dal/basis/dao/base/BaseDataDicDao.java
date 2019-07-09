@@ -19,6 +19,17 @@ public class BaseDataDicDao {
     @Autowired
     private BaseDataDicMapper sysDataDicMapper;
 
+    /**
+     * 数据恢复用  待数据恢复完成删除
+     * @return
+     */
+    @Deprecated
+    public List<BaseDataDic> getAllBaseDataDicList(){
+        BaseDataDicExample example = new BaseDataDicExample();
+        BaseDataDicExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        return sysDataDicMapper.selectByExample(example);
+    }
+
     //region 获取所有数据字典列表
 
     /**

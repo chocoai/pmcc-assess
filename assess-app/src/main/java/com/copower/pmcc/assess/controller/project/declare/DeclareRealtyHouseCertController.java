@@ -87,9 +87,7 @@ public class DeclareRealtyHouseCertController {
             if (!StringUtils.isEmpty(ids)) {
                 List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
                 for (Integer id : integers) {
-                    DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
-                    declareRealtyHouseCert.setId(id);
-                    declareRealtyHouseCertService.removeDeclareRealtyHouseCert(declareRealtyHouseCert);
+                    declareRealtyHouseCertService.deleteDeclareRealtyHouseCertById(id);
                 }
                 return HttpResult.newCorrectResult();
             }

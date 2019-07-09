@@ -40,17 +40,12 @@ public class DeclareRealtyLandCertDao {
         return declareRealtyLandCertMapper.selectByExample(example);
     }
 
-    public void removeDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert){
-        DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
-        MybatisUtils.convertObj2Example(declareRealtyLandCert, example);
-        declareRealtyLandCertMapper.deleteByExample(example);
+
+
+    public boolean deleteDeclareRealtyLandCertById(Integer id){
+        return declareRealtyLandCertMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public void remove(List<Integer> ids){
-        DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
-        example.createCriteria().andIdIn(ids);
-        declareRealtyLandCertMapper.deleteByExample(example);
-    }
 
     public List<DeclareRealtyLandCert> getDeclareRealtyLandCertList(DeclareRealtyLandCert declareRealtyLandCert){
         DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();

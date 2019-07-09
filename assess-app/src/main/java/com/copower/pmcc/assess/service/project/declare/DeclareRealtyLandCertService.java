@@ -333,16 +333,9 @@ public class DeclareRealtyLandCertService {
         return vos;
     }
 
-    public void removeDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
-        if (declareRealtyLandCert.getPid() != null) {
-            DeclareRealtyHouseCert declareRealtyHouseCert = declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(declareRealtyLandCert.getPid());
-            if (Objects.equal(DeclareTypeEnum.BranchData.getKey(), declareRealtyHouseCert.getEnable())) {
-                DeclareRealtyHouseCert oo = new DeclareRealtyHouseCert();
-                oo.setId(declareRealtyLandCert.getPid());
-                declareRealtyHouseCertDao.removeDeclareRealtyHouseCert(oo);
-            }
-        }
-        declareRealtyLandCertDao.removeDeclareRealtyLandCert(declareRealtyLandCert);
+
+    public boolean deleteDeclareRealtyLandCertById(Integer id){
+        return declareRealtyLandCertDao.deleteDeclareRealtyLandCertById(id) ;
     }
 
     public DeclareRealtyLandCertVo getDeclareRealtyLandCertVo(DeclareRealtyLandCert declareRealtyLandCert) {

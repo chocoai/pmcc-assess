@@ -32,11 +32,11 @@ public class DeclareRealtyRealEstateCertDao {
         return declareRealtyRealEstateCertMapper.updateByPrimaryKeySelective(declareRealtyRealEstateCert)==1;
     }
 
-    public void removeDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert){
-        DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();
-        MybatisUtils.convertObj2Example(declareRealtyRealEstateCert, example);
-        declareRealtyRealEstateCertMapper.deleteByExample(example);
+    public boolean deleteDeclareRealtyRealEstateCertById(Integer id){
+        return declareRealtyRealEstateCertMapper.deleteByPrimaryKey(id) == 1;
     }
+
+
 
     public List<DeclareRealtyRealEstateCert> getDeclareRealtyRealEstateCertList(DeclareRealtyRealEstateCert declareRealtyRealEstateCert){
         DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();

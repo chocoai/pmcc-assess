@@ -171,8 +171,9 @@ public class DeclareRealtyRealEstateCertService {
         return vos;
     }
 
-    public void removeDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
-        declareRealtyRealEstateCertDao.removeDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
+
+    public boolean deleteDeclareRealtyRealEstateCertById(Integer id){
+        return declareRealtyRealEstateCertDao.deleteDeclareRealtyRealEstateCertById(id) ;
     }
 
     public DeclareRealtyRealEstateCertVo getDeclareRealtyRealEstateCertVo(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {

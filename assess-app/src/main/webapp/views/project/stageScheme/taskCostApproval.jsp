@@ -3,9 +3,10 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <script src="${pageContext.request.contextPath}/assets/math/6.0.2/math.js"></script>
+    <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
-
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -14,7 +15,7 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!-- 引入成本法 详情模块 -->
-            <jsp:include page="/views/method/marketCostDetail.jsp"></jsp:include>
+
             <!--填写表单-->
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -22,16 +23,14 @@
     </div>
 </div>
 </body>
-
 <%@include file="/views/share/main_footer.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="application/javascript">
-    $(function () {
-
-    })
     function saveform() {
         saveApprovalform("");
     }
-
 </script>
 </body>
 </html>
