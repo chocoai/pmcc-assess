@@ -14,5 +14,5 @@ public interface CustomProjectInfoMapper {
                                                   @Param("queryMember")String queryMember, @Param("entrustPurpose")Integer entrustPurpose,
                                                   @Param("queryManager")String queryManager, @Param("queryTimeStart")Date queryTimeStart,
                                                   @Param("queryTimeEnd")Date queryTimeEnd,@Param("queryConsignor")String queryConsignor,
-                                                  @Param("queryUseUnit")Integer queryUseUnit);//查询
+                                                  @Param("queryUseUnit")Integer queryUseUnit,@Param("queryEstateName")String queryEstateName);//查询
 }

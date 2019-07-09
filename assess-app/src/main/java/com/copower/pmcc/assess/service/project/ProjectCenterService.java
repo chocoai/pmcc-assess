@@ -65,7 +65,7 @@ public class ProjectCenterService {
      * @return
      */
     public BootstrapTableVo getProjectList(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                           String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit) throws Exception {
+                                           String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit,String queryEstateName) throws Exception {
 
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<Integer> orgIds = null;
@@ -92,7 +92,7 @@ public class ProjectCenterService {
             endTimeParse = c.getTime();
         }
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("", queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit);
+                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit,queryEstateName);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
@@ -205,7 +205,7 @@ public class ProjectCenterService {
             endTimeParse = c.getTime();
         }
         List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit);
+                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit,null);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? Lists.newArrayList() : projectInfoVos);

@@ -100,9 +100,9 @@ public class ProjectCenterController {
     @ResponseBody
     @RequestMapping(value = "/getProjectList", name = "取得所有项目列表", method = RequestMethod.GET)
     public BootstrapTableVo getProjectList(String queryName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose,
-                                           String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit) throws Exception{
+                                           String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit,String queryEstateName) throws Exception{
         return projectCenterService.getProjectList(queryName, projectStatus,queryCreator,queryMember,entrustPurpose,
-                queryManager,queryTimeStart,queryTimeEnd,queryConsignor,queryUseUnit);
+                queryManager,queryTimeStart,queryTimeEnd,queryConsignor,queryUseUnit,queryEstateName);
     }
 
     @ResponseBody

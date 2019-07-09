@@ -714,6 +714,10 @@ public class SurveyExamineTaskService {
                 surveySceneExplore = JSONObject.parseObject(survey, SurveySceneExplore.class);
                 surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
                 surveySceneExploreService.updateSurveySceneExplore(surveySceneExplore);
+                //写入楼盘名称
+                ProjectInfo info = projectInfoService.getProjectInfoById(surveySceneExplore.getProjectId());
+                info.setEstateName(basicEstate.getName());
+                projectInfoService.saveProjectInfo(info);
             }
         }
         //需将土地实际用途、房屋实际用途、楼层、房号反写到申报记录表中
