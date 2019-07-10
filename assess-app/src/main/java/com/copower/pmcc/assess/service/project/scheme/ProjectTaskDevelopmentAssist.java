@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
@@ -109,7 +110,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
      * @throws BusinessException
      */
     private void save(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        MdDevelopment mdDevelopment = JSONObject.parseObject(formData,MdDevelopment.class) ;
+        MdDevelopmentVo mdDevelopment = JSONObject.parseObject(formData,MdDevelopmentVo.class) ;
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
@@ -173,8 +174,9 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         }
         if (mdDevelopment != null) {
             // StringUtils.uncapitalize 首字母小写
-            modelAndView.addObject(StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment));
-            modelAndView.addObject(String.format("%s%s", StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), JSON_STRING), JSON.toJSONString(mdDevelopmentService.getMdDevelopmentVo(mdDevelopment)));
+            modelAndView.addObject(StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment,true));
+            modelAndView.addObject(String.format("%s2",StringUtils.uncapitalize(MdDevelopment.class.getSimpleName())), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment,false));
+            modelAndView.addObject(String.format("%s%s", StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), JSON_STRING), JSON.toJSONString(mdDevelopmentService.getMdDevelopmentVo(mdDevelopment,false)));
         }
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);

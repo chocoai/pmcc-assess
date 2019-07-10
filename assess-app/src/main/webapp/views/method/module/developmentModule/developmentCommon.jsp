@@ -274,7 +274,7 @@
     developmentCommon.parameter = {
         getDeclareEconomicIndicatorsContentList: function (callback) {
             $.ajax({
-                url: getContextPath() + "/declareEconomicIndicatorsContent/getDeclareEconomicIndicatorsContentList",
+                url: getContextPath() + "/declareEconomicIndicatorsContent/getEntityListByPid",
                 type: "post",
                 dataType: "json",
                 data: {indicatorsHeadId: '${declareBuildEngineeringAndEquipmentCenter.indicatorId}'},
@@ -505,6 +505,8 @@
     };
 
 </script>
+
+
 
 <script type="text/html" id="commonDevelopmentParameterBase" data-title="收入类(参数)">
     <div class="commonDevelopmentParameterHandle">
@@ -1055,4 +1057,5 @@
         </tfoot>
     </table>
 </script>
+
 

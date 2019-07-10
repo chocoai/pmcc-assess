@@ -15,6 +15,9 @@
     <result column="head_content" property="headContent" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="project_construction_period" property="projectConstructionPeriod" jdbcType="DECIMAL" />
+    <result column="developed_year" property="developedYear" jdbcType="DECIMAL" />
+    <result column="remaining_development_year" property="remainingDevelopmentYear" jdbcType="DECIMAL" />
+    <result column="reward_rate_id" property="rewardRateId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -80,7 +83,8 @@
   <sql id="Base_Column_List" >
     id, name, area, price, type, plan_details_id, construction_cost_subtotal, interest_investment, 
     investment_profit, assess_price, head_content, content, project_construction_period, 
-    creator, gmt_created, gmt_modified
+    developed_year, remaining_development_year, reward_rate_id, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentExample" >
     select
@@ -120,14 +124,16 @@
       type, plan_details_id, construction_cost_subtotal, 
       interest_investment, investment_profit, assess_price, 
       head_content, content, project_construction_period, 
-      creator, gmt_created, gmt_modified
-      )
+      developed_year, remaining_development_year, 
+      reward_rate_id, creator, gmt_created, 
+      gmt_modified)
     values (#{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
       #{type,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{constructionCostSubtotal,jdbcType=DECIMAL}, 
       #{interestInvestment,jdbcType=DECIMAL}, #{investmentProfit,jdbcType=DECIMAL}, #{assessPrice,jdbcType=DECIMAL}, 
       #{headContent,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{projectConstructionPeriod,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{developedYear,jdbcType=DECIMAL}, #{remainingDevelopmentYear,jdbcType=DECIMAL}, 
+      #{rewardRateId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -170,6 +176,15 @@
       </if>
       <if test="projectConstructionPeriod != null" >
         project_construction_period,
+      </if>
+      <if test="developedYear != null" >
+        developed_year,
+      </if>
+      <if test="remainingDevelopmentYear != null" >
+        remaining_development_year,
+      </if>
+      <if test="rewardRateId != null" >
+        reward_rate_id,
       </if>
       <if test="creator != null" >
         creator,
@@ -217,6 +232,15 @@
       </if>
       <if test="projectConstructionPeriod != null" >
         #{projectConstructionPeriod,jdbcType=DECIMAL},
+      </if>
+      <if test="developedYear != null" >
+        #{developedYear,jdbcType=DECIMAL},
+      </if>
+      <if test="remainingDevelopmentYear != null" >
+        #{remainingDevelopmentYear,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardRateId != null" >
+        #{rewardRateId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -277,6 +301,15 @@
       <if test="record.projectConstructionPeriod != null" >
         project_construction_period = #{record.projectConstructionPeriod,jdbcType=DECIMAL},
       </if>
+      <if test="record.developedYear != null" >
+        developed_year = #{record.developedYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remainingDevelopmentYear != null" >
+        remaining_development_year = #{record.remainingDevelopmentYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.rewardRateId != null" >
+        reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -306,6 +339,9 @@
       head_content = #{record.headContent,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
       project_construction_period = #{record.projectConstructionPeriod,jdbcType=DECIMAL},
+      developed_year = #{record.developedYear,jdbcType=DECIMAL},
+      remaining_development_year = #{record.remainingDevelopmentYear,jdbcType=DECIMAL},
+      reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -352,6 +388,15 @@
       <if test="projectConstructionPeriod != null" >
         project_construction_period = #{projectConstructionPeriod,jdbcType=DECIMAL},
       </if>
+      <if test="developedYear != null" >
+        developed_year = #{developedYear,jdbcType=DECIMAL},
+      </if>
+      <if test="remainingDevelopmentYear != null" >
+        remaining_development_year = #{remainingDevelopmentYear,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardRateId != null" >
+        reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -378,6 +423,9 @@
       head_content = #{headContent,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       project_construction_period = #{projectConstructionPeriod,jdbcType=DECIMAL},
+      developed_year = #{developedYear,jdbcType=DECIMAL},
+      remaining_development_year = #{remainingDevelopmentYear,jdbcType=DECIMAL},
+      reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

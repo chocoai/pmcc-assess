@@ -44,6 +44,7 @@
     function submit() {
         development.valid(function () {
             var data = development.getFomData();
+            console.log(data) ;
             if ("${processInsId}" != "0") {
                 submitEditToServer(JSON.stringify(data));
             } else {

@@ -30,6 +30,12 @@ public class MdDevelopment {
 
     private BigDecimal projectConstructionPeriod;
 
+    private BigDecimal developedYear;
+
+    private BigDecimal remainingDevelopmentYear;
+
+    private Integer rewardRateId;
+
     private String creator;
 
     private Date gmtCreated;
@@ -138,6 +144,30 @@ public class MdDevelopment {
 
     public void setProjectConstructionPeriod(BigDecimal projectConstructionPeriod) {
         this.projectConstructionPeriod = projectConstructionPeriod;
+    }
+
+    public BigDecimal getDevelopedYear() {
+        return developedYear;
+    }
+
+    public void setDevelopedYear(BigDecimal developedYear) {
+        this.developedYear = developedYear;
+    }
+
+    public BigDecimal getRemainingDevelopmentYear() {
+        return remainingDevelopmentYear;
+    }
+
+    public void setRemainingDevelopmentYear(BigDecimal remainingDevelopmentYear) {
+        this.remainingDevelopmentYear = remainingDevelopmentYear;
+    }
+
+    public Integer getRewardRateId() {
+        return rewardRateId;
+    }
+
+    public void setRewardRateId(Integer rewardRateId) {
+        this.rewardRateId = rewardRateId;
     }
 
     public String getCreator() {

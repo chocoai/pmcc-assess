@@ -33,16 +33,31 @@
 
             <div class="form-group">
                 <!-- append html -->
-                <div>
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            项目建设期(年)
-                        </label>
-                        <div class="col-sm-3">
-                            <label class="form-control">${mdDevelopment.projectConstructionPeriod}</label>
-                        </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        项目建设期(年)
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${mdDevelopment.projectConstructionPeriod}</label>
                     </div>
+                </div>
 
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        已开发时间(年)
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${mdDevelopment.developedYear}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        剩余开发时间(年)
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${mdDevelopment.remainingDevelopmentYear}</label>
+                    </div>
                 </div>
             </div>
         </form>
@@ -73,6 +88,8 @@
 </div>
 
 <jsp:include page="/views/method/module/developmentModule/developmentCommon.jsp"></jsp:include>
+
+<jsp:include page="/views/project/tool/rewardRateDetail.jsp"></jsp:include>
 
 <script>
     var development = {};

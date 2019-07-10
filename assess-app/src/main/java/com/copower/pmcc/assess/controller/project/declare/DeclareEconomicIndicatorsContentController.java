@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareEconomicIndicatorsContent;
 import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsContentService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,6 @@ public class DeclareEconomicIndicatorsContentController {
     private DeclareEconomicIndicatorsContentService declareEconomicIndicatorsContentService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @ResponseBody
     @RequestMapping(value = "/saveDeclareEconomicIndicatorsContentList", method = {RequestMethod.POST}, name = "保存经济指标")
     public HttpResult saveAndUpdate(Integer planDetailsId, Integer indicatorsHeadId, String formData) {
         try {
@@ -40,28 +40,46 @@ public class DeclareEconomicIndicatorsContentController {
                         oo.setIndicatorsHeadId(indicatorsHeadId);
                     }
                     if (oo.getId() == null || oo.getId() == 0) {
-                        declareEconomicIndicatorsContentService.addDeclareEconomicIndicatorsContent(oo) ;
-                    }else {
-                        declareEconomicIndicatorsContentService.updateDeclareEconomicIndicatorsContent(oo) ;
+                        declareEconomicIndicatorsContentService.addDeclareEconomicIndicatorsContent(oo);
+                    } else {
+                        declareEconomicIndicatorsContentService.updateDeclareEconomicIndicatorsContent(oo);
                     }
                 });
             }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,"保存异常");
+            return HttpResult.newErrorResult(500, "保存异常");
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/getDeclareEconomicIndicatorsContentList", method = {RequestMethod.POST}, name = "获取经济指标")
-    public HttpResult getEntityListByPid(DeclareEconomicIndicatorsContent declareEconomicIndicatorsContent) {
+    public HttpResult getDeclareEconomicIndicatorsContentList(DeclareEconomicIndicatorsContent declareEconomicIndicatorsContent) {
         try {
             List<DeclareEconomicIndicatorsContent> indicatorsList = declareEconomicIndicatorsContentService.getDeclareEconomicIndicatorsContentList(declareEconomicIndicatorsContent);
             return HttpResult.newCorrectResult(indicatorsList);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,"保存异常");
+            return HttpResult.newErrorResult(500, "保存异常");
+        }
+    }
+
+    @RequestMapping(value = "/getEntityListByPid", method = {RequestMethod.POST}, name = "获取经济指标")
+    public HttpResult getEntityListByPid(Integer indicatorsHeadId) {
+        try {
+            List<DeclareEconomicIndicatorsContent> indicatorsList = Lists.newArrayList();
+            if (indicatorsHeadId != null) {
+                DeclareEconomicIndicatorsContent query = new DeclareEconomicIndicatorsContent();
+                query.setIndicatorsHeadId(indicatorsHeadId);
+                List<DeclareEconomicIndicatorsContent> indicatorsList2 = declareEconomicIndicatorsContentService.getDeclareEconomicIndicatorsContentList(query);
+                if (CollectionUtils.isNotEmpty(indicatorsList2)) {
+                    indicatorsList.addAll(indicatorsList2);
+                }
+            }
+            return HttpResult.newCorrectResult(indicatorsList);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, "保存异常");
         }
     }
 

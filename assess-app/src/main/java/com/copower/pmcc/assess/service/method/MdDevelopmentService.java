@@ -93,7 +93,7 @@ public class MdDevelopmentService {
         return mdDevelopmentLandDao.getMdDevelopmentLandList(mdDevelopmentLand);
     }
 
-    public MdDevelopmentVo getMdDevelopmentVo(MdDevelopment mdDevelopment) {
+    public MdDevelopmentVo getMdDevelopmentVo(MdDevelopment mdDevelopment, boolean format) {
         if (mdDevelopment == null) {
             return null;
         }
@@ -108,7 +108,7 @@ public class MdDevelopmentService {
             }
             if (jsonObject != null) {
                 if (jsonObject.get("f20") != null) {
-                    vo.setF20(changeHundred((String) jsonObject.get("f20")));
+                    vo.setF20(changeHundred((String) jsonObject.get("f20"), format));
                 }
                 if (jsonObject.get("f21") != null) {
                     vo.setF21((String) jsonObject.get("f21"));
@@ -123,26 +123,26 @@ public class MdDevelopmentService {
                     vo.setF24((String) jsonObject.get("f24"));
                 }
                 if (jsonObject.get("f25") != null) {
-                    vo.setF25(changeHundred((String) jsonObject.get("f25")));
+                    vo.setF25(changeHundred((String) jsonObject.get("f25"), format));
                 }
                 if (jsonObject.get("f27") != null) {
-                    vo.setF27(changeHundred((String) jsonObject.get("f27")));
+                    vo.setF27(changeHundred((String) jsonObject.get("f27"), format));
                 }
                 if (jsonObject.get("f29") != null) {
-                    vo.setF29(changeHundred((String) jsonObject.get("f29")));
+                    vo.setF29(changeHundred((String) jsonObject.get("f29"), format));
                 }
                 if (jsonObject.get("f29Explain") != null) {
                     vo.setF29Explain((String) jsonObject.get("f29Explain"));
                 }
 
                 if (jsonObject.get("f30") != null) {
-                    vo.setF30(changeHundred((String) jsonObject.get("f30")));
+                    vo.setF30(changeHundred((String) jsonObject.get("f30"), format));
                 }
                 if (jsonObject.get("f30Explain") != null) {
                     vo.setF30Explain((String) jsonObject.get("f30Explain"));
                 }
                 if (jsonObject.get("g32") != null) {
-                    vo.setG32(changeHundred((String) jsonObject.get("g32")));
+                    vo.setG32(changeHundred((String) jsonObject.get("g32"), format));
                 }
                 if (jsonObject.get("g32Explain") != null) {
                     vo.setG32Explain((String) jsonObject.get("g32Explain"));
@@ -154,84 +154,86 @@ public class MdDevelopmentService {
                     vo.setF31Explain((String) jsonObject.get("f31Explain"));
                 }
                 if (jsonObject.get("g33") != null) {
-                    vo.setG33(changeHundred((String) jsonObject.get("g33")));
+                    vo.setG33(changeHundred((String) jsonObject.get("g33"), format));
                 }
                 if (jsonObject.get("g33Explain") != null) {
                     vo.setG33Explain((String) jsonObject.get("g33Explain"));
                 }
                 if (jsonObject.get("g34") != null) {
-                    vo.setG34(changeHundred((String) jsonObject.get("g34")));
+                    vo.setG34(changeHundred((String) jsonObject.get("g34"), format));
                 }
                 if (jsonObject.get("g34Explain") != null) {
                     vo.setG34Explain((String) jsonObject.get("g34Explain"));
                 }
                 if (jsonObject.get("g35") != null) {
-                    vo.setG35(changeHundred((String) jsonObject.get("g35")));
+                    vo.setG35(changeHundred((String) jsonObject.get("g35"), format));
                 }
                 if (jsonObject.get("g35Explain") != null) {
                     vo.setG35Explain((String) jsonObject.get("g35Explain"));
                 }
                 if (jsonObject.get("f37") != null) {
-                    vo.setF37(changeHundred((String) jsonObject.get("f37")));
+                    vo.setF37(changeHundred((String) jsonObject.get("f37"), format));
                 }
                 if (jsonObject.get("f37Explain") != null) {
                     vo.setF37Explain((String) jsonObject.get("f37Explain"));
                 }
                 if (jsonObject.get("f38") != null) {
-                    vo.setF38(changeHundred((String) jsonObject.get("f38")));
+                    vo.setF38(changeHundred((String) jsonObject.get("f38"), format));
                 }
                 if (jsonObject.get("f38Explain") != null) {
                     vo.setF38Explain((String) jsonObject.get("f38Explain"));
                 }
                 if (jsonObject.get("f39") != null) {
-                    vo.setF39(changeHundred((String) jsonObject.get("f39")));
+                    vo.setF39(changeHundred((String) jsonObject.get("f39"), format));
                 }
                 if (jsonObject.get("f39Explain") != null) {
                     vo.setF39Explain((String) jsonObject.get("f39Explain"));
                 }
                 if (jsonObject.get("e43") != null) {
-                    vo.setE43(changeHundred((String) jsonObject.get("e43")));
+                    vo.setE43(changeHundred((String) jsonObject.get("e43"), format));
                 }
                 if (jsonObject.get("e43Explain") != null) {
                     vo.setE43Explain((String) jsonObject.get("e43Explain"));
                 }
 
                 if (jsonObject.get("f43") != null) {
-                    vo.setF43(changeHundred((String) jsonObject.get("f43")));
+                    vo.setF43((String) jsonObject.get("f43"));
                 }
                 if (jsonObject.get("g43") != null) {
-                    vo.setG43(changeHundred((String) jsonObject.get("g43")));
+                    vo.setG43((String) jsonObject.get("g43"));
                 }
                 if (jsonObject.get("d44") != null) {
-                    vo.setD44(changeHundred((String) jsonObject.get("d44")));
+                    vo.setD44((String) jsonObject.get("d44"));
                 }
                 if (jsonObject.get("d44Explain") != null) {
-                    vo.setD44Explain(changeHundred((String) jsonObject.get("d44Explain")));
+                    vo.setD44Explain(changeHundred((String) jsonObject.get("d44Explain"), format));
                 }
                 if (jsonObject.get("d45") != null) {
-                    vo.setD45(changeHundred((String) jsonObject.get("d45")));
+                    vo.setD45((String) jsonObject.get("d45"));
                 }
                 if (jsonObject.get("d45Explain") != null) {
-                    vo.setD45Explain(changeHundred((String) jsonObject.get("d45Explain")));
+                    vo.setD45Explain(changeHundred((String) jsonObject.get("d45Explain"), format));
                 }
                 if (jsonObject.get("d46") != null) {
-                    vo.setD45(changeHundred((String) jsonObject.get("d46")));
+                    vo.setD46((String) jsonObject.get("d46"));
                 }
                 if (jsonObject.get("d46Explain") != null) {
-                    vo.setD46Explain(changeHundred((String) jsonObject.get("d46Explain")));
+                    vo.setD46Explain(changeHundred((String) jsonObject.get("d46Explain"), format));
                 }
                 if (jsonObject.get("unsaleableBuildingArea") != null) {
-                    vo.setUnsaleableBuildingArea(changeHundred((String) jsonObject.get("unsaleableBuildingArea")));
+                    vo.setUnsaleableBuildingArea((String) jsonObject.get("unsaleableBuildingArea"));
                 }
             }
         }
         return vo;
     }
 
-    public String changeHundred(String value){
-        if (NumberUtils.isNumber(value)){
-            BigDecimal bigDecimal = new BigDecimal(value).multiply(new BigDecimal(100));
-            return bigDecimal.setScale(2, BigDecimal.ROUND_UP).toString() ;
+    private String changeHundred(String value, boolean format) {
+        if (format) {
+            if (NumberUtils.isNumber(value)) {
+                BigDecimal bigDecimal = new BigDecimal(value).multiply(new BigDecimal(100));
+                return String.format("%s%s", bigDecimal.setScale(2, BigDecimal.ROUND_UP).toString(), "%");
+            }
         }
         return value;
     }

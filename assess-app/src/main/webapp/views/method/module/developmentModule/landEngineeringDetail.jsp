@@ -15,7 +15,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
-                    <label class="form-control">${mdDevelopment.f20}%</label>
+                    <label class="form-control">${mdDevelopment.f20}</label>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
-                    <label class="form-control">${mdDevelopment.f25}%</label>
+                    <label class="form-control">${mdDevelopment.f25}</label>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
-                    <label class="form-control">${mdDevelopment.f27}%</label>
+                    <label class="form-control">${mdDevelopment.f27}</label>
                 </div>
             </div>
         </div>
@@ -104,7 +104,7 @@
                     契税率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f29}%</label>
+                    <label class="form-control">${mdDevelopment.f29}</label>
                 </div>
             </div>
 
@@ -124,7 +124,7 @@
                     交易费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f30}%</label>
+                    <label class="form-control">${mdDevelopment.f30}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -143,7 +143,7 @@
                     管理费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g32}%</label>
+                    <label class="form-control">${mdDevelopment.g32}</label>
                 </div>
             </div>
 
@@ -183,7 +183,7 @@
                     销售费用率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g33}%</label>
+                    <label class="form-control">${mdDevelopment.g33}</label>
                 </div>
             </div>
 
@@ -203,7 +203,7 @@
                     投资利息率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g34}%</label>
+                    <label class="form-control">${mdDevelopment.g34}</label>
                 </div>
             </div>
 
@@ -223,7 +223,7 @@
                     投资利润率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g35}%</label>
+                    <label class="form-control">${mdDevelopment.g35}</label>
                 </div>
             </div>
 
@@ -243,7 +243,7 @@
                     销售环节增值税及附加<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f37}%</label>
+                    <label class="form-control">${mdDevelopment.f37}</label>
 
                 </div>
             </div>
@@ -264,7 +264,7 @@
                     土地增值税<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f38}%</label>
+                    <label class="form-control">${mdDevelopment.f38}</label>
 
                 </div>
             </div>
@@ -285,7 +285,7 @@
                     项目开发所得税<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f39}%</label>
+                    <label class="form-control">${mdDevelopment.f39}</label>
                 </div>
             </div>
 
@@ -318,21 +318,22 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地还原率<span class="symbol required"></span>
+                    土地还原率或者报酬率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.e43}%</label>
+
+                    <div class="input-group">
+                        <label class="form-control">${mdDevelopment.e43}</label>
+                        <span class="input-group-btn">
+                                    <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
+                              <input type="button" class="btn btn-primary" value="报酬率测算"
+                                     onclick="rewardRateDetail.calculationDetail('${mdDevelopment.rewardRateId}');"/>
+                            </span>
+                    </div>
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    费率说明
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.e43Explain}</label>
-                </div>
-            </div>
+
         </div>
 
         <div class="form-group">
