@@ -27,15 +27,21 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -223,10 +229,16 @@ public class ProjectPlanDetailsService {
      * @param projectId
      * @return
      */
-    public List<ProjectPlanDetailsVo> getPlanDetailListByPlanId(Integer projectId, Integer planId) {
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
-        if (CollectionUtils.isEmpty(projectPlanDetails)) return Lists.newArrayList();
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getRootProjectPlanDetailsByPlanId(planId);
+        if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
+        //递归获取所有子项任务
+        List<ProjectPlanDetails> detailsAllList = Lists.newArrayList();
+        projectPlanDetails.forEach(o -> detailsAllList.addAll(getPlanDetailsListRecursion(o.getId(), true)));
+        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(detailsAllList, false);
 
         //获取当前人该阶段下待处理的任务
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
@@ -238,7 +250,7 @@ public class ProjectPlanDetailsService {
 
         //获取该阶段下正在运行的待审批任务
         List<String> processInsIds = Lists.newArrayList();
-        for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
+        for (ProjectPlanDetails projectPlanDetail : detailsAllList) {
             if (StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())) {
                 if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
                     processInsIds.add(projectPlanDetail.getProcessInsId());
@@ -332,7 +344,9 @@ public class ProjectPlanDetailsService {
                 }
             }
         }
-        return projectPlanDetailsVos;
+        bootstrapTableVo.setTotal((long) page.getTotal());
+        bootstrapTableVo.setRows(projectPlanDetailsVos);
+        return bootstrapTableVo;
     }
 
 

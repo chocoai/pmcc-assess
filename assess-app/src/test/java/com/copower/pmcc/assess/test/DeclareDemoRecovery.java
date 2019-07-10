@@ -177,7 +177,6 @@ public class DeclareDemoRecovery {
                                 list.add(declareRecord);
                             }
                         }
-
                     }
                 }
             }
