@@ -35,6 +35,7 @@
             mcId: '${mcId}',
             isLand: '${isLand}',
             judgeObjectId: '${judgeObject.id}',
+            readonly: getQueryString("readonly"),
             cases: JSON.parse($("#casesJSON").val())
         });
     })
@@ -49,12 +50,12 @@
             url: '${pageContext.request.contextPath}/marketCompare/saveResult',
             data: {formData: JSON.stringify(data)},
             success: function (result) {
-                if(result.ret){
+                if (result.ret) {
                     toastr.success('保存成功');
-                    if(callback) {
-                        callback(result.data.id,result.data.price)
+                    if (callback) {
+                        callback(result.data.id, result.data.price)
                     }
-                }else{
+                } else {
                     Alert(result.errmsg);
                 }
             }

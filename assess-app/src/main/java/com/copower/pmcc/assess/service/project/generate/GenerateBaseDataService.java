@@ -1225,8 +1225,8 @@ public class GenerateBaseDataService {
             }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             BasicHouseVo basicHouseVo = generateBaseExamineService.getBasicHouse();
-            if (StringUtils.isNotBlank(basicHouseVo.getDecorateSituationDescription())){
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()),basicHouseVo.getDecorateSituationDescription());
+            if (StringUtils.isNotBlank(basicHouseVo.getDecorateSituationDescription())) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicHouseVo.getDecorateSituationDescription());
             }
         }
         String value = "/";
@@ -1805,17 +1805,17 @@ public class GenerateBaseDataService {
      *
      * @throws Exception
      */
-    public String getHotTip(List<KeyValueDto> keyValueDtoList,String name) throws Exception {
+    public String getHotTip(List<KeyValueDto> keyValueDtoList, String name) throws Exception {
         Document doc = new Document();
         String localPath = getLocalPath();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
-        if (Objects.equal(name, BaseReportFieldEnum.HotTipBank.name())){
-            String value = getHotTipBank() ;
-            if (StringUtils.isEmpty(value)){
-                value = "/" ;
+        if (Objects.equal(name, BaseReportFieldEnum.HotTipBank.name())) {
+            String value = getHotTipBank();
+            if (StringUtils.isEmpty(value)) {
+                value = "/";
             }
             documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(value, keyValueDtoList), false);
-        }else {
+        } else {
             documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(getHotTip(), keyValueDtoList), false);
         }
         doc.save(localPath);
@@ -1826,21 +1826,21 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(8);
         BaseDataDic type = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
-            for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
-                if (schemeJudgeObject.getDeclareRecordId() != null){
-                    String registration = getActualRegistration(type,schemeJudgeObject.getDeclareRecordId()) ;//证载地址
-                    String addressAssetInventory = getActualAddressAssetInventory(type,schemeJudgeObject.getDeclareRecordId());//现场查勘地址
-                    if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)){
-                        stringBuilder.append(String.format("%s号估价对象证载地址为",generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()))) ;
-                        stringBuilder.append(registration) ;
-                        stringBuilder.append("，") ;
-                        stringBuilder.append("估价人员现场查勘地址为") ;
-                        stringBuilder.append(addressAssetInventory) ;
-                        stringBuilder.append("，") ;
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (schemeJudgeObject.getDeclareRecordId() != null) {
+                    String registration = getActualRegistration(type, schemeJudgeObject.getDeclareRecordId());//证载地址
+                    String addressAssetInventory = getActualAddressAssetInventory(type, schemeJudgeObject.getDeclareRecordId());//现场查勘地址
+                    if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)) {
+                        stringBuilder.append(String.format("%s号估价对象证载地址为", generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())));
+                        stringBuilder.append(registration);
+                        stringBuilder.append("，");
+                        stringBuilder.append("估价人员现场查勘地址为");
+                        stringBuilder.append(addressAssetInventory);
+                        stringBuilder.append("，");
                         stringBuilder.append(String.format("经%s出具《%s》确认一致。",
-                                getCertificateAssetInventory(type,schemeJudgeObject.getDeclareRecordId()),
-                                getCredentialAssetInventory(type,schemeJudgeObject.getDeclareRecordId()))) ;
+                                getCertificateAssetInventory(type, schemeJudgeObject.getDeclareRecordId()),
+                                getCredentialAssetInventory(type, schemeJudgeObject.getDeclareRecordId())));
                     }
                 }
             }
@@ -1851,7 +1851,7 @@ public class GenerateBaseDataService {
     private String getHotTip() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(16);
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
-        String hotTipCompy = getHotTipBank() ;
+        String hotTipCompy = getHotTipBank();
         Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> hashMap = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
         BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE);
         List<Integer> integerList = Lists.newArrayList();
@@ -1892,7 +1892,7 @@ public class GenerateBaseDataService {
             stringSet.clear();
             row++;
         }
-        if (StringUtils.isNotBlank(hotTipCompy) ) {
+        if (StringUtils.isNotBlank(hotTipCompy)) {
             stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、%s", row + 1, hotTipCompy)));
             stringSet.clear();
             row++;
@@ -2769,53 +2769,55 @@ public class GenerateBaseDataService {
     /**
      * 功能描述: 资产清查实际地址
      */
-    public String getActualAddressAssetInventory(BaseDataDic type,Integer declareRecordId) throws Exception {
-        return getAssetInventoryCommon("actual", type,declareRecordId);
+    public String getActualAddressAssetInventory(BaseDataDic type, Integer declareRecordId) throws Exception {
+        return getAssetInventoryCommon("actual", type, declareRecordId);
     }
 
     /**
      * 登记地址
+     *
      * @throws Exception
      */
-    public String getActualRegistration(BaseDataDic type,Integer declareRecordId) throws Exception {
-        return getAssetInventoryCommon("registration", type,declareRecordId);
+    public String getActualRegistration(BaseDataDic type, Integer declareRecordId) throws Exception {
+        return getAssetInventoryCommon("registration", type, declareRecordId);
     }
 
     /**
      * 功能描述: 资产清查证明人
      */
-    public String getCertificateAssetInventory(BaseDataDic type,Integer declareRecordId) throws Exception {
-        return getAssetInventoryCommon("voucher", type,declareRecordId);
+    public String getCertificateAssetInventory(BaseDataDic type, Integer declareRecordId) throws Exception {
+        return getAssetInventoryCommon("voucher", type, declareRecordId);
     }
 
     /**
      * 功能描述: 资产清查证明文件
      */
-    public String getCredentialAssetInventory(BaseDataDic type,Integer declareRecordId) throws Exception {
-        return getAssetInventoryCommon("credential", type,declareRecordId);
+    public String getCredentialAssetInventory(BaseDataDic type, Integer declareRecordId) throws Exception {
+        return getAssetInventoryCommon("credential", type, declareRecordId);
     }
 
     /**
      * 功能描述: 资产清查确认一致
      */
-    public String getAssetInventoryConfirmConsistency(BaseDataDic type,Integer declareRecordId) throws Exception {
-        return getAssetInventoryCommon("sureConsistent", type,declareRecordId);
+    public String getAssetInventoryConfirmConsistency(BaseDataDic type, Integer declareRecordId) throws Exception {
+        return getAssetInventoryCommon("sureConsistent", type, declareRecordId);
     }
 
     /**
      * 功能描述: 资产清查一致说明
      */
-    public String getAssetInventoryAgreement(BaseDataDic type,Integer declareRecordId) throws Exception {
-        return getAssetInventoryCommon("differenceReason", type,declareRecordId);
+    public String getAssetInventoryAgreement(BaseDataDic type, Integer declareRecordId) throws Exception {
+        return getAssetInventoryCommon("differenceReason", type, declareRecordId);
     }
 
     /**
      * 资产清查 提取的公共方法
+     *
      * @param fieldName
      * @param type
      * @throws Exception
      */
-    private String getAssetInventoryCommon(String fieldName, BaseDataDic type,Integer declareRecordId) throws Exception {
+    private String getAssetInventoryCommon(String fieldName, BaseDataDic type, Integer declareRecordId) throws Exception {
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         Set<SurveyAssetInventoryContent> surveyAssetInventoryContentSet = Sets.newHashSet();
         Set<String> stringSet = Sets.newHashSet();
@@ -2826,35 +2828,32 @@ public class GenerateBaseDataService {
             query.setProjectPhaseId(projectPhase.getId());
             query.setDeclareRecordId(declareRecordId);
             List<ProjectPlanDetails> projectPlanDetailsList2 = projectPlanDetailsService.getProjectDetails(query);
-            if (CollectionUtils.isNotEmpty(projectPlanDetailsList2)){
-                projectPlanDetailsList.addAll(projectPlanDetailsList2) ;
+            if (CollectionUtils.isNotEmpty(projectPlanDetailsList2)) {
+                projectPlanDetailsList.addAll(projectPlanDetailsList2);
             }
         }
         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
             for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                 List<SurveyAssetInventoryContent> listByPlanDetailsId = surveyAssetInventoryContentService.getContentListByPlanDetailsId(projectPlanDetails.getId());
                 if (CollectionUtils.isNotEmpty(listByPlanDetailsId)) {
-                    if (listByPlanDetailsId.stream().anyMatch(obj -> Objects.equal(type.getId(), obj.getInventoryContent()))) {
-                        listByPlanDetailsId.stream().filter(obj -> Objects.equal(type.getId(), obj.getInventoryContent())).forEachOrdered(o -> {
-                            if (Objects.equal("不一致",o.getAreConsistent())){
-                                surveyAssetInventoryContentSet.add(o) ;
-                            }
-                        });
-                    }
+                    listByPlanDetailsId.forEach(o -> {
+                        if (Objects.equal("不一致", o.getAreConsistent()) && Objects.equal(type.getId(), o.getInventoryContent()))
+                            surveyAssetInventoryContentSet.add(o);
+                    });
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(surveyAssetInventoryContentSet)){
-            for (SurveyAssetInventoryContent surveyAssetInventoryContent : surveyAssetInventoryContentSet){
+        if (CollectionUtils.isNotEmpty(surveyAssetInventoryContentSet)) {
+            for (SurveyAssetInventoryContent surveyAssetInventoryContent : surveyAssetInventoryContentSet) {
                 String value = (String) Reflections.getFieldValue(surveyAssetInventoryContent, fieldName);
                 if (StringUtils.isNotEmpty(value)) {
-                    stringSet.add(value) ;
+                    stringSet.add(value);
                 }
             }
         }
         if (CollectionUtils.isNotEmpty(stringSet)) {
-           return StringUtils.join(stringSet , "");
-        }else {
+            return StringUtils.join(stringSet, "");
+        } else {
             return null;
         }
     }
@@ -3032,6 +3031,7 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 估价对象市场价值的确定
+     *
      * @auther: zch
      * @date: 2019/2/26 16:25
      */
@@ -3059,12 +3059,12 @@ public class GenerateBaseDataService {
             }
         }
         if (!objectListMap.isEmpty()) {
-            for (Map.Entry<SchemeJudgeObject ,List<SchemeSurePriceItem> > entry:objectListMap.entrySet()){
+            for (Map.Entry<SchemeJudgeObject, List<SchemeSurePriceItem>> entry : objectListMap.entrySet()) {
                 List<SchemeSurePriceItem> schemeSurePriceItemList = entry.getValue();
                 List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getChildrenJudgeObject(entry.getKey().getId());
                 SchemeSurePriceItem mdIncomeItem = null;
                 SchemeSurePriceItem mdCompareItem = null;
-                final int size = schemeSurePriceItemList.size() ;
+                final int size = schemeSurePriceItemList.size();
                 if (schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().equals(mdIncome.getName())).count() >= 1) {
                     mdIncomeItem = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().equals(mdIncome.getName())).findFirst().get();
                 }
@@ -3072,18 +3072,18 @@ public class GenerateBaseDataService {
                     mdCompareItem = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodName().equals(mdCompare.getName())).findFirst().get();
                 }
                 stringBuilder.delete(0, stringBuilder.toString().length());
-                if (objectListMap.size() > 1){
+                if (objectListMap.size() > 1) {
                     stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey()));
                 }
-                if (size == 1){
-                    stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，比较法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(entry.getValue().stream().findFirst().get().getTrialPrice(),2,false)) ;
+                if (size == 1) {
+                    stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，比较法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(entry.getValue().stream().findFirst().get().getTrialPrice(), 2, false));
                 }
-                if (size == 2){
+                if (size == 2) {
                     //刚好收益法和市场比较法 选择的情况
                     if (mdIncomeItem != null && mdCompareItem != null) {
                         final int computeDifference = publicService.computeDifference(mdIncomeItem.getTrialPrice(), mdCompareItem.getTrialPrice());
                         stringBuilder.append(mdIncome.getName()).append("与").append(mdCompare.getName());
-                        if (computeDifference > TEN){
+                        if (computeDifference > TEN) {
                             stringBuilder.append("测算结果有一定差异").append("，");
                             stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，").append(mdCompare.getName()).append("的试算结果更接近市场状况。");
                             stringBuilder.append("故最终单价=");
@@ -3113,7 +3113,7 @@ public class GenerateBaseDataService {
                             }
                             stringBuilder.append("（").append("收益法价格*权重+比较法价格*权重").append("）");
                         }
-                        if (computeDifference <= TEN){
+                        if (computeDifference <= TEN) {
                             stringBuilder.append("测算结果相近，");
                             stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素").append("，");
                             stringBuilder.append(mdIncome.getName()).append("的试算结果与").append(mdCompare.getName());
@@ -3133,11 +3133,11 @@ public class GenerateBaseDataService {
                     });
                     stringBuilder.append(StringUtils.join(stringList, "，")).append("估价对象结果如下表");
                 }
-                AsposeUtils.insertHtml(documentBuilder ,AsposeUtils.getWarpCssHtml(stringBuilder.toString() ,keyValueDtoList));
+                AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(stringBuilder.toString(), keyValueDtoList));
                 //当为合并对象的时候,需要写入单价调整表
                 if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                     List<SchemeJudgeObjectVo> voList = judgeObjectList.stream().map(oo -> schemeJudgeObjectService.getSchemeJudgeObjectVo(oo)).collect(Collectors.toList());
-                    documentBuilder.insertDocument(getUnitPriceAdjustmentDocument(voList) ,ImportFormatMode.KEEP_DIFFERENT_STYLES) ;
+                    documentBuilder.insertDocument(getUnitPriceAdjustmentDocument(voList), ImportFormatMode.KEEP_DIFFERENT_STYLES);
                 }
             }
         }
@@ -3929,8 +3929,8 @@ public class GenerateBaseDataService {
                         }
                     }
                 }
-                if (map.isEmpty()){
-                    value = "专业物管" ;
+                if (map.isEmpty()) {
+                    value = "专业物管";
                 }
             }
             break;
@@ -5311,9 +5311,9 @@ public class GenerateBaseDataService {
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     }
-                    if(schemeReportFileItemList.size()>1) {
+                    if (schemeReportFileItemList.size() > 1) {
                         this.imageInsertToWrod3(schemeReportFileItemList, 3, builder);
-                    }else{
+                    } else {
                         this.imageInsertToWrod3(schemeReportFileItemList, 1, builder);
                     }
                 }
@@ -5328,7 +5328,7 @@ public class GenerateBaseDataService {
         if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
         if (builder == null) throw new RuntimeException("builder empty");
         Table table = builder.startTable();
-        int rowLength = (schemeReportFileList.size() % colCount > 0 ? (schemeReportFileList.size() / colCount) + 1 : schemeReportFileList.size() / colCount) *2;//行数
+        int rowLength = (schemeReportFileList.size() % colCount > 0 ? (schemeReportFileList.size() / colCount) + 1 : schemeReportFileList.size() / colCount) * 2;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
         int maxWidth = 435;
@@ -5352,9 +5352,9 @@ public class GenerateBaseDataService {
                             }
                             imgPath = generateCommonMethod.getCombinationOfhead(paths);
                         }
-                        int width = maxWidth/colCount;
-                        int height = maxWidth/colCount;
-                        if(schemeReportFileList.size()==1){
+                        int width = maxWidth / colCount;
+                        int height = maxWidth / colCount;
+                        if (schemeReportFileList.size() == 1) {
                             height = 250;
                         }
                         builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,

@@ -117,13 +117,20 @@
                 <form id="frm_lease_income" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="sectionId">
+                    <input type="hidden" name="mcId">
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 月租金收入(元/m2)
                             </label>
                             <div class="col-sm-4">
-                                <label class="form-control" data-name="rentalIncome"></label>
+                                <div class="input-group">
+                                    <label class="form-control" data-name="rentalIncome"></label>
+                                    <span class="input-group-btn">
+                                    <input type="button" class="btn btn-primary" value="市场比较法"
+                                           onclick="lease.viewCompareMethod(this);"/>
+                                </span>
+                                </div>
                             </div>
                         </div>
                         <div class="x-valid">
@@ -302,7 +309,6 @@
                                 <label class="form-control v-percent" name="transactionTaxeFeeRatio"></label>
                             </div>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
@@ -418,7 +424,7 @@
     //查看收入信息
     lease.viewLeaseIncome = function (index) {
         var row = $("#tb_lease_income_list").bootstrapTable('getData')[index];
-        $("#frm_lease_income").find('label').each(function () {
+        $("#frm_lease_income").initForm(row).find('label').each(function () {
             if ($(this).hasClass('v-percent')) {
                 $(this).text(AssessCommon.pointToPercent(row[$(this).attr('data-name')]));
             } else {
@@ -426,6 +432,34 @@
             }
         })
         $('#modal_lease_income').modal();
+    }
+
+    lease.viewCompareMethod = function (_this) {
+        var mcId = $("#frm_lease_income").find('[name=mcId]').val();
+        var frame = layer.open({
+            type: 2,
+            title: '市场比较法',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '${pageContext.request.contextPath}/marketCompare/index?mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}&readonly=true',
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
+                    $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+                }
+            },
+            btnAlign: 'c',
+            btn: ['关闭'],
+            btn2: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
+                    $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+                }
+            }
+        });
+        layer.full(frame);
     }
 
     //查看成本信息
