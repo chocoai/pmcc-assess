@@ -162,7 +162,16 @@
         box: declareCommon.config.declareRealty.box,
         fileId: declareCommon.config.declareRealty.fileId,
         newFileId: declareCommon.config.declareRealty.newFileId,
-        fileView: declareCommon.config.declareRealty.fileView
+        fileView: declareCommon.config.declareRealty.fileView,
+        declareEconomicIndicatorsHead:{
+            frm:  declareCommon.config.declareEconomicIndicatorsHead2.frm,
+            name: declareCommon.config.declareEconomicIndicatorsHead2.name,
+            box: declareCommon.config.declareEconomicIndicatorsHead2.box
+        } ,
+        declareEconomicIndicatorsContent:{
+            frm:  declareCommon.config.declareEconomicIndicatorsContent2.frm,
+            name: declareCommon.config.declareEconomicIndicatorsContent2.name
+        }
     };
 
     declareApprovalFun.landConfig = {
@@ -210,6 +219,8 @@
                         toastr.success('关联的土地证数据已经被删除!');
                     }
                 });
+            }else {
+                toastr.success('无土地证数据!');
             }
         });
     };
@@ -228,14 +239,15 @@
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
                 declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
                     if (declareCommon.isNotBlank(data)) {
-                        declareCommon.initDeclareEconomicIndicators($("#" + declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.frm) , data , function () {
-                            console.log("test") ;
+                        declareCommon.initDeclareEconomicIndicators($("#" + declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.frm) ,$("#"+declareApprovalFun.houseConfig.declareEconomicIndicatorsContent.frm), data , function () {
                             $('#' + declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.box).modal("show");
                         }) ;
                     } else {
                         toastr.success('关联的经济指标数据已经被删除!');
                     }
                 }) ;
+            }else {
+                toastr.success('经济指标无!');
             }
         });
     };
@@ -334,6 +346,33 @@
         });
     };
 
+    //不动产 经济指标
+    declareApprovalFun.realtyRealDeclareEconomicIndicators = function (id) {
+        var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        var element1 = $("#"+declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsHead.frm).find(".panel-body") ;
+        var element2 = $("#"+declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsContent.frm).find(".panel-body") ;
+        declareCommon.appendDeclareEconomicIndicatorsApproval(element1,element2) ;
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
+                declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
+                    if (declareCommon.isNotBlank(data)) {
+                        declareCommon.initDeclareEconomicIndicators($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsHead.frm) ,$("#"+declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsContent.frm), data , function () {
+                            $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsHead.box).modal("show");
+                        }) ;
+                    } else {
+                        toastr.success('关联的经济指标数据已经被删除!');
+                    }
+                }) ;
+            }else {
+                toastr.success('经济指标无!');
+            }
+        });
+    };
+
     //不动产
     declareApprovalFun.realEstateloadList  = function () {
         var cols = declareCommon.getRealEstateColumn();
@@ -341,6 +380,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.realtyRealDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看详情" onclick="declareApprovalFun.realtyRealEstatefindData(' + row.id + ',\'exampleList\')"><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -585,5 +625,55 @@
         </div>
     </div>
 </div>
+
+
+<!-- 不动产 经济指标  -->
+<div id="boxDeclareEconomicIndicatorsHeadRealtyRealEstate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">经济指标</h3>
+            </div>
+            <form id="frmDeclareEconomicIndicatorsHeadRealtyRealEstate" class="form-horizontal" style="display: block;margin-bottom: 0px;padding-bottom: 0px;">
+                <input type="hidden" name="id">
+                <input type="hidden" name="centerId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form id="frmDeclareEconomicIndicatorsContentRealtyRealEstate" class="form-horizontal" style="display: block;margin-top: -4px;padding-top: -4px;">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </html>
 

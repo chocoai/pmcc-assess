@@ -22,6 +22,8 @@ public class DeclareRealtyRealEstateCertVo extends DeclareRealtyRealEstateCert {
     private String registrationTimeFmt;
     private String natureName;
 
+    private Integer centerId;
+
     public String getNatureName() {
         return natureName;
     }
@@ -125,5 +127,13 @@ public class DeclareRealtyRealEstateCertVo extends DeclareRealtyRealEstateCert {
 
     public void setPlanningUseName(String planningUseName) {
         this.planningUseName = planningUseName;
+    }
+
+    public Integer getCenterId() {
+        return centerId;
+    }
+
+    public void setCenterId(Integer centerId) {
+        this.centerId = centerId;
     }
 }

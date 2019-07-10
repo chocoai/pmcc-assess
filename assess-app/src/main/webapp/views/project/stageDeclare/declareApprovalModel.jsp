@@ -88,17 +88,20 @@
             var html = $("#"+commonDeclareApprovalModel.config.declareEconomicIndicators.idB).html() ;
             return html ;
         } ,
-        treeGirdParse:function () {
-            $('#' + commonDeclareApprovalModel.config.declareEconomicIndicators.tree).treegrid();
+        treeGirdParse:function (target) {
+            if (target){
+                target.find('#' + commonDeclareApprovalModel.config.declareEconomicIndicators.tree).treegrid();
+            }else {
+                $('#' + commonDeclareApprovalModel.config.declareEconomicIndicators.tree).treegrid();
+            }
         },
         getElementText: function (ele) {
             var text =  text = ele.find("td").first().text()  ;
             text = text.replace(/\s*/g,"");
             return text ;
         },
-        initFormContent:function (arrData) {
-            console.log(arrData) ;
-            var table = $("#"+commonDeclareApprovalModel.config.declareEconomicIndicators.tree) ;
+        initFormContent:function (arrData,frm) {
+            var table = frm.find("table") ;
             var tbody = table.find('tbody') ;
             tbody.find("tr").each(function (i,tr) {
                 var dataKey = $(tr).attr('data-key') ;
@@ -138,7 +141,7 @@
                                                 $(subChilds.get(subChilds.length - 1)).after(element);
                                             }
                                         }
-                                        commonDeclareApprovalModel.declareEconomicIndicators.treeGirdParse() ;
+                                        commonDeclareApprovalModel.declareEconomicIndicators.treeGirdParse(frm) ;
                                     }) ;
                                 }
                             }

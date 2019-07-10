@@ -71,6 +71,8 @@ public class DeclareRealtyRealEstateCertService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private DeclareRecordExtendService declareRecordExtendService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -235,6 +237,15 @@ public class DeclareRealtyRealEstateCertService {
         vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getPublicSituation()));
         vo.setUseRightTypeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightNature()));
         vo.setNatureName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
+
+        DeclareBuildEngineeringAndEquipmentCenter centerQuery = new DeclareBuildEngineeringAndEquipmentCenter();
+        centerQuery.setRealEstateId(declareRealtyRealEstateCert.getId());
+        centerQuery.setPlanDetailsId(declareRealtyRealEstateCert.getPlanDetailsId());
+        centerQuery.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(centerQuery);
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            vo.setCenterId(centerList.stream().findFirst().get().getId());
+        }
         return vo;
     }
 

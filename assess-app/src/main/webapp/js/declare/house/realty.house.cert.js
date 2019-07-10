@@ -232,12 +232,12 @@ assessCommonHouse.showAddModelDeclareEconomicIndicators = function (id) {
             if (centerData.indicatorId){
                 declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
                     data.centerId = item.centerId;
-                    declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm) , data , function () {
+                    declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm) , $("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm),data , function () {
                         $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
                     }) ;
                 }) ;
             }else {
-                declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm),{centerId: centerData.id} ,function () {
+                declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm),$("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm) ,{centerId: centerData.id} ,function () {
                     $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
                 }) ;
             }
@@ -251,7 +251,11 @@ assessCommonHouse.showAddModelDeclareEconomicIndicators = function (id) {
 assessCommonHouse.saveDeclareEconomicIndicatorsData = function () {
     declareCommon.saveDeclareEconomicIndicators(function () {
         $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("hide");
-    }) ;
+        $("#"+assessCommonHouse.config.declareEconomicIndicatorsHead.frm).find(".panel-body").empty() ;
+        $("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm).find(".panel-body").empty() ;
+        toastr.info("成功!");
+    },$("#"+assessCommonHouse.config.declareEconomicIndicatorsHead.frm),
+        $("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm)) ;
 } ;
 
 /**

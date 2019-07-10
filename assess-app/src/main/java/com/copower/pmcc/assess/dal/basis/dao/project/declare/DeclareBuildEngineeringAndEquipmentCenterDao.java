@@ -36,11 +36,6 @@ public class DeclareBuildEngineeringAndEquipmentCenterDao {
         return declareBuildEngineeringAndEquipmentCenterMapper.updateByPrimaryKeySelective(declareBuildEngineeringAndEquipmentCenter)==1;
     }
 
-    public void removeDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter){
-        DeclareBuildEngineeringAndEquipmentCenterExample example = new DeclareBuildEngineeringAndEquipmentCenterExample();
-        MybatisUtils.convertObj2Example(declareBuildEngineeringAndEquipmentCenter, example);
-        declareBuildEngineeringAndEquipmentCenterMapper.deleteByExample(example);
-    }
 
     public void deleteIds(List<Integer> ids){
         DeclareBuildEngineeringAndEquipmentCenterExample example = new DeclareBuildEngineeringAndEquipmentCenterExample();
