@@ -926,6 +926,186 @@ public class MdDevelopmentExample {
             return (Criteria) this;
         }
 
+        public Criteria andDevelopedYearIsNull() {
+            addCriterion("developed_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearIsNotNull() {
+            addCriterion("developed_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearEqualTo(BigDecimal value) {
+            addCriterion("developed_year =", value, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearNotEqualTo(BigDecimal value) {
+            addCriterion("developed_year <>", value, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearGreaterThan(BigDecimal value) {
+            addCriterion("developed_year >", value, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("developed_year >=", value, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearLessThan(BigDecimal value) {
+            addCriterion("developed_year <", value, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("developed_year <=", value, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearIn(List<BigDecimal> values) {
+            addCriterion("developed_year in", values, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearNotIn(List<BigDecimal> values) {
+            addCriterion("developed_year not in", values, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("developed_year between", value1, value2, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopedYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("developed_year not between", value1, value2, "developedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearIsNull() {
+            addCriterion("remaining_development_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearIsNotNull() {
+            addCriterion("remaining_development_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearEqualTo(BigDecimal value) {
+            addCriterion("remaining_development_year =", value, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearNotEqualTo(BigDecimal value) {
+            addCriterion("remaining_development_year <>", value, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearGreaterThan(BigDecimal value) {
+            addCriterion("remaining_development_year >", value, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("remaining_development_year >=", value, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearLessThan(BigDecimal value) {
+            addCriterion("remaining_development_year <", value, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("remaining_development_year <=", value, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearIn(List<BigDecimal> values) {
+            addCriterion("remaining_development_year in", values, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearNotIn(List<BigDecimal> values) {
+            addCriterion("remaining_development_year not in", values, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("remaining_development_year between", value1, value2, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainingDevelopmentYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("remaining_development_year not between", value1, value2, "remainingDevelopmentYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdIsNull() {
+            addCriterion("reward_rate_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdIsNotNull() {
+            addCriterion("reward_rate_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdEqualTo(Integer value) {
+            addCriterion("reward_rate_id =", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdNotEqualTo(Integer value) {
+            addCriterion("reward_rate_id <>", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdGreaterThan(Integer value) {
+            addCriterion("reward_rate_id >", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("reward_rate_id >=", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdLessThan(Integer value) {
+            addCriterion("reward_rate_id <", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("reward_rate_id <=", value, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdIn(List<Integer> values) {
+            addCriterion("reward_rate_id in", values, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdNotIn(List<Integer> values) {
+            addCriterion("reward_rate_id not in", values, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdBetween(Integer value1, Integer value2) {
+            addCriterion("reward_rate_id between", value1, value2, "rewardRateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("reward_rate_id not between", value1, value2, "rewardRateId");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

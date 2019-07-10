@@ -571,6 +571,17 @@
         }
     };
 
+    underConstruction.getRewardRate = function (_this) {
+        var group = $(_this).closest('.input-group');
+        rewardRateFunc.calculation(group.find('[name=rewardRateId]').val(), function (data) {
+            if (data) {
+                AssessCommon.elementParsePoint(group.find('[name=e43]').val(data.resultValue));
+                group.find('[name=rewardRateId]').val(data.id);
+                group.find('[name=e43]').val(data.resultValue).trigger('blur');
+            }
+        })
+    } ;
+
     /**
      math.sqrt(4) 开方
      math.add( ) 加

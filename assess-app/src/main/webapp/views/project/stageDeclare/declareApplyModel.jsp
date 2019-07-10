@@ -665,8 +665,12 @@
             var html = $("#"+commonDeclareApplyModel.config.declareEconomicIndicators.idB).html() ;
             return html ;
         },
-        treeGirdParse:function () {
-            $('#' + commonDeclareApplyModel.config.declareEconomicIndicators.tree).treegrid();
+        treeGirdParse:function (target) {
+            if (target){
+                target.find('#' + commonDeclareApplyModel.config.declareEconomicIndicators.tree).treegrid() ;
+            }else {
+                $('#' + commonDeclareApplyModel.config.declareEconomicIndicators.tree).treegrid();
+            }
         },
         addChild:function (that,template) {
             var tr = $(that).closest('tr');
@@ -688,7 +692,8 @@
                     $(subChilds.get(subChilds.length - 1)).after(html);
                 }
             }
-            commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse() ;
+            var form = $(that).closest('form');
+            commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse(form) ;
         },
         totalHandle:function (key,that) {
             var table = $(that).closest("table") ;
@@ -781,9 +786,8 @@
                 }
             }
         },
-        initFormContent:function (arrData) {
-            console.log(arrData) ;
-            var table = $("#"+commonDeclareApplyModel.config.declareEconomicIndicators.tree) ;
+        initFormContent:function (arrData ,frm) {
+            var table = frm.find("table") ;
             var tbody = table.find('tbody') ;
             tbody.find("tr").each(function (i,tr) {
                 var dataKey = $(tr).attr('data-key') ;
@@ -823,7 +827,7 @@
                                                 $(subChilds.get(subChilds.length - 1)).after(element);
                                             }
                                         }
-                                        commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse() ;
+                                        commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse(frm) ;
                                     }) ;
                                 }
                             }
@@ -832,17 +836,10 @@
                 }) ;
             }) ;
         },
-        getFormData:function (planDetailsId) {
+        getFormData:function (planDetailsId , frmHead,frmContent) {
             var itemArray = [] ;
             var handParams = ['otherBuildingArea'] ;//非固定key的数组
-            var form = $('#' + commonDeclareApplyModel.config.declareEconomicIndicators.handleId).closest("form") ;
-            if (form.size() == 0){
-                return false ;
-            }
-            if (!form.valid()) {
-                return false;
-            }
-            var table = $("#"+commonDeclareApplyModel.config.declareEconomicIndicators.tree) ;
+            var table = frmContent.find("table") ;
             var tbody = table.find('tbody') ;
             tbody.find("tr").each(function (i,tr) {
                 var item = {} ;
@@ -895,7 +892,7 @@
                     }
                 }
             });
-            var head = formSerializeArray(form) ;
+            var head = formSerializeArray(frmHead) ;
             head.planDetailsId = planDetailsId;
             return {head:head,content:itemArray} ;
         },

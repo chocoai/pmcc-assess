@@ -13,7 +13,7 @@
     <div class="x_content">
         <form class="form-horizontal" id="developmentFrm">
             <input type="hidden" name="id" value="${mdDevelopment.id}">
-            <input type="hidden" value='${mdDevelopmentJson}'>
+            <input type="hidden" value='${mdDevelopmentJson}' id="mdDevelopmentJson">
             <div class="col-sm-12 form-group">
                 <span class="col-sm-1">
                     <label>经营方式</label><span class="symbol required"></span>
@@ -30,19 +30,40 @@
 
             <div  class="form-group">
                 <!-- append html -->
-                <div>
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            项目建设期(年)
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" value="${mdDevelopment.projectConstructionPeriod}"
-                                   placeholder="项目建设期(年)"
-                                   class="form-control" name="projectConstructionPeriod" onblur="landEngineering.calculationF34(); landEngineering.calculationD34();underConstruction.calculationF34(); underConstruction.calculationD34();">
-                        </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        项目建设期(年)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text" value="${mdDevelopment.projectConstructionPeriod}"
+                               placeholder="项目建设期(年)"
+                               class="form-control"  name="projectConstructionPeriod" onblur="landEngineering.calculationF34(); landEngineering.calculationD34();underConstruction.calculationF34(); underConstruction.calculationD34();">
                     </div>
-
                 </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        已开发时间(年)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text" value="${mdDevelopment.developedYear}"
+                               placeholder="已开发时间(年)"
+                               class="form-control"  name="developedYear" onblur="projectConstructionPeriodFun();">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        剩余开发时间(年)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text" value="${mdDevelopment.remainingDevelopmentYear}"
+                               placeholder="剩余开发时间(年)"
+                               class="form-control"  name="remainingDevelopmentYear" onblur="projectConstructionPeriodFun();">
+                    </div>
+                </div>
+
+
             </div>
         </form>
     </div>
@@ -70,8 +91,31 @@
 </div>
 
 <jsp:include page="/views/method/module/developmentModule/developmentCommon.jsp"></jsp:include>
+<jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
 
 <script>
+
+    function projectConstructionPeriodFun() {
+        var target = $(development.config.frm) ;
+        var developedYear = target.find("input[name='developedYear']").val() ;
+        var remainingDevelopmentYear = target.find("input[name='remainingDevelopmentYear']").val() ;
+        if (!AssessCommon.isNumber(developedYear)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(remainingDevelopmentYear)) {
+            return false;
+        }
+        var c = 0;
+        if (development.isNotBlank(developedYear)) {
+            c += Number(developedYear);
+        }
+        if (development.isNotBlank(remainingDevelopmentYear)) {
+            c += Number(remainingDevelopmentYear);
+        }
+        target.find("input[name='projectConstructionPeriod']").val(c) ;
+        target.find("input[name='projectConstructionPeriod']").trigger('blur');
+    }
+
     var development = {};
 
     development.config = {
@@ -103,6 +147,8 @@
         }
         return false
     };
+
+
 
     development.valid = function (callback) {
         var head = formSerializeArray($(development.config.frm)) ;
@@ -276,13 +322,10 @@
                 $(development.config.land.frm).show();
                 $(development.config.engineering.frm).hide();
                 $("#developmentLand").attr('checked','true') ;
-                $("#developmentEngineering").attr('checked','false') ;
             }
             if (type == '2') {
-
                 $(development.config.land.frm).hide();
                 $(development.config.engineering.frm).show();
-                $("#developmentLand").attr('checked','false') ;
                 $("#developmentEngineering").attr('checked','true') ;
             }
         }

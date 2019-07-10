@@ -55,6 +55,15 @@ declareCommon.config = {
     declareEconomicIndicatorsContent: {
         frm: "frmDeclareEconomicIndicatorsContent",
         name: "经济指标2"
+    },
+    declareEconomicIndicatorsHead2: {
+        frm: "frmDeclareEconomicIndicatorsHeadRealtyRealEstate",
+        name: "经济指标1",
+        box: "boxDeclareEconomicIndicatorsHeadRealtyRealEstate"
+    },
+    declareEconomicIndicatorsContent2: {
+        frm: "frmDeclareEconomicIndicatorsContentRealtyRealEstate",
+        name: "经济指标2"
     }
 };
 
@@ -374,7 +383,7 @@ declareCommon.appendDeclareEconomicIndicators = function (eleA,eleB) {
     eleB.empty();
     eleA.prepend(commonDeclareApplyModel.declareEconomicIndicators.getHtmlA()) ;
     eleB.prepend(commonDeclareApplyModel.declareEconomicIndicators.getHtmlB()) ;
-    commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse() ;
+    commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse(eleB) ;
 } ;
 
 declareCommon.appendDeclareEconomicIndicatorsApproval = function (eleA,eleB) {
@@ -382,24 +391,25 @@ declareCommon.appendDeclareEconomicIndicatorsApproval = function (eleA,eleB) {
     eleB.empty();
     eleA.prepend(commonDeclareApprovalModel.declareEconomicIndicators.getHtmlA()) ;
     eleB.prepend(commonDeclareApprovalModel.declareEconomicIndicators.getHtmlB()) ;
-    commonDeclareApprovalModel.declareEconomicIndicators.treeGirdParse() ;
+    commonDeclareApprovalModel.declareEconomicIndicators.treeGirdParse(eleB) ;
 } ;
 
 /**
  * 经济指标1 , 2保存
  * @param callback
  */
-declareCommon.saveDeclareEconomicIndicators = function (callback) {
-    var data = commonDeclareApplyModel.declareEconomicIndicators.getFormData(declareCommon.getPlanDetailsId()) ;
+declareCommon.saveDeclareEconomicIndicators = function (callback,frmHead,frmContent) {
+    if (!frmHead.valid()) {
+        return false;
+    }
+    var data = commonDeclareApplyModel.declareEconomicIndicators.getFormData(declareCommon.getPlanDetailsId(),frmHead,frmContent) ;
     if (data){
 
     }else {
         return false ;
     }
     console.log("declareCommon.saveDeclareEconomicIndicators 经济指标1 , 2保存") ;
-    console.log(data) ;
     declareCommon.saveDeclareEconomicIndicatorsHead(data.head , function (item) {
-        console.log(item) ;
         declareCommon.clearDeclareEconomicIndicatorsByContent(item.id , function () {
             //把经济指标的id更新到中间表中去
             declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: item.id, id: data.head.centerId}, function () {
@@ -467,7 +477,7 @@ declareCommon.saveDeclareEconomicIndicatorsHead = function (data, callback) {
  * @param frm
  * @param callback
  */
-declareCommon.initDeclareEconomicIndicators = function ( frm , data,callback) {
+declareCommon.initDeclareEconomicIndicators = function ( frm ,frmContent, data,callback) {
     frm.clearAll();
     frm.initForm(data);
     frm.find("input[name='planDate']").val(formatDate(data.planDate));
@@ -481,10 +491,10 @@ declareCommon.initDeclareEconomicIndicators = function ( frm , data,callback) {
     if (this.isNotBlank(data.id)){
         declareCommon.getDeclareEconomicIndicatorsContentList(data.id , function (arrData) {
             try {
-                commonDeclareApplyModel.declareEconomicIndicators.initFormContent(arrData);
+                commonDeclareApplyModel.declareEconomicIndicators.initFormContent(arrData,frmContent);
             } catch (e) {
                 try {
-                    commonDeclareApprovalModel.declareEconomicIndicators.initFormContent(arrData);
+                    commonDeclareApprovalModel.declareEconomicIndicators.initFormContent(arrData,frmContent);
                 } catch (e) {
                     console.log(e) ;
                 }
