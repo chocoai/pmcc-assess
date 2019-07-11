@@ -1,10 +1,13 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BasicUnitHuxingController {
     @Autowired
-    private BasicUnitService basicUnitService;
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -76,6 +79,30 @@ public class BasicUnitHuxingController {
             return null;
         }
     }
+
+    @GetMapping(value = "/getSelectHuxingListByUnitId", name = "获取选择户型数据列表")
+    public BootstrapTableVo getSelectHuxingListByUnitId(Integer basicUnitId) {
+        try {
+            return basicUnitHuxingService.getSelectHuxingListByUnitId(basicUnitId);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return null;
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getUnitId", name = "批量申请获取单元id")
+    public HttpResult getUnitId(Integer tableId) {
+        try {
+            BasicApplyBatchDetail house = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", tableId);
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.getParentTableId(house));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return null;
+        }
+    }
+
+
 
     @RequestMapping(value = "/basicUnitHuxingList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing) {
