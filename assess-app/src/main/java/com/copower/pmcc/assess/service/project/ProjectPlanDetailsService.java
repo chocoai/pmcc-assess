@@ -233,12 +233,9 @@ public class ProjectPlanDetailsService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getRootProjectPlanDetailsByPlanId(planId);
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
-        //递归获取所有子项任务
-        List<ProjectPlanDetails> detailsAllList = Lists.newArrayList();
-        projectPlanDetails.forEach(o -> detailsAllList.addAll(getPlanDetailsListRecursion(o.getId(), true)));
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(detailsAllList, false);
+        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 
         //获取当前人该阶段下待处理的任务
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
@@ -250,7 +247,7 @@ public class ProjectPlanDetailsService {
 
         //获取该阶段下正在运行的待审批任务
         List<String> processInsIds = Lists.newArrayList();
-        for (ProjectPlanDetails projectPlanDetail : detailsAllList) {
+        for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
             if (StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())) {
                 if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
                     processInsIds.add(projectPlanDetail.getProcessInsId());

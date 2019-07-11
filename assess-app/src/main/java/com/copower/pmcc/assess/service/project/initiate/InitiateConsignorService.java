@@ -61,7 +61,7 @@ public class InitiateConsignorService {
         if (initiateConsignor.getId() == null || initiateConsignor.getId() == 0) {
             initiateConsignor.setCreator(commonService.thisUserAccount());
             //对 委托人进行单独处理
-            if (initiateConsignor.getCsType().equals(InitiateContactsEnum.naturalPerson.getId())) {
+            if (InitiateContactsEnum.naturalPerson.getId().equals(initiateConsignor.getCsType())) {
                 initiateConsignor.setCsUnitProperties(null);
                 initiateConsignor.setCsScopeOperation(null);
                 initiateConsignor.setCsSociologyCode(null);

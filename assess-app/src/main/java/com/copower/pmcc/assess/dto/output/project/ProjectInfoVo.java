@@ -39,6 +39,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private String valueTypeName;
     private String propertyScopeName;
     private String loanTypeName;
+    private String serviceComeFromName;
     private Integer finishPre;
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
@@ -247,5 +248,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setContractList(List<KeyValueDto> contractList) {
         this.contractList = contractList;
+    }
+
+    public String getServiceComeFromName() {
+        return serviceComeFromName;
+    }
+
+    public void setServiceComeFromName(String serviceComeFromName) {
+        this.serviceComeFromName = serviceComeFromName;
     }
 }

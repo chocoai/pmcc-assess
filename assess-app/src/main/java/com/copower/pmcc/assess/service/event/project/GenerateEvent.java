@@ -71,7 +71,7 @@ public class GenerateEvent extends BaseProcessEvent {
         Integer publicProjectId = projectInfo.getPublicProjectId();
         if (publicProjectId == null) return;
         SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(publicProjectId, applicationConstant.getAppKey());
-        if (sysProjectDto != null) {
+        if (sysProjectDto != null && sysProjectDto.getId() > 0) {
             sysProjectDto.setStatus(ProjectStatusEnum.FINISH.getKey());
             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
             if (baseDataDic == null) return;

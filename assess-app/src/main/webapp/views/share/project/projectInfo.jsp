@@ -58,15 +58,16 @@
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门</label>
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control">${projectInfo.departmentName}</label>
+                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
+                                                                    pattern='yyyy-MM-dd'/></label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">业务来源</label>
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control">${projectInfo.serviceComeFrom}</label>
+                        <label class="form-control">${projectInfo.departmentName}</label>
                     </div>
                 </div>
             </div>
@@ -89,37 +90,21 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日</label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
-                                                                    pattern='yyyy-MM-dd'/></label>
-                    </div>
-                </div>
-                <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目经理</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${projectInfo.projectMemberVo.userAccountManagerName}</label>
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目成员</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${projectInfo.projectMemberVo.userAccountMemberName}</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <label class="form-control">${projectInfo.loanTypeName}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">合同金额</label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control">${projectInfo.contractPrice}</label>
                     </div>
                 </div>
             </div>
@@ -160,8 +145,27 @@
                         </div>
                     </c:if>
                 </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">合同金额</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${projectInfo.contractPrice}</label>
+                    </div>
+                </div>
             </div>
-
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">业务来源</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${projectInfo.serviceComeFromName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">业务来源说明</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${projectInfo.serviceComeFromExplain}</label>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目说明</label>

@@ -153,6 +153,9 @@
                                         <input type="hidden" name="copyPlanDetailsId">
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
+                                    <div class="col-md-3">
+                                        <ul id="ztree${plan.id}" class="ztree"></ul>
+                                    </div>
                                 </div>
                             </c:forEach>
                         </div>
@@ -225,9 +228,56 @@
     </div>
 </div>
 </body>
+<div id="ztreePlanTaskInfo" style="display: none;">
+    <div class="col-md-12 form-horizontal">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">开始时间</label>
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                    <label class="form-control dbdate" name="planStartDate"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">结束时间</label>
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                    <label class="form-control dbdate" name="planEndDate"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">计划工时</label>
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                    <label class="form-control" name="planHours"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">提交时间</label>
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                    <label class="form-control dbdate" name="taskSubmitTime"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">责任人</label>
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                    <label class="form-control" name="executeUserName"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="text-align: center;">
+            <div class="x-valid">
+                <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
+                    <input type="button" class="btn btn-primary" value="提交">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript">
+<script type="application/javascript">
     $(function () {
         //注册事件
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -243,21 +293,6 @@
             projectDetails.loadPlanItem(projectDetails.getActiveTab().closest('li').attr('plan-id'));
         }, 30 * 1000)
     })
-
-    function writeToErpProject() {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/home/writeToErpProject',
-            data: {projectId: '${projectInfo.id}'},
-            type: 'post',
-            success: function (result) {
-                if (result.ret) {
-                    Alert("写入成功");
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
-    }
 </script>
 <script type="application/javascript">
     var projectDetails = {
@@ -268,6 +303,12 @@
                 projectId: '${projectInfo.id}',
                 planId: that.attr('plan-id')
             });
+
+            <%--ztreeInit({--%>
+                <%--target: $('#ztree' + that.attr('plan-id')),--%>
+                <%--projectId: '${projectInfo.id}',--%>
+                <%--planId: that.attr('plan-id')--%>
+            <%--});--%>
         },
 
         loadPlanItem: function (planId) {
@@ -755,7 +796,7 @@
             });
             cols.push({
                 field: 'opt', title: '操作', formatter: function (value, row, index) {
-                    return "<a target='_blank' href='/pmcc-hr/hrBase/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";;
+                    return "<a target='_blank' href='/pmcc-hr/hrBase/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 }
             });
             $("#tb_projectLegWorkList").bootstrapTable('destroy');
@@ -786,7 +827,8 @@
             });
             cols.push({
                 field: 'opt', title: '操作', formatter: function (value, row, index) {
-                    return "<a target='_blank' href='/pmcc-finance/FinancialBase/DetailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";;
+                    return "<a target='_blank' href='/pmcc-finance/FinancialBase/DetailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                    ;
                 }
             });
             $("#tb_projectBillList").bootstrapTable('destroy');
@@ -804,5 +846,62 @@
     };
 
 </script>
-
+<script type="application/javascript">
+    var zTreeObj;
+    function ztreeInit(options) {
+        var defaults = {
+            target: undefined,
+            projectId: undefined,
+            planId: undefined
+        }
+        var defaults = $.extend({}, defaults, options);
+        var setting = {
+            data: {
+                key: {
+                    name: "projectPhaseName"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid"
+                }
+            },
+            // 回调函数
+            callback: {
+                onClick: function (event, treeId, treeNode, clickFlag) {
+                    console.log(treeNode);
+                    var taskInfo = $("#ztreePlanTaskInfo");
+                    taskInfo.initForm(treeNode);
+                    //显示对应数据 显示可操作按钮
+                    //页面层
+                    layer.closeAll('page');
+                    layer.open({
+                        type: 1,
+                        shade: 0,
+                        offset: 'r',
+                        area: ['50%', '300px'], //宽高
+                        content: $("#ztreePlanTaskInfo").html()
+                    });
+                }
+            }
+        };
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId",
+            data: {
+                projectId: defaults.projectId,
+                planId: defaults.planId
+            },
+            type: 'get',
+            success: function (result) {
+                if (result) {
+                    console.log(result.rows);
+                    zTreeObj = $.fn.zTree.init(defaults.target, setting, result.rows);
+                    var rootNode = zTreeObj.getNodes()[0];
+                    zTreeObj.selectNode(rootNode);
+                    zTreeObj.expandNode(rootNode, true, false, true);
+                }
+            }
+        })
+    }
+</script>
 </html>

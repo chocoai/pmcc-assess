@@ -354,7 +354,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getPlanDetailListByPlanId", name = "取得阶段工作成果", method = RequestMethod.GET)
+    @RequestMapping(value = "/getPlanDetailListByPlanId", name = "取得阶段工作成果")
     public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId) {
         return projectPlanDetailsService.getPlanDetailListByPlanId(projectId, planId);
     }
@@ -372,7 +372,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getValueDefinition", name = "取得价值定义信息", method = RequestMethod.POST)
+    @RequestMapping(value = "/getValueDefinition", name = "取得价值定义信息")
     public HttpResult getValueDefinition(String entrustPurpose, String valueType) {
         try {
             DataValueDefinition valueDefinition = dataValueDefinitionService.getValueDefinition(entrustPurpose, valueType);
