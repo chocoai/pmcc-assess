@@ -102,7 +102,7 @@ public class MdMarketCostService {
         return mdCostDao.getEstateNetworkList(mdCost);
     }
 
-    public List<MdCostBuilding> mdCostBuildingList(MdCostBuilding mdCostBuilding) {
+    public List<MdCostBuilding> getMdCostBuildingList(MdCostBuilding mdCostBuilding) {
         return mdCostBuildingDao.getEstateNetworkList(mdCostBuilding);
     }
 

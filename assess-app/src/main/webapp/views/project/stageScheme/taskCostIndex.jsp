@@ -49,6 +49,8 @@
                     </form>
                 </div>
 
+                <%@include file="/views/method/module/developmentCommon.jsp" %>
+
 
                 <div class="x_content">
                     <form class="form-horizontal" id="constructionFrm">
@@ -104,6 +106,9 @@
     };
 
     $(document).ready(function () {
+
+        var type = '${mdCost.type}' ;
+
         cost.frm.find("input[type='radio'][name='type']").change(function () {
             var data = formSerializeArray(cost.frm);
             if (data.type == '1') {
@@ -115,6 +120,15 @@
                 cost.constructionFrm.show() ;
             }
         });
+
+        if (type == '2'){
+            cost.buildingFrm.hide() ;
+            cost.constructionFrm.show() ;
+        }
+        if (type == '1'){
+            cost.buildingFrm.show() ;
+            cost.constructionFrm.hide() ;
+        }
     });
 
 </script>

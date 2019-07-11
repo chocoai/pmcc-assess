@@ -20,15 +20,67 @@ public class MdCostConstruction {
 
     private String jsonContent;
 
-    private Integer engineeringId;
+    private BigDecimal developLandAreaTax;
 
-    private Integer pid;
+    private BigDecimal developBuildAreaTax;
+
+    private BigDecimal developYearNumberTax;
+
+    private BigDecimal landPurchasePrice;
+
+    private String landPurchasePriceExplain;
+
+    private BigDecimal landGetRelevant;
+
+    private String landGetRelevantExplain;
+
+    private BigDecimal reconnaissanceDesign;
+
+    private BigDecimal constructionInstallationEngineeringFee;
+
+    private BigDecimal infrastructureCost;
+
+    private BigDecimal infrastructureMatchingCost;
+
+    private BigDecimal devDuring;
+
+    private BigDecimal otherEngineeringCost;
+
+    private BigDecimal unforeseenExpenses;
+
+    private String unforeseenExpensesExplain;
+
+    private BigDecimal managementExpense;
+
+    private String managementExpenseExplain;
+
+    private BigDecimal salesFee;
+
+    private String salesFeeExplain;
+
+    private BigDecimal interestInvestmentTax;
+
+    private String interestInvestmentTaxExplain;
+
+    private BigDecimal salesTaxAndAdditional;
+
+    private String salesTaxAndAdditionalExplain;
+
+    private BigDecimal investmentProfitTax;
+
+    private String investmentProfitTaxExplain;
+
+    private BigDecimal constructionAssessmentValue2;
 
     private String creator;
 
     private Date gmtModified;
 
     private Date gmtCreated;
+
+    private Integer pid;
+
+    private BigDecimal additionalCostLandAcquisition;
 
     public Integer getId() {
         return id;
@@ -94,20 +146,212 @@ public class MdCostConstruction {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
-    public Integer getEngineeringId() {
-        return engineeringId;
+    public BigDecimal getDevelopLandAreaTax() {
+        return developLandAreaTax;
     }
 
-    public void setEngineeringId(Integer engineeringId) {
-        this.engineeringId = engineeringId;
+    public void setDevelopLandAreaTax(BigDecimal developLandAreaTax) {
+        this.developLandAreaTax = developLandAreaTax;
     }
 
-    public Integer getPid() {
-        return pid;
+    public BigDecimal getDevelopBuildAreaTax() {
+        return developBuildAreaTax;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setDevelopBuildAreaTax(BigDecimal developBuildAreaTax) {
+        this.developBuildAreaTax = developBuildAreaTax;
+    }
+
+    public BigDecimal getDevelopYearNumberTax() {
+        return developYearNumberTax;
+    }
+
+    public void setDevelopYearNumberTax(BigDecimal developYearNumberTax) {
+        this.developYearNumberTax = developYearNumberTax;
+    }
+
+    public BigDecimal getLandPurchasePrice() {
+        return landPurchasePrice;
+    }
+
+    public void setLandPurchasePrice(BigDecimal landPurchasePrice) {
+        this.landPurchasePrice = landPurchasePrice;
+    }
+
+    public String getLandPurchasePriceExplain() {
+        return landPurchasePriceExplain;
+    }
+
+    public void setLandPurchasePriceExplain(String landPurchasePriceExplain) {
+        this.landPurchasePriceExplain = landPurchasePriceExplain == null ? null : landPurchasePriceExplain.trim();
+    }
+
+    public BigDecimal getLandGetRelevant() {
+        return landGetRelevant;
+    }
+
+    public void setLandGetRelevant(BigDecimal landGetRelevant) {
+        this.landGetRelevant = landGetRelevant;
+    }
+
+    public String getLandGetRelevantExplain() {
+        return landGetRelevantExplain;
+    }
+
+    public void setLandGetRelevantExplain(String landGetRelevantExplain) {
+        this.landGetRelevantExplain = landGetRelevantExplain == null ? null : landGetRelevantExplain.trim();
+    }
+
+    public BigDecimal getReconnaissanceDesign() {
+        return reconnaissanceDesign;
+    }
+
+    public void setReconnaissanceDesign(BigDecimal reconnaissanceDesign) {
+        this.reconnaissanceDesign = reconnaissanceDesign;
+    }
+
+    public BigDecimal getConstructionInstallationEngineeringFee() {
+        return constructionInstallationEngineeringFee;
+    }
+
+    public void setConstructionInstallationEngineeringFee(BigDecimal constructionInstallationEngineeringFee) {
+        this.constructionInstallationEngineeringFee = constructionInstallationEngineeringFee;
+    }
+
+    public BigDecimal getInfrastructureCost() {
+        return infrastructureCost;
+    }
+
+    public void setInfrastructureCost(BigDecimal infrastructureCost) {
+        this.infrastructureCost = infrastructureCost;
+    }
+
+    public BigDecimal getInfrastructureMatchingCost() {
+        return infrastructureMatchingCost;
+    }
+
+    public void setInfrastructureMatchingCost(BigDecimal infrastructureMatchingCost) {
+        this.infrastructureMatchingCost = infrastructureMatchingCost;
+    }
+
+    public BigDecimal getDevDuring() {
+        return devDuring;
+    }
+
+    public void setDevDuring(BigDecimal devDuring) {
+        this.devDuring = devDuring;
+    }
+
+    public BigDecimal getOtherEngineeringCost() {
+        return otherEngineeringCost;
+    }
+
+    public void setOtherEngineeringCost(BigDecimal otherEngineeringCost) {
+        this.otherEngineeringCost = otherEngineeringCost;
+    }
+
+    public BigDecimal getUnforeseenExpenses() {
+        return unforeseenExpenses;
+    }
+
+    public void setUnforeseenExpenses(BigDecimal unforeseenExpenses) {
+        this.unforeseenExpenses = unforeseenExpenses;
+    }
+
+    public String getUnforeseenExpensesExplain() {
+        return unforeseenExpensesExplain;
+    }
+
+    public void setUnforeseenExpensesExplain(String unforeseenExpensesExplain) {
+        this.unforeseenExpensesExplain = unforeseenExpensesExplain == null ? null : unforeseenExpensesExplain.trim();
+    }
+
+    public BigDecimal getManagementExpense() {
+        return managementExpense;
+    }
+
+    public void setManagementExpense(BigDecimal managementExpense) {
+        this.managementExpense = managementExpense;
+    }
+
+    public String getManagementExpenseExplain() {
+        return managementExpenseExplain;
+    }
+
+    public void setManagementExpenseExplain(String managementExpenseExplain) {
+        this.managementExpenseExplain = managementExpenseExplain == null ? null : managementExpenseExplain.trim();
+    }
+
+    public BigDecimal getSalesFee() {
+        return salesFee;
+    }
+
+    public void setSalesFee(BigDecimal salesFee) {
+        this.salesFee = salesFee;
+    }
+
+    public String getSalesFeeExplain() {
+        return salesFeeExplain;
+    }
+
+    public void setSalesFeeExplain(String salesFeeExplain) {
+        this.salesFeeExplain = salesFeeExplain == null ? null : salesFeeExplain.trim();
+    }
+
+    public BigDecimal getInterestInvestmentTax() {
+        return interestInvestmentTax;
+    }
+
+    public void setInterestInvestmentTax(BigDecimal interestInvestmentTax) {
+        this.interestInvestmentTax = interestInvestmentTax;
+    }
+
+    public String getInterestInvestmentTaxExplain() {
+        return interestInvestmentTaxExplain;
+    }
+
+    public void setInterestInvestmentTaxExplain(String interestInvestmentTaxExplain) {
+        this.interestInvestmentTaxExplain = interestInvestmentTaxExplain == null ? null : interestInvestmentTaxExplain.trim();
+    }
+
+    public BigDecimal getSalesTaxAndAdditional() {
+        return salesTaxAndAdditional;
+    }
+
+    public void setSalesTaxAndAdditional(BigDecimal salesTaxAndAdditional) {
+        this.salesTaxAndAdditional = salesTaxAndAdditional;
+    }
+
+    public String getSalesTaxAndAdditionalExplain() {
+        return salesTaxAndAdditionalExplain;
+    }
+
+    public void setSalesTaxAndAdditionalExplain(String salesTaxAndAdditionalExplain) {
+        this.salesTaxAndAdditionalExplain = salesTaxAndAdditionalExplain == null ? null : salesTaxAndAdditionalExplain.trim();
+    }
+
+    public BigDecimal getInvestmentProfitTax() {
+        return investmentProfitTax;
+    }
+
+    public void setInvestmentProfitTax(BigDecimal investmentProfitTax) {
+        this.investmentProfitTax = investmentProfitTax;
+    }
+
+    public String getInvestmentProfitTaxExplain() {
+        return investmentProfitTaxExplain;
+    }
+
+    public void setInvestmentProfitTaxExplain(String investmentProfitTaxExplain) {
+        this.investmentProfitTaxExplain = investmentProfitTaxExplain == null ? null : investmentProfitTaxExplain.trim();
+    }
+
+    public BigDecimal getConstructionAssessmentValue2() {
+        return constructionAssessmentValue2;
+    }
+
+    public void setConstructionAssessmentValue2(BigDecimal constructionAssessmentValue2) {
+        this.constructionAssessmentValue2 = constructionAssessmentValue2;
     }
 
     public String getCreator() {
@@ -132,5 +376,21 @@ public class MdCostConstruction {
 
     public void setGmtCreated(Date gmtCreated) {
         this.gmtCreated = gmtCreated;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public BigDecimal getAdditionalCostLandAcquisition() {
+        return additionalCostLandAcquisition;
+    }
+
+    public void setAdditionalCostLandAcquisition(BigDecimal additionalCostLandAcquisition) {
+        this.additionalCostLandAcquisition = additionalCostLandAcquisition;
     }
 }

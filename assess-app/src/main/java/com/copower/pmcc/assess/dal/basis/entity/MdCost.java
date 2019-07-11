@@ -10,6 +10,10 @@ public class MdCost {
 
     private BigDecimal area;
 
+    private Integer planDetailsId;
+
+    private String type;
+
     private BigDecimal price;
 
     private String creator;
@@ -17,8 +21,6 @@ public class MdCost {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String type;
 
     public Integer getId() {
         return id;
@@ -42,6 +44,22 @@ public class MdCost {
 
     public void setArea(BigDecimal area) {
         this.area = area;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public BigDecimal getPrice() {
@@ -74,13 +92,5 @@ public class MdCost {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
     }
 }

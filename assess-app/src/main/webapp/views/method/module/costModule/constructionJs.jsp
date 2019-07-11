@@ -3,165 +3,356 @@
 <script type="text/javascript">
     var construction = {};
 
+    construction.target = $("#constructionFrm");
+    construction.fixed = 2; //小数点保留2位
+    construction.fixedMax = 4; //小数点保留4位
+    construction.fixedMin = 0; //小数点保留0位
+
     construction.callCompareMethod = function (this_) {
 
     };
 
-    construction.config = {
-        id: "constructionModel",
-        totalTaxRate: {
-            key: "totalTaxRate",
-            name: "合计税率",
-            business: "businessTax",//增值税
-            urbanMaintenance: "urbanMaintenanceTax",//城建税
-            education: "educationTax",//教育费附加
-            localEducation: "localEducationTax",//地方教育费附加
-            stampDuty: "stampDuty"//印花税
-        },
-        /*说明:key代表计算出的金额,correcting代表费率校正值,tax代表费率,name代表名称*/
-        inputConfig: {
-            developLandArea: {
-                key: "developLandArea",
-                tax: "developLandAreaTax",
-                name: "开发土地面积"
-            },
-            developBuildArea: {
-                key: "developBuildArea",
-                tax: "developBuildAreaTax",
-                name: "开发建筑面积"
-            },
-            developYearNumber: {
-                key: "developYearNumber",
-                tax: "developYearNumberTax",
-                name: "开发年"
-            },
-            landPurchasePrice: {
-                key: "landPurchasePrice",
-                name: "土地购买价格",
-                tax: "landPurchasePriceTax"
-            },
-            landGetRelevant: {
-                key: "landGetRelevant",
-                tax: "landGetRelevantTax",
-                name: "土地取得相关税费"
-            },
-            landGetCostTotal: {
-                key: "landGetCostTotal",
-                name: "土地取得成本合计",
-                tax: ""
-            },
-            reconnaissanceDesign: {
-                key: "reconnaissanceDesign",
-                tax: "reconnaissanceDesignTax",
-                correcting: "",
-                name: "勘察设计和前期工程费"
-            },
-            constructionInstallationEngineeringFee: {
-                key: "constructionInstallationEngineeringFee",
-                tax: "constructionInstallationEngineeringFeeTax",
-                correcting: "",
-                name: "建筑安装工程费",
-                class: "constructionInstallationEngineeringFeeClass"
-            },
-            infrastructureCost: {
-                key: "infrastructureCost",
-                tax: "infrastructureCostTax",
-                correcting: "",
-                name: "基础设施费用"
-            },
-            infrastructureMatchingCost: {
-                key: "infrastructureMatchingCost",
-                tax: "infrastructureMatchingCostTax",
-                correcting: "",
-                name: "公共配套设施费用"
-            },
-            devDuring: {
-                key: "devDuring",
-                tax: "devDuringTax",
-                correcting: "",
-                name: "开发期间"
-            },
-            otherEngineeringCost: {
-                key: "otherEngineeringCost",
-                tax: "otherEngineeringCostTax",
-                correcting: "",
-                name: "其它工程费"
-            },
-            constructionSubtotal: {
-                key: "constructionSubtotal",
-                tax: "",
-                name: "建设成本小计"
-            },
-            unforeseenExpenses: {
-                key: "unforeseenExpenses",
-                tax: "unforeseenExpensesTax",
-                correcting: "",
-                name: "不可预见费"
-            },
-            deed: {
-                key: "deed",
-                tax: "deedTax",
-                correcting: "deedCorrecting",
-                name: "契税"
-            },
-            transactionCost: {
-                key: "transactionCost",
-                tax: "transactionCostTax",
-                correcting: "transactionCostCorrecting",
-                name: "交易费"
-            },
-            managementExpense: {
-                key: "managementExpense",
-                tax: "managementExpenseTax",
-                correcting: "managementExpenseCorrecting",
-                name: "管理费"
-            },
-            salesFee: {
-                key: "salesFee",
-                tax: "salesFeeTax",
-                correcting: "salesFeeCorrecting",
-                name: "销售费用"
-            },
-            interestInvestment: {
-                key: "interestInvestment",
-                tax: "interestInvestmentTax",
-                correcting: "interestInvestmentCorrecting",
-                name: "投资利息"
-            },
-            investmentProfit: {
-                key: "investmentProfit",
-                tax: "investmentProfitTax",
-                correcting: "investmentProfitCorrecting",
-                name: "投资利润"
-            },
-            salesTaxAndAdditional: {
-                key: "salesTaxAndAdditional",
-                tax: "",
-                correcting: "salesTaxAndAdditionalCorrecting",
-                name: "销售税金及附加"
-            },
-            businessAdditional: {
-                key: "businessAdditional",
-                tax: "businessAdditionalTax",
-                name: "增值税金及附加"
-            },
-            landIncrement: {
-                key: "landIncrement",
-                tax: "landIncrementTax",
-                name: "土地增值"
-            },
-            constructionAssessmentValue: {
-                key: "constructionAssessmentValue",
-                tax: "",
-                name: "在建工程评估价值"
-            },
-            constructionAssessmentPrice: {
-                key: "constructionAssessmentPrice",
-                tax: "",
-                correcting: "constructionAssessmentPriceCorrecting",
-                name: "在建工程单位价"
-            }
+    construction.calculationE6 = function () {
+        //=D3*D6/10000
+        var d3 = construction.target.find("input[name='developLandAreaTax']").val() ;
+        var d6 = construction.target.find("input[name='landPurchasePrice']").val() ;
+        if (!AssessCommon.isNumber(d3)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d6)) {
+            return false;
+        }
+        var c = math.chain(d3).multiply(d6).divide(10000) ;
+        construction.target.find("input[name='e6']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE7 = function () {
+        //=ROUND(E6*D7,2)
+        var d7 = construction.target.find("input[name='landGetRelevant']").attr("data-value") ;
+        var e6 = construction.target.find("input[name='e6']").val() ;
+        if (!AssessCommon.isNumber(e6)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d7)) {
+            return false;
+        }
+        var c = math.chain(e6).multiply(d7) ;
+        construction.target.find("input[name='e7']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationD8 = function () {
+        //=E8/D3*10000
+        var d3 = construction.target.find("input[name='developLandAreaTax']").val() ;
+        var e8 = construction.target.find("input[name='additionalCostLandAcquisition']").val() ;
+        if (!AssessCommon.isNumber(d3)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e8)) {
+            return false;
+        }
+        var c = math.chain(e8).divide(d3).multiply(10000) ;
+        construction.target.find("input[name='d8']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationLandGetCostTotalE9 = function () {
+        //=SUM(E6:F8)
+        var e6 = construction.target.find("input[name='e6']").val() ;
+        var e7 = construction.target.find("input[name='e7']").val() ;
+        var e8 = construction.target.find("input[name='additionalCostLandAcquisition']").val() ;
+        if (!AssessCommon.isNumber(e6)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e7)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e8)) {
+            return false;
+        }
+        var c = math.chain(e6).add(e7).add(e8) ;
+        c = c.value.toFixed(construction.fixed) ;
+        construction.target.find("input[name='landGetCostTotal']").val(c).trigger('blur') ;
+        construction.target.find(".landGetCostTotal").html(c) ;
+    };
+
+    construction.calculationE12 = function () {
+        //=F3*D12/10000
+        var f3 = construction.target.find("input[name='developBuildAreaTax']").val();
+        var d12 = construction.target.find("input[name='constructionInstallationEngineeringFee']").val();
+        if (!AssessCommon.isNumber(f3)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d12)) {
+            return false;
+        }
+        var c = math.chain(f3).multiply(d12).divide(10000) ;
+        construction.target.find("input[name='e12']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE11 = function () {
+        //=IF(E12=" "," ",ROUND(E12*D11,2))
+        var e12 = construction.target.find("input[name='e12']").val();
+        var d11 = construction.target.find("input[name='reconnaissanceDesign']").attr("data-value");
+        if (!AssessCommon.isNumber(e12)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d11)) {
+            return false;
+        }
+        var c = math.chain(e12).multiply(d11) ;
+        construction.target.find("input[name='e11']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE13 = function () {
+        //=$F$3*D13/10000
+        var d13 = construction.target.find("select[name='infrastructureCost']").val() ;
+        var f3 = construction.target.find("input[name='developBuildAreaTax']").val();
+        if (!AssessCommon.isNumber(d13)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f3)) {
+            return false;
+        }
+        var c = math.chain(d13).multiply(f3).divide(10000) ;
+        construction.target.find("input[name='e13']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE14 = function () {
+        //=$F$3*D14/10000
+        var d14 = construction.target.find("select[name='infrastructureMatchingCost']").val() ;
+        var f3 = construction.target.find("input[name='developBuildAreaTax']").val();
+        if (!AssessCommon.isNumber(d14)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f3)) {
+            return false;
+        }
+        var c = math.chain(d14).multiply(f3).divide(10000) ;
+        construction.target.find("input[name='e14']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE15 = function () {
+        //=$F$3*D15/10000
+        var d15 = construction.target.find("select[name='devDuring']").val() ;
+        var f3 = construction.target.find("input[name='developBuildAreaTax']").val();
+        if (!AssessCommon.isNumber(d15)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f3)) {
+            return false;
+        }
+        var c = math.chain(d15).multiply(f3).divide(10000) ;
+        construction.target.find("input[name='e15']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE16 = function () {
+        //=$F$3*D16/10000
+        var d16 = construction.target.find("input[name='otherEngineeringCost']").val() ;
+        var f3 = construction.target.find("input[name='developBuildAreaTax']").val();
+        if (!AssessCommon.isNumber(d16)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f3)) {
+            return false;
+        }
+        var c = math.chain(d16).multiply(f3).divide(10000) ;
+        construction.target.find("input[name='e16']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE17 = function () {
+        //=SUM(E11:F16)
+        var e11 = construction.target.find("input[name='e11']").val();
+        var e12 = construction.target.find("input[name='e12']").val();
+        var e13 = construction.target.find("input[name='e13']").val();
+        var e14 = construction.target.find("input[name='e14']").val();
+        var e15 = construction.target.find("input[name='e15']").val();
+        var e16 = construction.target.find("input[name='e16']").val();
+        if (!AssessCommon.isNumber(e11)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e12)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e13)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e14)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e15)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e16)) {
+            return false;
+        }
+        var c = math.chain(e11).add(e12).add(e13).add(e14).add(e15).add(e16) ;
+        c = c.value.toFixed(construction.fixed) ;
+        construction.target.find("input[name='constructionSubtotal']").val(c).trigger('blur') ;
+        construction.target.find(".constructionSubtotal").html(c) ;
+    };
+
+    construction.calculationE18 = function () {
+        //=IF(E17=" "," ",ROUND(E17*D18,2))
+        var e17 = construction.target.find("input[name='constructionSubtotal']").val() ;
+        var d18 = construction.target.find("input[name='unforeseenExpenses']").attr("data-value");
+        var c = math.chain(e17).multiply(d18);
+        construction.target.find("input[name='e18']").val(c.value.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE19 = function () {
+        //=IF(E17=" "," ",(E9+E17+E18)*D19)
+        var e9 = construction.target.find("input[name='landGetCostTotal']").val() ;
+        var e17 = construction.target.find("input[name='constructionSubtotal']").val() ;
+        var e18 = construction.target.find("input[name='e18']").val();
+        var d19 = construction.target.find("input[name='managementExpense']").attr("data-value");
+        if (!AssessCommon.isNumber(e9)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e17)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e18)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d19)) {
+            return false;
+        }
+        var c = math.multiply( math.chain(e9).add(e17).add(e18).done(),  d19) ;
+        construction.target.find("input[name='e19']").val(c.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.calculationE21 = function () {
+        //=IF(F3=" "," ",(E9+E11+E13)*((1+D21)^H3-1)+(E12+E14+E15+E16+E18+E19)*((1+D21)^(H3/2)-1))
+        var e9 = construction.target.find("input[name='landGetCostTotal']").val() ;
+        var e11 = construction.target.find("input[name='e11']").val();
+        var e12 = construction.target.find("input[name='e12']").val();
+        var e13 = construction.target.find("input[name='e13']").val();
+        var e14 = construction.target.find("input[name='e14']").val();
+        var e15 = construction.target.find("input[name='e15']").val();
+        var e16 = construction.target.find("input[name='e16']").val();
+        var e18 = construction.target.find("input[name='e18']").val();
+        var e19 = construction.target.find("input[name='e19']").val() ;
+        var d21 = construction.target.find("input[name='interestInvestmentTax']").attr("data-value");
+        var h3 = construction.target.find("input[name='developYearNumberTax']").val();
+
+        try {
+            var a =  Math.pow(1+math.number(d21),math.number(h3)) ;
+            var c1 = math.multiply(  math.chain(e9).add(e11).add(e13).done() ,math.chain( a  ).subtract(1).done() )  ;
+            var b = Math.pow(1+math.number(d21),math.number(h3) / 2) ;
+            var c2 = math.multiply(  math.chain(e12).add(e14).add(e15).add(e16).add(e18).add(e19).done() ,math.chain(  b ).subtract(1).done() )  ;
+            var c = math.add(c1,c2) ;
+            c = c.toFixed(construction.fixed) ;
+            construction.target.find("input[name='interestInvestment']").val(c).trigger('blur') ;
+            construction.target.find(".interestInvestment").html(c) ;
+        } catch (e) {
+
         }
     };
+
+    construction.calculationG21 = function () {
+        //=ROUND(D20*((1+D21)^(H3/2)-1),5)
+        var d20 = construction.target.find("input[name='salesFee']").attr("data-value");
+        var d21 = construction.target.find("input[name='interestInvestmentTax']").attr("data-value");
+        var h3 = construction.target.find("input[name='developYearNumberTax']").val();
+        if (!AssessCommon.isNumber(d20)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d21)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(h3)) {
+            return false;
+        }
+        var a = Math.pow(1+math.number(d21),math.number(h3) / 2) ;
+        var c = math.multiply(d20, math.subtract(a,1)) ;
+        construction.target.find("input[name='g21']").val(c.toFixed(5)).trigger('blur') ;
+    };
+
+    construction.calculationG23 = function () {
+        //=ROUND(D23*D20,5)
+        var d23 = construction.target.find("input[name='investmentProfitTax']").attr("data-value");
+        var d20 = construction.target.find("input[name='salesFee']").attr("data-value");
+        if (!AssessCommon.isNumber(d20)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d23)) {
+            return false;
+        }
+        var c = math.chain(d23).multiply(d20).done() ;
+        construction.target.find("input[name='g23']").val(c.toFixed(5)).trigger('blur') ;
+    };
+
+    construction.calculationG24 = function () {
+        //=ROUND(D20+G21+D22+G23,4)
+        var d20 = construction.target.find("input[name='salesFee']").attr("data-value");
+        var d22 = construction.target.find("input[name='salesTaxAndAdditional']").attr("data-value");
+        var g21 = construction.target.find("input[name='g21']").val() ;
+        var g23 = construction.target.find("input[name='g23']").val() ;
+        if (!AssessCommon.isNumber(d20)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d22)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(g21)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(g23)) {
+            return false;
+        }
+        var c = math.chain(d20).add(g21).add(d22).add(g23).done() ;
+        construction.target.find("input[name='g24']").val(c.toFixed(4)).trigger('blur') ;
+    };
+
+    construction.calculationE23 = function () {
+        //=IF(D9=" "," ",(E9+E17+E18+E19)*D23)
+        var d23 = construction.target.find("input[name='investmentProfitTax']").attr("data-value");
+        var e9 = construction.target.find("input[name='landGetCostTotal']").val() ;
+        var e17 = construction.target.find("input[name='constructionSubtotal']").val() ;
+        var e18 = construction.target.find("input[name='e18']").val();
+        var e19 = construction.target.find("input[name='e19']").val() ;
+        if (!AssessCommon.isNumber(e9)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e17)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e18)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e19)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(d23)) {
+            return false;
+        }
+        var c = math.multiply(d23 , math.chain(e9).add(e17).add(e18).add(e19).done()) ;
+        c = c.toFixed(construction.fixed) ;
+        construction.target.find("input[name='investmentProfit']").val(c).trigger('blur') ;
+        construction.target.find(".investmentProfit").html(c) ;
+    };
+
+    construction.constructionInstallationEngineeringFeeEvent = {
+        show:function () {
+            var target = $("#boxMdCostConstruction");
+            if (target.find(".panel-body").find("table").size() == 0) {
+                target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
+                developmentCommon.architecturalB.treeGirdParse(target);
+            }
+            target.modal("show");
+        },
+        save:function () {
+            var target = $("#boxMdCostConstruction");
+            var table = target.find("table");
+            var value = table.find("tfoot").find("input[name='totalPrice']").first().val();
+            if (!AssessCommon.isNumber(value)) {
+                toastr.success('请重新填写!');
+                return false;
+            }
+            value = Number(value);
+            construction.target.find("input[name='constructionInstallationEngineeringFee']").val(value.toFixed(construction.fixed)).trigger('blur');
+            target.modal("hide");
+        }
+    } ;
+
 
 </script>

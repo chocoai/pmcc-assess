@@ -90,7 +90,7 @@
 
 </div>
 
-<jsp:include page="/views/method/module/developmentModule/developmentCommon.jsp"></jsp:include>
+<jsp:include page="/views/method/module/developmentCommon.jsp"></jsp:include>
 <jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
 
 <script>
