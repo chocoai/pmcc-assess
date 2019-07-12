@@ -32,12 +32,12 @@
                 <!-- append html -->
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        项目建设期(年)
+                        项目建设期(年)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" value="${mdDevelopment.projectConstructionPeriod}"
+                        <input type="text" value="${mdDevelopment.projectConstructionPeriod}" required="required"
                                placeholder="项目建设期(年)"
-                               class="form-control"  name="projectConstructionPeriod" onblur="landEngineering.calculationF34(); landEngineering.calculationD34();underConstruction.calculationF34(); underConstruction.calculationD34();">
+                               class="form-control"  name="projectConstructionPeriod" onblur="checkParams(this);landEngineering.calculationF34(); landEngineering.calculationD34();underConstruction.calculationF34(); underConstruction.calculationD34();">
                     </div>
                 </div>
 
@@ -48,7 +48,7 @@
                     <div class="col-sm-3">
                         <input type="text" value="${mdDevelopment.developedYear}"
                                placeholder="已开发时间(年)"
-                               class="form-control"  name="developedYear" onblur="projectConstructionPeriodFun();">
+                               class="form-control"  name="developedYear" onblur="checkParams(this);projectConstructionPeriodFun();">
                     </div>
                 </div>
 
@@ -59,7 +59,7 @@
                     <div class="col-sm-3">
                         <input type="text" value="${mdDevelopment.remainingDevelopmentYear}"
                                placeholder="剩余开发时间(年)"
-                               class="form-control"  name="remainingDevelopmentYear" onblur="projectConstructionPeriodFun();">
+                               class="form-control"  name="remainingDevelopmentYear" onblur="checkParams(this);projectConstructionPeriodFun();">
                     </div>
                 </div>
 
@@ -94,6 +94,30 @@
 <jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
 
 <script>
+
+    function checkParams(that) {
+        if (!development.isNotBlank(that)) {
+            return false;
+        }
+        var value = $(that).val();
+        var i = 0;
+        if (!development.isNotBlank(value)) {
+            return false;
+        }
+        if (AssessCommon.isNumber(value)) {
+            i++;
+        }
+        var reg = new RegExp(/^[0-9]+\.?[0-9]*%$/);
+        if (reg.test(value)) {
+            i++;
+        }
+        if (i == 0) {
+            alert("不符合，必须是数字!");
+            $(that).attr("data-value", '');
+            $(that).val('');
+            return false;
+        }
+    }
 
     function projectConstructionPeriodFun() {
         var target = $(development.config.frm) ;
@@ -148,9 +172,35 @@
         return false
     };
 
+    //参数校验
+    development.checkParams = function (that) {
+        if (!development.isNotBlank(that)) {
+            return false;
+        }
+        var value = $(that).val();
+        var i = 0;
+        if (!development.isNotBlank(value)) {
+            return false;
+        }
+        if (AssessCommon.isNumber(value)) {
+            i++;
+        }
+        var reg = new RegExp(/^[0-9]+\.?[0-9]*%$/);
+        if (reg.test(value)) {
+            i++;
+        }
+        if (i == 0) {
+            alert("不符合，必须是数字!");
+            $(that).attr("data-value", '');
+            $(that).val('');
+            return false;
+        }
+    };
+
 
 
     development.valid = function (callback) {
+        var html = "<div class='help-block' for='for'>" + "该字段为必填项(注意哦!)" + "</div>";
         var head = formSerializeArray($(development.config.frm)) ;
         var frm = undefined;
         if (head.development == '1') {
@@ -159,10 +209,25 @@
         if (head.development == '2') {
             frm = $(development.config.engineering.frm) ;
         }
+        var data = formSerializeArray(frm) ;
+        if (!$(development.config.frm).valid()) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(data.f22)){
+            frm.find("select[name='f22']").parent().after(html.replace(/for/g, "f22_"));
+        }
+        if (!AssessCommon.isNumber(data.f22)){
+            frm.find("select[name='f23']").parent().after(html.replace(/for/g, "f23_"));
+        }
+        if (!AssessCommon.isNumber(data.f22)){
+            frm.find("select[name='f24']").parent().after(html.replace(/for/g, "f24_"));
+        }
         if (!frm.valid()) {
             return false;
         }
-        callback() ;
+        if (callback){
+            callback() ;
+        }
     };
 
     development.getFomData = function () {
@@ -190,6 +255,8 @@
         data.investmentProfit = frm.find(".f35").html() ;
         return data ;
     };
+
+
 
     development.initData = function () {
         var landFrm = $(development.config.land.frm) ;

@@ -564,7 +564,13 @@
             underConstruction.target.find("input[name='d21']").trigger('blur');
             underConstruction.target.find("input[name='d20']").trigger('blur');
             var data = developmentCommon.architecturalB.getFomData(table);
-            developmentCommon.saveMdArchitecturalObj(data , "engineering" , function () {
+            var pid = 0;
+            if (developmentCommon.isNotBlank('${mdDevelopment}')){
+                if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                    pid = '${mdDevelopment.id}' ;
+                }
+            }
+            developmentCommon.saveMdArchitecturalObj(data , "engineering" ,AssessDBKey.MdDevelopment,pid , function () {
 
             }) ;
             target.modal("hide");

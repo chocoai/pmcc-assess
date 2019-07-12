@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_panel">
-
+    <input type="hidden" name="id" value="${mdCostConstruction.id}">
+    <input type="hidden" name="pid" value="${mdCost.id}">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -17,8 +18,14 @@
                     开发土地面积(㎡)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" name="developLandAreaTax"  onblur="construction.calculationE6();construction.calculationD8()"
-                           placeholder=" 开发土地面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developLandAreaTax}${declareEconomicIndicatorsHead.assessUseLandArea}">
+                    <c:if test="${!empty mdCostConstruction.developLandAreaTax}">
+                    <input type="text" name="developLandAreaTax"  onblur="cost.checkParams(this);construction.calculationE6();construction.calculationD8()"
+                           placeholder=" 开发土地面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developLandAreaTax}">
+                    </c:if>
+                    <c:if test="${empty mdCostConstruction.developLandAreaTax}">
+                    <input type="text" name="developLandAreaTax"  onblur="cost.checkParams(this);construction.calculationE6();construction.calculationD8()"
+                           placeholder=" 开发土地面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${declareEconomicIndicatorsHead.assessUseLandArea}">
+                    </c:if>
                 </div>
             </div>
 
@@ -27,8 +34,14 @@
                     开发建筑面积(㎡)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" name="developBuildAreaTax" onblur="construction.calculationE12();construction.calculationE13();construction.calculationE14();construction.calculationE15();construction.calculationE16();"
-                           placeholder="开发建筑面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developBuildAreaTax}${declareEconomicIndicatorsHead.assessTotalBuildArea}">
+                    <c:if test="${!empty mdCostConstruction.developBuildAreaTax}">
+                        <input type="text" name="developBuildAreaTax" onblur="cost.checkParams(this);construction.calculationE12();construction.calculationE13();construction.calculationE14();construction.calculationE15();construction.calculationE16();"
+                               placeholder="开发建筑面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developBuildAreaTax}">
+                    </c:if>
+                    <c:if test="${empty mdCostConstruction.developBuildAreaTax}">
+                        <input type="text" name="developBuildAreaTax" onblur="cost.checkParams(this);construction.calculationE12();construction.calculationE13();construction.calculationE14();construction.calculationE15();construction.calculationE16();"
+                               placeholder="开发建筑面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${declareEconomicIndicatorsHead.assessTotalBuildArea}">
+                    </c:if>
                 </div>
             </div>
 
@@ -37,7 +50,8 @@
                     开发期（年）<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" name="developYearNumberTax" onblur="construction.calculationE21();construction.calculationG21();construction.constructionAssessmentPriceCorrectingCalculationE26();"
+
+                    <input type="text" name="developYearNumberTax" onblur="cost.checkParams(this);construction.calculationE21();construction.calculationG21();construction.constructionAssessmentPriceCorrectingCalculationE26();"
                            placeholder="开发期（年）" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developYearNumberTax}">
                 </div>
             </div>
@@ -65,7 +79,7 @@
                 </label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" name="landPurchasePrice" placeholder="土地购买价格" data-rule-number="true" onblur="construction.calculationE6();"
+                        <input type="text" name="landPurchasePrice" placeholder="土地购买价格" data-rule-number="true" onblur="cost.checkParams(this);construction.calculationE6();"
                                class="form-control" required="required" value="${mdCostConstruction.landPurchasePrice}" data-value="${mdCostConstruction.landPurchasePrice}">
                         <span class="input-group-btn">
                                         <input type="button" class="btn btn-primary" value="市场比较法"
@@ -94,7 +108,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" name="landGetRelevant"
-                           placeholder="土地取得相关税费率" class="form-control x-percent" data-rule-number='true' onblur="construction.calculationE7();"
+                           placeholder="土地取得相关税费率" class="form-control x-percent"  onblur="cost.checkParams(this);construction.calculationE7();"
                            required="required" value="${mdCostConstruction.landGetRelevant}" data-value="${mdCostConstruction.landGetRelevant}">
                 </div>
             </div>
@@ -118,7 +132,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" name="additionalCostLandAcquisition"
-                           placeholder="土地取得附加成本" class="form-control" data-rule-number='true' onblur="construction.calculationD8();"
+                           placeholder="土地取得附加成本" class="form-control" data-rule-number='true' onblur="cost.checkParams(this);construction.calculationD8();"
                            required="required" value="${mdCostConstruction.additionalCostLandAcquisition}">
                 </div>
             </div>
@@ -127,9 +141,9 @@
         </div>
     </div>
 
-    <input type="text" readonly="readonly" class="form-control" name="e6" placeholder="e6" onblur="construction.calculationE7();">
-    <input type="text" readonly="readonly" class="form-control" name="e7" placeholder="e7" onblur="construction.calculationLandGetCostTotalE9();">
-    <input type="text" readonly="readonly" class="form-control" name="d8" placeholder="d8" onblur="construction.calculationLandGetCostTotalE9();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e6" placeholder="e6" onblur="construction.calculationE7();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e7" placeholder="e7" onblur="construction.calculationLandGetCostTotalE9();">
+    <input type="hidden" readonly="readonly" class="form-control" name="d8" placeholder="d8" onblur="construction.calculationLandGetCostTotalE9();">
 
 </div>
 
@@ -151,8 +165,8 @@
                     勘察设计和前期工程费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-11">
-                    <input type="text" name="reconnaissanceDesign" onblur="construction.calculationE11()"
-                           placeholder="勘察设计和前期工程费率" class="form-control x-percent" data-rule-number='true'
+                    <input type="text" name="reconnaissanceDesign" onblur="cost.checkParams(this);construction.calculationE11()"
+                           placeholder="勘察设计和前期工程费率" class="form-control x-percent"
                            required="required" value="${mdCostConstruction.reconnaissanceDesign}" data-value="${mdCostConstruction.reconnaissanceDesign}">
                 </div>
             </div>
@@ -220,7 +234,7 @@
             <div class="x-valid">
                 <div class="col-sm-11">
                     <select name="infrastructureMatchingCost"
-                            class="form-control search-select select2 " onchange="construction.calculationE14()" required>
+                            class="form-control search-select select2 " onchange="construction.calculationE14()" required="required">
                         <option>请选择</option>
                         <option value="10">2009-2032 金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
@@ -245,7 +259,7 @@
             <div class="x-valid">
                 <div class="col-sm-11">
                     <select name="devDuring"
-                            class="form-control search-select select2 " onchange="construction.calculationE15();" required>
+                            class="form-control search-select select2 " onchange="construction.calculationE15();" required="required">
                         <option>请选择</option>
                         <option value="10">2009-2032 金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
@@ -269,19 +283,19 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
-                    <input type="text" value="${mdCostConstruction.otherEngineeringCost}" onblur="construction.calculationE16()"
+                    <input type="text" value="${mdCostConstruction.otherEngineeringCost}" onblur="cost.checkParams(this);construction.calculationE16()"
                            placeholder="其它工程费" required class="form-control" name="otherEngineeringCost">
                 </div>
             </div>
         </div>
     </div>
 
-    <input type="text" readonly="readonly" class="form-control" name="e12" placeholder="e12" onblur="construction.calculationE11();">
-    <input type="text" readonly="readonly" class="form-control" name="e11" placeholder="e11" onblur="construction.calculationE17();">
-    <input type="text" readonly="readonly" class="form-control" name="e13" placeholder="e13" onblur="construction.calculationE17();">
-    <input type="text" readonly="readonly" class="form-control" name="e14" placeholder="e14" onblur="construction.calculationE17();">
-    <input type="text" readonly="readonly" class="form-control" name="e15" placeholder="e15" onblur="construction.calculationE17();">
-    <input type="text" readonly="readonly" class="form-control" name="e16" placeholder="e16" onblur="construction.calculationE17();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e12" placeholder="e12" onblur="construction.calculationE11();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e11" placeholder="e11" onblur="construction.calculationE17();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e13" placeholder="e13" onblur="construction.calculationE17();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e14" placeholder="e14" onblur="construction.calculationE17();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e15" placeholder="e15" onblur="construction.calculationE17();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e16" placeholder="e16" onblur="construction.calculationE17();">
 
 
 </div>
@@ -303,7 +317,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" required
-                           placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpenses" onblur="construction.calculationE18();"
+                           placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpenses" onblur="cost.checkParams(this);construction.calculationE18();"
                            value="${mdCostConstruction.unforeseenExpenses}" data-value="${mdCostConstruction.unforeseenExpenses}">
                 </div>
             </div>
@@ -326,7 +340,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" required
-                           placeholder="管理费率" class="form-control x-percent" name="managementExpense" onblur="construction.calculationE19();"
+                           placeholder="管理费率" class="form-control x-percent" name="managementExpense" onblur="cost.checkParams(this);construction.calculationE19();"
                            value="${mdCostConstruction.managementExpense}" data-value="${mdCostConstruction.managementExpense}">
                 </div>
             </div>
@@ -349,7 +363,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" required
-                           placeholder="销售费率" class="form-control x-percent" name="salesFee" onblur="construction.calculationG23();construction.calculationG21();"
+                           placeholder="销售费率" class="form-control x-percent" name="salesFee" onblur="cost.checkParams(this);construction.calculationG23();construction.calculationG21();"
                            value="${mdCostConstruction.salesFee}" data-value="${mdCostConstruction.salesFee}">
                 </div>
             </div>
@@ -372,7 +386,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" required
-                           placeholder="投资利息率" class="form-control x-percent" name="interestInvestmentTax" onblur="construction.calculationE21();construction.calculationG21();"
+                           placeholder="投资利息率" class="form-control x-percent" name="interestInvestmentTax" onblur="cost.checkParams(this);construction.calculationE21();construction.calculationG21();"
                            value="${mdCostConstruction.interestInvestmentTax}" data-value="${mdCostConstruction.interestInvestmentTax}">
                 </div>
             </div>
@@ -395,7 +409,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" required
-                           placeholder="销售税金及附加率" class="form-control x-percent" name="salesTaxAndAdditional" onblur="construction.calculationG24()"
+                           placeholder="销售税金及附加率" class="form-control x-percent" name="salesTaxAndAdditional" onblur="cost.checkParams(this);construction.calculationG24()"
                            value="${mdCostConstruction.salesTaxAndAdditional}" data-value="${mdCostConstruction.salesTaxAndAdditional}">
                 </div>
             </div>
@@ -418,7 +432,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" required
-                           placeholder="开发利润率" class="form-control x-percent" name="investmentProfitTax" onblur="construction.calculationG23();construction.calculationE23();"
+                           placeholder="开发利润率" class="form-control x-percent" name="investmentProfitTax" onblur="cost.checkParams(this);construction.calculationG23();construction.calculationE23();"
                            data-value="${mdCostConstruction.investmentProfitTax}"  value="${mdCostConstruction.investmentProfitTax}">
                 </div>
             </div>
@@ -434,11 +448,11 @@
             </div>
         </div>
     </div>
-    <input type="text" readonly="readonly" class="form-control" name="e18" placeholder="e18" onblur="construction.calculationE19();">
-    <input type="text" readonly="readonly" class="form-control" name="e19" placeholder="e19" onblur="construction.calculationE23();construction.calculationE21()">
-    <input type="text" readonly="readonly" class="form-control" name="g23" placeholder="g23" onblur="construction.calculationG24();">
-    <input type="text" readonly="readonly" class="form-control" name="g24" placeholder="g24" onblur="construction.constructionAssessmentValueCalculationE25();">
-    <input type="text" readonly="readonly" class="form-control" name="g21" placeholder="g21" onblur="construction.calculationG24();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e18" placeholder="e18" onblur="construction.calculationE19();">
+    <input type="hidden" readonly="readonly" class="form-control" name="e19" placeholder="e19" onblur="construction.calculationE23();construction.calculationE21()">
+    <input type="hidden" readonly="readonly" class="form-control" name="g23" placeholder="g23" onblur="construction.calculationG24();">
+    <input type="hidden" readonly="readonly" class="form-control" name="g24" placeholder="g24" onblur="construction.constructionAssessmentValueCalculationE25();">
+    <input type="hidden" readonly="readonly" class="form-control" name="g21" placeholder="g21" onblur="construction.calculationG24();">
 </div>
 
 
@@ -450,7 +464,7 @@
         <h3>测算结果</h3>
         <div class="clearfix"></div>
     </div>
-    <input type="text" readonly="readonly" name="constructionAssessmentValue2" onblur="construction.constructionAssessmentValueCalculationE25();" value="${mdCostConstruction.constructionAssessmentValue2}" class="form-control" placeholder="在建工程评估价值2">
+    <input type="hidden" readonly="readonly" name="constructionAssessmentValue2" onblur="construction.constructionAssessmentValueCalculationE25();" value="${mdCostConstruction.constructionAssessmentValue2}" class="form-control" placeholder="在建工程评估价值2">
     <div class="x_content">
         <div class="form-group">
             <div class="col-md-12 col-sm-12">
@@ -458,30 +472,30 @@
                     <tfoot>
                     <tr>
                         <td> 土地取得成本小计</td>
-                        <td><label class="landGetCostTotal"></label> <input type="hidden" onblur="construction.calculationE19();" value="${mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
+                        <td><label class="landGetCostTotal">${mdCostConstruction.landGetCostTotal}</label> <input type="hidden" onblur="construction.calculationE19();" value="${mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
                     </tr>
                     <tr>
                         <td> 建设成本小计</td>
-                        <td><label class="constructionSubtotal"></label>
+                        <td><label class="constructionSubtotal">${mdCostConstruction.constructionSubtotal}</label>
                             <input type="hidden" onblur="construction.calculationE18();"
                                    value="${mdCostConstruction.constructionSubtotal}" name="constructionSubtotal" placeholder="建设成本小计">
                         </td>
                     </tr>
                     <tr>
                         <td> 投资利息</td>
-                        <td><label class="interestInvestment"></label><input onblur="construction.constructionAssessmentValue2calculationE24()" type="hidden" value="${mdCostConstruction.interestInvestment}" name="interestInvestment" placeholder="投资利息"> </td>
+                        <td><label class="interestInvestment">${mdCostConstruction.interestInvestment}</label><input onblur="construction.constructionAssessmentValue2calculationE24()" type="hidden" value="${mdCostConstruction.interestInvestment}" name="interestInvestment" placeholder="投资利息"> </td>
                     </tr>
                     <tr>
                         <td> 开发利润</td>
-                        <td><label class="investmentProfit"></label><input type="hidden" onblur="construction.constructionAssessmentValue2calculationE24()" value="${mdCostConstruction.investmentProfit}" name="investmentProfit" placeholder="开发利润"> </td>
+                        <td><label class="investmentProfit">${mdCostConstruction.investmentProfit}</label><input type="hidden" onblur="construction.constructionAssessmentValue2calculationE24()" value="${mdCostConstruction.investmentProfit}" name="investmentProfit" placeholder="开发利润"> </td>
                     </tr>
                     <tr>
                         <td> 在建工程评估价值</td>
-                        <td><label class="constructionAssessmentValue"></label><input type="hidden" onblur="construction.constructionAssessmentPriceCorrectingCalculationE26();" value="${mdCostConstruction.constructionAssessmentValue}" name="constructionAssessmentValue" placeholder="在建工程评估价值"> </td>
+                        <td><label class="constructionAssessmentValue">${mdCostConstruction.constructionAssessmentValue}</label><input type="hidden" onblur="construction.constructionAssessmentPriceCorrectingCalculationE26();" value="${mdCostConstruction.constructionAssessmentValue}" name="constructionAssessmentValue" placeholder="在建工程评估价值"> </td>
                     </tr>
                     <tr>
                         <td> 在建工程单位价</td>
-                        <td><label class="constructionAssessmentPriceCorrecting"></label><input type="hidden" value="${mdCostConstruction.constructionAssessmentPriceCorrecting}" name="constructionAssessmentPriceCorrecting" placeholder="在建工程单位价"> </td>
+                        <td><label class="constructionAssessmentPriceCorrecting">${mdCostConstruction.constructionAssessmentPriceCorrecting}</label><input type="hidden" value="${mdCostConstruction.constructionAssessmentPriceCorrecting}" name="constructionAssessmentPriceCorrecting" placeholder="在建工程单位价"> </td>
                     </tr>
                     </tfoot>
                 </table>

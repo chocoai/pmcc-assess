@@ -8,9 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
-import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsHeadService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -44,11 +42,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     @Autowired
     private SchemeInfoService schemeInfoService;
     @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
     private MdMarketCostService mdMarketCostService;
-    @Autowired
-    private SchemeSupportInfoService schemeSupportInfoService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
@@ -57,8 +51,6 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataInfrastructureService dataInfrastructureService;
-    @Autowired
-    private MdArchitecturalObjService mdArchitecturalObjService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     @Autowired
@@ -124,15 +116,67 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
+        this.saveAndUpdate(projectPlanDetails, processInsId, formData);
+    }
 
-//        SchemeInfo schemeInfo = new SchemeInfo();
-//        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-//        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
-//        schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-//        schemeInfo.setProcessInsId(processInsId);
-//        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
-//        schemeInfo.setMethodDataId();
-//        schemeInfoService.saveSchemeInfo(schemeInfo);
+    private void saveAndUpdate(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException{
+        SchemeInfo schemeInfo = new SchemeInfo();
+        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+        schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
+        List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(schemeInfo) ;
+        JSONObject jsonObject = JSON.parseObject(formData);
+        String type = (String) jsonObject.get("type");
+        MdCost mdCost = new MdCost();
+        MdCostConstruction mdCostConstruction = null;
+        MdCostBuilding mdCostBuilding = null;
+        if (Objects.equal("2", type)) {
+            mdCostConstruction = JSONObject.parseObject(formData, MdCostConstruction.class);
+            if (mdCostConstruction != null) {
+                if (mdCostConstruction.getPid() != null) {
+                    mdCost.setId(mdCostConstruction.getPid());
+                }
+            }
+        }
+        if (Objects.equal("1", type)) {
+            mdCostBuilding = JSONObject.parseObject(formData, MdCostBuilding.class);
+            if (mdCostBuilding != null) {
+                if (mdCostBuilding.getPid() != null) {
+                    mdCost.setId(mdCostBuilding.getPid());
+                }
+            }
+        }
+        if (mdCost != null) {
+            mdCost.setType(type);
+            mdMarketCostService.saveAndUpdateMdCost(mdCost);
+        }
+        if (mdCostBuilding != null){
+            mdCostBuilding.setJsonContent(formData);
+            mdMarketCostService.saveAndUpdateMdCostBuilding(mdCostBuilding,mdCost) ;
+            mdCost.setPrice(mdCostBuilding.getAssessPrice());
+        }
+        if (mdCostConstruction != null){
+            mdCostConstruction.setJsonContent(formData);
+            mdMarketCostService.saveAndUpdateMdCostConstruction(mdCostConstruction,mdCost);
+            mdCost.setPrice(mdCostConstruction.getConstructionAssessmentPriceCorrecting());
+        }
+
+        if (mdCost != null) {
+            mdMarketCostService.saveAndUpdateMdCost(mdCost);
+        }
+
+        if (CollectionUtils.isNotEmpty(schemeInfoList)){
+            for (SchemeInfo oo:schemeInfoList){
+                oo.setMethodDataId(mdCost.getId());
+                oo.setProcessInsId(StringUtils.isNotEmpty(processInsId)?processInsId:"0");
+                schemeInfoService.saveSchemeInfo(oo);
+            }
+        }else {
+            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId)?processInsId:"0");
+            schemeInfo.setMethodDataId(mdCost.getId());
+            schemeInfoService.saveSchemeInfo(schemeInfo);
+        }
     }
 
     @Override
@@ -141,7 +185,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        this.saveAndUpdate(projectPlanDetails, processInsId, formData);
     }
 
     /**
@@ -156,9 +200,6 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter = new DeclareBuildEngineeringAndEquipmentCenter();
         DeclareEconomicIndicatorsHead declareEconomicIndicatorsHead = new DeclareEconomicIndicatorsHead();
         SchemeInfo select = new SchemeInfo();
-
-
-
         select.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.COST).getId());
         select.setPlanDetailsId(projectPlanDetails.getId());
         if (projectPlanDetails.getJudgeObjectId() != null) {

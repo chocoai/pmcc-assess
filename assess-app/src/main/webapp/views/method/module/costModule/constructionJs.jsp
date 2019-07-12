@@ -388,6 +388,28 @@
                 target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
                 developmentCommon.architecturalB.treeGirdParse(target);
             }
+            var pid = 0;
+            if (developmentCommon.isNotBlank('${mdCostConstruction}')){
+                if (developmentCommon.isNotBlank('${mdCostConstruction.id}')){
+                    pid = '${mdCostConstruction.id}' ;
+                }
+            }
+            developmentCommon.architecturalB.getData("mdCostConstruction",AssessDBKey.MdCost,pid,'${projectPlanDetails.id}',function (data) {
+                var item = undefined ;
+                if (data.length >= 1){
+                    var n = data[0] ;
+                    if (n.jsonContent){
+                        try {
+                            item = JSON.parse(n.jsonContent) ;
+                        } catch (e) {
+                            console.log("解析异常!") ;
+                        }
+                    }
+                }
+                if (item){
+                    developmentCommon.architecturalB.initData(target.find("table"),item) ;
+                }
+            }) ;
             target.modal("show");
         },
         save:function () {
@@ -400,14 +422,21 @@
             }
             value = Number(value);
             construction.target.find("input[name='constructionInstallationEngineeringFee']").val(value.toFixed(construction.fixed)).trigger('blur');
+
+            var data = developmentCommon.architecturalB.getFomData(table);
+            var pid = 0;
+            if (developmentCommon.isNotBlank('${mdCostConstruction}')){
+                if (developmentCommon.isNotBlank('${mdCostConstruction.id}')){
+                    pid = '${mdCostConstruction.id}' ;
+                }
+            }
+            developmentCommon.saveMdArchitecturalObj(data , "mdCostConstruction" ,AssessDBKey.MdCost,pid , function () {
+
+            }) ;
             target.modal("hide");
         }
     } ;
 
-    //参数校验
-    construction.checkParams = function (this_) {
-
-    };
 
 
 </script>

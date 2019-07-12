@@ -1,691 +1,470 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div id="constructionModel">
+<div class="x_panel">
+    <input type="hidden" name="id" value="${mdCostConstruction.id}">
+    <input type="hidden" name="pid" value="${mdCost.id}">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>开发信息</h3>
+        <div class="clearfix"></div>
+    </div>
 
-
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>开发信息</h3>
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="x_content">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        开发土地面积(㎡)
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text" name="developLandAreaTax"
-                                   placeholder=" 开发土地面积(㎡)" class="form-control" data-rule-number='true'
-                                   readonly="readonly">
-                        </div>
-                    </div>
+    <div class="x_content">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    开发土地面积(㎡)<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.developLandAreaTax} </label>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        开发建筑面积(㎡)
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text" name="developBuildAreaTax"
-                                   placeholder="开发建筑面积(㎡)" class="form-control" data-rule-number='true'
-                                   readonly="readonly">
-                        </div>
-                    </div>
-                </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    开发建筑面积(㎡)<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
 
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        开发期（年）
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text" name="developYearNumberTax"
-                                   placeholder="开发期（年）" class="form-control" data-rule-number='true'
-                                   readonly="readonly">
-                        </div>
-                    </div>
-                </div>
+                    <label  class="form-control"> ${mdCostConstruction.developBuildAreaTax} </label>
 
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        土地购买价格
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text" name="landPurchasePriceTax"
-                                   placeholder="土地购买价格" class="form-control" data-rule-number='true'
-                                   readonly="readonly">
-                        </div>
-                    </div>
                 </div>
-            </form>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    开发期（年）<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+
+                    <label  class="form-control"> ${mdCostConstruction.developYearNumberTax} </label>
+
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>合计税率</h3>
-            <div class="clearfix"></div>
+</div>
+
+
+<div class="x_panel">
+
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>土地取得成本</h3>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="x_content">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地购买价格<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <label  class="form-control"> ${mdCostConstruction.landPurchasePrice} </label>
+                        <span class="input-group-btn">
+                                        <input type="button" class="btn btn-primary" value="市场比较法"
+                                               onclick="">
+                                    </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    价格说明
+                </label>
+                <div class="col-sm-3">
+
+                    <label  class="form-control"> ${mdCostConstruction.landPurchasePriceExplain} </label>
+
+                </div>
+            </div>
         </div>
 
-        <div class="x_content">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            地方教育费附加
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="地方教育费附加" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="localEducationTax">
-                        </div>
-                    </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地取得相关税费率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.landGetRelevant} </label>
 
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            印花税
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="印花税" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="stampDuty">
-                        </div>
-                    </div>
                 </div>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            增值税
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="增值税" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="businessTax">
-                        </div>
-                    </div>
+            </div>
 
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            城建税
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="城建税" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="urbanMaintenanceTax">
-                        </div>
-                    </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
 
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            教育费附加
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="教育费附加" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="educationTax">
-                        </div>
-                    </div>
+                    <label  class="form-control"> ${mdCostConstruction.landGetRelevantExplain} </label>
+
                 </div>
+            </div>
+        </div>
 
-            </form>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地取得附加成本<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+
+                    <label  class="form-control"> ${mdCostConstruction.additionalCostLandAcquisition} </label>
+
+                </div>
+            </div>
+
+
         </div>
     </div>
 
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>建设成本</h3>
-            <div class="clearfix"></div>
+
+</div>
+
+
+<div class="x_panel">
+
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>建设成本或费率</h3>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="x_content">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    勘察设计和前期工程费率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-11">
+
+                    <label  class="form-control"> ${mdCostConstruction.reconnaissanceDesign} </label>
+
+                </div>
+            </div>
+
+
         </div>
 
-        <div class="x_content">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        勘察设计和前期工程费率
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text"
-                                   placeholder="勘察设计和前期工程费率" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="reconnaissanceDesignTax">
-                        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                建筑安装工程费<span class="symbol required"></span>
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-11">
+                    <div class="input-group">
+
+                        <label  class="form-control"> ${mdCostConstruction.constructionInstallationEngineeringFee} </label>
+
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="constructionInstallationEngineeringFeeEvent();">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                        </span>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        建筑安装工程费
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <div class="input-group">
-                                <input type="text" readonly="readonly"
-                                       placeholder="建筑安装工程费" value="0" class="form-control"
-                                       name="constructionInstallationEngineeringFeeTax">
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                基础设施建设费<span class="symbol required"></span>
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-11">
+                    <label  class="form-control"> ${mdCostConstruction.infrastructureCost} </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                公共配套设施建设费<span class="symbol required"></span>
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-11">
+                    <label  class="form-control"> ${mdCostConstruction.infrastructureMatchingCost} </label>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                开发期间税费<span class="symbol required"></span>
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-11">
+                    <label  class="form-control"> ${mdCostConstruction.devDuring} </label>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                其它工程费<span class="symbol required"></span>
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-11">
+                    <label  class="form-control"> ${mdCostConstruction.otherEngineeringCost} </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>设计费参数比率</h3>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="x_content">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    不可预见费率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.unforeseenExpenses} </label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.unforeseenExpensesExplain} </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    管理费率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.managementExpense} </label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.managementExpenseExplain} </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    销售费率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.salesFee} </label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.salesFeeExplain} </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    投资利息率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.interestInvestmentTax} </label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.interestInvestmentTaxExplain} </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    销售税金及附加率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.salesTaxAndAdditional} </label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.salesTaxAndAdditionalExplain} </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    开发利润率<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.investmentProfitTax} </label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label  class="form-control"> ${mdCostConstruction.investmentProfitTaxExplain} </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>测算结果</h3>
+        <div class="clearfix"></div>
+    </div>
+    <input type="hidden" readonly="readonly" name="constructionAssessmentValue2" onblur="construction.constructionAssessmentValueCalculationE25();" value="${mdCostConstruction.constructionAssessmentValue2}" class="form-control" placeholder="在建工程评估价值2">
+    <div class="x_content">
+        <div class="form-group">
+            <div class="col-md-12 col-sm-12">
+                <table class="table table-bordered">
+                    <tfoot>
+                    <tr>
+                        <td> 土地取得成本小计</td>
+                        <td><label class="landGetCostTotal">${mdCostConstruction.landGetCostTotal}</label> <input type="hidden"  value="${mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
+                    </tr>
+                    <tr>
+                        <td> 建设成本小计</td>
+                        <td><label class="constructionSubtotal">${mdCostConstruction.constructionSubtotal}</label></td>
+                    </tr>
+                    <tr>
+                        <td> 投资利息</td>
+                        <td><label class="interestInvestment">${mdCostConstruction.interestInvestment}</label><input  type="hidden" value="${mdCostConstruction.interestInvestment}" name="interestInvestment" placeholder="投资利息"> </td>
+                    </tr>
+                    <tr>
+                        <td> 开发利润</td>
+                        <td><label class="investmentProfit">${mdCostConstruction.investmentProfit}</label><input type="hidden"  value="${mdCostConstruction.investmentProfit}" name="investmentProfit" placeholder="开发利润"> </td>
+                    </tr>
+                    <tr>
+                        <td> 在建工程评估价值</td>
+                        <td><label class="constructionAssessmentValue">${mdCostConstruction.constructionAssessmentValue}</label><input type="hidden"  value="${mdCostConstruction.constructionAssessmentValue}" name="constructionAssessmentValue" placeholder="在建工程评估价值"> </td>
+                    </tr>
+                    <tr>
+                        <td> 在建工程单位价</td>
+                        <td><label class="constructionAssessmentPriceCorrecting">${mdCostConstruction.constructionAssessmentPriceCorrecting}</label><input type="hidden" value="${mdCostConstruction.constructionAssessmentPriceCorrecting}" name="constructionAssessmentPriceCorrecting" placeholder="在建工程单位价"> </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="boxMdCostConstruction" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">建筑安装工程费</h3>
+            </div>
+            <form id="frmMdCostConstruction" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        基础设施建设费
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text" readonly="readonly"
-                                   placeholder="基础设施建设费" class="form-control" name="infrastructureCostTax">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        公共配套设施建设费
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text" readonly="readonly"
-                                   placeholder="公共配套设施建设费" class="form-control" name="infrastructureMatchingCostTax">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        开发期间税费
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text" readonly="readonly"
-                                   placeholder="开发期间税费" class="form-control" name="devDuringTax">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        其它工程费
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-11">
-                            <input type="text" readonly="readonly"
-                                   placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
-                        </div>
-                    </div>
-
-                </div>
-
             </form>
-        </div>
-    </div>
-
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>设计费参数比率</h3>
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="x_content">
-            <form class="form-horizontal">
-                <%--<div class="form-group">--%>
-                    <%--<label class="col-sm-1 control-label">--%>
-                        <%--不可预见费率--%>
-                    <%--</label>--%>
-                    <%--<div class="x-valid">--%>
-                        <%--<div class="col-sm-3">--%>
-                            <%--<input type="text" readonly="readonly"--%>
-                                   <%--placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--<div class="x-valid">--%>
-                        <%--<label class="col-sm-1 control-label">--%>
-                            <%--费率说明--%>
-                        <%--</label>--%>
-                        <%--<div class="col-sm-3">--%>
-                            <%--<input type="text"--%>
-                                   <%--placeholder="费率说明" class="form-control"--%>
-                                   <%--name="unforeseenExpensesTaxExplain" readonly="readonly">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            管理费率
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="管理费率" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="managementExpenseTax">
-                        </div>
-                    </div>
-
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            费率说明
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="费率说明" class="form-control"
-                                   name="managementExpenseTaxExplain" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            销售费用率
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="销售费用率" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="salesFeeTax">
-                        </div>
-                    </div>
-
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            费率说明
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="费率说明" class="form-control"
-                                   name="salesFeeTaxExplain" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            投资利息率
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="投资利息率" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="interestInvestmentTax">
-                        </div>
-                    </div>
-
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            费率说明
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="费率说明" class="form-control"
-                                   name="interestInvestmentTaxExplain" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            投资利润率
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="投资利润率" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="investmentProfitTax">
-                        </div>
-                    </div>
-
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            费率说明
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="费率说明" class="form-control"
-                                   name="investmentProfitTaxExplain"  readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-
-            </form>
-        </div>
-    </div>
-
-
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>测算结果</h3>
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="x_content">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-md-12 col-sm-12">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <td>土地取得成本合计</td>
-                                <td class="landGetCostTotal">0.00</td>
-                            </tr>
-                            <tr>
-                                <td> 建设成本小计</td>
-                                <td class="constructionSubtotal">0.00</td>
-                            </tr>
-                            <tr>
-                                <td> 投资利息</td>
-                                <td class="interestInvestment">0.00</td>
-                            </tr>
-                            <tr>
-                                <td> 投资利润</td>
-                                <td class="investmentProfit">0.00</td>
-                            </tr>
-                            <tr>
-                                <td> 在建工程评估价值</td>
-                                <td class="constructionAssessmentValue">0.00</td>
-                            </tr>
-                            <tr>
-                                <td> 在建工程单位价</td>
-                                <td class="constructionAssessmentPriceCorrecting">0.00</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <form>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+
 <script>
-
-    var construction = new Object();
-
-    construction.config = {
-        id: "constructionModel",
-        totalTaxRate: {
-            key: "totalTaxRate",
-            name: "合计税率",
-            business: "businessTax",//增值税
-            urbanMaintenance: "urbanMaintenanceTax",//城建税
-            education: "educationTax",//教育费附加
-            localEducation: "localEducationTax",//地方教育费附加
-            stampDuty: "stampDuty"//印花税
-        },
-        /*说明:key代表计算出的金额,correcting代表费率校正值,tax代表费率,name代表名称*/
-        inputConfig: {
-            developLandArea: {
-                key: "developLandArea",
-                tax: "developLandAreaTax",
-                name: "开发土地面积"
-            },
-            developBuildArea: {
-                key: "developBuildArea",
-                tax: "developBuildAreaTax",
-                name: "开发建筑面积"
-            },
-            developYearNumber: {
-                key: "developYearNumber",
-                tax: "developYearNumberTax",
-                name: "开发年"
-            },
-            landPurchasePrice: {
-                key: "landPurchasePrice",
-                name: "土地购买价格",
-                tax: "landPurchasePriceTax"
-            },
-            landGetRelevant: {
-                key: "landGetRelevant",
-                tax: "landGetRelevantTax",
-                name: "土地取得相关税费"
-            },
-            landGetCostTotal: {
-                key: "landGetCostTotal",
-                name: "土地取得成本合计",
-                tax: ""
-            },
-            reconnaissanceDesign: {
-                key: "reconnaissanceDesign",
-                tax: "reconnaissanceDesignTax",
-                correcting: "",
-                name: "勘察设计和前期工程费"
-            },
-            constructionInstallationEngineeringFee: {
-                key: "constructionInstallationEngineeringFee",
-                tax: "constructionInstallationEngineeringFeeTax",
-                correcting: "",
-                name: "建筑安装工程费",
-                class: "constructionInstallationEngineeringFeeClass"
-            },
-            infrastructureCost: {
-                key: "infrastructureCost",
-                tax: "infrastructureCostTax",
-                correcting: "",
-                name: "基础设施费用"
-            },
-            infrastructureMatchingCost: {
-                key: "infrastructureMatchingCost",
-                tax: "infrastructureMatchingCostTax",
-                correcting: "",
-                name: "公共配套设施费用"
-            },
-            devDuring: {
-                key: "devDuring",
-                tax: "devDuringTax",
-                correcting: "",
-                name: "开发期间"
-            },
-            otherEngineeringCost: {
-                key: "otherEngineeringCost",
-                tax: "otherEngineeringCostTax",
-                correcting: "",
-                name: "其它工程费"
-            },
-            constructionSubtotal: {
-                key: "constructionSubtotal",
-                tax: "",
-                name: "建设成本小计"
-            },
-            unforeseenExpenses: {
-                key: "unforeseenExpenses",
-                tax: "unforeseenExpensesTax",
-                correcting: "",
-                name: "不可预见费"
-            },
-            deed: {
-                key: "deed",
-                tax: "deedTax",
-                correcting: "deedCorrecting",
-                name: "契税"
-            },
-            transactionCost: {
-                key: "transactionCost",
-                tax: "transactionCostTax",
-                correcting: "transactionCostCorrecting",
-                name: "交易费"
-            },
-            managementExpense: {
-                key: "managementExpense",
-                tax: "managementExpenseTax",
-                correcting: "managementExpenseCorrecting",
-                name: "管理费"
-            },
-            salesFee: {
-                key: "salesFee",
-                tax: "salesFeeTax",
-                correcting: "salesFeeCorrecting",
-                name: "销售费用"
-            },
-            interestInvestment: {
-                key: "interestInvestment",
-                tax: "interestInvestmentTax",
-                correcting: "interestInvestmentCorrecting",
-                name: "投资利息"
-            },
-            investmentProfit: {
-                key: "investmentProfit",
-                tax: "investmentProfitTax",
-                correcting: "investmentProfitCorrecting",
-                name: "投资利润"
-            },
-            salesTaxAndAdditional: {
-                key: "salesTaxAndAdditional",
-                tax: "",
-                correcting: "salesTaxAndAdditionalCorrecting",
-                name: "销售税金及附加"
-            },
-            businessAdditional: {
-                key: "businessAdditional",
-                tax: "businessAdditionalTax",
-                name: "增值税金及附加"
-            },
-            landIncrement: {
-                key: "landIncrement",
-                tax: "landIncrementTax",
-                name: "土地增值"
-            },
-            constructionAssessmentValue: {
-                key: "constructionAssessmentValue",
-                tax: "",
-                name: "在建工程评估价值"
-            },
-            constructionAssessmentPrice: {
-                key: "constructionAssessmentPrice",
-                tax: "",
-                correcting: "constructionAssessmentPriceCorrecting",
-                name: "在建工程单位价"
+    function constructionInstallationEngineeringFeeEvent() {
+        var target = $("#boxMdCostConstruction");
+        if (target.find(".panel-body").find("table").size() == 0) {
+            target.find(".panel-body").append(developmentCommon.architecturalB.getHtmlDetail());
+            developmentCommon.architecturalB.treeGirdParse(target);
+        }
+        var pid = 0;
+        if (developmentCommon.isNotBlank('${mdCostConstruction}')){
+            if (developmentCommon.isNotBlank('${mdCostConstruction.id}')){
+                pid = '${mdCostConstruction.id}' ;
             }
         }
-    };
-
-    construction.isEmpty = function (item) {
-        if (item) {
-            return true;
-        }
-        return false;
-    };
-
-
-    construction.specialTreatment = function (obj) {
-        if (construction.isEmpty(obj)) {
-            var nnn = "" + obj + "";
-            var str = nnn.substring(nnn.length - 1, nnn.length);
-            if (str == '%') {//检测是否为百分比
-                return nnn;
-            } else {
-                str = AssessCommon.pointToPercent(Number(nnn));
-                return str;
-            }
-            return obj;
-        }
-        return 0;
-    };
-
-    construction.set = function (name, data) {
-        if (construction.isEmpty(name)) {
-            if (construction.isEmpty(data)) {
-                $("#" + construction.config.id).find("input[name='" + name + "']").val(data);
-            }
-        }
-    };
-
-    /**
-     * @author:  zch
-     * 描述:收集数据
-     * @date:2018-10-12
-     **/
-    construction.formParams = function () {
-        var item = {};
-        var forms = $("#" + construction.config.id).find("form");
-        $.each(forms, function (i, n) {
-        });
-        $.each(forms, function (i, n) {
-            try {
-                /*Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。 ECMAScript6 (可能不兼容) */
-                item = Object.assign(item, formSerializeArray($(n)));
-            } catch (e) {
-                item = $.extend(item, formSerializeArray($(n)));
-            }
-        });
-        item.landGetCostTotal = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html());
-        item.constructionSubtotal = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html());
-        item.interestInvestment = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.interestInvestment.key).html());
-        item.investmentProfit = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.investmentProfit.key).html());
-        item.constructionAssessmentValue = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentValue.key).html());
-        item.constructionAssessmentPriceCorrecting = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentPrice.correcting).html());
-        return item;
-    };
-
-
-    /**
-     * @author:  zch
-     * 描述:赋值
-     * @date:2018-10-12
-     **/
-    construction.initForm = function (item) {
-        var forms = $("#" + construction.config.id).find("form");
-        item = JSON.parse(item);
-        $.each(forms, function (i, n) {
-            $(n).clearAll();
-        });
-        $.each(forms, function (i, n) {
-            $(n).initForm(item);
-        });
-        $.each(forms, function (i, n) {
-            var inputs = $(n).find(":input");
-            $.each(inputs, function (i, k) {
-                var kk = $(k);
-                var className = kk.attr("class");
-                var str = null;
-                var name = kk.attr("name");
-                if (className.indexOf("x-percent") != -1) {
+        developmentCommon.architecturalB.getData("mdCostConstruction",AssessDBKey.MdCost,pid,'${projectPlanDetails.id}',function (data) {
+            var item = undefined ;
+            if (data.length >= 1){
+                var n = data[0] ;
+                if (n.jsonContent){
                     try {
-                        str = eval("item." + name);
-                        if (construction.isEmpty(str)) {
-                            str = construction.specialTreatment(str);
-                            construction.set(name,str);
-                        }
+                        item = JSON.parse(n.jsonContent) ;
                     } catch (e) {
+                        console.log("解析异常!") ;
                     }
                 }
-            });
-        });
-        $("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html(item.landGetCostTotal);
-        $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html(item.constructionSubtotal);
-        $("#" + construction.config.id).find("." + construction.config.inputConfig.interestInvestment.key).html(item.interestInvestment);
-        $("#" + construction.config.id).find("." + construction.config.inputConfig.investmentProfit.key).html(item.investmentProfit);
-        $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentValue.key).html(item.constructionAssessmentValue);
-        $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentPrice.correcting).html(item.constructionAssessmentPriceCorrecting);
-    };
-
-
+            }
+            if (item){
+                developmentCommon.architecturalB.initData(target.find("table"),item) ;
+            }
+        }) ;
+        target.modal("show");
+    }
 </script>

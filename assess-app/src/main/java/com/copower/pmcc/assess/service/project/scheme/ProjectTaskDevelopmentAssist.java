@@ -117,19 +117,13 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
      * @throws BusinessException
      */
     private void save(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        MdDevelopmentVo mdDevelopment = JSONObject.parseObject(formData,MdDevelopmentVo.class) ;
+        MdDevelopmentVo mdDevelopment = JSONObject.parseObject(formData, MdDevelopmentVo.class);
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-        schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
         schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT).getId());
-
-        MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
-        mdArchitecturalObj.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopment.class));
-        mdArchitecturalObj.setPid(0);
-        mdArchitecturalObj.setPlanDetailsId(mdDevelopment.getPlanDetailsId());
-        List<MdArchitecturalObj> mdArchitecturalObjList = mdArchitecturalObjService.getMdArchitecturalObjListByExample(mdArchitecturalObj) ;
+        List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(schemeInfo);
         mdDevelopment.setContent(formData);
         if (projectPlanDetails.getJudgeObjectId() != null) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
@@ -138,15 +132,19 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
         mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
-        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)){
-            for (MdArchitecturalObj oo:mdArchitecturalObjList){
-                oo.setPid(mdDevelopment.getId());
-                mdArchitecturalObjService.saveMdArchitecturalObj(oo) ;
+        if (CollectionUtils.isNotEmpty(schemeInfoList)){
+            for (SchemeInfo oo :schemeInfoList){
+                //处理评估方案中的各个评估方法
+                oo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+                oo.setMethodDataId(mdDevelopment.getId());
+                schemeInfoService.saveSchemeInfo(oo);
             }
+        }else {
+            //处理评估方案中的各个评估方法
+            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+            schemeInfo.setMethodDataId(mdDevelopment.getId());
+            schemeInfoService.saveSchemeInfo(schemeInfo);
         }
-        //处理评估方案中的各个评估方法
-        schemeInfo.setMethodDataId(mdDevelopment.getId());
-        schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 
     /**
@@ -156,39 +154,40 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo select = new SchemeInfo();
-        DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter = new DeclareBuildEngineeringAndEquipmentCenter() ;
         select.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.DEVELOPMENT).getId());
+        select.setProjectId(projectPlanDetails.getProjectId());
         select.setPlanDetailsId(projectPlanDetails.getId());
+        DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter = new DeclareBuildEngineeringAndEquipmentCenter();
         if (projectPlanDetails.getJudgeObjectId() != null) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
             if (schemeJudgeObject != null) {
                 Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
                 if (areaGroupId != null) {
                     SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
-                    if (schemeAreaGroup != null){
-                        modelAndView.addObject("dataInfrastructureList", dataInfrastructureService.calculatingMethod(schemeAreaGroup.getProvince(),schemeAreaGroup.getCity(),schemeAreaGroup.getDistrict()));
+                    if (schemeAreaGroup != null) {
+                        modelAndView.addObject("dataInfrastructureList", dataInfrastructureService.calculatingMethod(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict()));
                         modelAndView.addObject(StringUtils.uncapitalize(SchemeAreaGroup.class.getSimpleName()), schemeAreaGroup);
                     }
                 }
-                if (schemeJudgeObject.getDeclareRecordId() != null){
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId()) ;
-                    if (declareRecord != null){
+                if (schemeJudgeObject.getDeclareRecordId() != null) {
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                    if (declareRecord != null) {
                         modelAndView.addObject(StringUtils.uncapitalize(DeclareRecord.class.getSimpleName()), declareRecord);
                         DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class),declareRecord.getDataTableName())){
+                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
                             query.setHouseId(declareRecord.getDataTableId());
                             query.setType(DeclareRealtyHouseCert.class.getSimpleName());
-                            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query) ;
-                            if (CollectionUtils.isNotEmpty(centerList)){
-                                declareBuildEngineeringAndEquipmentCenter = centerList.stream().findFirst().get() ;
+                            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                            if (CollectionUtils.isNotEmpty(centerList)) {
+                                declareBuildEngineeringAndEquipmentCenter = centerList.stream().findFirst().get();
                             }
                         }
-                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class),declareRecord.getDataTableName())){
+                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
                             query.setRealEstateId(declareRecord.getDataTableId());
                             query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
-                            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query) ;
-                            if (CollectionUtils.isNotEmpty(centerList)){
-                                declareBuildEngineeringAndEquipmentCenter = centerList.stream().findFirst().get() ;
+                            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                            if (CollectionUtils.isNotEmpty(centerList)) {
+                                declareBuildEngineeringAndEquipmentCenter = centerList.stream().findFirst().get();
                             }
                         }
                     }
@@ -198,16 +197,16 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(select);
         MdDevelopment mdDevelopment = null;
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            SchemeInfo schemeInfo = schemeInfoList.stream().findFirst().get();
+            SchemeInfo schemeInfo = schemeInfoList.stream().sorted((o1,o2) -> o1.getId().compareTo(o2.getId())).findFirst().get();
             if (schemeInfo.getMethodDataId() != null) {
                 mdDevelopment = mdDevelopmentService.getMdDevelopmentById(schemeInfo.getMethodDataId());
             }
         }
         if (mdDevelopment != null) {
             // StringUtils.uncapitalize 首字母小写
-            modelAndView.addObject(StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment,true));
-            modelAndView.addObject(String.format("%s2",StringUtils.uncapitalize(MdDevelopment.class.getSimpleName())), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment,false));
-            modelAndView.addObject(String.format("%s%s", StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), JSON_STRING), JSON.toJSONString(mdDevelopmentService.getMdDevelopmentVo(mdDevelopment,false)));
+            modelAndView.addObject(StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment, true));
+            modelAndView.addObject(String.format("%s2", StringUtils.uncapitalize(MdDevelopment.class.getSimpleName())), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment, false));
+            modelAndView.addObject(String.format("%s%s", StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), JSON_STRING), JSON.toJSONString(mdDevelopmentService.getMdDevelopmentVo(mdDevelopment, false)));
         }
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
