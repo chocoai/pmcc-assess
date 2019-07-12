@@ -133,11 +133,11 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         }
         mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            //处理评估方案中的各个评估方法
-            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
-            schemeInfo.setMethodDataId(mdDevelopment.getId());
-            schemeInfoService.saveSchemeInfo(schemeInfo);
         }
+        //处理评估方案中的各个评估方法
+        schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+        schemeInfo.setMethodDataId(mdDevelopment.getId());
+        schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 
     /**
@@ -190,7 +190,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(select);
         MdDevelopment mdDevelopment = null;
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            SchemeInfo schemeInfo = schemeInfoList.stream().findFirst().get();
+            SchemeInfo schemeInfo = schemeInfoList.stream().sorted((o1,o2) -> o1.getId().compareTo(o2.getId())).findFirst().get();
             if (schemeInfo.getMethodDataId() != null) {
                 mdDevelopment = mdDevelopmentService.getMdDevelopmentById(schemeInfo.getMethodDataId());
             }
