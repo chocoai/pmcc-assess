@@ -34,7 +34,39 @@
                                            class="form-control">
                                 </div>
                             </div>
-
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    网站
+                                </label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" required id="queryWebName">
+                                        <option value="">--请选择--</option>
+                                        <c:if test="${not empty webTypes}">
+                                            <c:forEach items="${webTypes}" var="item">
+                                                <option value="${item}">${item}</option>
+                                            </c:forEach>
+                                        </c:if>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">省
+                                </label>
+                                <div class="col-sm-2">
+                                    <select id="province" name="province"
+                                            class="form-control search-select select2" required="required">
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">市
+                                </label>
+                                <div class="col-sm-2">
+                                    <select id="city" name="city" class="form-control search-select select2"
+                                            required="required">
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-primary"
                                         onclick="dataBuilder.prototype.loadDataDicList()">
@@ -61,6 +93,14 @@
 <script type="text/javascript">
     $(function () {
         dataBuilder.prototype.loadDataDicList();
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#province"),
+            cityTarget: $("#city"),
+            districtTarget: $("#district"),
+            provinceValue:'',
+            cityValue: '',
+            districtValue: ''
+        })
     });
     var dataBuilder = function () {
 
@@ -78,6 +118,8 @@
             cols.push({field: 'currentPrice', title: '成交价'});
             cols.push({field: 'consultPrice', title: '估算价'});
             cols.push({field: 'initPrice', title: '起始价'});
+            cols.push({field: 'provinceName', title: '省'});
+            cols.push({field: 'cityName', title: '市'});
             cols.push({
                 field: 'end', title: '结束时间', formatter: function (value, row, index) {
                     return formatDate(row.end, false);
@@ -93,7 +135,12 @@
             });
             $("#" + dataBuilder.prototype.config().table).bootstrapTable('destroy');
             TableInit(dataBuilder.prototype.config().table, "${pageContext.request.contextPath}/netAuctionInfoController/getAuctionInfoList", cols, {
-                queryTitle: $("#queryTitle").val()
+                queryTitle: $("#queryTitle").val(),
+                queryWebName: $("#queryWebName").val(),
+                province: $("#province").val(),
+                city: $("#city").val(),
+
+
             }, {
                 showColumns: false,
                 showRefresh: false,

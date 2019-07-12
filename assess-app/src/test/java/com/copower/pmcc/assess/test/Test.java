@@ -605,8 +605,8 @@ public class Test {
                         netAuctionInfo.setItemUrl(String.format("%s" + netAuctionInfo.getItemUrl(), "https:"));
                         netAuctionInfo.setType(entry.getValue().substring(0, entry.getValue().indexOf("_")));
                         String provinceAndCity = entry.getValue().substring(entry.getValue().indexOf("_") + 1);
-                        netAuctionInfo.setProvincename(provinceAndCity.substring(0, provinceAndCity.indexOf("_")));
-                        netAuctionInfo.setCityname(provinceAndCity.substring(provinceAndCity.indexOf("_") + 1));
+                        netAuctionInfo.setProvinceName(provinceAndCity.substring(0, provinceAndCity.indexOf("_")));
+                        netAuctionInfo.setCityName(provinceAndCity.substring(provinceAndCity.indexOf("_") + 1));
                         Elements itemContent = getContent(netAuctionInfo.getItemUrl(), "#J_HoverShow", "GBK").select("tr").get(0).select("span");
                         if (itemContent == null) continue;
                         netAuctionInfo.setInitPrice(itemContent.get(2).childNodes().get(0).toString().replace(",", ""));
@@ -688,8 +688,8 @@ public class Test {
                         netAuctionInfo.setTitle(jdsfDto.getTitle());
                         netAuctionInfo.setStart(jdsfDto.getStartTime());
                         netAuctionInfo.setEnd(jdsfDto.getEndTime());
-                        netAuctionInfo.setProvincename(jdsfDto.getProvince());
-                        netAuctionInfo.setCityname(jdsfDto.getCity());
+                        netAuctionInfo.setProvinceName(jdsfDto.getProvince());
+                        netAuctionInfo.setCityName(jdsfDto.getCity());
                         netAuctionInfo.setConsultPrice(jdsfDto.getAssessmentPriceStr());
                         netAuctionInfo.setCurrentPrice(jdsfDto.getCurrentPriceStr());
                         netAuctionInfo.setType(entry.getKey());
@@ -756,8 +756,8 @@ public class Test {
                         netAuctionInfo.setTitle(jdzcDto.getTitle());
                         netAuctionInfo.setStart(jdzcDto.getStartTime());
                         netAuctionInfo.setEnd(jdzcDto.getEndTime());
-                        netAuctionInfo.setProvincename(jdzcDto.getProvince());
-                        netAuctionInfo.setCityname(jdzcDto.getCity());
+                        netAuctionInfo.setProvinceName(jdzcDto.getProvince());
+                        netAuctionInfo.setCityName(jdzcDto.getCity());
                         netAuctionInfo.setCurrentPrice(jdzcDto.getCurrentPrice());
                         netAuctionInfo.setInitPrice(jdzcDto.getStartPrice());
                         netAuctionInfo.setType(entry.getKey());
@@ -993,7 +993,7 @@ public class Test {
                             String initPrice = tbody_tr.get(6).childNodes().get(1).childNodes().get(0).toString();
                             netAuctionInfo.setInitPrice(initPrice);
                             netAuctionInfo.setType(entry.getValue().substring(0, entry.getValue().indexOf("_")));
-                            netAuctionInfo.setProvincename(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
+                            netAuctionInfo.setProvinceName(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
                             netAuctionInfoDao.addInfo(netAuctionInfo);
                         } catch (Exception e) {
 

@@ -36,11 +36,20 @@ public class NetAuctionInfoDao {
      * @param queryTitle
      * @return
      */
-    public List<NetAuctionInfo> getNetAuctionInfoListByName(String queryTitle) {
+    public List<NetAuctionInfo> getNetAuctionInfoListByName(String queryTitle,String queryWebName,String provinceName,String cityName) {
         NetAuctionInfoExample example = new NetAuctionInfoExample();
         NetAuctionInfoExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(queryTitle)) {
             criteria.andTitleLike(String.format("%s%s%s", "%", queryTitle, "%"));
+        }
+        if (StringUtils.isNotBlank(queryWebName)) {
+            criteria.andWebNameLike(String.format("%s%s%s", "%", queryWebName, "%"));
+        }
+        if (StringUtils.isNotBlank(provinceName)) {
+            criteria.andProvinceNameLike(String.format("%s%s%s", "%", provinceName, "%"));
+        }
+        if (StringUtils.isNotBlank(cityName)) {
+            criteria.andCityNameLike(String.format("%s%s%s", "%", cityName, "%"));
         }
 
         example.setOrderByClause("id desc");

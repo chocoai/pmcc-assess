@@ -122,22 +122,13 @@ public class NetAuctionInfoService {
                         netAuctionInfo.setItemUrl(String.format("%s" + netAuctionInfo.getItemUrl(), "https:"));
                         netAuctionInfo.setType(entry.getValue().substring(0, entry.getValue().indexOf("_")));
                         String provinceAndCity = entry.getValue().substring(entry.getValue().indexOf("_") + 1);
-                        netAuctionInfo.setProvincename(provinceAndCity.substring(0, provinceAndCity.indexOf("_")));
-                        netAuctionInfo.setCityname(provinceAndCity.substring(provinceAndCity.indexOf("_") + 1));
+                        netAuctionInfo.setProvinceName(provinceAndCity.substring(0, provinceAndCity.indexOf("_")));
+                        netAuctionInfo.setProvinceName(provinceAndCity.substring(provinceAndCity.indexOf("_") + 1));
                         Elements itemContent = getContent(netAuctionInfo.getItemUrl(), "#J_HoverShow", "GBK").select("tr").get(0).select("span");
-                        if (itemContent == null) continue;
-                        netAuctionInfo.setInitPrice(itemContent.get(2).childNodes().get(0).toString().replace(",", ""));
-                        //  String dataFormHerf = getContent(netAuctionInfo.getItemUrl(), "#J_NoticeDetail", "GBK").get(0).attributes().get("data-from");
-//                        List<org.jsoup.nodes.Node> nodes = getContent(String.format("%s%s", "https:", dataFormHerf), "body", "GBK").get(0).childNodes();
-//                        StringBuilder content = new StringBuilder();
-//                        for (int j = 0; j < nodes.size(); j++) {
-//                            if (j == 0 || j == nodes.size() - 1) continue;
-//                            content.append(delHtmlTags(nodes.get(j).toString()));
-//                        }
-//                        if(content.length()>500) {
-//                            content.substring(0,500);
-//                        }
-//                        netAuctionInfo.setContent(content.toString());
+                        if (itemContent != null) {
+                            netAuctionInfo.setInitPrice(itemContent.get(2).childNodes().get(0).toString().replace(",", ""));
+                        }
+                        netAuctionInfo.setWebName("淘宝司法拍卖网");
                         netAuctionInfoDao.addInfo(netAuctionInfo);
 
                     }
@@ -204,11 +195,12 @@ public class NetAuctionInfoService {
                         netAuctionInfo.setTitle(jdsfDto.getTitle());
                         netAuctionInfo.setStart(jdsfDto.getStartTime());
                         netAuctionInfo.setEnd(jdsfDto.getEndTime());
-                        netAuctionInfo.setProvincename(jdsfDto.getProvince());
-                        netAuctionInfo.setCityname(jdsfDto.getCity());
+                        netAuctionInfo.setProvinceName(jdsfDto.getProvince());
+                        netAuctionInfo.setProvinceName(jdsfDto.getCity());
                         netAuctionInfo.setConsultPrice(jdsfDto.getAssessmentPriceStr());
                         netAuctionInfo.setCurrentPrice(jdsfDto.getCurrentPriceStr());
                         netAuctionInfo.setType(entry.getKey());
+                        netAuctionInfo.setWebName("京东司法拍卖网");
                         netAuctionInfoDao.addInfo(netAuctionInfo);
                     }
                 }
@@ -271,11 +263,12 @@ public class NetAuctionInfoService {
                         netAuctionInfo.setTitle(jdzcDto.getTitle());
                         netAuctionInfo.setStart(jdzcDto.getStartTime());
                         netAuctionInfo.setEnd(jdzcDto.getEndTime());
-                        netAuctionInfo.setProvincename(jdzcDto.getProvince());
-                        netAuctionInfo.setCityname(jdzcDto.getCity());
+                        netAuctionInfo.setProvinceName(jdzcDto.getProvince());
+                        netAuctionInfo.setProvinceName(jdzcDto.getCity());
                         netAuctionInfo.setCurrentPrice(jdzcDto.getCurrentPrice());
                         netAuctionInfo.setInitPrice(jdzcDto.getStartPrice());
                         netAuctionInfo.setType(entry.getKey());
+                        netAuctionInfo.setWebName("京东资产拍卖网");
                         netAuctionInfoDao.addInfo(netAuctionInfo);
                     }
                 }
@@ -346,6 +339,7 @@ public class NetAuctionInfoService {
                         netAuctionInfo.setCurrentPrice(zgsfDto.getNowPrice());
                         netAuctionInfo.setInitPrice(zgsfDto.getStartPrice());
                         netAuctionInfo.setType(entry.getKey());
+                        netAuctionInfo.setWebName("中国拍卖行业协会网-司法");
                         netAuctionInfoDao.addInfo(netAuctionInfo);
                     }
                 }
@@ -414,6 +408,7 @@ public class NetAuctionInfoService {
                         netAuctionInfo.setCurrentPrice(zgsfDto.getNowPrice());
                         netAuctionInfo.setInitPrice(zgsfDto.getStartPrice());
                         netAuctionInfo.setType(entry.getKey());
+                        netAuctionInfo.setWebName("中国拍卖行业协会网-标的");
                         netAuctionInfoDao.addInfo(netAuctionInfo);
                     }
                 }
@@ -505,7 +500,8 @@ public class NetAuctionInfoService {
                             String initPrice = tbody_tr.get(6).childNodes().get(1).childNodes().get(0).toString();
                             netAuctionInfo.setInitPrice(initPrice);
                             netAuctionInfo.setType(entry.getValue().substring(0, entry.getValue().indexOf("_")));
-                            netAuctionInfo.setProvincename(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
+                            netAuctionInfo.setProvinceName(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
+                            netAuctionInfo.setWebName("公拍网");
                             netAuctionInfoDao.addInfo(netAuctionInfo);
                         } catch (Exception e) {
 
@@ -554,6 +550,7 @@ public class NetAuctionInfoService {
                     netLandTransaction.setContent(title);
                     String detailHref = itemContent.get(i).childNodes().get(5).childNodes().get(1).attributes().get("href");
                     netLandTransaction.setDetailLink(String.format("%s%s", "http://www.yaggzy.org.cn", detailHref));
+                    netLandTransaction.setAddress("雅安");
                     netLandTransactionDao.addNetLandTransaction(netLandTransaction);
                     Elements tdElements = getContent(netLandTransaction.getDetailLink(), "tr", "");
                     Integer length = tdElements.get(1).select("td").size();

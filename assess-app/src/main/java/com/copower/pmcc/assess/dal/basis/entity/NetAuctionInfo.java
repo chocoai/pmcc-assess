@@ -21,11 +21,13 @@ public class NetAuctionInfo {
 
     private String content;
 
-    private String provincename;
+    private String provinceName;
 
-    private String cityname;
+    private String cityName;
 
     private String type;
+
+    private String webName;
 
     public Integer getId() {
         return id;
@@ -99,20 +101,20 @@ public class NetAuctionInfo {
         this.content = content == null ? null : content.trim();
     }
 
-    public String getProvincename() {
-        return provincename;
+    public String getProvinceName() {
+        return provinceName;
     }
 
-    public void setProvincename(String provincename) {
-        this.provincename = provincename == null ? null : provincename.trim();
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName == null ? null : provinceName.trim();
     }
 
-    public String getCityname() {
-        return cityname;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setCityname(String cityname) {
-        this.cityname = cityname == null ? null : cityname.trim();
+    public void setCityName(String cityName) {
+        this.cityName = cityName == null ? null : cityName.trim();
     }
 
     public String getType() {
@@ -121,5 +123,13 @@ public class NetAuctionInfo {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public String getWebName() {
+        return webName;
+    }
+
+    public void setWebName(String webName) {
+        this.webName = webName == null ? null : webName.trim();
     }
 }

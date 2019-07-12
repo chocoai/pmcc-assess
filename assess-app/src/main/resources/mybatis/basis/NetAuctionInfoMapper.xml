@@ -11,9 +11,10 @@
     <result column="start" property="start" jdbcType="TIMESTAMP" />
     <result column="end" property="end" jdbcType="TIMESTAMP" />
     <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="provinceName" property="provincename" jdbcType="VARCHAR" />
-    <result column="cityName" property="cityname" jdbcType="VARCHAR" />
+    <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="web_name" property="webName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, item_url, title, current_price, consult_price, init_price, start, end, content, 
-    provinceName, cityName, type
+    province_name, city_name, type, web_name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfoExample" >
     select
@@ -113,12 +114,14 @@
     </selectKey>
     insert into tb_net_auction_info (item_url, title, current_price, 
       consult_price, init_price, start, 
-      end, content, provinceName, 
-      cityName, type)
+      end, content, province_name, 
+      city_name, type, web_name
+      )
     values (#{itemUrl,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{currentPrice,jdbcType=VARCHAR}, 
       #{consultPrice,jdbcType=VARCHAR}, #{initPrice,jdbcType=VARCHAR}, #{start,jdbcType=TIMESTAMP}, 
-      #{end,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{provincename,jdbcType=VARCHAR}, 
-      #{cityname,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+      #{end,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{provinceName,jdbcType=VARCHAR}, 
+      #{cityName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{webName,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -150,14 +153,17 @@
       <if test="content != null" >
         content,
       </if>
-      <if test="provincename != null" >
-        provinceName,
+      <if test="provinceName != null" >
+        province_name,
       </if>
-      <if test="cityname != null" >
-        cityName,
+      <if test="cityName != null" >
+        city_name,
       </if>
       <if test="type != null" >
         type,
+      </if>
+      <if test="webName != null" >
+        web_name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -185,14 +191,17 @@
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
       </if>
-      <if test="provincename != null" >
-        #{provincename,jdbcType=VARCHAR},
+      <if test="provinceName != null" >
+        #{provinceName,jdbcType=VARCHAR},
       </if>
-      <if test="cityname != null" >
-        #{cityname,jdbcType=VARCHAR},
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="webName != null" >
+        #{webName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -232,14 +241,17 @@
       <if test="record.content != null" >
         content = #{record.content,jdbcType=VARCHAR},
       </if>
-      <if test="record.provincename != null" >
-        provinceName = #{record.provincename,jdbcType=VARCHAR},
+      <if test="record.provinceName != null" >
+        province_name = #{record.provinceName,jdbcType=VARCHAR},
       </if>
-      <if test="record.cityname != null" >
-        cityName = #{record.cityname,jdbcType=VARCHAR},
+      <if test="record.cityName != null" >
+        city_name = #{record.cityName,jdbcType=VARCHAR},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.webName != null" >
+        web_name = #{record.webName,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -257,9 +269,10 @@
       start = #{record.start,jdbcType=TIMESTAMP},
       end = #{record.end,jdbcType=TIMESTAMP},
       content = #{record.content,jdbcType=VARCHAR},
-      provinceName = #{record.provincename,jdbcType=VARCHAR},
-      cityName = #{record.cityname,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR}
+      province_name = #{record.provinceName,jdbcType=VARCHAR},
+      city_name = #{record.cityName,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      web_name = #{record.webName,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -291,14 +304,17 @@
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
       </if>
-      <if test="provincename != null" >
-        provinceName = #{provincename,jdbcType=VARCHAR},
+      <if test="provinceName != null" >
+        province_name = #{provinceName,jdbcType=VARCHAR},
       </if>
-      <if test="cityname != null" >
-        cityName = #{cityname,jdbcType=VARCHAR},
+      <if test="cityName != null" >
+        city_name = #{cityName,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="webName != null" >
+        web_name = #{webName,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -313,9 +329,10 @@
       start = #{start,jdbcType=TIMESTAMP},
       end = #{end,jdbcType=TIMESTAMP},
       content = #{content,jdbcType=VARCHAR},
-      provinceName = #{provincename,jdbcType=VARCHAR},
-      cityName = #{cityname,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR}
+      province_name = #{provinceName,jdbcType=VARCHAR},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      web_name = #{webName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
