@@ -23,7 +23,7 @@
                 </div>
                 <div class="x_content">
                     <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group ">
+                        <div class="form-group">
                             <div>
                                 <label class="col-sm-1 control-label">
                                     名称
@@ -65,6 +65,17 @@
                                     <select id="city" name="city" class="form-control search-select select2"
                                             required="required">
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    结束日期
+                                </label>
+                                <div class="col-sm-2">
+                                    <input placeholder="结束日期" id="queryEndTime" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate roomTime">
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -139,8 +150,7 @@
                 queryWebName: $("#queryWebName").val(),
                 province: $("#province").val(),
                 city: $("#city").val(),
-
-
+                queryEndTime: $("#queryEndTime").val()
             }, {
                 showColumns: false,
                 showRefresh: false,

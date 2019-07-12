@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 描述:
@@ -50,13 +50,23 @@ public class NetAuctionInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getAuctionInfoList", name = "信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getAuctionInfoList(String queryTitle,String queryWebName,String province,String city) {
+    public BootstrapTableVo getAuctionInfoList(String queryTitle,String queryWebName,String province,String city,String queryEndTime) throws Exception{
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         String provinceName = erpAreaService.getSysAreaName(province);
         String cityName = erpAreaService.getSysAreaName(city);
-        List<NetAuctionInfo> netAuctionInfos = netAuctionInfoDao.getNetAuctionInfoListByName(queryTitle,queryWebName,provinceName,cityName);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date endTime = null;
+        Date afterDate = null;
+        if(StringUtil.isNotEmpty(queryEndTime)){
+            endTime = sdf.parse(queryEndTime);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(endTime);
+            calendar.add(Calendar.DAY_OF_MONTH, +1); //得到后1天
+            afterDate = calendar.getTime();
+        }
+        List<NetAuctionInfo> netAuctionInfos = netAuctionInfoDao.getNetAuctionInfoListByName(queryTitle,queryWebName,provinceName,cityName,endTime,afterDate);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(netAuctionInfos) ? new ArrayList<NetAuctionInfo>() : netAuctionInfos);
         return bootstrapTableVo;

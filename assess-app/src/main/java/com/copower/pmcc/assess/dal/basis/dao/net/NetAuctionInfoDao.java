@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class NetAuctionInfoDao {
      * @param queryTitle
      * @return
      */
-    public List<NetAuctionInfo> getNetAuctionInfoListByName(String queryTitle,String queryWebName,String provinceName,String cityName) {
+    public List<NetAuctionInfo> getNetAuctionInfoListByName(String queryTitle,String queryWebName,String provinceName,String cityName,Date endTime,Date afterDate) {
         NetAuctionInfoExample example = new NetAuctionInfoExample();
         NetAuctionInfoExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(queryTitle)) {
@@ -50,6 +51,9 @@ public class NetAuctionInfoDao {
         }
         if (StringUtils.isNotBlank(cityName)) {
             criteria.andCityNameLike(String.format("%s%s%s", "%", cityName, "%"));
+        }
+        if (endTime!=null) {
+            criteria.andEndBetween(endTime,afterDate);
         }
 
         example.setOrderByClause("id desc");
