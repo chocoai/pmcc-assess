@@ -12,6 +12,9 @@
     <result column="cjsj" property="cjsj" jdbcType="VARCHAR" />
     <result column="ccj" property="ccj" jdbcType="VARCHAR" />
     <result column="jdr" property="jdr" jdbcType="VARCHAR" />
+    <result column="bdmc" property="bdmc" jdbcType="VARCHAR" />
+    <result column="crfs" property="crfs" jdbcType="VARCHAR" />
+    <result column="rjl" property="rjl" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, main_id, zdbh, zdwz, jydmj, tdyt, qsj, cjsj, ccj, jdr
+    id, main_id, zdbh, zdwz, jydmj, tdyt, qsj, cjsj, ccj, jdr, bdmc, crfs, rjl
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncementExample" >
     select
@@ -110,10 +113,12 @@
     </selectKey>
     insert into tb_net_result_announcement (main_id, zdbh, zdwz, 
       jydmj, tdyt, qsj, cjsj, 
-      ccj, jdr)
+      ccj, jdr, bdmc, crfs, 
+      rjl)
     values (#{mainId,jdbcType=INTEGER}, #{zdbh,jdbcType=VARCHAR}, #{zdwz,jdbcType=VARCHAR}, 
       #{jydmj,jdbcType=VARCHAR}, #{tdyt,jdbcType=VARCHAR}, #{qsj,jdbcType=VARCHAR}, #{cjsj,jdbcType=VARCHAR}, 
-      #{ccj,jdbcType=VARCHAR}, #{jdr,jdbcType=VARCHAR})
+      #{ccj,jdbcType=VARCHAR}, #{jdr,jdbcType=VARCHAR}, #{bdmc,jdbcType=VARCHAR}, #{crfs,jdbcType=VARCHAR}, 
+      #{rjl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncement" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -148,6 +153,15 @@
       <if test="jdr != null" >
         jdr,
       </if>
+      <if test="bdmc != null" >
+        bdmc,
+      </if>
+      <if test="crfs != null" >
+        crfs,
+      </if>
+      <if test="rjl != null" >
+        rjl,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="mainId != null" >
@@ -176,6 +190,15 @@
       </if>
       <if test="jdr != null" >
         #{jdr,jdbcType=VARCHAR},
+      </if>
+      <if test="bdmc != null" >
+        #{bdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="crfs != null" >
+        #{crfs,jdbcType=VARCHAR},
+      </if>
+      <if test="rjl != null" >
+        #{rjl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -218,6 +241,15 @@
       <if test="record.jdr != null" >
         jdr = #{record.jdr,jdbcType=VARCHAR},
       </if>
+      <if test="record.bdmc != null" >
+        bdmc = #{record.bdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crfs != null" >
+        crfs = #{record.crfs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjl != null" >
+        rjl = #{record.rjl,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -234,7 +266,10 @@
       qsj = #{record.qsj,jdbcType=VARCHAR},
       cjsj = #{record.cjsj,jdbcType=VARCHAR},
       ccj = #{record.ccj,jdbcType=VARCHAR},
-      jdr = #{record.jdr,jdbcType=VARCHAR}
+      jdr = #{record.jdr,jdbcType=VARCHAR},
+      bdmc = #{record.bdmc,jdbcType=VARCHAR},
+      crfs = #{record.crfs,jdbcType=VARCHAR},
+      rjl = #{record.rjl,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -269,6 +304,15 @@
       <if test="jdr != null" >
         jdr = #{jdr,jdbcType=VARCHAR},
       </if>
+      <if test="bdmc != null" >
+        bdmc = #{bdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="crfs != null" >
+        crfs = #{crfs,jdbcType=VARCHAR},
+      </if>
+      <if test="rjl != null" >
+        rjl = #{rjl,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -282,7 +326,10 @@
       qsj = #{qsj,jdbcType=VARCHAR},
       cjsj = #{cjsj,jdbcType=VARCHAR},
       ccj = #{ccj,jdbcType=VARCHAR},
-      jdr = #{jdr,jdbcType=VARCHAR}
+      jdr = #{jdr,jdbcType=VARCHAR},
+      bdmc = #{bdmc,jdbcType=VARCHAR},
+      crfs = #{crfs,jdbcType=VARCHAR},
+      rjl = #{rjl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
