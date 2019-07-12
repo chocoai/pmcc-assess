@@ -26,7 +26,13 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-11">
-                    <label class="form-control">${mdDevelopment.f21}</label>
+                    <div class="input-group">
+                        <label class="form-control">${mdDevelopment.f21}</label>
+                        <span class="input-group-btn">
+                              <input type="button" class="btn btn-primary" value="建筑安装工程费"
+                                     onclick="constructionInstallationEngineeringFeeEvent();"/>
+                            </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -465,6 +471,64 @@
     </div>
 </div>
 
+<script>
+    function constructionInstallationEngineeringFeeEvent() {
+        var target = $("#boxLandEngineering");
+        if (target.find(".panel-body").find("table").size() == 0) {
+            target.find(".panel-body").append(developmentCommon.architecturalA.getHtmlDetail());
+            developmentCommon.architecturalA.treeGirdParse(target);
+        }
+        developmentCommon.architecturalA.get("land" , function (data) {
+            var item = undefined ;
+            if (data.length >= 1){
+                var n = data[0] ;
+                if (n.jsonContent){
+                    try {
+                        item = JSON.parse(n.jsonContent) ;
+                    } catch (e) {
+                        console.log("解析异常!") ;
+                    }
+                }
+            }
+            if (item){
+                developmentCommon.architecturalA.initData(target.find("table"),item) ;
+            }
+        }) ;
+        target.modal("show");
+    }
+</script>
 
 
+<div id="boxLandEngineering" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">建筑安装工程费</h3>
+            </div>
+            <form id="boxLandEngineeringFrm" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 

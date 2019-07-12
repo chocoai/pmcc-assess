@@ -92,8 +92,14 @@
     });
 
     function submit() {
+        var item = formSerializeArray($("#md_development_form")) ;
         development.valid(function () {
             var data = development.getFomData();
+            if (item){
+                if (item.price){
+                    data.price =  item.price;
+                }
+            }
             console.log(data);
             if ("${processInsId}" != "0") {
                 submitEditToServer(JSON.stringify(data));
