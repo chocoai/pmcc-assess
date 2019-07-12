@@ -59,14 +59,18 @@ public class BasicApplyBatchDetailService {
      * @return
      */
     public BasicApplyBatchDetail addBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
+        basicApplyBatchDetail.setDisplayName(basicApplyBatchDetail.getName());
         if (basicApplyBatchDetail.getId() != null && basicApplyBatchDetail.getId() > 0) {
             switch (basicApplyBatchDetail.getTableName()) {
                 case "tb_basic_building":
+                    basicApplyBatchDetail.setDisplayName(String.format("%s栋",basicApplyBatchDetail.getName()));
                     BasicBuilding building = basicBuildingDao.getBasicBuildingById(basicApplyBatchDetail.getTableId());
                     building.setBuildingNumber(basicApplyBatchDetail.getName());
+                    building.setBuildingName(basicApplyBatchDetail.getDisplayName());
                     basicBuildingDao.updateBasicBuilding(building);
                     break;
                 case "tb_basic_unit":
+                    basicApplyBatchDetail.setDisplayName(String.format("%s单元",basicApplyBatchDetail.getName()));
                     BasicUnit unit = basicUnitService.getBasicUnitById(basicApplyBatchDetail.getTableId());
                     unit.setUnitNumber(basicApplyBatchDetail.getName());
                     basicUnitService.saveAndUpdateBasicUnit(unit);
@@ -83,13 +87,16 @@ public class BasicApplyBatchDetailService {
             basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
             switch (basicApplyBatchDetail.getTableName()) {
                 case "tb_basic_building":
+                    basicApplyBatchDetail.setDisplayName(String.format("%s栋",basicApplyBatchDetail.getName()));
                     BasicBuilding building = new BasicBuilding();
                     building.setBuildingNumber(basicApplyBatchDetail.getName());
                     building.setEstateId(this.getParentTableId(basicApplyBatchDetail));
+                    building.setBuildingName(basicApplyBatchDetail.getDisplayName());
                     basicBuildingDao.addBasicBuilding(building);
                     basicApplyBatchDetail.setTableId(building.getId());
                     break;
                 case "tb_basic_unit":
+                    basicApplyBatchDetail.setDisplayName(String.format("%s单元",basicApplyBatchDetail.getName()));
                     BasicUnit unit = new BasicUnit();
                     unit.setUnitNumber(basicApplyBatchDetail.getName());
                     unit.setBuildingId(this.getParentTableId(basicApplyBatchDetail));

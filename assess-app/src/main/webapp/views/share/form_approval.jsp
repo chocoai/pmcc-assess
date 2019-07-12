@@ -44,10 +44,7 @@
                     <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
                         <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 " id="div_bisNext">
                             <label class="checkbox-inline">
-                                <input type="checkbox" id="chk_bisNext" name="chk_bisNext" checked="checked"
-                                       value=""
-                                       class="grey"
-                                       onclick="formApproval.chkbisNextClick();">
+                                <input type="checkbox" id="chk_bisNext" name="chk_bisNext" value="" class="grey" onclick="formApproval.chkbisNextClick();">
                                 跳过多级审批
                             </label>
                         </div>

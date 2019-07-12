@@ -9,7 +9,8 @@
         <div class="x_title">
             <h3>变现分析税费（0{index}）
                 <small>
-                    <a href="javascript://;" class="btn btn-xs btn-warning" onclick="saveAnalysisGroup(true,'taskLiquidationAnalysisFrm_number');">保存</a>
+                    <a href="javascript://;" class="btn btn-xs btn-warning"
+                       onclick="saveAnalysisGroup(true,'taskLiquidationAnalysisFrm_number');">保存</a>
                     <a href="javascript://;" class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>
                 </small>
             </h3>
@@ -21,7 +22,8 @@
                     <div class="x-valid">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
                                 class="symbol required"></span></label>
-                        <div class=" col-xs-560  col-sm-560  col-md-560  col-lg-560 " style="overflow:auto;height:60px;">
+                        <div class=" col-xs-560  col-sm-560  col-md-560  col-lg-560 "
+                             style="overflow:auto;height:60px;">
                             <select class="form-control search-select select2" multiple="multiple" required="required"
                                     name="recordIds" onchange="getGroupAndPriceVo(this);">
                                 <c:forEach var="items" items="${declareRecordList}">
@@ -177,7 +179,7 @@
                             $.each(result.data, function (i, item) {
                                 var html = $("#" + commonField.taskLiquidationAnalysisDiv).html();
                                 var number = item.id;
-                                html = html.replace(/_number/g, number).replace(/{index}/g, i+1);
+                                html = html.replace(/_number/g, number).replace(/{index}/g, i + 1);
                                 $("#" + commonField.taskLiquidationAnalysisAppend).append(html);
 
                                 $("#" + commonField.taskLiquidationAnalysisFrm + number).initForm(item);
@@ -188,9 +190,10 @@
                                 }
                                 getAnalysisItemList(number);
                                 setTimeout(function () {
-                                    if(item.total){
+                                    if (item.total) {
                                         $("#" + commonField.taskLiquidationAnalysisFrm + number).find('[name=total]').text(fmoney(Number(item.total).toFixed(2), 2));
-                                    };
+                                    }
+                                    ;
                                 }, 500);
 
 
@@ -220,7 +223,7 @@
                         var html = $("#" + commonField.taskLiquidationAnalysisDiv).html();
                         var index = $("#" + commonField.taskLiquidationAnalysisAppend).find('.x_panel').length;
                         var number = result.data.id;
-                        html = html.replace(/_number/g, number).replace(/{index}/g, index+1);
+                        html = html.replace(/_number/g, number).replace(/{index}/g, index + 1);
                         $("#" + commonField.taskLiquidationAnalysisAppend).append(html);
                         $("#" + commonField.taskLiquidationAnalysisFrm + number).find("select[name='recordIds']").select2();
 
@@ -271,7 +274,7 @@
         var recordIds = $(_this).val();
         var frmId = $(_this).closest('.form-horizontal').attr("id");
         console.log(recordIds);
-        if(recordIds){
+        if (recordIds) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getGroupAndPriceVo",
                 type: "post",
@@ -279,7 +282,7 @@
                 data: {recordIds: JSON.stringify(recordIds)},
                 success: function (result) {
                     if (result.ret) {
-                        if(result.data) {
+                        if (result.data) {
 
                             initResult(frmId, result.data.groupArea, result.data.groupPrice);
                             $("#" + frmId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
@@ -297,13 +300,13 @@
     }
 
     //初始化计算结果
-    function initResult(frmId,evaluationArea,evaluationPrice) {
+    function initResult(frmId, evaluationArea, evaluationPrice) {
         var salesTax = "${salesTax}";
         var total = 0;
         var evaluationArea = evaluationArea;
         var evaluationPrice = evaluationPrice;
         $("#" + frmId).find("tbody[name='tbody_data_section']").find('tr').each(function () {
-            var $taxRateValue =  $(this).find('[name^=taxRateValue]');
+            var $taxRateValue = $(this).find('[name^=taxRateValue]');
             var rate = $taxRateValue.val();
             var price = 0;
             if ($taxRateValue.hasClass('x-percent')) {
@@ -401,7 +404,7 @@
                     var html = "";
                     $.each(result.data, function (i, item) {
                         var textPrice = fmoney(item.price, 2);
-                        if(!textPrice){
+                        if (!textPrice) {
                             textPrice = 0;
                         }
                         html += "<tr>";
@@ -451,49 +454,52 @@
     function getThisPrice(_this) {
         var frmId = $(_this).closest('.form-horizontal').attr("id");
         //增值税率
-        var salesTax = $("#"+frmId).find("input[data-key='data.tax.rate.allocation.sales.tax']").attr('data-value');
-        console.log("salesTax:"+salesTax)
+        var salesTax = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.sales.tax']").attr('data-value');
+        console.log("salesTax:" + salesTax)
         //城建税率
-        var constructionTax = $("#"+frmId).find("input[data-key='data.tax.rate.allocation.construction.tax']").attr('data-value');
-        console.log("constructionTax:"+constructionTax)
+        var constructionTax = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.construction.tax']").attr('data-value');
+        console.log("constructionTax:" + constructionTax)
         var constructionPrice = "price_data.tax.rate.allocation.construction.tax";
         //教育税附加率
-        var educationTax = $("#"+frmId).find("input[data-key='data.tax.rate.allocation.education.fee.plus']").attr('data-value');
-        console.log("educationTax:"+educationTax)
+        var educationTax = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.education.fee.plus']").attr('data-value');
+        console.log("educationTax:" + educationTax)
         var educationPrice = "price_data.tax.rate.allocation.education.fee.plus";
         //地方教育税附加率
-        var landEducationTax = $("#"+frmId).find("input[data-key='data.tax.rate.allocation.local.education.tax.additional']").attr('data-value');
-        console.log("landEducationTax:"+landEducationTax)
+        var landEducationTax = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.local.education.tax.additional']").attr('data-value');
+        console.log("landEducationTax:" + landEducationTax)
         var landEducationPrice = "price_data.tax.rate.allocation.local.education.tax.additional";
+        //交易手续费
+        var transactionCharges = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.transaction.charges']");
+        transactionCharges.attr("data-value", transactionCharges.val());
 
-        var evaluationArea = $("#"+frmId).find("td[name='evaluationArea']").val();
-        var evaluationPrice = $("#"+frmId).find("td[name='evaluationPrice']").val();
-        console.log(evaluationArea+evaluationPrice+"ppp")
+        var evaluationArea = $("#" + frmId).find("td[name='evaluationArea']").val();
+        var evaluationPrice = $("#" + frmId).find("td[name='evaluationPrice']").val();
+        console.log(evaluationArea + evaluationPrice + "ppp")
         var $taxRateValue = $(_this).parent().parent().find('[name^=taxRateValue]');
         var rate = $taxRateValue.val();
-        console.log("rate:"+rate)
+        console.log("rate:" + rate)
         var price = 0;
         if ($taxRateValue.hasClass('x-percent')) {
             rate = $taxRateValue.attr('data-value');
-            console.log("rate2:"+rate)
+            console.log("rate2:" + rate)
             var key = $taxRateValue.attr('data-key');
-            console.log("key:"+key);
+            console.log("key:" + key);
             switch (key) {
                 //增值税
                 case "data.tax.rate.allocation.sales.tax": {
-                    console.log(rate+"==="+Number(evaluationPrice))
+                    console.log(rate + "===" + Number(evaluationPrice))
                     if (rate && evaluationPrice) {
                         var temp = evaluationPrice / 1.05;
-                        console.log("temp"+temp)
+                        console.log("temp" + temp)
                         price = Number(temp * rate).toFixed(2);
-                        console.log("ptice:"+price)
+                        console.log("ptice:" + price)
                     }
-                    $("#"+frmId).find('input[data-key="' + constructionPrice + '"]').attr("data-value", (price * constructionTax).toFixed(2));
-                    $("#"+frmId).find('input[data-key="' + educationPrice + '"]').attr("data-value", (price * educationTax).toFixed(2));
-                    $("#"+frmId).find('input[data-key="' + landEducationPrice + '"]').attr("data-value", (price * landEducationTax).toFixed(2));
-                    $("#"+frmId).find('input[data-key="' + constructionPrice + '"]').val(fmoney(price * constructionTax, 2));
-                    $("#"+frmId).find('input[data-key="' + educationPrice + '"]').val(fmoney(price * educationTax, 2));
-                    $("#"+frmId).find('input[data-key="' + landEducationPrice + '"]').val(fmoney(price * landEducationTax, 2));
+                    $("#" + frmId).find('input[data-key="' + constructionPrice + '"]').attr("data-value", (price * constructionTax).toFixed(2));
+                    $("#" + frmId).find('input[data-key="' + educationPrice + '"]').attr("data-value", (price * educationTax).toFixed(2));
+                    $("#" + frmId).find('input[data-key="' + landEducationPrice + '"]').attr("data-value", (price * landEducationTax).toFixed(2));
+                    $("#" + frmId).find('input[data-key="' + constructionPrice + '"]').val(fmoney(price * constructionTax, 2));
+                    $("#" + frmId).find('input[data-key="' + educationPrice + '"]').val(fmoney(price * educationTax, 2));
+                    $("#" + frmId).find('input[data-key="' + landEducationPrice + '"]').val(fmoney(price * landEducationTax, 2));
                     break;
                 }
                 //城建税
@@ -564,21 +570,21 @@
     //获取结果值
     function getTotal(frmId) {
         var total = 0;
-        $("#"+frmId).find("tbody[name='tbody_data_section']").find('tr').each(function () {
+        $("#" + frmId).find("tbody[name='tbody_data_section']").find('tr').each(function () {
             var price = 0;
             price = $(this).find('[name^=price]').attr('data-value');
             if (price) {
                 total += Number(price);
             }
         })
-        $("#"+frmId).find('[name=total]').text(fmoney(Number(total).toFixed(2),2));
+        $("#" + frmId).find('[name=total]').text(fmoney(Number(total).toFixed(2), 2));
 
     }
 
 
     //格式化金额
     function fmoney(s, n) {
-        if(!AssessCommon.isNumber(s)) return s;
+        if (!AssessCommon.isNumber(s)) return s;
         n = n > 0 && n <= 20 ? n : 2;
         s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";//更改这里n数也可确定要保留的小数位
         var l = s.split(".")[0].split("").reverse(),
@@ -602,7 +608,7 @@
                         toastr.success('删除成功');
                         var frmId = $(_this).closest('.form-horizontal').attr("id");
                         $(_this).parent().parent().parent().empty();
-                        console.log(frmId+"-=-=-=-=")
+                        console.log(frmId + "-=-=-=-=")
                         getTotal(frmId);
                     }
                     else {
@@ -620,11 +626,11 @@
     //获取单个保存的数据
     function getFormData(frmId) {
         var data = {};
-        data.id = $('#'+frmId).find('[name=id]').val();
-        data.recordIds = $('#'+frmId).find("select[name='recordIds']").val();
-        data.total = $('#'+frmId).find('[name=total]').text().replace(/,/g,'');
+        data.id = $('#' + frmId).find('[name=id]').val();
+        data.recordIds = $('#' + frmId).find("select[name='recordIds']").val();
+        data.total = $('#' + frmId).find('[name=total]').text().replace(/,/g, '');
         data.analysisItemList = [];
-        $('#'+frmId).find("tbody[name='tbody_data_section']").find('tr').each(function () {
+        $('#' + frmId).find("tbody[name='tbody_data_section']").find('tr').each(function () {
             var analysisItem = {};
             analysisItem.id = $(this).find('[name=id]').val();
             analysisItem.price = $(this).find('[name^=price]').attr('data-value');

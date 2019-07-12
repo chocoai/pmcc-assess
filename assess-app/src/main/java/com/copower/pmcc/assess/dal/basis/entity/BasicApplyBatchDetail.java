@@ -15,6 +15,8 @@ public class BasicApplyBatchDetail {
 
     private String name;
 
+    private String displayName;
+
     private String creator;
 
     private Date gmtCreated;
@@ -67,6 +69,14 @@ public class BasicApplyBatchDetail {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName == null ? null : displayName.trim();
     }
 
     public String getCreator() {
