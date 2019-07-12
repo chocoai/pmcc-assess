@@ -8,6 +8,8 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -34,6 +36,8 @@ public class MdDevelopmentService {
     private MdDevelopmentLandDao mdDevelopmentLandDao;
     @Autowired
     private MdDevelopmentEngineeringDao mdDevelopmentEngineeringDao;
+    @Autowired
+    private MdArchitecturalObjService mdArchitecturalObjService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public MdDevelopment initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -63,6 +67,17 @@ public class MdDevelopmentService {
             mdDevelopmentDao.addMdDevelopment(oo);
         } else {
             mdDevelopmentDao.updateMdDevelopment(oo);
+        }
+        MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
+        mdArchitecturalObj.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopment.class));
+        mdArchitecturalObj.setPid(0);
+        mdArchitecturalObj.setPlanDetailsId(oo.getPlanDetailsId());
+        List<MdArchitecturalObj> mdArchitecturalObjList = mdArchitecturalObjService.getMdArchitecturalObjListByExample(mdArchitecturalObj) ;
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)){
+            for (MdArchitecturalObj po:mdArchitecturalObjList){
+                po.setPid(oo.getId());
+                mdArchitecturalObjService.saveMdArchitecturalObj(po) ;
+            }
         }
     }
 

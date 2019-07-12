@@ -24,7 +24,7 @@
                     <input type="text" value="${mdDevelopment.f20}"
                            placeholder="勘察设计和前期工程费率" class="form-control x-percent"
                            required="required"
-                           name="f20" onblur="landEngineering.calculationD20()" data-value="${mdDevelopment2.f20}">
+                           name="f20" onblur="checkParams(this);landEngineering.calculationD20()" data-value="${mdDevelopment2.f20}">
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" readonly="readonly"
+                        <input type="text" readonly="readonly" required="required"
                                placeholder="建筑安装工程费"  class="form-control"
                                name="f21" onblur="landEngineering.calculationD21()" value="${mdDevelopment.f21}">
                         <span class="input-group-btn">
@@ -63,7 +63,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="f22"
+                    <select name="f22" required="required"
                             class="form-control search-select select2" onchange="landEngineering.calculationD22(this)">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
@@ -88,7 +88,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="f23"
+                    <select name="f23" required="required"
                             class="form-control search-select select2 " onchange="landEngineering.calculationD23(this)">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
@@ -113,7 +113,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="f24"
+                    <select name="f24" required="required"
                             class="form-control search-select select2 " onchange="landEngineering.calculationD24()">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
@@ -138,8 +138,8 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text" value="${mdDevelopment.f25}"
-                           placeholder="其它工程费率" class="form-control x-percent" name="f25" onblur="landEngineering.calculationD25()"  data-value="${mdDevelopment2.f25}">
+                    <input type="text" value="${mdDevelopment.f25}" required="required"
+                           placeholder="其它工程费率" class="form-control x-percent" name="f25" onblur="checkParams(this);landEngineering.calculationD25()"  data-value="${mdDevelopment2.f25}">
                 </div>
             </div>
         </div>
@@ -150,8 +150,8 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="不可预见费率" class="form-control x-percent" name="f27" onblur="landEngineering.calculationD27()"  value="${mdDevelopment.f27}" data-value="${mdDevelopment2.f27}">
+                    <input type="text" required="required"
+                           placeholder="不可预见费率" class="form-control x-percent" name="f27" onblur="checkParams(this);landEngineering.calculationD27()"  value="${mdDevelopment.f27}" data-value="${mdDevelopment2.f27}">
                 </div>
             </div>
         </div>
@@ -206,7 +206,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="契税率" class="form-control x-percent"  required="required"
-                           name="f29" onblur="landEngineering.calculationD28()" value="${mdDevelopment.f29}"  data-value="${mdDevelopment2.f29}">
+                           name="f29" onblur="checkParams(this);landEngineering.calculationD28()" value="${mdDevelopment.f29}"  data-value="${mdDevelopment2.f29}">
                 </div>
             </div>
 
@@ -230,7 +230,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="交易费率" class="form-control x-percent" required="required"
-                           name="f30" onblur="landEngineering.calculationD28()" value="${mdDevelopment.f30}"  data-value="${mdDevelopment2.f30}">
+                           name="f30" onblur="checkParams(this);landEngineering.calculationD28()" value="${mdDevelopment.f30}"  data-value="${mdDevelopment2.f30}">
                 </div>
             </div>
             <div class="x-valid">
@@ -253,7 +253,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="管理费率" class="form-control x-percent" required="required"
-                           name="g32" onblur="landEngineering.calculationD32();landEngineering.calculationF32()" value="${mdDevelopment.g32}"  data-value="${mdDevelopment2.g32}">
+                           name="g32" onblur="checkParams(this);landEngineering.calculationD32();landEngineering.calculationF32()" value="${mdDevelopment.g32}"  data-value="${mdDevelopment2.g32}">
                 </div>
             </div>
 
@@ -276,7 +276,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="土地取得附加成本" class="form-control" required="required" data-rule-number='true'
-                           name="f31" onblur="landEngineering.calculationF32();landEngineering.calculationF35()" value="${mdDevelopment.f31}" >
+                           name="f31" onblur="checkParams(this);landEngineering.calculationF32();landEngineering.calculationF35()" value="${mdDevelopment.f31}" >
                 </div>
             </div>
 
@@ -298,7 +298,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="销售费用率" class="form-control x-percent" required="required"
-                           name="g33" onblur="landEngineering.calculationF33()" value="${mdDevelopment.g33}"   data-value="${mdDevelopment2.g33}">
+                           name="g33" onblur="checkParams(this);landEngineering.calculationF33()" value="${mdDevelopment.g33}"   data-value="${mdDevelopment2.g33}">
                 </div>
             </div>
 
@@ -319,7 +319,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="投资利息率" class="form-control x-percent" required="required"
-                           name="g34" onblur="landEngineering.calculationD34();landEngineering.calculationF34()" value="${mdDevelopment.g34}"  data-value="${mdDevelopment2.g34}">
+                           name="g34" onblur="checkParams(this);landEngineering.calculationD34();landEngineering.calculationF34()" value="${mdDevelopment.g34}"  data-value="${mdDevelopment2.g34}">
                 </div>
             </div>
 
@@ -340,7 +340,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="投资利润率" class="form-control x-percent" required="required"
-                           name="g35" onblur="landEngineering.calculationD35();landEngineering.calculationF35()" value="${mdDevelopment.g35}"  data-value="${mdDevelopment2.g35}">
+                           name="g35" onblur="checkParams(this);landEngineering.calculationD35();landEngineering.calculationF35()" value="${mdDevelopment.g35}"  data-value="${mdDevelopment2.g35}">
                 </div>
             </div>
 
@@ -361,7 +361,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="销售环节增值税及附加" class="form-control x-percent" required="required"
-                           name="f37" onblur="landEngineering.calculationD36()" value="${mdDevelopment.f37}"  data-value="${mdDevelopment2.f37}">
+                           name="f37" onblur="checkParams(this);landEngineering.calculationD36()" value="${mdDevelopment.f37}"  data-value="${mdDevelopment2.f37}">
                 </div>
             </div>
 
@@ -382,7 +382,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="土地增值税" class="form-control x-percent" required="required"
-                           name="f38" onblur="landEngineering.calculationD36()" value="${mdDevelopment.f38}"   data-value="${mdDevelopment2.f38}">
+                           name="f38" onblur="checkParams(this);landEngineering.calculationD36()" value="${mdDevelopment.f38}"   data-value="${mdDevelopment2.f38}">
                 </div>
             </div>
 
@@ -403,7 +403,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="项目开发所得税" class="form-control x-percent" required="required"
-                           name="f39" onblur="landEngineering.calculationD36()" value="${mdDevelopment.f39}"   data-value="${mdDevelopment2.f39}">
+                           name="f39" onblur="checkParams(this);landEngineering.calculationD36()" value="${mdDevelopment.f39}"   data-value="${mdDevelopment2.f39}">
                 </div>
             </div>
 
@@ -509,7 +509,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <input type="text" placeholder="法定年限" class="form-control" required="required"
-                           name="f43" onblur="landEngineering.calculationD43()" value="${mdDevelopment.f43}">
+                           name="f43" onblur="checkParams(this);landEngineering.calculationD43()" value="${mdDevelopment.f43}">
                 </div>
             </div>
 
@@ -533,7 +533,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="权利状况修正" class="form-control" required="required"
-                           name="d44" onblur="landEngineering.calculationD47()" value="${mdDevelopment.d44}">
+                           name="d44" onblur="checkParams(this);landEngineering.calculationD47()" value="${mdDevelopment.d44}">
                 </div>
             </div>
 
@@ -554,7 +554,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="其他修正" class="form-control" required="required"
-                           name="d45" onblur="landEngineering.calculationD47()" value="${mdDevelopment.d45}">
+                           name="d45" onblur="checkParams(this);landEngineering.calculationD47()" value="${mdDevelopment.d45}">
                 </div>
             </div>
 
@@ -575,7 +575,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="开发程度修正" class="form-control" required="required"
-                           name="d46" onblur="landEngineering.calculationD47()" value="${mdDevelopment.d46}">
+                           name="d46" onblur="checkParams(this);landEngineering.calculationD47()" value="${mdDevelopment.d46}">
                 </div>
             </div>
 

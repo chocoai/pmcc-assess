@@ -13,9 +13,11 @@ import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +52,8 @@ public class MdMarketCostService {
     private DataBuildingNewRateService dataBuildingNewRateService;
     @Autowired
     private DataInfrastructureService dataInfrastructureService;
+    @Autowired
+    private MdArchitecturalObjService mdArchitecturalObjService;
 
 
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -61,35 +65,55 @@ public class MdMarketCostService {
         return mdCost;
     }
 
-    public Integer saveAndUpdateMdCost(MdCost mdCost){
-        if (mdCost.getId() == null){
+    public void saveAndUpdateMdCost(MdCost mdCost) {
+        if (mdCost.getId() == null) {
             mdCost.setCreator(commonService.thisUserAccount());
-            return mdCostDao.addEstateNetwork(mdCost);
-        }else {
+            mdCostDao.addEstateNetwork(mdCost);
+        } else {
             mdCostDao.updateEstateNetwork(mdCost);
-            return null;
         }
     }
 
-    public Integer saveAndUpdateMdCostBuilding(MdCostBuilding mdCostBuilding){
-        if (mdCostBuilding.getId()==null){
+    public void saveAndUpdateMdCostBuilding(MdCostBuilding mdCostBuilding, MdCost mdCost) {
+        if (mdCostBuilding.getId() == null) {
+            mdCostBuilding.setPid(mdCost.getId());
             mdCostBuilding.setCreator(commonService.thisUserAccount());
-            return mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
-        }else {
+            mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
+        } else {
             mdCostBuildingDao.updateEstateNetwork(mdCostBuilding);
-            return  null;
+        }
+        MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
+        mdArchitecturalObj.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCost.class));
+        mdArchitecturalObj.setPid(0);
+        mdArchitecturalObj.setPlanDetailsId(mdCost.getPlanDetailsId());
+        List<MdArchitecturalObj> mdArchitecturalObjList = mdArchitecturalObjService.getMdArchitecturalObjListByExample(mdArchitecturalObj);
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)) {
+            for (MdArchitecturalObj oo : mdArchitecturalObjList) {
+                oo.setPid(mdCostBuilding.getId());
+                mdArchitecturalObjService.saveMdArchitecturalObj(oo);
+            }
         }
     }
 
 
-
-    public Integer saveAndUpdateMdCostConstruction(MdCostConstruction mdCostConstruction) {
-        if (mdCostConstruction.getId() == null){
+    public void saveAndUpdateMdCostConstruction(MdCostConstruction mdCostConstruction, MdCost mdCost) {
+        if (mdCostConstruction.getId() == null) {
             mdCostConstruction.setCreator(commonService.thisUserAccount());
-            return mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
-        }else {
+            mdCostConstruction.setPid(mdCost.getId());
+            mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
+        } else {
             mdCostConstructionDao.updateEstateNetwork(mdCostConstruction);
-            return null;
+        }
+        MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
+        mdArchitecturalObj.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCost.class));
+        mdArchitecturalObj.setPid(0);
+        mdArchitecturalObj.setPlanDetailsId(mdCost.getPlanDetailsId());
+        List<MdArchitecturalObj> mdArchitecturalObjList = mdArchitecturalObjService.getMdArchitecturalObjListByExample(mdArchitecturalObj);
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)) {
+            for (MdArchitecturalObj oo : mdArchitecturalObjList) {
+                oo.setPid(mdCostConstruction.getId());
+                mdArchitecturalObjService.saveMdArchitecturalObj(oo);
+            }
         }
     }
 
@@ -106,11 +130,11 @@ public class MdMarketCostService {
         return mdCostBuildingDao.getEstateNetworkList(mdCostBuilding);
     }
 
-    public MdCostBuilding getMdCostBuilding(Integer id){
+    public MdCostBuilding getMdCostBuilding(Integer id) {
         return mdCostBuildingDao.getEstateNetworkById(id);
     }
 
-    public MdCostConstruction getMdCostConstruction(Integer id){
+    public MdCostConstruction getMdCostConstruction(Integer id) {
         return mdCostConstructionDao.getEstateNetworkById(id);
     }
 

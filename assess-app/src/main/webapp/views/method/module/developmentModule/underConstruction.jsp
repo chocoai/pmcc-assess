@@ -23,7 +23,7 @@
                     <input type="text"
                            placeholder="勘察设计和前期工程费率" class="form-control x-percent"
                            required="required"
-                           name="f20" onblur="underConstruction.calculationD20()" value="${mdDevelopment.f20}"  data-value="${mdDevelopment2.f20}">
+                           name="f20" onblur="checkParams(this);underConstruction.calculationD20()" value="${mdDevelopment.f20}"  data-value="${mdDevelopment2.f20}">
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" readonly="readonly"
+                        <input type="text" readonly="readonly" required="required"
                                placeholder="建筑安装工程费"  class="form-control"
                                name="f21" onblur="underConstruction.calculationD21()" value="${mdDevelopment.f21}">
 
@@ -64,7 +64,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <select name="f22"
-                            class="form-control search-select select2" onchange="underConstruction.calculationD22(this)">
+                            class="form-control search-select select2" required="required" onchange="underConstruction.calculationD22(this)">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
@@ -89,7 +89,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <select name="f23"
-                            class="form-control search-select select2 " onchange="underConstruction.calculationD23(this)">
+                            class="form-control search-select select2 " required="required" onchange="underConstruction.calculationD23(this)">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
@@ -114,7 +114,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <select name="f24"
-                            class="form-control search-select select2 " onchange="underConstruction.calculationD24()">
+                            class="form-control search-select select2 " required="required" onchange="underConstruction.calculationD24()">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
@@ -139,7 +139,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <input type="text" value="${mdDevelopment.f25}"
-                           placeholder="其它工程费率" class="form-control x-percent" name="f25" onblur="underConstruction.calculationD25()"  data-value="${mdDevelopment2.f25}">
+                           placeholder="其它工程费率" class="form-control x-percent" name="f25" required="required" onblur="checkParams(this);underConstruction.calculationD25()"  data-value="${mdDevelopment2.f25}">
                 </div>
             </div>
         </div>
@@ -151,7 +151,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="不可预见费率" class="form-control x-percent" name="f27" onblur="underConstruction.calculationD27()"   value="${mdDevelopment.f27}"  data-value="${mdDevelopment2.f27}">
+                           placeholder="不可预见费率" class="form-control x-percent" name="f27" required="required" onblur="checkParams(this);underConstruction.calculationD27()"   value="${mdDevelopment.f27}"  data-value="${mdDevelopment2.f27}">
                 </div>
             </div>
         </div>
@@ -206,7 +206,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="契税率" class="form-control x-percent"  required="required"
-                           name="f29" onblur="underConstruction.calculationD28()" value="${mdDevelopment.f29}"  data-value="${mdDevelopment2.f29}">
+                           name="f29" onblur="checkParams(this);underConstruction.calculationD28()" value="${mdDevelopment.f29}"  data-value="${mdDevelopment2.f29}">
                 </div>
             </div>
 
@@ -230,7 +230,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="交易费率" class="form-control x-percent" required="required"
-                           name="f30" onblur="underConstruction.calculationD28()"  value="${mdDevelopment.f30}"  data-value="${mdDevelopment2.f30}">
+                           name="f30" onblur="checkParams(this);underConstruction.calculationD28()"  value="${mdDevelopment.f30}"  data-value="${mdDevelopment2.f30}">
                 </div>
             </div>
             <div class="x-valid">
@@ -253,7 +253,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="续建管理费率" class="form-control x-percent" required="required"
-                           name="g32" onblur="underConstruction.calculationD32();underConstruction.calculationF32()"  value="${mdDevelopment.g32}"  data-value="${mdDevelopment2.g32}">
+                           name="g32" onblur="checkParams(this);underConstruction.calculationD32();underConstruction.calculationF32()"  value="${mdDevelopment.g32}"  data-value="${mdDevelopment2.g32}">
                 </div>
             </div>
 
@@ -276,7 +276,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="在建工程修复费用" class="form-control" required="required" data-rule-number='true'
-                           name="f31" onblur="underConstruction.calculationF32();underConstruction.calculationF35()"  value="${mdDevelopment.f31}">
+                           name="f31" onblur="checkParams(this);underConstruction.calculationF32();underConstruction.calculationF35()"  value="${mdDevelopment.f31}">
                 </div>
             </div>
 
@@ -298,7 +298,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="销售费用率" class="form-control x-percent" required="required"
-                           name="g33" onblur="underConstruction.calculationF33()"  value="${mdDevelopment.g33}"   data-value="${mdDevelopment2.g33}">
+                           name="g33" onblur="checkParams(this);underConstruction.calculationF33()"  value="${mdDevelopment.g33}"   data-value="${mdDevelopment2.g33}">
                 </div>
             </div>
 
@@ -319,7 +319,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="投资利息率" class="form-control x-percent" required="required"
-                           name="g34" onblur="underConstruction.calculationD34();underConstruction.calculationF34()"  value="${mdDevelopment.g34}"  data-value="${mdDevelopment2.g34}">
+                           name="g34" onblur="checkParams(this);underConstruction.calculationD34();underConstruction.calculationF34()"  value="${mdDevelopment.g34}"  data-value="${mdDevelopment2.g34}">
                 </div>
             </div>
 
@@ -340,7 +340,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="续建投资利润（万元）" class="form-control x-percent" required="required"
-                           name="g35" onblur="underConstruction.calculationD35();underConstruction.calculationF35()"  value="${mdDevelopment.g35}"  data-value="${mdDevelopment2.g35}">
+                           name="g35" onblur="checkParams(this);underConstruction.calculationD35();underConstruction.calculationF35()"  value="${mdDevelopment.g35}"  data-value="${mdDevelopment2.g35}">
                 </div>
             </div>
 
@@ -361,7 +361,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="销售环节增值税及附加" class="form-control x-percent" required="required"
-                           name="f37" onblur="underConstruction.calculationD36()"  value="${mdDevelopment.f37}"  data-value="${mdDevelopment2.f37}">
+                           name="f37" onblur="checkParams(this);underConstruction.calculationD36()"  value="${mdDevelopment.f37}"  data-value="${mdDevelopment2.f37}">
                 </div>
             </div>
 
@@ -382,7 +382,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="土地增值税" class="form-control x-percent" required="required"
-                           name="f38" onblur="underConstruction.calculationD36()"  value="${mdDevelopment.f38}"  data-value="${mdDevelopment2.f38}">
+                           name="f38" onblur="checkParams(this);underConstruction.calculationD36()"  value="${mdDevelopment.f38}"  data-value="${mdDevelopment2.f38}">
                 </div>
             </div>
 
@@ -403,7 +403,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="项目开发所得税" class="form-control x-percent" required="required"
-                           name="f39" onblur="underConstruction.calculationD36()"  value="${mdDevelopment.f39}"   data-value="${mdDevelopment2.f39}">
+                           name="f39" onblur="checkParams(this);underConstruction.calculationD36()"  value="${mdDevelopment.f39}"   data-value="${mdDevelopment2.f39}">
                 </div>
             </div>
 
@@ -509,7 +509,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <input type="text" placeholder="法定年限" class="form-control" required="required"
-                           name="f43" onblur="underConstruction.calculationD43()"  value="${mdDevelopment.f43}">
+                           name="f43" onblur="checkParams(this);underConstruction.calculationD43()"  value="${mdDevelopment.f43}">
                 </div>
             </div>
 
@@ -519,7 +519,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <input type="text" placeholder="剩余年限" class="form-control" required="required"
-                           name="g43" onblur="underConstruction.calculationD43()"  value="${mdDevelopment.g43}">
+                           name="g43" onblur="checkParams(this);underConstruction.calculationD43()"  value="${mdDevelopment.g43}">
                 </div>
             </div>
         </div>
@@ -533,7 +533,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="权利状况修正" class="form-control" required="required"
-                           name="d44" onblur="underConstruction.calculationD47()"  value="${mdDevelopment.d44}">
+                           name="d44" onblur="checkParams(this);underConstruction.calculationD47()"  value="${mdDevelopment.d44}">
                 </div>
             </div>
 
@@ -554,7 +554,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="其他修正" class="form-control" required="required"
-                           name="d45" onblur="underConstruction.calculationD47()" value="${mdDevelopment.d45}">
+                           name="d45" onblur="checkParams(this);underConstruction.calculationD47()" value="${mdDevelopment.d45}">
                 </div>
             </div>
 
@@ -575,7 +575,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="开发程度修正" class="form-control" required="required"
-                           name="d46" onblur="underConstruction.calculationD47()"   value="${mdDevelopment.d46}">
+                           name="d46" onblur="checkParams(this);underConstruction.calculationD47()"   value="${mdDevelopment.d46}">
                 </div>
             </div>
 

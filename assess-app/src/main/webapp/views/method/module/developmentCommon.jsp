@@ -43,6 +43,9 @@
             } catch (e) {
             }
         },
+        getData:function (type,databaseName,pid,planDetailsId,callback) {
+            developmentCommon.getMdArchitecturalObjList(type,databaseName,pid,planDetailsId,callback) ;
+        },
         initData:function (table,data) {
             var tbody = table.find('tbody') ;
             var result = 0;
@@ -145,14 +148,8 @@
         }
     } ;
 
-    developmentCommon.saveMdArchitecturalObj = function (data,type,callback) {
-        var pid = 0;
-        if (developmentCommon.isNotBlank('${mdDevelopment}')){
-            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
-                pid = '${mdDevelopment.id}' ;
-            }
-        }
-        var item = {forData:JSON.stringify(data),type:type,planDetailsId:'${projectPlanDetails.id}' ,pid:pid ,databaseName:AssessDBKey.MdDevelopment} ;
+    developmentCommon.saveMdArchitecturalObj = function (data,type,databaseName,pid,callback) {
+        var item = {forData:JSON.stringify(data),type:type,planDetailsId:'${projectPlanDetails.id}' ,pid:pid ,databaseName:databaseName} ;
         developmentCommon.removeMdArchitecturalObj(item.type,item.databaseName,item.pid,item.planDetailsId,function () {
             $.ajax({
                 type: "post",

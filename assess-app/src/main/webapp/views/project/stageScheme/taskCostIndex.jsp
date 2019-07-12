@@ -45,7 +45,7 @@
 
                 <div class="x_content">
                     <form class="form-horizontal" id="buildingFrm">
-
+                        <%@include file="/views/method/module/costModule/building.jsp" %>
                     </form>
                 </div>
 
@@ -59,7 +59,6 @@
                     </form>
                 </div>
             </div>
-
 
 
             <div class="x_panel">
@@ -85,11 +84,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
 
-    var cost = {} ;
+    var cost = {};
 
-    cost.frm = $("#costMethodFrm") ;
-    cost.buildingFrm = $("#buildingFrm") ;
-    cost.constructionFrm = $("#constructionFrm") ;
+    cost.frm = $("#costMethodFrm");
+    cost.buildingFrm = $("#buildingFrm");
+    cost.constructionFrm = $("#constructionFrm");
 
     cost.isNotBlank = function (item) {
         if (item) {
@@ -105,45 +104,155 @@
         return false
     };
 
+    cost.valid = function (callback) {
+        var html = "<div class='help-block' for='for'>" + "该字段为必填项(注意哦!)" + "</div>";
+        var head = formSerializeArray(cost.frm);
+        if (head.type == '1') {
+            if (!cost.buildingFrm.valid()) {
+                return false;
+            }
+        }
+        if (head.type == '2') {
+            var data = formSerializeArray(cost.constructionFrm);
+            if (!AssessCommon.isNumber(data.infrastructureCost)){
+                cost.constructionFrm.find("select[name='infrastructureCost']").parent().after(html.replace(/for/g, "infrastructureCost_"));
+            }
+            if (!AssessCommon.isNumber(data.infrastructureMatchingCost)){
+                cost.constructionFrm.find("select[name='infrastructureMatchingCost']").parent().after(html.replace(/for/g, "infrastructureMatchingCost_"));
+            }
+            if (!AssessCommon.isNumber(data.devDuring)){
+                cost.constructionFrm.find("select[name='devDuring']").parent().after(html.replace(/for/g, "devDuring_"));
+            }
+            if (!cost.constructionFrm.valid()) {
+                return false;
+            }
+        }
+        if (callback) {
+            callback();
+        }
+    };
+
+    cost.getFomData = function () {
+        var head = formSerializeArray(cost.frm);
+        if (head.type == '1') {
+            var data = formSerializeArray(cost.buildingFrm);
+            $.extend(data, head);
+            data.planDetailsId = '${projectPlanDetails.id}';
+            return data;
+        }
+        if (head.type == '2') {
+            var data = formSerializeArray(cost.constructionFrm);
+            $.extend(data, head);
+            data.planDetailsId = '${projectPlanDetails.id}';
+            return data;
+        }
+    };
+
+    //参数校验
+    cost.checkParams = function (that) {
+        if (!cost.isNotBlank(that)) {
+            return false;
+        }
+        var value = $(that).val();
+        var i = 0;
+        if (!cost.isNotBlank(value)) {
+            return false;
+        }
+        if (AssessCommon.isNumber(value)) {
+            i++;
+        }
+        var reg = new RegExp(/^[0-9]+\.?[0-9]*%$/);
+        if (reg.test(value)) {
+            i++;
+        }
+        if (i == 0) {
+            alert("不符合，必须是数字!");
+            $(that).attr("data-value", '');
+            $(that).val('');
+            return false;
+        }
+    };
+
     $(document).ready(function () {
 
-        var type = '${mdCost.type}' ;
+        var type = '${mdCost.type}';
 
         cost.frm.find("input[type='radio'][name='type']").change(function () {
             var data = formSerializeArray(cost.frm);
             if (data.type == '1') {
-                cost.buildingFrm.show() ;
-                cost.constructionFrm.hide() ;
+                cost.buildingFrm.show();
+                cost.constructionFrm.hide();
             }
             if (data.type == '2') {
-                cost.buildingFrm.hide() ;
-                cost.constructionFrm.show() ;
+                cost.buildingFrm.hide();
+                cost.constructionFrm.show();
             }
         });
+        if (cost.isNotBlank(type)) {
+            if (type == '2') {
+                cost.buildingFrm.hide();
+                cost.constructionFrm.show();
+            }
+            if (type == '1') {
+                cost.buildingFrm.show();
+                cost.constructionFrm.hide();
+            }
+        }
 
-        if (type == '2'){
-            cost.buildingFrm.hide() ;
-            cost.constructionFrm.show() ;
-        }
-        if (type == '1'){
-            cost.buildingFrm.show() ;
-            cost.constructionFrm.hide() ;
-        }
+        if (!cost.isNotBlank('${mdCostConstruction.id}')){
+            var query = {province:'${schemeAreaGroup.province}',city:'${schemeAreaGroup.city}',district:'${schemeAreaGroup.district}',bisNationalUnity:true} ;
+            $.ajax({
+                type: "get",
+                url: "${pageContext.request.contextPath}/dataTaxRateAllocation/specialTreatment",
+                data: query,
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data){
+                            console.log(result.data) ;
+                            $.each(result.data,function (i,item) {
+                                var taxRate = item.taxRate ;
+                                if (item.taxRate){
+                                    taxRate = Number(item.taxRate) * 100 ;
+                                    taxRate = taxRate + "%" ;
+                                }
+                                if (item.typeName == '增值税金及附加'){
+                                    if (item.taxRate){
+                                        cost.constructionFrm.find("input[name='salesTaxAndAdditional']").val(taxRate) ;
+                                        cost.constructionFrm.find("input[name='salesTaxAndAdditional']").attr("data-value",item.taxRate) ;
+                                    }
+                                }
+                                if (item.fieldName == '管理费率'){
+                                    if (item.taxRate){
+                                        cost.constructionFrm.find("input[name='managementExpense']").val(taxRate) ;
+                                        cost.constructionFrm.find("input[name='managementExpense']").attr("data-value",item.taxRate) ;
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        Alert("保存失败:" + result.errmsg);
+                    }
+                },
+                error: function (e) {
+                    Alert("调用服务端方法失败，失败原因:" + e);
+                }
+            });
+        };
     });
 
 </script>
 <script type="application/javascript">
-
     //提交
     function submit() {
-        var data = {};
-
-        if ("${processInsId}" != "0") {
-            submitEditToServer(JSON.stringify(data));
-        }
-        else {
-            submitToServer(JSON.stringify(data));
-        }
+        cost.valid(function () {
+            var data = cost.getFomData();
+            console.log(data);
+            if ("${processInsId}" != "0") {
+                submitEditToServer(JSON.stringify(data));
+            } else {
+                submitToServer(JSON.stringify(data));
+            }
+        });
     }
 </script>
 
