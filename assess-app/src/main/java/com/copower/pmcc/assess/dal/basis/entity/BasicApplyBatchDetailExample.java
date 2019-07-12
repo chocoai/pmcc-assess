@@ -485,6 +485,76 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andDisplayNameIsNull() {
+            addCriterion("display_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameIsNotNull() {
+            addCriterion("display_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameEqualTo(String value) {
+            addCriterion("display_name =", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameNotEqualTo(String value) {
+            addCriterion("display_name <>", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameGreaterThan(String value) {
+            addCriterion("display_name >", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameGreaterThanOrEqualTo(String value) {
+            addCriterion("display_name >=", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameLessThan(String value) {
+            addCriterion("display_name <", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameLessThanOrEqualTo(String value) {
+            addCriterion("display_name <=", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameLike(String value) {
+            addCriterion("display_name like", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameNotLike(String value) {
+            addCriterion("display_name not like", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameIn(List<String> values) {
+            addCriterion("display_name in", values, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameNotIn(List<String> values) {
+            addCriterion("display_name not in", values, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameBetween(String value1, String value2) {
+            addCriterion("display_name between", value1, value2, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameNotBetween(String value1, String value2) {
+            addCriterion("display_name not between", value1, value2, "displayName");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

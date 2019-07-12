@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.job;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.service.NetAuctionInfoService;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -20,6 +21,8 @@ public class ClimbingCaseJob {
     private final static String JOB_RUNNING_LOCK_KEY = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_JOB_CLIMBING_CASE, "lock");
     @Autowired
     private RedissonClient redissonClient;
+    @Autowired
+    private NetAuctionInfoService netAuctionInfoService;
     /**
      * 爬取案例任务
      */
@@ -39,7 +42,8 @@ public class ClimbingCaseJob {
         }
         logger.info("----ClimbingCaseJob, start---------");
 
-
+        //抓取数据
+        netAuctionInfoService.climbingData();
 
         logger.info("----ClimbingCaseJob, end---------");
     }

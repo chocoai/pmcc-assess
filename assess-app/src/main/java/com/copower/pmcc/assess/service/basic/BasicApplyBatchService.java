@@ -143,6 +143,7 @@ public class BasicApplyBatchService {
             ZtreeDto treeDto2 = new ZtreeDto();
             treeDto2.setId(item.getId());
             treeDto2.setName(item.getName());
+            treeDto2.setDisplayName(item.getDisplayName());
             treeDto2.setPid(item.getPid());
             //判断是否有子节点
             if (!haveChilds(item.getId(), basicApplyBatch.getId())) {
@@ -551,6 +552,7 @@ public class BasicApplyBatchService {
         if (basicEstateOld != null) {
             BeanUtils.copyProperties(basicEstateOld, caseEstate);
             caseEstate.setId(null);
+            caseEstate.setVersion(1);
             caseEstate.setGmtCreated(null);
             caseEstate.setGmtModified(null);
             caseEstateService.saveAndUpdateCaseEstate(caseEstate);
@@ -679,6 +681,7 @@ public class BasicApplyBatchService {
                 if (buildingOld != null) {
                     BeanUtils.copyProperties(buildingOld, caseBuilding);
                     caseBuilding.setEstateId(estateId);
+                    caseBuilding.setVersion(1);
                     caseBuilding.setId(null);
                     caseBuilding.setGmtCreated(null);
                     caseBuilding.setGmtModified(null);
@@ -745,6 +748,7 @@ public class BasicApplyBatchService {
                 if (unitOld != null) {
                     BeanUtils.copyProperties(unitOld, caseUnit);
                     caseUnit.setBuildingId(caseBuildingId);
+                    caseUnit.setVersion(1);
                     caseUnit.setId(null);
                     caseUnit.setGmtCreated(null);
                     caseUnit.setGmtModified(null);
@@ -834,6 +838,7 @@ public class BasicApplyBatchService {
                 if (houseOld != null) {
                     BeanUtils.copyProperties(houseOld, caseHouse);
                     caseHouse.setUnitId(newUnitId);
+                    caseHouse.setVersion(1);
                     caseHouse.setId(null);
                     caseHouse.setGmtCreated(null);
                     caseHouse.setGmtModified(null);
