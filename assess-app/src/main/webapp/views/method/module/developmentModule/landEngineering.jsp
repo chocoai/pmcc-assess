@@ -20,7 +20,7 @@
                 勘察设计和前期工程费率<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <input type="text" value="${mdDevelopment.f20}"
                            placeholder="勘察设计和前期工程费率" class="form-control x-percent"
                            required="required"
@@ -34,7 +34,7 @@
                 建筑安装工程费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" readonly="readonly"
                                placeholder="建筑安装工程费"  class="form-control"
@@ -62,7 +62,7 @@
                 基础设施建设费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <select name="f22"
                             class="form-control search-select select2" onchange="landEngineering.calculationD22(this)">
                         <option>请选择</option>
@@ -87,7 +87,7 @@
                 公共配套设施建设费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <select name="f23"
                             class="form-control search-select select2 " onchange="landEngineering.calculationD23(this)">
                         <option>请选择</option>
@@ -112,7 +112,7 @@
                 开发期间税费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <select name="f24"
                             class="form-control search-select select2 " onchange="landEngineering.calculationD24()">
                         <option>请选择</option>
@@ -137,7 +137,7 @@
                 其它工程费率<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <input type="text" value="${mdDevelopment.f25}"
                            placeholder="其它工程费率" class="form-control x-percent" name="f25" onblur="landEngineering.calculationD25()"  data-value="${mdDevelopment2.f25}">
                 </div>
@@ -149,7 +149,7 @@
                 不可预见费率<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <input type="text"
                            placeholder="不可预见费率" class="form-control x-percent" name="f27" onblur="landEngineering.calculationD27()"  value="${mdDevelopment.f27}" data-value="${mdDevelopment2.f27}">
                 </div>

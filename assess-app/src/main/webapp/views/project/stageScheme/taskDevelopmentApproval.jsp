@@ -14,6 +14,31 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/method/marketDevelopmentDetail.jsp"></jsp:include>
+            <div class="x_panel">
+                <div class="x_content">
+                    <form class="form-horizontal" id="md_development_form">
+                        <input type="hidden" name="id" value="${mdDevelopment.id}">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    单价
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${mdDevelopment.price}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                报告附件
+                            </label>
+                            <div class="col-sm-3">
+                                <div id="_report_file"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <!--填写表单-->
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -26,6 +51,17 @@
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="application/javascript">
+    $(function () {
+        FileUtils.getFileShows({
+            target: "report_file",
+            formData: {
+                tableName: AssessDBKey.MdDevelopment,
+                tableId: '${mdDevelopment.id}'
+            },
+            editFlag: false,
+            deleteFlag: false
+        })
+    })
     function saveform() {
         saveApprovalform("");
     }
