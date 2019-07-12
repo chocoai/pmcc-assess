@@ -3,6 +3,8 @@ package com.copower.pmcc.assess.service.method;
 import com.copower.pmcc.assess.common.enums.MethodDataTypeEnum;
 import com.copower.pmcc.assess.common.enums.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDateSectionDao;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
@@ -42,13 +44,17 @@ public class MdIncomeDateSectionService {
     private MdIncomeDateSectionDao mdIncomeDateSectionDao;
     @Autowired
     private MdIncomeService mdIncomeService;
+    @Autowired
+    private MdIncomeLeaseDao mdIncomeLeaseDao;
+    @Autowired
+    private MdIncomeLeaseCostDao mdIncomeLeaseCostDao;
 
     /**
      * 保存数据
      *
      * @param mdIncomeDateSection
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveDateSection(MdIncomeDateSection mdIncomeDateSection) {
         int diffDays = 0;
         if (mdIncomeDateSection.getEndDate() != null)
@@ -91,6 +97,7 @@ public class MdIncomeDateSectionService {
                 mdIncomeService.addLeaseCost(mdIncomeLeaseCost);
             }
         }
+        updateSortingByBeginDate(mdIncomeDateSection.getIncomeId());
     }
 
     /**
@@ -99,8 +106,8 @@ public class MdIncomeDateSectionService {
      * @param id
      * @return
      */
-    @Transactional
-    public boolean deleteDateSection(Integer id) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteDateSection(Integer id) throws BusinessException {
         //先检查各子项有无相关联的数据
         MdIncomeDateSection dateSection = mdIncomeDateSectionDao.getDateSectionById(id);
         if (dateSection == null)
@@ -113,7 +120,8 @@ public class MdIncomeDateSectionService {
             mdIncomeService.deleteLeaseBySectionId(dateSection.getId());
             mdIncomeService.deleteLeaseCostBySectionId(dateSection.getId());
         }
-        return mdIncomeDateSectionDao.deleteDateSection(id);
+        mdIncomeDateSectionDao.deleteDateSection(id);
+        updateSortingByBeginDate(dateSection.getIncomeId());
     }
 
     /**
@@ -122,7 +130,42 @@ public class MdIncomeDateSectionService {
      * @param dateSection
      */
     public void updateDateSection(MdIncomeDateSection dateSection) {
+        dateSection = mdIncomeDateSectionDao.getDateSectionById(dateSection.getId());
+        if (dateSection == null) return;
         mdIncomeDateSectionDao.updateDateSection(dateSection);
+        updateSortingByBeginDate(dateSection.getIncomeId());
+    }
+
+    /**
+     * 更新相关数据排序by开始时间
+     *
+     * @param incomeId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateSortingByBeginDate(Integer incomeId) {
+        if (incomeId == null) return;
+        MdIncomeDateSection where = new MdIncomeDateSection();
+        where.setIncomeId(incomeId);
+        List<MdIncomeDateSection> sectionList = mdIncomeDateSectionDao.getDateSectionList(where);
+        if (CollectionUtils.isEmpty(sectionList)) return;
+        sectionList.sort((o1, o2) -> o1.getBeginDate().compareTo(o2.getBeginDate()));
+        for (int i = 0; i < sectionList.size(); i++) {
+            MdIncomeDateSection dateSection = sectionList.get(i);
+            dateSection.setSorting(i);
+            mdIncomeDateSectionDao.updateDateSection(dateSection);
+
+            MdIncomeLease mdIncomeLease = mdIncomeLeaseDao.getIncomeLeaseBySectionId(dateSection.getId());
+            if (mdIncomeLease != null) {
+                mdIncomeLease.setSorting(i);
+                mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease);
+            }
+
+            MdIncomeLeaseCost mdIncomeLeaseCost = mdIncomeLeaseCostDao.getIncomeLeaseCostBySectionId(dateSection.getId());
+            if (mdIncomeLeaseCost != null) {
+                mdIncomeLeaseCost.setSorting(i);
+                mdIncomeLeaseCostDao.updateLeaseCost(mdIncomeLeaseCost);
+            }
+        }
     }
 
     /**

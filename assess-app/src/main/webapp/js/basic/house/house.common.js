@@ -346,6 +346,46 @@
         })
     }
 
+    //户型选择
+    houseCommon.selectHuxing2 = function (_this,tableId) {
+        $.ajax({
+            url: getContextPath() +'/basicUnitHuxing/getUnitId',
+            data: {
+                tableId: tableId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    assessHuxing.selectByBasicUnitId({
+                        basicUnitId: result.data,
+                        success: function (row) {
+                            //1.赋值 2.拷贝附件并显示附件数据
+                            $(_this).closest('.input-group').find(':text').val(row.name);
+                            houseCommon.houseForm.find('[name=area]').val(row.area);
+                            houseCommon.houseForm.find('[name=orientation]').val(row.orientation).trigger('change');
+                            $.ajax({
+                                url: getContextPath() + '/basicHouse/copyHuxingPlan',
+                                data: {
+                                    sourceTableId: row.id,
+                                    sourceTableName: row.tableName,
+                                    targetTableId: houseCommon.getHouseId(),
+                                    fieldsName: houseCommon.houseFileControlIdArray[0]
+                                },
+                                success: function (result) {
+                                    houseCommon.fileShow(houseCommon.houseFileControlIdArray[0], false);
+                                    houseCommon.deleteHouseTagging();
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+
+    }
+
+
     //下拉框change事件
     houseCommon.changeEvent = function (basicHouseTrading) {
         houseCommon.houseTradingForm.find("select.transactionSituation").off('change').on('change', function () {

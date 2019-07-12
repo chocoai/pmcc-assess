@@ -172,16 +172,24 @@ public class ProjectInfoService {
             }
             int projectId = saveProjectInfo(projectInfo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectId);
-            consignor.setProjectId(projectId);
-            unitInformation.setProjectId(projectId);
-            possessor.setProjectId(projectId);
-            consignorService.saveAndUpdateInitiateConsignor(consignor);
-            unitInformationService.saveAndUpdate(unitInformation);
-            possessorService.saveAndUpdate(possessor);
-            //保存项目成员
-            projectMember.setProjectId(projectId);
-            projectMember.setCreator(commonService.thisUserAccount());
-            projectMemberService.saveProjectMemeber(projectMember);
+            if (consignor != null) {
+                consignor.setProjectId(projectId);
+                consignorService.saveAndUpdateInitiateConsignor(consignor);
+            }
+            if (unitInformation != null) {
+                unitInformation.setProjectId(projectId);
+                unitInformationService.saveAndUpdate(unitInformation);
+            }
+            if (possessor != null) {
+                possessor.setProjectId(projectId);
+                possessorService.saveAndUpdate(possessor);
+            }
+            if (projectMember != null) {//保存项目成员
+                projectMember.setProjectId(projectId);
+                projectMember.setCreator(commonService.thisUserAccount());
+                projectMemberService.saveProjectMemeber(projectMember);
+            }
+
             //发起项目
             if (init) {
                 //初始化项目信息
@@ -276,8 +284,8 @@ public class ProjectInfoService {
         ProjectPlan projectPlan = new ProjectPlan();
         projectPlan.setProjectId(projectInfoId);
 
-        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanList(projectInfoId) ;
-        if (CollectionUtils.isNotEmpty(projectPlans)){
+        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanList(projectInfoId);
+        if (CollectionUtils.isNotEmpty(projectPlans)) {
             unitInformationService.roundWrite(initiateProjectDto.getUnitinformation());
         }
     }
@@ -358,7 +366,7 @@ public class ProjectInfoService {
         processInfo.setAppKey(applicationConstant.getAppKey());
 
         try {
-            processUserDto = processControllerComponent.processStart(projectInfo.getCreator(),processInfo, projectInfo.getCreator(), false);
+            processUserDto = processControllerComponent.processStart(projectInfo.getCreator(), processInfo, projectInfo.getCreator(), false);
         } catch (BpmException e) {
             logger.info(e.getMessage());
             throw new BusinessException(e.getMessage());
@@ -482,7 +490,7 @@ public class ProjectInfoService {
                             approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
                             String displayUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), boxReDto.getProcessDisplayUrl(), boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
                             projectPlanVo.setPlanExecutor(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
-                            if(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())){
+                            if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
                                 projectPlanVo.setPlanCanExecut(true);
                                 projectPlanVo.setPlanExecutUrl(approvalUrl);
                             }
@@ -524,15 +532,13 @@ public class ProjectInfoService {
             return projectInfoVo;
         }
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
-        if (org.apache.commons.lang3.math.NumberUtils.isNumber(projectInfoVo.getServiceComeFrom())){
-            projectInfoVo.setServiceComeFrom(bidBaseDataDicService.getNameById(projectInfoVo.getServiceComeFrom()));
-        }
+        projectInfoVo.setServiceComeFromName(bidBaseDataDicService.getNameById(projectInfoVo.getServiceComeFrom()));
         if (StringUtils.isNotEmpty(projectInfo.getContractId()) && StringUtils.isNotEmpty(projectInfo.getContractId())) {
             List<String> contractIds = FormatUtils.transformString2List(projectInfo.getContractId());
-            List<String> contractName = FormatUtils.transformString2List(projectInfo.getContractName()) ;
-            Integer size = Stream.of(contractIds.size(),contractName.size()).mapToInt(Integer::intValue).min().getAsInt() ;
+            List<String> contractName = FormatUtils.transformString2List(projectInfo.getContractName());
+            Integer size = Stream.of(contractIds.size(), contractName.size()).mapToInt(Integer::intValue).min().getAsInt();
             for (int i = 0; i < size; i++) {
-                projectInfoVo.getContractList().add(new KeyValueDto(contractIds.get(i),contractName.get(i)));
+                projectInfoVo.getContractList().add(new KeyValueDto(contractIds.get(i), contractName.get(i)));
             }
         }
         //项目类型
@@ -689,63 +695,65 @@ public class ProjectInfoService {
         }
     }
 
-    public void projectClearData(Integer id){
-        if (id == null){
+    public void projectClearData(Integer id) {
+        if (id == null) {
             return;
         }
-        ProjectInfo projectInfo = getProjectInfoById(id) ;
-        if (projectInfo == null){
+        ProjectInfo projectInfo = getProjectInfoById(id);
+        if (projectInfo == null) {
             return;
         }
-        ProjectInfoVo projectInfoVo = getSimpleProjectInfoVo(projectInfo) ;
-        projectInfoDao.deleteByProjectInfoId(id) ;
-        if (projectInfoVo.getConsignorVo() != null){
-            if (projectInfoVo.getConsignorVo().getId() != null){
-                consignorService.remove(projectInfoVo.getConsignorVo().getId()) ;
+        ProjectInfoVo projectInfoVo = getSimpleProjectInfoVo(projectInfo);
+        projectInfoDao.deleteByProjectInfoId(id);
+        if (projectInfoVo.getConsignorVo() != null) {
+            if (projectInfoVo.getConsignorVo().getId() != null) {
+                consignorService.remove(projectInfoVo.getConsignorVo().getId());
             }
         }
-        if (projectInfoVo.getUnitInformationVo() != null){
-            if (projectInfoVo.getUnitInformationVo().getId() != null){
-                unitInformationService.remove(projectInfoVo.getUnitInformationVo().getId()) ;
+        if (projectInfoVo.getUnitInformationVo() != null) {
+            if (projectInfoVo.getUnitInformationVo().getId() != null) {
+                unitInformationService.remove(projectInfoVo.getUnitInformationVo().getId());
             }
         }
-        if (projectInfoVo.getPossessorVo() != null){
-            if (projectInfoVo.getPossessorVo().getId() != null){
-                possessorService.remove(projectInfoVo.getPossessorVo().getId()) ;
+        if (projectInfoVo.getPossessorVo() != null) {
+            if (projectInfoVo.getPossessorVo().getId() != null) {
+                possessorService.remove(projectInfoVo.getPossessorVo().getId());
             }
         }
-        if (projectInfoVo.getProjectMemberVo() != null){
-            if (projectInfoVo.getProjectMemberVo().getId() != null){
-                projectMemberService.deleteProjectMemberById(projectInfoVo.getProjectMemberVo().getId()) ;
+        if (projectInfoVo.getProjectMemberVo() != null) {
+            if (projectInfoVo.getProjectMemberVo().getId() != null) {
+                projectMemberService.deleteProjectMemberById(projectInfoVo.getProjectMemberVo().getId());
             }
         }
     }
 
     /**
      * 项目是否可操作
+     *
      * @param projectId
      * @return
      */
-    public boolean isProjectOperable(Integer projectId){
+    public boolean isProjectOperable(Integer projectId) {
         ProjectInfo projectInfo = getProjectInfoById(projectId);
-        if(projectInfo==null) return false;
-        if(ProjectStatusEnum.FINISH.getKey().equals(projectInfo.getProjectStatus()))
+        if (projectInfo == null) return false;
+        if (ProjectStatusEnum.FINISH.getKey().equals(projectInfo.getProjectStatus()))
             return false;
-        if(ProjectStatusEnum.CLOSE.getKey().equals(projectInfo.getProjectStatus()))
+        if (ProjectStatusEnum.CLOSE.getKey().equals(projectInfo.getProjectStatus()))
             return false;
-        if(ProjectStatusEnum.PAUSE.getKey().equals(projectInfo.getProjectStatus()))
+        if (ProjectStatusEnum.PAUSE.getKey().equals(projectInfo.getProjectStatus()))
             return false;
         return true;
     }
 
     /**
      * 完成项目
+     *
      * @param projectId
      */
     public void finishProject(Integer projectId) throws BusinessException {
         //检查该项目是否还有待提交或待审批的任务
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(applicationConstant.getAppKey(), Lists.newArrayList(projectId));
-        if(CollectionUtils.isNotEmpty(projectTaskList))
+        if (CollectionUtils.isNotEmpty(projectTaskList))
             throw new BusinessException("项目中还有待提交的任务");
         ProjectInfo projectInfo = getProjectInfoById(projectId);
         projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());

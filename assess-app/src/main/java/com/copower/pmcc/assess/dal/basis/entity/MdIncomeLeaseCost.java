@@ -48,6 +48,8 @@ public class MdIncomeLeaseCost {
 
     private BigDecimal educationRatio;
 
+    private Integer sorting;
+
     private String creator;
 
     private Date gmtCreated;
@@ -228,6 +230,14 @@ public class MdIncomeLeaseCost {
 
     public void setEducationRatio(BigDecimal educationRatio) {
         this.educationRatio = educationRatio;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
     public String getCreator() {

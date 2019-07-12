@@ -24,6 +24,7 @@
     <result column="construction_tax_ratio" property="constructionTaxRatio" jdbcType="DECIMAL" />
     <result column="local_education_ratio" property="localEducationRatio" jdbcType="DECIMAL" />
     <result column="education_ratio" property="educationRatio" jdbcType="DECIMAL" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -91,8 +92,8 @@
     maintenance, maintenance_cost_ratio, additional, additional_ratio, insurance_premium, 
     insurance_premium_ratio, land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
     transaction_taxe_fee_explain, property_tax_ratio, stamp_duty_ratio, sales_tax_ratio, 
-    construction_tax_ratio, local_education_ratio, education_ratio, creator, gmt_created, 
-    gmt_modified
+    construction_tax_ratio, local_education_ratio, education_ratio, sorting, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCostExample" >
     select
@@ -135,8 +136,9 @@
       land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
       transaction_taxe_fee_explain, property_tax_ratio, 
       stamp_duty_ratio, sales_tax_ratio, construction_tax_ratio, 
-      local_education_ratio, education_ratio, creator, 
-      gmt_created, gmt_modified)
+      local_education_ratio, education_ratio, sorting, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{replacementValue,jdbcType=DECIMAL}, 
       #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=DECIMAL}, #{maintenance,jdbcType=VARCHAR}, 
       #{maintenanceCostRatio,jdbcType=DECIMAL}, #{additional,jdbcType=VARCHAR}, #{additionalRatio,jdbcType=DECIMAL}, 
@@ -144,8 +146,9 @@
       #{landUseTax,jdbcType=DECIMAL}, #{useTaxParameter,jdbcType=VARCHAR}, #{transactionTaxeFeeRatio,jdbcType=DECIMAL}, 
       #{transactionTaxeFeeExplain,jdbcType=VARCHAR}, #{propertyTaxRatio,jdbcType=DECIMAL}, 
       #{stampDutyRatio,jdbcType=DECIMAL}, #{salesTaxRatio,jdbcType=DECIMAL}, #{constructionTaxRatio,jdbcType=DECIMAL}, 
-      #{localEducationRatio,jdbcType=DECIMAL}, #{educationRatio,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{localEducationRatio,jdbcType=DECIMAL}, #{educationRatio,jdbcType=DECIMAL}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -215,6 +218,9 @@
       </if>
       <if test="educationRatio != null" >
         education_ratio,
+      </if>
+      <if test="sorting != null" >
+        sorting,
       </if>
       <if test="creator != null" >
         creator,
@@ -289,6 +295,9 @@
       </if>
       <if test="educationRatio != null" >
         #{educationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -376,6 +385,9 @@
       <if test="record.educationRatio != null" >
         education_ratio = #{record.educationRatio,jdbcType=DECIMAL},
       </if>
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -414,6 +426,7 @@
       construction_tax_ratio = #{record.constructionTaxRatio,jdbcType=DECIMAL},
       local_education_ratio = #{record.localEducationRatio,jdbcType=DECIMAL},
       education_ratio = #{record.educationRatio,jdbcType=DECIMAL},
+      sorting = #{record.sorting,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -487,6 +500,9 @@
       <if test="educationRatio != null" >
         education_ratio = #{educationRatio,jdbcType=DECIMAL},
       </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -522,6 +538,7 @@
       construction_tax_ratio = #{constructionTaxRatio,jdbcType=DECIMAL},
       local_education_ratio = #{localEducationRatio,jdbcType=DECIMAL},
       education_ratio = #{educationRatio,jdbcType=DECIMAL},
+      sorting = #{sorting,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

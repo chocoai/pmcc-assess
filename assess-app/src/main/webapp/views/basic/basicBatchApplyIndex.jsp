@@ -175,6 +175,47 @@
         </div>
     </div>
 </div>
+<div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static" aria-hidden="true"
+     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑</h4>
+            </div>
+            <form id="frm_detail_b" class="form-horizontal">
+                <input type="hidden" name="id" value="0">
+                <div class="modal-body" style="overflow: auto; ">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="x_content">
+                                <input type="hidden" name="pid">
+                                <input type="hidden" name="applyBatchId">
+                                <input type="hidden" name="tableName">
+                                <input type="hidden" name="tableId">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <div id="detailContent_b">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="editItemData()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
@@ -291,7 +332,7 @@
                 html += "楼栋编号";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
+                html += "<input type='text'  name='name' class='form-control' required value='01'>";
                 html += "</div>";
                 break;
             }
@@ -301,7 +342,7 @@
                 html += "单元编号";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
+                html += "<input type='text'  name='name' class='form-control' required value='01'>";
                 html += "</div>";
                 break;
             }
@@ -311,7 +352,7 @@
                 html += "房号";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
+                html += "<input type='text'  name='name' class='form-control' required value='01'>";
                 html += "</div>";
                 break;
             }
@@ -343,10 +384,39 @@
                 if (result.ret) {
                     console.log("id:"+result.data.id+"pid:"+result.data.pid);
                     toastr.success('保存成功');
-                    // ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
+                     //ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
                      var node = zTreeObj.getSelectedNodes()[0];
                     zTreeObj.addNodes(node, {id: result.data.id, pid:result.data.pid, name:result.data.name});
                     $('#detail_modal').modal('hide');
+                } else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            }
+        });
+    }
+
+    //编辑明细
+    function editItemData() {
+        if (!$("#frm_detail").valid()) {
+            return false;
+        }
+        var formData = formParams("frm_detail_b");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
+            type: "post",
+            dataType: "json",
+            data: formData,
+            success: function (result) {
+                if (result.ret) {
+                    console.log("id:"+result.data.id+"pid:"+result.data.pid);
+                    toastr.success('保存成功');
+                     //ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
+                    var node = zTreeObj.getSelectedNodes()[0];
+                    node.id = result.data.id;
+                    node.name = result.data.name;
+                    node.pid = result.data.pid;
+                    zTreeObj.updateNode(node, false);
+                    $('#detail_modal_b').modal('hide');
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
                 }
@@ -392,9 +462,9 @@
         var html = "";
         switch (level) {
             case 1: {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_building");
+                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_building");
                 html += "<label class='col-sm-2 control-label'>";
-                html += "楼栋号";
+                html += "楼栋编号";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required>";
@@ -402,7 +472,7 @@
                 break;
             }
             case 2: {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_unit");
+                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_unit");
                 html += "<label class='col-sm-2 control-label'>";
                 html += "单元编号";
                 html += "</label>";
@@ -412,7 +482,7 @@
                 break;
             }
             case 3: {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_house");
+                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_house");
                 html += "<label class='col-sm-2 control-label'>";
                 html += "房号";
                 html += "</label>";
@@ -422,10 +492,10 @@
                 break;
             }
         }
-        $("#frm_detail").clearAll();
-        $("#frm_detail").find("#detailContent").empty().append(html);
-        $("#frm_detail").initForm(data);
-        $("#detail_modal").modal();
+        $("#frm_detail_b").clearAll();
+        $("#frm_detail_b").find("#detailContent_b").empty().append(html);
+        $("#frm_detail_b").initForm(data);
+        $("#detail_modal_b").modal();
     }
 
     //编辑明细

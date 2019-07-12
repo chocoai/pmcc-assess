@@ -42,6 +42,7 @@ public class MdIncomeLeaseDao {
     public List<MdIncomeLease> getIncomeLeaseList(MdIncomeLease mdIncomeLease) {
         MdIncomeLeaseExample example = new MdIncomeLeaseExample();
         MybatisUtils.convertObj2Example(mdIncomeLease, example);
+        example.setOrderByClause("sorting");
         return mdIncomeLeaseMapper.selectByExample(example);
     }
 

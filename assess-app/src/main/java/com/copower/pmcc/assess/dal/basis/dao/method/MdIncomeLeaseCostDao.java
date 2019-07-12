@@ -57,7 +57,16 @@ public class MdIncomeLeaseCostDao {
     public List<MdIncomeLeaseCost> getLeaseCostList(MdIncomeLeaseCost mdIncomeLeaseCost) {
         MdIncomeLeaseCostExample example = new MdIncomeLeaseCostExample();
         MybatisUtils.convertObj2Example(mdIncomeLeaseCost, example);
+        example.setOrderByClause("sorting");
         return mdIncomeLeaseCostMapper.selectByExample(example);
+    }
+
+    public MdIncomeLeaseCost getIncomeLeaseCostBySectionId(Integer sectionId) {
+        MdIncomeLeaseCostExample example = new MdIncomeLeaseCostExample();
+        example.createCriteria().andSectionIdEqualTo(sectionId);
+        List<MdIncomeLeaseCost> leaseList = mdIncomeLeaseCostMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(leaseList)) return null;
+        return leaseList.get(0);
     }
 
     /**

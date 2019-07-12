@@ -40,6 +40,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
+                        <c:if test="${empty isApplyBatch}">
                         <input type="text" readonly="readonly" onclick="houseCommon.selectHuxing(this);"
                                placeholder="户型" class="form-control" name="huxingName"
                                value="${basicHouse.huxingName}">
@@ -48,8 +49,21 @@
                                 data-toggle="tooltip"
                                 data-original-title="选择"
                                 onclick="houseCommon.selectHuxing(this);">
-                        <i class="fa fa-search"></i>
+                             <i class="fa fa-search"></i>
                         </button>
+                        </c:if>
+                        <c:if test="${isApplyBatch eq 'show'}">
+                             <input type="text" readonly="readonly" onclick="houseCommon.selectHuxing2(this,${tableId});"
+                                    placeholder="户型" class="form-control" name="huxingName"
+                                    value="${basicHouse.huxingName}">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="houseCommon.selectHuxing2(this,${tableId});">
+                             <i class="fa fa-search"></i>
+                        </button>
+                        </c:if>
                         <button type="button" class="btn btn-default docs-tooltip"
                                 onclick="$(this).closest('.input-group').find('input').val('');"
                                 data-toggle="tooltip" data-original-title="清除">

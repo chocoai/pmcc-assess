@@ -374,7 +374,6 @@
                 $("#" + objProject.config.info.frm).find("select.valueType").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.serviceComeFrom, item.serviceComeFrom, function (html, data) {
-                console.log(html);
                 $("#" + objProject.config.info.frm).find("select[name='serviceComeFrom']").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.property_scope, item.propertyScope, function (html, data) {

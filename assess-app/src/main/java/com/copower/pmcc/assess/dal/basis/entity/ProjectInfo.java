@@ -62,6 +62,8 @@ public class ProjectInfo {
 
     private String serviceComeFrom;
 
+    private String serviceComeFromExplain;
+
     private String status;
 
     private String projectStatus;
@@ -72,13 +74,13 @@ public class ProjectInfo {
 
     private String assignStatus;
 
+    private String estateName;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String estateName;
 
     public Integer getId() {
         return id;
@@ -312,6 +314,14 @@ public class ProjectInfo {
         this.serviceComeFrom = serviceComeFrom == null ? null : serviceComeFrom.trim();
     }
 
+    public String getServiceComeFromExplain() {
+        return serviceComeFromExplain;
+    }
+
+    public void setServiceComeFromExplain(String serviceComeFromExplain) {
+        this.serviceComeFromExplain = serviceComeFromExplain == null ? null : serviceComeFromExplain.trim();
+    }
+
     public String getStatus() {
         return status;
     }
@@ -352,6 +362,14 @@ public class ProjectInfo {
         this.assignStatus = assignStatus == null ? null : assignStatus.trim();
     }
 
+    public String getEstateName() {
+        return estateName;
+    }
+
+    public void setEstateName(String estateName) {
+        this.estateName = estateName == null ? null : estateName.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -374,13 +392,5 @@ public class ProjectInfo {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getEstateName() {
-        return estateName;
-    }
-
-    public void setEstateName(String estateName) {
-        this.estateName = estateName == null ? null : estateName.trim();
     }
 }

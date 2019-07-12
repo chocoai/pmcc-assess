@@ -58,7 +58,7 @@ public class InitiatePossessorService {
         }
         if (initiatePossessor.getId() == null || initiatePossessor.getId() == 0) {
             //对资产占有人信息 进行单独处理
-            if (initiatePossessor.getpType().equals(InitiateContactsEnum.naturalPerson.getId())) {
+            if (InitiateContactsEnum.naturalPerson.getId().equals(initiatePossessor.getpType())) {
                 initiatePossessor.setpUnitProperties(null);
                 initiatePossessor.setpScopeOperation(null);
                 initiatePossessor.setpSociologyCode(null);

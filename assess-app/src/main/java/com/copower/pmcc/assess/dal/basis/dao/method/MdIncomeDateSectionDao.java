@@ -55,6 +55,7 @@ public class MdIncomeDateSectionDao {
     public List<MdIncomeDateSection> getDateSectionList(MdIncomeDateSection mdIncomeDateSection) {
         MdIncomeDateSectionExample example = new MdIncomeDateSectionExample();
         MybatisUtils.convertObj2Example(mdIncomeDateSection, example);
+        example.setOrderByClause("sorting");
         return mdIncomeDateSectionMapper.selectByExample(example);
     }
 

@@ -50,7 +50,8 @@
                                        placeholder="报酬率" readonly="readonly"
                                        data-value="${mdIncome.rewardRate}">
                                 <span class="input-group-btn">
-                                     <input type="button" class="btn btn-primary" value="报酬率" onclick="rewardRateDetail.calculationDetail('${mdIncome.rewardRateId}');"/>
+                                     <input type="button" class="btn btn-primary" value="报酬率"
+                                            onclick="rewardRateDetail.calculationDetail('${mdIncome.rewardRateId}');"/>
                                 </span>
                             </div>
                         </div>
@@ -126,9 +127,9 @@
                             <div class="col-sm-4">
                                 <div class="input-group">
                                     <label class="form-control" data-name="rentalIncome"></label>
-                                    <span class="input-group-btn">
+                                    <span class="input-group-btn" >
                                     <input type="button" class="btn btn-primary" value="市场比较法"
-                                           onclick="lease.viewCompareMethod(this);"/>
+                                         id="btnViewCompare"  onclick="lease.viewCompareMethod(this);"/>
                                 </span>
                                 </div>
                             </div>
@@ -399,7 +400,6 @@
 </div>
 
 
-
 <script type="text/html" id="leaseResultHtml">
     <tr data-id="{id}">
         <td>
@@ -431,6 +431,11 @@
                 $(this).text(row[$(this).attr('data-name')]);
             }
         })
+        if ($("#frm_lease_income").find('[name=mcId]').val() > 0) {
+            $("#btnViewCompare").removeAttr("disabled");
+        } else {
+            $("#btnViewCompare").attr("disabled","disabled");
+        }
         $('#modal_lease_income').modal();
     }
 

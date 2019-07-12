@@ -48,6 +48,7 @@ public class IncomeController {
         try {
             MdIncomeDateSection mdIncomeDateSection = JSON.parseObject(formData, MdIncomeDateSection.class);
             mdIncomeDateSectionService.saveDateSection(mdIncomeDateSection);
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());

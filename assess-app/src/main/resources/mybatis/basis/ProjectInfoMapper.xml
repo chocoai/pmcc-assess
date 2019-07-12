@@ -31,15 +31,16 @@
     <result column="contract_name" property="contractName" jdbcType="VARCHAR" />
     <result column="contract_price" property="contractPrice" jdbcType="DECIMAL" />
     <result column="service_come_from" property="serviceComeFrom" jdbcType="VARCHAR" />
+    <result column="service_come_from_explain" property="serviceComeFromExplain" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
     <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER" />
     <result column="assign_process_ins_id" property="assignProcessInsId" jdbcType="VARCHAR" />
     <result column="assign_status" property="assignStatus" jdbcType="VARCHAR" />
+    <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -104,9 +105,9 @@
     province, city, district, valuation_date, entrust_purpose, entrust_aim_type, remark_entrust_purpose, 
     value_type, remark_value_type, department_id, remarks, complete_date_plan, complete_date_actual, 
     complete_date_start, process_ins_id, property_scope, scope_include, scope_not_include, 
-    loan_type, contract_id, contract_name, contract_price, service_come_from, status, 
-    project_status, public_project_id, assign_process_ins_id, assign_status, creator, 
-    gmt_created, gmt_modified, estate_name
+    loan_type, contract_id, contract_name, contract_price, service_come_from, service_come_from_explain, 
+    status, project_status, public_project_id, assign_process_ins_id, assign_status, 
+    estate_name, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample" >
     select
@@ -151,10 +152,11 @@
       complete_date_start, process_ins_id, property_scope, 
       scope_include, scope_not_include, loan_type, 
       contract_id, contract_name, contract_price, 
-      service_come_from, status, project_status, 
-      public_project_id, assign_process_ins_id, assign_status, 
-      creator, gmt_created, gmt_modified, 
-      estate_name)
+      service_come_from, service_come_from_explain, 
+      status, project_status, public_project_id, 
+      assign_process_ins_id, assign_status, estate_name, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP}, 
@@ -164,10 +166,11 @@
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{propertyScope,jdbcType=VARCHAR}, 
       #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{loanType,jdbcType=INTEGER}, 
       #{contractId,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, #{contractPrice,jdbcType=DECIMAL}, 
-      #{serviceComeFrom,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, 
-      #{publicProjectId,jdbcType=INTEGER}, #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{estateName,jdbcType=VARCHAR})
+      #{serviceComeFrom,jdbcType=VARCHAR}, #{serviceComeFromExplain,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, 
+      #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -259,6 +262,9 @@
       <if test="serviceComeFrom != null" >
         service_come_from,
       </if>
+      <if test="serviceComeFromExplain != null" >
+        service_come_from_explain,
+      </if>
       <if test="status != null" >
         status,
       </if>
@@ -274,6 +280,9 @@
       <if test="assignStatus != null" >
         assign_status,
       </if>
+      <if test="estateName != null" >
+        estate_name,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -282,9 +291,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="estateName != null" >
-        estate_name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -372,6 +378,9 @@
       <if test="serviceComeFrom != null" >
         #{serviceComeFrom,jdbcType=VARCHAR},
       </if>
+      <if test="serviceComeFromExplain != null" >
+        #{serviceComeFromExplain,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
@@ -387,6 +396,9 @@
       <if test="assignStatus != null" >
         #{assignStatus,jdbcType=VARCHAR},
       </if>
+      <if test="estateName != null" >
+        #{estateName,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -395,9 +407,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="estateName != null" >
-        #{estateName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -497,6 +506,9 @@
       <if test="record.serviceComeFrom != null" >
         service_come_from = #{record.serviceComeFrom,jdbcType=VARCHAR},
       </if>
+      <if test="record.serviceComeFromExplain != null" >
+        service_come_from_explain = #{record.serviceComeFromExplain,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -512,6 +524,9 @@
       <if test="record.assignStatus != null" >
         assign_status = #{record.assignStatus,jdbcType=VARCHAR},
       </if>
+      <if test="record.estateName != null" >
+        estate_name = #{record.estateName,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -520,9 +535,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.estateName != null" >
-        estate_name = #{record.estateName,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -560,15 +572,16 @@
       contract_name = #{record.contractName,jdbcType=VARCHAR},
       contract_price = #{record.contractPrice,jdbcType=DECIMAL},
       service_come_from = #{record.serviceComeFrom,jdbcType=VARCHAR},
+      service_come_from_explain = #{record.serviceComeFromExplain,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       project_status = #{record.projectStatus,jdbcType=VARCHAR},
       public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
       assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
       assign_status = #{record.assignStatus,jdbcType=VARCHAR},
+      estate_name = #{record.estateName,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      estate_name = #{record.estateName,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -660,6 +673,9 @@
       <if test="serviceComeFrom != null" >
         service_come_from = #{serviceComeFrom,jdbcType=VARCHAR},
       </if>
+      <if test="serviceComeFromExplain != null" >
+        service_come_from_explain = #{serviceComeFromExplain,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -675,6 +691,9 @@
       <if test="assignStatus != null" >
         assign_status = #{assignStatus,jdbcType=VARCHAR},
       </if>
+      <if test="estateName != null" >
+        estate_name = #{estateName,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -683,9 +702,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="estateName != null" >
-        estate_name = #{estateName,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -720,15 +736,16 @@
       contract_name = #{contractName,jdbcType=VARCHAR},
       contract_price = #{contractPrice,jdbcType=DECIMAL},
       service_come_from = #{serviceComeFrom,jdbcType=VARCHAR},
+      service_come_from_explain = #{serviceComeFromExplain,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       project_status = #{projectStatus,jdbcType=VARCHAR},
       public_project_id = #{publicProjectId,jdbcType=INTEGER},
       assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
       assign_status = #{assignStatus,jdbcType=VARCHAR},
+      estate_name = #{estateName,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      estate_name = #{estateName,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

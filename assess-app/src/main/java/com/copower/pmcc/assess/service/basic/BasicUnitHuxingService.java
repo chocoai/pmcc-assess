@@ -213,4 +213,34 @@ public class BasicUnitHuxingService {
         vo.setTotal(page.getTotal());
         return vo;
     }
+
+    /**
+     * 获取选择户型数据列表
+     *
+     * @param basicUnitId
+     * @return
+     */
+    public BootstrapTableVo getSelectHuxingListByUnitId(Integer basicUnitId) throws Exception {
+        BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicUnitId);
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicUnitHuxingVo> list = Lists.newArrayList();
+        if (basicUnit != null) {
+            BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+            basicUnitHuxing.setUnitId(basicUnit.getId());
+            List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
+            if(!CollectionUtils.isEmpty(basicUnitHuxingList)){
+                for (BasicUnitHuxing unitHuxing : basicUnitHuxingList) {
+                    BasicUnitHuxingVo unitHuxingVo = getBasicUnitHuxingVo(unitHuxing);
+                    unitHuxingVo.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                    list.add(unitHuxingVo);
+                }
+            }
+
+        }
+        vo.setRows(ObjectUtils.isEmpty(list) ? Lists.newArrayList() : list);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
 }

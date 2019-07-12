@@ -27,15 +27,21 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -223,9 +229,12 @@ public class ProjectPlanDetailsService {
      * @param projectId
      * @return
      */
-    public List<ProjectPlanDetailsVo> getPlanDetailListByPlanId(Integer projectId, Integer planId) {
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
-        if (CollectionUtils.isEmpty(projectPlanDetails)) return Lists.newArrayList();
+        if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 
         //获取当前人该阶段下待处理的任务
@@ -332,7 +341,9 @@ public class ProjectPlanDetailsService {
                 }
             }
         }
-        return projectPlanDetailsVos;
+        bootstrapTableVo.setTotal((long) page.getTotal());
+        bootstrapTableVo.setRows(projectPlanDetailsVos);
+        return bootstrapTableVo;
     }
 
 

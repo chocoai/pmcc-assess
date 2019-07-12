@@ -34,6 +34,8 @@ public class MdIncomeDateSection {
 
     private BigDecimal incomePrice;
 
+    private Integer sorting;
+
     private String creator;
 
     private Date gmtCreated;
@@ -158,6 +160,14 @@ public class MdIncomeDateSection {
 
     public void setIncomePrice(BigDecimal incomePrice) {
         this.incomePrice = incomePrice;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
     public String getCreator() {

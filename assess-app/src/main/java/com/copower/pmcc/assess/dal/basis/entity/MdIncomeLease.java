@@ -38,6 +38,8 @@ public class MdIncomeLease {
 
     private String additionalCaptureRemark;
 
+    private Integer sorting;
+
     private String creator;
 
     private Date gmtCreated;
@@ -178,6 +180,14 @@ public class MdIncomeLease {
 
     public void setAdditionalCaptureRemark(String additionalCaptureRemark) {
         this.additionalCaptureRemark = additionalCaptureRemark == null ? null : additionalCaptureRemark.trim();
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
     public String getCreator() {

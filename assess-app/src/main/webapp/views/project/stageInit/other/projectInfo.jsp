@@ -229,11 +229,19 @@
                            value="${projectInfo.contractPrice}"/>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">业务来源</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="serviceComeFrom" class="form-control search-select select2" >
                     </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">业务来源说明</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input name="serviceComeFromExplain" class="form-control" placeholder="业务来源说明" value="${projectInfo.serviceComeFromExplain}"/>
                 </div>
             </div>
         </div>
