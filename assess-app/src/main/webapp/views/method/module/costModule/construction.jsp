@@ -37,7 +37,7 @@
                     开发期（年）<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" name="developYearNumberTax" onblur="construction.calculationE21();construction.calculationG21();"
+                    <input type="text" name="developYearNumberTax" onblur="construction.calculationE21();construction.calculationG21();construction.constructionAssessmentPriceCorrectingCalculationE26();"
                            placeholder="开发期（年）" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developYearNumberTax}">
                 </div>
             </div>
@@ -437,7 +437,7 @@
     <input type="text" readonly="readonly" class="form-control" name="e18" placeholder="e18" onblur="construction.calculationE19();">
     <input type="text" readonly="readonly" class="form-control" name="e19" placeholder="e19" onblur="construction.calculationE23();construction.calculationE21()">
     <input type="text" readonly="readonly" class="form-control" name="g23" placeholder="g23" onblur="construction.calculationG24();">
-    <input type="text" readonly="readonly" class="form-control" name="g24" placeholder="g24" onblur="">
+    <input type="text" readonly="readonly" class="form-control" name="g24" placeholder="g24" onblur="construction.constructionAssessmentValueCalculationE25();">
     <input type="text" readonly="readonly" class="form-control" name="g21" placeholder="g21" onblur="construction.calculationG24();">
 </div>
 
@@ -450,7 +450,7 @@
         <h3>测算结果</h3>
         <div class="clearfix"></div>
     </div>
-    <input type="text" readonly="readonly" name="constructionAssessmentValue2" value="${mdCostConstruction.constructionAssessmentValue2}" class="form-control" placeholder="在建工程评估价值2">
+    <input type="text" readonly="readonly" name="constructionAssessmentValue2" onblur="construction.constructionAssessmentValueCalculationE25();" value="${mdCostConstruction.constructionAssessmentValue2}" class="form-control" placeholder="在建工程评估价值2">
     <div class="x_content">
         <div class="form-group">
             <div class="col-md-12 col-sm-12">
@@ -469,15 +469,15 @@
                     </tr>
                     <tr>
                         <td> 投资利息</td>
-                        <td><label class="interestInvestment"></label><input type="hidden" value="${mdCostConstruction.interestInvestment}" name="interestInvestment" placeholder="投资利息"> </td>
+                        <td><label class="interestInvestment"></label><input onblur="construction.constructionAssessmentValue2calculationE24()" type="hidden" value="${mdCostConstruction.interestInvestment}" name="interestInvestment" placeholder="投资利息"> </td>
                     </tr>
                     <tr>
                         <td> 开发利润</td>
-                        <td><label class="investmentProfit"></label><input type="hidden" value="${mdCostConstruction.investmentProfit}" name="investmentProfit" placeholder="开发利润"> </td>
+                        <td><label class="investmentProfit"></label><input type="hidden" onblur="construction.constructionAssessmentValue2calculationE24()" value="${mdCostConstruction.investmentProfit}" name="investmentProfit" placeholder="开发利润"> </td>
                     </tr>
                     <tr>
                         <td> 在建工程评估价值</td>
-                        <td><label class="constructionAssessmentValue"></label><input type="hidden" value="${mdCostConstruction.constructionAssessmentValue}" name="constructionAssessmentValue" placeholder="在建工程评估价值"> </td>
+                        <td><label class="constructionAssessmentValue"></label><input type="hidden" onblur="construction.constructionAssessmentPriceCorrectingCalculationE26();" value="${mdCostConstruction.constructionAssessmentValue}" name="constructionAssessmentValue" placeholder="在建工程评估价值"> </td>
                     </tr>
                     <tr>
                         <td> 在建工程单位价</td>

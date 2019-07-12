@@ -331,6 +331,56 @@
         construction.target.find(".investmentProfit").html(c) ;
     };
 
+    construction.constructionAssessmentValue2calculationE24 = function () {
+        //=IF(D9=" "," ",E9+E17+E18+E19+E21+E23)
+        var e23 = construction.target.find("input[name='investmentProfit']").val() ;
+        var e21 = construction.target.find("input[name='interestInvestment']").val() ;
+        var e9 = construction.target.find("input[name='landGetCostTotal']").val() ;
+        var e17 = construction.target.find("input[name='constructionSubtotal']").val() ;
+        var e18 = construction.target.find("input[name='e18']").val();
+        var e19 = construction.target.find("input[name='e19']").val() ;
+        if (!AssessCommon.isNumber(e21)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(e23)) {
+            return false;
+        }
+        var c = math.chain(e9).add(e17).add(e18).add(e19).add(e21).add(e23).done() ;
+        construction.target.find("input[name='constructionAssessmentValue2']").val(c.toFixed(construction.fixed)).trigger('blur') ;
+    };
+
+    construction.constructionAssessmentValueCalculationE25 = function () {
+        //=IF(E24=" "," ",E24/(1-G24))
+        var e24 = construction.target.find("input[name='constructionAssessmentValue2']").val() ;
+        var g24 = construction.target.find("input[name='g24']").val() ;
+        if (!AssessCommon.isNumber(e24)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(g24)) {
+            return false;
+        }
+        var c = math.chain(e24).divide(1-math.number(g24)).done() ;
+        c = c.toFixed(construction.fixed) ;
+        construction.target.find("input[name='constructionAssessmentValue']").val(c).trigger('blur') ;
+        construction.target.find(".constructionAssessmentValue").html(c) ;
+    };
+
+    construction.constructionAssessmentPriceCorrectingCalculationE26 = function () {
+        //=IF(E25=" "," ",E25*10000/F3)
+        var e25 = construction.target.find("input[name='constructionAssessmentValue']").val() ;
+        var f3 = construction.target.find("input[name='developBuildAreaTax']").val();
+        if (!AssessCommon.isNumber(e25)) {
+            return false;
+        }
+        if (!AssessCommon.isNumber(f3)) {
+            return false;
+        }
+        var c = math.chain(e25).multiply(10000).divide(f3).done() ;
+        c = c.toFixed(construction.fixed) ;
+        construction.target.find("input[name='constructionAssessmentPriceCorrecting']").val(c).trigger('blur') ;
+        construction.target.find(".constructionAssessmentPriceCorrecting").html(c) ;
+    };
+
     construction.constructionInstallationEngineeringFeeEvent = {
         show:function () {
             var target = $("#boxMdCostConstruction");
@@ -353,6 +403,11 @@
             target.modal("hide");
         }
     } ;
+
+    //参数校验
+    construction.checkParams = function (this_) {
+
+    };
 
 
 </script>
