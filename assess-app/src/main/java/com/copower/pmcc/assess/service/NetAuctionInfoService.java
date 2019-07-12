@@ -509,7 +509,7 @@ public class NetAuctionInfoService {
     public void getNetInfoFromGGZYYA() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -10); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
