@@ -32,6 +32,7 @@ public class NetLandTransactionDao {
         if (StringUtils.isNotBlank(content)) {
             criteria.andContentLike("%" + content + "%");
         }
+        example.setOrderByClause("id desc");
         List<NetLandTransaction> netLandTransactions = netLandTransactionMapper.selectByExample(example);
         return netLandTransactions;
     }

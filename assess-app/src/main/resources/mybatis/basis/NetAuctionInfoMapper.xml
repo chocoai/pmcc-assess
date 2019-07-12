@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.NetAuctionInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="item_url" property="itemUrl" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="current_price" property="currentPrice" jdbcType="VARCHAR" />
+    <result column="consult_price" property="consultPrice" jdbcType="VARCHAR" />
+    <result column="init_price" property="initPrice" jdbcType="VARCHAR" />
+    <result column="start" property="start" jdbcType="TIMESTAMP" />
+    <result column="end" property="end" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="provinceName" property="provincename" jdbcType="VARCHAR" />
+    <result column="cityName" property="cityname" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, item_url, title, current_price, consult_price, init_price, start, end, content, 
+    provinceName, cityName, type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_net_auction_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_net_auction_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_net_auction_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfoExample" >
+    delete from tb_net_auction_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_auction_info (item_url, title, current_price, 
+      consult_price, init_price, start, 
+      end, content, provinceName, 
+      cityName, type)
+    values (#{itemUrl,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{currentPrice,jdbcType=VARCHAR}, 
+      #{consultPrice,jdbcType=VARCHAR}, #{initPrice,jdbcType=VARCHAR}, #{start,jdbcType=TIMESTAMP}, 
+      #{end,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{provincename,jdbcType=VARCHAR}, 
+      #{cityname,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_auction_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="itemUrl != null" >
+        item_url,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="currentPrice != null" >
+        current_price,
+      </if>
+      <if test="consultPrice != null" >
+        consult_price,
+      </if>
+      <if test="initPrice != null" >
+        init_price,
+      </if>
+      <if test="start != null" >
+        start,
+      </if>
+      <if test="end != null" >
+        end,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="provincename != null" >
+        provinceName,
+      </if>
+      <if test="cityname != null" >
+        cityName,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="itemUrl != null" >
+        #{itemUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="currentPrice != null" >
+        #{currentPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="consultPrice != null" >
+        #{consultPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="initPrice != null" >
+        #{initPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="start != null" >
+        #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="end != null" >
+        #{end,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="provincename != null" >
+        #{provincename,jdbcType=VARCHAR},
+      </if>
+      <if test="cityname != null" >
+        #{cityname,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfoExample" resultType="java.lang.Integer" >
+    select count(*) from tb_net_auction_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_net_auction_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemUrl != null" >
+        item_url = #{record.itemUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currentPrice != null" >
+        current_price = #{record.currentPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.consultPrice != null" >
+        consult_price = #{record.consultPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.initPrice != null" >
+        init_price = #{record.initPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.start != null" >
+        start = #{record.start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.end != null" >
+        end = #{record.end,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.provincename != null" >
+        provinceName = #{record.provincename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityname != null" >
+        cityName = #{record.cityname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_net_auction_info
+    set id = #{record.id,jdbcType=INTEGER},
+      item_url = #{record.itemUrl,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      current_price = #{record.currentPrice,jdbcType=VARCHAR},
+      consult_price = #{record.consultPrice,jdbcType=VARCHAR},
+      init_price = #{record.initPrice,jdbcType=VARCHAR},
+      start = #{record.start,jdbcType=TIMESTAMP},
+      end = #{record.end,jdbcType=TIMESTAMP},
+      content = #{record.content,jdbcType=VARCHAR},
+      provinceName = #{record.provincename,jdbcType=VARCHAR},
+      cityName = #{record.cityname,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfo" >
+    update tb_net_auction_info
+    <set >
+      <if test="itemUrl != null" >
+        item_url = #{itemUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="currentPrice != null" >
+        current_price = #{currentPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="consultPrice != null" >
+        consult_price = #{consultPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="initPrice != null" >
+        init_price = #{initPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="start != null" >
+        start = #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="end != null" >
+        end = #{end,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="provincename != null" >
+        provinceName = #{provincename,jdbcType=VARCHAR},
+      </if>
+      <if test="cityname != null" >
+        cityName = #{cityname,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfo" >
+    update tb_net_auction_info
+    set item_url = #{itemUrl,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      current_price = #{currentPrice,jdbcType=VARCHAR},
+      consult_price = #{consultPrice,jdbcType=VARCHAR},
+      init_price = #{initPrice,jdbcType=VARCHAR},
+      start = #{start,jdbcType=TIMESTAMP},
+      end = #{end,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      provinceName = #{provincename,jdbcType=VARCHAR},
+      cityName = #{cityname,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

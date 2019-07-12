@@ -26,19 +26,22 @@
 
     developmentCommon.config = {
         commonParameter: {id: "commonDevelopmentParameterBase", handle: "commonDevelopmentParameterHandle"},
-        architecturalA: {id: "architecturalA", handle: "architecturalAHandle"},
-        architecturalB: {id: "architecturalB", handle: "architecturalBHandle"}
+        architecturalA: {id: "architecturalA", handle: "architecturalAHandle",detail:'architecturalADetail'},
+        architecturalB: {id: "architecturalB", handle: "architecturalBHandle",detail:'architecturalBDetail'}
     };
 
     developmentCommon.architecturalB = {
         get:function (type , callback) {
-            var pid = 0;
-            if (developmentCommon.isNotBlank('${mdDevelopment}')){
-                if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
-                    pid = '${mdDevelopment.id}' ;
+            try {
+                var pid = 0;
+                if (developmentCommon.isNotBlank('${mdDevelopment}')){
+                    if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                        pid = '${mdDevelopment.id}' ;
+                    }
                 }
+                developmentCommon.getMdArchitecturalObjList(type ,AssessDBKey.MdDevelopment , pid ,'${projectPlanDetails.id}' ,callback) ;
+            } catch (e) {
             }
-            developmentCommon.getMdArchitecturalObjList(type ,AssessDBKey.MdDevelopment , pid ,'${projectPlanDetails.id}' ,callback) ;
         },
         initData:function (table,data) {
             var tbody = table.find('tbody') ;
@@ -86,18 +89,26 @@
             var value = $(that).val() ;
             var a = tr.find("input[name='price']").val() ;
             var b = tr.find("input[name='valuationDateDegreeCompletion']").attr('data-value');
-            if (!developmentCommon.isNotBlank(value)){
-                alert("不能为空!") ;
-                return false;
+            if (developmentCommon.isNotBlank(value)){
+                if (!AssessCommon.isNumber(value)){
+                    var reg = new RegExp(/^[0-9]+%$/);
+                    if (!reg.test(value)){
+                        $(that).val('') ;
+                        alert("不符合，必须是数字!") ;
+                        return false;
+                    }
+                }
+                if (!AssessCommon.isNumber(a)){
+                    return false;
+                }
+                if (!AssessCommon.isNumber(b)){
+                    return false;
+                }
+                var c = Number(a) * Number(b) ;
+                tr.find("td").last().text(c.toFixed(2)) ;
+            }else {
+                tr.find("td").last().text('') ;
             }
-            if (!AssessCommon.isNumber(a)){
-                return false;
-            }
-            if (!AssessCommon.isNumber(b)){
-                return false;
-            }
-            var c = Number(a) * Number(b) ;
-            tr.find("td").last().text(c.toFixed(2)) ;
             var table = $(that).closest("table") ;
             var result = 0;
             table.find("tbody").find("tr").each(function (i,item) {
@@ -115,6 +126,9 @@
         },
         getHtml: function () {
             return $("#" + developmentCommon.config.architecturalB.id).html();
+        },
+        getHtmlDetail:function () {
+            return $("#" + developmentCommon.config.architecturalB.detail).html();
         },
         getFomData:function (table) {
             var tbody = table.find('tbody') ;
@@ -212,9 +226,12 @@
         },
         totalResult:function (that) {
             var value = $(that).val() ;
-            if (!AssessCommon.isNumber(value)){
-                alert("必须是数字!") ;
-                return false;
+            if (developmentCommon.isNotBlank(value)){
+                if (!AssessCommon.isNumber(value)){
+                    $(that).val('') ;
+                    alert("必须是数字!") ;
+                    return false;
+                }
             }
             var table = $(that).closest("table") ;
             var result = math.bignumber(0);
@@ -267,6 +284,9 @@
         },
         getHtml: function () {
             return $("#" + developmentCommon.config.architecturalA.id).html();
+        },
+        getHtmlDetail:function () {
+            return $("#" + developmentCommon.config.architecturalA.detail).html();
         }
     } ;
 
@@ -904,7 +924,216 @@
         <tfoot>
         <tr class="treegrid-99" data-key="architecturalEngineering"  data-role="parent">
             <td>合计 </td>
-            <td> <input type="text" readonly="readonly" name="totalPrice"> </td>
+            <td> <input type="text" class="form-control"  readonly="readonly" name="totalPrice"> </td>
+        </tr>
+        </tfoot>
+    </table>
+</script>
+
+<script type="text/html" id="architecturalBDetail" data-title="复杂树 详情(审批用)">
+    <table class="table tree">
+        <thead>
+        <tr>
+            <th>工程名称</th>
+            <th>单方造价(元/㎡)</th>
+            <th>估价时点完工程度</th>
+            <th>估价时点单价(元/㎡)</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr class="treegrid-1" data-key="architecturalEngineering"  data-role="parent">
+            <td>建筑工程 </td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-1-1 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地下基础 </td>
+            <td> <input type="text" class="form-control" readonly="readonly" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"   class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-1-2 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地下室 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"   class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-1-3 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地上主体 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"   class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+
+        <tr class="treegrid-2" data-key="installationWorks"  data-role="parent">
+            <td>安装工程</td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-1 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 电气工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-2 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 给排水工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-3 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 燃气工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-4 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 消防工程含消防报警 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-5 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 通风空调工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-6 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 智能化系统工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-7 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 电梯工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-8 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 其它工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+
+        <tr class="treegrid-3" data-key="decorationEngineering"  data-role="parent">
+            <td>装饰工程</td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-1 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 楼地面工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-2 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 外墙墙柱面工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-3 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 内墙墙柱面工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-4 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 天棚工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-5 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 门窗工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-6 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 外墙（油漆、涂料、裱糊）工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-7 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 内墙（油漆、涂料、裱糊）工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-8 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 其它工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+
+        <tr class="treegrid-4" data-key="ancillaryWorks"  data-role="parent">
+            <td>附属工程</td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-1 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 道路 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-2 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 围墙 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-3 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 大门 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-4 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 绿化 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-5 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 园林 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-6 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 景观 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
+
+        <tr class="treegrid-5" data-key="secondInstallationProject"  data-role="parent">
+            <td>二装工程</td>
+            <td>  </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+
+        </tbody>
+
+        <tfoot>
+        <tr class="treegrid-99" data-key="architecturalEngineering"  data-role="parent">
+            <td>合计 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly" " name="totalPrice"> </td>
         </tr>
         </tfoot>
     </table>
@@ -1052,10 +1281,158 @@
         <tfoot>
             <tr class="treegrid-99" data-key="architecturalEngineering"  data-role="parent">
                 <td>合计 </td>
-                <td> <input type="text" readonly="readonly" name="totalPrice"> </td>
+                <td> <input type="text" class="form-control" readonly="readonly" name="totalPrice"> </td>
             </tr>
         </tfoot>
     </table>
 </script>
+
+<script type="text/html" id="architecturalADetail" data-title="简单树 详情(审批用)">
+    <table class="table tree">
+        <thead>
+        <tr>
+            <th>工程名称</th>
+            <th>单方造价(元/㎡)</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr class="treegrid-1" data-key="architecturalEngineering"  data-role="parent">
+            <td>建筑工程 </td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-1-1 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地下基础 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-1-2 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地下室 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-1-3 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
+            <td> 地上主体 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+
+        <tr class="treegrid-2" data-key="installationWorks"  data-role="parent">
+            <td>安装工程</td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-2-1 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 电气工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-2-2 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 给排水工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-2-3 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 燃气工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-2-4 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 消防工程含消防报警 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-2-5 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 通风空调工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-2-6 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 智能化系统工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-2-7 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 电梯工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-2-8 treegrid-parent-2" data-key="installationWorks" data-role="child">
+            <td> 其它工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+
+        <tr class="treegrid-3" data-key="decorationEngineering"  data-role="parent">
+            <td>装饰工程</td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-3-1 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 楼地面工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-3-2 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 外墙墙柱面工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-3-3 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 内墙墙柱面工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-3-4 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 天棚工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-3-5 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 门窗工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-3-6 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 外墙（油漆、涂料、裱糊）工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-3-7 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 内墙（油漆、涂料、裱糊）工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-3-8 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
+            <td> 其它工程 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+
+        <tr class="treegrid-4" data-key="ancillaryWorks"  data-role="parent">
+            <td>附属工程</td>
+            <td>  </td>
+        </tr>
+        <tr class="treegrid-4-1 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 道路 </td>
+            <td> <input type="text" class="form-control" readonly="readonly"  onblur="" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-4-2 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 围墙 </td>
+            <td> <input type="text" class="form-control" readonly="readonly"    onblur="" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-4-3 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 大门 </td>
+            <td> <input type="text" class="form-control" readonly="readonly"  onblur="" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-4-4 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 绿化 </td>
+            <td> <input type="text" class="form-control" readonly="readonly"  onblur="" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-4-5 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 园林 </td>
+            <td> <input type="text" class="form-control" readonly="readonly"  onblur="" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+        <tr class="treegrid-4-6 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
+            <td> 景观 </td>
+            <td> <input type="text" class="form-control" readonly="readonly"  onblur="" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+        </tr>
+
+        <tr class="treegrid-5" data-key="secondInstallationProject"  data-role="parent">
+            <td>二装工程</td>
+            <td>  </td>
+        </tr>
+
+        </tbody>
+
+        <tfoot>
+        <tr class="treegrid-99" data-key="architecturalEngineering"  data-role="parent">
+            <td>合计 </td>
+            <td> <input type="text" class="form-control" readonly="readonly" name="totalPrice"> </td>
+        </tr>
+        </tfoot>
+    </table>
+</script>
+
 
 

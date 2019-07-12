@@ -182,12 +182,13 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="openBox(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="openBox(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="详情" onclick="openItemUrl(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
-            $("#" + dataBuilder.prototype.config().table).bootstrapTable('destroy');
+            $("#" + dataBuilder.prototype.config().tabletable).bootstrapTable('destroy');
             TableInit(dataBuilder.prototype.config().table, "${pageContext.request.contextPath}/netLandTransaction/getLandTransactionList", cols, {
                 content: $("#queryName").val()
             }, {
@@ -207,6 +208,10 @@
         var row = $("#transaction_List").bootstrapTable('getData')[index];
         if (row.content.indexOf('结果一览表') != -1) {
             getResultList(row.id);
+            $("#resultListBox").modal();
+        }
+        if (row.content.indexOf('雅公资') != -1) {
+            getYGZResultList(row.id);
             $("#resultListBox").modal();
         }
         if (row.content.indexOf('挂告') != -1) {
@@ -229,6 +234,29 @@
         cols.push({field: 'zdbh', title: '宗地编号'});
         cols.push({field: 'zdwz', title: '宗地位置'});
         cols.push({field: 'jydmj', title: '净用地面积（平方米）'});
+        cols.push({field: 'qsj', title: '起始价'});
+        cols.push({field: 'ccj', title: '成交价'});
+        cols.push({field: 'jdr', title: '竞得人'});
+
+        $("#result_List").bootstrapTable('destroy');
+        TableInit("result_List", "${pageContext.request.contextPath}/netLandTransaction/getResultList", cols, {
+            mainId: id
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+        });
+    }
+
+    //雅公资结果公告
+    function getYGZResultList(id) {
+        var cols = [];
+        cols.push({field: 'bdmc', title: '标的名称'});
+        cols.push({field: 'zdwz', title: '地块位置'});
+        cols.push({field: 'jydmj', title: '土地面积'});
+        cols.push({field: 'tdyt', title: '土地用途'});
+        cols.push({field: 'crfs', title: '出让方式'});
+        cols.push({field: 'rjl', title: '容积率'});
         cols.push({field: 'qsj', title: '起始价'});
         cols.push({field: 'ccj', title: '成交价'});
         cols.push({field: 'jdr', title: '竞得人'});
@@ -315,6 +343,12 @@
         });
     }
 
+   function  openItemUrl(index) {
+        var row = $("#transaction_List").bootstrapTable('getData')[index];
+        if(row.detailLink) {
+            window.open(row.detailLink, "");
+        }
+    }
     //保存数据
     function updateLandTransaction() {
         Alert("更新信息将花费较长时间，确认要现在更新么？", 2, null, function () {

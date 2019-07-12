@@ -21,6 +21,12 @@ public class NetResultAnnouncement {
 
     private String jdr;
 
+    private String bdmc;
+
+    private String crfs;
+
+    private String rjl;
+
     public Integer getId() {
         return id;
     }
@@ -99,5 +105,29 @@ public class NetResultAnnouncement {
 
     public void setJdr(String jdr) {
         this.jdr = jdr == null ? null : jdr.trim();
+    }
+
+    public String getBdmc() {
+        return bdmc;
+    }
+
+    public void setBdmc(String bdmc) {
+        this.bdmc = bdmc == null ? null : bdmc.trim();
+    }
+
+    public String getCrfs() {
+        return crfs;
+    }
+
+    public void setCrfs(String crfs) {
+        this.crfs = crfs == null ? null : crfs.trim();
+    }
+
+    public String getRjl() {
+        return rjl;
+    }
+
+    public void setRjl(String rjl) {
+        this.rjl = rjl == null ? null : rjl.trim();
     }
 }
