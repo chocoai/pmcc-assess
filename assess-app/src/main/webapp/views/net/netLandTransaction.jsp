@@ -182,12 +182,13 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="openBox(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="openBox(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="详情" onclick="openItemUrl(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
-            $("#" + dataBuilder.prototype.config().table).bootstrapTable('destroy');
+            $("#" + dataBuilder.prototype.config().tabletable).bootstrapTable('destroy');
             TableInit(dataBuilder.prototype.config().table, "${pageContext.request.contextPath}/netLandTransaction/getLandTransactionList", cols, {
                 content: $("#queryName").val()
             }, {
@@ -342,6 +343,12 @@
         });
     }
 
+   function  openItemUrl(index) {
+        var row = $("#transaction_List").bootstrapTable('getData')[index];
+        if(row.detailLink) {
+            window.open(row.detailLink, "");
+        }
+    }
     //保存数据
     function updateLandTransaction() {
         Alert("更新信息将花费较长时间，确认要现在更新么？", 2, null, function () {

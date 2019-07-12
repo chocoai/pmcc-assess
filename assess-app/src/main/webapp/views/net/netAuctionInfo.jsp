@@ -77,7 +77,7 @@
             cols.push({field: 'type', title: '类型'});
             cols.push({field: 'currentPrice', title: '成交价'});
             cols.push({field: 'consultPrice', title: '估算价'});
-            cols.push({field: 'initPrice', title: '成交价'});
+            cols.push({field: 'initPrice', title: '起始价'});
             cols.push({
                 field: 'end', title: '结束时间', formatter: function (value, row, index) {
                     return formatDate(row.end, false);

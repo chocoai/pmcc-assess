@@ -51,6 +51,24 @@ public class NetAuctionInfoService {
     @Autowired
     private NetResultAnnouncementDao netResultAnnouncementDao;
 
+    //抓取数据
+    public void climbingData(){
+        //来源淘宝网
+        this.getNetInfoFromTB();
+        //来源京东司法
+        this.getNetInfoFromJDSF();
+        //来源京东资产
+        this.getNetInfoFromJDZC();
+        //中国拍卖行业协会网-司法
+        this.getNetInfoFromZGSF();
+        //中国拍卖行业协会网-标的
+        this.getNetInfoFromZGBD();
+        //来源公拍网
+        this.getNetInfoFromGPW();
+        //公共资源交易平台-雅安
+        this.getNetInfoFromGGZYYA();
+    }
+
     //来源淘宝网
     public void getNetInfoFromTB() {
         try {
