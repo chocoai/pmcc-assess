@@ -63,7 +63,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="f22"
+                    <select name="f22" required
                             class="form-control search-select select2" onchange="landEngineering.calculationD22(this)">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
@@ -88,7 +88,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="f23"
+                    <select name="f23" required
                             class="form-control search-select select2 " onchange="landEngineering.calculationD23(this)">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
@@ -113,7 +113,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="f24"
+                    <select name="f24" required
                             class="form-control search-select select2 " onchange="landEngineering.calculationD24()">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
