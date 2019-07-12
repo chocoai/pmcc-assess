@@ -92,6 +92,9 @@
     })
     var setting = {
         data: {
+            key:{
+                name:"displayName"
+            },
             simpleData: {
                 enable: true,
                 idKey: "id",
@@ -119,7 +122,7 @@
 
     //初始化
     function ztreeInit(estateName) {
-        zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{"id": 0, "pid": 0, "name": estateName, "isParent": true}]);
+        zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{"id": 0, "pid": 0, "displayName": estateName, "isParent": true}]);
         //展开第一级，选中根节点
         var rootNode = zTreeObj.getNodes()[0];
         zTreeObj.selectNode(rootNode);

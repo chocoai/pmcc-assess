@@ -143,6 +143,7 @@ public class BasicApplyBatchService {
             ZtreeDto treeDto2 = new ZtreeDto();
             treeDto2.setId(item.getId());
             treeDto2.setName(item.getName());
+            treeDto2.setDisplayName(item.getDisplayName());
             treeDto2.setPid(item.getPid());
             //判断是否有子节点
             if (!haveChilds(item.getId(), basicApplyBatch.getId())) {

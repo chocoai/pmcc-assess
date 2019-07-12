@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by kings on 2018-10-30
@@ -31,6 +32,16 @@ public class BasicApplyBatchEvent implements ProcessEventExecutor {
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processExecution.getProcessInstanceId());
         applyBatch.setStatus(ProcessStatusEnum.FINISH.getValue());
+        writeToCase(applyBatch);
+    }
+
+    /**
+     * 数据写入到案例库
+     * @param applyBatch
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void writeToCase(BasicApplyBatch applyBatch) throws Exception {
         //更改状态
         basicApplyBatchDao.updateInfo(applyBatch);
         //拷贝到案例库

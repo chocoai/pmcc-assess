@@ -114,8 +114,8 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button class="btn btn-default" onclick="saveDraft()">
-                            保存草稿
+                        <button class="btn btn-warning" onclick="saveDraft()">
+                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
                         </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
@@ -247,6 +247,9 @@
 
     var setting = {
         data: {
+            key:{
+                name:"displayName"
+            },
             simpleData: {
                 enable: true,
                 idKey: "id",
@@ -274,7 +277,7 @@
 
     //初始化
     function ztreeInit(estateName) {
-        zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{"id": 0, "pid": 0, "name": estateName, "isParent": true}]);
+        zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{"id": 0, "pid": 0, "displayName": estateName, "isParent": true}]);
         //展开第一级，选中根节点
         var rootNode = zTreeObj.getNodes()[0];
         zTreeObj.selectNode(rootNode);
@@ -332,7 +335,7 @@
                 html += "楼栋编号";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required value='01'>";
+                html += "<input type='text'  name='name' class='form-control' required value=''>";
                 html += "</div>";
                 break;
             }
@@ -342,7 +345,7 @@
                 html += "单元编号";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required value='01'>";
+                html += "<input type='text'  name='name' class='form-control' required value=''>";
                 html += "</div>";
                 break;
             }
@@ -352,7 +355,7 @@
                 html += "房号";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required value='01'>";
+                html += "<input type='text'  name='name' class='form-control' required value=''>";
                 html += "</div>";
                 break;
             }
@@ -386,7 +389,7 @@
                     toastr.success('保存成功');
                      //ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
                      var node = zTreeObj.getSelectedNodes()[0];
-                    zTreeObj.addNodes(node, {id: result.data.id, pid:result.data.pid, name:result.data.name});
+                    zTreeObj.addNodes(node, {id: result.data.id, pid:result.data.pid, displayName:result.data.displayName});
                     $('#detail_modal').modal('hide');
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
