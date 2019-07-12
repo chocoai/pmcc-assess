@@ -132,12 +132,19 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
         mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
-        if (CollectionUtils.isNotEmpty(schemeInfoList)) {
+        if (CollectionUtils.isNotEmpty(schemeInfoList)){
+            for (SchemeInfo oo :schemeInfoList){
+                //处理评估方案中的各个评估方法
+                oo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+                oo.setMethodDataId(mdDevelopment.getId());
+                schemeInfoService.saveSchemeInfo(oo);
+            }
+        }else {
+            //处理评估方案中的各个评估方法
+            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+            schemeInfo.setMethodDataId(mdDevelopment.getId());
+            schemeInfoService.saveSchemeInfo(schemeInfo);
         }
-        //处理评估方案中的各个评估方法
-        schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
-        schemeInfo.setMethodDataId(mdDevelopment.getId());
-        schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 
     /**

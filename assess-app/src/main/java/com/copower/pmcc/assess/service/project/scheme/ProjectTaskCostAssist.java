@@ -166,7 +166,13 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             mdMarketCostService.saveAndUpdateMdCost(mdCost);
         }
 
-        if (CollectionUtils.isEmpty(schemeInfoList)){
+        if (CollectionUtils.isNotEmpty(schemeInfoList)){
+            for (SchemeInfo oo:schemeInfoList){
+                oo.setMethodDataId(mdCost.getId());
+                oo.setProcessInsId(StringUtils.isNotEmpty(processInsId)?processInsId:"0");
+                schemeInfoService.saveSchemeInfo(oo);
+            }
+        }else {
             schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId)?processInsId:"0");
             schemeInfo.setMethodDataId(mdCost.getId());
             schemeInfoService.saveSchemeInfo(schemeInfo);
