@@ -231,8 +231,6 @@ public class ProjectPlanDetailsService {
      */
     public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
@@ -341,7 +339,7 @@ public class ProjectPlanDetailsService {
                 }
             }
         }
-        bootstrapTableVo.setTotal((long) page.getTotal());
+        bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
     }
