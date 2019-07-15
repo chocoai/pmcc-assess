@@ -129,10 +129,11 @@ public class MdIncomeDateSectionService {
      *
      * @param dateSection
      */
+    @Transactional(rollbackFor = Exception.class)
     public void updateDateSection(MdIncomeDateSection dateSection) {
+        mdIncomeDateSectionDao.updateDateSection(dateSection);
         dateSection = mdIncomeDateSectionDao.getDateSectionById(dateSection.getId());
         if (dateSection == null) return;
-        mdIncomeDateSectionDao.updateDateSection(dateSection);
         updateSortingByBeginDate(dateSection.getIncomeId());
     }
 
