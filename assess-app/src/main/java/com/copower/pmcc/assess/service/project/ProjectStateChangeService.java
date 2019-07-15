@@ -178,6 +178,7 @@ public class ProjectStateChangeService extends BaseService {
             processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, commonService.thisUserAccount(), false);
         } catch (Exception e) {
             log.error(String.format("流程发起失败: %s", e.getMessage()), e);
+            throw new BusinessException(String.format("流程发起失败: %s", e.getMessage()));
         }
         return processUserDto;
     }
