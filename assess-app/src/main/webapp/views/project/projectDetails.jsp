@@ -304,11 +304,11 @@
                 planId: that.attr('plan-id')
             });
 
-            <%--ztreeInit({--%>
-                <%--target: $('#ztree' + that.attr('plan-id')),--%>
-                <%--projectId: '${projectInfo.id}',--%>
-                <%--planId: that.attr('plan-id')--%>
-            <%--});--%>
+            ztreeInit({
+                target: $('#ztree' + that.attr('plan-id')),
+                projectId: '${projectInfo.id}',
+                planId: that.attr('plan-id')
+            });
         },
 
         loadPlanItem: function (planId) {
