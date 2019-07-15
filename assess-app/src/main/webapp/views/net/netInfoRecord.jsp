@@ -26,11 +26,11 @@
                         <div class="form-group">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    名称
+                                    标题
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="名称" id="queryTitle" name="queryTitle"
+                                           placeholder="标题" id="queryTitle" name="queryTitle"
                                            class="form-control">
                                 </div>
                             </div>
@@ -69,12 +69,22 @@
                             </div>
                         </div>
                         <div class="form-group ">
-                            <div class="x-valid">
+                            <div>
                                 <label class="col-sm-1 control-label">
-                                    结束日期
+                                    内容
                                 </label>
                                 <div class="col-sm-2">
-                                    <input placeholder="结束日期" id="queryEndTime" data-date-format="yyyy-mm-dd"
+                                    <input type="text" data-rule-maxlength="50"
+                                           placeholder="内容" id="queryContent" name="queryContent"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    抓取日期
+                                </label>
+                                <div class="col-sm-2">
+                                    <input placeholder="抓取日期" id="queryEndTime" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate roomTime">
                                 </div>
                             </div>
@@ -86,7 +96,6 @@
 
                             </div>
                         </div>
-
                     </form>
                     <table class="table table-bordered" id="transaction_List">
                         <!-- cerare document add ajax data-->
@@ -124,18 +133,16 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'title', title: '名称'});
-            cols.push({field: 'type', title: '类型'});
-            cols.push({field: 'currentPrice', title: '成交价'});
-            cols.push({field: 'consultPrice', title: '估算价'});
-            cols.push({field: 'initPrice', title: '起始价'});
-            cols.push({field: 'provinceName', title: '省'});
-            cols.push({field: 'cityName', title: '市'});
+            cols.push({field: 'title',title: '标题', width: '20%'});
+            cols.push({field: 'province', title: '省', width: '10%'});
+            cols.push({field: 'city', title: '市', width: '10%'});
+            cols.push({field: 'sourceSiteName', title: '来源网站', width: '20%'});
             cols.push({
-                field: 'end', title: '结束时间', formatter: function (value, row, index) {
-                    return formatDate(row.end, false);
+                field: 'gmtCreated', title: '抓取时间',width: '10%', formatter: function (value, row, index) {
+                    return formatDate(row.gmtCreated, false);
                 }
             });
+            cols.push({field: 'content', title: '内容', width: '30%'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -145,11 +152,12 @@
                 }
             });
             $("#" + dataBuilder.prototype.config().table).bootstrapTable('destroy');
-            TableInit(dataBuilder.prototype.config().table, "${pageContext.request.contextPath}/netAuctionInfoController/getAuctionInfoList", cols, {
+            TableInit(dataBuilder.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordController/getInfoRecordList", cols, {
                 queryTitle: $("#queryTitle").val(),
                 queryWebName: $("#queryWebName").val(),
                 province: $("#province").val(),
                 city: $("#city").val(),
+                queryContent: $("#queryContent").val(),
                 queryEndTime: $("#queryEndTime").val()
             }, {
                 showColumns: false,
@@ -163,8 +171,8 @@
         openItem:function (index) {
             var row = $("#transaction_List").bootstrapTable('getData')[index];
             console.log(row);
-            if(row.itemUrl) {
-                window.open(row.itemUrl, "");
+            if(row.sourceSiteUrl) {
+                window.open(row.sourceSiteUrl, "");
             }
         }
     }
