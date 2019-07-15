@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="x_content">
-                    <form class="form-horizontal" id="buildingFrm">
+                    <form class="form-horizontal" id="buildingFrm" style="display: none">
                         <%@include file="/views/method/module/costModule/building.jsp" %>
                     </form>
                 </div>
