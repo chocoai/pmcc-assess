@@ -27,6 +27,12 @@ public class SchemeReportFileItem {
 
     private Integer declareRecordId;
 
+    private Integer certifyPart;
+
+    private Integer certifyPartCategory;
+
+    private Boolean bisEnable;
+
     public Integer getId() {
         return id;
     }
@@ -121,5 +127,29 @@ public class SchemeReportFileItem {
 
     public void setDeclareRecordId(Integer declareRecordId) {
         this.declareRecordId = declareRecordId;
+    }
+
+    public Integer getCertifyPart() {
+        return certifyPart;
+    }
+
+    public void setCertifyPart(Integer certifyPart) {
+        this.certifyPart = certifyPart;
+    }
+
+    public Integer getCertifyPartCategory() {
+        return certifyPartCategory;
+    }
+
+    public void setCertifyPartCategory(Integer certifyPartCategory) {
+        this.certifyPartCategory = certifyPartCategory;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 }
