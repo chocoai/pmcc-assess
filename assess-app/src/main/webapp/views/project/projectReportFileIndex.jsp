@@ -82,7 +82,7 @@
                     <c:forEach items="${declareRecordList}" var="declareRecord">
                         <div class="row">
                             <input type="hidden" name="declareRecordId" value="${declareRecord.id}">
-                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
+                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10  col-sm-10 col-xs-10">
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h4><strong>${declareRecord.name}</strong>
@@ -106,6 +106,9 @@
                                                 <th>文件名称</th>
                                                 <th>排序</th>
                                                 <th>附件</th>
+                                                <th>对应查勘部位</th>
+                                                <th>附件类别</th>
+                                                <th>是否上报告</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -526,7 +529,7 @@
                     $.each(result.data, function (i, item) {
                         html += '<tr><td><input type="text" name="fileName" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
                             '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this,'+declareRecordId+');" ></td>' +
-                            '<td>' + item.fileViewName + '</td><td>' +
+                            '<td>' + item.fileViewName + '</td>' +'<td>' + item.certifyPartName + '</td>' +'<td>' + item.certifyPartCategoryName + '</td>' +'<td>' + item.bisEnableName + '</td><td>' +
                             '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="getAndInit(' + item.id + ');">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
                     })

@@ -5305,7 +5305,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
-                List<SchemeReportFileItem> schemeReportFileItemList = schemeReportFileService.getListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                List<SchemeReportFileItem> schemeReportFileItemList = schemeReportFileService.getReportListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                 if (CollectionUtils.isNotEmpty(schemeReportFileItemList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {

@@ -50,7 +50,7 @@ public class SchemeReportFileService extends BaseService {
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private DeclareRecordService declareRecordService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -63,8 +63,6 @@ public class SchemeReportFileService extends BaseService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private DeclareRecordService declareRecordService;
     @Autowired
     private SurveyAssetInventoryService surveyAssetInventoryService;
     @Autowired
@@ -121,6 +119,9 @@ public class SchemeReportFileService extends BaseService {
                 baseAttachmentService.deleteAttachmentByDto(attachmentDto);
             }
         }
+        //先删除原来对应查勘的附件
+        this.deleteSurveyFile(id);
+
         schemeReportFileItemDao.deleteReportFileItem(id);
     }
 
@@ -181,6 +182,21 @@ public class SchemeReportFileService extends BaseService {
 
 
     /**
+     * 获取上报告的实况图片ByDeclareRecordId
+     *
+     * @param declareRecordId
+     * @return
+     */
+    public List<SchemeReportFileItem> getReportListByDeclareRecordId(Integer declareRecordId) {
+        SchemeReportFileItem where = new SchemeReportFileItem();
+        where.setDeclareRecordId(declareRecordId);
+        where.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
+        where.setBisEnable(true);
+        List<SchemeReportFileItem> reportFileItemList = schemeReportFileItemDao.getReportFileItemList(where);
+        return LangUtils.transform(reportFileItemList, o -> getSchemeReportFileItemVo(o));
+    }
+
+    /**
      * 获取实况图片ByDeclareRecordId
      *
      * @param declareRecordId
@@ -190,7 +206,6 @@ public class SchemeReportFileService extends BaseService {
         SchemeReportFileItem where = new SchemeReportFileItem();
         where.setDeclareRecordId(declareRecordId);
         where.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
-        where.setBisEnable(true);
         List<SchemeReportFileItem> reportFileItemList = schemeReportFileItemDao.getReportFileItemList(where);
         return LangUtils.transform(reportFileItemList, o -> getSchemeReportFileItemVo(o));
     }
@@ -461,16 +476,9 @@ public class SchemeReportFileService extends BaseService {
             baseAttachmentService.updateAttachementByExample(reportAttachment, attachmentNew);
         }
 
-        if (schemeReportFileItem.getCertifyPart() != null || schemeReportFileItem.getCertifyPartCategory() != null) {
-            //先删除原来关联的
-            SysAttachmentDto old = new SysAttachmentDto();
-            old.setReName(String.valueOf(schemeReportFileItem.getId()));
-            List<SysAttachmentDto> oldattachmentList = baseAttachmentService.getAttachmentList(old);
-            if (CollectionUtils.isNotEmpty(oldattachmentList)) {
-                for (SysAttachmentDto oldItem : oldattachmentList) {
-                    baseAttachmentService.deleteAttachment(oldItem.getId());
-                }
-            }
+        if (schemeReportFileItem.getCertifyPart() != null && schemeReportFileItem.getCertifyPartCategory() != null) {
+            //先删除原来对应查勘的附件
+            this.deleteSurveyFile(schemeReportFileItem.getId());
             //关联到查勘
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeReportFileItem.getDeclareRecordId());
             BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
@@ -486,6 +494,7 @@ public class SchemeReportFileService extends BaseService {
             reportAttachment.setTableId(schemeReportFileItem.getId());
             List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(reportAttachment);
             if (CollectionUtils.isNotEmpty(attachmentList)) {
+                DeclareRecord declareRecordById = declareRecordService.getDeclareRecordById(schemeReportFileItem.getDeclareRecordId());
                 SysAttachmentDto reportAttachment2 = new SysAttachmentDto();
                 for (SysAttachmentDto dto : attachmentList) {
                     BeanUtils.copyProperties(dto, reportAttachment2);
@@ -509,11 +518,25 @@ public class SchemeReportFileService extends BaseService {
                     }
                     reportAttachment2.setFieldsName(category.getFieldName());
                     reportAttachment2.setReName(String.valueOf(schemeReportFileItem.getId()));
+                    reportAttachment2.setId(null);
+                    reportAttachment2.setProjectId(declareRecordById.getProjectId());
                     baseAttachmentService.addAttachment(reportAttachment2);
                 }
             }
         }
 
+    }
+
+    //删除原来对应查勘的附件
+    public void deleteSurveyFile(Integer id) {
+        SysAttachmentDto old = new SysAttachmentDto();
+        old.setReName(String.valueOf(id));
+        List<SysAttachmentDto> oldAttachmentList = baseAttachmentService.getAttachmentList(old);
+        if (CollectionUtils.isNotEmpty(oldAttachmentList)) {
+            for (SysAttachmentDto oldItem : oldAttachmentList) {
+                baseAttachmentService.deleteAttachment(oldItem.getId());
+            }
+        }
     }
 
     //选择实况图片
@@ -552,6 +575,13 @@ public class SchemeReportFileService extends BaseService {
                 stringBuilder.append(baseAttachmentService.getViewHtml(attachmentDto));
             }
             vo.setFileViewName(stringBuilder.toString());
+        }
+        vo.setCertifyPartName(schemeReportFileItem.getCertifyPart() != null ? baseDataDicService.getNameById(schemeReportFileItem.getCertifyPart()) : "");
+        vo.setCertifyPartCategoryName(schemeReportFileItem.getCertifyPartCategory() != null ? baseDataDicService.getNameById(schemeReportFileItem.getCertifyPartCategory()) : "");
+        if (schemeReportFileItem.getBisEnable() != null && schemeReportFileItem.getBisEnable()) {
+            vo.setBisEnableName("是");
+        } else {
+            vo.setBisEnableName("否");
         }
         return vo;
     }

@@ -80,9 +80,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/reportFileEditName", name = "选择的图片修改名称 ", method = RequestMethod.POST)
-    public HttpResult reportFileEditName(Integer id,String newName,Integer newSorting) {
+    public HttpResult reportFileEditName(Integer id, String newName, Integer newSorting) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.reportFileEditName(id,newName,newSorting));
+            return HttpResult.newCorrectResult(schemeReportFileService.reportFileEditName(id, newName, newSorting));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -103,9 +103,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/selectLiveSituation", name = "选择实况图片 ", method = RequestMethod.POST)
-    public HttpResult selectLiveSituation(Integer attachmentId,Integer declareRecordId,String fileName) {
+    public HttpResult selectLiveSituation(Integer attachmentId, Integer declareRecordId, String fileName) {
         try {
-            schemeReportFileService.selectLiveSituation(attachmentId,declareRecordId,fileName);
+            schemeReportFileService.selectLiveSituation(attachmentId, declareRecordId, fileName);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -124,6 +124,7 @@ public class SchemeController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
 
     @ResponseBody
     @RequestMapping(value = "/getReportFileCustomList", name = "获取自定义块 ", method = RequestMethod.POST)
