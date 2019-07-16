@@ -5331,7 +5331,7 @@ public class GenerateBaseDataService {
         int rowLength = (schemeReportFileList.size() % colCount > 0 ? (schemeReportFileList.size() / colCount) + 1 : schemeReportFileList.size() / colCount) * 2;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
-        int maxWidth = 435;
+        int maxWidth = 350;
         int cellWidth = maxWidth / colCount;
         for (int j = 0; j < rowLength; j++) {
             //插入图片
@@ -5355,7 +5355,7 @@ public class GenerateBaseDataService {
                         int width = maxWidth / colCount;
                         int height = maxWidth / colCount;
                         if (schemeReportFileList.size() == 1) {
-                            height = 250;
+                            height = 145;
                         }
                         builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
                                 RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
