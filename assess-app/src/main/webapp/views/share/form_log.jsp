@@ -41,8 +41,8 @@
     var formLog = {
         //配置信息
         config: {
-            projectId: "${empty projectId||projectId==0?0:projectId}",
-            processInsId: "${empty processInsId?0:processInsId}",
+            projectId: "${empty projectId||projectId==0?-1:projectId}",
+            processInsId: "${empty processInsId?-1:processInsId}",
             processLogUrl: "${pageContext.request.contextPath}/public/getApprovalLog",
             projectLogUrl: "${pageContext.request.contextPath}/public/getApprovalLogByProject"
         },
