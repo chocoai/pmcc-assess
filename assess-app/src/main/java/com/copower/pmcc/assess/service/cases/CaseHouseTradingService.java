@@ -104,6 +104,7 @@ public class CaseHouseTradingService {
         vo.setInformationTypeName(baseDataDicService.getNameById(caseHouseTrading.getInformationType()));
         vo.setInformationCategoryName(baseDataDicService.getNameById(caseHouseTrading.getInformationCategory()));
         vo.setScopePropertyName(baseDataDicService.getNameById(caseHouseTrading.getScopeProperty()));
+        vo.setPriceTypeName(baseDataDicService.getNameById(caseHouseTrading.getPriceType()));
         return vo;
     }
 }

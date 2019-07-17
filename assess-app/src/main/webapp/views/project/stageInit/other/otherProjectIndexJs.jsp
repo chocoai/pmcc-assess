@@ -1104,21 +1104,42 @@
             objProject.consignor.contactsShow();
             objProject.possessor.contactsShow();
             objProject.unit_information.contactsShow();
-            if (objProject.isNotBlank('${projectInfoVoJson}')) {
-                var str = $("#projectInfoVoJson").val();
-                if (objProject.isNotBlank(str)) {
-                    var data = {};
-                    try {
-                        data = JSON.parse(str);
-                    } catch (e) {
-                        console.log(e);
-                    }
-                    if (objProject.isNotBlankObjectProperty(data)) {
-                        objProject.info.loadInit(data);
-                        objProject.consignor.loadInit(data.consignorVo);
-                        objProject.possessor.loadInit(data.possessorVo);
-                        objProject.unit_information.loadInit(data.unitInformationVo);
-                    }
+            var str = $("#projectInfoVoJson").val();
+            if (objProject.isNotBlank(str)) {
+                var data = {};
+                try {
+                    data = JSON.parse(str);
+                } catch (e) {
+                    console.log(str) ;
+                    console.log(e);
+                }
+
+                if (objProject.isNotBlankObjectProperty(data)) {
+                    objProject.info.loadInit(data);
+                }else {
+                    var item = formParams(objProject.config.info.frm) ;
+                    objProject.info.loadInit({id:item.id});
+                }
+
+                if (objProject.isNotBlank(data.consignorVo)){
+                    objProject.consignor.loadInit(data.consignorVo);
+                }else {
+                    var item = formParams(objProject.config.consignor.frm) ;
+                    objProject.consignor.loadInit({id:item.id});
+                }
+
+                if (objProject.isNotBlank(data.possessorVo)){
+                    objProject.possessor.loadInit(data.possessorVo);
+                }else {
+                    var item = formParams(objProject.config.possessor.frm) ;
+                    objProject.possessor.loadInit({id:item.id});
+                }
+
+                if (objProject.isNotBlank(data.unitInformationVo)){
+                    objProject.unit_information.loadInit(data.unitInformationVo);
+                }else {
+                    var item = formParams(objProject.config.unit_information.frm) ;
+                    objProject.unit_information.loadInit({id:item.id});
                 }
             }
         });

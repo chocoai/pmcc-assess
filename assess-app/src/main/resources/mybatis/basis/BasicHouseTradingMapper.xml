@@ -32,6 +32,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="land_buyer_seller" property="landBuyerSeller" jdbcType="VARCHAR" />
+    <result column="price_type" property="priceType" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -101,7 +102,7 @@
     description_content, installment_interest_rate, payment_method, transaction_situation, 
     tax_burden, scope_property, scope_include, scope_not_include, scope_property_explain, 
     down_payment_ratio, lending_rate, loan_period, deposit, information_type, information_category, 
-    name, phone, land_buyer_seller, creator, gmt_created, gmt_modified, price_connotation
+    name, phone, land_buyer_seller, price_type, creator, gmt_created, gmt_modified, price_connotation
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" >
     select
@@ -147,8 +148,8 @@
       down_payment_ratio, lending_rate, loan_period, 
       deposit, information_type, information_category, 
       name, phone, land_buyer_seller, 
-      creator, gmt_created, gmt_modified, 
-      price_connotation)
+      price_type, creator, gmt_created, 
+      gmt_modified, price_connotation)
     values (#{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
       #{tradingType,jdbcType=INTEGER}, #{tradingTotalPrice,jdbcType=DECIMAL}, #{tradingUnitPrice,jdbcType=DECIMAL}, 
       #{buyerExtraTax,jdbcType=VARCHAR}, #{buyerExtraFee,jdbcType=VARCHAR}, #{rentingExtraTax,jdbcType=VARCHAR}, 
@@ -159,8 +160,8 @@
       #{downPaymentRatio,jdbcType=VARCHAR}, #{lendingRate,jdbcType=VARCHAR}, #{loanPeriod,jdbcType=INTEGER}, 
       #{deposit,jdbcType=VARCHAR}, #{informationType,jdbcType=INTEGER}, #{informationCategory,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{landBuyerSeller,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{priceConnotation,jdbcType=INTEGER})
+      #{priceType,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{priceConnotation,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -254,6 +255,9 @@
       </if>
       <if test="landBuyerSeller != null" >
         land_buyer_seller,
+      </if>
+      <if test="priceType != null" >
+        price_type,
       </if>
       <if test="creator != null" >
         creator,
@@ -355,6 +359,9 @@
       </if>
       <if test="landBuyerSeller != null" >
         #{landBuyerSeller,jdbcType=VARCHAR},
+      </if>
+      <if test="priceType != null" >
+        #{priceType,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -469,6 +476,9 @@
       <if test="record.landBuyerSeller != null" >
         land_buyer_seller = #{record.landBuyerSeller,jdbcType=VARCHAR},
       </if>
+      <if test="record.priceType != null" >
+        price_type = #{record.priceType,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -518,6 +528,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
       land_buyer_seller = #{record.landBuyerSeller,jdbcType=VARCHAR},
+      price_type = #{record.priceType,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
@@ -616,6 +627,9 @@
       <if test="landBuyerSeller != null" >
         land_buyer_seller = #{landBuyerSeller,jdbcType=VARCHAR},
       </if>
+      <if test="priceType != null" >
+        price_type = #{priceType,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -662,6 +676,7 @@
       name = #{name,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       land_buyer_seller = #{landBuyerSeller,jdbcType=VARCHAR},
+      price_type = #{priceType,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},

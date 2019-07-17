@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
     <classPathEntry
-            location="D:\lib\mysql-connector-java-5.1.23.jar"/>
+            location="E:\lib\maven\mysql\mysql-connector-java\5.1.9\mysql-connector-Java-5.1.9.jar"/>
 
     <context id="ticket-pms">
 
@@ -116,9 +116,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_house_trading" domainObjectName="CaseHouseTrading">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_house_trading" domainObjectName="CaseHouseTrading">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_house_trading_lease" domainObjectName="CaseHouseTradingLease">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -136,14 +136,14 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_case_estate" domainObjectName="CaseEstate">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_case_estate" domainObjectName="CaseEstate">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_case_estate_land_state" domainObjectName="CaseEstateLandState">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>
-        </table>
+        <!--<table tableName="tb_case_estate_land_state" domainObjectName="CaseEstateLandState">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_case_estate_network" domainObjectName="CaseEstateNetwork">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

@@ -64,6 +64,8 @@ public class BasicHouseTrading {
 
     private String landBuyerSeller;
 
+    private Integer priceType;
+
     private String creator;
 
     private Date gmtCreated;
@@ -310,6 +312,14 @@ public class BasicHouseTrading {
 
     public void setLandBuyerSeller(String landBuyerSeller) {
         this.landBuyerSeller = landBuyerSeller == null ? null : landBuyerSeller.trim();
+    }
+
+    public Integer getPriceType() {
+        return priceType;
+    }
+
+    public void setPriceType(Integer priceType) {
+        this.priceType = priceType;
     }
 
     public String getCreator() {

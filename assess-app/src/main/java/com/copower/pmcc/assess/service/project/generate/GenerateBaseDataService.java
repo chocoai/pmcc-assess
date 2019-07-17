@@ -1964,206 +1964,125 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath();
-        createLiquidationAnalysisTable(builder);
+        Map<String, String> map = Maps.newHashMap();
+        List<SchemeLiquidationAnalysisGroup> groupByAreaId = schemeLiquidationAnalysisService.getGroupByAreaId(areaId, projectId);
+        if (CollectionUtils.isNotEmpty(groupByAreaId)) {
+            for (SchemeLiquidationAnalysisGroup groupItem : groupByAreaId) {
+                String tablePath = createLiquidationAnalysisTable(groupItem);
+                if (StringUtils.isNotBlank(tablePath)) {
+                    String key = RandomStringUtils.randomNumeric(22);
+                    map.put(key, tablePath);
+                    builder.write(key);
+                }
+            }
+        } else {
+            String tablePath = createLiquidationAnalysisTable(new SchemeLiquidationAnalysisGroup());
+            if (StringUtils.isNotBlank(tablePath)) {
+                String key = RandomStringUtils.randomNumeric(22);
+                map.put(key, tablePath);
+                builder.write(key);
+            }
+        }
         doc.save(localPath);
+        if (!map.isEmpty()) {
+            AsposeUtils.replaceTextToFile(localPath, map);
+        }
         return localPath;
     }
 
-    public void createLiquidationAnalysisTable(DocumentBuilder builder) throws Exception {
-        List<SchemeLiquidationAnalysisGroup> groupByAreaId = schemeLiquidationAnalysisService.getGroupByAreaId(areaId, projectId);
-        for (SchemeLiquidationAnalysisGroup groupItem : groupByAreaId) {
+    private String createLiquidationAnalysisTable(SchemeLiquidationAnalysisGroup groupItem) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
+        String localPath = getLocalPath(RandomStringUtils.randomAscii(8));
+        if (groupItem != null && StringUtils.isNotBlank(groupItem.getRecordIds())) {
             String recordIds = groupItem.getRecordIds();
             List<Integer> recordList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(recordIds));
             List<Integer> judgeNumberByDeclareIds = schemeJudgeObjectService.getJudgeNumberByDeclareIds(recordList);
             String number = generateCommonMethod.convertNumber(judgeNumberByDeclareIds);
             builder.insertHtml(generateCommonMethod.getSongWarpCssHtml3(String.format("%s%s", number, "号委估对象")));
-            List<SchemeLiquidationAnalysisItem> itemList = schemeLiquidationAnalysisService.getAnalysisItemListByGroupId(groupItem.getId());
-            Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-            Table table = builder.startTable();
-
-            //物业类型、税率、计算基数、计算公式、税费负担方、商业
-            int rowLength = 3 + itemList.size() + 1;
-            int cellLength = 6;
-            for (int i = 0; i < rowLength; i++) {
-                try {
-                    for (int j = 0; j < cellLength + 1; j++) {
-                        //目的是自动插入单元格并且确保只插入每行6个(列6个),6+1原因是最后一个索引用做结束行
-                        if (j < cellLength) {
-                            builder.insertCell();
-                        }
-                        if (i == 0) {
-                            switch (j) {
-                                case 0:
-                                    builder.writeln("物业类型");
-                                    break;
-                                case 1:
-                                    builder.writeln("税率");
-                                    break;
-                                case 2:
-                                    builder.writeln("计算基数");
-                                    break;
-                                case 3:
-                                    builder.writeln("计算公式");
-                                    break;
-                                case 4:
-                                    builder.writeln("税费负担方");
-                                    break;
-                                case 5:
-                                    builder.writeln("单位(面积/㎡ 金额/元)");
-                                    break;
-                                case 6:
-                                    builder.endRow();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        if (i == 1) {
-                            switch (j) {
-                                case 0:
-                                    builder.writeln("面积");
-                                    break;
-                                case 1:
-                                    builder.writeln("/");
-                                    break;
-                                case 2:
-                                    builder.writeln("/");
-                                    break;
-                                case 3:
-                                    builder.writeln("/");
-                                    break;
-                                case 4:
-                                    builder.writeln("/");
-                                    break;
-                                case 5:
-                                    builder.writeln(schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString());
-                                    break;
-                                case 6:
-                                    builder.endRow();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        if (i == 2) {
-                            switch (j) {
-                                case 0:
-                                    builder.writeln("评估价");
-                                    break;
-                                case 1:
-                                    builder.writeln("/");
-                                    break;
-                                case 2:
-                                    builder.writeln("/");
-                                    break;
-                                case 3:
-                                    builder.writeln("/");
-                                    break;
-                                case 4:
-                                    builder.writeln("/");
-                                    break;
-                                case 5:
-                                    builder.writeln(schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString());
-                                    break;
-                                case 6:
-                                    builder.endRow();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        if (i >= 3 && i < 3 + itemList.size()) {
-                            SchemeLiquidationAnalysisItem item = itemList.get(i - 3);
-                            switch (j) {
-                                case 0:
-                                    builder.writeln(StringUtils.isNotBlank(item.getTaxRateName()) ? item.getTaxRateName() : "空");
-                                    break;
-                                case 1:
-                                    if (item.getCalculationMethod() == 1 && !StringUtils.isEmpty(item.getTaxRateValue())) {
-                                        builder.writeln(new BigDecimal(item.getTaxRateValue()).multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
-                                    } else if (item.getCalculationMethod() == 0 && !StringUtils.isEmpty(item.getTaxRateValue())) {
-                                        builder.writeln(item.getTaxRateValue() + "元/㎡");
-                                    } else {
-                                        builder.writeln("空");
-                                    }
-                                    break;
-                                case 2:
-                                    if (StringUtils.isNotBlank(item.getCalculateBase())) {
-                                        builder.writeln(item.getCalculateBase());
-                                    } else {
-                                        builder.writeln("空");
-                                    }
-                                    break;
-                                case 3:
-                                    if (StringUtils.isNotBlank(item.getCalculationFormula())) {
-                                        builder.writeln(item.getCalculationFormula());
-                                    } else {
-                                        builder.writeln("空");
-                                    }
-                                    break;
-                                case 4:
-                                    if (StringUtils.isNotBlank(item.getTaxesBurden())) {
-                                        builder.writeln(item.getTaxesBurden());
-                                    } else {
-                                        builder.writeln("空");
-                                    }
-                                    break;
-                                case 5:
-                                    if (item.getPrice() != null) {
-                                        builder.writeln(item.getPrice().toString());
-                                    } else {
-                                        builder.writeln("空");
-                                    }
-                                    break;
-                                case 6:
-                                    builder.endRow();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        if (i >= 3 + itemList.size() && i < 3 + itemList.size() + 1) {
-                            switch (j) {
-                                case 0:
-                                    builder.writeln("合计费用");
-                                    break;
-                                case 1:
-                                    mergeCellModelList.add(new MergeCellModel(i, j, i, 5));
-                                    if (groupItem.getTotal() != null) {
-                                        builder.writeln(groupItem.getTotal().toString());
-                                    } else {
-                                        builder.writeln("无");
-                                    }
-                                    break;
-                                case 2:
-                                    builder.writeln("");
-                                    break;
-                                case 3:
-                                    builder.writeln("");
-                                    break;
-                                case 4:
-                                    builder.writeln("");
-                                    break;
-                                case 5:
-                                    builder.writeln("");
-                                    break;
-                                case 6:
-                                    builder.endRow();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    logger.error("变现分析税费异常", e);
-                }
-            }
-            if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-                generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-            }
-            builder.endTable();
         }
+        List<SchemeLiquidationAnalysisItem> itemList = Lists.newArrayList();
+        if (groupItem != null && groupItem.getId() != null) {
+            List<SchemeLiquidationAnalysisItem> itemList2 = schemeLiquidationAnalysisService.getAnalysisItemListByGroupId(groupItem.getId());
+            if (CollectionUtils.isNotEmpty(itemList2)) {
+                itemList.addAll(itemList2);
+            }
+        }
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        LinkedList<String> linkedList = Lists.newLinkedList();
+        int j = 0;
+
+        Table table = builder.startTable();
+        linkedList.addAll(Arrays.asList("物业类型", "税率", "计算基数", "计算公式", "税费负担方", "单位(面积/㎡ 金额/元)"));
+        AsposeUtils.writeWordTitle(builder, linkedList);
+        linkedList.clear();
+        j++;
+
+
+        linkedList.addAll(Arrays.asList("面积", "/", "/", "/", "/", schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString()));
+        AsposeUtils.writeWordTitle(builder, linkedList);
+        linkedList.clear();
+        j++;
+
+        linkedList.addAll(Arrays.asList("评估价", "/", "/", "/", "/", schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString()));
+        AsposeUtils.writeWordTitle(builder, linkedList);
+        linkedList.clear();
+        j++;
+
+        if (CollectionUtils.isNotEmpty(itemList)) {
+            for (SchemeLiquidationAnalysisItem item : itemList) {
+                linkedList.add(StringUtils.isNotBlank(item.getTaxRateName()) ? item.getTaxRateName() : "空");
+                if (item.getCalculationMethod() == 1 && !StringUtils.isEmpty(item.getTaxRateValue())) {
+                    linkedList.add(new BigDecimal(item.getTaxRateValue()).multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
+                } else if (item.getCalculationMethod() == 0 && !StringUtils.isEmpty(item.getTaxRateValue())) {
+                    linkedList.add(item.getTaxRateValue() + "元/㎡");
+                } else {
+                    linkedList.add("空");
+                }
+
+                if (StringUtils.isNotBlank(item.getCalculateBase())) {
+                    linkedList.add(item.getCalculateBase());
+                } else {
+                    linkedList.add("空");
+                }
+
+                if (StringUtils.isNotBlank(item.getCalculationFormula())) {
+                    linkedList.add(item.getCalculationFormula());
+                } else {
+                    linkedList.add("空");
+                }
+
+                if (StringUtils.isNotBlank(item.getTaxesBurden())) {
+                    linkedList.add(item.getTaxesBurden());
+                } else {
+                    linkedList.add("空");
+                }
+
+                if (item.getPrice() != null) {
+                    linkedList.add(item.getPrice().toString());
+                } else {
+                    linkedList.add("空");
+                }
+
+                AsposeUtils.writeWordTitle(builder, linkedList);
+                linkedList.clear();
+                j++;
+            }
+        }
+
+        if (groupItem != null && groupItem.getTotal() != null) {
+            linkedList.addAll(Arrays.asList("合计费用", groupItem.getTotal().toString(), "", "", "", ""));
+            AsposeUtils.writeWordTitle(builder, linkedList);
+            linkedList.clear();
+            mergeCellModelList.add(new MergeCellModel(j, 1, j, 5));
+        }
+        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+            generateCommonMethod.mergeCellTable(mergeCellModelList, table);
+        }
+        builder.endTable();
+        doc.save(localPath);
+        return localPath;
     }
 
 
@@ -2545,11 +2464,15 @@ public class GenerateBaseDataService {
         switch (schemeSupportTypeEnum) {
             case REPORT_ANALYSIS_CATEGORY_LIQUIDITY:
                 result = dataReportAnalysisService.getReportLiquidity(this.projectInfo, areaId);
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+                if (StringUtils.isNotBlank(result)) {
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+                }
                 break;
             case REPORT_ANALYSIS_CATEGORY_RISK:
                 result = dataReportAnalysisRiskService.getReportRisk(areaId);
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+                if (StringUtils.isNotBlank(result)) {
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+                }
                 break;
         }
         document.save(localPath);
@@ -2572,7 +2495,7 @@ public class GenerateBaseDataService {
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
         }
-        result = StringUtils.replacePattern(result, "\\$\\{.*?\\}", "");
+//        result = StringUtils.replacePattern(result, "\\$\\{.*?\\}", "");
         builder.insertHtml(AsposeUtils.getWarpCssHtml(result, keyValueDtoList), false);
         document.save(localPath);
         return localPath;
@@ -3667,7 +3590,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet2() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -5194,31 +5117,16 @@ public class GenerateBaseDataService {
                         builder.writeln(key);
                     }
                 }
-
                 //成本法
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCost.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdCost.class));
-                    if (CollectionUtils.isEmpty(attachmentDtos)) continue;
-                    String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
-                    File file = new File(generateCompareFile);
-                    if (file.isFile()) {
-                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdCost.getName());
-                        builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
-                        //去掉html
-                        key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
-                        key = String.format("%s%s", key, UUID.randomUUID().toString());
-                        map.put(key, generateCompareFile);
-                        builder.writeln(key);
-                    }
-                }
 
+                }
                 //假设开发法
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdDevelopment.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(schemeInfo.getMethodDataId(), null, FormatUtils.entityNameConvertToTableName(MdDevelopment.class));
-                    if (CollectionUtils.isEmpty(attachmentDtos)) continue;
-                    String generateCompareFile = baseAttachmentService.downloadFtpFileToLocal(attachmentDtos.get(0).getId());
+                    GenerateMdDevelopmentService generateMdDevelopmentService = new GenerateMdDevelopmentService(projectId, schemeInfo, areaId);
+                    String generateCompareFile = generateMdDevelopmentService.generateCompareFile();
                     File file = new File(generateCompareFile);
                     if (file.isFile()) {
                         String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdDevelopment.getName());
@@ -5874,6 +5782,8 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
+        documentBuilder.getFont().setSize(12);
+        documentBuilder.getFont().setName(AsposeUtils.SongStyleFontName);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         Map<SchemeJudgeObject, SchemeInfo> objectSchemeInfoMap = Maps.newHashMap();
@@ -5922,6 +5832,8 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.settingBuildingTable(documentBuilder);
+        documentBuilder.getFont().setSize(9);
+        documentBuilder.getFont().setName(AsposeUtils.SongStyleFontName);
         List<Integer> planDetailsIdList = Lists.newArrayList();
         mdMarketCompareItemList.forEach(po -> {
             if (po.getPlanDetailsId() != null) {
@@ -6013,35 +5925,39 @@ public class GenerateBaseDataService {
                 //装修状况
                 {
                     String value = null;
-                    if (!basicHouseRoomListMap.isEmpty()) {
-                        Set<String> stringSet = Sets.newHashSet();
-                        StringBuilder stringBuilder = new StringBuilder(8);
-                        basicHouseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
-                            List<String> stringList = Lists.newArrayList();
-                            basicHouseRoomDecorateVos.forEach(obj -> {
-                                if (StringUtils.isNotEmpty(obj.getPartName())) {
-                                    stringBuilder.append(obj.getPartName());
+                    if (StringUtils.isEmpty(basicHouseVo.getDecorateSituationName())) {
+                        if (!basicHouseRoomListMap.isEmpty()) {
+                            Set<String> stringSet = Sets.newHashSet();
+                            StringBuilder stringBuilder = new StringBuilder(8);
+                            basicHouseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
+                                List<String> stringList = Lists.newArrayList();
+                                basicHouseRoomDecorateVos.forEach(obj -> {
+                                    if (StringUtils.isNotEmpty(obj.getPartName())) {
+                                        stringBuilder.append(obj.getPartName());
+                                    }
+                                    if (StringUtils.isNotEmpty(obj.getRemark())) {
+                                        stringBuilder.append(obj.getRemark());
+                                    }
+                                    if (StringUtils.isEmpty(obj.getRemark()) && StringUtils.isNotEmpty(obj.getMaterialName())) {
+                                        stringBuilder.append("装修材料").append(obj.getMaterialName());
+                                    }
+                                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                                        stringList.add(stringBuilder.toString());
+                                    }
+                                    stringBuilder.delete(0, stringBuilder.toString().length());
+                                });
+                                if (CollectionUtils.isNotEmpty(stringList)) {
+                                    if (StringUtils.isNotBlank(basicHouseRoom.getRoomType())) {
+                                        stringSet.add(String.format("%s%s%s", basicHouseRoom.getRoomType(), ":", StringUtils.join(stringList, "、")));
+                                    }
                                 }
-                                if (StringUtils.isNotEmpty(obj.getRemark())) {
-                                    stringBuilder.append(obj.getRemark());
-                                }
-                                if (StringUtils.isEmpty(obj.getRemark()) && StringUtils.isNotEmpty(obj.getMaterialName())) {
-                                    stringBuilder.append("装修材料").append(obj.getMaterialName());
-                                }
-                                if (StringUtils.isNotEmpty(stringBuilder.toString())) {
-                                    stringList.add(stringBuilder.toString());
-                                }
-                                stringBuilder.delete(0, stringBuilder.toString().length());
                             });
-                            if (CollectionUtils.isNotEmpty(stringList)) {
-                                if (StringUtils.isNotBlank(basicHouseRoom.getRoomType())) {
-                                    stringSet.add(String.format("%s%s%s", basicHouseRoom.getRoomType(), ":", StringUtils.join(stringList, "、")));
-                                }
+                            if (CollectionUtils.isNotEmpty(stringSet)) {
+//                                value = StringUtils.join(stringSet, "；");
                             }
-                        });
-                        if (CollectionUtils.isNotEmpty(stringSet)) {
-                            value = StringUtils.join(stringSet, "；");
                         }
+                    } else {
+                        value = basicHouseVo.getDecorateSituationName();
                     }
                     if (StringUtils.isEmpty(value)) {
                         value = nullValue;

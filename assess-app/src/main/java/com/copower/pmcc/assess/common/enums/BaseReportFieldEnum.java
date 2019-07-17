@@ -1,10 +1,6 @@
 package com.copower.pmcc.assess.common.enums;
 
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author: zch
@@ -205,48 +201,52 @@ public enum BaseReportFieldEnum implements Serializable {
     BACKGROUND_ANALYSIS_GENERAL("房地产市场总体概况"),
     BACKGROUND_ANALYSIS_MARKET("同类房地产市场状况"),
     BACKGROUND_ANALYSIS_BLOCK("同类房地产市场版块状况"),
-    BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),;
+    BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),
 
-    private String key;
-
+    Development_managementExpenseTax("假设法管理费率"),
+    Development_managementExpense("假设法管理费额"),
+    Development_Land_SetUse("假设法土地设定用途"),
+    Development_SetUse("假设法设定用途"),
+    Development_RelevantBasisEconomicIndicators("假设法技术经济指标相关依据"),
+    Development_PlanningConstraints("假设法规划限制条件"),
+    Development_region("假设法区域"),
+    Development_EconomicIndicators("假设法估价对象技术经济指标"),
+    Development_PriceForecast("假设法售价预测"),
+    Development_reconnaissanceDesign("假设法勘察设计和前期工程费率"),
+    Development_constructionInstallationEngineeringFee("假设法建筑安装工程费"),
+    Development_constructionInstallationEngineeringFee_Basis("假设法建安工程费用计算依据"),
+    Development_infrastructureCost_FileName("假设法基础设施费文件名称"),
+    Development_infrastructureCost("假设法基础设施建设费"),
+    Development_infrastructureMatchingCost("假设法公共配套设施建设费"),
+    Development_devDuring("假设法开发期间税费"),
+    Development_otherEngineeringCost("假设法其他工程费"),
+    Development_constructionSubtotal("假设法工程建设成本小计"),
+    Development_constructionSubtotal2("假设法建设成本"),
+    Development_constructionSubtotal_ComputationalProcess("假设法建安成本计算过程"),
+    Development_unforeseenExpensesTax("假设法不可预见费率"),
+    Development_unforeseenExpenses("假设法不可预见费"),
+    Development_deedCorrecting("假设法契税率"),
+    Development_transactionCostCorrecting("假设法交易费率"),
+    Development_LandAcquisitionCost("假设法地价总额"),
+    Development_LandAcquisitionCostTax("假设法土地取得税费"),
+    Development_salesFeeTax("假设法销售费率"),
+    Development_salesFee("假设法销售费额"),
+    Development_TotalCompletedPriceRealEstateDevelopment("假设法不动产开发完成总价"),
+    Development_projectConstructionPeriod("假设法开发周期"),
+    Development_interestInvestmentTax("假设法投资利率"),
+    Development_interestInvestment("假设法投资利息"),
+    Development_investmentProfitTax("假设法投资利润率"),
+    Development_investmentProfit("假设法投资利润"),
+    Development_assessPrice("假设法委估土地单价"),
+    Development_Price("假设法评估单价"),
+    Development_total_area("假设法总面积"),
+    Development_OtherAmendments("假设法其他修正值"),
+    Development_DevelopmentDegreeCorrectionValue("假设法开发程度修正值"),
+    Development_AmendmentStatusRights("假设法宗地权利状况修正值"),
+    ;
     private String name;
-
-
-    private BaseReportFieldEnum(String key, String name) {
-        this.name = name;
-        this.key = key;
-    }
-
     private BaseReportFieldEnum(String name) {
         this.name = name;
-    }
-
-    public static BaseReportFieldEnum getEnumByName(String id) {
-        for (BaseReportFieldEnum e : BaseReportFieldEnum.values()) {
-            if (e.getKey().equals(id)) {
-                return e;
-            }
-        }
-        return null;
-    }
-
-    public static List<KeyValueDto> getBaseReportFieldEnumList() {
-        List<KeyValueDto> keyValueDtos = new ArrayList<>();
-        for (BaseReportFieldEnum e : BaseReportFieldEnum.values()) {
-            KeyValueDto keyValueDto = new KeyValueDto();
-            keyValueDto.setKey(String.valueOf(e.getKey()));
-            keyValueDto.setValue(e.getName());
-            keyValueDtos.add(keyValueDto);
-        }
-        return keyValueDtos;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public String getName() {

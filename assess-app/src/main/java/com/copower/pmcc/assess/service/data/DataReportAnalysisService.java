@@ -201,11 +201,19 @@ public class DataReportAnalysisService {
      */
     public String getReportLiquidity(ProjectInfo projectInfo, Integer areaGroupId) throws Exception {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
-        if (baseDataDic == null) return "";
+        if (baseDataDic == null) {
+            return "";
+        }
         SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
         SchemeLiquidationAnalysis data = schemeLiquidationAnalysisService.getDataByAreaId(areaGroupId);
-        String liquidRatios = data.getLiquidRatios();//变现比率
-        String liquidTime = data.getLiquidTime();//变现时间
+        String liquidRatios = "";//变现比率
+        String liquidTime = "";//变现时间
+        if (data != null && StringUtils.isNotBlank(data.getLiquidRatios())) {
+            liquidRatios = data.getLiquidRatios();//变现比率
+        }
+        if (data != null && StringUtils.isNotBlank(data.getLiquidTime())) {
+            liquidTime = data.getLiquidTime();//变现时间
+        }
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
         if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);//区域下委估对象
@@ -316,10 +324,13 @@ public class DataReportAnalysisService {
      */
     public String getReportLiquidity2(ProjectInfo projectInfo, Integer areaGroupId) throws Exception {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
-        if (baseDataDic == null) return "";
-        SchemeLiquidationAnalysis data = schemeLiquidationAnalysisService.getDataByAreaId(areaGroupId);
+        if (baseDataDic == null) {
+            return "";
+        }
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
-        if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
+        if (CollectionUtils.isEmpty(reportAnalysisList)){
+            return "";
+        }
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);//区域下委估对象
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> estateGroupMap = generateCommonMethod.getEstateGroupByAreaId(areaGroupId);
         Map<String, EstateLiquidityAnalysisDto> analysisDtoMap = Maps.newHashMap();//用于处理变现能力综述
@@ -674,7 +685,7 @@ public class DataReportAnalysisService {
             stringBuilder.append(generateCommonMethod.judgeEachDesc(rentMap, "", "。", true));
         if (!otherMap.isEmpty())
             stringBuilder.append(generateCommonMethod.judgeEachDesc(otherMap, "", "。", true));
-        if(pledgeMap.isEmpty()&&rentMap.isEmpty()&&otherMap.isEmpty()){
+        if (pledgeMap.isEmpty() && rentMap.isEmpty() && otherMap.isEmpty()) {
             stringBuilder.append("无抵押，无租赁，无典当，无继承，无担保，无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷。");
         }
         return stringBuilder.toString();

@@ -234,6 +234,12 @@
                     <label class="form-control">${basicHouseTrading.transactionSituationName}</label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价格类型</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control">${basicHouseTrading.priceTypeName}</label>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <c:if test="${isHouseAbnormal eq true}">
@@ -432,6 +438,17 @@
                     </div>
                 </c:otherwise>
             </c:choose>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    交易附件
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <div id="_house_trading_file_f"></div>
+                </div>
+            </div>
         </div>
     </form>
 </div>

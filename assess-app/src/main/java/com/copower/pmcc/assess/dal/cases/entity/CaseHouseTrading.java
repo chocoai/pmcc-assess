@@ -12,9 +12,9 @@ public class CaseHouseTrading {
 
     private Integer tradingType;
 
-    private BigDecimal tradingUnitPrice;
-
     private BigDecimal tradingTotalPrice;
+
+    private BigDecimal tradingUnitPrice;
 
     private String buyerExtraTax;
 
@@ -38,6 +38,10 @@ public class CaseHouseTrading {
 
     private Integer scopeProperty;
 
+    private String scopeInclude;
+
+    private String scopeNotInclude;
+
     private String scopePropertyExplain;
 
     private String downPaymentRatio;
@@ -56,6 +60,10 @@ public class CaseHouseTrading {
 
     private String phone;
 
+    private String landBuyerSeller;
+
+    private Integer priceType;
+
     private String creator;
 
     private Date gmtCreated;
@@ -63,12 +71,6 @@ public class CaseHouseTrading {
     private Date gmtModified;
 
     private Integer priceConnotation;
-
-    private String scopeNotInclude;
-
-    private String scopeInclude;
-
-    private String landBuyerSeller;
 
     public Integer getId() {
         return id;
@@ -102,20 +104,20 @@ public class CaseHouseTrading {
         this.tradingType = tradingType;
     }
 
-    public BigDecimal getTradingUnitPrice() {
-        return tradingUnitPrice;
-    }
-
-    public void setTradingUnitPrice(BigDecimal tradingUnitPrice) {
-        this.tradingUnitPrice = tradingUnitPrice;
-    }
-
     public BigDecimal getTradingTotalPrice() {
         return tradingTotalPrice;
     }
 
     public void setTradingTotalPrice(BigDecimal tradingTotalPrice) {
         this.tradingTotalPrice = tradingTotalPrice;
+    }
+
+    public BigDecimal getTradingUnitPrice() {
+        return tradingUnitPrice;
+    }
+
+    public void setTradingUnitPrice(BigDecimal tradingUnitPrice) {
+        this.tradingUnitPrice = tradingUnitPrice;
     }
 
     public String getBuyerExtraTax() {
@@ -206,6 +208,22 @@ public class CaseHouseTrading {
         this.scopeProperty = scopeProperty;
     }
 
+    public String getScopeInclude() {
+        return scopeInclude;
+    }
+
+    public void setScopeInclude(String scopeInclude) {
+        this.scopeInclude = scopeInclude == null ? null : scopeInclude.trim();
+    }
+
+    public String getScopeNotInclude() {
+        return scopeNotInclude;
+    }
+
+    public void setScopeNotInclude(String scopeNotInclude) {
+        this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
+    }
+
     public String getScopePropertyExplain() {
         return scopePropertyExplain;
     }
@@ -278,6 +296,22 @@ public class CaseHouseTrading {
         this.phone = phone == null ? null : phone.trim();
     }
 
+    public String getLandBuyerSeller() {
+        return landBuyerSeller;
+    }
+
+    public void setLandBuyerSeller(String landBuyerSeller) {
+        this.landBuyerSeller = landBuyerSeller == null ? null : landBuyerSeller.trim();
+    }
+
+    public Integer getPriceType() {
+        return priceType;
+    }
+
+    public void setPriceType(Integer priceType) {
+        this.priceType = priceType;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -308,29 +342,5 @@ public class CaseHouseTrading {
 
     public void setPriceConnotation(Integer priceConnotation) {
         this.priceConnotation = priceConnotation;
-    }
-
-    public String getScopeNotInclude() {
-        return scopeNotInclude;
-    }
-
-    public void setScopeNotInclude(String scopeNotInclude) {
-        this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
-    }
-
-    public String getScopeInclude() {
-        return scopeInclude;
-    }
-
-    public void setScopeInclude(String scopeInclude) {
-        this.scopeInclude = scopeInclude == null ? null : scopeInclude.trim();
-    }
-
-    public String getLandBuyerSeller() {
-        return landBuyerSeller;
-    }
-
-    public void setLandBuyerSeller(String landBuyerSeller) {
-        this.landBuyerSeller = landBuyerSeller == null ? null : landBuyerSeller.trim();
     }
 }

@@ -210,6 +210,7 @@ AssessDicKey.examineHouseInformationSourceTypeOpen = "examine.house.information.
 AssessDicKey.examineHouseInformationSourceCategory = "examine.house.information.source.category";//信息来源类别
 AssessDicKey.examineHouseResearchType = "examine.house.research.type";//调查方式
 AssessDicKey.examineHousePriceConnotation = "examine.house.price.connotation";//单价内涵
+AssessDicKey.examineHouse_transaction_price_type = "examine.house.transaction.price.type";//价格类型
 AssessDicKey.examineHouseUseCondition = "examine.house.use.condition";//使用情况
 AssessDicKey.examineHouseDecorateSituation = "examine.house.decorate.situation";//使用情况
 

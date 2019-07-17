@@ -370,7 +370,7 @@ public class GenerateMdIncomeService implements Serializable {
                     File file = new File(path);
                     if (file.isFile()) {
                         if (StringUtils.isNotBlank(path)) {
-                            if (false) {
+                            if (true) {
                                 generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, path);
                             }
                         }

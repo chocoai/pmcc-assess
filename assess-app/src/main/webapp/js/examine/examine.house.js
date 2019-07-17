@@ -37,7 +37,8 @@
         AssessUploadKey.HOUSE_NEW_HUXING_PLAN,
         AssessUploadKey.HOUSE_IMG_PLAN,
         AssessUploadKey.HOUSE_DECORATE,
-        AssessUploadKey.HOUSE_FILE
+        AssessUploadKey.HOUSE_FILE,
+        AssessUploadKey.HOUSE_TRADING_FILE
     ];
 
     houseCommon.getHouseId = function () {
@@ -165,6 +166,9 @@
                 });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePriceConnotation, data.basicHouseTrading.priceConnotation, function (html, data) {
                     houseCommon.houseTradingForm.find("select.priceConnotation").empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouse_transaction_price_type, data.basicHouseTrading.priceType, function (html, data) {
+                    houseCommon.houseTradingForm.find("select[name='priceType']").empty().html(html).trigger('change');
                 });
             }
         });

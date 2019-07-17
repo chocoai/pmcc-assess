@@ -20,6 +20,8 @@ public class BasicHouseTradingVo extends BasicHouseTrading {
     private String scopePropertyName;
     private String priceConnotationName;
 
+    private String priceTypeName;
+
     public String getPriceConnotationName() {
         return priceConnotationName;
     }
@@ -106,5 +108,13 @@ public class BasicHouseTradingVo extends BasicHouseTrading {
 
     public void setScopePropertyName(String scopePropertyName) {
         this.scopePropertyName = scopePropertyName;
+    }
+
+    public String getPriceTypeName() {
+        return priceTypeName;
+    }
+
+    public void setPriceTypeName(String priceTypeName) {
+        this.priceTypeName = priceTypeName;
     }
 }

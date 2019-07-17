@@ -18,6 +18,9 @@ public class CaseHouseTradingVo extends CaseHouseTrading {
     private String informationCategoryName;
     private String financingConditionsName;
     private String scopePropertyName;
+
+    private String priceTypeName;
+
     public String getTradingTimeName() {
         return tradingTimeName;
     }
@@ -98,4 +101,11 @@ public class CaseHouseTradingVo extends CaseHouseTrading {
         this.scopePropertyName = scopePropertyName;
     }
 
+    public String getPriceTypeName() {
+        return priceTypeName;
+    }
+
+    public void setPriceTypeName(String priceTypeName) {
+        this.priceTypeName = priceTypeName;
+    }
 }

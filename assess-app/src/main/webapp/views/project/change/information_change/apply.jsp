@@ -125,7 +125,14 @@
         var data = {};
 
         if("${CurrentStep}"!="0"){
-            data.oldRecord = JSON.stringify(JSON.parse('${el:toJsonString(projectInfo)}'))
+            var projectInfoVoJson = $("#projectInfoVoJson").val() ;
+            if (projectInfoVoJson){
+                try {
+                    data.oldRecord = JSON.stringify(JSON.parse(projectInfoVoJson));
+                } catch (e) {
+                }
+                <%--data.oldRecord = JSON.stringify(JSON.parse('${el:toJsonString(projectInfo)}')) ;--%>
+            }
         }
         data.newRecord = JSON.stringify(objProject.getFormData());
         data.changeReason = $("#changeReason").val();

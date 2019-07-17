@@ -26,7 +26,7 @@
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <input type="text" name="pEntrustmentUnit"
                                class="form-control" required="required" placeholder="单位"
-                               value="${projectInfo.possessorVo.pEntrustmentUnitName}">
+                               value="${projectInfo.possessorVo.pEntrustmentUnit}">
                     </div>
                 </div>
 

@@ -286,22 +286,31 @@ public class GenerateCommonMethod {
             setScale = new BigDecimal(bigDecimal.toString());
         }
         //四舍五入,并且取到约定的位数
-        return setScale.abs().setScale(newScale, BigDecimal.ROUND_UP).toString();
+        return setScale.abs().setScale(newScale, BigDecimal.ROUND_HALF_UP).toString();
     }
 
     /**
      * 将非整数在约定的位数下取整 如 1515.45 取10 变为 1510
      *
      * @param bigDecimal
-     * @param number
+     * @param number     必须是10的正次方的结果 如10,100,1000,1000
      * @return
      */
     public String getBigDecimalToInteger(final BigDecimal bigDecimal, int number) {
         if (bigDecimal == null) {
             return "";
         }
-        int num = bigDecimal.intValue() / number;
-        num *= number;
+        double log = Math.log10(number);
+        if (log < 0) {
+            //暂时不处理,测试
+        }
+        int newScale = (int) Math.log10(new BigDecimal(number).doubleValue());
+        int num = bigDecimal.intValue() / (number * 10);
+        num *= (number * 10);
+        int result = bigDecimal.intValue() % (number * 10);
+        BigDecimal big = new BigDecimal(result / Math.pow(10, newScale)).setScale(0, BigDecimal.ROUND_HALF_UP);
+        big = big.multiply(new BigDecimal(Math.pow(10, newScale)));
+        num += big.intValue();
         return String.valueOf(num);
     }
 
@@ -1138,7 +1147,7 @@ public class GenerateCommonMethod {
         Graphics g = outImage.getGraphics();
         Graphics2D g2d = (Graphics2D) g;
         // 设置背景色 白色
-        g2d.setBackground(new Color(255,255,255));
+        g2d.setBackground(new Color(255, 255, 255));
         // 通过使用当前绘图表面的背景色进行填充来清除指定的矩形。
         g2d.clearRect(0, 0, width, height);
         // 开始拼凑 根据图片的数量判断该生成那种样式的组合头像目前为4中
@@ -1168,14 +1177,10 @@ public class GenerateCommonMethod {
     /**
      * 图片缩放
      *
-     * @param filePath
-     *            图片路径
-     * @param height
-     *            高度
-     * @param width
-     *            宽度
-     * @param bb
-     *            比例不对时是否需要补白
+     * @param filePath 图片路径
+     * @param height   高度
+     * @param width    宽度
+     * @param bb       比例不对时是否需要补白
      */
     public static BufferedImage resize2(String filePath, int height, int width,
                                         boolean bb) {
