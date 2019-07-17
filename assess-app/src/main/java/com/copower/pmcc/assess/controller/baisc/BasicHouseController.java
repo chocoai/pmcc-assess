@@ -94,6 +94,17 @@ public class BasicHouseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
+    public HttpResult getDataFromProject(Integer applyId) {
+        try {
+            return HttpResult.newCorrectResult(basicHouseService.getBasicHouseFromProject(applyId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/addHouseAndTrading", name = "添加房屋及交易信息", method = {RequestMethod.POST})
     public HttpResult addHouseAndTrading(String houseNumber,Integer applyId) {
         try {

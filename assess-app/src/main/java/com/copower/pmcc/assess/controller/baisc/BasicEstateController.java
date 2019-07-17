@@ -95,6 +95,17 @@ public class BasicEstateController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getDataFromProject", name = "引用项目中的数据", method = {RequestMethod.GET})
+    public HttpResult getDataFromProject(Integer applyId) {
+        try {
+            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapFromProject(applyId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/addEstateAndLandstate", name = "添加楼盘及土地基本信息", method = {RequestMethod.POST})
     public HttpResult addEstateAndLandstate(String estateName, String province, String city) {
         try {

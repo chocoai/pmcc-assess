@@ -550,6 +550,199 @@ public class BasicHouseService {
         return objectMap;
     }
 
+    //引用项目中数据
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> getBasicHouseFromProject(Integer applyId) throws Exception {
+        if (applyId == null) {
+            throw new Exception("null ponit");
+        }
+        this.clearInvalidData(0);
+        Map<String, Object> objectMap = new HashMap<String, Object>(2);
+        BasicHouse oldBasicHouse = this.getHouseByApplyId(applyId);
+        if (oldBasicHouse == null) {
+            return objectMap;
+        }
+        BasicHouse basicHouse = new BasicHouse();
+        BeanUtils.copyProperties(oldBasicHouse, basicHouse);
+        basicHouse.setApplyId(0);
+        basicHouse.setCreator(commonService.thisUserAccount());
+        basicHouse.setId(null);
+        basicHouse.setGmtCreated(null);
+        basicHouse.setGmtModified(null);
+        basicHouse.setHouseNumber(null);
+        basicHouseDao.addBasicHouse(basicHouse);
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
+
+        BasicHouseTrading queryTrading = new BasicHouseTrading();
+        queryTrading.setHouseId(oldBasicHouse.getId());
+        List<BasicHouseTrading> oldBasicHouseTradings = basicHouseTradingService.basicHouseTradingList(queryTrading);
+        if (!ObjectUtils.isEmpty(oldBasicHouseTradings)) {
+            BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+            BeanUtils.copyProperties(oldBasicHouseTradings.get(0), basicHouseTrading);
+            basicHouseTrading.setApplyId(0);
+            basicHouseTrading.setHouseId(basicHouse.getId());
+            basicHouseTrading.setCreator(commonService.thisUserAccount());
+            basicHouseTrading.setId(null);
+            basicHouseTrading.setGmtCreated(null);
+            basicHouseTrading.setGmtModified(null);
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+        }
+
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(oldBasicHouse.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(basicHouse.getId());
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+
+
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("house_id", String.valueOf(basicHouse.getId()));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setWhereSql("house_id=" + oldBasicHouse.getId());
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出售sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出租sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供水sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//排水sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//电力通讯网络sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//临路状况sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
+
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+
+        BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
+        basicHouseRoom.setHouseId(oldBasicHouse.getId());
+        BasicHouseCorollaryEquipment caseHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
+        caseHouseCorollaryEquipment.setHouseId(oldBasicHouse.getId());
+        List<BasicHouseRoom> basicHouseRooms = basicHouseRoomService.basicHouseRoomList(basicHouseRoom);
+        List<BasicHouseCorollaryEquipment> caseHouseCorollaryEquipments = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
+        List<BasicHouseDamagedDegree> damagedDegreeList = basicHouseDamagedDegreeService.getDamagedDegreeList(oldBasicHouse.getId());
+
+
+        if (!ObjectUtils.isEmpty(basicHouseRooms)) {
+            try {
+                for (BasicHouseRoom oo : basicHouseRooms) {
+                    BasicHouseRoom room = new BasicHouseRoom();
+                    BeanUtils.copyProperties(oo, room);
+                    room.setId(null);
+                    room.setHouseId(basicHouse.getId());
+                    room.setCreator(commonService.thisUserAccount());
+                    room.setGmtCreated(null);
+                    room.setGmtModified(null);
+                    basicHouseRoomService.saveAndUpdateBasicHouseRoom(room);
+                    BasicHouseRoomDecorate oldBasicHouseRoomDecorate = new BasicHouseRoomDecorate();
+                    oldBasicHouseRoomDecorate.setRoomId(oo.getId());
+                    List<BasicHouseRoomDecorate> oldBasicHouseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(oldBasicHouseRoomDecorate);
+                    if (!ObjectUtils.isEmpty(oldBasicHouseRoomDecorateList)) {
+                        for (BasicHouseRoomDecorate po : oldBasicHouseRoomDecorateList) {
+                            BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
+                            BeanUtils.copyProperties(po, basicHouseRoomDecorate);
+                            basicHouseRoomDecorate.setRoomId(room.getId());
+                            basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
+                            basicHouseRoomDecorate.setGmtCreated(null);
+                            basicHouseRoomDecorate.setGmtModified(null);
+                            basicHouseRoomDecorate.setId(null);
+                            basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
+        }
+
+
+
+        if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
+            try {
+                for (BasicHouseCorollaryEquipment oo : caseHouseCorollaryEquipments) {
+                    SysAttachmentDto query = new SysAttachmentDto();
+                    query.setTableId(oo.getId());
+                    query.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
+                    List<SysAttachmentDto> sysAttachmentDtoList1 = baseAttachmentService.getAttachmentList(query);
+                    BasicHouseCorollaryEquipment po = new BasicHouseCorollaryEquipment();
+                    BeanUtils.copyProperties(oo, po);
+                    po.setId(null);
+                    po.setHouseId(basicHouse.getId());
+                    po.setCreator(commonService.thisUserAccount());
+                    po.setGmtCreated(null);
+                    po.setGmtModified(null);
+                    Integer id = basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
+                    if (!ObjectUtils.isEmpty(sysAttachmentDtoList1)) {
+                        for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList1) {
+                            attachmentDto = new SysAttachmentDto();
+                            attachmentDto.setTableId(id);
+                            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
+                            baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
+        }
+
+        if (CollectionUtils.isNotEmpty(damagedDegreeList)) {
+            try {
+                for (BasicHouseDamagedDegree caseHouseDamagedDegree : damagedDegreeList) {
+                    BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
+                    BeanUtils.copyProperties(caseHouseDamagedDegree, basicHouseDamagedDegree);
+                    basicHouseDamagedDegree.setId(null);
+                    basicHouseDamagedDegree.setHouseId(basicHouse.getId());
+                    basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
+                    basicHouseDamagedDegree.setGmtCreated(null);
+                    basicHouseDamagedDegree.setGmtModified(null);
+                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
+                    List<BasicHouseDamagedDegreeDetail> damagedDegreeDetailList = basicHouseDamagedDegreeService.getDamagedDegreeDetails(caseHouseDamagedDegree.getId());
+                    if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
+                        for (BasicHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
+                            BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
+                            BeanUtils.copyProperties(caseHouseDamagedDegreeDetail, basicHouseDamagedDegreeDetail);
+                            basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
+                            basicHouseDamagedDegreeDetail.setId(null);
+                            basicHouseDamagedDegreeDetail.setHouseId(basicHouse.getId());
+                            basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
+                            basicHouseDamagedDegreeDetail.setGmtCreated(null);
+                            basicHouseDamagedDegreeDetail.setGmtModified(null);
+                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+                        }
+                    }
+                }
+            } catch (Exception e1) {
+                logger.error(e1.getMessage(),e1);
+            }
+        }
+        return objectMap;
+    }
+
 
     /**
      * 拷贝户型图

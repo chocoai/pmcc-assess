@@ -5,7 +5,10 @@ import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.PublicService;
@@ -63,6 +66,8 @@ public class BasicUnitService {
     private DdlMySqlAssist ddlMySqlAssist;
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -279,6 +284,100 @@ public class BasicUnitService {
         sqlBuilder.append(basicEstateService.copyTaggingFromCase(EstateTaggingTypeEnum.UNIT, caseUnit.getId(), applyId));
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
 
+        return basicUnit;
+    }
+
+    //引用项目中数据
+    @Transactional(rollbackFor = Exception.class)
+    public BasicUnit getBasicUnitByFromProject(Integer applyId) throws Exception {
+        if (applyId == null) {
+            throw new BusinessException("null point");
+        }
+        BasicUnit oldBasicUnit = this.getBasicUnitByApplyId(applyId);
+
+        if (oldBasicUnit == null) {
+            throw new BusinessException("null point");
+        }
+
+        this.clearInvalidData(0);
+        BasicUnit basicUnit = new BasicUnit();
+        BeanUtils.copyProperties(oldBasicUnit, basicUnit);
+        basicUnit.setApplyId(0);
+        basicUnit.setCreator(commonService.thisUserAccount());
+        basicUnit.setGmtCreated(null);
+        basicUnit.setGmtModified(null);
+        basicUnit.setUnitNumber(null);
+        basicUnitDao.addBasicUnit(basicUnit);
+
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(oldBasicUnit.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(basicUnit.getId());
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+
+        BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
+        oldBasicEstateTagging.setApplyId(applyId);
+        oldBasicEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
+        if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setApplyId(0);
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+        }
+        try {
+            List<BasicUnitHuxing> oldBasicUnitHuxingList = null;
+            BasicUnitHuxing query = new BasicUnitHuxing();
+            query.setUnitId(oldBasicUnit.getId());
+            oldBasicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);
+            if (!ObjectUtils.isEmpty(oldBasicUnitHuxingList)) {
+                for (BasicUnitHuxing oldBasicUnitHuxing : oldBasicUnitHuxingList) {
+                    BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+                    BeanUtils.copyProperties(oldBasicUnitHuxing, basicUnitHuxing);
+                    basicUnitHuxing.setUnitId(basicUnit.getId());
+                    basicUnitHuxing.setId(null);
+                    basicUnitHuxing.setGmtCreated(null);
+                    basicUnitHuxing.setGmtModified(null);
+                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+
+                    //附件拷贝
+                    example = new SysAttachmentDto();
+                    example.setTableId(oldBasicUnitHuxing.getId());
+                    example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                    attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(id);
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                    baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+                }
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage(), e);
+        }
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("unit_id", String.valueOf(basicUnit.getId()));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setWhereSql("unit_id=" + oldBasicUnit.getId());
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋内装sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
+
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         return basicUnit;
     }
 
