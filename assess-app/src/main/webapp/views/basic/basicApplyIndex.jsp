@@ -522,52 +522,38 @@
                 Loading.progressHide();
                 if (result.ret) {
                     if (result.data != null) {
-                       // var type = result.data.type;
-                        //basicCommon.basicApplyForm.find("input[type='radio'][name='type'][value='"+type+"']").trigger('click');
-                        // if (type == 2) {
-                        //     $("#unitAndHouseInfo").hide();
-                        // } else {
-                        //     $("#unitAndHouseInfo").show();
-                        // }
-                        //industry.keyApp(type);
                         basicCommon.hideAllTab();
                         //初始楼盘信息
-                        estateCommon.loadMarkerList(result.data.id);
-                        estateCommon.init(result.data.id, function (data) {
+
+                        estateCommon.getDataFromProject(result.data.id, function (data) {
                             if(data) {
                                 basicCommon.basicApplyForm.find('[name=estateName]').val(data.basicEstate.name);
                                 basicCommon.showEstateTab("add");
-                                $("#basicEstateFrm").find("input[name=id]").val("0");
                             }
                         });
                         //初始楼栋信息
-                        buildingCommon.loadMarkerList(result.data.id);
-                        buildingCommon.init(result.data.id, function (data) {
+                        buildingCommon.getDataFromProject(result.data.id, function (data) {
                             if(data) {
                                 basicCommon.basicApplyForm.find('[name=buildingNumber]').val(data.buildingNumber);
                                 basicCommon.showBuildingTab("add");
-                                $("#basicBuildingFrm").find("input[name=id]").val("0");
                             }
                         });
                         //初始单元信息
-                        unitCommon.loadMarkerList(result.data.id);
-                        unitCommon.init(result.data.id, function (data) {
+                        unitCommon.getDataFromProject(result.data.id, function (data) {
                             if(data) {
                                 basicCommon.basicApplyForm.find('[name=unitNumber]').val(data.unitNumber);
                                 basicCommon.showUnitTab("add");
-                                $("#basicUnitFrm").find("input[name=id]").val("0");
                             }
                         });
                         //初始房屋信息
-                        houseCommon.init(result.data.id, function (data) {
+                        houseCommon.getDataFromProject(result.data.id, function (data) {
                             if(data&&data.basicHouse) {
                                 basicCommon.basicApplyForm.find('[name=houseNumber]').val(data.basicHouse.houseNumber);
                                 basicCommon.showHouseTab("add");
-                                $("#basicHouseFrm").find("input[name=id]").val("0");
                             }
                         });
-                        $('#divBoxProjectItemData').modal('hide');
-                        $('#divBoxProjectData').modal('hide');
+                         $('#divBoxProjectItemData').modal('hide');
+                         $('#divBoxProjectData').modal('hide');
                     }
                 } else {
                     Loading.progressHide();

@@ -44,6 +44,7 @@ public class ProjectReportFileController {
         modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(projectId));
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
         modelAndView.addObject("declareRecordList", declareRecordList);
+        modelAndView.addObject("projectId", projectId);
         //生成位置图
         schemeReportFileService.makeJudgeObjectPosition(declareRecordList);
 

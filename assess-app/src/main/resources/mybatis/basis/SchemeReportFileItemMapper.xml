@@ -14,6 +14,9 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
+    <result column="certify_part" property="certifyPart" jdbcType="INTEGER" />
+    <result column="certify_part_category" property="certifyPartCategory" jdbcType="INTEGER" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +78,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, plan_details_id, judge_object_id, type, attachment_id, file_name, sorting, remark, 
-    creator, gmt_created, gmt_modified, declare_record_id
+    creator, gmt_created, gmt_modified, declare_record_id, certify_part, certify_part_category, 
+    bis_enable
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItemExample" >
     select
@@ -114,11 +118,13 @@
     insert into tb_scheme_report_file_item (plan_details_id, judge_object_id, type, 
       attachment_id, file_name, sorting, 
       remark, creator, gmt_created, 
-      gmt_modified, declare_record_id)
+      gmt_modified, declare_record_id, certify_part, 
+      certify_part_category, bis_enable)
     values (#{planDetailsId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
       #{attachmentId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{declareRecordId,jdbcType=INTEGER})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{declareRecordId,jdbcType=INTEGER}, #{certifyPart,jdbcType=INTEGER}, 
+      #{certifyPartCategory,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -159,6 +165,15 @@
       <if test="declareRecordId != null" >
         declare_record_id,
       </if>
+      <if test="certifyPart != null" >
+        certify_part,
+      </if>
+      <if test="certifyPartCategory != null" >
+        certify_part_category,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="planDetailsId != null" >
@@ -193,6 +208,15 @@
       </if>
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="certifyPart != null" >
+        #{certifyPart,jdbcType=INTEGER},
+      </if>
+      <if test="certifyPartCategory != null" >
+        #{certifyPartCategory,jdbcType=INTEGER},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -241,6 +265,15 @@
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       </if>
+      <if test="record.certifyPart != null" >
+        certify_part = #{record.certifyPart,jdbcType=INTEGER},
+      </if>
+      <if test="record.certifyPartCategory != null" >
+        certify_part_category = #{record.certifyPartCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -259,7 +292,10 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      declare_record_id = #{record.declareRecordId,jdbcType=INTEGER}
+      declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      certify_part = #{record.certifyPart,jdbcType=INTEGER},
+      certify_part_category = #{record.certifyPartCategory,jdbcType=INTEGER},
+      bis_enable = #{record.bisEnable,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -300,6 +336,15 @@
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       </if>
+      <if test="certifyPart != null" >
+        certify_part = #{certifyPart,jdbcType=INTEGER},
+      </if>
+      <if test="certifyPartCategory != null" >
+        certify_part_category = #{certifyPartCategory,jdbcType=INTEGER},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -315,7 +360,10 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      declare_record_id = #{declareRecordId,jdbcType=INTEGER}
+      declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      certify_part = #{certifyPart,jdbcType=INTEGER},
+      certify_part_category = #{certifyPartCategory,jdbcType=INTEGER},
+      bis_enable = #{bisEnable,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

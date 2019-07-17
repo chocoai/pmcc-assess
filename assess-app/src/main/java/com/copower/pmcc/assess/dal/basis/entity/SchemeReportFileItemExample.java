@@ -864,6 +864,186 @@ public class SchemeReportFileItemExample {
             addCriterion("declare_record_id not between", value1, value2, "declareRecordId");
             return (Criteria) this;
         }
+
+        public Criteria andCertifyPartIsNull() {
+            addCriterion("certify_part is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartIsNotNull() {
+            addCriterion("certify_part is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartEqualTo(Integer value) {
+            addCriterion("certify_part =", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartNotEqualTo(Integer value) {
+            addCriterion("certify_part <>", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartGreaterThan(Integer value) {
+            addCriterion("certify_part >", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartGreaterThanOrEqualTo(Integer value) {
+            addCriterion("certify_part >=", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartLessThan(Integer value) {
+            addCriterion("certify_part <", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartLessThanOrEqualTo(Integer value) {
+            addCriterion("certify_part <=", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartIn(List<Integer> values) {
+            addCriterion("certify_part in", values, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartNotIn(List<Integer> values) {
+            addCriterion("certify_part not in", values, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartBetween(Integer value1, Integer value2) {
+            addCriterion("certify_part between", value1, value2, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartNotBetween(Integer value1, Integer value2) {
+            addCriterion("certify_part not between", value1, value2, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryIsNull() {
+            addCriterion("certify_part_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryIsNotNull() {
+            addCriterion("certify_part_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryEqualTo(Integer value) {
+            addCriterion("certify_part_category =", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryNotEqualTo(Integer value) {
+            addCriterion("certify_part_category <>", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryGreaterThan(Integer value) {
+            addCriterion("certify_part_category >", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("certify_part_category >=", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryLessThan(Integer value) {
+            addCriterion("certify_part_category <", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("certify_part_category <=", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryIn(List<Integer> values) {
+            addCriterion("certify_part_category in", values, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryNotIn(List<Integer> values) {
+            addCriterion("certify_part_category not in", values, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("certify_part_category between", value1, value2, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("certify_part_category not between", value1, value2, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNull() {
+            addCriterion("bis_enable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNotNull() {
+            addCriterion("bis_enable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableEqualTo(Boolean value) {
+            addCriterion("bis_enable =", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotEqualTo(Boolean value) {
+            addCriterion("bis_enable <>", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThan(Boolean value) {
+            addCriterion("bis_enable >", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable >=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThan(Boolean value) {
+            addCriterion("bis_enable <", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable <=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIn(List<Boolean> values) {
+            addCriterion("bis_enable in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotIn(List<Boolean> values) {
+            addCriterion("bis_enable not in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable not between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

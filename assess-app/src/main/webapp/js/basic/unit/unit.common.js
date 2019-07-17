@@ -104,6 +104,24 @@
         })
     }
 
+    //项目中引用数据
+    unitCommon.getDataFromProject = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicUnit/getDataFromProject',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.showUnitView(result.data);
+                    unitCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
+
     //单元明细
     unitCommon.detail = function (applyId) {
         $.ajax({

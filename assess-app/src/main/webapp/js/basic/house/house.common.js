@@ -126,6 +126,23 @@
         })
     }
 
+    //项目中引用数据
+    houseCommon.getDataFromProject = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicHouse/getDataFromProject',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    houseCommon.showHouseView(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
+
     //房屋明细
     houseCommon.detail = function (applyId) {
         $.ajax({

@@ -82,7 +82,7 @@
                     <c:forEach items="${declareRecordList}" var="declareRecord">
                         <div class="row">
                             <input type="hidden" name="declareRecordId" value="${declareRecord.id}">
-                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
+                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10  col-sm-10 col-xs-10">
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h4><strong>${declareRecord.name}</strong>
@@ -90,6 +90,11 @@
                                                 <input type="button" class="btn btn-success btn-xs"
                                                        onclick="addLiveSituationFile(${declareRecord.id})"
                                                        value="新增实况照片">
+                                            </small>
+                                            <small>
+                                                <input type="button" class="btn btn-success btn-xs"
+                                                       onclick="getLiveSituationAll(${declareRecord.id})"
+                                                       value="选择查勘中图片">
                                             </small>
                                         </h4>
 
@@ -101,6 +106,9 @@
                                                 <th>文件名称</th>
                                                 <th>排序</th>
                                                 <th>附件</th>
+                                                <th>对应查勘部位</th>
+                                                <th>附件类别</th>
+                                                <th>是否上报告</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -131,37 +139,37 @@
                 <div class="x_content collapse">
                     <c:forEach items="${declareRecordList}" var="declareRecord">
                         <c:if test="${not empty ownershipCertFileList.get(declareRecord.id)}">
-                        <div class="row">
-                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
-                                <div class="x_panel">
-                                    <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>文件名称</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach items="${ownershipCertFileList.get(declareRecord.id)}" var="item"
-                                                   varStatus="i">
+                            <div class="row">
+                                <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
+                                        <table class="table table-hover">
+                                            <thead>
                                             <tr>
-                                                <th>${i.index+1}</th>
-                                                <td>${item.fileName}</td>
-                                                <td>
-                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑"
-                                                           onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                                    <input type="button" class="btn btn-xs btn-warning" value="查看"
-                                                           onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
-                                                </td>
+                                                <th>序号</th>
+                                                <th>文件名称</th>
+                                                <th>操作</th>
                                             </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${ownershipCertFileList.get(declareRecord.id)}" var="item"
+                                                       varStatus="i">
+                                                <tr>
+                                                    <th>${i.index+1}</th>
+                                                    <td>${item.fileName}</td>
+                                                    <td>
+                                                        <input type="button" class="btn btn-xs btn-primary" value="编辑"
+                                                               onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                                        <input type="button" class="btn btn-xs btn-warning" value="查看"
+                                                               onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </c:if>
                     </c:forEach>
                 </div>
@@ -252,6 +260,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+
 <div id="addItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -282,6 +291,33 @@
                                         <div class="col-sm-3">
                                             <input type="text" class="form-control"
                                                    name="sorting" placeholder="排序">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">对应查勘部位</label>
+                                        <div class="col-sm-3">
+                                            <select name="certifyPart" class="form-control search-select certifyPart select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">附件类别</label>
+                                        <div class="col-sm-3">
+                                            <select name="certifyPartCategory" class="form-control search-select certifyPartCategory select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            是否上报告
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="bisEnable" name="bisEnable"
+                                                       value="true" checked>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -321,6 +357,49 @@
     </div>
 </div>
 
+<div id="allExamineFileModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">查勘照片</h3>
+            </div>
+            <form id="allExamineFileFrm" class="form-horizontal">
+                <input type="hidden" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>附件</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-id="all_live_situation">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script type="text/html" id="reportFileCustomHtml">
     <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
         <div class="x_panel">
@@ -449,8 +528,8 @@
                     var html = '';
                     $.each(result.data, function (i, item) {
                         html += '<tr><td><input type="text" name="fileName" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
-                            '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this);" ></td>' +
-                            '<td>' + item.fileViewName + '</td><td>' +
+                            '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this,'+declareRecordId+');" ></td>' +
+                            '<td>' + item.fileViewName + '</td>' +'<td>' + item.certifyPartName + '</td>' +'<td>' + item.certifyPartCategoryName + '</td>' +'<td>' + item.bisEnableName + '</td><td>' +
                             '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="getAndInit(' + item.id + ');">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
                     })
@@ -464,19 +543,21 @@
 
     //移除实况照片
     function removeLiveSituation(id, _this) {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/scheme/removeLiveSituation',
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result.ret) {
-                    $(_this).closest('tr').remove();
-                } else {
-                    Alert(result.errmsg);
+        Alert("确认删除", 2, null, function () {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/scheme/removeLiveSituation',
+                data: {
+                    id: id
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        $(_this).closest('tr').remove();
+                    } else {
+                        Alert(result.errmsg);
+                    }
                 }
-            }
-        })
+            })
+        });
     }
 
     function addLiveSituationFile(declareRecordId) {
@@ -484,8 +565,59 @@
         $("#frmItemFile").find("input[name='declareRecordId']").val(declareRecordId);
         uploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement", "uploadSupplementFile");
         loadUploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement", "uploadSupplementFile");
+        AssessCommon.loadDataDicByKey(AssessDicKey.certifyPart, '', function (html, data) {
+            $("#frmItemFile").find("select[name='certifyPart']").empty().html(html).trigger('change');
+        });
+        //绑定变更事件
+        $("#frmItemFile").find("select[name='certifyPart']").on('change', function () {
+            getCategory($(this).val(),false);
+        });
         $("#addItemModal").modal("show");
 
+    }
+
+    //加载查勘所有实况照片
+    function getLiveSituationAll(declareRecordId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/getLiveSituationAll',
+            data: {
+                declareRecordId: declareRecordId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var html = '';
+                    $.each(result.data, function (i, item) {
+                        ++i;
+                        html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituation(' + item.id + ',' + declareRecordId + ',\'' + item.reName + '\');"></td></tr>';
+                    })
+                    $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
+                    $("#allExamineFileModal").modal("show");
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //选择查勘中照片
+    function selectLiveSituation(attachmentId, declareRecordId, fileName) {
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/selectLiveSituation',
+            data: {
+                attachmentId: attachmentId,
+                declareRecordId: declareRecordId,
+                fileName: fileName
+            },
+            success: function (result) {
+                Loading.progressHide();
+                Alert("选择图片成功!", 1, null, function () {
+                    loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
+                });
+            }
+        })
     }
 
     //修改实况照片
@@ -499,7 +631,13 @@
                 if (result.ret) {
                     $("#frmItemFile").clearAll();
                     $("#frmItemFile").initForm(result.data);
-                    console.log(result.data);
+                    AssessCommon.loadDataDicByKey(AssessDicKey.certifyPart,result.data.certifyPart, function (html, data) {
+                        $("#frmItemFile").find("select[name='certifyPart']").empty().html(html).trigger('change');
+                    });
+                    //绑定变更事件
+                    $("#frmItemFile").find("select[name='certifyPart']").on('change', function () {
+                        getCategory( $(this).val(),result.data.certifyPartCategory);
+                    });
                     uploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
                     loadUploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
                     $('#addItemModal').modal("show");
@@ -539,7 +677,7 @@
     }
 
     //实况照片改名
-    function reportFileEditName(id, _this) {
+    function reportFileEditName(id, _this,declareRecordId) {
         var newName = $(_this).closest("tr").find("input[name='fileName']").val();
         var newSorting = $(_this).closest("tr").find("input[name='sorting']").val();
         $.ajax({
@@ -551,7 +689,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-
+                    loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
                 } else {
                     Alert(result.errmsg);
                 }
@@ -588,6 +726,47 @@
             deleteFlag: true
         })
     }
+
+    function getCategory(pid, value) {
+        if (!pid) {
+            console.log("111")
+            var option = "<option value=''>-先选择对应查勘部位-</option>";
+            $("#frmItemFile").find("select[name='certifyPartCategory']").html(option);
+            $("#frmItemFile").find("select[name='certifyPartCategory']").val(['']).trigger('change');
+            return false;
+        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseDataDic/getCacheDataDicListByPid",
+            type: "get",
+            dataType: "json",
+            data: {pid: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (data.length >= 1) {
+                        var option = "<option value=''>-请选择-</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                        $("#frmItemFile").find("select[name='certifyPartCategory']").html(option);
+                        if (value) {
+                            $("#frmItemFile").find("select[name='certifyPartCategory']").val([value]).trigger('change');
+                        } else {
+                            $("#frmItemFile").find("select[name='certifyPartCategory']").val(['']).trigger('change');
+                        }
+                    }
+
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+
+    };
 </script>
 
 </html>

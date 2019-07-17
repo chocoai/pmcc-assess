@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileCustomDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileCustom;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
@@ -28,7 +29,8 @@ public class SchemeController {
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
     @Autowired
     private SchemeReportFileService schemeReportFileService;
-
+    @Autowired
+    private SchemeReportFileCustomDao schemeReportFileCustomDao;
 
     @ResponseBody
     @RequestMapping(value = "/changeFunctionContent", name = "评估方法原因及思路更新 ", method = RequestMethod.POST)
@@ -41,6 +43,17 @@ public class SchemeController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getLiveSituationAll", name = "获取查勘中所有的实况图片 ", method = RequestMethod.POST)
+    public HttpResult getLiveSituationAll(Integer declareRecordId) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationAll(declareRecordId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 
     @ResponseBody
@@ -67,9 +80,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/reportFileEditName", name = "选择的图片修改名称 ", method = RequestMethod.POST)
-    public HttpResult reportFileEditName(Integer id,String newName,Integer newSorting) {
+    public HttpResult reportFileEditName(Integer id, String newName, Integer newSorting) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.reportFileEditName(id,newName,newSorting));
+            return HttpResult.newCorrectResult(schemeReportFileService.reportFileEditName(id, newName, newSorting));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -89,6 +102,18 @@ public class SchemeController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/selectLiveSituation", name = "选择实况图片 ", method = RequestMethod.POST)
+    public HttpResult selectLiveSituation(Integer attachmentId, Integer declareRecordId, String fileName) {
+        try {
+            schemeReportFileService.selectLiveSituation(attachmentId, declareRecordId, fileName);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/removeLiveSituation", name = "移除实况图片 ", method = RequestMethod.POST)
     public HttpResult removeLiveSituation(Integer id) {
         try {
@@ -99,6 +124,7 @@ public class SchemeController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
 
     @ResponseBody
     @RequestMapping(value = "/getReportFileCustomList", name = "获取自定义块 ", method = RequestMethod.POST)

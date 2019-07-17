@@ -139,6 +139,25 @@
             }
         })
     }
+
+    //项目中引用楼盘
+    estateCommon.getDataFromProject = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/getDataFromProject',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    estateCommon.showEstateView(result.data);
+                    estateCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
+
     //楼盘明细
     estateCommon.detail = function (applyId) {
         $.ajax({

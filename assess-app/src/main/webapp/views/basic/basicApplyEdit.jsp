@@ -28,6 +28,9 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
+                        <button class="btn btn-warning" onclick="saveDraft();">
+                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                        </button>
                         <button id="btn_close" class="btn btn-warning" onclick="closeBasicApp();">
                             关闭流程<i style="margin-left: 10px" class="fa fa-close"></i>
                         </button>
@@ -126,6 +129,36 @@
                 })
             })
         })
+    }
+
+    //保存草稿
+    function saveDraft() {
+        if (!basicCommon.saveDraftValid()) {
+            return false;
+        }
+        Loading.progressShow();
+        var formData = JSON.stringify(basicCommon.getFormData());
+        console.log(formData);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApply/saveDraft",
+            type: "post",
+            dataType: "json",
+            async: false,
+            data: {formData: formData},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    //关闭流程
+                    AssessCommon.closeProcess('${basicApply.processInsId}', function () {
+                        Alert('保存草稿成功', 1, null, function () {
+                            window.close();
+                        })
+                    })
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        });
     }
 </script>
 </html>

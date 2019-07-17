@@ -52,6 +52,17 @@ public class BasicBuildingController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
+    public HttpResult getDataFromProject(Integer applyId) {
+        try {
+            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingFromProject(applyId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicBuilding", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicBuilding(BasicBuilding basicBuilding) {
         try {

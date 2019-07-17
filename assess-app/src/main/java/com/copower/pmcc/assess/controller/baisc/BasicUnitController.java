@@ -94,6 +94,17 @@ public class BasicUnitController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
+    public HttpResult getDataFromProject(Integer applyId) {
+        try {
+            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByFromProject(applyId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/addUnit", name = "添加单元信息", method = {RequestMethod.POST})
     public HttpResult addUnit(String unitNumber) {
         try {
