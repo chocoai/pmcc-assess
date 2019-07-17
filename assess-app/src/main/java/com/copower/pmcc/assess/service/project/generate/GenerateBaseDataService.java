@@ -5331,7 +5331,7 @@ public class GenerateBaseDataService {
         int rowLength = (schemeReportFileList.size() % colCount > 0 ? (schemeReportFileList.size() / colCount) + 1 : schemeReportFileList.size() / colCount) * 2;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
-        int maxWidth = 350;
+        int maxWidth = 325;
         int cellWidth = maxWidth / colCount;
         for (int j = 0; j < rowLength; j++) {
             //插入图片
@@ -5357,7 +5357,7 @@ public class GenerateBaseDataService {
                         if (schemeReportFileList.size() == 1) {
                             height = 145;
                         }
-                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
+                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 0,
                                 RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
                         //设置样式
                         builder.getCellFormat().getBorders().setColor(Color.white);
@@ -5380,6 +5380,8 @@ public class GenerateBaseDataService {
                     if (index < schemeReportFileList.size()) {
                         SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
                         builder.insertCell();
+                        builder.getFont().setName("宋体");
+                        builder.getFont().setSize(10.5);
                         builder.write(schemeReportFileItem.getFileName());
                     }
                 }

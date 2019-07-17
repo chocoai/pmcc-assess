@@ -1129,9 +1129,9 @@ public class GenerateCommonMethod {
         List<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
         // 压缩图片所有的图片生成尺寸 250x250
         for (int i = 0; i < paths.size(); i++) {
-            bufferedImages.add(resize2(paths.get(i), 250, 250, true));
+            bufferedImages.add(resize2(paths.get(i), 250, 247, true));
         }
-        int width = 510; // 这是画板的宽高
+        int width = 514; // 这是画板的宽高
         int height = 510; // 这是画板的高度
         BufferedImage outImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         // 生成画布
