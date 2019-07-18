@@ -69,6 +69,32 @@
                 </div>
             </div>
 
+            <div class="x_panel">
+                <div class="x_content">
+                    <form class="form-horizontal" id="md_cost_form">
+                        <input type="hidden" name="id" value="${mdCost.id}">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    单价
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${mdCost.price}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                报告附件
+                            </label>
+                            <div class="col-sm-3">
+                                <div id="_report_file"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
 
             <!--填写表单-->
             <%@include file="/views/share/form_approval.jsp" %>
@@ -83,6 +109,19 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 
 <script type="application/javascript">
+
+    $(function () {
+        FileUtils.getFileShows({
+            target: "report_file",
+            formData: {
+                tableName: AssessDBKey.MdCost,
+                tableId: '${mdCost.id}'
+            },
+            editFlag: false,
+            deleteFlag: false
+        })
+    });
+
     function saveform() {
         saveApprovalform("");
     }
