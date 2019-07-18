@@ -15,6 +15,8 @@ public class CaseMatchingEnvironment {
 
     private String remark;
 
+    private String humanImpact;
+
     private String creator;
 
     private Date gmtCreated;
@@ -67,6 +69,14 @@ public class CaseMatchingEnvironment {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getHumanImpact() {
+        return humanImpact;
+    }
+
+    public void setHumanImpact(String humanImpact) {
+        this.humanImpact = humanImpact == null ? null : humanImpact.trim();
     }
 
     public String getCreator() {

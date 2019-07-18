@@ -66,6 +66,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getFaceStreet(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+        String value = null;
         try {
             Map<Integer, String> map = Maps.newHashMap();
             StringBuilder contentBuilder = new StringBuilder(8);
@@ -81,11 +82,12 @@ public class GenerateLoactionService {
                 contentBuilder.delete(0, contentBuilder.toString().length());
             }
             String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-            return StringUtils.strip(s, "，");
+            value = StringUtils.strip(s, "，");
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             return "";
         }
+        return StringUtils.isNotBlank(value)?value:"不临街" ;
     }
 
     public String getFaceStreetExtend(BasicApply basicApply) throws Exception {
@@ -188,6 +190,16 @@ public class GenerateLoactionService {
                 if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), d)) {
                     matchingEnvironmentVo.setRemark("非常差");
                 }
+            }
+        }
+        if ("废弃物".equals(key)){
+            if (StringUtils.isNotBlank(matchingEnvironmentVo.getHumanImpact())){
+                matchingEnvironmentVo.setRemark(String.format("对人的影响%s",matchingEnvironmentVo.getHumanImpact()));
+            }
+        }
+        if ("居民特征".equals(key)){
+            if (StringUtils.isNotBlank(matchingEnvironmentVo.getHumanImpact())){
+                matchingEnvironmentVo.setRemark(String.format("对人的影响%s",matchingEnvironmentVo.getHumanImpact()));
             }
         }
         if (matchingEnvironmentVo != null) {

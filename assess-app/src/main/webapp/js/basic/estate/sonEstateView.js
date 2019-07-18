@@ -2112,8 +2112,6 @@ var matchingEnvironment;
                         AssessCommon.getDataDicInfo(influenceDegree,function (n) {
                             if (item.remark){
                                 var data = JSON.parse(item.remark);
-                                console.log(n);
-                                console.log(data.first);
                                 if (n.name == "无影响"){
                                     frm.find("textarea").each(function () {
                                         if ($(this).attr("name") == "remark"){

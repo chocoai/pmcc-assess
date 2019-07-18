@@ -43,6 +43,8 @@
         </div>
     </div>
 </div>
+
+<!-- 模态框中的 明细数据 -->
 <div id="damagedDegreeDetailModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -116,6 +118,7 @@
     </div>
 </div>
 
+<!-- 选项卡 内容之一 -->
 <script type="text/html" id="damagedDegreeTabContentHtml">
     <div role="tabpanel" class="tab-pane fade" id="tab_content_{type}" aria-labelledby="profile-tab">
         <table class="table table-bordered">
@@ -133,6 +136,7 @@
         </table>
     </div>
 </script>
+<!-- 结构部分下面4列 的 支撑html -->
 <script type="text/html" id="damagedDegreeTabTrHtml">
     <tr class="group">
         <td>

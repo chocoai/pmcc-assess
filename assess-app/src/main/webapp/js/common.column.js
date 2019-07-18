@@ -41,6 +41,32 @@ commonColumn.matchingEnvironmentColumn = function () {
     cols.push({field: 'categoryName', title: '影响要素'});
     cols.push({field: 'influenceDegreeName', title: '影响程度'});
     cols.push({field: 'remark', title: '影响源描述'});
+    // cols.push({field: 'humanImpact', title: '对人的影响'});
+    cols.push({
+        field: 'humanImpact', title: '对人的影响', formatter: function (value, row, index) {
+           if (value){
+               if (value == '0'){
+                   return "不确定" ;
+               }
+               if (value == '1'){
+                   return "差" ;
+               }
+               if (value == '2'){
+                   return "较差" ;
+               }
+               if (value == '3'){
+                   return "一般" ;
+               }
+               if (value == '4'){
+                   return "好" ;
+               }
+               if (value == '5'){
+                   return "非常好" ;
+               }
+           }
+            return "" ;
+        }
+    });
     return cols;
 }
 

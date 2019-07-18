@@ -415,6 +415,76 @@ public class BasicMatchingEnvironmentExample {
             return (Criteria) this;
         }
 
+        public Criteria andHumanImpactIsNull() {
+            addCriterion("human_impact is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactIsNotNull() {
+            addCriterion("human_impact is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactEqualTo(String value) {
+            addCriterion("human_impact =", value, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactNotEqualTo(String value) {
+            addCriterion("human_impact <>", value, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactGreaterThan(String value) {
+            addCriterion("human_impact >", value, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactGreaterThanOrEqualTo(String value) {
+            addCriterion("human_impact >=", value, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactLessThan(String value) {
+            addCriterion("human_impact <", value, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactLessThanOrEqualTo(String value) {
+            addCriterion("human_impact <=", value, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactLike(String value) {
+            addCriterion("human_impact like", value, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactNotLike(String value) {
+            addCriterion("human_impact not like", value, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactIn(List<String> values) {
+            addCriterion("human_impact in", values, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactNotIn(List<String> values) {
+            addCriterion("human_impact not in", values, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactBetween(String value1, String value2) {
+            addCriterion("human_impact between", value1, value2, "humanImpact");
+            return (Criteria) this;
+        }
+
+        public Criteria andHumanImpactNotBetween(String value1, String value2) {
+            addCriterion("human_impact not between", value1, value2, "humanImpact");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;

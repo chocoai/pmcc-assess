@@ -199,27 +199,42 @@ public class GenerateHouseEntityService {
         BaseDataDic production = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_PRODUCTION);
         BaseDataDic office = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_OFFICE);
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject) ;
+            if (basicApply == null || basicApply.getId() == 0){
+                continue;
+            }
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-            if (basicHouse != null && basicHouse.getHuxingId() != null && basicHouse.getHuxingId() > 0) {
-                BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+            BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+            StringBuilder stringBuilder = new StringBuilder();
+            if (basicUnit != null && StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())) {
+                stringBuilder.append("梯户比").append(basicUnit.getElevatorHouseholdRatio());
+            }
+            if (basicHouse != null && basicHouse.getHuxingId() != null) {
                 BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
-                if (basicUnitHuxing == null) continue;
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(StringUtils.isBlank(basicUnit.getElevatorHouseholdRatio()) ? "" : String.format("梯户比%s,", basicUnit.getElevatorHouseholdRatio()));
-                if (basicUnitHuxing.getType().equals(production.getId())) {//办公商业取开间进深
-                    stringBuilder.append(basicUnitHuxing.getBay() != null ? "" : String.format("开间%s米,", basicUnitHuxing.getBay()));
-                    stringBuilder.append(basicUnitHuxing.getDeep() != null ? "" : String.format("进深%s米,", basicUnitHuxing.getDeep()));
-                } else if (basicUnitHuxing.getType().equals(office.getId())) {//工业仓储取跨长跨宽
-                    stringBuilder.append(basicUnitHuxing.getSpanLength() != null ? "" : String.format("跨长%s米,", basicUnitHuxing.getSpanLength()));
-                    stringBuilder.append(basicUnitHuxing.getSpanWidth() != null ? "" : String.format("跨宽%s米,", basicUnitHuxing.getSpanWidth()));
-                    stringBuilder.append(basicUnitHuxing.getSpanNumber() != null ? "" : String.format("跨数%s米,", basicUnitHuxing.getSpanNumber()));
-                } else {
-                    stringBuilder.append(String.format("%s,", basicUnitHuxing.getName()));
+                if (basicUnitHuxing != null) {
+                    int i = 0;
+                    //办公商业取开间进深
+                    if (Objects.equal(basicUnitHuxing.getType(), production.getId())) {
+                        stringBuilder.append(basicUnitHuxing.getBay() != null ? "" : String.format("开间%s米,", basicUnitHuxing.getBay()));
+                        stringBuilder.append(basicUnitHuxing.getDeep() != null ? "" : String.format("进深%s米,", basicUnitHuxing.getDeep()));
+                        i++;
+                    }
+                    //工业仓储取跨长跨宽
+                    if (Objects.equal(basicUnitHuxing.getType(), office.getId())) {
+                        stringBuilder.append(basicUnitHuxing.getSpanLength() != null ? "" : String.format("跨长%s米,", basicUnitHuxing.getSpanLength()));
+                        stringBuilder.append(basicUnitHuxing.getSpanWidth() != null ? "" : String.format("跨宽%s米,", basicUnitHuxing.getSpanWidth()));
+                        stringBuilder.append(basicUnitHuxing.getSpanNumber() != null ? "" : String.format("跨数%s米,", basicUnitHuxing.getSpanNumber()));
+                        i++;
+                    }
+                    if (i == 0) {
+                        stringBuilder.append(String.format("%s,", basicUnitHuxing.getName()));
+                    }
+                    if (StringUtils.isNotBlank(basicUnitHuxing.getDescription())) {
+                        stringBuilder.append(basicUnitHuxing.getDescription());
+                    }
                 }
-                if (StringUtils.isNotBlank(basicUnitHuxing.getDescription())) {
-                    stringBuilder.append(basicUnitHuxing.getDescription());
-                }
+            }
+            if (StringUtils.isNotBlank(stringBuilder.toString())) {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
             }
         }

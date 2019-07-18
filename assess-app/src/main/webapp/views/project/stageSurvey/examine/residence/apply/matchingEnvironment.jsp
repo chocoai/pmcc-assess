@@ -76,6 +76,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                            对人的影响<span class="symbol required"></span>
+                                        </label>
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                            <select required="required" name="humanImpact" onchange="" class="form-control  ">
+                                                <option value="0">不确定</option>
+                                                <option value="1">差</option>
+                                                <option value="2">较差</option>
+                                                <option value="3">一般</option>
+                                                <option value="4">好</option>
+                                                <option value="5">非常好</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             影响源描述
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">

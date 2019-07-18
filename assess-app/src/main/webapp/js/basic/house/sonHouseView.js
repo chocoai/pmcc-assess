@@ -1738,8 +1738,40 @@ damagedDegree.loadDamagedDegreeList = function () {
 //现状change
 damagedDegree.entityConditionChange = function (_this) {
     var group = $(_this).closest('.group');
-    group.find('[data-name=entityConditionContent]').text($(_this).attr('data-' + $(_this).val()));
+    var text = $(_this).attr('data-' + $(_this).val()) +" *" ;
+    group.find('[data-name=entityConditionContent]').text(text);
+    group.find("textarea").attr("required","required") ;
 };
+
+damagedDegree.valid = function (remark) {
+    var i = 0;
+    var target = $("#damagedDegreeTabContent") ;
+    target.find(".tab-pane").each(function () {
+        $(this).tab('show');
+        $(this).find("textarea").each(function () {
+            var required = $(this).attr('required') ;
+            //必须是已经选择了的
+            if (required){
+                var text = $(this).val() ;
+                var name = $(this).attr('name') ;
+                var html = "<span class='help-block' for='"+name+"'" +">"   +"此字段必须填写 </span>" ;
+                if(text){
+                }else {
+                    $(this).after(html) ;
+                    i++;
+                }
+            }
+        });
+    }) ;
+    if (i != 0){
+        if (remark){
+            toastr.success(remark);
+        }else {
+            toastr.success('请检查房屋完损度');
+        }
+    }
+    return i == 0 ;
+} ;
 
 //显示modal
 damagedDegree.damagedDegreeDetailModalShow = function (damagedDegreeId, category) {

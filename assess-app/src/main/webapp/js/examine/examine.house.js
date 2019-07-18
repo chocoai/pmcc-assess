@@ -390,10 +390,6 @@
                 $('.tooltips').tooltip();
             }
         });
-        console.log({
-            type: tradingType,
-            houseId: houseCommon.getHouseId()
-        });
     };
 
     //保存出售或出租

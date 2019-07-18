@@ -183,6 +183,16 @@ basicCommon.valid = function () {
                 return false;
             }
         }
+
+        try {
+            if (damagedDegree) {
+                if (!damagedDegree.valid()) {
+                    return false;
+                }
+            }
+        } catch (e) {
+            console.log("damagedDegree函数不存在") ;
+        }
     }
     return true;
 };

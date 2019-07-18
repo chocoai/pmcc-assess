@@ -13,6 +13,8 @@ public class BasicMatchingEnvironment {
 
     private Integer influenceDegree;
 
+    private String humanImpact;
+
     private String remark;
 
     private String creator;
@@ -59,6 +61,14 @@ public class BasicMatchingEnvironment {
 
     public void setInfluenceDegree(Integer influenceDegree) {
         this.influenceDegree = influenceDegree;
+    }
+
+    public String getHumanImpact() {
+        return humanImpact;
+    }
+
+    public void setHumanImpact(String humanImpact) {
+        this.humanImpact = humanImpact == null ? null : humanImpact.trim();
     }
 
     public String getRemark() {

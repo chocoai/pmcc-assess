@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingEnvironment;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -14,7 +15,11 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Function;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +30,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @Auther: zch
@@ -114,10 +121,10 @@ public class BasicMatchingEnvironmentService {
         return vo;
     }
 
-    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentVos(Integer estateId){
-        BasicMatchingEnvironment where=new BasicMatchingEnvironment();
+    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentVos(Integer estateId) {
+        BasicMatchingEnvironment where = new BasicMatchingEnvironment();
         where.setEstateId(estateId);
-        return LangUtils.transform(basicMatchingEnvironmentDao.basicMatchingEnvironmentList(where), o->getBasicMatchingEnvironmentVo(o));
+        return LangUtils.transform(basicMatchingEnvironmentDao.basicMatchingEnvironmentList(where), o -> getBasicMatchingEnvironmentVo(o));
     }
 
     public BasicMatchingEnvironmentVo getBasicMatchingEnvironmentVo(BasicMatchingEnvironment basicMatchingEnvironment) {
@@ -129,6 +136,21 @@ public class BasicMatchingEnvironmentService {
         vo.setTypeName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEnvironment.getType()) ? Integer.parseInt(basicMatchingEnvironment.getType()) : null));
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingEnvironment.getCategory()));
         vo.setInfluenceDegreeName(baseDataDicService.getNameById(basicMatchingEnvironment.getInfluenceDegree()));
+        final List<KeyValueDto> keyValueDtos = Lists.newArrayList(
+                new KeyValueDto("0", "不确定"),
+                new KeyValueDto("1", "差"),
+                new KeyValueDto("2", "较差"),
+                new KeyValueDto("3", "一般"),
+                new KeyValueDto("4", "好"),
+                new KeyValueDto("5", "非常好")
+        );
+        if (StringUtils.isNotBlank(basicMatchingEnvironment.getHumanImpact())){
+            keyValueDtos.forEach(keyValueDto -> {
+                if (Objects.equal(keyValueDto.getKey(),basicMatchingEnvironment.getHumanImpact())){
+                    basicMatchingEnvironment.setHumanImpact(keyValueDto.getValue());
+                }
+            });
+        }
         return vo;
     }
 

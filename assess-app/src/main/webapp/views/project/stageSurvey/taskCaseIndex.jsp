@@ -292,7 +292,8 @@
                 planDetailsId: "${projectPlanDetails.id}",
                 formData: JSON.stringify(data),
                 transactionType: data.transactionType,
-                examineFormType: data.examineFormType
+                examineFormType: data.examineFormType,
+                name:data.examineFormName
             },
             type: "post",
             dataType: "json",
@@ -442,11 +443,22 @@
 
 <script type="text/html" id="plan_details_modal_html">
     <div class="form-group">
+
         <div class="x-valid">
             <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                表单类型
+                案例名称
             </label>
-            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                <input type="text" placeholder="案例名称"  name="projectPhaseName"
+                       class="form-control ">
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                表单类型<span class="symbol required"></span>
+            </label>
+            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                 <input type="hidden" id="planDetailsId" name="id"/>
                 <input type="hidden" id="pid" name="pid"/>
                 <select class="form-control" name="transactionType" required>
@@ -460,7 +472,7 @@
     </div>
     <div class="form-group" id="examineFormTypeList" style="display: none">
         <div class="x-valid">
-            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"></label>
+            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">案例类别<span class="symbol required"></span></label>
             <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                 <c:forEach var="item" items="${examineFormTypeList}">
                 <span class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
@@ -470,6 +482,9 @@
                 </c:forEach>
             </div>
         </div>
+    </div>
+    <div class="form-group">
+
     </div>
 
     <%--这部分功能暂不开放 1--%>

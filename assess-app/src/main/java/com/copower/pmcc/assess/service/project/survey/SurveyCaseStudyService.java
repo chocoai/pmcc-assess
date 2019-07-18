@@ -109,7 +109,11 @@ public class SurveyCaseStudyService {
             ProjectPlanDetails lastDetails = childrenPlanDetailsList.get(childrenPlanDetailsList.size() - 1);
             sort = lastDetails.getSorting() + 1;
         }
-        planDetails.setProjectPhaseName(String.format("案例%s(%s)",sort,baseDataDicService.getNameById(transactionType)));
+        if (StringUtils.isEmpty(projectPlanDetails.getProjectPhaseName())) {
+            planDetails.setProjectPhaseName(String.format("案例%s(%s)", sort, baseDataDicService.getNameById(transactionType)));
+        }else {
+            planDetails.setProjectPhaseName(projectPlanDetails.getProjectPhaseName());
+        }
         planDetails.setPlanStartDate(projectPlanDetails.getPlanStartDate());
         planDetails.setPlanEndDate(projectPlanDetails.getPlanEndDate());
         planDetails.setPlanHours(projectPlanDetails.getPlanHours());
