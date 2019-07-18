@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
@@ -393,6 +394,8 @@ public class BasicHouseService {
             basicHouseTrading.setGmtModified(null);
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+        }else {
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), new BasicHouseTradingVo());
         }
 
         //附件拷贝
@@ -597,6 +600,8 @@ public class BasicHouseService {
             basicHouseTrading.setGmtModified(null);
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+        }else {
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), new BasicHouseTradingVo());
         }
 
         //删除原有的附件

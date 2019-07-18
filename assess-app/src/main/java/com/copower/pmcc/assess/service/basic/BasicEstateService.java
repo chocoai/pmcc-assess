@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -408,6 +409,8 @@ public class BasicEstateService {
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
+        }else{
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
 
         CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
@@ -563,6 +566,8 @@ public class BasicEstateService {
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
+        }else{
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
 
         BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();

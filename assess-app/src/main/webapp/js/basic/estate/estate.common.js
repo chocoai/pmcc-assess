@@ -258,20 +258,8 @@
                 estateCommon.fileShow(item);
             })
         });
+
         estateCommon.estateLandStateForm.initForm(data.basicEstateLandState, function () {
-            //绑定变更事件
-            if(!estateCommon.isNotBlank(data.basicEstateLandState.landUseCategory)) {
-                estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
-                    AssessCommon.loadDataDicByPid($(this).val(), data.basicEstateLandState.landUseCategory, function (html, data) {
-                        estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
-                    });
-                    data.basicEstateLandState.landUseCategory = null;//第一次执行成功后置为空
-                });
-            }else{
-                AssessCommon.loadDataDicByPid(data.basicEstateLandState.landUseType, data.basicEstateLandState.landUseCategory, function (html, data) {
-                    estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
-                });
-            }
             //土地开发程度为熟地时选择几通几平
             estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change', function () {
                 $("#developmentDegreeContentContainer").empty();
