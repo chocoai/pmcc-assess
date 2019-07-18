@@ -98,7 +98,18 @@ public class BasicEstateController {
     @RequestMapping(value = "/getDataFromProject", name = "引用项目中的数据", method = {RequestMethod.GET})
     public HttpResult getDataFromProject(Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapFromProject(applyId));
+            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapFromProject(applyId,null));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/batchGetDataFromProject", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
+    public HttpResult batchGetDataFromProject(Integer applyId,Integer tableId) {
+        try {
+            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapFromProject(applyId,tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

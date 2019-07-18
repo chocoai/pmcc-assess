@@ -552,7 +552,7 @@ public class BasicHouseService {
 
     //引用项目中数据
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> getBasicHouseFromProject(Integer applyId) throws Exception {
+    public Map<String, Object> getBasicHouseFromProject(Integer applyId,Integer tableId) throws Exception {
         if (applyId == null) {
             throw new Exception("null ponit");
         }
@@ -563,14 +563,21 @@ public class BasicHouseService {
             return objectMap;
         }
         BasicHouse basicHouse = new BasicHouse();
+        if(tableId!=null) {
+            this.clearInvalidData2(tableId);
+        }
         BeanUtils.copyProperties(oldBasicHouse, basicHouse);
         basicHouse.setApplyId(0);
         basicHouse.setCreator(commonService.thisUserAccount());
-        basicHouse.setId(null);
         basicHouse.setGmtCreated(null);
         basicHouse.setGmtModified(null);
-        basicHouse.setHouseNumber(null);
-        basicHouseDao.addBasicHouse(basicHouse);
+        if(tableId!=null){
+            basicHouse.setId(tableId);
+            basicHouse.setApplyId(null);
+        }else {
+            basicHouse.setId(null);
+        }
+        this.saveAndUpdateBasicHouse(basicHouse);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         BasicHouseTrading queryTrading = new BasicHouseTrading();
@@ -580,6 +587,9 @@ public class BasicHouseService {
             BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
             BeanUtils.copyProperties(oldBasicHouseTradings.get(0), basicHouseTrading);
             basicHouseTrading.setApplyId(0);
+            if(tableId!=null){
+                basicHouseTrading.setApplyId(null);
+            }
             basicHouseTrading.setHouseId(basicHouse.getId());
             basicHouseTrading.setCreator(commonService.thisUserAccount());
             basicHouseTrading.setId(null);
@@ -587,6 +597,19 @@ public class BasicHouseService {
             basicHouseTrading.setGmtModified(null);
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+        }
+
+        //删除原有的附件
+        if(tableId!=null) {
+            SysAttachmentDto deleteExample = new SysAttachmentDto();
+            deleteExample.setTableId(tableId);
+            deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
+            if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
+                for (SysAttachmentDto item : attachmentList) {
+                    baseAttachmentService.deleteAttachment(item.getId());
+                }
+            }
         }
 
         //附件拷贝
@@ -770,6 +793,30 @@ public class BasicHouseService {
         for (SysAttachmentDto sysAttachmentDto : attachmentList) {
             baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
         }
+    }
+
+    /**
+     * 清理无效数据
+     *
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void clearInvalidData2(Integer tableId) throws Exception {
+        StringBuilder sqlBulder = new StringBuilder();
+        String baseSql = "delete from %s where house_id=%s;";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), tableId));
+
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), tableId));
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
     /**
