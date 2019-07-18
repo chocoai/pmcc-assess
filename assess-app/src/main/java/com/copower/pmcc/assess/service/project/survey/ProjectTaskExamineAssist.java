@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -271,6 +272,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
      * @param modelAndView
      * @throws Exception
      */
+    @Transactional(rollbackFor = Exception.class)
     private void setIndustryExamineParam(DeclareRecord declareRecord, SurveyExamineInfo surveyExamineInfo, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
         ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());

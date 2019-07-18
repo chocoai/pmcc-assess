@@ -124,6 +124,25 @@
         })
     }
 
+    //项目中引用楼盘(批量)
+    buildingCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/batchGetDataFromProject',
+            type: 'get',
+            data: {applyId: applyId,
+                tableId: tableId},
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingView(result.data);
+                    buildingCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
+
     //楼栋明细
     buildingCommon.detail = function (applyId) {
         $.ajax({

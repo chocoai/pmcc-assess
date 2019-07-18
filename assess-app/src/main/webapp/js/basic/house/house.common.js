@@ -142,6 +142,23 @@
             }
         })
     }
+    //项目中引用楼盘(批量)
+    houseCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicHouse/batchGetDataFromProject',
+            type: 'get',
+            data: {applyId: applyId,
+                tableId: tableId},
+            success: function (result) {
+                if (result.ret) {
+                    houseCommon.showHouseView(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
 
     //房屋明细
     houseCommon.detail = function (applyId) {

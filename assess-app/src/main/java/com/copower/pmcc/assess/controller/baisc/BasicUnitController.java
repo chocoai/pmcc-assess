@@ -97,7 +97,18 @@ public class BasicUnitController {
     @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
     public HttpResult getDataFromProject(Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByFromProject(applyId));
+            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByFromProject(applyId,null));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/batchGetDataFromProject", name = "项目中引用数据批量", method = {RequestMethod.GET})
+    public HttpResult batchGetDataFromProject(Integer applyId,Integer tableId) {
+        try {
+            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByFromProject(applyId,tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by kings on 2018-8-23.
@@ -48,6 +52,21 @@ public class ProjectPlanDetailsController {
     public HttpResult updateExecuteUser(Integer planDetailsId, String newExecuteUser) {
         try {
             projectPlanDetailsService.updateExecuteUser(planDetailsId, newExecuteUser);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("调整责任人", e);
+            return HttpResult.newErrorResult("调整责任人异常");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "批量调整责任人", value = "/batchUpdateExecuteUser")
+    public HttpResult batchUpdateExecuteUser(String planDetailsIds, String newExecuteUser) {
+        try {
+            String[] split = planDetailsIds.split(",");
+            List<String> strings = Arrays.asList(split);
+            List<Integer> transform = LangUtils.transform(strings, p -> Integer.valueOf(p));
+            projectPlanDetailsService.batchUpdateExecuteUser(transform, newExecuteUser);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("调整责任人", e);

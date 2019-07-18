@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -271,6 +272,25 @@ public class BasicEstateService {
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
+
+    @Transactional(rollbackFor = Exception.class)
+    public void clearInvalidData2(Integer tableId) throws Exception {
+        StringBuilder sqlBulder = new StringBuilder();
+        String baseSql = "delete from %s where estate_id=%s;";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), tableId));
+
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandState.class), tableId));
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
+    }
     /**
      * 获取数据
      *
@@ -389,6 +409,8 @@ public class BasicEstateService {
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
+        }else{
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
 
         CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
@@ -474,8 +496,7 @@ public class BasicEstateService {
 
     //引用项目中的数据
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> getBasicEstateMapFromProject(Integer applyId) throws Exception {
-
+    public Map<String, Object> getBasicEstateMapFromProject(Integer applyId,Integer tableId) throws Exception {
         BasicApply referenceBasicApply = basicApplyService.getByBasicApplyId(applyId);
         if (referenceBasicApply == null) {
             throw new BusinessException("null point");
@@ -489,15 +510,36 @@ public class BasicEstateService {
         }
 
         BasicEstate basicEstate = new BasicEstate();
+        if(tableId!=null){
+            this.clearInvalidData2(tableId);
+        }
         BeanUtils.copyProperties(oldEstateByApplyId, basicEstate);
         basicEstate.setApplyId(0);
         basicEstate.setCreator(commonService.thisUserAccount());
         basicEstate.setGmtCreated(null);
         basicEstate.setGmtModified(null);
-        basicEstate.setName(null);
+        if(tableId!=null){
+            basicEstate.setId(tableId);
+            basicEstate.setApplyId(null);
+        }else {
+            basicEstate.setId(null);
+        }
 
-        basicEstateDao.addBasicEstate(basicEstate);
+        this.saveAndUpdateBasicEstate(basicEstate);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
+
+        //删除原有的附件
+        if(tableId!=null) {
+            SysAttachmentDto deleteExample = new SysAttachmentDto();
+            deleteExample.setTableId(tableId);
+            deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
+            if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
+                for (SysAttachmentDto item : attachmentList) {
+                    baseAttachmentService.deleteAttachment(item.getId());
+                }
+            }
+        }
 
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
@@ -517,10 +559,15 @@ public class BasicEstateService {
             basicEstateLandState.setEstateId(basicEstate.getId());
             basicEstateLandState.setCreator(commonService.thisUserAccount());
             basicEstateLandState.setApplyId(0);
+            if(tableId!=null){
+                basicEstateLandState.setApplyId(null);
+            }
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
+        }else{
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
 
         BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
@@ -532,6 +579,10 @@ public class BasicEstateService {
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
+            if(tableId!=null){
+                basicEstateTagging.setApplyId(null);
+                basicEstateTagging.setTableId(tableId);
+            }
             basicEstateTagging.setName(null);
             basicEstateTagging.setGmtCreated(null);
             basicEstateTagging.setGmtModified(null);

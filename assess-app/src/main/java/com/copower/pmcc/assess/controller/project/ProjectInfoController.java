@@ -209,7 +209,7 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectClearData", name = "项目清除所属项目的数据  仅仅限于草稿这样做", method = RequestMethod.POST)
     public HttpResult projectClearData(Integer id) {
         try {
-            projectInfoService.projectClearData(id) ;
+            projectInfoService.projectClearData(id);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -406,6 +406,18 @@ public class ProjectInfoController {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("完成项目异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectPlanDetail", name = "取得计划编制信息", method = RequestMethod.POST)
+    public HttpResult getProjectPlanDetail(Integer id) {
+        try {
+            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.getPlanDetailListByProjectPlanDetailId(id);
+            return HttpResult.newCorrectResult(projectPlanDetailsVo);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("取得计划编制信息异常");
         }
     }
 }

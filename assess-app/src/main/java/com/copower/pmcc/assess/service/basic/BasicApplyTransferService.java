@@ -629,6 +629,7 @@ public class BasicApplyTransferService {
      * @throws Exception
      */
     private String copyBasicTagging(EstateTaggingTypeEnum typeEnum, Integer applyIdSource, Integer applyTarget) throws Exception {
+        //sql 拼写有误
         StringBuilder sqlBuilder = new StringBuilder();
         SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
         synchronousDataDto.setWhereSql(String.format("apply_id=%s and type='%s'", applyIdSource, typeEnum.getKey()));
