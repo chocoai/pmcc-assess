@@ -23,6 +23,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -31,6 +32,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -234,6 +236,7 @@ public class SchemeReportFileService extends BaseService {
             List<SysAttachmentDto> dtoList = null;
             if (basicEstate != null) {
                 dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                removeGenerateFile(dtoList);
                 if (CollectionUtils.isNotEmpty(dtoList)) {
                     dtoList.forEach(o -> {
                         o.setReName(AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getValue());
@@ -241,6 +244,7 @@ public class SchemeReportFileService extends BaseService {
                     });
                 }
                 dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_TOTAL_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                removeGenerateFile(dtoList);
                 if (CollectionUtils.isNotEmpty(dtoList)) {
                     dtoList.forEach(o -> {
                         o.setReName(AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getValue());
@@ -251,6 +255,7 @@ public class SchemeReportFileService extends BaseService {
 
             if (basicBuilding != null) {
                 dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                removeGenerateFile(dtoList);
                 if (CollectionUtils.isNotEmpty(dtoList)) {
                     dtoList.forEach(o -> {
                         o.setReName(AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getValue());
@@ -259,6 +264,7 @@ public class SchemeReportFileService extends BaseService {
                 }
 
                 dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                removeGenerateFile(dtoList);
                 if (CollectionUtils.isNotEmpty(dtoList)) {
                     dtoList.forEach(o -> {
                         o.setReName(AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getValue());
@@ -266,6 +272,7 @@ public class SchemeReportFileService extends BaseService {
                     });
                 }
                 dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                removeGenerateFile(dtoList);
                 if (CollectionUtils.isNotEmpty(dtoList)) {
                     dtoList.forEach(o -> {
                         o.setReName(AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getValue());
@@ -276,6 +283,7 @@ public class SchemeReportFileService extends BaseService {
 
             if (basicUnit != null) {
                 dtoList = baseAttachmentService.getByField_tableId(basicUnit.getId(), AssessUploadEnum.UNIT_APPEARANCE.getKey(), FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+                removeGenerateFile(dtoList);
                 if (CollectionUtils.isNotEmpty(dtoList)) {
                     dtoList.forEach(o -> {
                         o.setReName(AssessUploadEnum.UNIT_APPEARANCE.getValue());
@@ -286,6 +294,7 @@ public class SchemeReportFileService extends BaseService {
 
             if (basicHouse != null) {
                 dtoList = baseAttachmentService.getByField_tableId(basicHouse.getId(), AssessUploadEnum.HOUSE_DECORATE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+                removeGenerateFile(dtoList);
                 if (CollectionUtils.isNotEmpty(dtoList)) {
                     dtoList.forEach(o -> {
                         o.setReName(AssessUploadEnum.HOUSE_DECORATE.getValue());
@@ -294,6 +303,7 @@ public class SchemeReportFileService extends BaseService {
                 }
 
                 dtoList = baseAttachmentService.getByField_tableId(basicHouse.getId(), AssessUploadEnum.HOUSE_IMG_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+                removeGenerateFile(dtoList);
                 if (CollectionUtils.isNotEmpty(dtoList)) {
                     dtoList.forEach(o -> {
                         o.setReName(AssessUploadEnum.HOUSE_DECORATE.getValue());
@@ -306,6 +316,7 @@ public class SchemeReportFileService extends BaseService {
             if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                 for (BasicHouseRoom item : basicHouseRoomList) {
                     dtoList = baseAttachmentService.getByField_tableId(item.getId(), AssessUploadEnum.HOUSE_ROOM_FILE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class));
+                    removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
                         dtoList.forEach(o -> {
                             o.setReName(String.format("%s", item.getRoomType()));
@@ -316,6 +327,19 @@ public class SchemeReportFileService extends BaseService {
             }
         }
         return attachmentDtoList;
+    }
+
+    //删除自己生成附件
+    public void removeGenerateFile(List<SysAttachmentDto> attachmentDtoList){
+        if(CollectionUtils.isNotEmpty(attachmentDtoList)) {
+            Iterator<SysAttachmentDto> it = attachmentDtoList.iterator();
+            while (it.hasNext()) {
+                SysAttachmentDto item = it.next();
+                if (StringUtil.isNotEmpty(item.getReName())) {
+                    it.remove();
+                }
+            }
+        }
     }
 
 
@@ -517,6 +541,7 @@ public class SchemeReportFileService extends BaseService {
                             break;
                     }
                     reportAttachment2.setFieldsName(category.getFieldName());
+                    //reName存放关联的id
                     reportAttachment2.setReName(String.valueOf(schemeReportFileItem.getId()));
                     reportAttachment2.setId(null);
                     reportAttachment2.setProjectId(declareRecordById.getProjectId());
