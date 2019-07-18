@@ -156,6 +156,11 @@
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
                                     <div class="col-md-3">
+                                        <small>
+                                            <a href="javascript://;" class="btn btn-xs btn-success" onclick="batchUpdateExecuteUser()">批量设置责任人<i
+                                                    class="fa fa-plus"></i>
+                                            </a>
+                                        </small>
                                         <ul id="ztree${plan.id}" class="ztree"></ul>
                                     </div>
                                 </div>
@@ -268,11 +273,8 @@
                 </div>
             </div>
         </div>
-        <div class="form-group" style="text-align: center;">
-            <div class="x-valid">
-                <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
-                    <input type="button" class="btn btn-primary" value="提交">
-                </div>
+        <div class="form-group">
+            <div style="text-align: center;" id="operateToolbar">
             </div>
         </div>
     </div>
@@ -312,6 +314,7 @@
     }
 </script>
 <script type="application/javascript">
+    var copyPlanDetailsTempId = undefined;
     var projectDetails = {
         loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
@@ -321,11 +324,11 @@
                 planId: that.attr('plan-id')
             });
 
-            <%--ztreeInit({--%>
-                <%--target: $('#ztree' + that.attr('plan-id')),--%>
-                <%--projectId: '${projectInfo.id}',--%>
-                <%--planId: that.attr('plan-id')--%>
-            <%--});--%>
+            ztreeInit({
+                target: $('#ztree' + that.attr('plan-id')),
+                projectId: '${projectInfo.id}',
+                planId: that.attr('plan-id')
+            });
         },
 
         loadPlanItem: function (planId) {
@@ -436,6 +439,7 @@
                         title: '操作',
                         width: '20%',
                         formatter: function (value, row) {
+                            console.log(row);
                             var s = "";
                             if (!row.bisStart && row.bisLastLayer && '${isPM}' == 'true') {
                                 s += " <a onclick='projectDetails.updateExecuteUser(\"" + row.id + "\")' href='javascript://' title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
@@ -638,6 +642,7 @@
 
         //打开任务页面的回调
         taskOpenWin: function (url) {
+            layer.closeAll();
             openWin(url, function () {
                 projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
             })
@@ -656,7 +661,7 @@
                         if (result.ret) {
                             toastr.success('计划重启成功');
                             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
-                            layer.close(index);
+                            layer.closeAll();
                         } else {
                             toastr.info(result.errmsg);
                         }
@@ -678,7 +683,7 @@
                         if (result.ret) {
                             toastr.success('任务重启成功');
                             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
-                            layer.close(index);
+                            layer.closeAll();
                         } else {
                             toastr.info(result.errmsg);
                         }
@@ -689,6 +694,8 @@
 
         //调整责任人
         updateExecuteUser: function (planDetailsId) {
+            console.log(planDetailsId)
+            layer.close(layer.index);
             erpEmployee.select({
                 currOrgId: '${companyId}',
                 onSelected: function (data) {
@@ -715,18 +722,21 @@
             });
         },
 
+
         //工作事项复制
         taskCopy: function (_this, id) {
             $(_this).closest('.tab-pane').find('.btn-copy').each(function () {
                 $(this).find('span').text('复制');
             });
             $(_this).find('span').text('已被复制');
-            $(_this).closest('.tab-pane').find('[name=copyPlanDetailsId]').val(id);
+            //$(_this).closest('.tab-pane').find('[name=copyPlanDetailsId]').val(id);
+            copyPlanDetailsTempId = id;
+
         },
 
         //工作事项粘贴
         taskPaste: function (_this, id) {
-            var copyPlanDetailsId = $(_this).closest('.tab-pane').find('[name=copyPlanDetailsId]').val();
+            var copyPlanDetailsId = copyPlanDetailsTempId;
             if (!copyPlanDetailsId) {
                 Alert('请选择复制对象');
                 return false;
@@ -735,6 +745,7 @@
                 Alert('无法粘贴自己');
                 return false;
             }
+            layer.closeAll();
             Loading.progressShow();
             $.ajax({
                 url: '${pageContext.request.contextPath}/projectPlanDetails/taskPaste',
@@ -873,6 +884,12 @@
         }
         var defaults = $.extend({}, defaults, options);
         var setting = {
+            check:{
+                enable:true
+            },
+            view: {
+                selectedMulti: false  //允许同时选中多个节点。
+            },
             data: {
                 key: {
                     name: "projectPhaseName"
@@ -886,19 +903,55 @@
             // 回调函数
             callback: {
                 onClick: function (event, treeId, treeNode, clickFlag) {
-                    console.log(treeNode);
-                    var taskInfo = $("#ztreePlanTaskInfo");
-                    taskInfo.initForm(treeNode);
-                    //显示对应数据 显示可操作按钮
-                    //页面层
-                    layer.closeAll('page');
-                    layer.open({
-                        type: 1,
-                        shade: 0,
-                        offset: 'r',
-                        area: ['50%', '300px'], //宽高
-                        content: $("#ztreePlanTaskInfo").html()
-                    });
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/projectInfo/getProjectPlanDetail",
+                        data: {
+                            id: treeNode.id
+                        },
+                        type: 'post',
+                        success: function (result) {
+                            if (result) {
+                                console.log(JSON.stringify(result.data)+"===");
+                                var s = "";
+                                if (!result.data.bisStart && result.data.bisLastLayer && '${isPM}' == 'true') {
+                                    s += " <a onclick='projectDetails.updateExecuteUser(\"" + result.data.id + "\")' href='javascript://' title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
+                                }
+                                if (result.data.excuteUrl) {
+                                    var btnClass = 'btn-success';
+                                    if (/processInsId/.test(result.data.excuteUrl)) {
+                                        btnClass = 'btn-primary';
+                                    }
+                                    s += " <a onclick='projectDetails.taskOpenWin(\"" + result.data.excuteUrl + "\")' href='javascript://' title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                } else if (result.data.displayUrl) {
+                                    if (result.data.canReplay) {
+                                        s += " <a href='javascript://' onclick='projectDetails.replyTask(" + result.data.id + ")' title='重启' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
+                                    }
+                                    s += " <a target='_blank' href='" + result.data.displayUrl + "' title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                }
+                                if (result.data.canCopy) {
+                                    s += " <a href='javascript://' onclick='projectDetails.taskCopy(this," + result.data.id + ");' data-planDetailsId='" + result.data.id + "' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></a>";
+                                }
+                                if (result.data.canPaste) {
+                                    s += " <a href='javascript://' onclick='projectDetails.taskPaste(this," + result.data.id + ");' data-planDetailsId='" + result.data.id + "' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></a>";
+                                }
+
+                                var taskInfo = $("#ztreePlanTaskInfo");
+                                taskInfo.initForm(treeNode);
+                                $("#operateToolbar").empty().append(s);
+                                //显示对应数据 显示可操作按钮
+                                //页面层
+                                layer.closeAll('page');
+                                layer.open({
+                                    type: 1,
+                                    shade: 0,
+                                    area: ['50%', '300px'], //宽高
+                                    content: $("#ztreePlanTaskInfo").html(),
+                                    btnAlign: 'c',
+                                });
+                            }
+                        }
+                    })
+
                 }
             }
         };
@@ -919,6 +972,46 @@
                 }
             }
         })
+    }
+
+    //调整责任人
+    function batchUpdateExecuteUser() {
+        var nodes = zTreeObj.getCheckedNodes(true);
+        var length=0;
+        for(var ever in nodes) {
+            length++;
+        }
+        console.log(length)
+        if(length==0){
+            alert("请勾选节点");
+            return false;
+        }
+        console.log(nodes);
+        <%--layer.close(layer.index);--%>
+        <%--erpEmployee.select({--%>
+            <%--currOrgId: '${companyId}',--%>
+            <%--onSelected: function (data) {--%>
+                <%--if (data && data.account) {--%>
+                    <%--$.ajax({--%>
+                        <%--url: '${pageContext.request.contextPath}/projectPlanDetails/updateExecuteUser',--%>
+                        <%--data: {--%>
+                            <%--planDetailsId: planDetailsId,--%>
+                            <%--newExecuteUser: data.account--%>
+                        <%--},--%>
+                        <%--success: function (result) {--%>
+                            <%--if (result.ret) {--%>
+                                <%--toastr.success('责任人调整成功');--%>
+                                <%--projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());--%>
+                            <%--} else {--%>
+                                <%--Alert(result.errmsg);--%>
+                            <%--}--%>
+                        <%--}--%>
+                    <%--});--%>
+                <%--} else {--%>
+                    <%--Alert("还未选择任何人员");--%>
+                <%--}--%>
+            <%--}--%>
+        <%--});--%>
     }
 </script>
 </html>
