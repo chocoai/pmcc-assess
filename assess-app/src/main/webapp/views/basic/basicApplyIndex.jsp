@@ -524,7 +524,6 @@
                     if (result.data != null) {
                         basicCommon.hideAllTab();
                         //初始楼盘信息
-
                         estateCommon.getDataFromProject(result.data.id, function (data) {
                             if(data) {
                                 basicCommon.basicApplyForm.find('[name=estateName]').val(data.basicEstate.name);

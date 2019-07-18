@@ -141,11 +141,30 @@
     }
 
     //项目中引用楼盘
-    estateCommon.getDataFromProject = function (applyId, callback) {
+    estateCommon.getDataFromProject = function (applyId,callback) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getDataFromProject',
             type: 'get',
             data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    estateCommon.showEstateView(result.data);
+                    estateCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    }
+
+    //项目中引用楼盘(批量)
+    estateCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/batchGetDataFromProject',
+            type: 'get',
+            data: {applyId: applyId,
+                tableId: tableId},
             success: function (result) {
                 if (result.ret) {
                     estateCommon.showEstateView(result.data);

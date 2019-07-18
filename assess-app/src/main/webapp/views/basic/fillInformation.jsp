@@ -65,35 +65,25 @@
                         basicCommon.hideAllTab();
                         //初始楼盘信息
                         if("estate"=="${buildingType}"){
+
                             estateCommon.loadMarkerList(result.data.id);
-                            estateCommon.init(result.data.id,basicCommon.showEstateTab("add"));
-                            setTimeout(function () {
-                                $("#basicEstateFrm").find("input[name=id]").val("${tableId}");
-                            }, 2000);
+                            estateCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showEstateTab("add"));
                         }
 
                         //初始楼栋信息
                         if("building"=="${buildingType}") {
                             buildingCommon.loadMarkerList(result.data.id);
-                            buildingCommon.init(result.data.id, basicCommon.showBuildingTab("add"));
-                            setTimeout(function () {
-                                $("#basicBuildingFrm").find("input[name=id]").val("${tableId}");
-                            }, 2000);
+                            buildingCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showBuildingTab("add"));
+
                         }
                         //初始单元信息
                         if("unit"=="${buildingType}") {
                             unitCommon.loadMarkerList(result.data.id);
-                            unitCommon.init(result.data.id, basicCommon.showUnitTab("add"));
-                            setTimeout(function () {
-                                $("#basicUnitFrm").find("input[name=id]").val("${tableId}");
-                            }, 2000);
+                            unitCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showUnitTab("add"));
                         }
                         //初始房屋信息
                         if("house"=="${buildingType}") {
-                            houseCommon.init(result.data.id, basicCommon.showHouseTab("add"));
-                            setTimeout(function () {
-                                $("#basicHouseFrm").find("input[name=id]").val("${tableId}");
-                            }, 2000);
+                            houseCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showHouseTab("add"));
                         }
                         $('#divBoxProjectItemData').modal('hide');
                         $('#divBoxProjectData').modal('hide');

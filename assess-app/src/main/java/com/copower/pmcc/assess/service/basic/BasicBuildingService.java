@@ -285,6 +285,17 @@ public class BasicBuildingService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void clearInvalidData2(Integer tableId) throws Exception {
+        StringBuilder sqlBulder = new StringBuilder();
+        String baseSql = "delete from %s where building_id=%s;";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), tableId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), tableId));
+
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
+    }
     /**
      * 将CaseBuilding下的子类 转移到 BasicBuilding下的子类中去 (用做过程数据)
      *
@@ -357,27 +368,45 @@ public class BasicBuildingService {
 
    //引用项目中的数据
     @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding getBasicBuildingFromProject(Integer applyId) throws Exception {
+    public BasicBuilding getBasicBuildingFromProject(Integer applyId,Integer tableId) throws Exception {
         if (applyId == null) {
             throw new Exception("null point");
         }
-        //applyId = applyId == null ? 0 : applyId;
         //清理数据
         this.clearInvalidData(0);
         BasicBuildingVo oldbasicBuilding = this.getBasicBuildingByApplyId(applyId);
-        //CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseBuildingId);
         if (oldbasicBuilding == null) {
             return null;
         }
         BasicBuilding basicBuilding = new BasicBuilding();
+        if(tableId!=null) {
+            this.clearInvalidData2(tableId);
+        }
         BeanUtils.copyProperties(oldbasicBuilding, basicBuilding);
         basicBuilding.setApplyId(0);
         basicBuilding.setCreator(commonService.thisUserAccount());
         basicBuilding.setGmtCreated(null);
         basicBuilding.setGmtModified(null);
-        basicBuilding.setBuildingNumber(null);
-        basicBuilding.setBuildingName(null);
-        basicBuildingDao.addBasicBuilding(basicBuilding);
+        if(tableId!=null){
+            basicBuilding.setId(tableId);
+            basicBuilding.setApplyId(null);
+        }else{
+            basicBuilding.setId(null);
+        }
+        this.saveAndUpdateBasicBuilding(basicBuilding);
+
+        //删除原有的附件
+        if(tableId!=null) {
+            SysAttachmentDto deleteExample = new SysAttachmentDto();
+            deleteExample.setTableId(tableId);
+            deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
+            if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
+                for (SysAttachmentDto item : attachmentList) {
+                    baseAttachmentService.deleteAttachment(item.getId());
+                }
+            }
+        }
 
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
@@ -397,6 +426,10 @@ public class BasicBuildingService {
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
+            if(tableId!=null){
+                basicEstateTagging.setApplyId(null);
+                basicEstateTagging.setTableId(tableId);
+            }
             basicEstateTagging.setName(null);
             basicEstateTagging.setGmtCreated(null);
             basicEstateTagging.setGmtModified(null);
