@@ -731,6 +731,61 @@ public class ProjectPlanDetailsService {
     }
 
     /**
+     * 批量调整任务责任人
+     *
+     * @param planDetailsIds
+     * @param newExecuteUser
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void batchUpdateExecuteUser(List<Integer> planDetailsIds, String newExecuteUser) throws BusinessException {
+        List<ProjectPlanDetails> projectPlanDetailsByIds = this.getProjectPlanDetailsByIds(planDetailsIds);
+        for (ProjectPlanDetails projectPlanDetails: projectPlanDetailsByIds) {
+            if (projectPlanDetails == null) return;
+            if (StringUtils.isBlank(newExecuteUser))
+                throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+            if (projectPlanDetails.getBisStart())
+                continue;
+            projectPlanDetails.setExecuteUserAccount(newExecuteUser);
+            SysUserDto sysUser = erpRpcUserService.getSysUser(newExecuteUser);
+            projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+
+            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
+            projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
+            projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
+            projectResponsibilityDto.setPlanDetailsId(projectPlanDetails.getId());
+            ProjectResponsibilityDto projectTask = bpmRpcProjectTaskService.getProjectTask(projectResponsibilityDto);
+            if (projectTask != null) {
+                projectTask.setUserAccount(newExecuteUser);
+                bpmRpcProjectTaskService.updateProjectTask(projectTask);
+            }
+
+
+            //当任务为现场查勘或案例调查时特殊处理
+            ProjectPhase projectPhaseExplore = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
+            ProjectPhase projectPhaseStudy = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
+            if (projectPlanDetails.getProjectPhaseId().equals(projectPhaseExplore.getId()) || projectPlanDetails.getProjectPhaseId().equals(projectPhaseStudy.getId())) {
+                //将task任务也移交过去
+                ProjectPlanDetails parentDetail = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
+                if (parentDetail != null) {
+                    parentDetail.setExecuteUserAccount(newExecuteUser);
+                    parentDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
+                    projectPlanDetailsDao.updateProjectPlanDetails(parentDetail);
+                }
+                List<SurveyExamineTask> taskList = surveyExamineTaskService.getTaskListByPlanDetailsId(projectPlanDetails.getPid());
+                if (CollectionUtils.isNotEmpty(taskList)) {
+                    for (SurveyExamineTask surveyExamineTask : taskList) {
+                        surveyExamineTask.setUserAccount(newExecuteUser);
+                        surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
      * 任务粘贴
      *
      * @param copyPlanDetailsId

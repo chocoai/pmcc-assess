@@ -157,8 +157,8 @@
                                     </p>
                                     <div class="col-md-3">
                                         <small>
-                                            <a href="javascript://;" class="btn btn-xs btn-success" onclick="batchUpdateExecuteUser()">批量设置责任人<i
-                                                    class="fa fa-plus"></i>
+                                            <a href="javascript://;" class="btn btn-xs btn-success"
+                                               onclick="batchUpdateExecuteUser()">批量设置责任人
                                             </a>
                                         </small>
                                         <ul id="ztree${plan.id}" class="ztree"></ul>
@@ -300,13 +300,13 @@
 
     function writeToErpProject() {
         $.ajax({
-            url:'${pageContext.request.contextPath}/home/writeToErpProject',
-            data:{projectId:'${projectInfo.id}'},
-            type:'post',
-            success:function (result) {
-                if(result.ret){
+            url: '${pageContext.request.contextPath}/home/writeToErpProject',
+            data: {projectId: '${projectInfo.id}'},
+            type: 'post',
+            success: function (result) {
+                if (result.ret) {
                     Alert("写入成功");
-                }else{
+                } else {
                     Alert(result.errmsg);
                 }
             }
@@ -876,6 +876,7 @@
 </script>
 <script type="application/javascript">
     var zTreeObj;
+
     function ztreeInit(options) {
         var defaults = {
             target: undefined,
@@ -884,8 +885,8 @@
         }
         var defaults = $.extend({}, defaults, options);
         var setting = {
-            check:{
-                enable:true
+            check: {
+                enable: true
             },
             view: {
                 selectedMulti: false  //允许同时选中多个节点。
@@ -911,7 +912,7 @@
                         type: 'post',
                         success: function (result) {
                             if (result) {
-                                console.log(JSON.stringify(result.data)+"===");
+                                console.log(JSON.stringify(result.data) + "===");
                                 var s = "";
                                 if (!result.data.bisStart && result.data.bisLastLayer && '${isPM}' == 'true') {
                                     s += " <a onclick='projectDetails.updateExecuteUser(\"" + result.data.id + "\")' href='javascript://' title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
@@ -977,41 +978,52 @@
     //调整责任人
     function batchUpdateExecuteUser() {
         var nodes = zTreeObj.getCheckedNodes(true);
-        var length=0;
-        for(var ever in nodes) {
+        var length = 0;
+        for (var p in nodes) {
             length++;
         }
-        console.log(length)
-        if(length==0){
+        if (length == 0) {
             alert("请勾选节点");
             return false;
         }
-        console.log(nodes);
-        <%--layer.close(layer.index);--%>
-        <%--erpEmployee.select({--%>
-            <%--currOrgId: '${companyId}',--%>
-            <%--onSelected: function (data) {--%>
-                <%--if (data && data.account) {--%>
-                    <%--$.ajax({--%>
-                        <%--url: '${pageContext.request.contextPath}/projectPlanDetails/updateExecuteUser',--%>
-                        <%--data: {--%>
-                            <%--planDetailsId: planDetailsId,--%>
-                            <%--newExecuteUser: data.account--%>
-                        <%--},--%>
-                        <%--success: function (result) {--%>
-                            <%--if (result.ret) {--%>
-                                <%--toastr.success('责任人调整成功');--%>
-                                <%--projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());--%>
-                            <%--} else {--%>
-                                <%--Alert(result.errmsg);--%>
-                            <%--}--%>
-                        <%--}--%>
-                    <%--});--%>
-                <%--} else {--%>
-                    <%--Alert("还未选择任何人员");--%>
-                <%--}--%>
-            <%--}--%>
-        <%--});--%>
+        var planDetailsIds = [];
+        for (var i = 0; i < length; i++) {
+            console.log(nodes[i].bisLastLayer + "===" + nodes[i].pid);
+            if (nodes[i].bisLastLayer == true) {
+                planDetailsIds.push(nodes[i].id);
+            }
+            if (nodes[i].bisLastLayer == false && nodes[i].pid != null && nodes[i].pid != 0) {
+                planDetailsIds.push(nodes[i].id);
+            }
+
+        }
+        var ids = planDetailsIds;
+        console.log(planDetailsIds + "--");
+        layer.close(layer.index);
+        erpEmployee.select({
+            currOrgId: '${companyId}',
+            onSelected: function (data) {
+                if (data && data.account) {
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/projectPlanDetails/batchUpdateExecuteUser',
+                        data: {
+                            planDetailsIds: planDetailsIds.join(),
+                            newExecuteUser: data.account
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                toastr.success('责任人调整成功');
+                                projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                            } else {
+                                Alert(result.errmsg);
+                            }
+                        }
+                    });
+                } else {
+                    Alert("还未选择任何人员");
+                }
+            }
+        });
     }
 </script>
 </html>
