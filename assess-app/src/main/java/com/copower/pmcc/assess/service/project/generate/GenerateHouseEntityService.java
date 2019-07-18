@@ -151,11 +151,11 @@ public class GenerateHouseEntityService {
         StringBuilder builder = new StringBuilder();
         if (basicBuilding.getBuildingArea() != null)
             builder.append(String.format("建筑面积%s平方米，", basicBuilding.getBuildingArea()));
-        if (basicBuilding.getInJacketArea() != null)
+        if (StringUtils.isNotBlank(basicBuilding.getInJacketArea()))
             builder.append(String.format("套内面积%s平方米，", basicBuilding.getInJacketArea()));
-        if (basicBuilding.getUseArea() != null)
+        if (StringUtils.isNotBlank(basicBuilding.getUseArea()))
             builder.append(String.format("使用面积%s平方米，", basicBuilding.getUseArea()));
-        if (basicBuilding.getBuildingHeight() != null)
+        if (StringUtils.isNotBlank(basicBuilding.getBuildingHeight()))
             builder.append(String.format("建筑高度%s米，", basicBuilding.getBuildingHeight()));
         if (basicBuilding.getFirstFloor() != null)
             builder.append(String.format("首层%s至", basicBuilding.getFirstFloor()));
@@ -163,7 +163,7 @@ public class GenerateHouseEntityService {
             builder.append(String.format("最高层%s是", basicBuilding.getMaxFloor()));
         if (basicBuilding.getPropertyType() != null)
             builder.append(String.format("%s，", baseDataDicService.getNameById(basicBuilding.getPropertyType())));
-        if (basicBuilding.getFloorHeight() != null)
+        if (StringUtils.isNotBlank(basicBuilding.getFloorHeight()))
             builder.append(String.format("层高%s米", basicBuilding.getFloorHeight()));
         return builder.toString();
     }
