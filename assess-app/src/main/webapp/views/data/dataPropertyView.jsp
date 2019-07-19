@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/7/19
-  Time: 14:37
-  To change this template use File | Settings | File Templates.
---%>
+
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -66,6 +60,7 @@
 </div>
 </body>
 <%@include file="/views/data/dataPropertyServiceItem.jsp" %>
+<%@include file="/views/data/dataPropertyModelQuote.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
@@ -119,73 +114,38 @@
             });
         },
         removeData:function (id) {
-            Alert("确认删除!",2,null,function () {
-                $.ajax({
-                    url:"${pageContext.request.contextPath}/dataProperty/deleteDataPropertyById",
-                    type: "post",
-                    dataType: "json",
-                    data: {id:id},
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('删除成功');
-                            dataProperty.prototype.loadDataDicList();
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            });
+            dataPropertyModelQuote.deleteDataProperty(id,function () {
+                toastr.success('删除成功');
+                dataProperty.prototype.loadDataDicList();
+            }) ;
         },
         showModel:function () {
-            $("#"+dataProperty.prototype.config().frm).clearAll();
-            $('#'+dataProperty.prototype.config().box).modal("show");
+            var target = $('#'+dataProperty.prototype.config().box) ;
+            target.find(".panel-body").empty() ;
+            target.find(".panel-body").append(dataPropertyModelQuote.getFatherHtml()) ;
+            target.find("form").clearAll();
+            target.modal("show");
         },
         saveData:function () {
             if (!$("#"+dataProperty.prototype.config().frm).valid()){
                 return false;
             }
             var data = formParams(dataProperty.prototype.config().frm);
-            $.ajax({
-                url:"${pageContext.request.contextPath}/dataProperty/saveAndUpdateDataProperty",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        $('#'+dataProperty.prototype.config().box).modal('hide');
-                        dataProperty.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            dataPropertyModelQuote.saveDataProperty(data,function () {
+                toastr.success('保存成功');
+                $('#'+dataProperty.prototype.config().box).modal('hide');
+                dataProperty.prototype.loadDataDicList();
+            }) ;
         },
         getAndInit:function (id) {
-            $.ajax({
-                url:"${pageContext.request.contextPath}/dataProperty/getDataPropertyById",
-                type: "get",
-                dataType: "json",
-                data: {id:id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#"+dataProperty.prototype.config().frm).clearAll();
-                        $("#" + dataProperty.prototype.config().frm).initForm(result.data);
-                        $('#'+dataProperty.prototype.config().box).modal("show");
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            var data = $("#"+dataProperty.prototype.config().table).bootstrapTable('getRowByUniqueId',id);
+            var target = $('#'+dataProperty.prototype.config().box) ;
+            target.find(".panel-body").empty() ;
+            target.find(".panel-body").append(dataPropertyModelQuote.getFatherHtml()) ;
+            target.find("form").clearAll();
+            target.find("form").find(".form-group").show();
+            target.find("form").initForm(data);
+            target.modal("show");
         }
 
     }
@@ -200,57 +160,11 @@
                 <h3 class="modal-title">物业公司</h3>
             </div>
             <form id="frmFather" class="form-horizontal">
-                <input type="hidden" id="id" name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="name"
-                                                   placeholder="名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            公司性质
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="companyNature" class="form-control search-select select2">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach items="${unitPropertiesList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            社会信誉
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="socialPrestige" class="form-control search-select select2">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach items="${reputations}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-success"
-                                            onclick="showItemable()" data-toggle="modal"> 设置服务内容
-                                    </button>
-                                </div>
+
                             </div>
                         </div>
                     </div>

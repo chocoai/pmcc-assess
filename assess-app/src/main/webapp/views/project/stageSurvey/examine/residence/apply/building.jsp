@@ -241,7 +241,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    竣工时间获取方式<span class="symbol required">
+                    竣工时间获取方式<span class="symbol required"></span>
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="completedTimeType" required class="form-control completedTimeType search-select select2">
@@ -260,11 +260,11 @@
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    物业公司
+                    楼间距<span class="symbol required"></span>
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="hidden" name="property" placeholder="物业公司" class="form-control" value="${basicBuilding.property}">
-                    <input type="text" name="propertyName" placeholder="物业公司" class="form-control" value="${basicBuilding.propertyName}">
+                    <select name="betweenDistance" required class="form-control betweenDistance search-select select2">
+                    </select>
                 </div>
             </div>
         </div>
@@ -332,21 +332,31 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    楼间距<span class="symbol required">
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="betweenDistance" required class="form-control betweenDistance search-select select2">
-                    </select>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼间距描述</label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <textarea class="form-control" name="betweenDistanceDescription"
+                                  placeholder="楼间距描述">${basicBuilding.betweenDistanceDescription}</textarea>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼间距描述</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <textarea class="form-control" name="betweenDistanceDescription"
-                                  placeholder="楼间距描述">${basicBuilding.betweenDistanceDescription}</textarea>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    物业公司
+                </label>
+                <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
+                    <div class="input-group">
+                        <input type="hidden" name="property" placeholder="物业公司 (请输入物业公司第一个名称)" class="form-control" value="${basicBuilding.property}">
+                        <input type="text" name="propertyName" placeholder="物业公司" class="form-control" value="${basicBuilding.propertyName}">
+                        <span class="input-group-btn">
+                                        <input type="button" class="btn btn-primary" value="物业公司添加"
+                                               onclick="buildingCommon.addPropertyHandle(this);">
+                                    </span>
+                        <span class="input-group-btn">
+                                        <input type="button" class="btn btn-primary" value="当前物业公司服务查看"
+                                               onclick="buildingCommon.propertyHandle(this);">
+                                    </span>
+                    </div>
                 </div>
             </div>
         </div>

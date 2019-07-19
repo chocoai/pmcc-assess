@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
@@ -295,75 +296,34 @@ public class EvaluationHypothesisService {
 
             //不相一致假设
             if (AssessReportFieldConstant.HYPOTHESIS_INCONFORMITY.equals(basis.getFieldName())) {
-                boolean flag = true;//是否输出标题
-
-                for (SchemeJudgeObject judgeObject : judgeObjectList) {
-                    //对应资产清查内容
-                    SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
-                    List<SurveyAssetInventoryContent> SurveyAssetInventoryContents = surveyAssetInventoryContentService.getContentListByPlanDetailsId(surveyAssetInventory.getPlanDetailId());
-
-                    for (SurveyAssetInventoryContent item : SurveyAssetInventoryContents) {
-                        switch (baseDataDicService.getCacheDataDicById(item.getInventoryContent()).getFieldName()) {
-                            //证载地址
-                            case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS:
-                                if ("不一致".equals(item.getAreConsistent())) {
-                                    if (flag == true) {
-                                        stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                                        stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
-                                        flag = false;
-                                    }
-                                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOAD_ADDRESS);
-                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))
-                                            .replace("#{房产证登记地址}", item.getRegistration())
-                                            .replace("#{土地证登记地址}", item.getActual())
-                                            .replace("#{证明文件名称}", item.getCredential())
-                                            .replace("#{证明文件说明内容}", item.getDifferenceReason())).append("</p>");
-
-                                }
-                                break;
-                            //登记地址
-                            case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS:
-                                if ("不一致".equals(item.getAreConsistent())) {
-                                    if (flag == true) {
-                                        stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                                        stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
-                                        flag = false;
-                                    }
-                                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTERED_ADDRESS);
-                                    stringBuilder.append("<p style=\"text-indent:2em\">")
-                                            .append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))
-                                                    .replace("#{登记地址}", item.getRegistration())
-                                                    .replace("#{实际地址}", item.getActual())
-                                                    .replace("#{证明文件名称}", item.getCredential())
-                                                    .replace("#{证明文件说明内容}", item.getDifferenceReason())).append("</p>");
-
-                                }
-                                break;
-                            //登记用途
-                            case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE:
-                                if ("不一致".equals(item.getAreConsistent())) {
-                                    if (flag == true) {
-                                        stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                                        stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
-                                        flag = false;
-                                    }
-                                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTRATION_PURPOSES);
-                                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))
-                                            .replace("#{登记用途}", item.getRegistration())
-                                            .replace("#{实际用途}", item.getActual())
-                                            .replace("#{证明文件名称}", item.getCredential())
-                                            .replace("#{证明文件说明内容}", item.getDifferenceReason())).append("</p>");
-                                }
-                                break;
+                stringBuilder.append(AsposeUtils.getWarpElementCssHtml(String.format("%s、%s", ++order2, basis.getName()), "p", "text-indent", "2em"));
+                if (StringUtils.isNotBlank(basis.getTemplate())) {
+                    stringBuilder.append(AsposeUtils.getWarpElementCssHtml(basis.getTemplate(), "p", "text-indent", "2em"));
+                }
+                BaseDataDic type = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
+                List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
+                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                    StringBuffer stringBuffer = new StringBuffer(8);
+                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                        if (schemeJudgeObject.getDeclareRecordId() != null) {
+                            String registration = generateCommonMethod.getAssetInventoryCommon("registration", type, schemeJudgeObject.getDeclareRecordId(), projectInfo);//证载地址
+                            String addressAssetInventory = generateCommonMethod.getAssetInventoryCommon("actual", type, schemeJudgeObject.getDeclareRecordId(), projectInfo);//现场查勘地址
+                            if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)) {
+                                stringBuffer.append(String.format("%s号估价对象证载地址为", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject)));
+                                stringBuffer.append(registration);
+                                stringBuffer.append("，");
+                                stringBuffer.append("估价人员现场查勘地址为");
+                                stringBuffer.append(addressAssetInventory);
+                                stringBuffer.append("，");
+                                stringBuffer.append("经").append(generateCommonMethod.getAssetInventoryCommon("voucher", type, schemeJudgeObject.getDeclareRecordId(), projectInfo)).append("出具");
+                                stringBuffer.append("《").append(generateCommonMethod.getAssetInventoryCommon("credential", type, schemeJudgeObject.getDeclareRecordId(), projectInfo)).append("》").append("确认一致。");
+                            }
                         }
                     }
+                    if (StringUtils.isNotBlank(stringBuffer.toString())){
+                        stringBuilder.append(AsposeUtils.getWarpElementCssHtml(stringBuffer.toString(), "p", "text-indent", "2em"));
+                    }
                 }
-                if (flag == true) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append("无不相一致假设。").append("</p>");
-
-                }
-
             }
 
             //依据不足假设
