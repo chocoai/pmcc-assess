@@ -14,10 +14,7 @@ import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformati
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
-import com.copower.pmcc.assess.service.event.project.ProjectInfoChangeEvent;
-import com.copower.pmcc.assess.service.event.project.ProjectPauseChangeEvent;
-import com.copower.pmcc.assess.service.event.project.ProjectRestartChangeEvent;
-import com.copower.pmcc.assess.service.event.project.ProjectStopChangeEvent;
+import com.copower.pmcc.assess.service.event.project.*;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
@@ -168,6 +165,9 @@ public class ProjectStateChangeService extends BaseService {
             processInfo.setProcessEventExecutor(ProjectRestartChangeEvent.class);
         } else if (projectChangeTypeEnum.equals(ProjectChangeTypeEnum.INFO_CHANGE)) {
             processInfo.setProcessEventExecutor(ProjectInfoChangeEvent.class);
+            processInfo.setProcessEventExecutor(ProjectInfoChangeEvent.class);
+        }else if(projectChangeTypeEnum.equals(ProjectChangeTypeEnum.SCHEME_CHANGE)){
+            processInfo.setProcessEventExecutor(ProjectSchemeChangeEvent.class);
         }
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setTableId(costsProjectChangeLog.getId());
