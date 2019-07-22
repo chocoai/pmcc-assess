@@ -20,6 +20,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <%@include file="/views/data/dataPropertyModelQuote.jsp" %>
 
             <form id="basicApplyFrm">
                 <!--案例或者查勘 entity json-->

@@ -681,8 +681,19 @@ public class AsposeUtils {
      * @return
      */
     public static String getWarpCssHtml(String html, List<KeyValueDto> keyValueDtoList) {
+        return getWarpElementCssHtml(html,"div",keyValueDtoList) ;
+    }
+
+    /**
+     * 例如: <element style='font-family:仿宋_GB2312;font-size:14pt;line-height:100%;'>html</element>
+     * @param html
+     * @param element
+     * @param keyValueDtoList
+     * @return
+     */
+    public static String getWarpElementCssHtml(String html,String element, List<KeyValueDto> keyValueDtoList) {
         StringBuilder stringBuilder = new StringBuilder(8);
-        stringBuilder.append("<div").append(" ");
+        stringBuilder.append("<").append(element).append(" ");
         if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
             if (keyValueDtoList.stream().anyMatch(keyValueDto -> {
                 if (StringUtils.isNotEmpty(keyValueDto.getKey()) && StringUtils.isNotEmpty(keyValueDto.getValue())) {
@@ -701,7 +712,7 @@ public class AsposeUtils {
         }
         stringBuilder.append(">");
         stringBuilder.append(html);
-        stringBuilder.append("</div>");
+        stringBuilder.append("</").append(element).append(">");
         return stringBuilder.toString();
     }
 
@@ -709,6 +720,12 @@ public class AsposeUtils {
         List<KeyValueDto> keyValueDtoList = new ArrayList<>(1);
         keyValueDtoList.add(new KeyValueDto(key, value));
         return getWarpCssHtml(html, keyValueDtoList);
+    }
+
+    public static String getWarpElementCssHtml(String html,String element, String key, String value) {
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(1);
+        keyValueDtoList.add(new KeyValueDto(key, value));
+        return getWarpElementCssHtml(html, element,keyValueDtoList);
     }
 
     public static List<KeyValueDto> getKeyValueDtoList() {

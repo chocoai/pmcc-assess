@@ -40,7 +40,6 @@ public class GenerateLoactionService {
     @Autowired
     private ErpAreaService erpAreaService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private StringBuffer stringBuffer = new StringBuffer(8);
     private final String error = "无";
 
 
@@ -534,9 +533,14 @@ public class GenerateLoactionService {
         }).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
             builder.append("限行情况:");
+            Set<String> stringSet = Sets.newHashSet();
+            StringBuffer stringBuffer = new StringBuffer(8) ;
             basicMatchingTrafficList.stream().forEach(basicMatchingTrafficVo -> {
-                builder.append(basicMatchingTrafficVo.getLimitSpeed()).append(basicMatchingTrafficVo.getLimitTime()).append(basicMatchingTrafficVo.getLimitSpeialName()).append(";");
+                stringBuffer.append(basicMatchingTrafficVo.getLimitSpeed()).append(basicMatchingTrafficVo.getLimitTime()).append(basicMatchingTrafficVo.getLimitSpeialName()).append(";") ;
+                stringSet.add(stringBuffer.toString()) ;
+                stringBuffer.delete(0,stringBuffer.toString().length()) ;
             });
+            builder.append(StringUtils.join(stringSet,"")) ;
         }
         return builder.toString();
     }
@@ -651,6 +655,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getPosition(BasicEstate basicEstate) throws Exception {
+        StringBuffer stringBuffer = new StringBuffer(8);
         stringBuffer.delete(0, stringBuffer.toString().length());
         if (basicEstate != null) {
             stringBuffer.append(erpAreaService.getSysAreaName(basicEstate.getProvince()))
@@ -678,6 +683,7 @@ public class GenerateLoactionService {
      * @return
      */
     public String getFloor(List<SchemeJudgeObject> judgeObjectList) {
+        StringBuffer stringBuffer = new StringBuffer(8);
         stringBuffer.delete(0, stringBuffer.toString().length());
         Map<Integer, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {

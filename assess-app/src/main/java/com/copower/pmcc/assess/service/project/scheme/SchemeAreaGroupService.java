@@ -396,6 +396,9 @@ public class SchemeAreaGroupService {
                 }
             }
         }
+        if (result.doubleValue() > 0){
+            result = result.setScale(2,BigDecimal.ROUND_HALF_UP) ;
+        }
         return result;
     }
 
@@ -413,6 +416,9 @@ public class SchemeAreaGroupService {
                     result = result.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
                 }
             }
+        }
+        if (result.doubleValue() > 0){
+            result = result.setScale(2,BigDecimal.ROUND_HALF_UP) ;
         }
         return result;
     }

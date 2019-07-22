@@ -29,6 +29,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -1079,13 +1080,9 @@ public class GenerateMdCompareService {
                                 } else {
                                     builder.insertCell();
                                     if (isIndex) {
-                                        if (item2.getScore() != null) {
-                                            builder.writeln(item2.getScore().toString());
-                                        } else {
-                                            builder.writeln("");
-                                        }
+                                        builder.writeln(item2.getScore() == null?"":item2.getScore().toString());
                                     } else {
-                                        builder.writeln(item2.getValue());
+                                        builder.writeln(StringUtil.isEmpty(item2.getValue())?"无":item2.getValue());
                                     }
                                 }
                             }

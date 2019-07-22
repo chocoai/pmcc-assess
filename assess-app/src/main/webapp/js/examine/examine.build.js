@@ -24,6 +24,21 @@
         return buildingCommon.buildingForm.find('[name=buildingNumber]').val();
     };
 
+    //物业操作
+    buildingCommon.propertyHandle = function (_this) {
+        var group = $(_this).closest(".input-group") ;
+        var property = group.find("input[name='property']").val() ;
+        if (property){
+            dataPropertyModelQuote.dataPropertyServiceItemTableModalToolShow(property) ;
+        }else {
+            toastr.success('请先选择物业');
+        }
+    };
+
+    buildingCommon.addPropertyHandle = function (_this) {
+
+    };
+
     buildingCommon.detail = function (id) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',

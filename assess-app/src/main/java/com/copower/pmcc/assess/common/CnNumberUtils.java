@@ -94,7 +94,8 @@ public class CnNumberUtils implements Serializable {
         }
         clearZero(0, strBuilder);
         //小数位转换
-        strBuilder.append("圆");
+//        strBuilder.append("圆");
+        strBuilder.append("元");
         if (strNumArrayLength == 1 || strNumArray[1].matches("^[0]*$")) {
             strBuilder.append("整");
             return strBuilder.toString();
