@@ -1832,7 +1832,7 @@ public class GenerateBaseDataService {
                     String registration = getActualRegistration(type, schemeJudgeObject.getDeclareRecordId());//证载地址
                     String addressAssetInventory = getActualAddressAssetInventory(type, schemeJudgeObject.getDeclareRecordId());//现场查勘地址
                     if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)) {
-                        stringBuilder.append(String.format("%s号估价对象证载地址为", generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())));
+                        stringBuilder.append(String.format("%s号估价对象证载地址为", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject)));
                         stringBuilder.append(registration);
                         stringBuilder.append("，");
                         stringBuilder.append("估价人员现场查勘地址为");
@@ -2247,7 +2247,7 @@ public class GenerateBaseDataService {
         String value = getSchemeAreaGroup().getValueDefinitionDesc();
         if (StringUtils.isNotEmpty(value)) {
             if (StringUtils.isNotEmpty(value.trim())) {
-                return value;
+                return generateCommonMethod.trim(value);
             }
         }
         return " ";
@@ -2742,44 +2742,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     private String getAssetInventoryCommon(String fieldName, BaseDataDic type, Integer declareRecordId) throws Exception {
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
-        Set<SurveyAssetInventoryContent> surveyAssetInventoryContentSet = Sets.newHashSet();
-        Set<String> stringSet = Sets.newHashSet();
-        List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
-        if (projectPhase != null) {
-            ProjectPlanDetails query = new ProjectPlanDetails();
-            query.setProjectId(projectId);
-            query.setProjectPhaseId(projectPhase.getId());
-            query.setDeclareRecordId(declareRecordId);
-            List<ProjectPlanDetails> projectPlanDetailsList2 = projectPlanDetailsService.getProjectDetails(query);
-            if (CollectionUtils.isNotEmpty(projectPlanDetailsList2)) {
-                projectPlanDetailsList.addAll(projectPlanDetailsList2);
-            }
-        }
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                List<SurveyAssetInventoryContent> listByPlanDetailsId = surveyAssetInventoryContentService.getContentListByPlanDetailsId(projectPlanDetails.getId());
-                if (CollectionUtils.isNotEmpty(listByPlanDetailsId)) {
-                    listByPlanDetailsId.forEach(o -> {
-                        if (Objects.equal("不一致", o.getAreConsistent()) && Objects.equal(type.getId(), o.getInventoryContent()))
-                            surveyAssetInventoryContentSet.add(o);
-                    });
-                }
-            }
-        }
-        if (CollectionUtils.isNotEmpty(surveyAssetInventoryContentSet)) {
-            for (SurveyAssetInventoryContent surveyAssetInventoryContent : surveyAssetInventoryContentSet) {
-                String value = (String) Reflections.getFieldValue(surveyAssetInventoryContent, fieldName);
-                if (StringUtils.isNotEmpty(value)) {
-                    stringSet.add(value);
-                }
-            }
-        }
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            return StringUtils.join(stringSet, "");
-        } else {
-            return null;
-        }
+        return generateCommonMethod.getAssetInventoryCommon(fieldName,type,declareRecordId,projectInfo) ;
     }
 
     /**
@@ -3400,9 +3363,6 @@ public class GenerateBaseDataService {
                 if (schemeReimbursementItemVo.getKnowTotalPrice() != null) {
                     knowTotalPrice = knowTotalPrice.add(schemeReimbursementItemVo.getKnowTotalPrice());
                 }
-            }
-            if (knowTotalPrice.doubleValue() > 0) {
-//                knowTotalPrice = knowTotalPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
             }
         }
         return knowTotalPrice;

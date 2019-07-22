@@ -39,6 +39,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -189,7 +190,7 @@ public class GenerateReportService {
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             dir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
         }
-        if (PoiUtils.isWord2003(dir)){
+        if (PoiUtils.isWord2003(dir)) {
             Document doc = new Document(dir);
             Document clone = doc.deepClone();
 //            dir = generateCommonMethod.getLocalPath(null,"docx") ;
@@ -425,32 +426,32 @@ public class GenerateReportService {
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,""));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, ""));
                 }
                 //建行个贷特别提示
                 if (Objects.equal(BaseReportFieldEnum.HotTip2.getName(), name)) {
                     keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,BaseReportFieldEnum.HotTipBank.name()));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, BaseReportFieldEnum.HotTipBank.name()));
                 }
                 if (Objects.equal(BaseReportFieldEnum.HotTip4.getName(), name)) {
                     keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "11pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,BaseReportFieldEnum.HotTipBank.name()));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, BaseReportFieldEnum.HotTipBank.name()));
                 }
                 if (Objects.equal(BaseReportFieldEnum.HotTipBank.getName(), name)) {
                     keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "10pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,BaseReportFieldEnum.HotTipBank.name()));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, BaseReportFieldEnum.HotTipBank.name()));
                 }
                 if (Objects.equal(BaseReportFieldEnum.Atypism2.getName(), name)) {
                     keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
                     keyValueDtoList.add(new KeyValueDto("font-size", "10pt"));
                     keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList,BaseReportFieldEnum.HotTipBank.name()));
+                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, BaseReportFieldEnum.HotTipBank.name()));
                 }
                 //作业结束时间
                 if (Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), name)) {
@@ -827,7 +828,11 @@ public class GenerateReportService {
                 }
                 //法定优先受偿款总金额
                 if (Objects.equal(BaseReportFieldEnum.StatutoryPriorityAmountTotal.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeReimbursementKnowTotalPrice().toString());
+                    BigDecimal bigDecimal = generateBaseDataService.getSchemeReimbursementKnowTotalPrice();
+                    if (bigDecimal.doubleValue() > 0) {
+                        bigDecimal = bigDecimal.divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    }
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, bigDecimal.toString());
                 }
                 //估价对象区位状况表
                 if (Objects.equal(BaseReportFieldEnum.JudgeObjectAreaStatusSheet.getName(), name)) {
@@ -1068,14 +1073,14 @@ public class GenerateReportService {
     }
 
     private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
-        Map<String, String> errorMap2 = Maps.newHashMap() ;
-        List<String> typeList = Arrays.asList("\r","\n") ;
+        Map<String, String> errorMap2 = Maps.newHashMap();
+        List<String> typeList = Arrays.asList("\r", "\n");
         {
-            if (!textMap.isEmpty()){
-                textMap.forEach((key,value) -> {
+            if (!textMap.isEmpty()) {
+                textMap.forEach((key, value) -> {
                     typeList.forEach(s -> {
-                        if (StringUtils.contains(value,s)){
-                            errorMap2.put(key,value) ;
+                        if (StringUtils.contains(value, s)) {
+                            errorMap2.put(key, value);
                         }
                     });
                 });
@@ -1085,7 +1090,7 @@ public class GenerateReportService {
                     replaceHandleError(errorMap2, localPath);
                 } catch (Exception e) {
                     String error = e.getMessage();
-                    logger.info(error,e);
+                    logger.info(error, e);
                     //docx 结尾的会出错
                 }
             }
