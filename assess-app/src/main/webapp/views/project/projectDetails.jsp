@@ -322,6 +322,16 @@
     var projectDetails = {
         loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
+            <%--ztreeInit({--%>
+                <%--target: $('#ztree' + that.attr('plan-id')),--%>
+                <%--projectId: '${projectInfo.id}',--%>
+                <%--planId: that.attr('plan-id')--%>
+            <%--});--%>
+            <%--projectDetails.loadTaskList({--%>
+                <%--target: $('#plan_task_list' + that.attr('plan-id')),--%>
+                <%--projectId: '${projectInfo.id}',--%>
+                <%--planId: that.attr('plan-id')--%>
+            <%--});--%>
 
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId",
@@ -664,22 +674,22 @@
         },
 
         //打开任务页面的回调
-        taskOpenWin: function (url) {
+        taskOpenWin: function (id,url) {
             layer.closeAll();
             openWin(url, function () {
-                projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
-                <%--$.ajax({--%>
-                    <%--url: "${pageContext.request.contextPath}/projectPlanDetails/getProjectPlanDetailsById",--%>
-                    <%--data: {--%>
-                        <%--id:id--%>
-                    <%--},--%>
-                    <%--type: 'post',--%>
-                    <%--success: function (result) {--%>
-                        <%--if (result) {--%>
-                            <%--refreshNode(result);--%>
-                        <%--}--%>
-                    <%--}--%>
-                <%--})--%>
+                //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/projectPlanDetails/getProjectPlanDetailsById",
+                    data: {
+                        id:id
+                    },
+                    type: 'post',
+                    success: function (result) {
+                        if (result) {
+                            refreshNode(result.data);
+                        }
+                    }
+                })
             })
         },
 
@@ -717,8 +727,8 @@
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('任务重启成功');
-                            projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
-                            //refreshNode(result);
+                           //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                            refreshNode(result.data);
                             layer.closeAll();
                         } else {
                             toastr.info(result.errmsg);
@@ -745,8 +755,8 @@
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('责任人调整成功');
-                                    projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
-                                    //refreshNode(result);
+                                    //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                                    refreshNode(result.data);
                                 } else {
                                     Alert(result.errmsg);
                                 }
@@ -927,7 +937,7 @@
             },
             view: {
                 selectedMulti: false, //允许同时选中多个节点。
-                fontCss: setFontCss
+                showIcon:true
             },
             data: {
                 key: {
@@ -960,7 +970,7 @@
                                     if (/processInsId/.test(result.data.excuteUrl)) {
                                         btnClass = 'btn-primary';
                                     }
-                                    s += " <a onclick='projectDetails.taskOpenWin(\"" + result.data.excuteUrl + "\")' href='javascript://' title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                    s += " <a onclick='projectDetails.taskOpenWin(" + result.data.id + ",\"" + result.data.excuteUrl + "\")' href='javascript://' title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
                                 } else if (result.data.displayUrl) {
                                     if (result.data.canReplay) {
                                         s += " <a href='javascript://' onclick='projectDetails.replyTask(" + result.data.id + ")' title='重启' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
@@ -1004,6 +1014,9 @@
             success: function (result) {
                 if (result) {
                     console.log(result.rows);
+                    $.each(result.rows, function (i, item) {
+                        setNodeIcon(item);
+                    })
                     zTreeObj = $.fn.zTree.init(defaults.target, setting, result.rows);
                     var rootNode = zTreeObj.getNodes()[0];
                     zTreeObj.selectNode(rootNode);
@@ -1016,7 +1029,7 @@
     //设置节点颜色
     function setFontCss(treeId, treeNode) {
         //已完成
-        if(treeNode.bisRestart == false && treeNode.bisStart== true){
+        if(treeNode.displayUrl  && treeNode.canReplay == true && !treeNode.excuteUrl){
             return {color:"#CCCC33"};
         }
         //待处理
@@ -1098,10 +1111,29 @@
             node.processInsId = data.processInsId;
             node.actualHours = data.actualHours;
             node.bisRestart = data.bisRestart;
+            node.displayUrl = data.displayUrl;
+            node.canReplay = data.canReplay;
+            node.excuteUrl = data.excuteUrl;
+            setNodeIcon(node);
             zTreeObj.updateNode(node, false);
         }else{
             console.log(2)
             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+        }
+    }
+
+    function setNodeIcon(item) {
+        //已完成
+        if(item.displayUrl  && item.canReplay == true && !item.excuteUrl){
+            item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/search.png";
+        }
+        //待处理
+        else if(item.bisRestart == true && item.bisStart== false){
+            item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/pencil.png";
+        }
+        //待审批
+        else if(item.bisRestart == true && item.bisStart== true){
+            item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/tip.png";
         }
     }
 </script>

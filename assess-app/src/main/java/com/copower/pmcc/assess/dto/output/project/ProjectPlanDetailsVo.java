@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class ProjectPlanDetailsVo extends ProjectPlanDetails {
     private String nodeName;//ztree时显示的节点名称
+    private String icon;//图标
     private String _parentId;
 
     private String executeUserName;
@@ -130,5 +131,13 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
