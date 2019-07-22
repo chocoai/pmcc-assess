@@ -61,6 +61,10 @@
                                         <a href="${pageContext.request.contextPath}/project.information.change/applyView?projectId=${projectInfo.id}"
                                            target="_blank">信息变更</a>
                                     </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/project.scheme.change/applyView?projectId=${projectInfo.id}"
+                                           target="_blank">方案变更</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="btn-group">
@@ -155,7 +159,7 @@
                                         <input type="hidden" name="copyPlanDetailsId">
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3" id="showZtree">
                                         <small>
                                             <a href="javascript://;" class="btn btn-xs btn-success"
                                                onclick="batchUpdateExecuteUser()">批量设置责任人
@@ -318,17 +322,36 @@
     var projectDetails = {
         loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
-            projectDetails.loadTaskList({
-                target: $('#plan_task_list' + that.attr('plan-id')),
-                projectId: '${projectInfo.id}',
-                planId: that.attr('plan-id')
-            });
 
-            ztreeInit({
-                target: $('#ztree' + that.attr('plan-id')),
-                projectId: '${projectInfo.id}',
-                planId: that.attr('plan-id')
-            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId",
+                data: {
+                    projectId: '${projectInfo.id}',
+                    planId: that.attr('plan-id')
+                },
+                type: 'get',
+                success: function (result) {
+                    if (result) {
+                        console.log(result.total);
+                        if(result.total<=30){
+                            $("#showZtree a").hide();
+                            projectDetails.loadTaskList({
+                                target: $('#plan_task_list' + that.attr('plan-id')),
+                                projectId: '${projectInfo.id}',
+                                planId: that.attr('plan-id')
+                            });
+                        }else {
+                            $("#showZtree a").show();
+                            ztreeInit({
+                                target: $('#ztree' + that.attr('plan-id')),
+                                projectId: '${projectInfo.id}',
+                                planId: that.attr('plan-id')
+                            });
+                        }
+                    }
+                }
+            })
+
         },
 
         loadPlanItem: function (planId) {
@@ -645,6 +668,18 @@
             layer.closeAll();
             openWin(url, function () {
                 projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                <%--$.ajax({--%>
+                    <%--url: "${pageContext.request.contextPath}/projectPlanDetails/getProjectPlanDetailsById",--%>
+                    <%--data: {--%>
+                        <%--id:id--%>
+                    <%--},--%>
+                    <%--type: 'post',--%>
+                    <%--success: function (result) {--%>
+                        <%--if (result) {--%>
+                            <%--refreshNode(result);--%>
+                        <%--}--%>
+                    <%--}--%>
+                <%--})--%>
             })
         },
 
@@ -683,6 +718,7 @@
                         if (result.ret) {
                             toastr.success('任务重启成功');
                             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                            //refreshNode(result);
                             layer.closeAll();
                         } else {
                             toastr.info(result.errmsg);
@@ -710,6 +746,7 @@
                                 if (result.ret) {
                                     toastr.success('责任人调整成功');
                                     projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                                    //refreshNode(result);
                                 } else {
                                     Alert(result.errmsg);
                                 }
@@ -889,11 +926,12 @@
                 enable: true
             },
             view: {
-                selectedMulti: false  //允许同时选中多个节点。
+                selectedMulti: false, //允许同时选中多个节点。
+                fontCss: setFontCss
             },
             data: {
                 key: {
-                    name: "projectPhaseName"
+                    name: "nodeName"
                 },
                 simpleData: {
                     enable: true,
@@ -975,6 +1013,22 @@
         })
     }
 
+    //设置节点颜色
+    function setFontCss(treeId, treeNode) {
+        //已完成
+        if(treeNode.bisRestart == false && treeNode.bisStart== true){
+            return {color:"#CCCC33"};
+        }
+        //待处理
+        else if(treeNode.bisRestart == true && treeNode.bisStart== false){
+            return {color:"green"};
+        }
+        //待审批
+        else if(treeNode.bisRestart == true && treeNode.bisStart== true){
+            return {color:"blue"};
+        }
+    };
+
     //调整责任人
     function batchUpdateExecuteUser() {
         var nodes = zTreeObj.getCheckedNodes(true);
@@ -988,7 +1042,9 @@
         }
         var planDetailsIds = [];
         for (var i = 0; i < length; i++) {
-            console.log(nodes[i].bisLastLayer + "===" + nodes[i].pid);
+            if (nodes[i].bisRestart == false && nodes[i].bisStart == false) {
+                continue;
+            }
             if (nodes[i].bisLastLayer == true) {
                 planDetailsIds.push(nodes[i].id);
             }
@@ -1024,6 +1080,29 @@
                 }
             }
         });
+    }
+
+    /**
+     * 刷新当前节点
+     *
+     */
+    function refreshNode(data) {
+        if(zTreeObj) {
+            console.log(1)
+            var node = zTreeObj.getSelectedNodes()[0];
+            node.nodeName = data.nodeName;
+            node.status = data.status;
+            node.returnDetailsReason = data.returnDetailsReason;
+            node.taskSubmitTime = data.taskSubmitTime;
+            node.bisStart = data.bisStart;
+            node.processInsId = data.processInsId;
+            node.actualHours = data.actualHours;
+            node.bisRestart = data.bisRestart;
+            zTreeObj.updateNode(node, false);
+        }else{
+            console.log(2)
+            projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+        }
     }
 </script>
 </html>

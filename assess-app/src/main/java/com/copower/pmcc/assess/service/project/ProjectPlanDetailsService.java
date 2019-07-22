@@ -37,6 +37,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -487,6 +488,9 @@ public class ProjectPlanDetailsService {
         if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
             SysUserDto sysUser = erpRpcUserService.getSysUser(projectPlanDetails.getExecuteUserAccount());
             projectPlanDetailsVo.setExecuteUserName(sysUser == null ? "" : sysUser.getUserName());
+            projectPlanDetailsVo.setNodeName(String.format("%s(%s)",projectPlanDetails.getProjectPhaseName(),sysUser.getUserName()));
+        }else{
+            projectPlanDetailsVo.setNodeName(projectPlanDetails.getProjectPhaseName());
         }
         if (projectPlanDetails.getExecuteDepartmentId() != null) {
             SysDepartmentDto departmentById = erpRpcDepartmentService.getDepartmentById(projectPlanDetails.getExecuteDepartmentId());
@@ -656,10 +660,10 @@ public class ProjectPlanDetailsService {
      * @param reason
      */
     @Transactional(rollbackFor = Exception.class)
-    public void replyProjectPlanDetails(Integer planDetailsId, String reason) throws BusinessException {
+    public ProjectPlanDetailsVo replyProjectPlanDetails(Integer planDetailsId, String reason) throws BusinessException {
         //1.更新任务状态 记录重启原因 2.添加新的待提交任务
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
-        if (projectPlanDetails == null) return;
+        if (projectPlanDetails == null) return null;
         if (!StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue()))
             throw new BusinessException("已完成的任务才允许重启");
 
@@ -675,7 +679,7 @@ public class ProjectPlanDetailsService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
         projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-
+        return getProjectPlanDetailsVo(projectPlanDetails);
     }
 
     /**
@@ -685,9 +689,9 @@ public class ProjectPlanDetailsService {
      * @param newExecuteUser
      */
     @Transactional(rollbackFor = Exception.class)
-    public void updateExecuteUser(Integer planDetailsId, String newExecuteUser) throws BusinessException {
+    public ProjectPlanDetailsVo updateExecuteUser(Integer planDetailsId, String newExecuteUser) throws BusinessException {
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
-        if (projectPlanDetails == null) return;
+        if (projectPlanDetails == null) return null;
         if (StringUtils.isBlank(newExecuteUser))
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         if (projectPlanDetails.getBisStart())
@@ -728,6 +732,7 @@ public class ProjectPlanDetailsService {
                 }
             }
         }
+        return getProjectPlanDetailsVo(projectPlanDetails);
     }
 
     /**

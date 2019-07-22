@@ -13,6 +13,7 @@ import java.util.List;
  * @time: 17:00
  */
 public class ProjectPlanDetailsVo extends ProjectPlanDetails {
+    private String nodeName;//ztree时显示的节点名称
     private String _parentId;
 
     private String executeUserName;
@@ -121,5 +122,13 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setTasks(List<KeyValueDto> tasks) {
         this.tasks = tasks;
+    }
+
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
     }
 }

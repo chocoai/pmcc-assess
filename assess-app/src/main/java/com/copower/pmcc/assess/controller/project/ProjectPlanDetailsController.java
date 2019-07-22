@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -39,8 +41,8 @@ public class ProjectPlanDetailsController {
     @PostMapping(name = "重启任务", value = "/replyProjectPlanDetails")
     public HttpResult replyProjectPlanDetails(Integer planDetailsId, String reason) {
         try {
-            projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, reason);
-            return HttpResult.newCorrectResult();
+            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, reason);
+            return HttpResult.newCorrectResult(projectPlanDetailsVo);
         } catch (Exception e) {
             logger.error("重启任务", e);
             return HttpResult.newErrorResult("重启任务异常");
@@ -51,8 +53,8 @@ public class ProjectPlanDetailsController {
     @PostMapping(name = "调整责任人", value = "/updateExecuteUser")
     public HttpResult updateExecuteUser(Integer planDetailsId, String newExecuteUser) {
         try {
-            projectPlanDetailsService.updateExecuteUser(planDetailsId, newExecuteUser);
-            return HttpResult.newCorrectResult();
+            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.updateExecuteUser(planDetailsId, newExecuteUser);
+            return HttpResult.newCorrectResult(projectPlanDetailsVo);
         } catch (Exception e) {
             logger.error("调整责任人", e);
             return HttpResult.newErrorResult("调整责任人异常");
@@ -83,6 +85,19 @@ public class ProjectPlanDetailsController {
         } catch (Exception e) {
             logger.error("项目详情粘贴数据", e);
             return HttpResult.newErrorResult("粘贴数据异常");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "获取数据", value = "/getProjectPlanDetailsById")
+    public HttpResult replyProjectPlanDetails(Integer id) {
+        try {
+            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(id);
+            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.getProjectPlanDetailsVo(projectPlanDetails);
+            return HttpResult.newCorrectResult(projectPlanDetailsVo);
+        } catch (Exception e) {
+            logger.error("获取数据", e);
+            return HttpResult.newErrorResult("获取数据异常");
         }
     }
 }
