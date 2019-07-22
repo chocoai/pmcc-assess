@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;

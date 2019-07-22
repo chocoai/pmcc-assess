@@ -3652,28 +3652,19 @@ public class GenerateBaseDataService {
             linkedLists.add(nullValue);
         }
 
-        //抵押=总价-法定
+        BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
         if (mortgageFlag) {
-            BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
             linkedLists.add(generateCommonMethod.getBigDecimalRound(knowTotalPrice, 2, true));//9
+        }
+        //抵押=总价-法定
+        if (reimbursement) {
             if (schemeJudgeObject.getPrice() != null && declareRecord.getFloorArea() != null) {
                 BigDecimal totol = schemeJudgeObject.getPrice().multiply(declareRecord.getFloorArea());
-            linkedLists.add(generateCommonMethod.getBigDecimalRound(knowTotalPrice, 2, true));//9
-            if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
-                BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
                 BigDecimal mortgage = totol.subtract(knowTotalPrice);
                 mortgage = mortgage.divide(new BigDecimal(10000));
                 mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
-                if (reimbursement) {
-                    linkedLists.add(mortgage.toString());//10
-                }
+                linkedLists.add(mortgage.toString());//10
             } else {
-                if (reimbursement) {
-                    linkedLists.add(nullValue);
-                }
-            }
-        } else {
-            if (reimbursement) {
                 linkedLists.add(nullValue);
             }
         }
@@ -3689,6 +3680,7 @@ public class GenerateBaseDataService {
      * @param seat
      * @throws Exception
      */
+
     private void writeJudgeObjectResultSurveyInCell(BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat, boolean mortgageFlag) throws Exception {
         writeJudgeObjectResultSurveyInCell2(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, true, mortgageFlag);
     }
@@ -5255,7 +5247,7 @@ public class GenerateBaseDataService {
                         builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
                         builder.getCellFormat().setWidth(cellWidth);
                         builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-                        builder.getRowFormat().setAlignment(RowAlignment.LEFT);
+//                        builder.getRowFormat().setAlignment(RowAlignment.LEFT);
                         // builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     }
                 }
