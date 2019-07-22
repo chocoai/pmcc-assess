@@ -101,16 +101,17 @@
             return false;
         }
         var data = formSerializeArray(form);
+        var target = $("#dataPropertyServiceItemTableModalTool");
         dataPropertyModelQuote.saveDataPropertyServiceItem(data, function () {
             toastr.success('保存成功');
+            dataPropertyModelQuote.dataPropertyServiceItemList($("#dataPropertyServiceItemTableModalToolTable"), data.masterId);
+            target.find("input[name='masterId']").val(data.masterId);
             $(_this).parent().parent().parent().parent().modal('hide');
-            dataPropertyModelQuote.dataPropertyServiceItemTableModalToolShow(data.masterId);
         });
     };
 
     dataPropertyModelQuote.deleteDataPropertyServiceItem = function (id, callback) {
         Alert("确认要删除么？", 2, null, function () {
-            Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataPropertyServiceItem/deleteDataPropertyServiceItemById",
                 type: "post",
@@ -137,7 +138,7 @@
         var target = $("#dataPropertyServiceItemTableModalTool");
         target.modal('show');
         target.find("input[name='masterId']").val(id);
-        dataPropertyModelQuote.dataPropertyServiceItemList(target.find("table"), id);
+        dataPropertyModelQuote.dataPropertyServiceItemList($("#dataPropertyServiceItemTableModalToolTable"), id);
     };
 
     dataPropertyModelQuote.addDataPropertyServiceItemModalTool = function (_this) {
@@ -154,58 +155,40 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.DATA_SERVICE_CONTENT, data.serviceType, function (html, data) {
             frm.find('[name=serviceType]').empty().html(html).trigger('change');
         });
-        frm.find('[name=serviceContent]').off('change').on('change', function () {
+        frm.find('[name=serviceType]').change(function () {
             var serviceType = undefined;
             if (!data.serviceType) {
                 serviceType = frm.find('[name=serviceType]').val();
             }
             AssessCommon.loadDataDicByPid(serviceType, data.serviceContent, function (html, data) {
-                frm.find('[name=serviceContent]').empty().html(html).trigger('change');
+                frm.find('[name=serviceContent]').empty().html(html);
             });
-        });
+        }) ;
     };
 
-    dataPropertyModelQuote.selectChangeCategory = function (_this) {
-        var serviceType = $(_this).find("option:selected").val();
-        var form = $(_this).closest("form");
-        if (serviceType) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataPropertyServiceItem/getServiceContentList",
-                type: "get",
-                dataType: "json",
-                data: {pid: serviceType},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (data.length >= 1) {
-                            var option = "<option value=''>请选择</option>";
-                            for (var i = 0; i < data.length; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            form.find("select[name='serviceContent']").empty().append(option);
-                        }
 
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因34347:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因3447:" + result);
-                }
-            })
-        }
-    };
 
     dataPropertyModelQuote.getFatherHtml = function () {
         return $("#dataPropertyModelQuoteFatherHtml").html();
-    }
+    };
+
+    dataPropertyModelQuote.dataPropertyModelQuoteFatherSave = function (_this) {
+        var target = $(_this).parent().parent().parent().parent().parent() ;
+        if (!target.find("form").valid()) {
+            return false;
+        }
+        var data = formSerializeArray(target.find("form"));
+        dataPropertyModelQuote.saveDataProperty(data,function () {
+            toastr.success('保存成功');
+            target.modal('hide');
+        });
+    };
 
 
 </script>
 
 <script type="text/html" id="dataPropertyModelQuoteFatherHtml">
-    <input type="hidden" id="id" name="id">
+    <input type="hidden"  name="id">
     <div class="form-group">
         <div class="x-valid">
             <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
@@ -256,7 +239,7 @@
         </label>
         <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
             <button type="button" class="btn btn-success"
-                    onclick="showItemable()" data-toggle="modal"> 设置服务内容
+                    onclick="showItemable(this)" data-toggle="modal"> 设置服务内容
             </button>
         </div>
     </div>
@@ -309,16 +292,16 @@
                     <input type="hidden" name="id" value="0">
                     <input type="hidden" name="masterId">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-xs-12  col-sm-12  col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
                                             服务类型
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                             <select name="serviceType" class="form-control serviceType"
-                                                    onchange="dataPropertyModelQuote.selectChangeCategory(this);">
+                                                    onchange="">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach items="${serviceContent}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
@@ -327,10 +310,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
                                             服务内容
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                             <select name="serviceContent" class="form-control">
                                                 <option value="">请先选择类型</option>
                                             </select>
@@ -339,19 +322,19 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
                                             服务时间
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                             <input type="text" class="form-control" name="serviceTime"
                                                    placeholder="服务时间" required="required">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
                                             等级评价
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                             <select name="gradeEvaluation" class="form-control search-select select2">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach items="${reputations}" var="item">
@@ -363,10 +346,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
                                             收费标准<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-xs-10  col-sm-10  col-md-10">
                                             <input type="text" class="form-control" name="chargesNotes"
                                                    placeholder="收费标准" required="required">
                                         </div>
@@ -386,6 +369,39 @@
                     保存
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dataPropertyModelQuoteFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">物业公司</h3>
+            </div>
+            <form  class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="dataPropertyModelQuote.dataPropertyModelQuoteFatherSave(this)">
+                        保存
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
