@@ -96,19 +96,19 @@
     };
 
     dataPropertyModelQuote.dataPropertyServiceItemModalToolSave = function (_this) {
-        var form = $(_this).parent().parent().parent().find("form") ;
+        var form = $(_this).parent().parent().parent().find("form");
         if (!form.valid()) {
             return false;
         }
-        var data = formSerializeArray(form) ;
-        dataPropertyModelQuote.saveDataPropertyServiceItem(data,function () {
+        var data = formSerializeArray(form);
+        dataPropertyModelQuote.saveDataPropertyServiceItem(data, function () {
             toastr.success('保存成功');
             $(_this).parent().parent().parent().parent().modal('hide');
-            dataPropertyModelQuote.dataPropertyServiceItemTableModalToolShow(data.masterId) ;
+            dataPropertyModelQuote.dataPropertyServiceItemTableModalToolShow(data.masterId);
         });
     };
 
-    dataPropertyModelQuote.deleteDataPropertyServiceItem = function (id,callback) {
+    dataPropertyModelQuote.deleteDataPropertyServiceItem = function (id, callback) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
@@ -118,9 +118,9 @@
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                       if (callback){
-                           callback() ;
-                       }
+                        if (callback) {
+                            callback();
+                        }
                     } else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
                     }
@@ -131,24 +131,44 @@
                 }
             })
         })
-    } ;
+    };
 
     dataPropertyModelQuote.dataPropertyServiceItemTableModalToolShow = function (id) {
-        var target = $("#dataPropertyServiceItemTableModalTool") ;
+        var target = $("#dataPropertyServiceItemTableModalTool");
         target.modal('show');
-        target.find("input[name='masterId']").val(id) ;
-        dataPropertyModelQuote.dataPropertyServiceItemList(target.find("table"),id) ;
+        target.find("input[name='masterId']").val(id);
+        dataPropertyModelQuote.dataPropertyServiceItemList(target.find("table"), id);
     };
 
     dataPropertyModelQuote.addDataPropertyServiceItemModalTool = function (_this) {
-        var masterId = $(_this).parent().parent().find("input[name='masterId']").val() ;
+        var masterId = $(_this).parent().parent().find("input[name='masterId']").val();
+        dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($("#dataPropertyServiceItemModalTool").find("form"), {masterId: masterId});
+    };
 
+    dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool = function (frm, data) {
+        frm.clearAll();
+        frm.initForm(data);
+        AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, data.gradeEvaluation, function (html, data) {
+            frm.find('[name=gradeEvaluation]').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.DATA_SERVICE_CONTENT, data.serviceType, function (html, data) {
+            frm.find('[name=serviceType]').empty().html(html).trigger('change');
+        });
+        frm.find('[name=serviceContent]').off('change').on('change', function () {
+            var serviceType = undefined;
+            if (!data.serviceType) {
+                serviceType = frm.find('[name=serviceType]').val();
+            }
+            AssessCommon.loadDataDicByPid(serviceType, data.serviceContent, function (html, data) {
+                frm.find('[name=serviceContent]').empty().html(html).trigger('change');
+            });
+        });
     };
 
     dataPropertyModelQuote.selectChangeCategory = function (_this) {
-        var serviceType = $(_this).find("option:selected").val() ;
-        var form = $(_this).closest("form") ;
-        if (serviceType){
+        var serviceType = $(_this).find("option:selected").val();
+        var form = $(_this).closest("form");
+        if (serviceType) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataPropertyServiceItem/getServiceContentList",
                 type: "get",
@@ -162,7 +182,7 @@
                             for (var i = 0; i < data.length; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            form.find("select[name='serviceContent']").empty().append(option) ;
+                            form.find("select[name='serviceContent']").empty().append(option);
                         }
 
                     }
@@ -243,7 +263,8 @@
 </script>
 
 
-<div id="dataPropertyServiceItemTableModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="dataPropertyServiceItemTableModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -284,7 +305,7 @@
                 <h3 class="modal-title">编辑服务内容</h3>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <input type="hidden" name="id" value="0">
                     <input type="hidden" name="masterId">
                     <div class="row">
@@ -360,7 +381,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" onclick="dataPropertyModelQuote.dataPropertyServiceItemModalToolSave(this);">
+                <button type="button" class="btn btn-primary"
+                        onclick="dataPropertyModelQuote.dataPropertyServiceItemModalToolSave(this);">
                     保存
                 </button>
             </div>
