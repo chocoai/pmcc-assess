@@ -9,7 +9,7 @@ package com.copower.pmcc.assess.common.enums;
  */
 public enum ProjectChangeTypeEnum {
     INFO_CHANGE("info_change", "项目信息变更"), PAUSE_CHANGE("pause_change", "项目暂停变更"), STOP_CHANGE("stop_change", "项目终止变更"), RESTART_CHANGE("restart_change", "项目重启变更"),
-    MANAGER_CHANGE("manager_change", "项目经理变更"), MEMBER_CHANGE("member_change", "组员变更"),STAGE_RESTART("stage_restart","阶段重启");
+    MANAGER_CHANGE("manager_change", "项目经理变更"), MEMBER_CHANGE("member_change", "组员变更"),STAGE_RESTART("stage_restart","阶段重启"), SCHEME_CHANGE("scheme_change", "方案信息变更");
 
     private String value;
     private String name;
