@@ -159,7 +159,7 @@
                                         <input type="hidden" name="copyPlanDetailsId">
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
-                                    <div class="col-md-3" id="showZtree">
+                                    <div class="col-md-3" id="showZtree" style="display: none;">
                                         <small>
                                             <a href="javascript://;" class="btn btn-xs btn-success"
                                                onclick="batchUpdateExecuteUser()">批量设置责任人
@@ -673,7 +673,15 @@
         },
 
         //打开任务页面的回调
-        taskOpenWin: function (id,url) {
+        taskOpenWin: function (url) {
+            layer.closeAll();
+            openWin(url, function () {
+                projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+            })
+        },
+
+        //打开任务页面的回调
+        ztreeTaskOpenWin: function (id,url) {
             layer.closeAll();
             openWin(url, function () {
                 //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
@@ -967,7 +975,7 @@
                                     if (/processInsId/.test(result.data.excuteUrl)) {
                                         btnClass = 'btn-primary';
                                     }
-                                    s += " <a onclick='projectDetails.taskOpenWin(" + result.data.id + ",\"" + result.data.excuteUrl + "\")' href='javascript://' title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                    s += " <a onclick='projectDetails.ztreeTaskOpenWin(" + result.data.id + ",\"" + result.data.excuteUrl + "\")' href='javascript://' title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
                                 } else if (result.data.displayUrl) {
                                     if (result.data.canReplay) {
                                         s += " <a href='javascript://' onclick='projectDetails.replyTask(" + result.data.id + ")' title='重启' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
