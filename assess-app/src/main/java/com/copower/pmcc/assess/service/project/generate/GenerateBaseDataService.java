@@ -5877,8 +5877,8 @@ public class GenerateBaseDataService {
                 //面积(㎡)
                 {
                     String value = null;
-                    if (basicBuildingVo.getBuildingArea() != null) {
-                        value = generateCommonMethod.getBigDecimalRound(basicBuildingVo.getBuildingArea(), 2, false);
+                    if (basicHouseVo.getArea() != null) {
+                        value = generateCommonMethod.getBigDecimalRound(basicHouseVo.getArea(), 2, false);
                     }
                     if (StringUtils.isEmpty(value)) {
                         value = nullValue;
@@ -5898,41 +5898,7 @@ public class GenerateBaseDataService {
                 }
                 //装修状况
                 {
-                    String value = null;
-                    if (StringUtils.isEmpty(basicHouseVo.getDecorateSituationName())) {
-                        if (!basicHouseRoomListMap.isEmpty()) {
-                            Set<String> stringSet = Sets.newHashSet();
-                            StringBuilder stringBuilder = new StringBuilder(8);
-                            basicHouseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
-                                List<String> stringList = Lists.newArrayList();
-                                basicHouseRoomDecorateVos.forEach(obj -> {
-                                    if (StringUtils.isNotEmpty(obj.getPartName())) {
-                                        stringBuilder.append(obj.getPartName());
-                                    }
-                                    if (StringUtils.isNotEmpty(obj.getRemark())) {
-                                        stringBuilder.append(obj.getRemark());
-                                    }
-                                    if (StringUtils.isEmpty(obj.getRemark()) && StringUtils.isNotEmpty(obj.getMaterialName())) {
-                                        stringBuilder.append("装修材料").append(obj.getMaterialName());
-                                    }
-                                    if (StringUtils.isNotEmpty(stringBuilder.toString())) {
-                                        stringList.add(stringBuilder.toString());
-                                    }
-                                    stringBuilder.delete(0, stringBuilder.toString().length());
-                                });
-                                if (CollectionUtils.isNotEmpty(stringList)) {
-                                    if (StringUtils.isNotBlank(basicHouseRoom.getRoomType())) {
-                                        stringSet.add(String.format("%s%s%s", basicHouseRoom.getRoomType(), ":", StringUtils.join(stringList, "、")));
-                                    }
-                                }
-                            });
-                            if (CollectionUtils.isNotEmpty(stringSet)) {
-//                                value = StringUtils.join(stringSet, "；");
-                            }
-                        }
-                    } else {
-                        value = basicHouseVo.getDecorateSituationName();
-                    }
+                    String value = basicHouseVo.getDecorateSituationName();
                     if (StringUtils.isEmpty(value)) {
                         value = nullValue;
                     }
@@ -5940,7 +5906,6 @@ public class GenerateBaseDataService {
                 }
                 //平面布局
                 {
-                    String value = null;
                     StringBuilder stringBuilder = new StringBuilder(8);
                     if (basicUnit != null && StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())) {
                         stringBuilder.append("梯户比").append(basicUnit.getElevatorHouseholdRatio());
@@ -5970,7 +5935,7 @@ public class GenerateBaseDataService {
                             }
                         }
                     }
-                    value = stringBuilder.toString();
+                    String value = stringBuilder.toString();
                     if (StringUtils.isEmpty(value)) {
                         value = nullValue;
                     }
