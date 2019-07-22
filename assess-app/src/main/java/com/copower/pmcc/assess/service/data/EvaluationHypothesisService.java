@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
@@ -270,27 +269,28 @@ public class EvaluationHypothesisService {
                 }
 
                 if (CollectionUtils.isNotEmpty(actualTimenumbers) || CollectionUtils.isNotEmpty(purposeNumbers)) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
                 }
                 if (CollectionUtils.isEmpty(actualTimenumbers) && CollectionUtils.isEmpty(purposeNumbers)) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append("无未定事项假设。").append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml("无未定事项假设。"));
                 }
                 if (CollectionUtils.isNotEmpty(group)) {
                     if (group.size() == 1) {
                         for (Map.Entry<List<Integer>, String> entry : group.get(0).entrySet()) {
                             DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
-                            stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", entry.getValue()).replace("#{估价对象号}", (generateCommonMethod.convertNumber(entry.getKey()) + "号"))).append("</p>");
+                            stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", entry.getValue()).replace("#{估价对象号}", (generateCommonMethod.convertNumber(entry.getKey()) + "号"))));
                         }
                     } else {
                         DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
-                        stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", completedTime.deleteCharAt(completedTime.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号"))).append("</p>");
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", completedTime.deleteCharAt(completedTime.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号"))));
                     }
                 }
                 if (CollectionUtils.isNotEmpty(purposeNumbers)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_PURPOSE);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{设定用途}", settingPurpose.deleteCharAt(settingPurpose.length() - 1)).replace("#{实际用途}", actualPurpose.deleteCharAt(actualPurpose.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(purposeNumbers) + "号"))).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{设定用途}", settingPurpose.deleteCharAt(settingPurpose.length() - 1)).replace("#{实际用途}", actualPurpose.deleteCharAt(actualPurpose.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(purposeNumbers) + "号"))));
                 }
             }
 
@@ -350,22 +350,22 @@ public class EvaluationHypothesisService {
                     }
                 }
                 if (StringUtils.isNotBlank(paymentNormal) || StringUtils.isNotBlank(paymentAbnormality)) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
                 }
                 if (StringUtils.isEmpty(paymentNormal) && StringUtils.isEmpty(paymentAbnormality)) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append("无依据不足假设").append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml("无依据不足假设"));
                 }
                 if (StringUtils.isNotBlank(paymentNormal)) {
                     String number = getSubstitutionPrincipleName(paymentNormal.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_GIST_INSUFFICIENT_REFERENCE_NORMAL);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)));
                 }
                 if (StringUtils.isNotBlank(paymentAbnormality)) {
                     String number = getSubstitutionPrincipleName(paymentAbnormality.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_GIST_INSUFFICIENT_REFERENCE_ABNORMALITY);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)));
                 }
 
             }
@@ -429,22 +429,22 @@ public class EvaluationHypothesisService {
                 }
                 if (valuationDate.compareTo(investigationsEndDate) != 0 || StringUtils.isNotBlank(surroundingsDamage) || StringUtils.isNotBlank(entityDamage)
                         || StringUtils.isNotBlank(havePledge) || StringUtils.isNotBlank(haveOther)) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
                 }
                 if (valuationDate.compareTo(investigationsEndDate) != 0) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DATE_ARE_CONSISTENT);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{查勘结束日期}", sdf2.format(investigationsEndDate)).replace("#{评估基准日}", sdf2.format(valuationDate))).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{查勘结束日期}", sdf2.format(investigationsEndDate)).replace("#{评估基准日}", sdf2.format(valuationDate))));
                 }
                 if (StringUtils.isNotBlank(surroundingsDamage)) {
                     String number = getSubstitutionPrincipleName(surroundingsDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.SURROUNDINGS_CONDITION);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", sdf2.format(valuationDate))).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", sdf2.format(valuationDate))));
                 }
                 if (StringUtils.isNotBlank(entityDamage)) {
                     String number = getSubstitutionPrincipleName(entityDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTITY_CONDITION);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", sdf2.format(valuationDate))).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", sdf2.format(valuationDate))));
                 }
                 if (StringUtils.isNotBlank(havePledge)) {
                     String number = getSubstitutionPrincipleName(havePledge.toString());
@@ -460,7 +460,7 @@ public class EvaluationHypothesisService {
                 content.append(pledgeContent).append(otherContent);
                 if (StringUtils.isNotBlank(content)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_DEPART_FROM_FACT_PLEDGE);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(tagfilter(dataReportTemplateByField.getTemplate().replace("#{内容}", content))).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(tagfilter(dataReportTemplateByField.getTemplate().replace("#{内容}", content))));
                 }
 
             }
@@ -532,14 +532,13 @@ public class EvaluationHypothesisService {
                     }
                     //转让限制
                     if (StringUtils.isNotBlank(surveyAssetInventory.getTransferLimit())) {
-                        limitContent.append(judgeObject.getNumber()).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
+                        limitContent.append(generateCommonMethod.convertNumber(Lists.newArrayList(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
                     } else {
                         limit.append(judgeObject.getNumber()).append(",");
                     }
-
                 }
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
 
                 if (StringUtils.isNotBlank(limit)) {
                     String number = getSubstitutionPrincipleName(limit.toString());
@@ -571,37 +570,36 @@ public class EvaluationHypothesisService {
                 //他权
                 if (StringUtils.isNotBlank(content)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ALIENI_IURIS);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{一般假设他权与转让}", content)))).append("</p>");
-
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{一般假设他权与转让}", content)))));
                 }
                 //安全质量
                 DataReportTemplateItem safetyQuality = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.SAFETY_QUALITY);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(safetyQuality.getTemplate()))).append("</p>");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(safetyQuality.getTemplate()))));
 
                 //建筑
                 if (StringUtils.isNotBlank(noBuildingArea)) {
                     String number = getSubstitutionPrincipleName(noBuildingArea.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_AREA);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))));
                 }
                 if (StringUtils.isNotBlank(noBuildingConstruction)) {
                     String number = getSubstitutionPrincipleName(noBuildingConstruction.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_CONSTRUCTION);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))));
                 }
                 //合理价格
                 DataReportTemplateItem reasonablePrice = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REASONABLE_PRICE);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(reasonablePrice.getTemplate()))).append("</p>");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(reasonablePrice.getTemplate()))));
 
                 //公共设施
                 DataReportTemplateItem communalFacilities = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.COMMUNAL_FACILITIES);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(communalFacilities.getTemplate()))).append("</p>");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(communalFacilities.getTemplate()))));
             }
 
             //评估报告的使用限制
             if (AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION.equals(basis.getFieldName())) {
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
                 //评估基准日
                 Date valuationDate = projectInfo.getValuationDate();
                 //现场查勘结束日期
@@ -615,35 +613,33 @@ public class EvaluationHypothesisService {
 
                 //估价报告用途
                 DataReportTemplateItem purpose = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PURPOSE);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(purpose.getTemplate()))).append("</p>");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(purpose.getTemplate()))));
 
                 //相差天数
                 long daysBetween = (investigationsEndDate.getTime() - valuationDate.getTime()) / (60 * 60 * 24 * 1000);
                 //评估基准日与报告有效期
                 if (!pledgeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
                 } else if (pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) > 180) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
                 } else if (pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) <= 180) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_NOT_PLEDGE);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))).append("</p>");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(pledge.getTemplate()).append("</p>");
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
                 }
                 //成交价格与报告内容
                 DataReportTemplateItem content = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_CONTENT);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(content.getTemplate()))).append("</p>");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(content.getTemplate()))));
                 //解释
                 DataReportTemplateItem explain = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_EXPLAIN);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(explain.getTemplate()))).append("</p>");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(explain.getTemplate()))));
                 //其他
                 DataReportTemplateItem other = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_OTHER);
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order3) + "）", tagfilter(other.getTemplate()))).append("</p>");
-
-
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(other.getTemplate()))));
             }
 
 

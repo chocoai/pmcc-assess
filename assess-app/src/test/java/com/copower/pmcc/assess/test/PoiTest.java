@@ -33,6 +33,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
@@ -449,6 +451,30 @@ public class PoiTest {
         builder.writeln("fffffffffffffff");
 
         document.save("D:\\test\\template1.doc");
+    }
+
+    @Test
+    public void testDiffYear() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String str1 = "2059-03-13";
+        String str2 = "2019-08-14";
+        Calendar bef = Calendar.getInstance();
+        Calendar aft = Calendar.getInstance();
+        bef.setTime(sdf.parse(str1));
+        aft.setTime(sdf.parse(str2));
+        int surplus = aft.get(Calendar.DATE) - bef.get(Calendar.DATE);
+        int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
+        int year = aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR);
+        System.out.println(result);
+        if(result < 0){
+            result = 1;
+        }else if(result == 0){
+            result = surplus <= 0 ? 1 : 0;
+        }else{
+            result = 0;
+        }
+        System.out.println(result);
+        System.out.println("相差年份：" + ((Math.abs(year)) + result));
     }
 }
 

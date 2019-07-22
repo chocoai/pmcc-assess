@@ -92,8 +92,7 @@ public class ProjectPlanDetailsController {
     @PostMapping(name = "获取数据", value = "/getProjectPlanDetailsById")
     public HttpResult replyProjectPlanDetails(Integer id) {
         try {
-            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(id);
-            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.getProjectPlanDetailsVo(projectPlanDetails);
+            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.getPlanDetailListByProjectPlanDetailId(id);
             return HttpResult.newCorrectResult(projectPlanDetailsVo);
         } catch (Exception e) {
             logger.error("获取数据", e);

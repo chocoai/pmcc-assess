@@ -2447,7 +2447,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(result, false)), true);
         document.save(localPath);
         return localPath;
     }
@@ -3658,6 +3658,9 @@ public class GenerateBaseDataService {
             linkedLists.add(generateCommonMethod.getBigDecimalRound(knowTotalPrice, 2, true));//9
             if (schemeJudgeObject.getPrice() != null && declareRecord.getFloorArea() != null) {
                 BigDecimal totol = schemeJudgeObject.getPrice().multiply(declareRecord.getFloorArea());
+            linkedLists.add(generateCommonMethod.getBigDecimalRound(knowTotalPrice, 2, true));//9
+            if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
+                BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
                 BigDecimal mortgage = totol.subtract(knowTotalPrice);
                 mortgage = mortgage.divide(new BigDecimal(10000));
                 mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
