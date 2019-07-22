@@ -29,8 +29,6 @@
                 <div class="title_right">
                     <div class="col-md-12 col-sm-12 col-xs-12 pull-right" style="margin: 0px">
                         <div class="btn-group">
-                            <a class="btn btn-primary" href="javascript://" onclick="writeToErpProject()"><i
-                                    class="fa fa-add">&nbsp;</i>写入外勤项目</a>
                             <a class="btn btn-danger" href="javascript://"
                                onclick="projectDetails.finishProject()"><i class="fa fa-check">&nbsp;</i>完成</a>
                             <c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">

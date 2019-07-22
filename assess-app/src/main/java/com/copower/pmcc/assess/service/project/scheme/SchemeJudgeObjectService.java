@@ -28,6 +28,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -36,6 +37,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -90,9 +92,9 @@ public class SchemeJudgeObjectService {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private SurveyCommonService surveyCommonService;
+    private ApplicationConstant applicationConstant;
     @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -554,6 +556,9 @@ public class SchemeJudgeObjectService {
                 plan.setBisAutoComplete(false);
                 projectPlanService.updateProjectPlan(plan);
                 projectPlanDetailsService.deletePlanDetailsByPlanId(plan.getId());
+
+                //清除task任务
+                bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),plan.getId());
             }
         }
         projectPlanDetailsService.deletePlanDetailsByPlanId(planId);
