@@ -385,7 +385,7 @@ public class GenerateHouseEntityService {
             }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             List<BasicHouseDamagedDegreeVo> degreeVoList = generateBaseExamineService.getDamagedDegreeVoList();
-            Map<String, List<BasicHouseDamagedDegreeVo>> stringListMap = Maps.newHashMap();
+            Map<String, List<BasicHouseDamagedDegreeVo>> stringListMap = Maps.newLinkedHashMap();
             if (CollectionUtils.isNotEmpty(degreeVoList)) {
                 degreeVoList.stream().forEach(oo -> {
                     List<BasicHouseDamagedDegreeVo> damagedDegreeVoList = stringListMap.get(oo.getTypeName());

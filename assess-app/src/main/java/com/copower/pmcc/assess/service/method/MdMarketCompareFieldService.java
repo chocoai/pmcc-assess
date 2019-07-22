@@ -95,7 +95,7 @@ public class MdMarketCompareFieldService extends BaseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public String getCompareInfo(SchemeAreaGroup areaGroup,SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
+    public String getCompareInfo(SchemeAreaGroup areaGroup, SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             if (basicApply == null) return null;
@@ -259,20 +259,20 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case LAND_RIGHT_TYPE://土地权利类型
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(declareRecord.getLandRightType());
+                            stringBuilder.append(StringUtils.defaultString(declareRecord.getLandRightType()));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_RIGHT_TYPE.getKey(), stringBuilder.toString()));
                             break;
                         case LAND_RIGHT_NATURE://土地权利性质
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(declareRecord.getLandRightNature());
+                            stringBuilder.append(StringUtils.defaultString(declareRecord.getLandRightNature()));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_RIGHT_NATURE.getKey(), stringBuilder.toString()));
                             break;
                         case HOUSE_NATURE://房屋性质
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.HOUSE_NATURE.getKey(), declareRecord.getNature()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.HOUSE_NATURE.getKey(), StringUtils.defaultString(declareRecord.getNature())));
                             break;
                         case HOUSE_CERT_USE://房屋用途
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(declareRecord.getCertUse());
+                            stringBuilder.append(StringUtils.defaultString(declareRecord.getCertUse()));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.HOUSE_CERT_USE.getKey(), stringBuilder.toString()));
                             break;
                         case PROPERTY_MANAGEMENT://物业管理情况
