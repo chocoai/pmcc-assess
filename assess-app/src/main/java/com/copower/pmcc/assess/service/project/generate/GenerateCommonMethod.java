@@ -784,7 +784,7 @@ public class GenerateCommonMethod {
      * @param map
      * @return
      */
-    public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumBer) {
+    public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumber) {
         if (map == null || map.size() <= 0) return "";
         //map按key值排序
         Map<Integer, String> sortMap = new TreeMap<>(new Comparator<Integer>() {
@@ -799,7 +799,7 @@ public class GenerateCommonMethod {
         for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
             if (StringUtils.isBlank(stringListEntry.getKey())) continue;
             String content = stringListEntry.getKey().replaceAll("^<[^>]+>|<[^>]+>$", "");
-            if (listMap.size() <= 1 && isShowJudgeNumBer == Boolean.FALSE) {
+            if (listMap.size() <= 1 && isShowJudgeNumber == Boolean.FALSE) {
                 return explain + content;
             }
             builder.append(String.format("%s号", convertNumber(stringListEntry.getValue()))).append(StringUtils.defaultString(explain)).append(content).append(symbol);
@@ -814,10 +814,10 @@ public class GenerateCommonMethod {
      * @param map
      * @param explain
      * @param symbol
-     * @param isShowJudgeNumBer
+     * @param isShowJudgeNumber
      * @return
      */
-    public String judgeEachDesc2(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumBer) {
+    public String judgeEachDesc2(Map<Integer, String> map, String explain, String symbol, Boolean isShowJudgeNumber) {
         if (map == null || map.size() <= 0) {
             return "";
         }
@@ -834,14 +834,14 @@ public class GenerateCommonMethod {
         }
         if (one) {
             StringBuilder stringBuilder = new StringBuilder(8);
-            if (isShowJudgeNumBer.equals(Boolean.FALSE)) {
+            if (isShowJudgeNumber.equals(Boolean.FALSE)) {
                 stringBuilder.append(StringUtils.defaultString(explain)).append(map.entrySet().stream().findFirst().get().getValue());
             } else {
                 stringBuilder.append(StringUtils.defaultString(explain)).append(map.entrySet().stream().findFirst().get().getValue()).append(symbol);
             }
             return stringBuilder.toString();
         } else {
-            return judgeEachDesc(map, explain, symbol, isShowJudgeNumBer);
+            return judgeEachDesc(map, explain, symbol, isShowJudgeNumber);
         }
     }
 
@@ -949,9 +949,15 @@ public class GenerateCommonMethod {
      * @return
      */
     public String trim(String str) {
+        return trim(str,true);
+    }
+
+    public String trim(String str,Boolean removeTag) {
         if (StringUtils.isBlank(str)) return str;
-        str = StringUtils.strip(str.replaceAll("^<[^>]+>|<[^>]+>$", ""), "。");
-        str += "。";
+        if(removeTag){
+            str = StringUtils.strip(str.replaceAll("^<[^>]+>|<[^>]+>$", ""), "。");
+            str += "。";
+        }
         str = str.replaceAll(",+", ",").replaceAll(";+", ";")
                 .replaceAll("，+", "，").replaceAll("、+", "、")
                 .replaceAll("。+", "。").replaceAll("；+", "；")

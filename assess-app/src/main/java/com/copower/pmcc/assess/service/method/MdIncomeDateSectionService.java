@@ -57,9 +57,11 @@ public class MdIncomeDateSectionService {
     @Transactional(rollbackFor = Exception.class)
     public void saveDateSection(MdIncomeDateSection mdIncomeDateSection) {
         int diffDays = 0;
-        if (mdIncomeDateSection.getEndDate() != null)
+        if (mdIncomeDateSection.getEndDate() != null){
+            //计算相差年份
             diffDays = DateUtils.diffDate(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate());
-        BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
+        }
+        BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 1, BigDecimal.ROUND_HALF_UP);
         if (mdIncomeDateSection.getId() != null && mdIncomeDateSection.getId() > 0) {
             mdIncomeDateSection.setYearCount(yearCount);
             mdIncomeDateSectionDao.updateDateSection(mdIncomeDateSection);
