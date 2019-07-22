@@ -472,7 +472,6 @@
                         title: '操作',
                         width: '20%',
                         formatter: function (value, row) {
-                            console.log(row);
                             var s = "";
                             if (!row.bisStart && row.bisLastLayer && '${isPM}' == 'true') {
                                 s += " <a onclick='projectDetails.updateExecuteUser(\"" + row.id + "\")' href='javascript://' title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
@@ -740,7 +739,6 @@
 
         //调整责任人
         updateExecuteUser: function (planDetailsId) {
-            console.log(planDetailsId)
             layer.close(layer.index);
             erpEmployee.select({
                 currOrgId: '${companyId}',
@@ -960,7 +958,6 @@
                         type: 'post',
                         success: function (result) {
                             if (result) {
-                                console.log(JSON.stringify(result.data) + "===");
                                 var s = "";
                                 if (!result.data.bisStart && result.data.bisLastLayer && '${isPM}' == 'true') {
                                     s += " <a onclick='projectDetails.updateExecuteUser(\"" + result.data.id + "\")' href='javascript://' title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
@@ -1013,7 +1010,6 @@
             type: 'get',
             success: function (result) {
                 if (result) {
-                    console.log(result.rows);
                     $.each(result.rows, function (i, item) {
                         setNodeIcon(item);
                     })
@@ -1066,8 +1062,7 @@
             }
 
         }
-        var ids = planDetailsIds;
-        console.log(planDetailsIds + "--");
+        console.log(planDetailsIds);
         layer.close(layer.index);
         erpEmployee.select({
             currOrgId: '${companyId}',
@@ -1082,7 +1077,13 @@
                         success: function (result) {
                             if (result.ret) {
                                 toastr.success('责任人调整成功');
-                                projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                                //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                                var that = $(projectDetails.getActiveTab()).closest('li');
+                                ztreeInit({
+                                    target: $('#ztree' + that.attr('plan-id')),
+                                    projectId: '${projectInfo.id}',
+                                    planId: that.attr('plan-id')
+                                });
                             } else {
                                 Alert(result.errmsg);
                             }
@@ -1101,7 +1102,6 @@
      */
     function refreshNode(data) {
         if(zTreeObj) {
-            console.log(1)
             var node = zTreeObj.getSelectedNodes()[0];
             node.nodeName = data.nodeName;
             node.status = data.status;
@@ -1117,7 +1117,6 @@
             setNodeIcon(node);
             zTreeObj.updateNode(node, false);
         }else{
-            console.log(2)
             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
         }
     }
