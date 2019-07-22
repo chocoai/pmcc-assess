@@ -36,7 +36,15 @@
     };
 
     buildingCommon.addPropertyHandle = function (_this) {
-
+        var target = $("#dataPropertyModelQuoteFather");
+        target.find(".panel-body").empty() ;
+        target.find(".panel-body").append(dataPropertyModelQuote.getFatherHtml()) ;
+        target.find("form").clearAll();
+        AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, '', function (html, data) {
+            target.find("form").find('[name=socialPrestige]').empty().html(html).trigger('change');
+        });
+        target.find('[name=companyNature]').parent().parent().hide();
+        target.modal("show");
     };
 
     buildingCommon.detail = function (id) {

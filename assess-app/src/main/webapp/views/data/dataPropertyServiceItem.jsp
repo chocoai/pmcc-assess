@@ -18,6 +18,7 @@
             <div class="modal-body">
                 <form id="dataPropertyServiceItemFrm" class="form-horizontal">
                     <input type="hidden" name="id" value="0">
+                    <input type="hidden" name="masterId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
@@ -27,12 +28,8 @@
                                             服务类型
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="serviceType" class="form-control search-select select2 serviceType"
-                                                    onchange="dataPropertyModelQuote.selectChangeCategory(this);">
+                                            <select name="serviceType" class="form-control search-select select2 ">
                                                 <option value="">-请选择-</option>
-                                                <c:forEach items="${serviceContent}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
                                             </select>
                                         </div>
                                     </div>
@@ -64,9 +61,6 @@
                                         <div class="col-sm-4">
                                             <select name="gradeEvaluation" class="form-control search-select select2">
                                                 <option value="">-请选择-</option>
-                                                <c:forEach items="${reputations}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
                                             </select>
                                         </div>
                                     </div>
@@ -91,7 +85,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" onclick="dataPropertyServiceItem.prototype.saveData()">
+                <button type="button" class="btn btn-primary" onclick="dataPropertyServiceItem.prototype.saveData(this)">
                     保存
                 </button>
             </div>
@@ -133,33 +127,36 @@
                 dataPropertyServiceItem.prototype.loadDataDicList(data.masterId);
             });
         },
-        showModel: function () {
-            $("#" + dataPropertyServiceItem.prototype.config().frm).clearAll();
-            $('#' + dataPropertyServiceItem.prototype.config().box).modal("show");
+        showModel: function (_this) {
+            var target = $('#' + dataPropertyServiceItem.prototype.config().box) ;
+            var frm = $("#" + dataPropertyServiceItem.prototype.config().frm) ;
+            var masterId = target.find("input[name='masterId']").val();
+            dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool(frm,{masterId:masterId}) ;
+            target.modal("show");
         },
-        saveData: function () {
-            if (!$("#" + dataPropertyServiceItem.prototype.config().frm).valid()) {
+        saveData: function (_this) {
+            var target = $(_this).parent().parent().parent().parent() ;
+            if (!target.find("form").valid()) {
                 return false;
             }
-            var data = formParams(dataPropertyServiceItem.prototype.config().frm);
-            data.masterId = masterId;
+            var data = formSerializeArray(target.find("form"));
             dataPropertyModelQuote.saveDataPropertyServiceItem(data,function () {
                 toastr.success('保存成功');
-                $('#' + dataPropertyServiceItem.prototype.config().box).modal('hide');
-                dataPropertyServiceItem.prototype.loadDataDicList(masterId);
+                target.modal('hide');
+                dataPropertyServiceItem.prototype.loadDataDicList(data.masterId);
             });
         },
         getAndInit: function (id) {
             var data = $("#" + dataPropertyServiceItem.prototype.config().table).bootstrapTable('getRowByUniqueId',id);
-            $("#" + dataPropertyServiceItem.prototype.config().frm).clearAll();
-            $("#" + dataPropertyServiceItem.prototype.config().frm).initForm(data);
-            $("#dataPropertyServiceItemFrm").find('select.serviceContent').val(data.serviceContent).trigger('change');
+            var frm = $("#" + dataPropertyServiceItem.prototype.config().frm) ;
+            dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool(frm , data) ;
             $('#' + dataPropertyServiceItem.prototype.config().box).modal("show");
         },
         showStartModel: function (id) {
-            masterId = id;
-            dataPropertyServiceItem.prototype.loadDataDicList(masterId);
-            $('#' + dataPropertyServiceItem.prototype.config().startBox).modal("show");
+            var target = $('#' + dataPropertyServiceItem.prototype.config().startBox) ;
+            dataPropertyServiceItem.prototype.loadDataDicList(id);
+            target.find("input[name='masterId']").val(id) ;
+            target.modal("show");
         }
 
     }
@@ -175,9 +172,10 @@
             </div>
             <div class="modal-body">
                 <button type="button" class="btn btn-success"
-                        onclick="dataPropertyServiceItem.prototype.showModel()"
+                        onclick="dataPropertyServiceItem.prototype.showModel(this)"
                         data-toggle="modal"> 新增
                 </button>
+                <input type="hidden" name="masterId">
                 <table class="table table-bordered" id="tb_dataServiceItemList">
                     <!-- cerare document add ajax data-->
                 </table>

@@ -67,12 +67,10 @@
         dataProperty.prototype.loadDataDicList();
     });
 
-    function showItemable() {
-        var id = $("#id").val();
-        if(!id){
-            id = 0;
-        }
-        dataPropertyServiceItem.prototype.showStartModel(id);
+    function showItemable(_this) {
+        var frm = $(_this).closest("form") ;
+        var data = formSerializeArray(frm);
+        dataPropertyServiceItem.prototype.showStartModel(data.id);
     }
 
     var dataProperty = function () {
