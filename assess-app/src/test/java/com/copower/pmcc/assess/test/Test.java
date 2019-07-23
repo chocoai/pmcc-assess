@@ -40,6 +40,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -792,7 +793,7 @@ public class Test {
     public void getNetInfoFromZGSF() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -1); //得到前1天
+            calendar.add(Calendar.DATE, -10); //得到前1天
             Date date = calendar.getTime();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
@@ -806,11 +807,40 @@ public class Test {
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             String typeHref = "http://sf.caa123.org.cn/caa-web-ws/ws/0.1/lots?sortname=&sortorder=&count=12&lotStatus=2";
 
+            String htmlHref = "http://sf.caa123.org.cn/pages/lots.html?&lotStatus=2&canLoan=&isRestricted=";
+            Elements provinceElements = getContent(htmlHref, "#queryloaction", "");
+            Elements provinces = provinceElements.get(0).select("li a");
+
+//            for (Map.Entry<String, String> entry : needContentType.entrySet()) {
+//                for (Element item : provinces) {
+//                    List<String> pageHref = Lists.newArrayList();
+//                    Integer startPage = 0;
+//                    String provinceName = item.childNodes().get(0).childNodes().get(0).toString().trim();
+//
+//                    String dataHref = String.format("%s%s%s", typeHref, "&standardType=" + entry.getValue(), "&province=" + URLEncoder.encode(provinceName));
+//                    Elements pageElements = getContent(String.format("%s%s", dataHref, "&start=" + startPage), "body", "");
+//                    if (pageElements == null) continue;
+//                    String data = pageElements.get(0).childNodes().get(0).toString().trim();
+//                    JSONObject jsonObject = JSON.parseObject(data);
+//                    Integer totalCount = JSON.parseObject(jsonObject.getString("totalCount"), Integer.class);
+//                    if (totalCount == 0) continue;
+//                    Integer totalPages = JSON.parseObject(jsonObject.getString("totalPages"), Integer.class);
+//                    for (int i = 0; i < totalPages; i++) {
+//                        String dataPageHref = String.format("%s%s", dataHref, "&start=" + i);
+//                        pageHref.add(dataPageHref);
+//                    }
+//                    strHrefs.put(String.format("%s_%s", entry.getKey(), provinceName), pageHref);
+//
+//                }
+//            }
+
+            //只取四川的
             for (Map.Entry<String, String> entry : needContentType.entrySet()) {
-                Integer startPage = 0;
                 List<String> pageHref = Lists.newArrayList();
-                String dataHref = String.format("%s%s", typeHref, "&standardType=" + entry.getValue());
+                Integer startPage = 0;
+                String dataHref = String.format("%s%s%s", typeHref, "&standardType=" + entry.getValue(), "&province=" + URLEncoder.encode("四川省"));
                 Elements pageElements = getContent(String.format("%s%s", dataHref, "&start=" + startPage), "body", "");
+                if (pageElements == null) continue;
                 String data = pageElements.get(0).childNodes().get(0).toString().trim();
                 JSONObject jsonObject = JSON.parseObject(data);
                 Integer totalCount = JSON.parseObject(jsonObject.getString("totalCount"), Integer.class);
@@ -820,14 +850,16 @@ public class Test {
                     String dataPageHref = String.format("%s%s", dataHref, "&start=" + i);
                     pageHref.add(dataPageHref);
                 }
-                strHrefs.put(entry.getKey(), pageHref);
+                strHrefs.put(String.format("%s_%s", entry.getKey(), "四川"), pageHref);
             }
+
 
             for (Map.Entry<String, List<String>> entry : strHrefs.entrySet()) {
                 List<String> pageHref = entry.getValue();
                 circ:
                 for (String typeData : pageHref) {
                     Elements pageElements = getContent(typeData, "body", "");
+                    if (pageElements == null) continue;
                     String data = pageElements.get(0).childNodes().get(0).toString().trim();
                     JSONObject jsonObject = JSON.parseObject(data);
                     List<String> dataList = JSON.parseArray(jsonObject.getString("items"), String.class);
@@ -840,7 +872,7 @@ public class Test {
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(zgsfDto.getName());
-
+                        netInfoRecord.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
                         String content = getContent(zgsfDto.getName(), entry.getKey(), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
@@ -873,11 +905,40 @@ public class Test {
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             String typeHref = "https://paimai.caa123.org.cn/wt-web-ws/ws/0.1/lots?sortname=&sortorder=&count=12&status=3";
 
+            String htmlHref = "https://paimai.caa123.org.cn/pages/lots/list.html?&attribute=&term=&startTimeStamp=&endTimeStamp=&&canLoan=&isRestricted=";
+            Elements provinceElements = getContent(htmlHref, "#queryloaction", "");
+            Elements provinces = provinceElements.get(0).select("li a");
+
+//            for (Map.Entry<String, String> entry : needContentType.entrySet()) {
+//                Integer princeId = 1;
+//                for (Element item : provinces) {
+//                    String provinceName = item.childNodes().get(0).childNodes().get(0).toString().trim();
+//                    Integer startPage = 0;
+//                    List<String> pageHref = Lists.newArrayList();
+//                    String dataHref = String.format("%s%s", typeHref, "&standardType=" + entry.getValue());
+//                    Elements pageElements = getContent(String.format("%s%s%s", dataHref, "&start=" + startPage, "&province=" + princeId), "body", "");
+//                    princeId++;
+//                    if (pageElements == null) continue;
+//                    String data = pageElements.get(0).childNodes().get(0).toString().trim();
+//                    JSONObject jsonObject = JSON.parseObject(data);
+//                    Integer totalCount = JSON.parseObject(jsonObject.getString("totalCount"), Integer.class);
+//                    if (totalCount == 0) continue;
+//                    Integer totalPages = JSON.parseObject(jsonObject.getString("totalPages"), Integer.class);
+//                    for (int i = 0; i < totalPages; i++) {
+//                        String dataPageHref = String.format("%s%s", dataHref, "&start=" + i);
+//                        pageHref.add(dataPageHref);
+//                    }
+//                    strHrefs.put(String.format("%s_%s", entry.getKey(), provinceName), pageHref);
+//                }
+//            }
+
+            //只取四川的
             for (Map.Entry<String, String> entry : needContentType.entrySet()) {
                 Integer startPage = 0;
                 List<String> pageHref = Lists.newArrayList();
-                String dataHref = String.format("%s%s", typeHref, "&standardType=" + entry.getValue());
+                String dataHref = String.format("%s%s%s", typeHref, "&standardType=" + entry.getValue(), "&province=" + 23);
                 Elements pageElements = getContent(String.format("%s%s", dataHref, "&start=" + startPage), "body", "");
+                if (pageElements == null) continue;
                 String data = pageElements.get(0).childNodes().get(0).toString().trim();
                 JSONObject jsonObject = JSON.parseObject(data);
                 Integer totalCount = JSON.parseObject(jsonObject.getString("totalCount"), Integer.class);
@@ -887,7 +948,7 @@ public class Test {
                     String dataPageHref = String.format("%s%s", dataHref, "&start=" + i);
                     pageHref.add(dataPageHref);
                 }
-                strHrefs.put(entry.getKey(), pageHref);
+                strHrefs.put(String.format("%s_%s", entry.getKey(), "四川"), pageHref);
             }
 
             for (Map.Entry<String, List<String>> entry : strHrefs.entrySet()) {
@@ -907,7 +968,7 @@ public class Test {
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(zgsfDto.getName());
-
+                        netInfoRecord.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
                         String content = getContent(zgsfDto.getName(), entry.getKey(), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
@@ -1128,8 +1189,8 @@ public class Test {
                 for (int k = 0; k < tdElements.size(); k++) {
                     Elements select = tdElements.get(k).select("td");
                     Integer one = tdElements.get(0).select("th").size();
-                    if(one==0){
-                      one = tdElements.get(0).select("td").size();
+                    if (one == 0) {
+                        one = tdElements.get(0).select("td").size();
                     }
                     Integer tow = tdElements.get(1).select("td").size();
                     if (one == tow) {
@@ -1140,8 +1201,8 @@ public class Test {
                             }
                             continue;
                         }
-                    }else {
-                        if(k==0||k==1){
+                    } else {
+                        if (k == 0 || k == 1) {
                             continue;
                         }
                     }
@@ -1158,11 +1219,11 @@ public class Test {
                     netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
                     netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
                     StringBuilder content = new StringBuilder();
-                    if(CollectionUtils.isNotEmpty(fieldNames)){
+                    if (CollectionUtils.isNotEmpty(fieldNames)) {
                         for (int m = 0; m < fieldNames.size(); m++) {
                             content.append(fieldNames.get(m) + "：" + fieldValues.get(m) + "；");
                         }
-                    }else {
+                    } else {
                         for (int m = 0; m < fieldValues.size(); m++) {
                             content.append(fieldValues.get(m) + "；");
                         }
