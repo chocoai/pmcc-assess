@@ -69,7 +69,10 @@ declareRealtyRealEstateCert.enclosureFun = function () {
         async: false,
         success: function (result) {
             if (result.ret) {
-                declareRealtyRealEstateCert.loadList();
+                declareCommon.getDeclareRealtyData(id,function (row) {
+                    toastr.success('成功 !');
+                    $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('updateByUniqueId', {id: id, row: row});
+                }) ;
             }
         },
         error: function (result, status, e) {

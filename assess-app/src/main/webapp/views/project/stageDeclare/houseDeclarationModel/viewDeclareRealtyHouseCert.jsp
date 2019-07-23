@@ -76,10 +76,12 @@
        onchange="assessCommonHouse.inputFile();">
 <input type="file" id="ajaxFileUploadHouseLand" name="file" style="display: none;"
        onchange="assessCommonHouse.inputFileLand();">
-<input type="file" id="declareRealtyHouseCertFileIdNew" name="declareRealtyHouseCertFileIdNew" style="display: none"
-       onchange="assessCommonHouse.houseImportHandle();">
-<input type="file" id="sonDeclareRealtyLandCertFileId" name="file" style="display: none"
-       onchange="assessCommonHouse.landImportHandle()">
+<form enctype="multipart/form-data">
+    <input type="file" id="declareRealtyHouseCertFileIdNew" name="declareRealtyHouseCertFileIdNew" style="display: none"
+           onchange="assessCommonHouse.houseImportHandle();" multiple="multiple">
+    <input type="file" id="sonDeclareRealtyLandCertFileId" name="file" style="display: none"
+           onchange="assessCommonHouse.landImportHandle()" multiple="multiple">
+</form>
 
 <!-- 房产证信息 -->
 <div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"

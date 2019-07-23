@@ -523,7 +523,8 @@ assessCommonHouse.landImportHandle = function () {
         async: false,
         success: function (result) {
             if (result.ret) {
-                assessCommonHouse.loadList();
+                // assessCommonHouse.loadList();
+                toastr.success('成功 !');
             }
         },
         error: function (result, status, e) {
@@ -560,7 +561,10 @@ assessCommonHouse.houseImportHandle = function () {
         async: false,
         success: function (result) {
             if (result.ret) {
-                assessCommonHouse.loadList();
+                declareCommon.getHouseData(id , function (row) {
+                    toastr.success('成功 !');
+                    $("#" + assessCommonHouse.config.table).bootstrapTable('updateByUniqueId', {id: id, row: row});
+                }) ;
             }
         },
         error: function (result, status, e) {

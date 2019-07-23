@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -58,12 +59,19 @@ public class PublicController {
     public HttpResult importAjaxFile(HttpServletRequest request, String tableName, @RequestParam(defaultValue = "0") String tableId, String fieldsName) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-            Iterator<String> fileNames = multipartRequest.getFileNames();
-            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
-            if (multipartFile.isEmpty()) {
+            MultiValueMap<String, MultipartFile> multipartFileMultiValueMap = multipartRequest.getMultiFileMap();
+            List<MultipartFile> multipartFileList = Lists.newArrayList();
+            if (!multipartFileMultiValueMap.isEmpty()) {
+                multipartFileMultiValueMap.forEach((s, multipartFiles) -> {
+                    if (!multipartFiles.isEmpty()){
+                        multipartFileList.addAll(multipartFiles) ;
+                    }
+                });
+            }
+            if (CollectionUtils.isEmpty(multipartFileList)) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            return HttpResult.newCorrectResult(baseAttachmentService.importAjaxFile(multipartFile, tableName, tableId, fieldsName));
+            return HttpResult.newCorrectResult(baseAttachmentService.importAjaxFile(multipartFileList, tableName, tableId, fieldsName));
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
