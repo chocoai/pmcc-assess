@@ -434,7 +434,7 @@
                         html += "</td>";
 
                         html += "<td class='hidden-xs'>";
-                        html += "<input type='text' required  data-key='price_" + item.typeKey + "' name='price_" + item.id + "' data-value='" + item.price + "' value='" + textPrice + "' class='form-control' data-rule-number='true' readonly>";
+                        html += "<input type='text'  data-key='price_" + item.typeKey + "' name='price_" + item.id + "' data-value='" + item.price + "' value='" + textPrice + "' class='form-control' readonly>";
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanItemData(this," + item.id + ")'>" + "</span>";

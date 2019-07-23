@@ -45,6 +45,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 描述:
@@ -95,6 +98,8 @@ public class ProjectPlanService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private RedissonClient redissonClient;
 
     public ProjectPlan getProjectplanByProcessInsId(String processInsId) {
         return projectPlanDao.getProjectPlanByProcessInsId(processInsId);
@@ -108,8 +113,8 @@ public class ProjectPlanService {
         return projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), status);
     }
 
-    public List<ProjectPlan> getProjectPlanList(Integer projectId){
-        return projectPlanDao.getProjectPlanList(projectId) ;
+    public List<ProjectPlan> getProjectPlanList(Integer projectId) {
+        return projectPlanDao.getProjectPlanList(projectId);
     }
 
     public ProjectPlan getProjectPlan(Integer projectId, Integer stageSort) {
@@ -506,10 +511,10 @@ public class ProjectPlanService {
         projectPlanResponsibility.setProjectName(projectName);
         projectPlanResponsibility.setUserAccount(item.getExecuteUserAccount());
         projectPlanResponsibility.setModel(responsibileModelEnum.getId());
-        try{
+        try {
             projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
-        }catch (Exception e){
-            logger.error(e.getMessage(),e);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
         projectPlanResponsibility.setConclusion(responsibileModelEnum.getName());//
         projectPlanResponsibility.setPlanEndTime(item.getPlanEndDate());
@@ -596,7 +601,7 @@ public class ProjectPlanService {
         processInfo.setBisDraftStart(false);
         processInfo.setWorkStageId(projectWorkStage.getId());
         try {
-            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -693,59 +698,73 @@ public class ProjectPlanService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void enterNextStage(Integer planId) throws Exception {
-        //1.将当前阶段设置结束，并清理所有任务
-        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
-        projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
-        projectPlan.setFinishDate(new Date());
-        int currStageSort = projectPlan.getStageSort().intValue();
-        projectPlanDao.updateProjectPlan(projectPlan);
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(), planId);
+        //先获取分布式锁 保证进入下个阶段只有一个线程执行
+        RLock lock = redissonClient.getLock(String.format("%s_%s_%s", applicationConstant.getAppKey(), ProjectPlanService.class.getSimpleName(), planId));
+        boolean res = false;
+        try { // 尝试加锁,最多等待10秒,上锁以后20秒自动解锁
+            res = lock.tryLock(10, 60, TimeUnit.SECONDS);
+            if (!res) {//加锁不成功,不执行逻辑
+                logger.debug("----enterNextStage, Did not get the lock");
+                return;
+            }
+            boolean isAllFinish = projectPlanDetailsService.isAllPlanDetailsFinish(planId);
+            if (!isAllFinish) return;
+            //1.将当前阶段设置结束，并清理所有任务
+            ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
+            projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
+            projectPlan.setFinishDate(new Date());
+            int currStageSort = projectPlan.getStageSort().intValue();
+            projectPlanDao.updateProjectPlan(projectPlan);
+            bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(), planId);
 
-        //2.检查是否存在同级别的阶段
-        ProjectPlan projectPlanWhere = new ProjectPlan();
-        projectPlanWhere.setProjectId(projectPlan.getProjectId());
-        projectPlanWhere.setBisRestart(false);
-        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlan(projectPlanWhere);
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
-        List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
-            return (o.getStageSort().equals(currStageSort) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getKey()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE.getKey()));
-        });
+            //2.检查是否存在同级别的阶段
+            ProjectPlan projectPlanWhere = new ProjectPlan();
+            projectPlanWhere.setProjectId(projectPlan.getProjectId());
+            projectPlanWhere.setBisRestart(false);
+            List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlan(projectPlanWhere);
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
+            List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
+                return (o.getStageSort().equals(currStageSort) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getKey()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE.getKey()));
+            });
 
-        //3.当前同级阶段都完成任务，则进入下一阶段
-        if (CollectionUtils.isEmpty(filter)) {
-            List<ProjectPlan> nextProjectPlans = getNextProjectPlans(currStageSort, projectPlans);
-            if (CollectionUtils.isNotEmpty(nextProjectPlans)) {
-                for (ProjectPlan plan : nextProjectPlans) {
-                    if (StringUtils.equals(ProjectStatusEnum.WAIT.getKey(), plan.getProjectStatus())) {
-                        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(plan.getWorkStageId());
-                        if (projectWorkStage.getStageForm().endsWith("Execute")) {//后台自动执行计划内容
-                            ProjectPlanExecuteInterface bean = (ProjectPlanExecuteInterface) SpringContextUtils.getBean(projectWorkStage.getStageForm());
-                            bean.execute(plan, projectWorkStage);
-                        } else {//页面实施计划编制
-                            String userAccounts = projectWorkStageService.getWorkStageUserAccounts(plan.getWorkStageId(), plan.getProjectId());
-                            if (StringUtils.isNotBlank(userAccounts)) {
-                                List<String> strings = FormatUtils.transformString2List(userAccounts);
-                                for (String s : strings) {
-                                    saveProjectPlanResponsibility(plan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+            //3.当前同级阶段都完成任务，则进入下一阶段
+            if (CollectionUtils.isEmpty(filter)) {
+                List<ProjectPlan> nextProjectPlans = getNextProjectPlans(currStageSort, projectPlans);
+                if (CollectionUtils.isNotEmpty(nextProjectPlans)) {
+                    for (ProjectPlan plan : nextProjectPlans) {
+                        if (StringUtils.equals(ProjectStatusEnum.WAIT.getKey(), plan.getProjectStatus())) {
+                            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(plan.getWorkStageId());
+                            if (projectWorkStage.getStageForm().endsWith("Execute")) {//后台自动执行计划内容
+                                ProjectPlanExecuteInterface bean = (ProjectPlanExecuteInterface) SpringContextUtils.getBean(projectWorkStage.getStageForm());
+                                bean.execute(plan, projectWorkStage);
+                            } else {//页面实施计划编制
+                                String userAccounts = projectWorkStageService.getWorkStageUserAccounts(plan.getWorkStageId(), plan.getProjectId());
+                                if (StringUtils.isNotBlank(userAccounts)) {
+                                    List<String> strings = FormatUtils.transformString2List(userAccounts);
+                                    for (String s : strings) {
+                                        saveProjectPlanResponsibility(plan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                                    }
+                                } else {
+                                    throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
                                 }
-                            } else {
-                                throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
+                                plan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
+                                projectPlanDao.updateProjectPlan(plan);
                             }
-                            plan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
-                            projectPlanDao.updateProjectPlan(plan);
                         }
                     }
-                }
-            } else { //如果没有相应的阶段，则说明项目已经结束，处理更新项目状态的相关事项
-                projectInfo.setStatus(ProcessStatusEnum.FINISH.getValue());
-                projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
-                projectInfoDao.updateProjectInfo(projectInfo);
-                SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectInfo.getId(), applicationConstant.getAppKey());
-                if (sysProjectDto != null && sysProjectDto.getId() != null && sysProjectDto.getId() > 0) {
-                    sysProjectDto.setStatus(SysProjectEnum.FINISH.getValue());
-                    erpRpcProjectService.saveProject(sysProjectDto);
+                } else { //如果没有相应的阶段，则说明项目已经结束，处理更新项目状态的相关事项
+                    projectInfo.setStatus(ProcessStatusEnum.FINISH.getValue());
+                    projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
+                    projectInfoDao.updateProjectInfo(projectInfo);
+                    SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectInfo.getId(), applicationConstant.getAppKey());
+                    if (sysProjectDto != null && sysProjectDto.getId() != null && sysProjectDto.getId() > 0) {
+                        sysProjectDto.setStatus(SysProjectEnum.FINISH.getValue());
+                        erpRpcProjectService.saveProject(sysProjectDto);
+                    }
                 }
             }
+        } catch (InterruptedException e) {
+            logger.debug("get the lock error;" + e.getMessage(), e);
         }
     }
 
