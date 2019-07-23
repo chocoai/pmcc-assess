@@ -157,7 +157,7 @@
                                         <input type="hidden" name="copyPlanDetailsId">
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
-                                    <div class="col-md-3" id="showZtree" style="display: none;">
+                                    <div class="col-md-3" id="showZtree">
                                         <small>
                                             <a href="javascript://;" class="btn btn-xs btn-success"
                                                onclick="batchUpdateExecuteUser()">批量设置责任人
@@ -1057,15 +1057,15 @@
         }
         var planDetailsIds = [];
         for (var i = 0; i < length; i++) {
-            if (nodes[i].bisRestart == false && nodes[i].bisStart == false) {
-                continue;
-            }
+//            if (nodes[i].bisRestart == false && nodes[i].bisStart == false) {
+//                continue;
+//            }
             if (nodes[i].bisLastLayer == true) {
                 planDetailsIds.push(nodes[i].id);
             }
-            if (nodes[i].bisLastLayer == false && nodes[i].pid != null && nodes[i].pid != 0) {
-                planDetailsIds.push(nodes[i].id);
-            }
+//            if (nodes[i].bisLastLayer == false && nodes[i].pid != null && nodes[i].pid != 0) {
+//                planDetailsIds.push(nodes[i].id);
+//            }
 
         }
         console.log(planDetailsIds);
