@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -112,6 +113,9 @@ public class GenerateMdDevelopmentService {
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_Price.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_Price));
                 }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_SalesTaxAndAdditional.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_SalesTaxAndAdditional));
+                }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_assessPrice.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_assessPrice));
                 }
@@ -128,6 +132,9 @@ public class GenerateMdDevelopmentService {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_interestInvestmentTax));
                 }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionSubtotal));
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal3.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionSubtotal));
                 }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal2.getName())) {
@@ -166,6 +173,9 @@ public class GenerateMdDevelopmentService {
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_LandAcquisitionCost.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_LandAcquisitionCost));
                 }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_LandGetCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_LandAcquisitionCost));
+                }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_LandAcquisitionCostTax.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_LandAcquisitionCostTax));
                 }
@@ -187,8 +197,35 @@ public class GenerateMdDevelopmentService {
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_managementExpenseTax.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_managementExpenseTax));
                 }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue));
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_OtherAmendments.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_OtherAmendments));
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_OtherAmendmentsRemark.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_OtherAmendmentsRemark));
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_AmendmentStatusRights.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_AmendmentStatusRights));
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_AmendmentStatusRightsRemark.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_AmendmentStatusRightsRemark));
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_landIncrementTax.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_landIncrementTax));
+                }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal_ComputationalProcess.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getDevelopment_constructionSubtotal_ComputationalProcess());
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_region.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getDevelopment_region());
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_EconomicIndicators.getName())) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getDevelopment_EconomicIndicators());
+                }
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotalContent.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getDevelopment_constructionSubtotalContent());
                 }
             }
         }
@@ -204,6 +241,16 @@ public class GenerateMdDevelopmentService {
             AsposeUtils.replaceBookmarkToFile(localPath, fileMap);
         }
         return localPath;
+    }
+
+    private String getDevelopment_region(){
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        if (schemeAreaGroup != null){
+            if (StringUtils.isNotBlank(schemeAreaGroup.getAreaName())){
+                return schemeAreaGroup.getAreaName() ;
+            }
+        }
+        return errorStr;
     }
 
     private String getMdDevelopmentCommonValue(BaseReportFieldEnum fieldEnum) {
@@ -249,6 +296,36 @@ public class GenerateMdDevelopmentService {
             case Development_interestInvestmentTax: {
                 if (StringUtils.isNotBlank(vo.getG34())) {
                     return format.getG34();
+                }
+            }
+            break;
+            case Development_DevelopmentDegreeCorrectionValue: {
+                if (StringUtils.isNotBlank(vo.getD46())) {
+                    return format.getD46();
+                }
+            }
+            break;
+            case Development_AmendmentStatusRights: {
+                if (StringUtils.isNotBlank(vo.getD44())) {
+                    return format.getD44();
+                }
+            }
+            break;
+            case Development_AmendmentStatusRightsRemark: {
+                if (StringUtils.isNotBlank(vo.getD44Explain())) {
+                    return format.getD44Explain();
+                }
+            }
+            break;
+            case Development_OtherAmendments: {
+                if (StringUtils.isNotBlank(vo.getD45())) {
+                    return format.getD45();
+                }
+            }
+            break;
+            case Development_OtherAmendmentsRemark: {
+                if (StringUtils.isNotBlank(vo.getD45Explain())) {
+                    return format.getD45Explain();
                 }
             }
             break;
@@ -309,6 +386,12 @@ public class GenerateMdDevelopmentService {
             case Development_managementExpenseTax: {
                 if (NumberUtils.isNumber(vo.getG32())) {
                     return format.getG32();
+                }
+            }
+            break;
+            case Development_landIncrementTax: {
+                if (NumberUtils.isNumber(vo.getF38())) {
+                    return format.getF38();
                 }
             }
             break;
@@ -377,6 +460,8 @@ public class GenerateMdDevelopmentService {
                 }
             }
             break;
+            case Development_SalesTaxAndAdditional:
+                return errorStr;
             default: {
             }
             break;
@@ -466,5 +551,25 @@ public class GenerateMdDevelopmentService {
             }
         }
         return schemeJudgeObject;
+    }
+
+    private String getDevelopment_constructionSubtotalContent(){
+        return errorStr;
+    }
+
+
+    /**
+     * 经济指标
+     * @return
+     * @throws Exception
+     */
+    private String getDevelopment_EconomicIndicators()throws Exception{
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        generateCommonMethod.settingBuildingTable(builder);
+        String localPath =  generateCommonMethod.getLocalPath();
+
+        doc.save(localPath) ;
+        return localPath;
     }
 }
