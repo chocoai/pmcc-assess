@@ -141,9 +141,7 @@ public class ProjectTaskService {
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetails.setBisRestart(false);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-            if (projectPlanDetailsService.isAllPlanDetailsFinish(projectPlanDetails.getPlanId())) {
-                projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
-            }
+            projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
         }
         bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());
 

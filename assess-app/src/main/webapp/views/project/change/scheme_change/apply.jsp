@@ -23,14 +23,14 @@
                     <input type="hidden" name="areaName" value="${item.areaName}">
                     <div class="x_title collapse-link">
                         <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                         </ul>
                         <h3>
-                            <label>${item.areaName}</label>
+                                ${item.areaName}
                         </h3>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="x_content collapse">
+                    <div class="x_content">
                         <form id="frmJudgeObject${item.id}" class="form-horizontal">
                             <div class="form-group">
                                 <div class="x-valid">
@@ -166,10 +166,7 @@
             </c:forEach>
 
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
+                <div class="x_title">
                     <h2><i class="fa fa-info-circle"></i>
                         <small>变更原因</small>
                     </h2>

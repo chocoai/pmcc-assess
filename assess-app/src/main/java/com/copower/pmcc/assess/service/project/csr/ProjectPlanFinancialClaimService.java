@@ -427,15 +427,6 @@ public class ProjectPlanFinancialClaimService {
             }
 
         }
-
-        projectPlanDetailsWhere = new ProjectPlanDetails();
-        projectPlanDetailsWhere.setPlanId(projectPlanDetails.getPlanId());
-        projectPlanDetailsWhere.setStatus(ProcessStatusEnum.RUN.getValue());
-        projectPlanDetailsWhere.setBisLastLayer(true);
-        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
-        if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
-            projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
-        }
-
+        projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
     }
 }
