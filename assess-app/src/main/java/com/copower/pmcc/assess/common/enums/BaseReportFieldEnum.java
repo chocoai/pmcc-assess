@@ -221,14 +221,19 @@ public enum BaseReportFieldEnum implements Serializable {
     Development_devDuring("假设法开发期间税费"),
     Development_otherEngineeringCost("假设法其他工程费"),
     Development_constructionSubtotal("假设法工程建设成本小计"),
+    Development_constructionSubtotal3("假设法工程建设成本"),
     Development_constructionSubtotal2("假设法建设成本"),
+    Development_constructionSubtotalContent("假设法建设成本内容"),
     Development_constructionSubtotal_ComputationalProcess("假设法建安成本计算过程"),
     Development_unforeseenExpensesTax("假设法不可预见费率"),
     Development_unforeseenExpenses("假设法不可预见费"),
     Development_deedCorrecting("假设法契税率"),
     Development_transactionCostCorrecting("假设法交易费率"),
-    Development_LandAcquisitionCost("假设法地价总额"),
+    Development_LandAcquisitionCost("假设法地价总额"),//土地取得成本 同
+    Development_LandGetCost("假设法土地取得成本"),//
     Development_LandAcquisitionCostTax("假设法土地取得税费"),
+    Development_SalesTaxAndAdditional("假设法增值税金及附加"),
+    Development_landIncrementTax("假设法土地增值税率"),
     Development_salesFeeTax("假设法销售费率"),
     Development_salesFee("假设法销售费额"),
     Development_TotalCompletedPriceRealEstateDevelopment("假设法不动产开发完成总价"),
@@ -241,8 +246,10 @@ public enum BaseReportFieldEnum implements Serializable {
     Development_Price("假设法评估单价"),
     Development_total_area("假设法总面积"),
     Development_OtherAmendments("假设法其他修正值"),
+    Development_OtherAmendmentsRemark("假设法其他修正说明"),
     Development_DevelopmentDegreeCorrectionValue("假设法开发程度修正值"),
     Development_AmendmentStatusRights("假设法宗地权利状况修正值"),
+    Development_AmendmentStatusRightsRemark("假设法宗地权利状况修正说明"),
     ;
     private String name;
     private BaseReportFieldEnum(String name) {

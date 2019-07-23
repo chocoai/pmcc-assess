@@ -31,7 +31,12 @@ assessCommonLand.landImportEvent = function (id) {
  * 土地证附件 导入处理
  */
 assessCommonLand.landImportHandle = function () {
-    var id = $("#" + assessCommonLand.config.newFileId).attr("data-id");
+    var target = $("#" + assessCommonLand.config.newFileId) ;
+    var id = target.attr("data-id");
+    var value = target.val();
+    if (!declareCommon.isNotBlank(value)){
+        return false ;
+    }
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/public/importAjaxFile",
@@ -42,7 +47,7 @@ assessCommonLand.landImportHandle = function () {
             fieldsName: assessCommonLand.config.fileId
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: assessCommonLand.config.newFileId,//文件选择框的id属性
+        fileElementId: target.attr("id"),//文件选择框的id属性
         dataType: 'json',//服务器返回的格式
         async: false,
         success: function (result) {
@@ -81,7 +86,12 @@ assessCommonLand.houseImportEvent = function (id) {
  * 房产证附件 导入处理
  */
 assessCommonLand.houseImportHandle = function () {
-    var id = $("#" + assessCommonLand.config.newHouseFileId).attr("data-id");
+    var target = $("#" + assessCommonLand.config.newHouseFileId) ;
+    var id = target.attr("data-id");
+    var value = target.val();
+    if (!declareCommon.isNotBlank(value)){
+        return false ;
+    }
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/public/importAjaxFile",
@@ -92,7 +102,7 @@ assessCommonLand.houseImportHandle = function () {
             fieldsName: assessCommonLand.config.houseFileId
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: assessCommonLand.config.newHouseFileId,//文件选择框的id属性
+        fileElementId: target.attr("id"),//文件选择框的id属性
         dataType: 'json',//服务器返回的格式
         async: false,
         success: function (result) {

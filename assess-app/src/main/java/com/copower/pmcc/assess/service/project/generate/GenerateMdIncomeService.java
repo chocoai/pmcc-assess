@@ -370,9 +370,7 @@ public class GenerateMdIncomeService implements Serializable {
                     File file = new File(path);
                     if (file.isFile()) {
                         if (StringUtils.isNotBlank(path)) {
-                            if (true) {
-                                generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, path);
-                            }
+                            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, path);
                         }
                     }
                 }
@@ -640,29 +638,16 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:13
      */
-    public String getIncomeGetMdCompare() throws Exception {
-        DataEvaluationMethod dataEvaluationMethod = null;
-        SchemeInfo schemeInfo = null;
-        List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
-        if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
-            if (dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdCompare.getName().indexOf(oo.getName()) != -1).count() >= 1) {
-                dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> CalculationMethodNameEnum.MdCompare.getName().indexOf(oo.getName()) != -1).findFirst().get();
-            }
-        }
-        if (dataEvaluationMethod != null) {
-            schemeInfo = schemeInfoService.getSchemeInfo(getSchemeJudgeObject().getId(), dataEvaluationMethod.getMethod());
-        }
-        if (schemeInfo != null) {
-            if (schemeInfo.getMethodDataId() != null) {
-                try {
-                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), schemeInfo.getMethodDataId(), areaId);
-                    String temp = generateMdCompareService.generateCompareFile();
-                    File file = new File(temp);
-                    if (file.isFile()) {
-                        return temp;
-                    }
-                } catch (Exception e) {
-                }
+    private String getIncomeGetMdCompare() throws Exception {
+        BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        SchemeInfo schemeInfo  = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCompare.getId());
+        if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+            GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), schemeInfo.getMethodDataId(), areaId);
+            String temp = generateMdCompareService.generateCompareFile();
+            File file = new File(temp);
+            if (file.isFile()) {
+                return temp;
             }
         }
         return null;

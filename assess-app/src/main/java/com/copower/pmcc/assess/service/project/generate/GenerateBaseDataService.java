@@ -415,7 +415,7 @@ public class GenerateBaseDataService {
      * 抵押价值总金额
      */
     public String getTotalAmountMortgageValue() throws Exception {
-        BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice());
+        BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice()).abs();
         String value = generateCommonMethod.getBigDecimalToInteger(decimal, 100);
         value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
         return value;
@@ -425,7 +425,7 @@ public class GenerateBaseDataService {
      * 抵押价值总金额大写
      */
     public String getTotalAmountMortgageValueCapitalization() throws Exception {
-        BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice());
+        BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice()).abs();
         String value = generateCommonMethod.getBigDecimalToInteger(decimal, 100);
         String s = CnNumberUtils.toUppercaseSubstring(value);
         return s;

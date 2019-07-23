@@ -53,7 +53,12 @@ declareRealtyRealEstateCert.editData = function () {
 };
 //上传附件到服务端
 declareRealtyRealEstateCert.enclosureFun = function () {
-    var id = $("#" + declareRealtyRealEstateCert.config.fileId).attr("data-id");
+    var target = $("#" + declareRealtyRealEstateCert.config.fileId) ;
+    var id = target.attr("data-id");
+    var value = target.val();
+    if (!declareCommon.isNotBlank(value)){
+        return false ;
+    }
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/public/importAjaxFile",
@@ -64,7 +69,7 @@ declareRealtyRealEstateCert.enclosureFun = function () {
             fieldsName: declareRealtyRealEstateCert.config.newFileId
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: declareRealtyRealEstateCert.config.fileId,//文件选择框的id属性
+        fileElementId: target.attr("id"),//文件选择框的id属性
         dataType: 'json',//服务器返回的格式
         async: false,
         success: function (result) {

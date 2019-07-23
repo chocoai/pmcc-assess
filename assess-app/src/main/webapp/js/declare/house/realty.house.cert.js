@@ -507,7 +507,12 @@ assessCommonHouse.landImportEvent = function (id) {
  * 土地证附件 导入处理
  */
 assessCommonHouse.landImportHandle = function () {
-    var id = $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId).attr("data-id");
+    var target = $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId) ;
+    var id = target.attr("data-id");
+    var value = target.val();
+    if (!declareCommon.isNotBlank(value)){
+        return false ;
+    }
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/public/importAjaxFile",
@@ -518,12 +523,11 @@ assessCommonHouse.landImportHandle = function () {
             fieldsName: assessCommonHouse.config.landFileId
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: assessCommonHouse.config.son.declareRealtyLandCert.fileId,//文件选择框的id属性
+        fileElementId: target.attr("id"),//文件选择框的id属性
         dataType: 'json',//服务器返回的格式
         async: false,
         success: function (result) {
             if (result.ret) {
-                // assessCommonHouse.loadList();
                 toastr.success('成功 !');
             }
         },
@@ -545,7 +549,12 @@ assessCommonHouse.houseImportEvent = function (id) {
  * 房产证附件 导入处理
  */
 assessCommonHouse.houseImportHandle = function () {
-    var id = $("#" + assessCommonHouse.config.fileIdNew).attr("data-id");
+    var target = $("#" + assessCommonHouse.config.fileIdNew) ;
+    var id = target.attr("data-id");
+    var value = target.val();
+    if (!declareCommon.isNotBlank(value)){
+        return false ;
+    }
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/public/importAjaxFile",
@@ -556,7 +565,7 @@ assessCommonHouse.houseImportHandle = function () {
             fieldsName: assessCommonHouse.config.fileId
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: assessCommonHouse.config.fileIdNew,//文件选择框的id属性
+        fileElementId: target.attr("id"),//文件选择框的id属性
         dataType: 'json',//服务器返回的格式
         async: false,
         success: function (result) {
