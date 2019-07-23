@@ -70,7 +70,6 @@ public class CaseHouseRoomService {
     public CaseHouseRoomVo getCaseHouseRoomVo(CaseHouseRoom caseHouseRoom) {
         CaseHouseRoomVo vo = new CaseHouseRoomVo();
         BeanUtils.copyProperties(caseHouseRoom, vo);
-        vo.setRoomTypeName(baseDataDicService.getNameById(caseHouseRoom.getRoomType()));
         return vo;
     }
 
