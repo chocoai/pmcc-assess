@@ -63,10 +63,10 @@
 <input type="file" id="ajaxFileUploadLandHouse" name="file" style="display: none;"
        onchange="assessCommonLand.inputFileHouse();">
 <input type="file" id="declareRealtyLandCertNewFileId" name="declareRealtyLandCertNewFileId" style="display: none;"
-       onchange="assessCommonLand.landImportHandle();">
+       onchange="assessCommonLand.landImportHandle();" multiple="multiple">
 <input type="file" id="declareRealtyLandCert_declareRealtyLandCert_HouseCert_newFileId"
        name="declareRealtyLandCert_declareRealtyLandCert_HouseCert_newFileId"
-       onchange="assessCommonLand.houseImportHandle();" style="display: none">
+       onchange="assessCommonLand.houseImportHandle();" style="display: none" multiple="multiple">
 
 
 <!-- 土地证信息 -->

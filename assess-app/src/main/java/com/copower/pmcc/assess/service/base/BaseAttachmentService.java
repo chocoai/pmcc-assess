@@ -305,6 +305,19 @@ public class BaseAttachmentService {
         return fileFullPath;
     }
 
+    public String importAjaxFile(List<MultipartFile> multipartFileList, String tableName, String tableId, String fieldsName) throws Exception {
+       StringBuilder stringBuilder = new StringBuilder(8) ;
+       if (CollectionUtils.isNotEmpty(multipartFileList)){
+           for (MultipartFile multipartFile:multipartFileList){
+               String id = importAjaxFile(multipartFile, tableName, tableId, fieldsName) ;
+               if (StringUtils.isNotBlank(id)){
+                   stringBuilder.append(id) ;
+               }
+           }
+       }
+       return stringBuilder.toString();
+    }
+
     public String importAjaxFile(MultipartFile multipartFile, String tableName, String tableId, String fieldsName) throws Exception {
         String filePath = this.saveUploadFile(multipartFile);
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();

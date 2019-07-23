@@ -81,7 +81,7 @@
 
 <input type="file" id="declareRealtyRealEstateCertFileId" name="declareRealtyRealEstateCertFileId"
        style="display: none;"
-       onchange="declareRealtyRealEstateCert.enclosureFun();">
+       onchange="declareRealtyRealEstateCert.enclosureFun();" multiple="multiple">
 <!-- 不动产 add -->
 <div id="boxDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
