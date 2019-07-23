@@ -15,6 +15,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -76,6 +77,7 @@ public class GenerateEvent extends BaseProcessEvent {
             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
             if (baseDataDic == null) return;
             List<String> reportNumberList = projectNumberRecordService.getReportNumberList(projectId, baseDataDic.getId());
+            if (CollectionUtils.isEmpty(reportNumberList)) return;
             String s = StringUtils.join(reportNumberList, ',');
             sysProjectDto.setProjectDocumentNumber(s);
             erpRpcProjectService.saveProject(sysProjectDto);
