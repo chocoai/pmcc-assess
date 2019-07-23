@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoom" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="room_type" property="roomType" jdbcType="INTEGER" />
+    <result column="room_type" property="roomType" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="orientation" property="orientation" jdbcType="VARCHAR" />
@@ -124,7 +124,7 @@
       lighting, opening, depth, 
       layer_height, clear_height, creator, 
       gmt_created, gmt_modified)
-    values (#{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+    values (#{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, 
       #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, 
       #{lighting,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, 
@@ -194,7 +194,7 @@
         #{houseId,jdbcType=INTEGER},
       </if>
       <if test="roomType != null" >
-        #{roomType,jdbcType=INTEGER},
+        #{roomType,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -259,7 +259,7 @@
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
       <if test="record.roomType != null" >
-        room_type = #{record.roomType,jdbcType=INTEGER},
+        room_type = #{record.roomType,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -315,7 +315,7 @@
     update tb_case_house_room
     set id = #{record.id,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
-      room_type = #{record.roomType,jdbcType=INTEGER},
+      room_type = #{record.roomType,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       area = #{record.area,jdbcType=DECIMAL},
       orientation = #{record.orientation,jdbcType=VARCHAR},
@@ -342,7 +342,7 @@
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
       <if test="roomType != null" >
-        room_type = #{roomType,jdbcType=INTEGER},
+        room_type = #{roomType,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -395,7 +395,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoom" >
     update tb_case_house_room
     set house_id = #{houseId,jdbcType=INTEGER},
-      room_type = #{roomType,jdbcType=INTEGER},
+      room_type = #{roomType,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       area = #{area,jdbcType=DECIMAL},
       orientation = #{orientation,jdbcType=VARCHAR},
