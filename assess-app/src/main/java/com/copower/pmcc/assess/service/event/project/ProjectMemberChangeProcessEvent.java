@@ -73,13 +73,14 @@ public class ProjectMemberChangeProcessEvent extends BaseProcessEvent {
             projectChangeLogDao.modifyProjectChangeLog(costsProjectChangeLog);
 
             //更新到erp中
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processExecution.getProcessInstanceId());
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
             Integer publicProjectId = projectInfo.getPublicProjectId();
-            if (publicProjectId == null) return;
-            SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(publicProjectId, applicationConstant.getAppKey());
-            sysProjectDto.setProjectManager(newMember.getUserAccountManager());
-            sysProjectDto.setProjectMember(newMember.getUserAccountMember());
-            erpRpcProjectService.saveProject(sysProjectDto);
+            if (publicProjectId != null) {
+                SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoById(publicProjectId);
+                sysProjectDto.setProjectManager(newMember.getUserAccountManager());
+                sysProjectDto.setProjectMember(newMember.getUserAccountMember());
+                erpRpcProjectService.saveProject(sysProjectDto);
+            }
         }
     }
 
