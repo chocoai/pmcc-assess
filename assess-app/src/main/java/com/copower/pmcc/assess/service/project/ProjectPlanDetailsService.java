@@ -829,4 +829,14 @@ public class ProjectPlanDetailsService {
             }
         }
     }
+
+    /**
+     * 根据计划编号，取得计划所有的上子级计划总数
+     *
+     * @param planId
+     * @return
+     */
+    public Integer getTotalPlans(Integer planId) {
+        return projectPlanDetailsDao.getTotalPlans(planId);
+    }
 }
