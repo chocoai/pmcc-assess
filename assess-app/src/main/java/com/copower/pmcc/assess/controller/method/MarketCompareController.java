@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.dto.output.method.MdCompareCaseVo;
 import com.copower.pmcc.assess.dto.output.method.MdCompareInitParamVo;
@@ -161,6 +158,17 @@ public class MarketCompareController {
             return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(judgeObjectId,mcId, rewardRateId, rewardRate));
         } catch (Exception e) {
             return HttpResult.newErrorResult("更新失败");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/refreshData", name = "刷新", method = RequestMethod.POST)
+    public HttpResult refreshData(Integer mcId,Integer judgeObjectId) {
+        try {
+            MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.refreshData(mcId, judgeObjectId);
+            return HttpResult.newCorrectResult(mdCompareInitParamVo);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("保存失败");
         }
     }
 }

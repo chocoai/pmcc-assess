@@ -477,4 +477,46 @@ public class MdMarketCompareService {
         }
         return keyValueDtos;
     }
+
+    public MdCompareInitParamVo refreshData(Integer mcId,Integer judgeObjectId){
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
+        List<DataSetUseField> setUseFieldList = getSetUseFieldList(schemeJudgeObject.getSetUse());
+        //修改查勘信息
+        MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
+        mdMarketCompareItem.setMcId(mcId);
+        mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
+        List<MdMarketCompareItem> marketCompareItemList = mdMarketCompareItemDao.getMarketCompareItemList(mdMarketCompareItem);
+        if(CollectionUtils.isNotEmpty(marketCompareItemList)){
+            mdMarketCompareItem = marketCompareItemList.get(0);
+            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(mdMarketCompareItem.getPlanDetailsId());
+            mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
+            mdMarketCompareItemDao.updateMarketCompareItem(mdMarketCompareItem);
+        }
+
+
+        //所有案例信息
+        MdMarketCompareItem mdMarketCompareItemCase = new MdMarketCompareItem();
+        mdMarketCompareItemCase.setMcId(mcId);
+        mdMarketCompareItemCase.setType(ExamineTypeEnum.CASE.getId());
+        List<MdMarketCompareItem> marketCompareItemCaseList = mdMarketCompareItemDao.getMarketCompareItemList(mdMarketCompareItemCase);
+        if (CollectionUtils.isNotEmpty(marketCompareItemCaseList)) {
+            for (MdMarketCompareItem caseItem : marketCompareItemCaseList) {
+                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(caseItem.getPlanDetailsId());
+                BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
+                caseItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup,schemeJudgeObject, basicApply, setUseFieldList, true));
+                mdMarketCompareItemDao.updateMarketCompareItem(caseItem);
+            }
+        }
+
+
+        MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
+        mdCompareInitParamVo.setMcId(mcId);
+        mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);
+        mdCompareInitParamVo.setMarketCompare(getMdMarketCompare(mcId));
+        mdCompareInitParamVo.setFields(setUseFieldList);
+        mdCompareInitParamVo.setEvaluation(getEvaluationListByMcId(mcId));
+        mdCompareInitParamVo.setCases(getCaseListByMcId(mcId));
+        return mdCompareInitParamVo;
+    }
 }
