@@ -1,9 +1,14 @@
 package com.copower.pmcc.assess.common;
 
-import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
-import com.copower.pmcc.assess.service.project.ProjectMemberService;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
 import com.copower.pmcc.bpm.core.process.support.ApprovalUsersService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -14,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class AssessApprovalUsersService extends ApprovalUsersService {
     @Autowired
-    private ProjectMemberService projectMemberService;
+    private ProjectMemberDao projectMemberDao;
 
     public AssessApprovalUsersService(String appKey) {
         super(appKey);
@@ -24,9 +29,11 @@ public class AssessApprovalUsersService extends ApprovalUsersService {
     public String project_manager(String creator, String currUserAccount, Integer projectId) {
         String pm = "";
 
-        ProjectMemberVo projectMember = projectMemberService.getProjectMember(projectId);
-        if (projectMember != null) {
-            pm = projectMember.getUserAccountManager();
+        List<ProjectMember> projectMemberList = projectMemberDao.getProjectMemberList(projectId);
+
+        if (CollectionUtils.isNotEmpty(projectMemberList)) {
+            List<String> transform = LangUtils.transform(projectMemberList, o -> o.getUserAccountManager());
+            pm = FormatUtils.transformListString(transform);
         }
 
         return pm;
@@ -36,9 +43,11 @@ public class AssessApprovalUsersService extends ApprovalUsersService {
     public String project_member(String creator, String currUserAccount, Integer projectId) {
         String members = "";
 
-        ProjectMemberVo projectMember = projectMemberService.getProjectMember(projectId);
-        if (projectMember != null) {
-            members = projectMember.getUserAccountMember();
+        List<ProjectMember> projectMemberList = projectMemberDao.getProjectMemberList(projectId);
+
+        if (CollectionUtils.isNotEmpty(projectMemberList)) {
+            List<String> transform = LangUtils.transform(projectMemberList, o -> o.getUserAccountMember());
+            members = FormatUtils.transformListString(transform);
         }
 
         return members;
