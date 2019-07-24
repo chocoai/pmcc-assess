@@ -72,6 +72,10 @@ public class CaseBuilding {
 
     private Integer appearanceNewAndOld;
 
+    private Integer betweenDistance;
+
+    private String betweenDistanceDescription;
+
     private String builderName;
 
     private Integer maxFloor;
@@ -81,10 +85,6 @@ public class CaseBuilding {
     private Integer firstFloor;
 
     private Integer constructionQuality;
-
-    private Integer betweenDistance;
-
-    private String betweenDistanceDescription;
 
     private String vStructura;
 
@@ -103,6 +103,10 @@ public class CaseBuilding {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer propertySocialPrestige;
+
+    private Integer propertyCompanyNature;
 
     public Integer getId() {
         return id;
@@ -376,6 +380,22 @@ public class CaseBuilding {
         this.appearanceNewAndOld = appearanceNewAndOld;
     }
 
+    public Integer getBetweenDistance() {
+        return betweenDistance;
+    }
+
+    public void setBetweenDistance(Integer betweenDistance) {
+        this.betweenDistance = betweenDistance;
+    }
+
+    public String getBetweenDistanceDescription() {
+        return betweenDistanceDescription;
+    }
+
+    public void setBetweenDistanceDescription(String betweenDistanceDescription) {
+        this.betweenDistanceDescription = betweenDistanceDescription == null ? null : betweenDistanceDescription.trim();
+    }
+
     public String getBuilderName() {
         return builderName;
     }
@@ -414,22 +434,6 @@ public class CaseBuilding {
 
     public void setConstructionQuality(Integer constructionQuality) {
         this.constructionQuality = constructionQuality;
-    }
-
-    public Integer getBetweenDistance() {
-        return betweenDistance;
-    }
-
-    public void setBetweenDistance(Integer betweenDistance) {
-        this.betweenDistance = betweenDistance;
-    }
-
-    public String getBetweenDistanceDescription() {
-        return betweenDistanceDescription;
-    }
-
-    public void setBetweenDistanceDescription(String betweenDistanceDescription) {
-        this.betweenDistanceDescription = betweenDistanceDescription == null ? null : betweenDistanceDescription.trim();
     }
 
     public String getvStructura() {
@@ -502,5 +506,21 @@ public class CaseBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getPropertySocialPrestige() {
+        return propertySocialPrestige;
+    }
+
+    public void setPropertySocialPrestige(Integer propertySocialPrestige) {
+        this.propertySocialPrestige = propertySocialPrestige;
+    }
+
+    public Integer getPropertyCompanyNature() {
+        return propertyCompanyNature;
+    }
+
+    public void setPropertyCompanyNature(Integer propertyCompanyNature) {
+        this.propertyCompanyNature = propertyCompanyNature;
     }
 }

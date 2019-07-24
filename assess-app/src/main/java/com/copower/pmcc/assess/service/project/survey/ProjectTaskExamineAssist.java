@@ -24,6 +24,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.base.Objects;
@@ -211,7 +212,8 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         modelAndView.addObject("declareRecord", declareRecord);
-
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
         setIndustryExamineView(userAccount, projectPlanDetails, modelAndView);
         try {
             setIndustryExamineParam(declareRecord, surveyExamineInfo, projectPlanDetails, modelAndView);

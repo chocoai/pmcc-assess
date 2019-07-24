@@ -24,6 +24,8 @@ public class CaseBuildingVo extends CaseBuilding {
     private String propertyName;
     private DataBuilderVo dataBuilder;
     private DataPropertyVo dataProperty;
+    private String propertySocialPrestigeName;
+    private String propertyCompanyNatureName;
     public String getOpenTimeName() {
         return openTimeName;
     }
@@ -128,5 +130,21 @@ public class CaseBuildingVo extends CaseBuilding {
 
     public void setIndustryUseYearName(String industryUseYearName) {
         this.industryUseYearName = industryUseYearName;
+    }
+
+    public String getPropertySocialPrestigeName() {
+        return propertySocialPrestigeName;
+    }
+
+    public void setPropertySocialPrestigeName(String propertySocialPrestigeName) {
+        this.propertySocialPrestigeName = propertySocialPrestigeName;
+    }
+
+    public String getPropertyCompanyNatureName() {
+        return propertyCompanyNatureName;
+    }
+
+    public void setPropertyCompanyNatureName(String propertyCompanyNatureName) {
+        this.propertyCompanyNatureName = propertyCompanyNatureName;
     }
 }

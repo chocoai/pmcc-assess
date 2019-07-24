@@ -639,18 +639,24 @@ public class GenerateMdIncomeService implements Serializable {
      * @date: 2019/2/28 14:13
      */
     private String getIncomeGetMdCompare() throws Exception {
-        BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
-        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
-        SchemeInfo schemeInfo  = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCompare.getId());
-        if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-            GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), schemeInfo.getMethodDataId(), areaId);
-            String temp = generateMdCompareService.generateCompareFile();
-            File file = new File(temp);
-            if (file.isFile()) {
-                return temp;
+        List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList();
+        if (CollectionUtils.isNotEmpty(leaseVoList)){
+            if (leaseVoList.stream().anyMatch(oo -> oo.getMcId() != null)){
+                Integer mcId = leaseVoList.stream().filter(oo -> oo.getMcId() != null).findFirst().get().getMcId() ;
+                GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), mcId, areaId);
+                String compareFile = generateMdCompareService.generateCompareFile();
+                File file = new File(compareFile);
+                if (file.isFile()) {
+                    return compareFile;
+                }
             }
         }
-        return null;
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        builder.write("");
+        String localPath = getLocalPath();
+        document.save(localPath) ;
+        return localPath;
     }
 
     //收益法单价内涵

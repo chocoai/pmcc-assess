@@ -7,6 +7,25 @@
 
     var dataPropertyModelQuote = {};
 
+    dataPropertyModelQuote.getDataProperty = function (id ,callback) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/dataProperty/getDataPropertyById",
+            type: "get",
+            dataType: "json",
+            data: {id:id},
+            success: function (result) {
+                if (result.ret) {
+                   if(callback){
+                       callback(result.data) ;
+                   }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
+
     dataPropertyModelQuote.saveDataProperty = function (data, callback) {
         $.ajax({
             url: "${pageContext.request.contextPath}/dataProperty/saveAndUpdateDataProperty",

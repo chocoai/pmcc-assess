@@ -2216,6 +2216,136 @@ public class CaseBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andBetweenDistanceIsNull() {
+            addCriterion("between_distance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceIsNotNull() {
+            addCriterion("between_distance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceEqualTo(Integer value) {
+            addCriterion("between_distance =", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceNotEqualTo(Integer value) {
+            addCriterion("between_distance <>", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceGreaterThan(Integer value) {
+            addCriterion("between_distance >", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("between_distance >=", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceLessThan(Integer value) {
+            addCriterion("between_distance <", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceLessThanOrEqualTo(Integer value) {
+            addCriterion("between_distance <=", value, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceIn(List<Integer> values) {
+            addCriterion("between_distance in", values, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceNotIn(List<Integer> values) {
+            addCriterion("between_distance not in", values, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceBetween(Integer value1, Integer value2) {
+            addCriterion("between_distance between", value1, value2, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceNotBetween(Integer value1, Integer value2) {
+            addCriterion("between_distance not between", value1, value2, "betweenDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionIsNull() {
+            addCriterion("between_distance_description is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionIsNotNull() {
+            addCriterion("between_distance_description is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionEqualTo(String value) {
+            addCriterion("between_distance_description =", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionNotEqualTo(String value) {
+            addCriterion("between_distance_description <>", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionGreaterThan(String value) {
+            addCriterion("between_distance_description >", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("between_distance_description >=", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionLessThan(String value) {
+            addCriterion("between_distance_description <", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("between_distance_description <=", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionLike(String value) {
+            addCriterion("between_distance_description like", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionNotLike(String value) {
+            addCriterion("between_distance_description not like", value, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionIn(List<String> values) {
+            addCriterion("between_distance_description in", values, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionNotIn(List<String> values) {
+            addCriterion("between_distance_description not in", values, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionBetween(String value1, String value2) {
+            addCriterion("between_distance_description between", value1, value2, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBetweenDistanceDescriptionNotBetween(String value1, String value2) {
+            addCriterion("between_distance_description not between", value1, value2, "betweenDistanceDescription");
+            return (Criteria) this;
+        }
+
         public Criteria andBuilderNameIsNull() {
             addCriterion("builder_name is null");
             return (Criteria) this;
@@ -2523,136 +2653,6 @@ public class CaseBuildingExample {
 
         public Criteria andConstructionQualityNotBetween(Integer value1, Integer value2) {
             addCriterion("construction_quality not between", value1, value2, "constructionQuality");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceIsNull() {
-            addCriterion("between_distance is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceIsNotNull() {
-            addCriterion("between_distance is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceEqualTo(Integer value) {
-            addCriterion("between_distance =", value, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceNotEqualTo(Integer value) {
-            addCriterion("between_distance <>", value, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceGreaterThan(Integer value) {
-            addCriterion("between_distance >", value, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceGreaterThanOrEqualTo(Integer value) {
-            addCriterion("between_distance >=", value, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceLessThan(Integer value) {
-            addCriterion("between_distance <", value, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceLessThanOrEqualTo(Integer value) {
-            addCriterion("between_distance <=", value, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceIn(List<Integer> values) {
-            addCriterion("between_distance in", values, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceNotIn(List<Integer> values) {
-            addCriterion("between_distance not in", values, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceBetween(Integer value1, Integer value2) {
-            addCriterion("between_distance between", value1, value2, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceNotBetween(Integer value1, Integer value2) {
-            addCriterion("between_distance not between", value1, value2, "betweenDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionIsNull() {
-            addCriterion("between_distance_description is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionIsNotNull() {
-            addCriterion("between_distance_description is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionEqualTo(String value) {
-            addCriterion("between_distance_description =", value, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionNotEqualTo(String value) {
-            addCriterion("between_distance_description <>", value, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionGreaterThan(String value) {
-            addCriterion("between_distance_description >", value, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionGreaterThanOrEqualTo(String value) {
-            addCriterion("between_distance_description >=", value, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionLessThan(String value) {
-            addCriterion("between_distance_description <", value, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionLessThanOrEqualTo(String value) {
-            addCriterion("between_distance_description <=", value, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionLike(String value) {
-            addCriterion("between_distance_description like", value, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionNotLike(String value) {
-            addCriterion("between_distance_description not like", value, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionIn(List<String> values) {
-            addCriterion("between_distance_description in", values, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionNotIn(List<String> values) {
-            addCriterion("between_distance_description not in", values, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionBetween(String value1, String value2) {
-            addCriterion("between_distance_description between", value1, value2, "betweenDistanceDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andBetweenDistanceDescriptionNotBetween(String value1, String value2) {
-            addCriterion("between_distance_description not between", value1, value2, "betweenDistanceDescription");
             return (Criteria) this;
         }
 
@@ -3263,6 +3263,126 @@ public class CaseBuildingExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeIsNull() {
+            addCriterion("property_social_prestige is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeIsNotNull() {
+            addCriterion("property_social_prestige is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeEqualTo(Integer value) {
+            addCriterion("property_social_prestige =", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotEqualTo(Integer value) {
+            addCriterion("property_social_prestige <>", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeGreaterThan(Integer value) {
+            addCriterion("property_social_prestige >", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_social_prestige >=", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeLessThan(Integer value) {
+            addCriterion("property_social_prestige <", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeLessThanOrEqualTo(Integer value) {
+            addCriterion("property_social_prestige <=", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeIn(List<Integer> values) {
+            addCriterion("property_social_prestige in", values, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotIn(List<Integer> values) {
+            addCriterion("property_social_prestige not in", values, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeBetween(Integer value1, Integer value2) {
+            addCriterion("property_social_prestige between", value1, value2, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_social_prestige not between", value1, value2, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIsNull() {
+            addCriterion("property_company_nature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIsNotNull() {
+            addCriterion("property_company_nature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureEqualTo(Integer value) {
+            addCriterion("property_company_nature =", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotEqualTo(Integer value) {
+            addCriterion("property_company_nature <>", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureGreaterThan(Integer value) {
+            addCriterion("property_company_nature >", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_company_nature >=", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureLessThan(Integer value) {
+            addCriterion("property_company_nature <", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureLessThanOrEqualTo(Integer value) {
+            addCriterion("property_company_nature <=", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIn(List<Integer> values) {
+            addCriterion("property_company_nature in", values, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotIn(List<Integer> values) {
+            addCriterion("property_company_nature not in", values, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureBetween(Integer value1, Integer value2) {
+            addCriterion("property_company_nature between", value1, value2, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_company_nature not between", value1, value2, "propertyCompanyNature");
             return (Criteria) this;
         }
     }

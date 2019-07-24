@@ -205,6 +205,8 @@ public class CaseBuildingService {
                 vo.setDataBuilder(dataBuilderService.getDataBuilderVo(dataBuilder));
             }
         }
+        vo.setPropertyCompanyNatureName(baseDataDicService.getNameById(caseBuilding.getPropertyCompanyNature()));
+        vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(caseBuilding.getPropertySocialPrestige()));
         return vo;
     }
 

@@ -126,7 +126,6 @@ basicCommon.getMarkerAreaInWidth = '80%';
 
 basicCommon.valid = function () {
     $('.task_examine_item_tab a[data-name=estate]').tab('show');
-
     if (estateCommon) {
         if (estateCommon.estateForm.size() >= 1) {
             if (!estateCommon.estateForm.valid('楼盘数据不完整')) {
@@ -192,6 +191,7 @@ basicCommon.valid = function () {
             }
         } catch (e) {
             console.log("damagedDegree函数不存在") ;
+            console.log(e) ;
         }
     }
     return true;

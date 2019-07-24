@@ -148,7 +148,7 @@
             </div>
         </td>
         <td>
-            <select class="form-control" name="entityCondition" onchange="damagedDegree.entityConditionChange(this);"
+            <select class="form-control" data-role="required" required="required" name="entityCondition" onchange="damagedDegree.entityConditionChange(this);"
                     data-intact="{intact}" data-basicallyIntact="{basicallyIntact}"
                     data-generalDamage="{generalDamage}" data-seriousDamage="{seriousDamage}">
                 <option value="">-请选择-</option>

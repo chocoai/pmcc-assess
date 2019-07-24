@@ -24,6 +24,14 @@
         return buildingCommon.buildingForm.find('[name=buildingNumber]').val();
     };
 
+    buildingCommon.buildingNumberBlur = function (_this) {
+        $(_this).val($(_this).val().replace('栋',''));
+        var buildingNameElement = $(_this).closest('.form-group').find('[name=buildingName]');
+        if(!buildingNameElement.val()){
+            buildingNameElement.val($(_this).val()+'栋');
+        }
+    };
+
     //物业操作
     buildingCommon.propertyHandle = function (_this) {
         var group = $(_this).closest(".input-group") ;
@@ -98,10 +106,16 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_between_distance, data.betweenDistance, function (html, data) {
             buildingCommon.buildingForm.find('select.betweenDistance').empty().html(html).trigger('change');
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_appearance_new_and_old, data.appearanceNewAndOld, function (html, data) {
+            buildingCommon.buildingForm.find('[name=appearanceNewAndOld]').empty().html(html).trigger('change');
+        });
         //建筑使用寿命 ---
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_building_residence_data, data.residenceUseYear, function (html, data) {
             buildingCommon.buildingForm.find('select.residenceUseYear').empty().html(html).trigger('change');
         }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation,data.propertySocialPrestige, function (html, data) {
+            buildingCommon.buildingForm.find("select[name='propertySocialPrestige']").empty().html(html).trigger('change');
+        });
         $.ajax({
             url: getContextPath() + '/architecture/dataBuildingNewRateList',
             type: 'get',
@@ -296,6 +310,12 @@
             onSelect:function (id, name){
                 buildingCommon.buildingForm.find('input[name=property]').val(id);
                 buildingCommon.buildingForm.find('input[name=propertyName]').val(name);
+                if (dataPropertyModelQuote){
+                    dataPropertyModelQuote.getDataProperty(id , function (data) {
+                        buildingCommon.buildingForm.find("select[name='propertyCompanyNature']").val(data.companyNature).attr("selected",true).trigger('change');
+                        buildingCommon.buildingForm.find("select[name='propertySocialPrestige']").val(data.socialPrestige).trigger('change');
+                    }) ;
+                }
             }
         });
         buildingCommon.buildingForm.find('input[name=builderName]').apBuilder({

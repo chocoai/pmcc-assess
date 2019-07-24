@@ -3225,6 +3225,126 @@ public class BasicBuildingExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andPropertySocialPrestigeIsNull() {
+            addCriterion("property_social_prestige is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeIsNotNull() {
+            addCriterion("property_social_prestige is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeEqualTo(Integer value) {
+            addCriterion("property_social_prestige =", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotEqualTo(Integer value) {
+            addCriterion("property_social_prestige <>", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeGreaterThan(Integer value) {
+            addCriterion("property_social_prestige >", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_social_prestige >=", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeLessThan(Integer value) {
+            addCriterion("property_social_prestige <", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeLessThanOrEqualTo(Integer value) {
+            addCriterion("property_social_prestige <=", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeIn(List<Integer> values) {
+            addCriterion("property_social_prestige in", values, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotIn(List<Integer> values) {
+            addCriterion("property_social_prestige not in", values, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeBetween(Integer value1, Integer value2) {
+            addCriterion("property_social_prestige between", value1, value2, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_social_prestige not between", value1, value2, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIsNull() {
+            addCriterion("property_company_nature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIsNotNull() {
+            addCriterion("property_company_nature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureEqualTo(Integer value) {
+            addCriterion("property_company_nature =", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotEqualTo(Integer value) {
+            addCriterion("property_company_nature <>", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureGreaterThan(Integer value) {
+            addCriterion("property_company_nature >", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_company_nature >=", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureLessThan(Integer value) {
+            addCriterion("property_company_nature <", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureLessThanOrEqualTo(Integer value) {
+            addCriterion("property_company_nature <=", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIn(List<Integer> values) {
+            addCriterion("property_company_nature in", values, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotIn(List<Integer> values) {
+            addCriterion("property_company_nature not in", values, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureBetween(Integer value1, Integer value2) {
+            addCriterion("property_company_nature between", value1, value2, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_company_nature not between", value1, value2, "propertyCompanyNature");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

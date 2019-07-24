@@ -21,22 +21,13 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="楼栋号" required="required"
-                               name="buildingNumber" class="form-control" onblur="buildingNumberBlur(this);" value="${basicBuilding.buildingNumber}">
+                               name="buildingNumber" class="form-control" onblur="buildingCommon.buildingNumberBlur(this);" value="${basicBuilding.buildingNumber}">
                         <span class="input-group-btn">
                             <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
                         </span>
                     </div>
                 </div>
-                <script type="text/javascript">
-                    function buildingNumberBlur(_this) {
-                        $(_this).val($(_this).val().replace('栋',''));
-                        var buildingNameElement = $(_this).closest('.form-group').find('[name=buildingName]');
-                        if(!buildingNameElement.val()){
-                            buildingNameElement.val($(_this).val()+'栋');
-                        }
-                    }
-                </script>
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -342,21 +333,44 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    物业公司
+                    物业公司名称
                 </label>
-                <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
-                    <div class="input-group">
-                        <input type="hidden" name="property" placeholder="物业公司 (请输入物业公司第一个名称)" class="form-control" value="${basicBuilding.property}">
-                        <input type="text" name="propertyName" placeholder="物业公司" class="form-control" value="${basicBuilding.propertyName}">
-                        <span class="input-group-btn">
-                                        <input type="button" class="btn btn-primary" value="物业公司添加"
-                                               onclick="buildingCommon.addPropertyHandle(this);">
-                                    </span>
-                        <span class="input-group-btn">
-                                        <input type="button" class="btn btn-primary" value="当前物业公司服务查看"
-                                               onclick="buildingCommon.propertyHandle(this);">
-                                    </span>
-                    </div>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" name="propertyName" placeholder="物业公司名称" class="form-control" value="${basicBuilding.propertyName}">
+                    <input type="hidden" name="property" placeholder="物业公司 " class="form-control" value="${basicBuilding.property}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    物业公司公司性质
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="propertyCompanyNature" class="form-control">
+                        <option value="">-请选择-</option>
+                        <c:forEach items="${unitPropertiesList}" var="item">
+                            <c:choose>
+                                <c:when test="${item.id == basicBuilding.propertyCompanyNature}">
+                                    <option value="${item.id}"
+                                            selected="selected">${item.name}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${item.id}">${item.name}</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    物业公司社会信誉
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="propertySocialPrestige" class="form-control">
+                        <option value="">-请选择-</option>
+                    </select>
                 </div>
             </div>
         </div>

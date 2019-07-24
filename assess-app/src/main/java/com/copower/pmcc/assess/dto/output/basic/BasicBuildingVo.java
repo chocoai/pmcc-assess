@@ -32,7 +32,8 @@ public class BasicBuildingVo extends BasicBuilding {
     private String appearanceStyleName;
 
     private String appearanceNewAndOldName;
-
+    private String propertySocialPrestigeName;
+    private String propertyCompanyNatureName;
     public String getCompletedTimeTypeName() {
         return completedTimeTypeName;
     }
@@ -160,5 +161,21 @@ public class BasicBuildingVo extends BasicBuilding {
 
     public void setAppearanceNewAndOldName(String appearanceNewAndOldName) {
         this.appearanceNewAndOldName = appearanceNewAndOldName;
+    }
+
+    public String getPropertySocialPrestigeName() {
+        return propertySocialPrestigeName;
+    }
+
+    public void setPropertySocialPrestigeName(String propertySocialPrestigeName) {
+        this.propertySocialPrestigeName = propertySocialPrestigeName;
+    }
+
+    public String getPropertyCompanyNatureName() {
+        return propertyCompanyNatureName;
+    }
+
+    public void setPropertyCompanyNatureName(String propertyCompanyNatureName) {
+        this.propertyCompanyNatureName = propertyCompanyNatureName;
     }
 }

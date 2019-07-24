@@ -251,31 +251,43 @@
 
     //新增案例任务
     taskCaseIndex.addCaseTask = function (pid) {
-        $("#frm_planDetails").empty();
-        $("#frm_planDetails").append($("#plan_details_modal_html").html());
+        var target = $("#frm_planDetails") ;
+        target.empty();
+        target.append($("#plan_details_modal_html").html());
         $("#examineFormTypeList").show();
         var node = $("#case_list").treegrid('find', pid);
-        $("#pid").val(node.id);
-        $("#planStartDate").val(formatDate(node.planStartDate, false));
-        $("#planEndDate").val(formatDate(node.planEndDate, false));
-        $("#executeUserAccount").val(node.executeUserAccount);
-        $("#executeUserName").val(node.executeUserName);
-        $("#executeDepartmentId").val(node.executeDepartmentId);
-        $("#executeDepartmentName").val(node.executeDepartmentName);
-        $("#planHours").val(node.planHours);
-        $("#proportion").val(node.proportion);
+        var data = {} ;
+        $.extend( data,node ) ;
+        data.id = null;
+        data.pid = node.id;
+        var length = node.children.length + 1;
+        data.projectPhaseName = "案例"+length;
+        console.log(data) ;
+        taskCaseIndex.initFormData(target,data) ;
         $("#plan_details_modal").modal('show');
+    };
+
+    taskCaseIndex.initFormData = function (target,data) {
+        target.initForm(data) ;
+        target.find("[name='planStartDate']").val(formatDate(data.planStartDate, false)) ;
+        target.find("[name='planEndDate']").val(formatDate(data.planEndDate, false)) ;
+        target.find("[name='executeUserAccount']").val(data.executeUserAccount) ;
+        target.find("[name='executeUserName']").val(data.executeUserName) ;
+        target.find("[name='executeDepartmentId']").val(data.executeDepartmentId) ;
+        target.find("[name='executeDepartmentName']").val(data.executeDepartmentName) ;
+        target.find("[name='planHours']").val(data.planHours) ;
+        target.find("[name='proportion']").val(data.proportion) ;
     };
 
     //编辑案例任务
     taskCaseIndex.editCaseTask = function (id) {
-        $("#frm_planDetails").empty();
-        $("#frm_planDetails").append($("#plan_details_modal_html").html());
+        var target = $("#frm_planDetails") ;
+        target.empty();
+        target.append($("#plan_details_modal_html").html());
         $("#examineFormTypeList").hide();
         var node = $("#case_list").treegrid('find', id);
-        $("#frm_planDetails").initForm(node);
-        $("#planStartDate").val(formatDate(node.planStartDate, false));
-        $("#planEndDate").val(formatDate(node.planEndDate, false));
+        taskCaseIndex.initFormData(target,node);
+        target.initForm(node);
         $("#plan_details_modal").modal('show');
     };
 
@@ -285,6 +297,7 @@
             return false;
         }
         var data = formParams('frm_planDetails');
+        console.log(data) ;
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyCaseStudy/saveCaseTask",
@@ -442,14 +455,16 @@
 </script>
 
 <script type="text/html" id="plan_details_modal_html">
+    <input type="hidden" id="planDetailsId" name="id"/>
+    <input type="hidden" id="pid" name="pid"/>
     <div class="form-group">
 
         <div class="x-valid">
             <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                案例名称
+                案例名称<span class="symbol required"></span>
             </label>
             <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                <input type="text" placeholder="案例名称"  name="projectPhaseName"
+                <input type="text" placeholder="案例名称" required="required"  name="projectPhaseName"
                        class="form-control ">
             </div>
         </div>
@@ -459,8 +474,6 @@
                 表单类型<span class="symbol required"></span>
             </label>
             <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                <input type="hidden" id="planDetailsId" name="id"/>
-                <input type="hidden" id="pid" name="pid"/>
                 <select class="form-control" name="transactionType" required>
                     <option value="">-请选择-</option>
                     <c:forEach items="${transactionTypeList}" var="item">

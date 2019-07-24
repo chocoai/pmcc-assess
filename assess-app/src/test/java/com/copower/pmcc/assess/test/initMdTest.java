@@ -90,35 +90,35 @@ public class initMdTest {
         MarketCompareItemDto marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("楼盘名称");
         marketCompareItemDto.setValue("香瑞福");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("交易情况");
         marketCompareItemDto.setValue("正常");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("付款方式");
         marketCompareItemDto.setValue("一次性付款");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("房地产坐落及方位");
         marketCompareItemDto.setValue("东大街西北角");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("交通条件");
         marketCompareItemDto.setValue("良");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
@@ -139,35 +139,35 @@ public class initMdTest {
         MarketCompareItemDto marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("楼盘名称");
         marketCompareItemDto.setValue("彩叠园");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("交易情况");
         marketCompareItemDto.setValue("正常");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("付款方式");
         marketCompareItemDto.setValue("分期付款");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("房地产坐落及方位");
         marketCompareItemDto.setValue("正南街偏东");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("交通条件");
         marketCompareItemDto.setValue("优");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
@@ -183,35 +183,35 @@ public class initMdTest {
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("楼盘名称");
         marketCompareItemDto.setValue("合能琥珀");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("交易情况");
         marketCompareItemDto.setValue("正常");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("付款方式");
         marketCompareItemDto.setValue("一次性付款");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("房地产坐落及方位");
         marketCompareItemDto.setValue("东坡路南门");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
         marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName("交通条件");
         marketCompareItemDto.setValue("差");
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 

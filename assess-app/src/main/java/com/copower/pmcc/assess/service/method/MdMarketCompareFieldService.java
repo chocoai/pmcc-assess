@@ -616,7 +616,7 @@ public class MdMarketCompareFieldService extends BaseService {
         value = value.replaceAll("^[,，.。;；、]+|[,，.。;；、]+$", "");
         MarketCompareItemDto marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName(name);
-        marketCompareItemDto.setScore(100);
+        marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         marketCompareItemDto.setValue(value);
         return marketCompareItemDto;

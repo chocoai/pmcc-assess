@@ -52,9 +52,13 @@
         <!--</table>-->
 
 
-        <!--<table tableName="tb_case_building" domainObjectName="CaseBuilding">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_building" domainObjectName="CaseBuilding">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_case_building_property_service_item" domainObjectName="CaseBuildingPropertyServiceItem">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_building_outfit" domainObjectName="CaseBuildingOutfit">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -161,9 +165,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_case_matching_environment" domainObjectName="CaseMatchingEnvironment">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_case_matching_environment" domainObjectName="CaseMatchingEnvironment">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_case_matching_finance" domainObjectName="CaseMatchingFinance">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

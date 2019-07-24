@@ -102,6 +102,10 @@ public class BasicBuilding {
 
     private Date gmtModified;
 
+    private Integer propertySocialPrestige;
+
+    private Integer propertyCompanyNature;
+
     public Integer getId() {
         return id;
     }
@@ -492,5 +496,21 @@ public class BasicBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getPropertySocialPrestige() {
+        return propertySocialPrestige;
+    }
+
+    public void setPropertySocialPrestige(Integer propertySocialPrestige) {
+        this.propertySocialPrestige = propertySocialPrestige;
+    }
+
+    public Integer getPropertyCompanyNature() {
+        return propertyCompanyNature;
+    }
+
+    public void setPropertyCompanyNature(Integer propertyCompanyNature) {
+        this.propertyCompanyNature = propertyCompanyNature;
     }
 }

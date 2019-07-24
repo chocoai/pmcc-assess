@@ -307,8 +307,8 @@ public class ProjectInfoController {
         modelAndView.addObject("projectMemberVo", projectMemberVo);
 
         //判断当前人员是否关注项目
-        ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
-        modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
+//        ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
+//        modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
         //判断当前人是否为项目经理
         modelAndView.addObject("isPM", StringUtils.equals(projectMemberVo.getUserAccountManager(), processControllerComponent.getThisUser()));
         //区域

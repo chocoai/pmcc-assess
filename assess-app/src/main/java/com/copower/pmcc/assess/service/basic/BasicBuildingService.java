@@ -223,6 +223,8 @@ public class BasicBuildingService {
         vo.setConstructionQualityName(baseDataDicService.getNameById(basicBuilding.getConstructionQuality()));
         vo.setAppearanceStyleName(baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()));
         vo.setAppearanceNewAndOldName(baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()));
+        vo.setPropertyCompanyNatureName(baseDataDicService.getNameById(basicBuilding.getPropertyCompanyNature()));
+        vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(basicBuilding.getPropertySocialPrestige()));
         return vo;
     }
 

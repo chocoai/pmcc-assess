@@ -79,7 +79,11 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_basic_matching_environment" domainObjectName="BasicMatchingEnvironment">
+        <table tableName="tb_basic_building" domainObjectName="BasicBuilding">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_basic_building_property_service_item" domainObjectName="BasicBuildingPropertyServiceItem">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

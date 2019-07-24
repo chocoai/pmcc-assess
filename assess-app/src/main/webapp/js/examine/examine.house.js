@@ -650,7 +650,7 @@
         var tradingTotalPrice = houseCommon.houseTradingForm.find('[name=tradingTotalPrice]').val();
         if (AssessCommon.isNumber(area) && AssessCommon.isNumber(area)) {
             var tradingUnitPrice = parseFloat(tradingTotalPrice) / parseFloat(area);
-            houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val(tradingUnitPrice.toFixed(2));
+            houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val(parseInt(tradingUnitPrice));
         }
     }
 

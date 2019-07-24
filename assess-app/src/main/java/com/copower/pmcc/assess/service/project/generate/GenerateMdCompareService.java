@@ -390,7 +390,7 @@ public class GenerateMdCompareService {
         builder.insertCell();
         builder.write("建筑规模");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
-            Integer scoreTotal = 0;
+            double scoreTotal = 0;
             Integer num = 0;
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
@@ -398,7 +398,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.BUILDING_SCALE.getKey())) {
-                        scoreTotal += data.getScore();
+                        scoreTotal += data.getScore().doubleValue();
                         num++;
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -417,7 +417,7 @@ public class GenerateMdCompareService {
         builder.insertCell();
         builder.write("层高");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
-            Integer scoreTotal = 0;
+            double scoreTotal = 0;
             Integer num = 0;
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
@@ -425,7 +425,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey()) || data.getName().equals(MethodCompareFieldEnum.NET_HEIGHT.getKey())) {
-                        scoreTotal += data.getScore();
+                        scoreTotal += data.getScore().doubleValue();
                         num++;
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -444,7 +444,7 @@ public class GenerateMdCompareService {
         builder.insertCell();
         builder.write("空间布局");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
-            Integer scoreTotal = 0;
+            double scoreTotal = 0;
             Integer num = 0;
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
@@ -452,7 +452,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ELEVATOR_HOUSEHOLD_RATIO.getKey()) || data.getName().equals(MethodCompareFieldEnum.PLANE_LAYOUT.getKey())) {
-                        scoreTotal += data.getScore();
+                        scoreTotal += data.getScore().doubleValue();
                         num++;
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -471,7 +471,7 @@ public class GenerateMdCompareService {
         builder.insertCell();
         builder.write("装饰装修");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
-            Integer scoreTotal = 0;
+            double scoreTotal = 0;
             Integer num = 0;
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
@@ -479,7 +479,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey()) || data.getName().equals(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey())) {
-                        scoreTotal += data.getScore();
+                        scoreTotal += data.getScore().doubleValue();
                         num++;
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -498,7 +498,7 @@ public class GenerateMdCompareService {
         builder.insertCell();
         builder.write("设备设施");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
-            Integer scoreTotal = 0;
+            double scoreTotal = 0;
             Integer num = 0;
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
@@ -507,7 +507,7 @@ public class GenerateMdCompareService {
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.INTELLIGENT_LEVEL.getKey()) || data.getName().equals(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEATING_MODE.getKey()) || data.getName().equals(MethodCompareFieldEnum.NETWORK.getKey())) {
-                        scoreTotal += data.getScore();
+                        scoreTotal += data.getScore().doubleValue();
                         num++;
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -526,7 +526,7 @@ public class GenerateMdCompareService {
         builder.insertCell();
         builder.write("建筑功能");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
-            Integer scoreTotal = 0;
+            double scoreTotal = 0;
             Integer num = 0;
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
@@ -537,7 +537,7 @@ public class GenerateMdCompareService {
                             || data.getName().equals(MethodCompareFieldEnum.SUNSHINE.getKey()) || data.getName().equals(MethodCompareFieldEnum.SOUND_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEAT_PRESERVATION.getKey()) || data.getName().equals(MethodCompareFieldEnum.HEAT_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.WATERPROOF.getKey())) {
-                        scoreTotal += data.getScore();
+                        scoreTotal += data.getScore().doubleValue();
                         num++;
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -754,10 +754,10 @@ public class GenerateMdCompareService {
                 for (MarketCompareItemDto caseItem : dtos) {
                     if (cacheSetUseFieldList.getFieldName().equals(caseItem.getName())) {
                         Integer num = Integer.valueOf(item.getName().substring(item.getName().length() - 1, item.getName().length()));
-                        if (100 == caseItem.getScore()) {
-                            normal.put(num, caseItem.getScore());
+                        if (100 == caseItem.getScore().intValue()) {
+                            normal.put(num, caseItem.getScore().intValue());
                         }
-                        all.put(num, caseItem.getScore());
+                        all.put(num, caseItem.getScore().intValue());
                     }
                 }
             }
@@ -822,10 +822,10 @@ public class GenerateMdCompareService {
                 for (MarketCompareItemDto caseItem : dtos) {
                     if (cacheSetUseFieldList.getFieldName().equals(caseItem.getName())) {
                         Integer num = Integer.valueOf(item.getName().substring(item.getName().length() - 1, item.getName().length()));
-                        if (100 == caseItem.getScore()) {
-                            normal.put(num, caseItem.getScore());
+                        if (100 == caseItem.getScore().intValue()) {
+                            normal.put(num, caseItem.getScore().intValue());
                         }
-                        all.put(num, caseItem.getScore());
+                        all.put(num, caseItem.getScore().intValue());
                     }
                 }
             }

@@ -1748,20 +1748,26 @@ damagedDegree.valid = function (remark) {
     var target = $("#damagedDegreeTabContent") ;
     target.find(".tab-pane").each(function () {
         $(this).tab('show');
-        $(this).find("textarea").each(function () {
-            var required = $(this).attr('required') ;
-            //必须是已经选择了的
-            if (required){
-                var text = $(this).val() ;
-                var name = $(this).attr('name') ;
-                var html = "<span class='help-block' for='"+name+"'" +">"   +"此字段必须填写 </span>" ;
-                if(text){
-                }else {
-                    $(this).after(html) ;
-                    i++;
+        var checkArr = ["textarea","select"] ;
+        for (var k = 0;k < checkArr.length;k++){
+            var input = checkArr[k] ;
+            $(this).find(input).each(function () {
+                var required = $(this).attr('required') ;
+                if ($(this).is(":visible")){
+                    //必须是已经选择了的
+                    if (required){
+                        var text = $(this).val() ;
+                        var name = $(this).attr('name') ;
+                        var html = "<span class='help-block' for='"+name+"'" +">"   +"此字段必须填写 </span>" ;
+                        if(text){
+                        }else {
+                            $(this).after(html) ;
+                            i++;
+                        }
+                    }
                 }
-            }
-        });
+            });
+        }
     }) ;
     if (i != 0){
         if (remark){
