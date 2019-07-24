@@ -420,4 +420,17 @@ public class ProjectInfoController {
             return HttpResult.newErrorResult("取得计划编制信息异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getTotalPlans", name = "计划总数", method = RequestMethod.POST)
+    public HttpResult getTotalPlans(Integer planId) {
+        try {
+            Integer total = projectPlanDetailsService.getTotalPlans(planId);
+            return HttpResult.newCorrectResult(total);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("取得计划总数异常");
+        }
+    }
+
 }
