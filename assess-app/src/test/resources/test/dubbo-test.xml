@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://code.alibabatech.com/schema/dubbo
+	   http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="pmcc-assess"/>
+    <dubbo:protocol name="dubbo" port="20891"/>
+    <dubbo:registry address="N/A"/> <!-- 直连 -->
+    <!--<dubbo:registry address="${dubbo.zk.server}"/>--> <!-- 建议zk注册中心管理 -->
+
+    <!-- ======================provider========================== -->
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcToolsService" id="bpmRpcToolsService" check="false" retries="0" timeout="10000" url="192.168.2.206:20882" />
+</beans>

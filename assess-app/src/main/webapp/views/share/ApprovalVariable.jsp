@@ -23,3 +23,4 @@
 <input type="hidden" name="agentUserAccount" value="${agentUserAccount}">
 <input type="hidden" name="projectId" value="${projectId}">
 <input type="hidden" name="viewUrl" value="${viewUrl}">
+<input type="hidden" name="applicationUserAccount" value="${currUserInfo.userAccount}">
