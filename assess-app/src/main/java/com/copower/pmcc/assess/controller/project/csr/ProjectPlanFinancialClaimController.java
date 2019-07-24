@@ -83,7 +83,7 @@ public class ProjectPlanFinancialClaimController extends BaseController {
     public HttpResult saveProjectPlan(String formData) {
         try {
             projectPlanFinancialClaimService.saveFinancialClaimProjectPlan(formData);
-        } catch (BusinessException e) {
+        } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();

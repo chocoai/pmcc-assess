@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.survey.ProjectPlanSurveyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -48,7 +49,7 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException {
+    public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
         //获取项目下区域，再针对区域添加市场背景描述与分析任务
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectPlan.getProjectId());
         if (CollectionUtils.isEmpty(areaGroupList)) return;

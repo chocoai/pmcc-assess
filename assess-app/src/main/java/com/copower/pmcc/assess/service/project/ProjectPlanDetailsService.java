@@ -660,7 +660,7 @@ public class ProjectPlanDetailsService {
      * @param reason
      */
     @Transactional(rollbackFor = Exception.class)
-    public ProjectPlanDetailsVo replyProjectPlanDetails(Integer planDetailsId, String reason) throws BusinessException {
+    public ProjectPlanDetailsVo replyProjectPlanDetails(Integer planDetailsId, String reason) throws BusinessException, BpmException {
         //1.更新任务状态 记录重启原因 2.添加新的待提交任务
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return null;

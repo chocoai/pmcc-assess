@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.proxy.face;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 
 /**
@@ -13,6 +14,6 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
  */
 public interface ProjectPlanExecuteInterface {
     //计划后台执行内容
-    void execute(ProjectPlan projectPlan,ProjectWorkStage projectWorkStage) throws BusinessException;
+    void execute(ProjectPlan projectPlan,ProjectWorkStage projectWorkStage) throws BusinessException, BpmException;
 
 }

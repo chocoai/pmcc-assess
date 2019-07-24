@@ -309,7 +309,7 @@ public class ProjectPlanFinancialClaimService {
         projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
     }
 
-    public void saveFinancialClaimProjectPlan(String formData) throws BusinessException {
+    public void saveFinancialClaimProjectPlan(String formData) throws BusinessException, BpmException {
         projectPlanService.saveFinancialClaimProjectPlan(formData, commonService.thisUserAccount());
     }
 
