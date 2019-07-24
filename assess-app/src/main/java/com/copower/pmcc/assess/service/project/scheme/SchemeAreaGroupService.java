@@ -199,9 +199,9 @@ public class SchemeAreaGroupService {
                 int i = 1;
                 //初始化估价对象
                 for (DeclareRecord declareRecord : declareRecords) {
-                    boolean isSameProvince = StringUtils.equals(declareRecord.getProvince(), areaGroup.getProvince());
-                    boolean isSameCity = StringUtils.equals(declareRecord.getCity(), areaGroup.getCity());
-                    boolean isSameDistrict = StringUtils.equals(declareRecord.getDistrict(), areaGroup.getDistrict());
+                    boolean isSameProvince = StringUtils.equals(StringUtils.defaultString(declareRecord.getProvince()), StringUtils.defaultString(areaGroup.getProvince()));
+                    boolean isSameCity = StringUtils.equals(StringUtils.defaultString(declareRecord.getCity()), StringUtils.defaultString(areaGroup.getCity()));
+                    boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(declareRecord.getDistrict()) ,StringUtils.defaultString(areaGroup.getDistrict()) );
                     if (isSameProvince && isSameCity && isSameDistrict) {
                         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
                         schemeJudgeObject.setProjectId(projectId);
@@ -396,8 +396,8 @@ public class SchemeAreaGroupService {
                 }
             }
         }
-        if (result.doubleValue() > 0){
-            result = result.setScale(2,BigDecimal.ROUND_HALF_UP) ;
+        if (result.doubleValue() > 0) {
+            result = result.setScale(2, BigDecimal.ROUND_HALF_UP);
         }
         return result;
     }
@@ -417,8 +417,8 @@ public class SchemeAreaGroupService {
                 }
             }
         }
-        if (result.doubleValue() > 0){
-            result = result.setScale(2,BigDecimal.ROUND_HALF_UP) ;
+        if (result.doubleValue() > 0) {
+            result = result.setScale(2, BigDecimal.ROUND_HALF_UP);
         }
         return result;
     }
