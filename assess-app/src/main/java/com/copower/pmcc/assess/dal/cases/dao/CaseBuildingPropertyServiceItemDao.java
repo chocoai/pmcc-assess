@@ -5,12 +5,14 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingPropertyServiceItemE
 import com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingPropertyServiceItemMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by zch on 2019/7/24.
  */
+@Repository
 public class CaseBuildingPropertyServiceItemDao {
 
     @Autowired

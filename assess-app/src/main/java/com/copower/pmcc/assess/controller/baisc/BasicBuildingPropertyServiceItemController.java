@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * Created by zch on 2019/7/24.
  */
-@RequestMapping(value = "/caseBuildingPropertyServiceItem")
+@RequestMapping(value = "/basicBuildingPropertyServiceItem")
 @Controller
 public class BasicBuildingPropertyServiceItemController {
 

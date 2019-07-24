@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by zch on 2019/7/24.
  */
-@Repository(value = "basicBuildingPropertyServiceItemDao")
+@Repository
 public class BasicBuildingPropertyServiceItemDao {
 
     @Autowired

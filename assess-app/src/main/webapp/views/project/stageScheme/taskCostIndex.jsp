@@ -31,7 +31,7 @@
                             <span class="col-sm-1">
                                 <label>建筑形态</label>
                             </span>
-                            <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
+                            <span class="col-sm-2 col-sm-offset-1 checkbox-inline" style="display: none">
                                 <input type="radio" id="building" name="type" value="1">
                                 <label for="building">建筑物</label>
                             </span>
