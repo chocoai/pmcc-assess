@@ -46,7 +46,10 @@ import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.*;
+import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
 import com.google.common.collect.*;
@@ -474,89 +477,25 @@ public class GenerateBaseDataService {
     }
 
     public String getValuationProjectName2() throws Exception {
-        List<SchemeJudgeObject> judgeObjectList = getSchemeJudgeObjectList();
-        Map<KeyValueDto, DeclareRecord> dtoDeclareRecordMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                if (schemeJudgeObject.getDeclareRecordId() == null) {
-                    continue;
-                }
-                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                if (declareRecord == null) {
-                    continue;
-                }
-                String certName = "";
-                if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
-                    DeclareRealtyHouseCert realtyHouseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(declareRecord.getDataTableId());
-                    DeclareRealtyLandCert declareRealtyLandCert = null;
-                    DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
-                    center.setHouseId(realtyHouseCertById.getId());
-                    center.setPlanDetailsId(realtyHouseCertById.getPlanDetailsId());
-                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(center);
-                    if (CollectionUtils.isNotEmpty(centerList)) {
-                        if (centerList.stream().anyMatch(oo -> oo.getLandId() != null)) {
-                            declareRealtyLandCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(centerList.stream().filter(oo -> oo.getLandId() != null).findFirst().get().getLandId());
-                        }
-                    }
-                    if (StringUtils.isNotEmpty(realtyHouseCertById.getCertName())) {
-                        certName += String.format("房屋所有权证号:%s", realtyHouseCertById.getCertName());
-                    }
-                    if (declareRealtyLandCert != null && StringUtils.isNotEmpty(declareRealtyLandCert.getLandCertName())) {
-                        certName += String.format(";国有土地使用权证号:%s", declareRealtyLandCert.getLandCertName());
-                    }
-                }
-                if (StringUtils.isEmpty(certName) && StringUtils.isNotEmpty(declareRecord.getName())) {
-                    certName = declareRecord.getName();
-                }
-                DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                if (setUseField != null && StringUtils.isNotEmpty(setUseField.getName())) {
-                    if (StringUtils.isNotEmpty(declareRecord.getSeat())) {
-                        dtoDeclareRecordMap.put(new KeyValueDto(certName, setUseField.getName()), declareRecord);
-                    }
-                }
-            }
-        }
-        Set<String> stringSetA = Sets.newHashSet();
-        Set<String> stringSetB = Sets.newHashSet();
-        Set<String> stringSetC = Sets.newHashSet();
-        if (!dtoDeclareRecordMap.isEmpty()) {
-            dtoDeclareRecordMap.forEach((keyValueDto, declareRecord) -> {
-                stringSetA.add(keyValueDto.getKey());
-                stringSetB.add(keyValueDto.getValue());
-                if (StringUtils.isNotEmpty(declareRecord.getStreetNumber())) {
-                    stringSetC.add(StringUtils.remove(declareRecord.getSeat(), declareRecord.getStreetNumber()));
-                } else {
-                    stringSetC.add(declareRecord.getSeat());
-                }
-            });
-        }
         StringBuilder stringBuilder = new StringBuilder();
-        //报告使用单位
+        List<SchemeJudgeObject> judgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isEmpty(judgeObjectList)) {
+            return "";
+        }
+        List<String> seatList = judgeObjectList.stream().map(o -> o.getSeat()).collect(Collectors.toList());
         stringBuilder.append(this.getReportUnitString());
         stringBuilder.append("因案件执行需要涉及位于");
-        if (CollectionUtils.isNotEmpty(stringSetA)) {
-            stringBuilder.append(StringUtils.join(stringSetA, "、"));
-        }
-        if (CollectionUtils.isNotEmpty(stringSetB)) {
-            stringBuilder.append(StringUtils.join(stringSetB, "、"));
-        }
-        if (CollectionUtils.isNotEmpty(stringSetC)) {
-            int size = stringSetC.size();
-            if (size == 1) {
-                stringBuilder.append(stringSetC.stream().findFirst().get());
-            }
-            if (size == 2) {
-                List<String> list = Lists.newArrayList(stringSetC);
-                stringBuilder.append(publicService.fusinString(list, false)).append("");
-            }
-            if (size >= 3) {
-                stringBuilder.append(stringSetC.stream().findFirst().get()).append("等").append(size).append("宗");
-            }
+        stringBuilder.append(publicService.fusinString(seatList, false)).append("");
+        if (judgeObjectList.size() > 3)
+            stringBuilder.append(String.format("等%s宗", judgeObjectList.size()));
+        DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(judgeObjectList.get(0).getSetUse());
+        if (setUseField != null) {
+            stringBuilder.append(String.format("%s%s用途房地产", setUseField.getName(), judgeObjectList.size() > 3 ? "等" : ""));
         }
         if (getSchemeAreaGroup() != null) {
             String value = baseDataDicService.getNameById(getSchemeAreaGroup().getValueDefinition());
             if (StringUtils.isNotBlank(value.trim())) {
-                stringBuilder.append("用途房地产").append(value).append("评估");
+                stringBuilder.append(value).append("评估");
             }
         }
         return stringBuilder.toString();

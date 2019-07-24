@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -169,10 +170,14 @@ public class GenerateEquityService {
         StringBuilder rightBuilder = new StringBuilder();
         for (SurveyRightGroupDto surveyRightGroupDto : groupDtoList) {
             if (groupDtoList.size() > 1) {
-                String judgeNumber = generateCommonMethod.convertNumber(schemeJudgeObjectService.getJudgeNumberByDeclareIds(Lists.newArrayList(surveyRightGroupDto.getDeclareRecordIds())));
-                rightBuilder.append(String.format("%s号", judgeNumber));
+                ArrayList<Integer> arrayList = Lists.newArrayList(surveyRightGroupDto.getDeclareRecordIds());
+                if (CollectionUtils.isNotEmpty(arrayList) && arrayList.size() > 1) {
+                    String judgeNumber = generateCommonMethod.convertNumber(schemeJudgeObjectService.getJudgeNumberByDeclareIds(arrayList));
+                    rightBuilder.append(String.format("%s号", judgeNumber));
+                }
             }
-            rightBuilder.append(surveyRightGroupDto.getRemark()).append("，");
+            if (StringUtils.isNotBlank(surveyRightGroupDto.getRemark()))
+                rightBuilder.append(surveyRightGroupDto.getRemark()).append("，");
         }
         return generateCommonMethod.trim(rightBuilder.toString());
     }
