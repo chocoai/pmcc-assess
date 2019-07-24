@@ -25,6 +25,8 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +47,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/ProjectPlan", name = "项目计划内容")
 public class ProjectPlanController {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProjectPlanService projectPlanService;
     @Autowired
@@ -226,8 +229,9 @@ public class ProjectPlanController {
     public HttpResult saveProjectPlan(String formData, String appointUserAccount) {
         try {
             projectPlanService.saveProjectPlan(formData, appointUserAccount);
-        } catch (BusinessException e) {
-            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("保存项目计划异常");
         }
         return HttpResult.newCorrectResult();
     }

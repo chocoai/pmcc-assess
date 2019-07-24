@@ -70,8 +70,6 @@ public class PublicService {
     @Autowired
     private ProjectMemberService projectMemberService;
     @Autowired
-    private PublicService publicService;
-    @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
     private ErpRpcProjectService erpRpcProjectService;
@@ -398,8 +396,8 @@ public class PublicService {
         sysProjectDto.setProjectManager(projectMember.getUserAccountManager());
         sysProjectDto.setProjectMember(projectMember.getUserAccountMember());
         sysProjectDto.setProjectJson(JSON.toJSONString(projectInfo));
-        sysProjectDto.setProjectCompanyId(publicService.getCurrentCompany().getCompanyId());
-        sysProjectDto.setProjectDepartmentId(publicService.getCurrentCompany().getCompanyId());
+        sysProjectDto.setProjectCompanyId(getCurrentCompany().getCompanyId());
+        sysProjectDto.setProjectDepartmentId(getCurrentCompany().getCompanyId());
         sysProjectDto.setAppKey(applicationConstant.getAppKey());
         sysProjectDto.setStatus(ProjectStatusEnum.NORMAL.getKey());
         projectInfo.setPublicProjectId(erpRpcProjectService.saveProject(sysProjectDto));

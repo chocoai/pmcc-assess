@@ -327,7 +327,7 @@ public class ProjectPlanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveFinancialClaimProjectPlan(String formData, String appointUserAccount) throws BusinessException {
+    public void saveFinancialClaimProjectPlan(String formData, String appointUserAccount) throws BusinessException, BpmException {
         ProjectPlanDto projectPlanDto = JSON.parseObject(formData, ProjectPlanDto.class);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDto.getProjectId());
         ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(projectPlanDto.getId());//取得项目计划
@@ -396,7 +396,7 @@ public class ProjectPlanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveProjectPlan(String formData, String appointUserAccount) throws BusinessException {
+    public void saveProjectPlan(String formData, String appointUserAccount) throws BusinessException, BpmException {
         ProjectPlanDto projectPlanDto = JSON.parseObject(formData, ProjectPlanDto.class);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDto.getProjectId());
         ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(projectPlanDto.getId());//取得项目计划
@@ -502,7 +502,7 @@ public class ProjectPlanService {
      * @param workStageName
      * @param responsibileModelEnum
      */
-    public void saveProjectPlanDetailsResponsibility(ProjectPlanDetails item, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) {
+    public void saveProjectPlanDetailsResponsibility(ProjectPlanDetails item, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) throws BpmException {
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(item.getPlanId());
         projectPlanResponsibility.setPlanDetailsId(item.getId());
@@ -532,7 +532,7 @@ public class ProjectPlanService {
      * @param workStageName
      * @param responsibileModelEnum
      */
-    public void saveProjectPlanResponsibility(ProjectPlan projectPlan, String nextUser, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) {
+    public void saveProjectPlanResponsibility(ProjectPlan projectPlan, String nextUser, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) throws BpmException {
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(projectPlan.getId());
         projectPlanResponsibility.setPlanDetailsId(0);
@@ -673,7 +673,7 @@ public class ProjectPlanService {
         }
     }
 
-    public ProjectPlan RestartPlan(ProjectWorkStageRestart projectWorkStageRestart) {
+    public ProjectPlan RestartPlan(ProjectWorkStageRestart projectWorkStageRestart) throws BpmException {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectWorkStageRestart.getProjectId());
         ProjectPlan projectPlan = getProjectplanById(projectWorkStageRestart.getProjectPlanOldId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
@@ -708,7 +708,9 @@ public class ProjectPlanService {
                 return;
             }
             boolean isAllFinish = projectPlanDetailsService.isAllPlanDetailsFinish(planId);
-            if (!isAllFinish) return;
+            if (!isAllFinish){
+                return;
+            }
             //1.将当前阶段设置结束，并清理所有任务
             ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
             projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
@@ -765,6 +767,8 @@ public class ProjectPlanService {
             }
         } catch (InterruptedException e) {
             logger.debug("get the lock error;" + e.getMessage(), e);
+        }finally {
+            lock.unlock();
         }
     }
 
@@ -822,7 +826,13 @@ public class ProjectPlanService {
         String userAccounts = projectWorkStageService.getWorkStageUserAccounts(projectPlan.getWorkStageId(), projectPlan.getProjectId());
         if (StringUtils.isNotBlank(userAccounts)) {
             List<String> strings = FormatUtils.transformString2List(userAccounts);
-            strings.forEach(o -> saveProjectPlanResponsibility(projectPlan, o, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN));
+            strings.forEach(o -> {
+                try {
+                    saveProjectPlanResponsibility(projectPlan, o, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                } catch (BpmException e) {
+                    e.printStackTrace();
+                }
+            });
         } else {
             throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
         }

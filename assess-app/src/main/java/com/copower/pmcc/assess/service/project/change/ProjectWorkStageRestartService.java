@@ -68,7 +68,7 @@ public class ProjectWorkStageRestartService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void applyWorkStageRestart(ProjectWorkStageRestart projectWorkStageRestart) throws BusinessException {
+    public void applyWorkStageRestart(ProjectWorkStageRestart projectWorkStageRestart) throws BusinessException, BpmException {
 
         ProjectWorkStageRestart sysStart = projectWorkStageRestartDao.getProjectWorkStageRestartByProjectId(projectWorkStageRestart.getProjectId());
         if (sysStart != null) {

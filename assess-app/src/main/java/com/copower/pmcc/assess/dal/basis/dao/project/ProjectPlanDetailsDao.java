@@ -167,4 +167,9 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
+    public Integer getTotalPlans(Integer planId) {
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        example.createCriteria().andPlanIdEqualTo(planId).andPidGreaterThan(0);
+        return projectPlanDetailsMapper.countByExample(example);
+    }
 }

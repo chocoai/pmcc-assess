@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.survey.ProjectPlanSurveyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -20,6 +21,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -46,7 +48,8 @@ public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
 
 
     @Override
-    public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
         //1.根据申报数据生成任务数据
         projectPlanSurveyService.initPlanDetails(projectPlan);
         ProjectPlanDetails where = new ProjectPlanDetails();

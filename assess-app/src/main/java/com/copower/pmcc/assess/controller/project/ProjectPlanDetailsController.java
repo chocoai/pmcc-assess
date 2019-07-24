@@ -42,7 +42,7 @@ public class ProjectPlanDetailsController {
     public HttpResult replyProjectPlanDetails(Integer planDetailsId, String reason) {
         try {
             ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, reason);
-            return HttpResult.newCorrectResult(projectPlanDetailsVo);
+            return HttpResult.newCorrectResult(projectPlanDetailsService.getPlanDetailListByProjectPlanDetailId(projectPlanDetailsVo.getId()));
         } catch (Exception e) {
             logger.error("重启任务", e);
             return HttpResult.newErrorResult("重启任务异常");

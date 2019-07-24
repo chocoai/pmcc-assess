@@ -39,6 +39,5 @@
     <!-- 加载所有的spring配置 -->
     <import resource="classpath*:spring/spring-*.xml"/>
     <import resource="classpath*:app/spring-app-*.xml"/>
-    <import resource="classpath*:bpm/spring-bpm-*.xml"/>
-
+    <import resource="classpath*:bpm/spring-bpm-job.xml"/>
 </beans>

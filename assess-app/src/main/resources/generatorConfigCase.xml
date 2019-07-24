@@ -42,7 +42,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_case_house_trading" domainObjectName="CaseHouseTrading"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_case_house_room" domainObjectName="CaseHouseRoom"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
     </context>
 
 </generatorConfiguration>

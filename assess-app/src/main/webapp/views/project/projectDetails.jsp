@@ -157,12 +157,29 @@
                                         <input type="hidden" name="copyPlanDetailsId">
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
-                                    <div class="col-md-3" id="showZtree">
-                                        <small>
-                                            <a href="javascript://;" class="btn btn-xs btn-success"
-                                               onclick="batchUpdateExecuteUser()">批量设置责任人
-                                            </a>
-                                        </small>
+                                    <div class="col-md-5"  id="showZtree">
+                                            <p>
+                                            <small>
+                                                <a href="javascript://;" class="btn btn-xs btn-success"
+                                                   onclick="batchUpdateExecuteUser()">批量设置责任人
+                                                </a>
+                                            </small>
+                                            <span class="radio-inline">
+                                            <input type="radio" required name="checkedType" onclick="checkAllOrNo(true)"><label >全选</label>
+                                            </span>
+                                            <span class="radio-inline">
+                                            <input type="radio" name="checkedType" onclick="checkAllOrNo(false)"><label>全不选</label>
+                                            </span>
+                                            <span class="radio-inline">
+                                            <input type="radio" name="checkedType" onclick="checkReverse()"><label>反选</label>
+                                            </span>
+                                            <span class="radio-inline">
+                                            <input type="radio" name="expandType" onclick="expandAll(true)"><label>展开</label>
+                                            </span>
+                                            <span class="radio-inline">
+                                            <input type="radio" name="expandType" onclick="expandAll(false)"><label>收缩</label>
+                                            </span>
+                                            </p>
                                         <ul id="ztree${plan.id}" class="ztree"></ul>
                                     </div>
                                 </div>
@@ -326,30 +343,29 @@
                 <%--planId: that.attr('plan-id')--%>
             <%--});--%>
             <%--projectDetails.loadTaskList({--%>
-                <%--target: $('#plan_task_list' + that.attr('plan-id')),--%>
+                <%--target: $('#plan_task_list' + that.attr('plan-igetPlanDetailListByPlanIdd')),--%>
                 <%--projectId: '${projectInfo.id}',--%>
                 <%--planId: that.attr('plan-id')--%>
             <%--});--%>
 
             $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId",
+                url: "${pageContext.request.contextPath}/projectInfo/getTotalPlans",
                 data: {
-                    projectId: '${projectInfo.id}',
                     planId: that.attr('plan-id')
                 },
-                type: 'get',
+                type: 'post',
                 success: function (result) {
                     if (result) {
-                        console.log(result.total);
-                        if(result.total<=30){
-                            $("#showZtree a").hide();
+                        console.log(result.data);
+                        if(result.data<=30){
+                            $("#showZtree p").hide();
                             projectDetails.loadTaskList({
                                 target: $('#plan_task_list' + that.attr('plan-id')),
                                 projectId: '${projectInfo.id}',
                                 planId: that.attr('plan-id')
                             });
                         }else {
-                            $("#showZtree a").show();
+                            $("#showZtree p").show();
                             ztreeInit({
                                 target: $('#ztree' + that.attr('plan-id')),
                                 projectId: '${projectInfo.id}',
@@ -470,6 +486,7 @@
                         title: '操作',
                         width: '20%',
                         formatter: function (value, row) {
+                            console.log(row);
                             var s = "";
                             if (!row.bisStart && row.bisLastLayer && '${isPM}' == 'true') {
                                 s += " <a onclick='projectDetails.updateExecuteUser(\"" + row.id + "\")' href='javascript://' title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
@@ -1028,21 +1045,6 @@
         })
     }
 
-    //设置节点颜色
-    function setFontCss(treeId, treeNode) {
-        //已完成
-        if(treeNode.displayUrl  && treeNode.canReplay == true && !treeNode.excuteUrl){
-            return {color:"#CCCC33"};
-        }
-        //待处理
-        else if(treeNode.bisRestart == true && treeNode.bisStart== false){
-            return {color:"green"};
-        }
-        //待审批
-        else if(treeNode.bisRestart == true && treeNode.bisStart== true){
-            return {color:"blue"};
-        }
-    };
 
     //调整责任人
     function batchUpdateExecuteUser() {
@@ -1082,7 +1084,6 @@
                         },
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('责任人调整成功');
                                 //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                                 var that = $(projectDetails.getActiveTab()).closest('li');
                                 ztreeInit({
@@ -1090,6 +1091,7 @@
                                     projectId: '${projectInfo.id}',
                                     planId: that.attr('plan-id')
                                 });
+                                toastr.success('责任人调整成功');
                             } else {
                                 Alert(result.errmsg);
                             }
@@ -1133,13 +1135,40 @@
             item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/search.png";
         }
         //待处理
-        else if(item.bisRestart == true && item.bisStart== false){
+        else if(item.bisStart== false && item.excuteUrl){
             item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/pencil.png";
         }
         //待审批
-        else if(item.bisRestart == true && item.bisStart== true){
+        else if(item.excuteUrl && item.bisStart== true){
             item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/tip.png";
         }
     }
+
+    //全选或全不选
+    function checkAllOrNo(flag) {
+        zTreeObj.checkAllNodes(flag);
+    }
+    //反选
+    function checkReverse() {
+        var checkedTrueNodes = zTreeObj.getCheckedNodes(true);//选中的节点
+        var allNodes = zTreeObj.getNodes();//获取所有节点
+        var nodes = zTreeObj.transformToArray(allNodes); //转变为数组
+        zTreeObj.checkAllNodes(true);//全选
+        $.each(nodes, function( index,node) {
+                $.each(checkedTrueNodes, function (i, checkedTrue) {
+                    if (node == checkedTrue) {
+                            node.checked = false;  //设为不选中
+                            zTreeObj.updateNode(node);//更新状态
+                    }
+                });
+
+        });
+
+    }
+    //展开或收缩
+    function expandAll(flag) {
+        zTreeObj.expandAll(flag);
+    }
+
 </script>
 </html>

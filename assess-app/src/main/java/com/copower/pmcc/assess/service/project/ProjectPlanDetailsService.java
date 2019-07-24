@@ -660,7 +660,7 @@ public class ProjectPlanDetailsService {
      * @param reason
      */
     @Transactional(rollbackFor = Exception.class)
-    public ProjectPlanDetailsVo replyProjectPlanDetails(Integer planDetailsId, String reason) throws BusinessException {
+    public ProjectPlanDetailsVo replyProjectPlanDetails(Integer planDetailsId, String reason) throws BusinessException, BpmException {
         //1.更新任务状态 记录重启原因 2.添加新的待提交任务
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return null;
@@ -828,5 +828,15 @@ public class ProjectPlanDetailsService {
                 basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
             }
         }
+    }
+
+    /**
+     * 根据计划编号，取得计划所有的上子级计划总数
+     *
+     * @param planId
+     * @return
+     */
+    public Integer getTotalPlans(Integer planId) {
+        return projectPlanDetailsDao.getTotalPlans(planId);
     }
 }

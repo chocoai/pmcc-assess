@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectPlanExecuteInterface;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -14,6 +15,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +43,8 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
     private BaseProjectClassifyService baseProjectClassifyService;
 
     @Override
-    public void execute(ProjectPlan projectPlan,ProjectWorkStage projectWorkStage) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void execute(ProjectPlan projectPlan,ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
         //自动执行
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         List<ProjectPhase> phaseList = projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(), projectPlan.getWorkStageId());

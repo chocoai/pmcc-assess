@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+
+    <!--流程控制公共组件-->
+    <bean id="processControllerComponent" class="com.copower.pmcc.bpm.core.process.ProcessControllerComponent">
+        <constructor-arg name="commonService" ref="commonService"/>
+        <constructor-arg name="simpleRedisStandalone" ref="simpleRedisStandalone"/>
+        <constructor-arg name="erpRpcToolsService" ref="erpRpcToolsService"/>
+        <constructor-arg name="erpRpcUserService" ref="erpRpcUserService"/>
+
+        <constructor-arg name="bpmRpcBoxService" ref="bpmRpcBoxService"/>
+        <constructor-arg name="bpmRpcActivitiProcessManageService" ref="bpmRpcActivitiProcessManageService"/>
+        <constructor-arg name="bpmRpcProcessInsManagerService" ref="bpmRpcProcessInsManagerService"/>
+
+        <constructor-arg name="approvalUsersService" ref="approvalUsersService"/>
+        <constructor-arg name="applicationConstant" ref="applicationConstant"/>
+    </bean>
+
+    <!--角色人员获取-->
+    <bean id="approvalUsersService" class="com.copower.pmcc.assess.common.AssessApprovalUsersService">
+        <constructor-arg name="appKey" value="${app.key}"/>
+    </bean>
+</beans>
