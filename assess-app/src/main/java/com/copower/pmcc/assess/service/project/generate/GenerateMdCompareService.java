@@ -408,7 +408,7 @@ public class GenerateMdCompareService {
                 if(isIndex){
                     builder.write(String.valueOf(scoreTotal/num));
                 }else {
-                    builder.write(content.deleteCharAt(content.length() - 1).toString());
+                    builder.write(content.toString());
                 }
             }
         }
@@ -435,7 +435,7 @@ public class GenerateMdCompareService {
                 if(isIndex){
                     builder.write(String.valueOf(scoreTotal/num));
                 }else {
-                    builder.write(content.deleteCharAt(content.length() - 1).toString());
+                    builder.write(content.toString());
                 }
             }
         }
@@ -462,7 +462,7 @@ public class GenerateMdCompareService {
                 if(isIndex){
                     builder.write(String.valueOf(scoreTotal/num));
                 }else {
-                    builder.write(content.deleteCharAt(content.length() - 1).toString());
+                    builder.write(content.toString());
                 }
             }
         }
@@ -489,7 +489,7 @@ public class GenerateMdCompareService {
                 if(isIndex){
                     builder.write(String.valueOf(scoreTotal/num));
                 }else {
-                    builder.write(content.deleteCharAt(content.length() - 1).toString());
+                    builder.write(content.toString());
                 }
             }
         }
@@ -517,7 +517,7 @@ public class GenerateMdCompareService {
                 if(isIndex){
                     builder.write(String.valueOf(scoreTotal/num));
                 }else {
-                    builder.write(content.deleteCharAt(content.length() - 1).toString());
+                    builder.write(content.toString());
                 }
             }
         }
@@ -547,7 +547,7 @@ public class GenerateMdCompareService {
                 if(isIndex){
                     builder.write(String.valueOf(scoreTotal/num));
                 }else {
-                    builder.write(content.deleteCharAt(content.length() - 1).toString());
+                    builder.write(content.toString());
                 }
             }
         }
@@ -1173,8 +1173,10 @@ public class GenerateMdCompareService {
      * @param data    数据
      */
     public void jointContent(StringBuilder content, MarketCompareItemDto data) {
-        content.append(MethodCompareFieldEnum.getNameByKey(data.getName())).append(":");
-        content.append(data.getValue());
+        if(StringUtil.isNotEmpty(data.getValue())) {
+            content.append(MethodCompareFieldEnum.getNameByKey(data.getName())).append(":");
+            content.append(data.getValue());
+        }
     }
 
 }
