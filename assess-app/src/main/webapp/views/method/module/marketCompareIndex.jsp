@@ -11,6 +11,10 @@
                 <input type="button" class="btn btn-primary btn-xs" value="选择案例"
                        onclick="marketCompare.loadCaseAll();">
             </small>
+            <small>
+                <input type="button" class="btn btn-primary btn-xs" value="刷新"
+                       onclick="marketCompare.refreshData();">
+            </small>
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -1003,6 +1007,40 @@
                             }
                         }
                     })
+                }
+            })
+        }
+
+        //刷新
+        marketCompare.refreshData = function () {
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/marketCompare/refreshData',
+                data: {
+                    projectPlanDetailsId: '${projectPlanDetails.id}',
+                    mcId: marketCompare.mcId,
+                    judgeObjectId: marketCompare.judgeObjectId
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success("刷新成功！");
+                        marketCompare.init({
+                            mcId: result.data.mcId,
+                            judgeObjectId: result.data.judgeObjectId,
+                            marketCompare: result.data.marketCompare,
+                            fields: result.data.fields,
+                            evaluation: result.data.evaluation,
+                            casesAll: marketCompare.casesAll,
+                            isLand: marketCompare.isLand,
+                            areaId: marketCompare.areaId,
+                            cases: result.data.cases
+                        });
+                    } else {
+                        Alert('刷新异常，' + result.errmsg);
+                    }
                 }
             })
         }

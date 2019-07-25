@@ -310,7 +310,12 @@ public class BasicEstateService {
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
-        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState));
+        BasicEstateLandStateVo basicEstateLandStateVo = basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState);
+        if(basicEstateLandStateVo==null){
+            basicEstateLandStateVo = new BasicEstateLandStateVo();
+            basicEstateLandStateVo.setEstateId(estateLandState.getId());
+        }
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateVo);
         return objectMap;
     }
 
