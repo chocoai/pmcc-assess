@@ -178,30 +178,36 @@ public class EvaluationThinkingService {
         //第一段内容： 当只有一个方法时，根据方法取得模板，当有多个方法时，如果有多个基础方法则合并描述
         //第二段内容： 当方法中有其它方法，则用其它方法描述第二段
         //第三段内容： 当只有项目委托目的为抵押的时候才有第三段内容
+
+        //需判断有没有设定标准估价对象
         if (map == null) return null;
         if (projectInfo == null) return null;
-        StringBuilder firstDesc = new StringBuilder("");//第一段描述
+        StringBuilder firstDesc = new StringBuilder("(1)");//第一段描述
         StringBuilder secondDesc = new StringBuilder();//第二段描述
         StringBuilder thirdDesc = new StringBuilder();//第三段描述
         List<Integer> baseMethodList = Lists.newArrayList();
         List<Integer> baseOtherList = Lists.newArrayList();
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
-            if (mdCommonService.isBaseMethod(projectInfo.getProjectCategoryId(),entry.getKey()))
+            if (mdCommonService.isBaseMethod(projectInfo.getProjectCategoryId(), entry.getKey()))
                 baseMethodList.add(entry.getKey());
-            if (mdCommonService.isOtherMethod(projectInfo.getProjectCategoryId(),entry.getKey()))
+            if (mdCommonService.isOtherMethod(projectInfo.getProjectCategoryId(), entry.getKey()))
                 baseOtherList.add(entry.getKey());
+        }
+        String baseJudgeNumberString = generateCommonMethod.convertNumber(baseJudgeNumber);
+        if (CollectionUtils.isNotEmpty(baseJudgeNumber)) {
+            firstDesc.append(String.format("先设立估价对象%s的市场价格为标准价，", baseJudgeNumberString));
         }
 
         if (baseMethodList.size() == 1) {
             List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(baseMethodList.get(0)));
             if (CollectionUtils.isNotEmpty(thinkingList)) {
-                String thinkingTemp = thinkingList.get(0).getTemplateContent().replaceAll("#\\{估价对象号\\}", this.getJudgeNumber(map.get(baseMethodList.get(0))));
-                firstDesc.append("(1)").append(thinkingTemp);
+                String stringJudgeNumber = CollectionUtils.isNotEmpty(baseJudgeNumber) ? baseJudgeNumberString : this.getJudgeNumber(map.get(baseMethodList.get(0)));
+                String thinkingTemp = thinkingList.get(0).getTemplateContent().replaceAll("#\\{估价对象号\\}", stringJudgeNumber);
+                firstDesc.append(thinkingTemp);
             }
         } else {
-            String baseJudgeNumberString = generateCommonMethod.convertNumber(baseJudgeNumber);
-            firstDesc.append(String.format("(1)先设立估价对象%s的市场价格为标准价，", baseJudgeNumberString));
             String firstString = new String();
+            StringBuilder builder = new StringBuilder();
             for (Integer methodTyp : baseMethodList) {
                 if (mdCommonService.isCompareMethod(methodTyp))
                     firstString += compareExplain + "和";
@@ -211,14 +217,16 @@ public class EvaluationThinkingService {
                     firstString += costExplain + "和";
                 if (mdCommonService.isDevelopmentMethod(methodTyp))
                     firstString += developmentExplain + "和";
+                builder.append(map.get(baseMethodList.get(0))).append(",");
             }
-            firstDesc.append(StringUtils.strip(firstString, "和")).append(String.format("为导向综合求取估价对象%s的市场价值。", baseJudgeNumberString));
+            firstDesc.append(StringUtils.strip(firstString, "和")).append(String.format("为导向综合求取估价对象%s的市场价值。", StringUtils.strip(builder.toString(), ",")));
         }
-        if (CollectionUtils.isNotEmpty(baseOtherList)) {
+
+        if (CollectionUtils.isNotEmpty(baseJudgeNumber)) {
             String otherJudgeNumberString = generateCommonMethod.convertNumber(otherJudgeNumber);
-            secondDesc.append(String.format("(2)再通过%s对估价对象%s进行特定因素调整，得到其市场价值。"
-                            , baseDataDicService.getNameById(baseOtherList.get(0)), otherJudgeNumberString));
+            secondDesc.append(String.format("(2)再通过标准价格调整法对估价对象%s进行特定因素调整，得到其市场价值。", otherJudgeNumberString));
         }
+
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
         if (dataDic != null && projectInfo.getEntrustPurpose().equals(dataDic.getId())) {
             if (secondDesc.length() > 0)

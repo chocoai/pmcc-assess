@@ -35,7 +35,7 @@ public class CsrBorrowerDao {
     }
 
     public boolean update(CsrBorrower csrBorrower){
-        return csrBorrowerMapper.updateByPrimaryKey(csrBorrower)==1;
+        return csrBorrowerMapper.updateByPrimaryKeySelective(csrBorrower)==1;
     }
 
     public CsrBorrower getCsrBorrowerByID(Integer id){
@@ -112,7 +112,7 @@ public class CsrBorrowerDao {
         List<CsrBorrower> csrBorrowers = csrBorrowerMapper.selectByExample(example);
         for (CsrBorrower csrBorrower:csrBorrowers){
             csrBorrower.setGroupId(null);
-            csrBorrowerMapper.updateByPrimaryKey(csrBorrower);
+            csrBorrowerMapper.updateByPrimaryKeySelective(csrBorrower);
         }
     }
 

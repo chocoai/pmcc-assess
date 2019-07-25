@@ -24,7 +24,7 @@ public class EvaluationMethodDao {//evaluationMethodDao
 
 
     public boolean updateMethod(DataEvaluationMethod evaluationMethod) {
-        return evaluationMethodMapper.updateByPrimaryKey(evaluationMethod) == 1;
+        return evaluationMethodMapper.updateByPrimaryKeySelective(evaluationMethod) == 1;
     }
 
     public List<DataEvaluationMethod> getMethodAllList() {

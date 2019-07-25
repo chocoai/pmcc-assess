@@ -24,7 +24,7 @@ public class CsrProjectInfoGroupDao {
     }
 
     public boolean update(CsrProjectInfoGroup csrProjectInfoGroup){
-        return projectInfoGroupMapper.updateByPrimaryKey(csrProjectInfoGroup)==1;
+        return projectInfoGroupMapper.updateByPrimaryKeySelective(csrProjectInfoGroup)==1;
     }
 
     public boolean checkGroup(Integer csrProjectId){

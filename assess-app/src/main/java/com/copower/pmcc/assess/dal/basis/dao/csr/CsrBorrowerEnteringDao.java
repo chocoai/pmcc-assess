@@ -28,7 +28,7 @@ public class CsrBorrowerEnteringDao {
 
 
     public boolean update(CsrBorrowerEntering csrBorrowerEntering){
-        return csrBorrowerEnteringMapper.updateByPrimaryKey(csrBorrowerEntering)==1;
+        return csrBorrowerEnteringMapper.updateByPrimaryKeySelective(csrBorrowerEntering)==1;
     }
 
     public CsrBorrowerEntering getCsrBorrowerEnteringByBorrowerId(String id){

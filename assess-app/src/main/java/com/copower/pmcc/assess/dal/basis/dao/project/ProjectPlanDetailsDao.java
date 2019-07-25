@@ -115,7 +115,7 @@ public class ProjectPlanDetailsDao {
     }
 
     public Boolean updateProjectPlanDetailsAndNull(ProjectPlanDetails projectPlanDetails) {
-        int i = projectPlanDetailsMapper.updateByPrimaryKey(projectPlanDetails);
+        int i = projectPlanDetailsMapper.updateByPrimaryKeySelective(projectPlanDetails);
         return i == 1;
     }
 

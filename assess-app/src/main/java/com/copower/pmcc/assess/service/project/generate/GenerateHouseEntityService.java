@@ -199,8 +199,8 @@ public class GenerateHouseEntityService {
         BaseDataDic production = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_PRODUCTION);
         BaseDataDic office = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_OFFICE);
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject) ;
-            if (basicApply == null || basicApply.getId() == 0){
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply == null || basicApply.getId() == 0) {
                 continue;
             }
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
@@ -403,14 +403,17 @@ public class GenerateHouseEntityService {
                     String s = "";
                     if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                         damagedDegreeVoList.stream().forEach(oo -> {
+                            String linkString = null;
                             if (StringUtils.isNotBlank(oo.getCategoryName()) && StringUtils.isNotBlank(oo.getEntityConditionName()) && StringUtils.isNotBlank(oo.getEntityConditionContent())) {
                                 if (typeList.contains(oo.getTypeName()) && (oo.getCategoryName().contains("其它") || oo.getCategoryName().contains("特种设备"))) {
                                     String conditionName = oo.getEntityConditionContent().contains(oo.getEntityConditionName()) ? "" : oo.getEntityConditionName();
-                                    stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), conditionName));
+                                    linkString = String.format("%s%s", oo.getEntityConditionContent(), conditionName);
                                 } else {
-                                    stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
+                                    linkString = String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName());
                                 }
                             }
+                            if (StringUtils.isNotBlank(linkString))
+                                stringLinkedHashSet.add(linkString);
                         });
                         s = StringUtils.join(stringLinkedHashSet, "、");
                         stringLinkedHashSet.clear();
@@ -834,13 +837,9 @@ public class GenerateHouseEntityService {
     public String getIntelligent(List<SchemeJudgeObject> judgeObjectList) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
-                if (schemeJudgeObject.getDeclareRecordId() == null) {
-                    return false;
-                }
+                if (schemeJudgeObject.getDeclareRecordId() == null) return false;
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                if (basicApply == null || basicApply.getType() == 1) {
-                    return false;
-                }
+                if (basicApply == null) return false;
                 return true;
             }).collect(Collectors.toList());
         }
@@ -870,7 +869,7 @@ public class GenerateHouseEntityService {
                                 if (StringUtils.isNotBlank(oo.getSwitchCircuitName())) {
                                     stringBuilder.append(oo.getSwitchCircuitName());
                                 }
-                                stringBuilder.append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无").append("铺设");
+                                stringBuilder.append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无").append("铺设，");
                                 centerList.add(stringBuilder.toString());
                                 if (StringUtils.isNotBlank(oo.getLampsLanternsName())) {
                                     centerList.add(String.format("%s%s", "灯具为", oo.getLampsLanternsName()));

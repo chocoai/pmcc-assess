@@ -1813,7 +1813,7 @@ public class GenerateBaseDataService {
         {
             stringSet.add("本函内容摘自估价报告");
             stringSet.add("欲了解本次估价项目全面情况");
-            stringSet.add("请详见估价结果报告");
+            stringSet.add("请详见估价${报告类别}");
             stringSet.add("报告使用时请特别关注估价假设和限制条件内容。");
             stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、%s", row + 1, StringUtils.join(stringSet, "，"))));
             stringSet.clear();
@@ -4242,7 +4242,7 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", generateCommonMethod.trim(natural))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", generateCommonMethod.trim(humanity))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", generateCommonMethod.trim(scenery))));
-                stringBuilder.append(String.format("综述:%s", generateCommonMethod.trim(basicEstate.getLocationDescribe())));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综述:%s", generateCommonMethod.trim(basicEstate.getLocationDescribe()))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
             }
         }
@@ -4324,7 +4324,7 @@ public class GenerateBaseDataService {
             {
                 String s = generateLandEntityService.getContent(basicApply);
                 if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(String.format("综上所述:%s", generateCommonMethod.trim(s)));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综上所述:%s", generateCommonMethod.trim(s))));
                 }
             }
             documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
@@ -4380,11 +4380,14 @@ public class GenerateBaseDataService {
                 if (StringUtils.isNotBlank(matchingEquipment)) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("房屋配套设备设施工:%s", generateCommonMethod.trim(matchingEquipment))));
                 }
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("13、建筑功能:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingFunction(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("14、新旧程度及维护使用情况")));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("11、建筑功能:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingFunction(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("12、新旧程度及维护使用情况")));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateHouseEntityService.getDamagedDegree(judgeObjects)));
 
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("15、其它:%s", generateCommonMethod.trim(generateHouseEntityService.getOther(judgeObjects)))));
+                String stringOther = generateHouseEntityService.getOther(judgeObjects);
+                if (StringUtils.isNotBlank(stringOther))
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("13、其它:%s", generateCommonMethod.trim(stringOther))));
+
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("建筑实体分析:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildEntityAnalysis(judgeObjects, schemeAreaGroup)))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
             }
@@ -5445,9 +5448,6 @@ public class GenerateBaseDataService {
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             if (schemeJudgeObject.getStandardJudgeId() != null)
                 baseJudgeId.add(schemeJudgeObject.getStandardJudgeId());
-            else if (schemeJudgeObject.getBisMerge() == Boolean.FALSE && schemeJudgeObject.getBisSplit() == Boolean.FALSE && schemeJudgeObject.getBisEnable() == Boolean.TRUE) {
-                baseJudgeId.add(schemeJudgeObject.getId());
-            }
             List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
             if (CollectionUtils.isEmpty(schemeJudgeFunctionList)) continue;
             for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {

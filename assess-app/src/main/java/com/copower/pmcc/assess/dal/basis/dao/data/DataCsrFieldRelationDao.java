@@ -39,7 +39,7 @@ public class DataCsrFieldRelationDao {
                 logger.error("error:"+e.getMessage());
             }
         }else {
-            return mapper.updateByPrimaryKey(csrFieldRelation)==1;
+            return mapper.updateByPrimaryKeySelective(csrFieldRelation)==1;
         }
         return false;
     }
