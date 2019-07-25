@@ -126,6 +126,7 @@
         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
             buildingCommon.fileShow(item);
         });
+        buildingCommon.getBasicBuildingPropertyServiceItemBootstrapTableVo(buildingCommon.getBuildingId(),$("#basicBuildingPropertyServiceItemTable")) ;
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
             estateCommon.fileShow(n, AssessDBKey.BasicEstate, estateCommon.getEstateId());
@@ -140,6 +141,7 @@
             }
         } catch (e) {
         }
+
 
         $.each(unitCommon.unitFileControlIdArray, function (i, n) {
             unitCommon.fileShow(n, true);

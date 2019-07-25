@@ -61,18 +61,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            影响程度<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <select required="required" name="influenceDegree" onchange="matchingEnvironment.prototype.initRemarkInfo()"
-                                                    class="form-control  influenceDegree">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">--%>
+                                            <%--影响程度<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">--%>
+                                            <%--<select required="required" name="influenceDegree" onchange="matchingEnvironment.prototype.initRemarkInfo()"--%>
+                                                    <%--class="form-control  influenceDegree">--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">

@@ -3375,6 +3375,7 @@ public class GenerateBaseDataService {
         }
         if (!mortgageFlag) {
             doubleLinkedList.removeLast();
+            doubleLinkedList.removeLast();
         }
         String localPath = getLocalPath();
         Table table = builder.startTable();
@@ -3394,6 +3395,7 @@ public class GenerateBaseDataService {
                 strings.remove(1);
             }
             if (!mortgageFlag) {
+                strings.removeLast();
                 strings.removeLast();
             }
             generateCommonMethod.writeWordTitle(builder, doubleLinkedList, strings);
@@ -3621,7 +3623,7 @@ public class GenerateBaseDataService {
      */
 
     private void writeJudgeObjectResultSurveyInCell(BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat, boolean mortgageFlag) throws Exception {
-        writeJudgeObjectResultSurveyInCell2(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, true, mortgageFlag);
+        writeJudgeObjectResultSurveyInCell2(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, mortgageFlag);
     }
 
     /**
@@ -5847,7 +5849,7 @@ public class GenerateBaseDataService {
                 {
                     StringBuilder stringBuilder = new StringBuilder(8);
                     if (basicUnit != null && StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())) {
-                        stringBuilder.append("梯户比").append(basicUnit.getElevatorHouseholdRatio());
+                        stringBuilder.append("梯户比").append(basicUnit.getElevatorHouseholdRatio()).append(",");
                     }
                     if (basicHouseVo != null && basicHouseVo.getHuxingId() != null) {
                         BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouseVo.getHuxingId());

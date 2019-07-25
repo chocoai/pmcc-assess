@@ -95,4 +95,14 @@ public class DataPropertyServiceItemController {
         }
     }
 
+    @RequestMapping(value = "/getDataPropertyServiceItemVoList", method = {RequestMethod.GET}, name = "通过pid获取信息")
+    public HttpResult getDataPropertyServiceItemVoList(Integer masterId) {
+        try {
+            return HttpResult.newCorrectResult(dataPropertyServiceItemService.getListByMasterId(masterId));
+        } catch (Exception e) {
+            logger.error("获取数据字典异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
 }

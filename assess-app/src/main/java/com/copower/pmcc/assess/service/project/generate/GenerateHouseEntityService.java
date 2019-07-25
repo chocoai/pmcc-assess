@@ -19,10 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -207,7 +204,7 @@ public class GenerateHouseEntityService {
             BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
             StringBuilder stringBuilder = new StringBuilder();
             if (basicUnit != null && StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())) {
-                stringBuilder.append("梯户比").append(basicUnit.getElevatorHouseholdRatio());
+                stringBuilder.append("梯户比").append(basicUnit.getElevatorHouseholdRatio()).append(",");
             }
             if (basicHouse != null && basicHouse.getHuxingId() != null) {
                 BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
@@ -273,9 +270,62 @@ public class GenerateHouseEntityService {
                 });
                 unitDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s;", StringUtils.strip(unitDecorateBuilder.toString(), ",")));
             }
-
+            List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
             BasicHouseVo basicHouse = generateBaseExamineService.getBasicHouse();
-            roomDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("房间%s;", basicHouse.getDecorateSituationDescription()));
+            if (CollectionUtils.isNotEmpty(basicHouseRoomList)){
+                Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> basicHouseRoomListMap = Maps.newHashMap();
+                basicHouseRoomList.forEach(oo -> {
+                    List<BasicHouseRoomDecorateVo> decorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(oo.getId());
+                    if (CollectionUtils.isNotEmpty(decorateVos)) {
+                        basicHouseRoomListMap.put(oo, decorateVos);
+                    }
+                });
+                if (!basicHouseRoomListMap.isEmpty()){
+                    if (basicHouseRoomListMap.entrySet().stream().anyMatch(obj -> {
+                        if (StringUtils.isNotEmpty(obj.getKey().getRoomType())) {
+                            return obj.getValue().stream().anyMatch(oo -> {
+                                if (StringUtils.isNotEmpty(oo.getPartName())) {
+                                    if (StringUtils.isNotEmpty(oo.getRemark())) {
+                                        return true;
+                                    }
+                                    if (StringUtils.isEmpty(oo.getRemark()) && StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            });
+                        }
+                        return false;
+                    })) {
+                        Set<String> stringSet = Sets.newHashSet();
+                        StringBuilder stringBuilder = new StringBuilder(8) ;
+                        basicHouseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
+                            List<String> stringList = Lists.newArrayList();
+                            basicHouseRoomDecorateVos.forEach(obj -> {
+                                if (StringUtils.isNotEmpty(obj.getPartName())) {
+                                    stringBuilder.append(obj.getPartName());
+                                }
+                                if (StringUtils.isNotEmpty(obj.getRemark())) {
+                                    stringBuilder.append(obj.getRemark());
+                                }
+                                if (StringUtils.isEmpty(obj.getRemark()) && StringUtils.isNotEmpty(obj.getMaterialName())) {
+                                    stringBuilder.append("装修材料").append(obj.getMaterialName());
+                                }
+                                if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                                    stringList.add(stringBuilder.toString());
+                                }
+                                stringBuilder.delete(0, stringBuilder.toString().length());
+                            });
+                            if (CollectionUtils.isNotEmpty(stringList)) {
+                                stringSet.add(String.format("%s%s%s", basicHouseRoom.getRoomType(), ":", StringUtils.join(stringList, "、")));
+                            }
+                        });
+                        if (CollectionUtils.isNotEmpty(stringSet)) {
+                            roomDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "；"));
+                        }
+                    }
+                }
+            }
         }
         String outfitString = generateCommonMethod.judgeEachDesc(outfitMap, "", ";", false);
         String unitDecorateString = generateCommonMethod.judgeEachDesc(unitDecorateMap, "", ";", false);
