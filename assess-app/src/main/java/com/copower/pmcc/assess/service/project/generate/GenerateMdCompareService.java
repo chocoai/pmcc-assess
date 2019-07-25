@@ -1070,21 +1070,21 @@ public class GenerateMdCompareService {
 
                             if (item2.getName().equals(useField.getFieldName())) {
                                 //交易时间为评估基准日
-                                if (item2.getName().equals(MethodCompareFieldEnum.TRADING_TIME.getKey())) {
-                                    builder.insertCell();
-                                    if (isIndex) {
-                                        builder.write(item2.getScore().toString());
-                                    } else {
-                                        builder.write(DateUtils.format(mdMarketCompare.getValueTimePoint(), DateUtils.DATE_CHINESE_PATTERN));
-                                    }
-                                } else {
+//                                if (item2.getName().equals(MethodCompareFieldEnum.TRADING_TIME.getKey())) {
+//                                    builder.insertCell();
+//                                    if (isIndex) {
+//                                        builder.write(item2.getScore().toString());
+//                                    } else {
+//                                        builder.write(item2.getValue());
+//                                    }
+                                //} else {
                                     builder.insertCell();
                                     if (isIndex) {
                                         builder.write(item2.getScore() == null?"":item2.getScore().toString());
                                     } else {
                                         builder.write(StringUtil.isEmpty(item2.getValue())?"无":item2.getValue());
                                     }
-                                }
+                                //}
                             }
                         }
                     }

@@ -62,7 +62,7 @@ public enum MethodCompareFieldEnum {
     WATER_SUPPLY_DRAINAGE_MODE("water.supply.drainage.mode", "供（排）水方式"),//ps:供水和排水所有字段信息组合
     HEATING_MODE("heating.mode", "采暖供热方式"),//ps:采暖和供热所有字段信息组合
     NETWORK("network", "通讯网络"),//ps:通讯网络所有字段信息组合
-    ELEVATOR_HOUSEHOLD_RATIO("elevator.household.ratio", "电梯梯户比"),//ps:单元-梯户比
+    ELEVATOR_HOUSEHOLD_RATIO("elevator.household.ratio", "梯户比"),//ps:单元-梯户比
     INTERNAL_ASSEMBLY("internal.assembly", "内装"),//ps:楼栋内装信息+房屋内的装修信息
     PLANE_LAYOUT("plane.layout", "平面布局"),//ps:平面布局 实际用途为住宅取户型，其它用途时取户型与房间中的开间进深
     NEW_DEGREE("new.degree", "成新度"),//ps:成新度
