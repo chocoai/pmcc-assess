@@ -271,7 +271,11 @@ public class BasicHouseService {
 
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
         BasicHouseTradingVo basicHouseTradingVo = basicHouseTradingService.getBasicHouseTradingVo(houseTrading);
-        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingVo!=null?basicHouseTradingVo:new BasicHouseTradingVo());
+        if(basicHouseTradingVo==null){
+            basicHouseTradingVo = new BasicHouseTradingVo();
+            basicHouseTradingVo.setHouseId(basicHouse.getId());
+        }
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingVo);
         return objectMap;
     }
 

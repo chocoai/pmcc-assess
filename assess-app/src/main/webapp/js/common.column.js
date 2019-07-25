@@ -39,9 +39,8 @@ commonColumn.matchingEnvironmentColumn = function () {
     var cols = [];
     cols.push({field: 'typeName', title: '环境类型'});
     cols.push({field: 'categoryName', title: '影响要素'});
-    cols.push({field: 'influenceDegreeName', title: '影响程度'});
+    // cols.push({field: 'influenceDegreeName', title: '影响程度'});
     cols.push({field: 'remark', title: '影响源描述'});
-    // cols.push({field: 'humanImpact', title: '对人的影响'});
     cols.push({
         field: 'humanImpact', title: '对人的影响', formatter: function (value, row, index) {
            if (value){

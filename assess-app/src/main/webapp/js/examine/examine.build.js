@@ -25,35 +25,13 @@
     };
 
     buildingCommon.buildingNumberBlur = function (_this) {
-        $(_this).val($(_this).val().replace('栋',''));
+        $(_this).val($(_this).val().replace('栋', ''));
         var buildingNameElement = $(_this).closest('.form-group').find('[name=buildingName]');
-        if(!buildingNameElement.val()){
-            buildingNameElement.val($(_this).val()+'栋');
+        if (!buildingNameElement.val()) {
+            buildingNameElement.val($(_this).val() + '栋');
         }
     };
 
-    //物业操作
-    buildingCommon.propertyHandle = function (_this) {
-        var group = $(_this).closest(".input-group") ;
-        var property = group.find("input[name='property']").val() ;
-        if (property){
-            dataPropertyModelQuote.dataPropertyServiceItemTableModalToolShow(property) ;
-        }else {
-            toastr.success('请先选择物业');
-        }
-    };
-
-    buildingCommon.addPropertyHandle = function (_this) {
-        var target = $("#dataPropertyModelQuoteFather");
-        target.find(".panel-body").empty() ;
-        target.find(".panel-body").append(dataPropertyModelQuote.getFatherHtml()) ;
-        target.find("form").clearAll();
-        AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, '', function (html, data) {
-            target.find("form").find('[name=socialPrestige]').empty().html(html).trigger('change');
-        });
-        target.find('[name=companyNature]').parent().parent().hide();
-        target.modal("show");
-    };
 
     buildingCommon.detail = function (id) {
         $.ajax({
@@ -113,7 +91,7 @@
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_building_residence_data, data.residenceUseYear, function (html, data) {
             buildingCommon.buildingForm.find('select.residenceUseYear').empty().html(html).trigger('change');
         }, false);
-        AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation,data.propertySocialPrestige, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, data.propertySocialPrestige, function (html, data) {
             buildingCommon.buildingForm.find("select[name='propertySocialPrestige']").empty().html(html).trigger('change');
         });
         $.ajax({
@@ -123,11 +101,11 @@
                 if (result.ret) {
                     var retHtml = '<option value="" selected>-请选择-</option>';
                     $.each(result.data, function (i, item) {
-                        retHtml += '<option key="' + item.buildingStructure + '" title="' + item.buildingStructure + '" value="' + item.id + '"' ;
+                        retHtml += '<option key="' + item.buildingStructure + '" title="' + item.buildingStructure + '" value="' + item.id + '"';
                         if (item.id == data.industryUseYear) {
                             retHtml += 'selected="selected"'
                         }
-                        retHtml += '>' + item.buildingStructure + '</option>' ;
+                        retHtml += '>' + item.buildingStructure + '</option>';
                     });
                     buildingCommon.buildingForm.find('select.industryUseYear').empty().html(retHtml).trigger('change');
                 }
@@ -145,25 +123,25 @@
             buildingCommon.fileShow(item);
         });
         buildingModelView.prototype.viewInit();
-        if(data.vSpecifications) {
+        if (data.vSpecifications) {
             buildingCommon.writeSpecificationsHTMLData(data.vSpecifications);
             buildingCommon.addLableData(data.vSpecifications);
         }
     };
 
-    buildingCommon.addLableData = function(json) {
-        if(json){
+    buildingCommon.addLableData = function (json) {
+        if (json) {
             var jsonarray = eval(json);
             $.each(jsonarray, function (i, n) {
-                var specificationNameId = 'specificationName'+i;
-                var specificationContentId = 'specificationContent'+i;
-                $("#"+specificationNameId).val(n["specificationName"]);
-                $("#"+specificationContentId).val(n["specificationContent"]);
+                var specificationNameId = 'specificationName' + i;
+                var specificationContentId = 'specificationContent' + i;
+                $("#" + specificationNameId).val(n["specificationName"]);
+                $("#" + specificationContentId).val(n["specificationContent"]);
             })
         }
     }
 
-    buildingCommon.writeSpecificationsHTMLData = function(json) {
+    buildingCommon.writeSpecificationsHTMLData = function (json) {
         if (!json)return;
         $(".vSpecifications").empty();
         var jsonarray = eval(json);
@@ -207,7 +185,7 @@
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
-            area: ['97%', '80%'] ,
+            area: ['97%', '80%'],
             content: contentUrl,
             success: function (layero) {
                 buildingCommon.buildingMapiframe = window[layero.find('iframe')[0]['name']];
@@ -305,21 +283,146 @@
         })
     };
 
+    buildingCommon.getBasicBuildingPropertyServiceItemBootstrapTableVo = function (buildingId, selectId) {
+        var cols = [];
+        cols.push({checkbox: true});
+        cols.push({field: 'serviceTypeName', title: '服务类型'});
+        cols.push({field: 'serviceContentName', title: '服务内容'});
+        cols.push({field: 'serviceTime', title: '服务时间'});
+        cols.push({field: 'gradeEvaluationName', title: '等级评价'});
+        selectId.bootstrapTable('destroy');
+        TableInit(selectId.attr("id"), getContextPath() + "/basicBuildingPropertyServiceItem/getBasicBuildingPropertyServiceItemList?buildingId=" + buildingId, cols, {}, {
+            showColumns: true,
+            showRefresh: true,
+            search: false
+        });
+        var toolbar = $("#toolbarBuildingPropertyServiceItemTable");
+        if (toolbar.size() != 0){
+            var bootstrapTable = selectId.closest(".bootstrap-table") ;
+            if (bootstrapTable.size() != 0){
+                var fixedTableToolbar = bootstrapTable.find(".fixed-table-toolbar") ;
+                if (fixedTableToolbar.size() != 0){
+                    fixedTableToolbar.append(toolbar.html()) ;
+                }
+            }
+        }
+    };
+
+    buildingCommon.deleteBasicBuildingPropertyServiceItem = function (table) {
+        var rows = $(table).bootstrapTable('getSelections');
+        if (rows.length >= 1) {
+            var data = [];
+            $.each(rows, function (i, item) {
+                data.push(item.id);
+            });
+            $.ajax({
+                url: getContextPath() + "/basicBuildingPropertyServiceItem/deleteBasicBuildingPropertyServiceItemById",
+                type: "post",
+                dataType: "json",
+                data: {id: data.join(",")},
+                success: function (result) {
+                    if (result.ret) {
+                        $(table).bootstrapTable('refresh');
+                        toastr.success('删除成功!');
+                    }
+                    else {
+                        Alert("数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        } else {
+            toastr.success('至少勾选一个!');
+        }
+    };
+
+    buildingCommon.editBasicBuildingPropertyServiceItem = function (table, box,flag) {
+        if (flag){
+            var rows = $(table).bootstrapTable('getSelections');
+            if (rows.length == 1) {
+                var data = rows[0];
+                dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), data);
+                $(box).modal('show');
+            } else {
+                toastr.success('只能勾选一个!');
+            }
+        }else {
+            var masterId = buildingCommon.buildingForm.find('input[name=property]').val();
+            if (masterId){
+                $(box).modal('show');
+                dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), {masterId:masterId,buildingId:buildingCommon.getBuildingId()});
+            }else {
+                toastr.success('物业公司必选选择!');
+            }
+        }
+    };
+
+    buildingCommon.addBasicBuildingPropertyServiceItem = function (_this) {
+        var frm = $(_this).parent().prev().find("form");
+        if (!frm.valid()) {
+            return false ;
+        }
+        var data = formSerializeArray(frm);
+        buildingCommon.saveAndUpdateBasicBuildingPropertyServiceItem([data] , function () {
+            $(_this).parent().parent().parent().parent().modal('hide');
+            toastr.success('成功!');
+            $("#basicBuildingPropertyServiceItemTable").bootstrapTable('refresh');
+        });
+    };
+
+    buildingCommon.saveAndUpdateBasicBuildingPropertyServiceItem = function (data, callback) {
+        $.ajax({
+            url: getContextPath() + "/basicBuildingPropertyServiceItem/saveAndUpdateBasicBuildingPropertyServiceItem",
+            type: "post",
+            dataType: "json",
+            data: {formData: JSON.stringify(data)},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+                else {
+                    Alert("数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
+
     buildingCommon.autocompleteStart = function () {
         buildingCommon.buildingForm.find('input[name=propertyName]').apProperty({
-            onSelect:function (id, name){
+            onSelect: function (id, name) {
                 buildingCommon.buildingForm.find('input[name=property]').val(id);
                 buildingCommon.buildingForm.find('input[name=propertyName]').val(name);
-                if (dataPropertyModelQuote){
-                    dataPropertyModelQuote.getDataProperty(id , function (data) {
-                        buildingCommon.buildingForm.find("select[name='propertyCompanyNature']").val(data.companyNature).attr("selected",true).trigger('change');
+                if (dataPropertyModelQuote) {
+                    dataPropertyModelQuote.getDataProperty(id, function (data) {
+                        buildingCommon.buildingForm.find("select[name='propertyCompanyNature']").val(data.companyNature).attr("selected", true).trigger('change');
                         buildingCommon.buildingForm.find("select[name='propertySocialPrestige']").val(data.socialPrestige).trigger('change');
-                    }) ;
+                    });
+                    dataPropertyModelQuote.getDataPropertyServiceItemVoList(id, function (data) {
+                        var item = [];
+                        $.each(data, function (i, n) {
+                            var obj = {};
+                            $.extend(obj, n);
+                            obj.buildingId = buildingCommon.getBuildingId();
+                            obj.masterId = id;
+                            obj.id = null;
+                            item.push(obj);
+                        });
+                        buildingCommon.saveAndUpdateBasicBuildingPropertyServiceItem(item, function () {
+                            buildingCommon.getBasicBuildingPropertyServiceItemBootstrapTableVo(buildingCommon.getBuildingId(), $("#basicBuildingPropertyServiceItemTable"));
+                        });
+                    });
                 }
             }
         });
         buildingCommon.buildingForm.find('input[name=builderName]').apBuilder({
-            onSelect:function (id, name) {
+            onSelect: function (id, name) {
                 buildingCommon.buildingForm.find('input[name=builder]').val(id);
                 buildingCommon.buildingForm.find('input[name=builderName]').val(name);
             }

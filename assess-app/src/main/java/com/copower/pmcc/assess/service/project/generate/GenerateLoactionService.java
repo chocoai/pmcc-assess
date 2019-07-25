@@ -86,7 +86,7 @@ public class GenerateLoactionService {
             logger.error(ex.getMessage(), ex);
             return "";
         }
-        return StringUtils.isNotBlank(value)?value:"不临街" ;
+        return StringUtils.isNotBlank(value) ? value : "不临街";
     }
 
     public String getFaceStreetExtend(BasicApply basicApply) throws Exception {
@@ -119,91 +119,28 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getEnvironmentalScience(BasicApply basicApply, EnvironmentalScienceEnum scienceEnum) throws Exception {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = generateBaseExamineService.getBasicMatchingEnvironmentList();
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(scienceEnum.getKey());
         LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
         if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
-            String a = "无影响";
-            String b = "影响一般";
-            String c = "影响较大";
-            String d = "有重大影响";
-            //自然环境要素
-            if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.NATURAL.getKey())) {
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "空气", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "水体质量", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "美观度", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "静密程度", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "空间辐射", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "废弃物", hashSet, basicMatchingEnvironmentVoList);
-                builder.append(StringUtils.join(hashSet, "，"));
-                hashSet.clear();
-            }
-            //人文环境要素
-            if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.HUMANITY.getKey())) {
-                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "相邻利用物业状况", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "居民特征", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "治安状况", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "相邻利用物业状况", hashSet, basicMatchingEnvironmentVoList);
-                builder.append(StringUtils.join(hashSet, "，"));
-                hashSet.clear();
-            }
-            //景观要素
-            if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.SCENERY.getKey())) {
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "海景", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "江景", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "河景", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "湖景", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "山景", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "公园", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "园林", hashSet, basicMatchingEnvironmentVoList);
-                environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "中庭景观", hashSet, basicMatchingEnvironmentVoList);
-                builder.append(StringUtils.join(hashSet, "，"));
-                hashSet.clear();
-            }
-        }
-        return StringUtils.strip(builder.toString(), "，");
-    }
-
-    private void environmentalScience(EnvironmentalScienceEnum scienceEnum, String a, String b, String c, String d, String key, LinkedHashSet<String> hashSet, List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList) {
-        BasicMatchingEnvironmentVo matchingEnvironmentVo = null;
-        if (CollectionUtils.isEmpty(basicMatchingEnvironmentVoList)) return;
-        for (BasicMatchingEnvironmentVo basicMatchingEnvironmentVo : basicMatchingEnvironmentVoList) {
-            if (basicMatchingEnvironmentVo.getCategoryName().contains(key)) {
-                matchingEnvironmentVo = basicMatchingEnvironmentVo;
-                break;
-            }
-        }
-        if (matchingEnvironmentVo == null) return;
-        if (!Objects.equal(EnvironmentalScienceEnum.SCENERY.getKey(), scienceEnum.getKey())) {
-            if (matchingEnvironmentVo != null) {
-                if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), a)) {
-                    matchingEnvironmentVo.setRemark("优良");
-                }
-                if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), b)) {
-                    matchingEnvironmentVo.setRemark("一般");
-                }
-                if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), c)) {
-                    matchingEnvironmentVo.setRemark("差");
-                }
-                if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), d)) {
-                    matchingEnvironmentVo.setRemark("非常差");
+            for (BasicMatchingEnvironmentVo oo : basicMatchingEnvironmentVoList) {
+                if (Objects.equal(new Integer(oo.getType()), baseDataDic.getId())) {
+                    if (StringUtils.isNotBlank(oo.getHumanImpact())) {
+                        builder.append(oo.getCategoryName()).append("对人的影响").append(oo.getHumanImpact());
+                    }
+                    if (StringUtils.isNotBlank(oo.getRemark()) && StringUtils.isEmpty(oo.getHumanImpact())) {
+                        builder.append(oo.getCategoryName()).append("描述").append(oo.getHumanImpact());
+                    }
+                    if (StringUtils.isNotBlank(builder.toString())) {
+                        hashSet.add(builder.toString());
+                    }
+                    builder.delete(0, builder.toString().length());
                 }
             }
         }
-        if ("废弃物".equals(key)){
-            if (StringUtils.isNotBlank(matchingEnvironmentVo.getHumanImpact())){
-                matchingEnvironmentVo.setRemark(String.format("对人的影响%s",matchingEnvironmentVo.getHumanImpact()));
-            }
-        }
-        if ("居民特征".equals(key)){
-            if (StringUtils.isNotBlank(matchingEnvironmentVo.getHumanImpact())){
-                matchingEnvironmentVo.setRemark(String.format("对人的影响%s",matchingEnvironmentVo.getHumanImpact()));
-            }
-        }
-        if (matchingEnvironmentVo != null) {
-            hashSet.add(String.format("%s%s", key, matchingEnvironmentVo.getRemark()));
-        }
+        return StringUtils.join(hashSet, ",");
     }
 
 
@@ -534,13 +471,13 @@ public class GenerateLoactionService {
         if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
             builder.append("限行情况:");
             Set<String> stringSet = Sets.newHashSet();
-            StringBuffer stringBuffer = new StringBuffer(8) ;
+            StringBuffer stringBuffer = new StringBuffer(8);
             basicMatchingTrafficList.stream().forEach(basicMatchingTrafficVo -> {
-                stringBuffer.append(basicMatchingTrafficVo.getLimitSpeed()).append(basicMatchingTrafficVo.getLimitTime()).append(basicMatchingTrafficVo.getLimitSpeialName()).append(";") ;
-                stringSet.add(stringBuffer.toString()) ;
-                stringBuffer.delete(0,stringBuffer.toString().length()) ;
+                stringBuffer.append(basicMatchingTrafficVo.getLimitSpeed()).append(basicMatchingTrafficVo.getLimitTime()).append(basicMatchingTrafficVo.getLimitSpeialName()).append(";");
+                stringSet.add(stringBuffer.toString());
+                stringBuffer.delete(0, stringBuffer.toString().length());
             });
-            builder.append(StringUtils.join(stringSet,"")) ;
+            builder.append(StringUtils.join(stringSet, ""));
         }
         return builder.toString();
     }

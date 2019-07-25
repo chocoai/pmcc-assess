@@ -72,6 +72,28 @@
         });
     };
 
+    dataPropertyModelQuote.getDataPropertyServiceItemVoList = function (masterId,callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataPropertyServiceItem/getDataPropertyServiceItemVoList",
+            type: "get",
+            dataType: "json",
+            data: {masterId: masterId},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+                else {
+                    Alert("数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
+
 
     dataPropertyModelQuote.dataPropertyServiceItemList = function (selectId, masterId, colArr) {
         var cols = [];
@@ -175,14 +197,18 @@
             frm.find('[name=serviceType]').empty().html(html).trigger('change');
         });
         frm.find('[name=serviceType]').change(function () {
-            var serviceType = undefined;
-            if (!data.serviceType) {
-                serviceType = frm.find('[name=serviceType]').val();
-            }
+            var serviceType = frm.find('[name=serviceType]').val();
             AssessCommon.loadDataDicByPid(serviceType, data.serviceContent, function (html, data) {
-                frm.find('[name=serviceContent]').empty().html(html);
+                frm.find('[name=serviceContent]').empty().html(html).trigger('change');
             });
         }) ;
+        if (data.serviceType){
+            if (data.serviceContent){
+                AssessCommon.loadDataDicByPid(data.serviceType, data.serviceContent, function (html, data) {
+                    frm.find('[name=serviceContent]').empty().html(html).trigger('change');
+                });
+            }
+        }
     };
 
 

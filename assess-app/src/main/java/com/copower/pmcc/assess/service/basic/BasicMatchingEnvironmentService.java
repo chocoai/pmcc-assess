@@ -147,7 +147,7 @@ public class BasicMatchingEnvironmentService {
         if (StringUtils.isNotBlank(basicMatchingEnvironment.getHumanImpact())){
             keyValueDtos.forEach(keyValueDto -> {
                 if (Objects.equal(keyValueDto.getKey(),basicMatchingEnvironment.getHumanImpact())){
-                    basicMatchingEnvironment.setHumanImpact(keyValueDto.getValue());
+                    vo.setHumanImpact(keyValueDto.getValue());
                 }
             });
         }
