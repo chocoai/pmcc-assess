@@ -128,10 +128,7 @@ public class GenerateLoactionService {
             for (BasicMatchingEnvironmentVo oo : basicMatchingEnvironmentVoList) {
                 if (Objects.equal(new Integer(oo.getType()), baseDataDic.getId())) {
                     if (StringUtils.isNotBlank(oo.getHumanImpact())) {
-                        builder.append(oo.getCategoryName()).append("对人的影响").append(oo.getHumanImpact());
-                    }
-                    if (StringUtils.isNotBlank(oo.getRemark()) && StringUtils.isEmpty(oo.getHumanImpact())) {
-                        builder.append(oo.getCategoryName()).append("描述").append(oo.getHumanImpact());
+                        builder.append(oo.getCategoryName()).append(oo.getHumanImpact());
                     }
                     if (StringUtils.isNotBlank(builder.toString())) {
                         hashSet.add(builder.toString());

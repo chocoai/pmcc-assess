@@ -994,11 +994,24 @@ public class GenerateCommonMethod {
      * @param str
      * @return
      */
+    public String trimText(String str) {
+        return trim(str,true,false);
+    }
     public String trim(String str) {
         return trim(str,true);
     }
-
     public String trim(String str,Boolean removeTag) {
+        return trim(str,removeTag,true);
+    }
+
+    /**
+     * 替换为标准格式
+     * @param str
+     * @param removeTag 是否移除html标签
+     * @param containFullStop 末尾是否包含句号
+     * @return
+     */
+    public String trim(String str,Boolean removeTag,Boolean containFullStop) {
         if (StringUtils.isBlank(str)) return str;
         if(removeTag){
             str = StringUtils.strip(str.replaceAll("^<[^>]+>|<[^>]+>$", ""), "。");
@@ -1008,10 +1021,17 @@ public class GenerateCommonMethod {
                 .replaceAll("，+", "，").replaceAll("、+", "、")
                 .replaceAll("。+", "。").replaceAll("；+", "；")
                 .replaceAll("，\\s+。", "。").replaceAll("；\\s。", "。")
-                .replaceAll("^[，|,|，|、|;|；|.|。]+", "")
-                .replaceAll("[，|,|，|、|;|；|.|。]+$", "。");
+                .replaceAll("^[，|,|，|、|;|；|.|。]+", "");
+
+        str = str.replaceAll("，；", "；").replaceAll("；，", "，")
+                .replaceAll("，。", "。").replaceAll("。，", "，")
+                .replaceAll("；。", "。").replaceAll("。；", "；");
+
+        str=str.replaceAll("[，|,|，|、|;|；|.|。]+$", containFullStop?"。":"");
         return str;
     }
+
+
 
 
     /**

@@ -10,8 +10,6 @@
             <small id="small_select_case">
                 <input type="button" class="btn btn-primary btn-xs" value="选择案例"
                        onclick="marketCompare.loadCaseAll();">
-            </small>
-            <small>
                 <input type="button" class="btn btn-primary btn-xs" value="刷新"
                        onclick="marketCompare.refreshData();">
             </small>
@@ -1038,6 +1036,8 @@
                             areaId: marketCompare.areaId,
                             cases: result.data.cases
                         });
+                        marketCompare.calculation();
+                        marketCompare.save();
                     } else {
                         Alert('刷新异常，' + result.errmsg);
                     }
