@@ -127,8 +127,15 @@ public class GenerateLoactionService {
         if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
             for (BasicMatchingEnvironmentVo oo : basicMatchingEnvironmentVoList) {
                 if (Objects.equal(new Integer(oo.getType()), baseDataDic.getId())) {
-                    if (StringUtils.isNotBlank(oo.getHumanImpact())) {
-                        builder.append(oo.getCategoryName()).append(oo.getHumanImpact());
+                    if (StringUtils.isNotBlank(oo.getRemark())) {
+                        builder.append(oo.getRemark());
+                    } else if (StringUtils.isNotBlank(oo.getHumanImpact())) {
+                        String name = baseDataDicService.getNameById(oo.getHumanImpact());
+                        if ("无".equals(name)) {
+                            builder.append(oo.getHumanImpact()).append(oo.getCategoryName());
+                        } else {
+                            builder.append(oo.getCategoryName()).append(oo.getHumanImpact());
+                        }
                     }
                     if (StringUtils.isNotBlank(builder.toString())) {
                         hashSet.add(builder.toString());
