@@ -9,8 +9,10 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -52,6 +54,8 @@ public class BasicApplyController extends BaseController {
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private BasicApplyTransferService basicApplyTransferService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex(Integer basicApplyTypeId) {
@@ -72,6 +76,8 @@ public class BasicApplyController extends BaseController {
         basicApply.setId(0);
         modelAndView.addObject("basicApply", basicApply);
         modelAndView.addObject("basicApplyTypeId", basicApplyTypeId);
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
         return modelAndView;
     }
 

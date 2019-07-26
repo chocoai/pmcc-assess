@@ -14,9 +14,9 @@ import com.copower.pmcc.assess.dto.output.basic.BasicUnitDecorateVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
-import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateEquityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateHouseEntityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateLoactionService;
@@ -40,7 +40,7 @@ public class MdMarketCompareFieldService extends BaseService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private DataBlockService dataBlockService;
+    private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -224,12 +224,12 @@ public class MdMarketCompareFieldService extends BaseService {
                             if (StringUtils.isNotBlank(trafficCharges)) {
                                 stringBuilder.append(String.format("%s", trafficCharges));
                             }
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRAFFIC_CONDITIONS.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRAFFIC_CONDITIONS.getKey(),generateCommonMethod.trimText(stringBuilder.toString()) ));
                             break;
                         case URBAN_INFRASTRUCTURE://外部基础设施
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateLoactionService.getExternalInfrastructure(basicApply));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.URBAN_INFRASTRUCTURE.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.URBAN_INFRASTRUCTURE.getKey(),generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case PUBLIC_SERVICE_FACILITIES://公共服务设施
                             stringBuilder = new StringBuilder();
@@ -239,23 +239,22 @@ public class MdMarketCompareFieldService extends BaseService {
                                     stringBuilder.append(facility);
                                 }
                             }
-
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PUBLIC_SERVICE_FACILITIES.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PUBLIC_SERVICE_FACILITIES.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case NATURAL://自然环境
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NATURAL.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NATURAL.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case CULTURAL://人文环境
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.CULTURAL.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.CULTURAL.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case SCENERY://景观
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.SCENERY.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.SCENERY.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case LAND_RIGHT_TYPE://土地权利类型
                             stringBuilder = new StringBuilder();
@@ -285,7 +284,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case OTHER_SPECIAL_SITUATIONS://其它特殊情况
                             String specialCase = generateEquityService.getTransferLimit(Lists.newArrayList(judgeObject), null);
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OTHER_SPECIAL_SITUATIONS.getKey(), specialCase));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OTHER_SPECIAL_SITUATIONS.getKey(), generateCommonMethod.trimText(specialCase)));
                             break;
                         case BUILDING_AREA://建筑面积（㎡）
                             String buildingArea = null;
@@ -305,7 +304,7 @@ public class MdMarketCompareFieldService extends BaseService {
                         case BUILDING_SCALE://建筑规模
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateHouseEntityService.getBuildingScaleExtend(basicApply));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_SCALE.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_SCALE.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case BUILDING_STRUCTURE://建筑结构
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_STRUCTURE.getKey(), baseDataDicService.getNameById(examineBuilding.getBuildingStructureCategory())));
@@ -318,12 +317,12 @@ public class MdMarketCompareFieldService extends BaseService {
                                     stringBuilder.append(outfit.getDecorationPart()).append(outfit.getMaterialGradeName()).append(outfit.getDecoratingMaterialName()).append(",");
                                 }
                             }
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey(), StringUtils.strip(stringBuilder.toString(), ",")));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case APPEARANCE://外观
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateHouseEntityService.getAppearanceExtend(basicApply));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.APPEARANCE.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.APPEARANCE.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case AERATION://通风
                             stringBuilder = new StringBuilder();
@@ -406,6 +405,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             List<BasicHouseWater> waterList = basicHouseWaterService.getBasicHouseWaterList(examineHouse.getId());
                             if (CollectionUtils.isNotEmpty(waterList)) {
                                 for (BasicHouseWater houseWater : waterList) {
+                                    stringBuilder.append("给水采用");
                                     stringBuilder.append(houseWater.getGrade() == null ? "" : String.format("%s", baseDataDicService.getNameById(houseWater.getGrade())));//档次
                                     stringBuilder.append(houseWater.getBoosterEquipment() == null ? "" : String.format("%s", baseDataDicService.getNameById(houseWater.getBoosterEquipment())));//给水升压设备
                                     stringBuilder.append(houseWater.getPipeMaterial() == null ? "" : String.format("%s", baseDataDicService.getNameById(houseWater.getPipeMaterial())));//给水管材料
@@ -418,11 +418,12 @@ public class MdMarketCompareFieldService extends BaseService {
                             List<BasicHouseWaterDrain> drainList = basicHouseWaterDrainService.getBasicHouseWaterDrainList(examineHouse.getId());
                             if (CollectionUtils.isNotEmpty(drainList)) {
                                 for (BasicHouseWaterDrain houseWaterDrain : drainList) {
-                                    stringBuilder.append(houseWaterDrain.getType() == null ? "" : String.format("%s", baseDataDicService.getNameById(houseWaterDrain.getType())));//类别
-                                    stringBuilder.append(houseWaterDrain.getProcessingMode() == null ? "" : String.format("%s；", baseDataDicService.getNameById(houseWaterDrain.getProcessingMode())));//排水处理方式
+                                    stringBuilder.append(houseWaterDrain.getType() == null ? "" : String.format("%s采用", baseDataDicService.getNameById(houseWaterDrain.getType())));//类别
+                                    stringBuilder.append(houseWaterDrain.getDrainSystem() == null ? "" : baseDataDicService.getNameById(houseWaterDrain.getDrainSystem()));
+                                    stringBuilder.append(houseWaterDrain.getProcessingMode() == null ? "" : String.format("%s处理；", baseDataDicService.getNameById(houseWaterDrain.getProcessingMode())));//排水处理方式
                                 }
                             }
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case HEATING_MODE://采暖供热方式
                             stringBuilder = new StringBuilder();
@@ -434,13 +435,13 @@ public class MdMarketCompareFieldService extends BaseService {
                                     }
                                 }
                             }
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.HEATING_MODE.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.HEATING_MODE.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case NETWORK://电力通信网络
                             stringBuilder = new StringBuilder();
                             List<BasicHouseIntelligentVo> intelligentList = basicHouseIntelligentService.getBasicHouseIntelligentVos(examineHouse.getId());
                             stringBuilder.append(this.getIntelligentNet(intelligentList));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NETWORK.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NETWORK.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case ELEVATOR_HOUSEHOLD_RATIO://电梯梯户比
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ELEVATOR_HOUSEHOLD_RATIO.getKey(), examineUnit.getElevatorHouseholdRatio()));
@@ -472,7 +473,7 @@ public class MdMarketCompareFieldService extends BaseService {
                                     }
                                 }
                             }
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case PLANE_LAYOUT://平面布局
                             stringBuilder = new StringBuilder();
@@ -488,7 +489,7 @@ public class MdMarketCompareFieldService extends BaseService {
                                     }
                                 }
                             }
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PLANE_LAYOUT.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PLANE_LAYOUT.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case NEW_DEGREE://成新度
                             stringBuilder = new StringBuilder();
@@ -498,7 +499,7 @@ public class MdMarketCompareFieldService extends BaseService {
                         case Other://其它
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateHouseEntityService.getOtherExtend(basicApply));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.Other.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.Other.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case BUILDING_YEAR://竣工时间
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_YEAR.getKey(), DateUtils.formatDate(examineBuilding.getBeCompletedTime()), isCase));
@@ -523,7 +524,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case LAND_AREA_LOCATION://区域位置
                             String areaLocation = generateLandFactorService.getAreaLocation(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AREA_LOCATION.getKey(), areaLocation));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AREA_LOCATION.getKey(), generateCommonMethod.trimText(areaLocation)));
                             break;
                         case LAND_AGGLOMERATION_DEGREE://产业聚集度
                             String agglomerationDegree = null;
@@ -532,23 +533,23 @@ public class MdMarketCompareFieldService extends BaseService {
                             } catch (Exception ex) {
                                 agglomerationDegree = null;
                             }
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AGGLOMERATION_DEGREE.getKey(), agglomerationDegree));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AGGLOMERATION_DEGREE.getKey(), generateCommonMethod.trimText(agglomerationDegree)));
                             break;
                         case LAND_TRAFFIC_CONDITIONS://交通条件
                             String trafficConditions = generateLandFactorService.getTrafficConditions(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRAFFIC_CONDITIONS.getKey(), trafficConditions));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRAFFIC_CONDITIONS.getKey(), generateCommonMethod.trimText(trafficConditions)));
                             break;
                         case LAND_UPPORTING_FACILITY://配套设施条件
                             String upportingFacility = generateLandFactorService.getUpportingFacility(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_UPPORTING_FACILITY.getKey(), upportingFacility));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_UPPORTING_FACILITY.getKey(), generateCommonMethod.trimText(upportingFacility)));
                             break;
                         case LAND_ENVIRONMENT_CONDITION://环境条件
                             String environmentCondition = generateLandFactorService.getEnvironmentCondition(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_ENVIRONMENT_CONDITION.getKey(), environmentCondition));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_ENVIRONMENT_CONDITION.getKey(), generateCommonMethod.trimText(environmentCondition)));
                             break;
                         case LAND_PLANNING_CONDITION://规划条件
                             String planningCondition = generateLandFactorService.getPlanningCondition(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLANNING_CONDITION.getKey(), planningCondition));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLANNING_CONDITION.getKey(), generateCommonMethod.trimText(planningCondition)));
                             break;
                         case LAND_AREA://面积
                             String area = generateLandFactorService.getArea(Lists.newArrayList(judgeObject));
@@ -560,31 +561,31 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case LAND_TEMPORARY_ROAD_CONDITION://临街（路）状况
                             String temporaryRoadCondition = generateLandFactorService.getTemporaryRoadCondition(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TEMPORARY_ROAD_CONDITION.getKey(), temporaryRoadCondition));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TEMPORARY_ROAD_CONDITION.getKey(), generateCommonMethod.trimText(temporaryRoadCondition)));
                             break;
                         case LAND_TOPOGRAPHY://形状、地质、地形、地势
                             String topography = generateLandFactorService.getTopography(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TOPOGRAPHY.getKey(), topography));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TOPOGRAPHY.getKey(), generateCommonMethod.trimText(topography)));
                             break;
                         case LAND_PLOT_RATIO://容积率
                             String plotRatio = generateLandFactorService.getPlotRatio(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), plotRatio));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), generateCommonMethod.trimText(plotRatio)));
                             break;
                         case LAND_DEVELOPMENT_LEVEL://宗地开发程度
                             String developmentLevel = generateLandFactorService.getDevelopmentLevel(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_DEVELOPMENT_LEVEL.getKey(), developmentLevel));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_DEVELOPMENT_LEVEL.getKey(), generateCommonMethod.trimText(developmentLevel)));
                             break;
                         case LAND_USEFUL_LIFE://使用年限
                             String usefulLife = generateLandFactorService.getUsefulLife(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_USEFUL_LIFE.getKey(), usefulLife));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_USEFUL_LIFE.getKey(), generateCommonMethod.trimText(usefulLife)));
                             break;
                         case LAND_RIGHT_CONDITION://土地权利状况
                             String rightCondition = generateLandFactorService.getRightCondition(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_RIGHT_CONDITION.getKey(), rightCondition));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_RIGHT_CONDITION.getKey(), generateCommonMethod.trimText(rightCondition)));
                             break;
                         case LAND_OTHER://土地其它
                             String other = generateLandFactorService.getOther(Lists.newArrayList(judgeObject));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_OTHER.getKey(), other));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_OTHER.getKey(), generateCommonMethod.trimText(other)));
                             break;
                     }
                 } catch (Exception e) {
@@ -613,12 +614,11 @@ public class MdMarketCompareFieldService extends BaseService {
 
     private MarketCompareItemDto getMarketCompareItemDto(String name, String value, Boolean isCase) {
         value = StringUtils.isBlank(value) ? (isCase ? "无" : "") : value;
-        value = value.replaceAll("^[,，.。;；、]+|[,，.。;；、]+$", "");
         MarketCompareItemDto marketCompareItemDto = new MarketCompareItemDto();
         marketCompareItemDto.setName(name);
         marketCompareItemDto.setScore(new BigDecimal(100));
         marketCompareItemDto.setRatio(new BigDecimal("1"));
-        marketCompareItemDto.setValue(value);
+        marketCompareItemDto.setValue(generateCommonMethod.trimText(value));
         return marketCompareItemDto;
     }
 
@@ -634,14 +634,20 @@ public class MdMarketCompareFieldService extends BaseService {
             int size = intelligentVoList.size();
             for (int j = 0; j < intelligentVoList.size(); j++) {
                 stringBuilder.append("电路采用");
-                stringBuilder.append(org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getGradeName()) ? intelligentVoList.get(j).getGradeName() : "档次无").append("材料");
-                stringBuilder.append(org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName()) ? intelligentVoList.get(j).getSwitchCircuitName() : "开关回路无");
-                stringBuilder.append("铺设方式").append(org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName()) ? intelligentVoList.get(j).getLayingMethodName() : "无");
-                if (org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
+                if(StringUtils.isNotBlank(intelligentVoList.get(j).getGradeName())){
+                    stringBuilder.append(intelligentVoList.get(j).getGradeName());
+                }
+                if(StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName())){
+                    stringBuilder.append(intelligentVoList.get(j).getSwitchCircuitName());
+                }
+                if(StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName())){
+                    stringBuilder.append(intelligentVoList.get(j).getLayingMethodName()).append("铺设");
+                }
+                if (StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
                     stringBuilder.append(",");
                     stringBuilder.append(intelligentVoList.get(j).getLampsLanternsName());
                 }
-                if (org.apache.commons.lang3.StringUtils.isNotBlank(intelligentVoList.get(j).getIntelligentSystemName())) {
+                if (StringUtils.isNotBlank(intelligentVoList.get(j).getIntelligentSystemName())) {
                     stringBuilder.append(",");
                     stringBuilder.append(intelligentVoList.get(j).getIntelligentSystemName());
                 }

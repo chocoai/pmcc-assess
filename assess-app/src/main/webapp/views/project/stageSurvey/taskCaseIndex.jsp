@@ -130,26 +130,26 @@
         //先不做任务检查
         <%--Loading.progressShow();--%>
         <%--$.ajax({--%>
-            <%--url: "${pageContext.request.contextPath}/surveyCaseStudy/checkAssignmentTask",--%>
-            <%--data: {--%>
-                <%--planDetailsId: "${projectPlanDetails.id}"--%>
-            <%--},--%>
-            <%--type: "post",--%>
-            <%--dataType: "json",--%>
-            <%--success: function (result) {--%>
-                <%--Loading.progressHide();--%>
-                <%--console.log("=====");--%>
-                <%--console.log(result.data + "=====");--%>
-                <%--if (result.data) {--%>
-                    <%--submit(mustUseBox);--%>
-                    <%--$('#plan_details_modal').modal('hide');--%>
-                <%--} else {--%>
-                    <%--Alert("请添加一条任务");--%>
-                <%--}--%>
-            <%--},--%>
-            <%--error: function (result) {--%>
-                <%--Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);--%>
-            <%--}--%>
+        <%--url: "${pageContext.request.contextPath}/surveyCaseStudy/checkAssignmentTask",--%>
+        <%--data: {--%>
+        <%--planDetailsId: "${projectPlanDetails.id}"--%>
+        <%--},--%>
+        <%--type: "post",--%>
+        <%--dataType: "json",--%>
+        <%--success: function (result) {--%>
+        <%--Loading.progressHide();--%>
+        <%--console.log("=====");--%>
+        <%--console.log(result.data + "=====");--%>
+        <%--if (result.data) {--%>
+        <%--submit(mustUseBox);--%>
+        <%--$('#plan_details_modal').modal('hide');--%>
+        <%--} else {--%>
+        <%--Alert("请添加一条任务");--%>
+        <%--}--%>
+        <%--},--%>
+        <%--error: function (result) {--%>
+        <%--Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);--%>
+        <%--}--%>
         <%--});--%>
     };
 
@@ -251,42 +251,44 @@
 
     //新增案例任务
     taskCaseIndex.addCaseTask = function (pid) {
-        var target = $("#frm_planDetails") ;
+        var target = $("#frm_planDetails");
         target.empty();
         target.append($("#plan_details_modal_html").html());
         $("#examineFormTypeList").show();
         var node = $("#case_list").treegrid('find', pid);
-        var data = {} ;
-        $.extend( data,node ) ;
+        var data = {};
+        $.extend(data, node);
         data.id = null;
         data.pid = node.id;
-        var length = node.children.length + 1;
-        data.projectPhaseName = "案例"+length;
-        console.log(data) ;
-        taskCaseIndex.initFormData(target,data) ;
+        var length = 1;
+        if (node.children) {
+             length = node.children.length + 1;
+        }
+        data.projectPhaseName = "案例" + length;
+        taskCaseIndex.initFormData(target, data);
         $("#plan_details_modal").modal('show');
     };
 
-    taskCaseIndex.initFormData = function (target,data) {
-        target.initForm(data) ;
-        target.find("[name='planStartDate']").val(formatDate(data.planStartDate, false)) ;
-        target.find("[name='planEndDate']").val(formatDate(data.planEndDate, false)) ;
-        target.find("[name='executeUserAccount']").val(data.executeUserAccount) ;
-        target.find("[name='executeUserName']").val(data.executeUserName) ;
-        target.find("[name='executeDepartmentId']").val(data.executeDepartmentId) ;
-        target.find("[name='executeDepartmentName']").val(data.executeDepartmentName) ;
-        target.find("[name='planHours']").val(data.planHours) ;
-        target.find("[name='proportion']").val(data.proportion) ;
+    taskCaseIndex.initFormData = function (target, data) {
+        target.initForm(data);
+        target.find("[name='planStartDate']").val(formatDate(data.planStartDate, false));
+        target.find("[name='planEndDate']").val(formatDate(data.planEndDate, false));
+        target.find("[name='executeUserAccount']").val(data.executeUserAccount);
+        target.find("[name='executeUserName']").val(data.executeUserName);
+        target.find("[name='executeDepartmentId']").val(data.executeDepartmentId);
+        target.find("[name='executeDepartmentName']").val(data.executeDepartmentName);
+        target.find("[name='planHours']").val(data.planHours);
+        target.find("[name='proportion']").val(data.proportion);
     };
 
     //编辑案例任务
     taskCaseIndex.editCaseTask = function (id) {
-        var target = $("#frm_planDetails") ;
+        var target = $("#frm_planDetails");
         target.empty();
         target.append($("#plan_details_modal_html").html());
         $("#examineFormTypeList").hide();
         var node = $("#case_list").treegrid('find', id);
-        taskCaseIndex.initFormData(target,node);
+        taskCaseIndex.initFormData(target, node);
         target.initForm(node);
         $("#plan_details_modal").modal('show');
     };
@@ -297,7 +299,7 @@
             return false;
         }
         var data = formParams('frm_planDetails');
-        console.log(data) ;
+        console.log(data);
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyCaseStudy/saveCaseTask",
@@ -306,7 +308,7 @@
                 formData: JSON.stringify(data),
                 transactionType: data.transactionType,
                 examineFormType: data.examineFormType,
-                name:data.examineFormName
+                name: data.examineFormName
             },
             type: "post",
             dataType: "json",
@@ -464,7 +466,7 @@
                 案例名称<span class="symbol required"></span>
             </label>
             <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                <input type="text" placeholder="案例名称" required="required"  name="projectPhaseName"
+                <input type="text" placeholder="案例名称" required="required" name="projectPhaseName"
                        class="form-control ">
             </div>
         </div>
@@ -485,11 +487,13 @@
     </div>
     <div class="form-group" id="examineFormTypeList" style="display: none">
         <div class="x-valid">
-            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">案例类别<span class="symbol required"></span></label>
+            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">案例类别<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                 <c:forEach var="item" items="${examineFormTypeList}">
                 <span class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                <input type="radio" id="examineFormType_${item.key}" name="examineFormType" value='${item.key}' required>
+                <input type="radio" id="examineFormType_${item.key}" name="examineFormType" value='${item.key}'
+                       required>
                 <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
                 </span>
                 </c:forEach>

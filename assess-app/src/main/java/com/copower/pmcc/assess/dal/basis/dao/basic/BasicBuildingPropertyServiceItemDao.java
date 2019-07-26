@@ -26,6 +26,12 @@ public class BasicBuildingPropertyServiceItemDao {
         return mapper.updateByPrimaryKeySelective(oo)==1;
     }
 
+    public void removeIds(List<Integer> integerList){
+        BasicBuildingPropertyServiceItemExample example = new BasicBuildingPropertyServiceItemExample();
+        example.createCriteria().andIdIn(integerList);
+        mapper.deleteByExample(example) ;
+    }
+
     public BasicBuildingPropertyServiceItem getBasicBuildingPropertyServiceItemById(Integer id){
         return mapper.selectByPrimaryKey(id) ;
     }

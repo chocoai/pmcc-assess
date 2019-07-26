@@ -25,7 +25,7 @@ public class EvaluationThinkingDao {
 
 
     public boolean updateThinking(DataEvaluationThinking evaluationThinking) {
-        return evaluationThinkingMapper.updateByPrimaryKey(evaluationThinking) == 1;
+        return evaluationThinkingMapper.updateByPrimaryKeySelective(evaluationThinking) == 1;
     }
 
     public List<DataEvaluationThinking> getThinkingList(String name) {

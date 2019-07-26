@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -21,7 +20,6 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.Reflections;
-import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -44,7 +42,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -769,7 +766,7 @@ public class GenerateCommonMethod {
         List<KeyValueDto> keyValueDtoList = new ArrayList<>(4);
         keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
         keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
-        keyValueDtoList.add(new KeyValueDto("text-align", "right"));
+        keyValueDtoList.add(new KeyValueDto("text-align", "center"));
         keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
         return AsposeUtils.getWarpCssHtml(html, keyValueDtoList);
     }
@@ -923,12 +920,7 @@ public class GenerateCommonMethod {
                 }
             }
         }
-        Map<Integer, String> sortMap = new TreeMap<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        Map<Integer, String> sortMap = new TreeMap<>((o1, o2) -> o1.compareTo(o2));
         sortMap.putAll(standardMap);
         Map<String, List<Integer>> listMap = getStringListMap(sortMap);
 
@@ -1002,11 +994,24 @@ public class GenerateCommonMethod {
      * @param str
      * @return
      */
+    public String trimText(String str) {
+        return trim(str,true,false);
+    }
     public String trim(String str) {
         return trim(str,true);
     }
-
     public String trim(String str,Boolean removeTag) {
+        return trim(str,removeTag,true);
+    }
+
+    /**
+     * 替换为标准格式
+     * @param str
+     * @param removeTag 是否移除html标签
+     * @param containFullStop 末尾是否包含句号
+     * @return
+     */
+    public String trim(String str,Boolean removeTag,Boolean containFullStop) {
         if (StringUtils.isBlank(str)) return str;
         if(removeTag){
             str = StringUtils.strip(str.replaceAll("^<[^>]+>|<[^>]+>$", ""), "。");
@@ -1016,9 +1021,17 @@ public class GenerateCommonMethod {
                 .replaceAll("，+", "，").replaceAll("、+", "、")
                 .replaceAll("。+", "。").replaceAll("；+", "；")
                 .replaceAll("，\\s+。", "。").replaceAll("；\\s。", "。")
-                .replaceAll("[,|，|、|;|；|.|。]+$", "。");
+                .replaceAll("^[，|,|，|、|;|；|.|。]+", "");
+
+        str = str.replaceAll("，；", "；").replaceAll("；，", "，")
+                .replaceAll("，。", "。").replaceAll("。，", "，")
+                .replaceAll("；。", "。").replaceAll("。；", "；");
+
+        str=str.replaceAll("[，|,|，|、|;|；|.|。]+$", containFullStop?"。":"");
         return str;
     }
+
+
 
 
     /**

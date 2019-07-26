@@ -238,7 +238,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        竣工时间获取方式<span class="symbol required">
+                        竣工时间获取方式<span class="symbol required"></span>
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                         <select name="completedTimeType" required
@@ -258,13 +258,12 @@
                 </div>
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        物业公司
+                        楼间距<span class="symbol required"></span>
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <input type="hidden" name="property" placeholder="物业公司" class="form-control"
-                               value="${basicBuilding.property}">
-                        <input type="text" name="propertyName" placeholder="物业公司" class="form-control"
-                               value="${basicBuilding.propertyName}">
+                        <select name="betweenDistance" required
+                                class="form-control betweenDistance search-select select2">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -335,12 +334,65 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        楼间距<span class="symbol required">
+                        物业公司名称
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <select name="betweenDistance" required
-                                class="form-control betweenDistance search-select select2">
+                        <input type="text" name="propertyName" placeholder="物业公司名称" class="form-control" value="${basicBuilding.propertyName}">
+                        <input type="hidden" name="property" placeholder="物业公司 " class="form-control" value="${basicBuilding.property}">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业公司公司性质
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <select name="propertyCompanyNature" class="form-control">
+                            <option value="">-请选择-</option>
+                            <c:forEach items="${unitPropertiesList}" var="item">
+                                <c:choose>
+                                    <c:when test="${item.id == basicBuilding.propertyCompanyNature}">
+                                        <option value="${item.id}"
+                                                selected="selected">${item.name}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${item.id}">${item.name}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
                         </select>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业公司社会信誉
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <select name="propertySocialPrestige" class="form-control">
+                            <option value="">-请选择-</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业服务
+                    </label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <!-- 这个id是不能更改的bootstrap3 强制如此 -->
+                        <div id="toolbarBuildingPropertyServiceItemTable" style="display: none">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" onclick="buildingCommon.deleteBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable')">删除</button>
+                                <button type="button" class="btn btn-primary" onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',true)">编辑</button>
+                                <button type="button" class="btn btn-primary" onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',false)">添加</button>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable" data-toolbar="#toolbarBuildingPropertyServiceItemTable">
+
+                        </table>
                     </div>
                 </div>
             </div>
@@ -385,5 +437,97 @@
 </div>
 <div id="basicBuildSonContent">
     <%@include file="/views/basic/modelView/build/sonBuildView.jsp" %>
+</div>
+
+
+<div id="basicBuildingPropertyServiceItemModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">编辑服务内容</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <input type="hidden" name="buildingId">
+                    <div class="row">
+                        <div class="col-xs-12  col-sm-12  col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
+                                            服务类型<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <select required="required" name="serviceType" class="form-control serviceType"
+                                                    onchange="">
+                                                <option value="">-请选择-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
+                                            服务内容<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <select required="required" name="serviceContent" class="form-control">
+                                                <option value="">请先选择类型</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
+                                            服务时间
+                                        </label>
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <input type="text" class="form-control" name="serviceTime"
+                                                   placeholder="服务时间" required="required">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
+                                            等级评价<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <select required="required" name="gradeEvaluation" class="form-control search-select select2">
+                                                <option value="">-请选择-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
+                                            收费标准<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-xs-10  col-sm-10  col-md-10">
+                                            <input type="text" class="form-control" name="chargesNotes"
+                                                   placeholder="收费标准" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary"
+                        onclick="buildingCommon.addBasicBuildingPropertyServiceItem(this);">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 

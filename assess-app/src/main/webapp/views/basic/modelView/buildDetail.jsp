@@ -240,10 +240,10 @@
                 </div>
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        物业公司
+                        楼间距
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="propertyName">${basicBuilding.propertyName}</label>
+                        <label class="form-control">${basicBuilding.betweenDistanceName}</label>
                     </div>
                 </div>
             </div>
@@ -307,10 +307,41 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        楼间距
+                        物业公司
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control">${basicBuilding.betweenDistanceName}</label>
+                        <label class="form-control" name="propertyName">${basicBuilding.propertyName}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业公司公司性质
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="propertyName">${basicBuilding.propertyCompanyNatureName}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业公司社会信誉
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="propertyName">${basicBuilding.propertySocialPrestigeName}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业服务
+                    </label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable" >
+
+                        </table>
                     </div>
                 </div>
             </div>

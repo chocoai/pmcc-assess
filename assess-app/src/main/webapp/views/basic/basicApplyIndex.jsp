@@ -3,6 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <%@include file="/views/data/dataPropertyModelQuote.jsp" %>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">

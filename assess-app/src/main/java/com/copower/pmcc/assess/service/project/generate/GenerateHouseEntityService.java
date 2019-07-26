@@ -16,20 +16,21 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 /**
  * 房屋实体信息
  */
 @Service
 public class GenerateHouseEntityService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
     @Autowired
@@ -199,15 +200,15 @@ public class GenerateHouseEntityService {
         BaseDataDic production = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_PRODUCTION);
         BaseDataDic office = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_OFFICE);
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject) ;
-            if (basicApply == null || basicApply.getId() == 0){
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply == null || basicApply.getId() == 0) {
                 continue;
             }
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
             BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
             StringBuilder stringBuilder = new StringBuilder();
             if (basicUnit != null && StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())) {
-                stringBuilder.append("梯户比").append(basicUnit.getElevatorHouseholdRatio());
+                stringBuilder.append("梯户比").append(basicUnit.getElevatorHouseholdRatio()).append(",");
             }
             if (basicHouse != null && basicHouse.getHuxingId() != null) {
                 BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
@@ -273,9 +274,62 @@ public class GenerateHouseEntityService {
                 });
                 unitDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s;", StringUtils.strip(unitDecorateBuilder.toString(), ",")));
             }
-
+            List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
             BasicHouseVo basicHouse = generateBaseExamineService.getBasicHouse();
-            roomDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("房间%s;", basicHouse.getDecorateSituationDescription()));
+            if (CollectionUtils.isNotEmpty(basicHouseRoomList)){
+                Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> basicHouseRoomListMap = Maps.newHashMap();
+                basicHouseRoomList.forEach(oo -> {
+                    List<BasicHouseRoomDecorateVo> decorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(oo.getId());
+                    if (CollectionUtils.isNotEmpty(decorateVos)) {
+                        basicHouseRoomListMap.put(oo, decorateVos);
+                    }
+                });
+                if (!basicHouseRoomListMap.isEmpty()){
+                    if (basicHouseRoomListMap.entrySet().stream().anyMatch(obj -> {
+                        if (StringUtils.isNotEmpty(obj.getKey().getRoomType())) {
+                            return obj.getValue().stream().anyMatch(oo -> {
+                                if (StringUtils.isNotEmpty(oo.getPartName())) {
+                                    if (StringUtils.isNotEmpty(oo.getRemark())) {
+                                        return true;
+                                    }
+                                    if (StringUtils.isEmpty(oo.getRemark()) && StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            });
+                        }
+                        return false;
+                    })) {
+                        Set<String> stringSet = Sets.newHashSet();
+                        StringBuilder stringBuilder = new StringBuilder(8) ;
+                        basicHouseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
+                            List<String> stringList = Lists.newArrayList();
+                            basicHouseRoomDecorateVos.forEach(obj -> {
+                                if (StringUtils.isNotEmpty(obj.getPartName())) {
+                                    stringBuilder.append(obj.getPartName());
+                                }
+                                if (StringUtils.isNotEmpty(obj.getRemark())) {
+                                    stringBuilder.append(obj.getRemark());
+                                }
+                                if (StringUtils.isEmpty(obj.getRemark()) && StringUtils.isNotEmpty(obj.getMaterialName())) {
+                                    stringBuilder.append("装修材料").append(obj.getMaterialName());
+                                }
+                                if (StringUtils.isNotEmpty(stringBuilder.toString())) {
+                                    stringList.add(stringBuilder.toString());
+                                }
+                                stringBuilder.delete(0, stringBuilder.toString().length());
+                            });
+                            if (CollectionUtils.isNotEmpty(stringList)) {
+                                stringSet.add(String.format("%s%s%s", basicHouseRoom.getRoomType(), ":", StringUtils.join(stringList, "、")));
+                            }
+                        });
+                        if (CollectionUtils.isNotEmpty(stringSet)) {
+                            roomDecorateMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "；"));
+                        }
+                    }
+                }
+            }
         }
         String outfitString = generateCommonMethod.judgeEachDesc(outfitMap, "", ";", false);
         String unitDecorateString = generateCommonMethod.judgeEachDesc(unitDecorateMap, "", ";", false);
@@ -403,14 +457,17 @@ public class GenerateHouseEntityService {
                     String s = "";
                     if (CollectionUtils.isNotEmpty(damagedDegreeVoList)) {
                         damagedDegreeVoList.stream().forEach(oo -> {
+                            String linkString = null;
                             if (StringUtils.isNotBlank(oo.getCategoryName()) && StringUtils.isNotBlank(oo.getEntityConditionName()) && StringUtils.isNotBlank(oo.getEntityConditionContent())) {
                                 if (typeList.contains(oo.getTypeName()) && (oo.getCategoryName().contains("其它") || oo.getCategoryName().contains("特种设备"))) {
                                     String conditionName = oo.getEntityConditionContent().contains(oo.getEntityConditionName()) ? "" : oo.getEntityConditionName();
-                                    stringLinkedHashSet.add(String.format("%s%s", oo.getEntityConditionContent(), conditionName));
+                                    linkString = String.format("%s%s", oo.getEntityConditionContent(), conditionName);
                                 } else {
-                                    stringLinkedHashSet.add(String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName()));
+                                    linkString = String.format("%s%s", oo.getCategoryName(), oo.getEntityConditionName());
                                 }
                             }
+                            if (StringUtils.isNotBlank(linkString))
+                                stringLinkedHashSet.add(linkString);
                         });
                         s = StringUtils.join(stringLinkedHashSet, "、");
                         stringLinkedHashSet.clear();
@@ -653,13 +710,9 @@ public class GenerateHouseEntityService {
     public String getHouseWater(List<SchemeJudgeObject> judgeObjectList) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
-                if (schemeJudgeObject.getDeclareRecordId() == null) {
-                    return false;
-                }
+                if (schemeJudgeObject.getDeclareRecordId() == null)  return false;
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                if (basicApply == null || basicApply.getType() == 1) {
-                    return false;
-                }
+                if (basicApply == null || basicApply.getType() == 1) return false;
                 return true;
             }).collect(Collectors.toList());
         }
@@ -755,13 +808,9 @@ public class GenerateHouseEntityService {
     public String getHouseWaterDrain(List<SchemeJudgeObject> judgeObjectList) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
-                if (schemeJudgeObject.getDeclareRecordId() == null) {
-                    return false;
-                }
+                if (schemeJudgeObject.getDeclareRecordId() == null) return false;
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                if (basicApply == null || basicApply.getType() == 1) {
-                    return false;
-                }
+                if (basicApply == null || basicApply.getType() == 1)  return false;
                 return true;
             }).collect(Collectors.toList());
         }
@@ -783,6 +832,7 @@ public class GenerateHouseEntityService {
                     try {
                         voList = generateBaseExamineService.getBasicHouseWaterDrainList();
                     } catch (Exception e) {
+
                     }
                     if (CollectionUtils.isNotEmpty(voList)) {
                         voList.stream().forEach(basicHouseWaterDrain -> {
@@ -834,13 +884,9 @@ public class GenerateHouseEntityService {
     public String getIntelligent(List<SchemeJudgeObject> judgeObjectList) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
-                if (schemeJudgeObject.getDeclareRecordId() == null) {
-                    return false;
-                }
+                if (schemeJudgeObject.getDeclareRecordId() == null) return false;
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                if (basicApply == null || basicApply.getType() == 1) {
-                    return false;
-                }
+                if (basicApply == null) return false;
                 return true;
             }).collect(Collectors.toList());
         }
@@ -870,7 +916,7 @@ public class GenerateHouseEntityService {
                                 if (StringUtils.isNotBlank(oo.getSwitchCircuitName())) {
                                     stringBuilder.append(oo.getSwitchCircuitName());
                                 }
-                                stringBuilder.append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无").append("铺设");
+                                stringBuilder.append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无").append("铺设，");
                                 centerList.add(stringBuilder.toString());
                                 if (StringUtils.isNotBlank(oo.getLampsLanternsName())) {
                                     centerList.add(String.format("%s%s", "灯具为", oo.getLampsLanternsName()));
