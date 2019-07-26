@@ -51,6 +51,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.github.pagehelper.StringUtil;
 import com.google.common.base.Objects;
 import com.google.common.collect.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -1360,9 +1361,9 @@ public class GenerateBaseDataService {
                     continue;
                 }
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                Integer key = generateBaseExamineService.getBasicBuilding().getFloorCount();
-                if (key != null) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), key.toString());
+                String key = generateBaseExamineService.getBasicBuilding().getFloorCount();
+                if (StringUtil.isNotEmpty(key)) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), key);
                 }
             } else {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), val);

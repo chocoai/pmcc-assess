@@ -18,7 +18,7 @@ public class BasicBuilding {
 
     private String buildingName;
 
-    private Integer floorCount;
+    private String floorCount;
 
     private String location;
 
@@ -162,12 +162,12 @@ public class BasicBuilding {
         this.buildingName = buildingName == null ? null : buildingName.trim();
     }
 
-    public Integer getFloorCount() {
+    public String getFloorCount() {
         return floorCount;
     }
 
-    public void setFloorCount(Integer floorCount) {
-        this.floorCount = floorCount;
+    public void setFloorCount(String floorCount) {
+        this.floorCount = floorCount == null ? null : floorCount.trim();
     }
 
     public String getLocation() {
