@@ -7,13 +7,18 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -22,7 +27,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProjectPlanSurveyService {
@@ -84,10 +91,11 @@ public class ProjectPlanSurveyService {
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
             }
         }
-        generatePlanDetails(planId, projectId, workStageId, projectPhases, declareRecords);
+        generatePlanDetails(planId, projectId, workStageId, projectPhases, declareRecords,false);
     }
 
-    private void generatePlanDetails(Integer planId, Integer projectId, Integer workStageId, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords) {
+    private void generatePlanDetails(Integer planId, Integer projectId, Integer workStageId, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords,boolean appendTask)  {
+        LinkedHashMap<DeclareRecord, List<ProjectPlanDetails>> listLinkedHashMap = Maps.newLinkedHashMap();
         int i = 1;
         ProjectPlanDetails projectPlanDetails = null;
         String projectManager = projectMemberService.getProjectManager(projectId);
@@ -102,7 +110,7 @@ public class ProjectPlanSurveyService {
             projectPlanDetails.setBisLastLayer(false);
             projectPlanDetails.setSorting(i++);
             projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-
+            List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
             int j = 0;
             for (ProjectPhase projectPhase : projectPhases) {
                 ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
@@ -129,6 +137,7 @@ public class ProjectPlanSurveyService {
                 projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
                 projectPlanDetails.setCreator(commonService.thisUserAccount());
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
+                projectPlanDetailsList.add(projectPlanDetail);
             }
             declareRecord.setBisGenerate(true);
             try {
@@ -136,8 +145,20 @@ public class ProjectPlanSurveyService {
             } catch (BusinessException e) {
                 logger.error(e.getMessage(), e);
             }
+            if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                listLinkedHashMap.put(declareRecord, projectPlanDetailsList);
+            }
+        }
+        //在bpm里面追加任务
+        if (!listLinkedHashMap.isEmpty()) {
+            try {
+                projectPlanService.repairTreatmentTask(listLinkedHashMap, workStageId, projectId, projectPhases,appendTask);
+            } catch (BpmException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
+
 
     /**
      * 追加清查查勘任务
@@ -154,7 +175,7 @@ public class ProjectPlanSurveyService {
         if (CollectionUtils.isNotEmpty(declareRecords)) {
             ProjectPlan projectPlan = projectPlanService.getProjectPlan(projectId, currStageSort + 1);
             if (projectPlan != null)
-                generatePlanDetails(projectPlan.getId(), projectId, projectPlan.getWorkStageId(), projectPhases, declareRecords);
+                generatePlanDetails(projectPlan.getId(), projectId, projectPlan.getWorkStageId(), projectPhases, declareRecords,true);
         }
     }
 }

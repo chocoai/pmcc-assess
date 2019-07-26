@@ -25,11 +25,8 @@
     };
 
     buildingCommon.buildingNumberBlur = function (_this) {
-        $(_this).val($(_this).val().replace('栋', ''));
-        var buildingNameElement = $(_this).closest('.form-group').find('[name=buildingName]');
-        if (!buildingNameElement.val()) {
-            buildingNameElement.val($(_this).val() + '栋');
-        }
+        var value = $(_this).val() ;
+        buildingCommon.buildingForm.find('[name=buildingName]').val(value+'栋');
     };
 
 
@@ -127,6 +124,7 @@
             buildingCommon.writeSpecificationsHTMLData(data.vSpecifications);
             buildingCommon.addLableData(data.vSpecifications);
         }
+        buildingCommon.getBasicBuildingPropertyServiceItemBootstrapTableVo(buildingCommon.getBuildingId(), $("#basicBuildingPropertyServiceItemTable"));
     };
 
     buildingCommon.addLableData = function (json) {
@@ -346,16 +344,12 @@
                 dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), data);
                 $(box).modal('show');
             } else {
-                toastr.success('只能勾选一个!');
+                toastr.success('勾选一个!');
             }
         }else {
             var masterId = buildingCommon.buildingForm.find('input[name=property]').val();
-            if (masterId){
-                $(box).modal('show');
-                dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), {masterId:masterId,buildingId:buildingCommon.getBuildingId()});
-            }else {
-                toastr.success('物业公司必选选择!');
-            }
+            $(box).modal('show');
+            dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), {masterId:masterId == undefined?0:masterId,buildingId:buildingCommon.getBuildingId()});
         }
     };
 
@@ -415,7 +409,7 @@
                             item.push(obj);
                         });
                         buildingCommon.saveAndUpdateBasicBuildingPropertyServiceItem(item, function () {
-                            buildingCommon.getBasicBuildingPropertyServiceItemBootstrapTableVo(buildingCommon.getBuildingId(), $("#basicBuildingPropertyServiceItemTable"));
+                            $("#basicBuildingPropertyServiceItemTable").bootstrapTable('refresh');
                         });
                     });
                 }

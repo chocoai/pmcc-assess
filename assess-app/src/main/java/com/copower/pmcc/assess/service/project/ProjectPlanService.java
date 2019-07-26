@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectPlanSetEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
@@ -35,12 +36,14 @@ import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
@@ -53,9 +56,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -100,6 +101,8 @@ public class ProjectPlanService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private RedissonClient redissonClient;
+    @Autowired
+    private CommonService commonService;
 
     public ProjectPlan getProjectplanByProcessInsId(String processInsId) {
         return projectPlanDao.getProjectPlanByProcessInsId(processInsId);
@@ -708,7 +711,7 @@ public class ProjectPlanService {
                 return;
             }
             boolean isAllFinish = projectPlanDetailsService.isAllPlanDetailsFinish(planId);
-            if (!isAllFinish){
+            if (!isAllFinish) {
                 return;
             }
             //1.将当前阶段设置结束，并清理所有任务
@@ -767,7 +770,7 @@ public class ProjectPlanService {
             }
         } catch (InterruptedException e) {
             logger.debug("get the lock error;" + e.getMessage(), e);
-        }finally {
+        } finally {
             lock.unlock();
         }
     }
@@ -835,6 +838,68 @@ public class ProjectPlanService {
             });
         } else {
             throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
+        }
+    }
+
+    /**
+     * 在bpm里面追加任务
+     * 检测重启后没有产生得任务
+     * @param listLinkedHashMap
+     * @param workStageId
+     * @param projectId
+     * @param projectPhases
+     * @param appendTask
+     * @throws BpmException
+     */
+    public void repairTreatmentTask(LinkedHashMap<DeclareRecord, List<ProjectPlanDetails>> listLinkedHashMap, Integer workStageId, Integer projectId, List<ProjectPhase> projectPhases, boolean appendTask) throws BpmException {
+        if (listLinkedHashMap.isEmpty()) {
+            return;
+        }
+        if (!appendTask) {
+            return;
+        }
+        ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectId);
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
+        //目前只处理申报阶段重启之后bpm没有任务
+        List<ProjectPhase> projectPhaseList = Lists.newArrayList();
+        List<String> keys = Arrays.asList(AssessPhaseKeyConstant.ASSET_INVENTORY, AssessPhaseKeyConstant.SCENE_EXPLORE);
+        for (String key : keys) {
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(key,projectInfo.getProjectCategoryId());
+            if (projectPhase != null) {
+                projectPhaseList.add(projectPhase);
+            }
+        }
+        for (Map.Entry<DeclareRecord, List<ProjectPlanDetails>> entry : listLinkedHashMap.entrySet()) {
+            List<ProjectPlanDetails> projectPlanDetailsList = entry.getValue();
+            if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
+                continue;
+            }
+            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                ResponsibileModelEnum modelEnum = ResponsibileModelEnum.TASK;
+                ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+                projectPlanResponsibility.setProjectId(projectPlanDetails.getProjectId());
+                projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
+                projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
+                projectPlanResponsibility.setModel(modelEnum.getId());
+                List<ProjectResponsibilityDto> projectResponsibilityDtoList = bpmRpcProjectTaskService.getProjectTaskList(projectPlanResponsibility);
+                if (CollectionUtils.isEmpty(projectResponsibilityDtoList) && CollectionUtils.isNotEmpty(projectPhaseList)) {
+                    if (projectPlanDetails.getPlanEndDate() == null) {
+                        projectPlanDetails.setPlanEndDate(new Date());
+                    }
+                    if (projectPlanDetails.getPlanStartDate() == null) {
+                        projectPlanDetails.setPlanStartDate(new Date());
+                    }
+                    if (StringUtils.isEmpty(projectPlanDetails.getExecuteUserAccount())){
+                        projectPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
+                    }
+                    //当检测到没有任务并且还是处于申报阶段的任务,注意如果需要以后每个阶段都检测并追加遗漏的把这放开就行任务
+                    if (projectPhaseList.stream().anyMatch(select -> com.google.common.base.Objects.equal(select.getId(), projectPlanDetails.getProjectPhaseId()))) {
+                        saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), modelEnum);
+                        projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails) ;
+                    }
+                }
+            }
         }
     }
 

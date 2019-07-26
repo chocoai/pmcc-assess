@@ -232,36 +232,6 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    竣工时间获取方式<span class="symbol required"></span>
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="completedTimeType" required class="form-control completedTimeType search-select select2">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    竣工时间<span class="symbol required"></span>
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input placeholder="竣工时间"
-                           name="beCompletedTime" required data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate beCompletedTime">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    楼间距<span class="symbol required"></span>
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="betweenDistance" required class="form-control betweenDistance search-select select2">
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     建筑结构类型
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -324,9 +294,39 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼间距描述</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <textarea class="form-control" name="betweenDistanceDescription"
-                                  placeholder="楼间距描述">${basicBuilding.betweenDistanceDescription}</textarea>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" placeholder="楼间距描述" class="form-control" name="betweenDistanceDescription" value="${basicBuilding.betweenDistanceDescription}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    楼间距<span class="symbol required"></span>
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="betweenDistance" required class="form-control betweenDistance search-select select2">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    竣工时间获取方式<span class="symbol required"></span>
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="completedTimeType" required class="form-control completedTimeType search-select select2">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    竣工时间<span class="symbol required"></span>
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input placeholder="竣工时间"
+                           name="beCompletedTime" required data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate beCompletedTime">
                 </div>
             </div>
         </div>

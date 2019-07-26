@@ -214,27 +214,6 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    竣工时间获取方式
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="completedTimeTypeName">${basicBuilding.completedTimeTypeName}</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    竣工时间
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control dbdate" name="beCompletedTime"><fmt:formatDate
-                            value='${basicBuilding.beCompletedTime}' pattern='yyyy-MM-dd'/></label>
-
-                </div>
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="x-valid">
@@ -332,20 +311,40 @@
             </div>
         </div>
         <div class="form-group">
+
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    楼间距
+                    竣工时间获取方式
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicBuilding.betweenDistanceName}</label>
+                    <label class="form-control" name="completedTimeTypeName">${basicBuilding.completedTimeTypeName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    竣工时间
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control dbdate" name="beCompletedTime"><fmt:formatDate
+                            value='${basicBuilding.beCompletedTime}' pattern='yyyy-MM-dd'/></label>
+
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼间距描述</label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control">${basicBuilding.betweenDistanceDescription}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    楼间距
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control">${basicBuilding.betweenDistanceName}</label>
                 </div>
             </div>
         </div>
