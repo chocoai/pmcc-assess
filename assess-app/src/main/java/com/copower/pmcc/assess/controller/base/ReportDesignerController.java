@@ -65,6 +65,10 @@ public class ReportDesignerController {
         }
     }
 
-
+    @GetMapping(value = "/workLog",name = "出勤汇总报表页面")
+    public ModelAndView summary() {
+        ModelAndView modelAndView = commonService.baseView("/reportManage/workLog");
+        return modelAndView;
+    }
 
 }

@@ -16,17 +16,21 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 /**
  * 房屋实体信息
  */
 @Service
 public class GenerateHouseEntityService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
     @Autowired
@@ -706,13 +710,9 @@ public class GenerateHouseEntityService {
     public String getHouseWater(List<SchemeJudgeObject> judgeObjectList) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
-                if (schemeJudgeObject.getDeclareRecordId() == null) {
-                    return false;
-                }
+                if (schemeJudgeObject.getDeclareRecordId() == null)  return false;
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                if (basicApply == null || basicApply.getType() == 1) {
-                    return false;
-                }
+                if (basicApply == null || basicApply.getType() == 1) return false;
                 return true;
             }).collect(Collectors.toList());
         }
@@ -808,13 +808,9 @@ public class GenerateHouseEntityService {
     public String getHouseWaterDrain(List<SchemeJudgeObject> judgeObjectList) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
-                if (schemeJudgeObject.getDeclareRecordId() == null) {
-                    return false;
-                }
+                if (schemeJudgeObject.getDeclareRecordId() == null) return false;
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                if (basicApply == null || basicApply.getType() == 1) {
-                    return false;
-                }
+                if (basicApply == null || basicApply.getType() == 1)  return false;
                 return true;
             }).collect(Collectors.toList());
         }
@@ -836,6 +832,7 @@ public class GenerateHouseEntityService {
                     try {
                         voList = generateBaseExamineService.getBasicHouseWaterDrainList();
                     } catch (Exception e) {
+
                     }
                     if (CollectionUtils.isNotEmpty(voList)) {
                         voList.stream().forEach(basicHouseWaterDrain -> {

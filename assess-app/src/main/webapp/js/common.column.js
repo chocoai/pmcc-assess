@@ -42,7 +42,7 @@ commonColumn.matchingEnvironmentColumn = function () {
     // cols.push({field: 'influenceDegreeName', title: '影响程度'});
     cols.push({field: 'remark', title: '影响源描述'});
     cols.push({
-        field: 'humanImpact', title: '对人的影响', formatter: function (value, row, index) {
+        field: 'humanImpact', title: '影响结论', formatter: function (value, row, index) {
            if (value){
                if (value == '0'){
                    return "不确定" ;
