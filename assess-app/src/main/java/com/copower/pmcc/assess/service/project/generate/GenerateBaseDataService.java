@@ -4362,7 +4362,9 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("8、装饰装修:%s", generateCommonMethod.trim(generateHouseEntityService.getDecoration(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("9、外观:%s", generateCommonMethod.trim(generateHouseEntityService.getAppearance(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("10、设施设备"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml((String.format("电梯:%s", generateCommonMethod.trim(generateHouseEntityService.getUnitElevator(judgeObjects))))));
+                String unitElevator = generateCommonMethod.trim(generateHouseEntityService.getUnitElevator(judgeObjects));
+                if (StringUtils.isNotEmpty(unitElevator))
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("电梯:%s", unitElevator)));
                 {
                     stringLinkedHashMap.put(generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseAirConditioner), "空调:");
                     stringLinkedHashMap.put(generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseNewWind), "新风:");
