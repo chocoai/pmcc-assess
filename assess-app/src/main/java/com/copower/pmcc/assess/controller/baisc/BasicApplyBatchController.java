@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.controller.BaseController;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
@@ -9,8 +10,10 @@ import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -41,6 +44,8 @@ public class BasicApplyBatchController extends BaseController {
     private PublicBasicService publicBasicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -313,7 +318,12 @@ public class BasicApplyBatchController extends BaseController {
             BasicApplyBatchDetail detailData = basicApplyBatchDetailService.getSingleData(basicApplyBatchDetail);
             modelAndView.addObject("tableId", detailData.getTableId());
         }
+        BasicApply basicApply = new BasicApply();
+        basicApply.setType(type);
         modelAndView.addObject("type", type);
+        modelAndView.addObject("basicApply", basicApply);
         modelAndView.addObject("isApplyBatch", "show");
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
     }
 }

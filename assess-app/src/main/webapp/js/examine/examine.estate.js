@@ -698,21 +698,23 @@
             $.each(dataA, function (i, obj) {
                 var item = estateCommon.getLandLevelFilter(obj);
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
-                var text = "";
-                $.each(obj, function (i, n) {
-                    text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
-                });
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
-                landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
-                AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                    target.append(landLevelBodyHtml);
-                }, false);
+                if (landLevelBodyHtml){
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
+                    var text = "";
+                    $.each(obj, function (i, n) {
+                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
+                    });
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
+                        target.append(landLevelBodyHtml);
+                    }, false);
+                }
             });
 
             if (indexM == 0) {

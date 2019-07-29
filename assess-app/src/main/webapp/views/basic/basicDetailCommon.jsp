@@ -92,7 +92,6 @@
         }
 
 
-
         if ("${basicApply.buildingPartInMode}") {
             buildingCommon.detail('${basicApply.id}');
         }
@@ -102,8 +101,14 @@
         }
 
         if ("${basicApply.housePartInMode}") {
-            houseCommon.detail('${basicApply.id}' , function (data) {
-                houseCommon.loadTradingSellAndLeaseList(data.tradingType,false) ;
+            houseCommon.detail('${basicApply.id}', function (data) {
+                if (data.basicHouseTrading) {
+                    if (AssessCommon.isNumber(data.basicHouseTrading.tradingType)) {
+                        AssessCommon.getDataDicInfo(data.basicHouseTrading.tradingType, function (item) {
+                            houseCommon.loadTradingSellAndLeaseList(item.fieldName, false);
+                        });
+                    }
+                }
             });
         }
 

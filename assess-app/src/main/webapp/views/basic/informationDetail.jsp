@@ -90,15 +90,26 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/building/building.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/unit/unit.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 </html>
 <script type="text/javascript">
     $(function () {
         //选项卡处理
         industry.keyApp("${type}");
         $('#caseTab a').eq(0).tab('show');
+
+        houseCommon.detail('${basicApply.id}', function (data) {
+            if (data.basicHouseTrading) {
+                if (AssessCommon.isNumber(data.basicHouseTrading.tradingType)) {
+                    AssessCommon.getDataDicInfo(data.basicHouseTrading.tradingType, function (item) {
+                        houseCommon.loadTradingSellAndLeaseList(item.fieldName, false);
+                    });
+                }
+            }
+        });
     });
 </script>
