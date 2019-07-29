@@ -77,10 +77,11 @@
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/building/building.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/unit/unit.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 <script type="text/javascript">
     $(function () {
         //选项卡处理
@@ -101,7 +102,9 @@
         }
 
         if ("${basicApply.housePartInMode}") {
-            houseCommon.detail('${basicApply.id}');
+            houseCommon.detail('${basicApply.id}' , function (data) {
+                houseCommon.loadTradingSellAndLeaseList(data.tradingType,false) ;
+            });
         }
 
         $('#caseTab a').eq(0).tab('show');

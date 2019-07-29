@@ -74,6 +74,7 @@ public class BasicApplyController extends BaseController {
         //设置初始参数
         BasicApply basicApply = new BasicApply();
         basicApply.setId(0);
+        basicApply.setType(basicApplyTypeId);
         modelAndView.addObject("basicApply", basicApply);
         modelAndView.addObject("basicApplyTypeId", basicApplyTypeId);
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();

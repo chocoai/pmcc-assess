@@ -5,6 +5,10 @@
 ;(function ($) {
     var buildingCommon = {};
     buildingCommon.buildingForm = $('#basicBuildingFrm');
+    buildingCommon.buildingMapiframe = undefined;
+    buildingCommon.applyId = undefined;
+    buildingCommon.tableId = undefined;
+    buildingCommon.tableName = AssessDBKey.BasicBuilding;
     //附件上传控件id数组
     buildingCommon.buildingFileControlIdArray = [
         AssessUploadKey.BUILDING_FLOOR_PLAN,
@@ -29,6 +33,126 @@
         buildingCommon.buildingForm.find('[name=buildingName]').val(value+'栋');
     };
 
+    //添加楼栋
+    buildingCommon.add = function (_this, callback) {
+        var buildingNumber = $(_this).closest('form').find('[name=buildingNumber]').val();
+        if (!buildingNumber) {
+            toastr.info('请填写楼栋编号！');
+            return false;
+        }
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/addBuilding',
+            data: {
+                buildingNumber: buildingNumber
+            },
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingView(result.data);
+                    if (callback) {
+                        callback($(_this).attr('data-mode'));
+                    }
+                }
+            }
+        })
+    };
+
+    //升级楼栋
+    buildingCommon.upgrade = function (_this, callback) {
+        var caseBuildingId = $(_this).closest('form').find("input[name='caseBuildingId']").val();
+        var buildingPartInMode = $(_this).attr('data-mode');
+        if (!caseBuildingId) {
+            toastr.info('请选择系统中已存在的楼栋信息！');
+            return false;
+        }
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/appWriteBuilding',
+            data: {
+                caseBuildingId: caseBuildingId,
+                buildingPartInMode: buildingPartInMode
+            },
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingView(result.data);
+                    if (callback) {
+                        callback($(_this).attr('data-mode'));
+                    }
+                }
+            }
+        })
+    };
+
+    //楼栋初始化by applyId
+    buildingCommon.init = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingView(result.data);
+                    buildingCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //楼栋初始化by id
+    buildingCommon.initById = function (id, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/getBasicBuildingById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingView(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //项目中引用数据
+    buildingCommon.getDataFromProject = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/getDataFromProject',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingView(result.data);
+                    buildingCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //项目中引用楼盘(批量)
+    buildingCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/batchGetDataFromProject',
+            type: 'get',
+            data: {applyId: applyId,
+                tableId: tableId},
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingView(result.data);
+                    buildingCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
 
     buildingCommon.detail = function (id) {
         $.ajax({
@@ -40,6 +164,25 @@
                     if (result.data) {
                         buildingCommon.initForm(result.data);
                     }
+                }
+            }
+        })
+    };
+
+    buildingCommon.showBuildingView = function (data) {
+        buildingCommon.initForm(data) ;
+    };
+
+    //显示楼栋对应部分信息
+    buildingCommon.showBuildingDetail = function (id) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/getBasicBuildingById',
+            type: 'get',
+            async: false,
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.initForm(result.data) ;
                 }
             }
         })
@@ -224,6 +367,66 @@
             success: function (result) {
                 if (result.ret && buildingCommon.buildingMapiframe) {//标注成功后，刷新地图上的标注
                     buildingCommon.buildingMapiframe.loadMarkerList(result.data);
+                }
+            }
+        })
+    };
+
+    //楼盘标注（通过tableId）
+    buildingCommon.mapMarker2 = function (readonly,tableId) {
+        buildingCommon.tableId = tableId;
+        console.log(tableId+"===");
+        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + buildingCommon.tableId+'&tableName='+buildingCommon.tableName;
+        if (readonly != true) {
+            contentUrl += '&click=buildingCommon.addMarker2';
+        }
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
+            content: contentUrl,
+            success: function (layero) {
+                buildingCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
+                buildingCommon.loadMarkerList2(tableId);
+            }
+        });
+    };
+
+    //添加标注（通过tableId）
+    buildingCommon.addMarker2 = function (lng, lat) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
+            data: {
+                tableId: buildingCommon.tableId,
+                type: 'building',
+                lng: lng,
+                lat: lat,
+                name: buildingCommon.getBuildingNumber()
+            },
+            success: function (result) {
+                if (result.ret) {//标注成功后，刷新地图上的标注
+                    buildingCommon.loadMarkerList2(buildingCommon.tableId);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    };
+
+    //加载标注（通过tableId）
+    buildingCommon.loadMarkerList2 = function (tableId) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
+            data: {
+                tableId: tableId,
+                type: 'building'
+            },
+            success: function (result) {
+                if (result.ret && buildingCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
+                    buildingCommon.estateMapiframe.loadMarkerList(result.data);
                 }
             }
         })

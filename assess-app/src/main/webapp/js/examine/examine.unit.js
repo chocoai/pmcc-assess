@@ -5,6 +5,10 @@
 ;(function ($) {
     var unitCommon = {};
     unitCommon.unitForm = $('#basicUnitFrm');
+    unitCommon.unitMapiframe = undefined;
+    unitCommon.applyId = undefined;
+    unitCommon.tableId = undefined;
+    unitCommon.tableName = AssessDBKey.BasicUnit;
 
     //附件上传控件id数组
     unitCommon.unitFileControlIdArray = [
@@ -28,7 +32,9 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    callback(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
                 }
             }
         })
@@ -42,6 +48,191 @@
             unitCommon.fileUpload(item);
             unitCommon.fileShow(item);
         });
+    };
+
+    //添加单元
+    unitCommon.add = function (_this, callback) {
+        var unitNumber = $(_this).closest('form').find('[name=unitNumber]').val();
+        if (!unitNumber) {
+            toastr.info('请填写单元编号！');
+            return false;
+        }
+        $.ajax({
+            url: getContextPath() + '/basicUnit/addUnit',
+            data: {
+                unitNumber: unitNumber
+            },
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.showUnitView(result.data);
+                    if (callback) {
+                        callback($(_this).attr('data-mode'));
+                    }
+                }
+            }
+        })
+    };
+
+    //升级单元
+    unitCommon.upgrade = function (_this, callback) {
+        var caseUnitId = $(_this).closest('form').find("input[name='caseUnitId']").val();
+        var unitPartInMode = $(_this).attr('data-mode');
+        if (!caseUnitId) {
+            toastr.info('请选择系统中已存在的单元信息！');
+            return false;
+        }
+        $.ajax({
+            url: getContextPath() + '/basicUnit/appWriteUnit',
+            data: {
+                caseUnitId: caseUnitId,
+                unitPartInMode: unitPartInMode
+            },
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.showUnitView(result.data);
+                    if (callback) {
+                        callback($(_this).attr('data-mode'));
+                    }
+                }
+            }
+        })
+    };
+
+    //单元初始化by applyId
+    unitCommon.init = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicUnit/getBasicUnitByApplyId',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.showUnitView(result.data);
+                    unitCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //单元初始化by id
+    unitCommon.initById = function (id, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicUnit/getBasicUnitById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.showUnitView(result.data);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //项目中引用数据
+    unitCommon.getDataFromProject = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicUnit/getDataFromProject',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.showUnitView(result.data);
+                    unitCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //项目中引用楼盘(批量)
+    unitCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicUnit/batchGetDataFromProject',
+            type: 'get',
+            data: {
+                applyId: applyId,
+                tableId: tableId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.showUnitView(result.data);
+                    unitCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //楼盘标注（通过tableId）
+    unitCommon.mapMarker2 = function (readonly, tableId) {
+        unitCommon.tableId = tableId;
+        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + unitCommon.tableId + '&tableName=' + unitCommon.tableName;
+        if (readonly != true) {
+            contentUrl += '&click=unitCommon.addMarker2';
+        }
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
+            content: contentUrl,
+            success: function (layero) {
+                unitCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
+                unitCommon.loadMarkerList2(tableId);
+            }
+        });
+    };
+
+    //添加标注（通过tableId）
+    unitCommon.addMarker2 = function (lng, lat) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
+            data: {
+                tableId: unitCommon.tableId,
+                type: 'unit',
+                lng: lng,
+                lat: lat,
+                name: unitCommon.getUnitNumber()
+            },
+            success: function (result) {
+                if (result.ret) {//标注成功后，刷新地图上的标注
+                    unitCommon.loadMarkerList2(unitCommon.tableId);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    };
+
+    //加载标注（通过tableId）
+    unitCommon.loadMarkerList2 = function (tableId) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
+            data: {
+                tableId: tableId,
+                type: 'unit'
+            },
+            success: function (result) {
+                if (result.ret && unitCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
+                    unitCommon.estateMapiframe.loadMarkerList(result.data);
+                }
+            }
+        })
+    };
+
+    unitCommon.showUnitView = function (data) {
+        unitCommon.initForm(data);
     };
 
     //附件上传

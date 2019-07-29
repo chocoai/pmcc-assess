@@ -7,10 +7,16 @@
 <script src="${pageContext.request.contextPath}/js/autocomplete/property.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/new.wind.brand.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/roomType.js"></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/house.case.js'></script>
+
+
+<script src="${pageContext.request.contextPath}/js/select/huxing.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/autocomplete/roomType.js"></script>
-
 <script src="${pageContext.request.contextPath}/js/select/selectMap/distance.get.fun.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/selectMap/metro.checkbox.js"></script>
@@ -96,10 +102,10 @@
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/building/building.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/unit/unit.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 <script type="text/javascript">
     $(function () {
         $('#contentTabPanel .fa-close').click(function (e) {
@@ -107,13 +113,5 @@
             e.preventDefault();
             return false;
         });
-
-        houseCommon.changeEvent();
-
-        estateCommon.autocompleteStart();
-        buildingCommon.autocompleteStart();
-
-        $("#" + houseNewWind.prototype.config().frm).find("[name=equipment]").apNewWindBrand();
-        $("#" + houseHeating.prototype.config().frm).find("[name=equipment]").apHeatingBrand();
     })
 </script>

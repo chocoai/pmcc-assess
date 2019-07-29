@@ -8,7 +8,10 @@
 
     estateCommon.estateForm = $('#frm_estate');
     estateCommon.estateLandStateForm = $('#frm_estateLandState');
-
+    estateCommon.estateMapiframe = undefined;//地图标注iframe
+    estateCommon.applyId = undefined;
+    estateCommon.tableId = undefined;
+    estateCommon.tableName = AssessDBKey.BasicEstate;
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
         AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN,
@@ -47,7 +50,22 @@
     };
 
     estateCommon.getEstateName = function () {
-        return estateCommon.estateForm.find('[name=name]').val();
+        var estatePartInMode = basicCommon.basicApplyForm.find('[name=estatePartInMode]').val() ;
+        try {
+            estatePartInMode = basicCommon.basicApplyForm.find('[name=estatePartInMode]').val();
+        } catch (e) {
+        }
+        var estateName = basicCommon.basicApplyForm.find('[name=estateName]').val();
+        var name = basicCommon.basicApplyForm.find('[name=name]').val();
+        if (estatePartInMode) {
+            return name;
+        }
+        if (estateName){
+            return estateName;
+        }
+        if (name){
+            return name;
+        }
     };
 
 
@@ -75,6 +93,151 @@
                 tableId: estateCommon.getEstateId()
             },
             deleteFlag: true
+        })
+    };
+
+    //添加楼盘
+    estateCommon.add = function (_this, callback) {
+        var $form = $(_this).closest('form');
+        var province = $form.find('[name=province]').val();
+        var city = $form.find('[name=city]').val();
+        var estateName = $form.find('[name=estateName]').val();
+        if (!estateName) {
+            toastr.info('请填写楼盘名称！');
+            return false;
+        }
+        $.ajax({
+            url: getContextPath() + '/basicEstate/addEstateAndLandstate',
+            data: {
+                estateName: estateName,
+                province: province,
+                city: city
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    var basicEstate = data.basicEstate ;
+                    var basicEstateLandState = data.basicEstateLandState ;
+                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+                    if (callback) {
+                        callback($(_this).attr('data-mode'));
+                    }
+                }
+            }
+        })
+    };
+
+    //升级楼盘
+    estateCommon.upgrade = function (_this, callback) {
+        var caseEstateId = $(_this).closest('form').find("input[name='caseEstateId']").val();
+        var estatePartInMode = $(_this).attr('data-mode');
+        if (!caseEstateId) {
+            toastr.info('请选择系统中已存在的楼盘信息！');
+            return false;
+        }
+        $.ajax({
+            url: getContextPath() + '/basicEstate/appWriteEstate',
+            data: {
+                caseEstateId: caseEstateId,
+                estatePartInMode: estatePartInMode
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    var basicEstate = data.basicEstate ;
+                    var basicEstateLandState = data.basicEstateLandState ;
+                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+                    if (callback) {
+                        callback($(_this).attr('data-mode'));
+                    }
+                }
+            }
+        })
+    };
+
+    //楼盘初始化by applyId
+    estateCommon.init = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/getBasicEstateByApplyId',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    var basicEstate = data.basicEstate ;
+                    var basicEstateLandState = data.basicEstateLandState ;
+                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+                    estateCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //楼盘初始化by applyId
+    estateCommon.initById = function (id, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/getBasicEstateMapById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    var basicEstate = data.basicEstate ;
+                    var basicEstateLandState = data.basicEstateLandState ;
+                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //项目中引用楼盘
+    estateCommon.getDataFromProject = function (applyId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/getDataFromProject',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    var basicEstate = data.basicEstate ;
+                    var basicEstateLandState = data.basicEstateLandState ;
+                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+                    estateCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    //项目中引用楼盘(批量)
+    estateCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/batchGetDataFromProject',
+            type: 'get',
+            data: {
+                applyId: applyId,
+                tableId: tableId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    var basicEstate = data.basicEstate ;
+                    var basicEstateLandState = data.basicEstateLandState ;
+                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+                    estateCommon.applyId = applyId;
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
         })
     };
 
@@ -184,7 +347,7 @@
             } catch (e) {
             }
             if (estateCommon.isNotBlankObject(obj)) {
-                var objData = estateCommon.landLevelFilter(obj) ;
+                var objData = estateCommon.landLevelFilter(obj);
                 estateCommon.landLevelLoadHtml(objData);
             }
         }
@@ -432,6 +595,65 @@
         })
     };
 
+    //楼盘标注（通过tableId）
+    estateCommon.mapMarker2 = function (readonly,tableId) {
+        estateCommon.tableId = tableId;
+        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + estateCommon.tableId+'&tableName='+estateCommon.tableName;
+        if (readonly != true) {
+            contentUrl += '&click=estateCommon.addMarker2';
+        }
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
+            content: contentUrl,
+            success: function (layero) {
+                estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
+                estateCommon.loadMarkerList2(tableId);
+            }
+        });
+    };
+
+    //添加标注（通过tableId）
+    estateCommon.addMarker2 = function (lng, lat) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
+            data: {
+                tableId: estateCommon.tableId,
+                type: 'estate',
+                lng: lng,
+                lat: lat,
+                name: estateCommon.estateForm.find('[name=name]').val()
+            },
+            success: function (result) {
+                if (result.ret) {//标注成功后，刷新地图上的标注
+                    estateCommon.loadMarkerList2(estateCommon.tableId);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    };
+
+    //加载标注（通过tableId）
+    estateCommon.loadMarkerList2 = function (tableId) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
+            data: {
+                tableId: tableId,
+                type: 'estate'
+            },
+            success: function (result) {
+                if (result.ret && estateCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
+                    estateCommon.estateMapiframe.loadMarkerList(result.data);
+                }
+            }
+        })
+    };
+
     //获取区位描述
     estateCommon.getLocationDescribe = function (blockId) {
         $.ajax({
@@ -474,16 +696,16 @@
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
-                var item = estateCommon.getLandLevelFilter(obj) ;
+                var item = estateCommon.getLandLevelFilter(obj);
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                 landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
                 landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                 landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
                 landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
-                var text = "" ;
-                $.each(obj , function ( i ,n) {
-                    text += "等级:"+n.gradeName +"，说明:"+n.reamark +"； \r";
+                var text = "";
+                $.each(obj, function (i, n) {
+                    text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
                 });
                 landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
                 landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
@@ -514,15 +736,13 @@
     };
 
     //js数组去重复 ,直接重载在原生js上
-    Array.prototype.deleteEle=function(){
+    Array.prototype.deleteEle = function () {
         var newArr = this;
-        for (var i=newArr.length-1; i>=0; i--)
-        {
+        for (var i = newArr.length - 1; i >= 0; i--) {
             var targetNode = newArr[i];
-            for (var j=0; j<i; j++)
-            {
-                if(targetNode == newArr[j]){
-                    newArr.splice(i,1);
+            for (var j = 0; j < i; j++) {
+                if (targetNode == newArr[j]) {
+                    newArr.splice(i, 1);
                     break;
                 }
             }
@@ -546,20 +766,20 @@
         obj.forEach(function (data, index) {
             //这里主要是获取对象长度
             var arr = Object.keys(data);
-            objArray.push(arr.length) ;
+            objArray.push(arr.length);
         });
-        if (objArray.deleteEle().length >= 2){
+        if (objArray.deleteEle().length >= 2) {
             //说明修改过一次
             objArray.sort(function (a, b) {
-                return a-b;
+                return a - b;
             });
             //获取有最大属性值的那个对象
             var max = objArray[objArray.length - 1];
             obj.forEach(function (data, index) {
                 //这里主要是获取对象长度
                 var arr = Object.keys(data);
-                if (max == arr.length){
-                    return data ;
+                if (max == arr.length) {
+                    return data;
                 }
             });
         }
