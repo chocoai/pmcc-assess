@@ -9,7 +9,7 @@
     <result column="industry_use_year" property="industryUseYear" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
-    <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
+    <result column="floor_count" property="floorCount" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="builder" property="builder" jdbcType="INTEGER" />
     <result column="builder_name" property="builderName" jdbcType="VARCHAR" />
@@ -177,7 +177,7 @@
       )
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, 
       #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
-      #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, 
+      #{floorCount,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, 
       #{builderName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, #{propertyName,jdbcType=VARCHAR}, 
       #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
       #{buildingHeight,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
@@ -371,7 +371,7 @@
         #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="floorCount != null" >
-        #{floorCount,jdbcType=INTEGER},
+        #{floorCount,jdbcType=VARCHAR},
       </if>
       <if test="location != null" >
         #{location,jdbcType=VARCHAR},
@@ -535,7 +535,7 @@
         building_name = #{record.buildingName,jdbcType=VARCHAR},
       </if>
       <if test="record.floorCount != null" >
-        floor_count = #{record.floorCount,jdbcType=INTEGER},
+        floor_count = #{record.floorCount,jdbcType=VARCHAR},
       </if>
       <if test="record.location != null" >
         location = #{record.location,jdbcType=VARCHAR},
@@ -680,7 +680,7 @@
       industry_use_year = #{record.industryUseYear,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_name = #{record.buildingName,jdbcType=VARCHAR},
-      floor_count = #{record.floorCount,jdbcType=INTEGER},
+      floor_count = #{record.floorCount,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
       builder = #{record.builder,jdbcType=INTEGER},
       builder_name = #{record.builderName,jdbcType=VARCHAR},
@@ -750,7 +750,7 @@
         building_name = #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="floorCount != null" >
-        floor_count = #{floorCount,jdbcType=INTEGER},
+        floor_count = #{floorCount,jdbcType=VARCHAR},
       </if>
       <if test="location != null" >
         location = #{location,jdbcType=VARCHAR},
@@ -892,7 +892,7 @@
       industry_use_year = #{industryUseYear,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_name = #{buildingName,jdbcType=VARCHAR},
-      floor_count = #{floorCount,jdbcType=INTEGER},
+      floor_count = #{floorCount,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       builder = #{builder,jdbcType=INTEGER},
       builder_name = #{builderName,jdbcType=VARCHAR},

@@ -76,6 +76,8 @@ public class BasicEstate {
 
     private Date gmtModified;
 
+    private Date openTime;
+
     public Integer getId() {
         return id;
     }
@@ -362,5 +364,13 @@ public class BasicEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Date getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(Date openTime) {
+        this.openTime = openTime;
     }
 }

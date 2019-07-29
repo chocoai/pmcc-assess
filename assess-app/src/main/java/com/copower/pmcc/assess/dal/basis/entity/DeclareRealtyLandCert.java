@@ -90,6 +90,8 @@ public class DeclareRealtyLandCert {
 
     private Date gmtModified;
 
+    private Integer certUseCategory;
+
     public Integer getId() {
         return id;
     }
@@ -432,5 +434,13 @@ public class DeclareRealtyLandCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getCertUseCategory() {
+        return certUseCategory;
+    }
+
+    public void setCertUseCategory(Integer certUseCategory) {
+        this.certUseCategory = certUseCategory;
     }
 }

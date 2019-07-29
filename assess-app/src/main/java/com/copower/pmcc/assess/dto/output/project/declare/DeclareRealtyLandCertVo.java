@@ -17,6 +17,7 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
     private String purposeName;
     private String landRightNatureName;
     private String publicSituationName;
+    private String certUseCategoryName;
 
     public String getPublicSituationName() {
         return publicSituationName;
@@ -88,5 +89,13 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
 
     public void setLandRightNatureName(String landRightNatureName) {
         this.landRightNatureName = landRightNatureName;
+    }
+
+    public String getCertUseCategoryName() {
+        return certUseCategoryName;
+    }
+
+    public void setCertUseCategoryName(String certUseCategoryName) {
+        this.certUseCategoryName = certUseCategoryName;
     }
 }
