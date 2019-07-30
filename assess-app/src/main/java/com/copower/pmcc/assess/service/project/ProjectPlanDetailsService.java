@@ -467,7 +467,6 @@ public class ProjectPlanDetailsService {
         ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
         projectPlanDetailsWhere.setPlanId(planId);
         projectPlanDetailsWhere.setStatus(ProcessStatusEnum.RUN.getValue());
-        projectPlanDetailsWhere.setBisLastLayer(true);
         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
         return CollectionUtils.isEmpty(projectPlanDetailsList);
     }

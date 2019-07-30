@@ -96,20 +96,13 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
         List<BaseDataDic> transactionTypeList = new ArrayList<>();
         if (projectClassify != null && StringUtils.isNotBlank(projectClassify.getFieldName())) {
             switch (projectClassify.getFieldName()) {
-                //房产项目类型
-                case AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE:
+                case AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE://房产项目类型
+                case AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE://简单房产项目类型
                     transactionTypeList = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE);
                     break;
-                //简单房产项目类型
-                case AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE:
-                    transactionTypeList = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE);
-                    break;
-                //土地项目类型
-                case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE:
-                    transactionTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND);
-                    break;
-                //土地简单项目类型
-                case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE:
+
+                case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE://土地项目类型
+                case AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE://土地简单项目类型
                     transactionTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND);
                     break;
                 default:

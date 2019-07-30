@@ -6,7 +6,7 @@ package com.copower.pmcc.assess.common.enums;
 public enum DataInfrastructureEnum {
     CommunalFacilities("2","公共配套设施费用"),
     devTaxTotal("1","开发期间税费"),
-    InfrastructureSupportingFacilities("3","基础配套设施费用"),
+    InfrastructureSupportingFacilities("3","基础设施建设配套费"),
     ;
     private String name;
     private String remark;

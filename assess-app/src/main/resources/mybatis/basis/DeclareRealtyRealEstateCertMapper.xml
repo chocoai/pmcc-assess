@@ -61,6 +61,8 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="land_apportion_area" property="landApportionArea" jdbcType="DECIMAL" />
+    <result column="land_cert_use_category" property="landCertUseCategory" jdbcType="INTEGER" />
+    <result column="house_cert_use_category" property="houseCertUseCategory" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -130,7 +132,7 @@
     land_right_type, acquisition_price, land_cert_use, termination_date, memo, apportionment_area, 
     acreage, use_right_area, enable, declare_type, approval_mechanism, approval_time, 
     approval_name, real_estate_unit_number, bis_record, creator, gmt_created, gmt_modified, 
-    land_apportion_area
+    land_apportion_area, land_cert_use_category, house_cert_use_category
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample" >
     select
@@ -185,7 +187,8 @@
       enable, declare_type, approval_mechanism, 
       approval_time, approval_name, real_estate_unit_number, 
       bis_record, creator, gmt_created, 
-      gmt_modified, land_apportion_area)
+      gmt_modified, land_apportion_area, land_cert_use_category, 
+      house_cert_use_category)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{landCertGetQuestion,jdbcType=INTEGER}, 
       #{certName,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, 
@@ -205,7 +208,8 @@
       #{enable,jdbcType=VARCHAR}, #{declareType,jdbcType=VARCHAR}, #{approvalMechanism,jdbcType=VARCHAR}, 
       #{approvalTime,jdbcType=TIMESTAMP}, #{approvalName,jdbcType=VARCHAR}, #{realEstateUnitNumber,jdbcType=VARCHAR}, 
       #{bisRecord,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{landApportionArea,jdbcType=DECIMAL})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{landApportionArea,jdbcType=DECIMAL}, #{landCertUseCategory,jdbcType=INTEGER}, 
+      #{houseCertUseCategory,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -387,6 +391,12 @@
       <if test="landApportionArea != null" >
         land_apportion_area,
       </if>
+      <if test="landCertUseCategory != null" >
+        land_cert_use_category,
+      </if>
+      <if test="houseCertUseCategory != null" >
+        house_cert_use_category,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -562,6 +572,12 @@
       </if>
       <if test="landApportionArea != null" >
         #{landApportionArea,jdbcType=DECIMAL},
+      </if>
+      <if test="landCertUseCategory != null" >
+        #{landCertUseCategory,jdbcType=INTEGER},
+      </if>
+      <if test="houseCertUseCategory != null" >
+        #{houseCertUseCategory,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -751,6 +767,12 @@
       <if test="record.landApportionArea != null" >
         land_apportion_area = #{record.landApportionArea,jdbcType=DECIMAL},
       </if>
+      <if test="record.landCertUseCategory != null" >
+        land_cert_use_category = #{record.landCertUseCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseCertUseCategory != null" >
+        house_cert_use_category = #{record.houseCertUseCategory,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -816,7 +838,9 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      land_apportion_area = #{record.landApportionArea,jdbcType=DECIMAL}
+      land_apportion_area = #{record.landApportionArea,jdbcType=DECIMAL},
+      land_cert_use_category = #{record.landCertUseCategory,jdbcType=INTEGER},
+      house_cert_use_category = #{record.houseCertUseCategory,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -998,6 +1022,12 @@
       <if test="landApportionArea != null" >
         land_apportion_area = #{landApportionArea,jdbcType=DECIMAL},
       </if>
+      <if test="landCertUseCategory != null" >
+        land_cert_use_category = #{landCertUseCategory,jdbcType=INTEGER},
+      </if>
+      <if test="houseCertUseCategory != null" >
+        house_cert_use_category = #{houseCertUseCategory,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -1060,7 +1090,9 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      land_apportion_area = #{landApportionArea,jdbcType=DECIMAL}
+      land_apportion_area = #{landApportionArea,jdbcType=DECIMAL},
+      land_cert_use_category = #{landCertUseCategory,jdbcType=INTEGER},
+      house_cert_use_category = #{houseCertUseCategory,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

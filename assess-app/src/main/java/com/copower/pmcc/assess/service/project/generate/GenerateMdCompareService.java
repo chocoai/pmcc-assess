@@ -646,7 +646,7 @@ public class GenerateMdCompareService {
                 for (MarketCompareItemDto caseItem : dtos) {
                     if (tradingTransaction.getFieldName().equals(caseItem.getName())) {
                         if (caseItem.getScore() != null) {
-                            builder.write(String.format("%.2f", caseItem.getRatio()));
+                            builder.write(String.format("%.4f", caseItem.getRatio()));
                         } else {
                             builder.write("");
                         }
@@ -665,7 +665,7 @@ public class GenerateMdCompareService {
                 for (MarketCompareItemDto caseItem : dtos) {
                     if (tradingTime.getFieldName().equals(caseItem.getName())) {
                         if (caseItem.getScore() != null) {
-                            builder.write(String.format("%.2f", caseItem.getRatio()));
+                            builder.write(String.format("%.4f", caseItem.getRatio()));
                         } else {
                             builder.write("");
                         }
@@ -1148,7 +1148,7 @@ public class GenerateMdCompareService {
                 }
             }
             if (temp.compareTo(new BigDecimal("0")) != 0) {
-                builder.write(String.format("%.2f", temp));
+                builder.write(String.format("%.4f", temp));
             } else {
                 builder.write("系数异常");
             }

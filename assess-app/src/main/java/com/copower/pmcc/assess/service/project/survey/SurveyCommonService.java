@@ -107,8 +107,8 @@ public class SurveyCommonService {
         keyValueDtoList.add(keyValueDto);
 
         keyValueDto = new KeyValueDto();
-        keyValueDto.setKey(AssessExamineTaskConstant.FC_STRUCTURE);
-        keyValueDto.setValue(dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_STRUCTURE).getName());
+        keyValueDto.setKey(AssessExamineTaskConstant.FC_CONSTRUCTION_IN_PROGRESS);
+        keyValueDto.setValue(dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_CONSTRUCTION_IN_PROGRESS).getName());
         keyValueDtoList.add(keyValueDto);
         return keyValueDtoList;
     }

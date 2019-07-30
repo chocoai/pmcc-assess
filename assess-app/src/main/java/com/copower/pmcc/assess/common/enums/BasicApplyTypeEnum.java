@@ -15,7 +15,8 @@ import java.util.List;
 public enum BasicApplyTypeEnum {
     RESIDENCE(0, "fc.residence", "非工业交通仓储"),
     INDUSTRY(1, "fc.industry", "工业交通仓储"),
-    STRUCTURE(2, "fc.structure", "构筑物");
+    STRUCTURE(2, "fc.structure", "构筑物"),
+    CONSTRUCTION(3, "fc.construction.in.progress", "在建工程");
 
     private Integer id;
     private String key;

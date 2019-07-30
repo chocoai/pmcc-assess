@@ -580,9 +580,7 @@
                                             文号
                                         </label>
                                         <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                            <input type="text" class="form-control" data-rule-number='true'
-                                                   name="number"
-                                                   placeholder="文号">
+                                            <input type="text" class="form-control" name="number" placeholder="文号">
                                         </div>
                                     </div>
                                 </div>

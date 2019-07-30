@@ -194,6 +194,12 @@ public class DeclareRealtyRealEstateCertService {
         if (declareRealtyRealEstateCert.getUseStartDate() != null) {
             vo.setUseStartDateFmt(sdf.format(declareRealtyRealEstateCert.getUseStartDate()));
         }
+        if(declareRealtyRealEstateCert.getHouseCertUseCategory()!=null){
+            vo.setHouseCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));
+        }
+        if(declareRealtyRealEstateCert.getLandCertUseCategory()!=null){
+            vo.setLandCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory()));
+        }
         if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyRealEstateCert.getProvince())) {
                 //省
