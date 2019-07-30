@@ -31,14 +31,14 @@
                         <div class="btn-group">
                             <a class="btn btn-danger" href="javascript://"
                                onclick="projectDetails.finishProject()"><i class="fa fa-check">&nbsp;</i>完成</a>
-                            <c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
-                                <a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i
-                                        class="fa fa-pause">&nbsp;</i>暂停</a>
-                            </c:if>
-                            <c:if test="${projectStatusEnum=='pause'}">
-                                <a class="btn btn-success" href="javascript://"
-                                   onclick="projectDetails.restartProject()"><i class="fa fa-reply">&nbsp;</i>重启</a>
-                            </c:if>
+                            <%--<c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">--%>
+                                <%--<a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i--%>
+                                        <%--class="fa fa-pause">&nbsp;</i>暂停</a>--%>
+                            <%--</c:if>--%>
+                            <%--<c:if test="${projectStatusEnum=='pause'}">--%>
+                                <%--<a class="btn btn-success" href="javascript://"--%>
+                                   <%--onclick="projectDetails.restartProject()"><i class="fa fa-reply">&nbsp;</i>重启</a>--%>
+                            <%--</c:if>--%>
                             <c:if test="${projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
                                 <a class="btn btn-primary" href="javascript://"
                                    onclick="projectDetails.stopProject()"><i class="fa fa-stop">&nbsp;</i>终止</a>
@@ -157,7 +157,7 @@
                                         <input type="hidden" name="copyPlanDetailsId">
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
-                                    <div class="col-md-5" id="showZtree">
+                                    <div class="col-md-5" id="showZtree${plan.id}" style="display: none;">
                                         <p>
                                             <small>
                                                 <a href="javascript://;" class="btn btn-xs btn-success"
@@ -341,17 +341,6 @@
     var projectDetails = {
         loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
-            <%--ztreeInit({--%>
-            <%--target: $('#ztree' + that.attr('plan-id')),--%>
-            <%--projectId: '${projectInfo.id}',--%>
-            <%--planId: that.attr('plan-id')--%>
-            <%--});--%>
-            <%--projectDetails.loadTaskList({--%>
-            <%--target: $('#plan_task_list' + that.attr('plan-igetPlanDetailListByPlanIdd')),--%>
-            <%--projectId: '${projectInfo.id}',--%>
-            <%--planId: that.attr('plan-id')--%>
-            <%--});--%>
-
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectInfo/getTotalPlans",
                 data: {
@@ -360,16 +349,15 @@
                 type: 'post',
                 success: function (result) {
                     if (result) {
-                        console.log(result.data);
-                        if (result.data <= 30) {
-                            $("#showZtree p").hide();
+                        if (result.data <= 5) {
+                            $("#showZtree"+ that.attr('plan-id')).hide();
                             projectDetails.loadTaskList({
                                 target: $('#plan_task_list' + that.attr('plan-id')),
                                 projectId: '${projectInfo.id}',
                                 planId: that.attr('plan-id')
                             });
                         } else {
-                            $("#showZtree p").show();
+                            $("#showZtree"+ that.attr('plan-id')).show();
                             ztreeInit({
                                 target: $('#ztree' + that.attr('plan-id')),
                                 projectId: '${projectInfo.id}',
@@ -1053,9 +1041,7 @@
                         setNodeIcon(item);
                     })
                     zTreeObj = $.fn.zTree.init(defaults.target, setting, result.rows);
-                    var rootNode = zTreeObj.getNodes()[0];
-                    zTreeObj.selectNode(rootNode);
-                    zTreeObj.expandNode(rootNode, true, false, true);
+                    zTreeObj.expandAll(true);
                 }
             }
         })
