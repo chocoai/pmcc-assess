@@ -157,29 +157,33 @@
                                         <input type="hidden" name="copyPlanDetailsId">
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
-                                    <div class="col-md-5"  id="showZtree">
-                                            <p>
+                                    <div class="col-md-5" id="showZtree">
+                                        <p>
                                             <small>
                                                 <a href="javascript://;" class="btn btn-xs btn-success"
                                                    onclick="batchUpdateExecuteUser()">批量设置责任人
                                                 </a>
                                             </small>
                                             <span class="radio-inline">
-                                            <input type="radio" required name="checkedType" onclick="checkAllOrNo(true)"><label >全选</label>
+                                            <input type="radio" required name="checkedType"
+                                                   onclick="checkAllOrNo(true)"><label>全选</label>
                                             </span>
                                             <span class="radio-inline">
                                             <input type="radio" name="checkedType" onclick="checkAllOrNo(false)"><label>全不选</label>
                                             </span>
                                             <span class="radio-inline">
-                                            <input type="radio" name="checkedType" onclick="checkReverse()"><label>反选</label>
+                                            <input type="radio" name="checkedType"
+                                                   onclick="checkReverse()"><label>反选</label>
                                             </span>
                                             <span class="radio-inline">
-                                            <input type="radio" name="expandType" onclick="expandAll(true)"><label>展开</label>
+                                            <input type="radio" name="expandType"
+                                                   onclick="expandAll(true)"><label>展开</label>
                                             </span>
                                             <span class="radio-inline">
-                                            <input type="radio" name="expandType" onclick="expandAll(false)"><label>收缩</label>
+                                            <input type="radio" name="expandType"
+                                                   onclick="expandAll(false)"><label>收缩</label>
                                             </span>
-                                            </p>
+                                        </p>
                                         <ul id="ztree${plan.id}" class="ztree"></ul>
                                     </div>
                                 </div>
@@ -338,14 +342,14 @@
         loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
             <%--ztreeInit({--%>
-                <%--target: $('#ztree' + that.attr('plan-id')),--%>
-                <%--projectId: '${projectInfo.id}',--%>
-                <%--planId: that.attr('plan-id')--%>
+            <%--target: $('#ztree' + that.attr('plan-id')),--%>
+            <%--projectId: '${projectInfo.id}',--%>
+            <%--planId: that.attr('plan-id')--%>
             <%--});--%>
             <%--projectDetails.loadTaskList({--%>
-                <%--target: $('#plan_task_list' + that.attr('plan-igetPlanDetailListByPlanIdd')),--%>
-                <%--projectId: '${projectInfo.id}',--%>
-                <%--planId: that.attr('plan-id')--%>
+            <%--target: $('#plan_task_list' + that.attr('plan-igetPlanDetailListByPlanIdd')),--%>
+            <%--projectId: '${projectInfo.id}',--%>
+            <%--planId: that.attr('plan-id')--%>
             <%--});--%>
 
             $.ajax({
@@ -357,14 +361,14 @@
                 success: function (result) {
                     if (result) {
                         console.log(result.data);
-                        if(result.data<=30){
+                        if (result.data <= 30) {
                             $("#showZtree p").hide();
                             projectDetails.loadTaskList({
                                 target: $('#plan_task_list' + that.attr('plan-id')),
                                 projectId: '${projectInfo.id}',
                                 planId: that.attr('plan-id')
                             });
-                        }else {
+                        } else {
                             $("#showZtree p").show();
                             ztreeInit({
                                 target: $('#ztree' + that.attr('plan-id')),
@@ -696,14 +700,14 @@
         },
 
         //打开任务页面的回调
-        ztreeTaskOpenWin: function (id,url) {
+        ztreeTaskOpenWin: function (id, url) {
             layer.closeAll();
             openWin(url, function () {
                 //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                 $.ajax({
                     url: "${pageContext.request.contextPath}/projectPlanDetails/getProjectPlanDetailsById",
                     data: {
-                        id:id
+                        id: id
                     },
                     type: 'post',
                     success: function (result) {
@@ -749,7 +753,7 @@
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('任务重启成功');
-                           //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                            //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                             refreshNode(result.data);
                             layer.closeAll();
                         } else {
@@ -912,7 +916,20 @@
         loadProjectBill: function () {
             var cols = [];
             cols.push({field: 'billNumber', title: '票号'});
-            cols.push({field: 'amount', title: '开票金额'});
+            cols.push({
+                field: 'amount', title: '开票金额', formatter: function (value, row, index) {
+                    if (value) {
+                        return (Number(value)/100).toFixed(2);
+                    }
+                }
+            });
+            cols.push({
+                field: 'thisBalance', title: '收款金额', formatter: function (value, row, index) {
+                    if (value) {
+                        return (Number(value)/100).toFixed(2);
+                    }
+                }
+            });
             cols.push({field: 'company', title: '公司'});
             cols.push({field: 'billExplain', title: '说明'});
             cols.push({field: 'applyUserName', title: '申请人'});
@@ -924,7 +941,6 @@
             cols.push({
                 field: 'opt', title: '操作', formatter: function (value, row, index) {
                     return "<a target='_blank' href='/pmcc-finance/FinancialBase/DetailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
-                    ;
                 }
             });
             $("#tb_projectBillList").bootstrapTable('destroy');
@@ -958,7 +974,7 @@
             },
             view: {
                 selectedMulti: false, //允许同时选中多个节点。
-                showIcon:true
+                showIcon: true
             },
             data: {
                 key: {
@@ -1109,7 +1125,7 @@
      *
      */
     function refreshNode(data) {
-        if(zTreeObj) {
+        if (zTreeObj) {
             var node = zTreeObj.getSelectedNodes()[0];
             node.nodeName = data.nodeName;
             node.status = data.status;
@@ -1124,22 +1140,22 @@
             node.excuteUrl = data.excuteUrl;
             setNodeIcon(node);
             zTreeObj.updateNode(node, false);
-        }else{
+        } else {
             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
         }
     }
 
     function setNodeIcon(item) {
         //已完成
-        if(item.displayUrl  && item.canReplay == true && !item.excuteUrl){
+        if (item.displayUrl && item.canReplay == true && !item.excuteUrl) {
             item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/search.png";
         }
         //待处理
-        else if(item.bisStart== false && item.excuteUrl){
+        else if (item.bisStart == false && item.excuteUrl) {
             item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/pencil.png";
         }
         //待审批
-        else if(item.excuteUrl && item.bisStart== true){
+        else if (item.excuteUrl && item.bisStart == true) {
             item.icon = "${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/icons/tip.png";
         }
     }
@@ -1154,13 +1170,13 @@
         var allNodes = zTreeObj.getNodes();//获取所有节点
         var nodes = zTreeObj.transformToArray(allNodes); //转变为数组
         zTreeObj.checkAllNodes(true);//全选
-        $.each(nodes, function( index,node) {
-                $.each(checkedTrueNodes, function (i, checkedTrue) {
-                    if (node == checkedTrue) {
-                            node.checked = false;  //设为不选中
-                            zTreeObj.updateNode(node);//更新状态
-                    }
-                });
+        $.each(nodes, function (index, node) {
+            $.each(checkedTrueNodes, function (i, checkedTrue) {
+                if (node == checkedTrue) {
+                    node.checked = false;  //设为不选中
+                    zTreeObj.updateNode(node);//更新状态
+                }
+            });
 
         });
 

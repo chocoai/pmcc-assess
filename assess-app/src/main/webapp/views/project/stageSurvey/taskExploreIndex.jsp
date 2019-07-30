@@ -28,7 +28,6 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <input type="button" class="btn btn-success" value="新增" onclick="addExamineItem();">
                     <table id="explore_list" class="table table-bordered" style="max-height: auto;"></table>
                 </div>
             </div>
@@ -232,7 +231,7 @@
     };
 
     taskExploreIndex.getExamineFormTypeHtml = function (status, id) {
-        var html = "<a  data-placement='top' data-original-title='工业与非工业选择' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.showModel()'>选择<i class='fa'></i></a>";
+        var html = "<a  data-placement='top' data-original-title='表单类型选择' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.showModel()'>选择<i class='fa'></i></a>";
         return html;
     };
 

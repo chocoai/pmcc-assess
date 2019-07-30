@@ -1,13 +1,14 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -15,10 +16,8 @@ import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ProjectPlanSurveyService {
@@ -53,6 +51,8 @@ public class ProjectPlanSurveyService {
     private CommonService commonService;
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
 
     /**
      * 初始化阶段任务
@@ -94,72 +94,6 @@ public class ProjectPlanSurveyService {
         generatePlanDetails(planId, projectId, workStageId, projectPhases, declareRecords,false);
     }
 
-    private void generatePlanDetails(Integer planId, Integer projectId, Integer workStageId, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords,boolean appendTask)  {
-        LinkedHashMap<DeclareRecord, List<ProjectPlanDetails>> listLinkedHashMap = Maps.newLinkedHashMap();
-        int i = 1;
-        ProjectPlanDetails projectPlanDetails = null;
-        String projectManager = projectMemberService.getProjectManager(projectId);
-        for (DeclareRecord declareRecord : declareRecords) {
-            projectPlanDetails = new ProjectPlanDetails();
-            projectPlanDetails.setProjectWorkStageId(workStageId);
-            projectPlanDetails.setPlanId(planId);
-            projectPlanDetails.setProjectId(projectId);
-            projectPlanDetails.setProjectPhaseName(declareRecord.getName());
-            projectPlanDetails.setDeclareRecordId(declareRecord.getId());
-            projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-            projectPlanDetails.setBisLastLayer(false);
-            projectPlanDetails.setSorting(i++);
-            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-            List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
-            int j = 0;
-            for (ProjectPhase projectPhase : projectPhases) {
-                ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
-                projectPlanDetail.setProjectWorkStageId(workStageId);
-                projectPlanDetail.setPlanId(planId);
-                projectPlanDetail.setProjectId(projectId);
-                projectPlanDetail.setProjectPhaseName(projectPhase.getProjectPhaseName());
-                projectPlanDetail.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
-                projectPlanDetail.setPid(projectPlanDetails.getId());
-                projectPlanDetail.setDeclareRecordId(declareRecord.getId());
-                projectPlanDetail.setFirstPid(projectPlanDetails.getId());
-                projectPlanDetail.setProjectPhaseId(projectPhase.getId());
-                projectPlanDetail.setSorting(j++);
-                projectPlanDetails.setExecuteUserAccount(projectManager);
-                SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
-                if (sysUser != null) {
-                    projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
-                }
-                projectPlanDetails.setPlanStartDate(new Date());
-                projectPlanDetails.setPlanEndDate(new Date());
-                projectPlanDetails.setBisEnable(true);
-                projectPlanDetails.setProcessInsId("0");
-                projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
-                projectPlanDetails.setCreator(commonService.thisUserAccount());
-                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
-                projectPlanDetailsList.add(projectPlanDetail);
-            }
-            declareRecord.setBisGenerate(true);
-            try {
-                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-            } catch (BusinessException e) {
-                logger.error(e.getMessage(), e);
-            }
-            if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                listLinkedHashMap.put(declareRecord, projectPlanDetailsList);
-            }
-        }
-        //在bpm里面追加任务
-        if (!listLinkedHashMap.isEmpty()) {
-            try {
-                projectPlanService.repairTreatmentTask(listLinkedHashMap, workStageId, projectId, projectPhases,appendTask);
-            } catch (BpmException e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
-    }
-
-
     /**
      * 追加清查查勘任务
      */
@@ -177,5 +111,64 @@ public class ProjectPlanSurveyService {
             if (projectPlan != null)
                 generatePlanDetails(projectPlan.getId(), projectId, projectPlan.getWorkStageId(), projectPhases, declareRecords,true);
         }
+    }
+
+    private void generatePlanDetails(Integer planId, Integer projectId, Integer workStageId, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords,boolean appendTask)  {
+        int i = 1;
+        ProjectPlanDetails projectPlanDetails = null;
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
+        String projectManager = projectMemberService.getProjectManager(projectId);
+        for (DeclareRecord declareRecord : declareRecords) {
+            projectPlanDetails = new ProjectPlanDetails();
+            projectPlanDetails.setProjectWorkStageId(workStageId);
+            projectPlanDetails.setPlanId(planId);
+            projectPlanDetails.setProjectId(projectId);
+            projectPlanDetails.setProjectPhaseName(declareRecord.getName());
+            projectPlanDetails.setDeclareRecordId(declareRecord.getId());
+            projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+            projectPlanDetails.setBisLastLayer(false);
+            projectPlanDetails.setSorting(i++);
+            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
+            int j = 0;
+            for (ProjectPhase projectPhase : projectPhases) {
+                ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
+                projectPlanDetail.setProjectWorkStageId(workStageId);
+                projectPlanDetail.setPlanId(planId);
+                projectPlanDetail.setProjectId(projectId);
+                projectPlanDetail.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
+                projectPlanDetail.setPid(projectPlanDetails.getId());
+                projectPlanDetail.setDeclareRecordId(declareRecord.getId());
+                projectPlanDetail.setFirstPid(projectPlanDetails.getId());
+                projectPlanDetail.setProjectPhaseId(projectPhase.getId());
+                projectPlanDetail.setSorting(j++);
+                projectPlanDetail.setExecuteUserAccount(projectManager);
+                SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
+                if (sysUser != null) {
+                    projectPlanDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
+                }
+                projectPlanDetail.setPlanStartDate(new Date());
+                projectPlanDetail.setPlanEndDate(new Date());
+                projectPlanDetail.setBisEnable(true);
+                projectPlanDetail.setProcessInsId("0");
+                projectPlanDetail.setStatus(ProjectStatusEnum.RUNING.getKey());
+                projectPlanDetail.setCreator(commonService.thisUserAccount());
+                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
+                try {
+                    projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetail, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+                } catch (BpmException e) {
+                    logger.error(e.getMessage(),e);
+                }
+                //projectPlanDetailsList.add(projectPlanDetail);
+            }
+            declareRecord.setBisGenerate(true);
+            try {
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            } catch (BusinessException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+
     }
 }
