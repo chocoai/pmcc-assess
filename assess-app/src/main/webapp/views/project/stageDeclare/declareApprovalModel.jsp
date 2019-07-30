@@ -901,9 +901,17 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋用途</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋用途类型</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="planningUseName"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    房屋用途类别<span class="symbol required"></span>
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="houseCertUseCategoryName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -912,15 +920,14 @@
                     <label class="form-control" name="housingStructure"></label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋性质</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="natureName"></label>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -933,15 +940,15 @@
                     <label class="form-control" name="evidenceArea"></label>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">套内面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="innerArea"></label>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -954,14 +961,15 @@
                     <label class="form-control" name="registrationAuthority"></label>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">其它</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="other"></label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附记其它</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -974,6 +982,8 @@
                     <label class="form-control" name="floorCount"></label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">取得价格</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -987,9 +997,17 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类型</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="purposeName"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地用途类别<span class="symbol required"></span>
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="landCertUseCategoryName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -998,15 +1016,14 @@
                     <label class="form-control" name="useRightTypeName"></label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <label class="form-control" name="typeName"></label>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共用宗地面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -1022,6 +1039,14 @@
                     <input type="text" name="useStartDateFmt" class="form-control" readonly="readonly">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地分摊面积</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="landApportionArea"></label>
+                </div>
+            </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地使用年限止
@@ -1030,14 +1055,6 @@
                     <%--<label class="form-control" name="useEndDate"></label>--%>
                     <input type="text" name="useEndDateFmt" id="useEndDateFmt_d" class="form-control"
                            readonly="readonly">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地分摊面积</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="landApportionArea"></label>
                 </div>
             </div>
         </div>

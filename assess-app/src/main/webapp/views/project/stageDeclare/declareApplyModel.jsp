@@ -1969,13 +1969,20 @@
             color="#6f5499" size="10"/>
 
         <div class="form-group">
-
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋用途<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋用途类型<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="houseCertUse" required
                             class="form-control search-select select2 houseCertUse">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋用途类别</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="houseCertUseCategory"
+                            class="form-control search-select select2 houseCertUseCategory">
                     </select>
                 </div>
             </div>
@@ -1986,6 +1993,8 @@
                            placeholder="房屋结构" name="housingStructure" class="form-control">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋性质</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -1994,9 +2003,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑面积<span
                         class="symbol required"></span></label>
@@ -2017,6 +2023,9 @@
                            data-rule-number='true'>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">套内面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -2025,9 +2034,6 @@
                            data-rule-number='true'>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -2043,6 +2049,9 @@
                            placeholder="登记机关" name="registrationAuthority" class="form-control">
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">其它</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -2050,8 +2059,6 @@
                            placeholder="其它" name="other" class="form-control">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附记其它</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -2065,6 +2072,8 @@
                     <input type="text" placeholder="总层数" name="floorCount" class="form-control">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">取得价格</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -2092,6 +2101,16 @@
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地用途类别<span class="symbol required"></span>
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select required="required" name="landCertUseCategory"
+                            class="form-control search-select select2 landCertUseCategory">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     权利性质<span
                         class="symbol required"></span>
                 </label>
@@ -2101,6 +2120,8 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型<span
                         class="symbol required"></span></label>
@@ -2110,10 +2131,6 @@
                     </select>
                 </div>
             </div>
-
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共用宗地面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -2132,16 +2149,6 @@
                            class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    土地使用年限止<span class="symbol required"></span>
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input placeholder="土地使用年限止" required
-                           name="useEndDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate roomTime">
-                </div>
-            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -2150,6 +2157,16 @@
                     <input type="text"
                            placeholder="土地分摊面积(数字)" name="landApportionArea" class="form-control" data-rule-maxlength="100"
                            data-rule-number='true'>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地使用年限止<span class="symbol required"></span>
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input placeholder="土地使用年限止" required
+                           name="useEndDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
         </div>

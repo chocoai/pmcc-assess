@@ -971,6 +971,16 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         frm.find("select[name='nature']").empty().html(html).trigger('change');
     });
+    frm.find("select.landCertUse").off('change').on('change', function () {
+        AssessCommon.loadDataDicByPid($(this).val(), item.landCertUseCategory, function (html, data) {
+            frm.find("select.landCertUseCategory").empty().html(html).trigger('change');
+        });
+    });
+    frm.find("select.houseCertUse").off('change').on('change', function () {
+        AssessCommon.loadDataDicByPid($(this).val(), item.houseCertUseCategory, function (html, data) {
+            frm.find("select.houseCertUseCategory").empty().html(html).trigger('change');
+        });
+    });
     //绑定变更事件
     frm.find("select.landRightNature").off('change').on('change', function () {
         var landRightNatureId = frm.find("select.landRightNature").val();

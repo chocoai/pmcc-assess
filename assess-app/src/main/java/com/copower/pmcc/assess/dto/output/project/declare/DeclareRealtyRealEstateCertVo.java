@@ -21,6 +21,8 @@ public class DeclareRealtyRealEstateCertVo extends DeclareRealtyRealEstateCert {
     private String useRightTypeName;
     private String registrationTimeFmt;
     private String natureName;
+    private String houseCertUseCategoryName;
+    private String landCertUseCategoryName;
 
     private Integer centerId;
 
@@ -135,5 +137,21 @@ public class DeclareRealtyRealEstateCertVo extends DeclareRealtyRealEstateCert {
 
     public void setCenterId(Integer centerId) {
         this.centerId = centerId;
+    }
+
+    public String getHouseCertUseCategoryName() {
+        return houseCertUseCategoryName;
+    }
+
+    public void setHouseCertUseCategoryName(String houseCertUseCategoryName) {
+        this.houseCertUseCategoryName = houseCertUseCategoryName;
+    }
+
+    public String getLandCertUseCategoryName() {
+        return landCertUseCategoryName;
+    }
+
+    public void setLandCertUseCategoryName(String landCertUseCategoryName) {
+        this.landCertUseCategoryName = landCertUseCategoryName;
     }
 }

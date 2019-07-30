@@ -3955,6 +3955,126 @@ public class DeclareRealtyRealEstateCertExample {
             addCriterion("land_apportion_area not between", value1, value2, "landApportionArea");
             return (Criteria) this;
         }
+
+        public Criteria andLandCertUseCategoryIsNull() {
+            addCriterion("land_cert_use_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryIsNotNull() {
+            addCriterion("land_cert_use_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryEqualTo(Integer value) {
+            addCriterion("land_cert_use_category =", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotEqualTo(Integer value) {
+            addCriterion("land_cert_use_category <>", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryGreaterThan(Integer value) {
+            addCriterion("land_cert_use_category >", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("land_cert_use_category >=", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryLessThan(Integer value) {
+            addCriterion("land_cert_use_category <", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("land_cert_use_category <=", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryIn(List<Integer> values) {
+            addCriterion("land_cert_use_category in", values, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotIn(List<Integer> values) {
+            addCriterion("land_cert_use_category not in", values, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("land_cert_use_category between", value1, value2, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("land_cert_use_category not between", value1, value2, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryIsNull() {
+            addCriterion("house_cert_use_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryIsNotNull() {
+            addCriterion("house_cert_use_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryEqualTo(Integer value) {
+            addCriterion("house_cert_use_category =", value, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryNotEqualTo(Integer value) {
+            addCriterion("house_cert_use_category <>", value, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryGreaterThan(Integer value) {
+            addCriterion("house_cert_use_category >", value, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("house_cert_use_category >=", value, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryLessThan(Integer value) {
+            addCriterion("house_cert_use_category <", value, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("house_cert_use_category <=", value, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryIn(List<Integer> values) {
+            addCriterion("house_cert_use_category in", values, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryNotIn(List<Integer> values) {
+            addCriterion("house_cert_use_category not in", values, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("house_cert_use_category between", value1, value2, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("house_cert_use_category not between", value1, value2, "houseCertUseCategory");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

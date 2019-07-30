@@ -122,6 +122,10 @@ public class DeclareRealtyRealEstateCert {
 
     private BigDecimal landApportionArea;
 
+    private Integer landCertUseCategory;
+
+    private Integer houseCertUseCategory;
+
     public Integer getId() {
         return id;
     }
@@ -592,5 +596,21 @@ public class DeclareRealtyRealEstateCert {
 
     public void setLandApportionArea(BigDecimal landApportionArea) {
         this.landApportionArea = landApportionArea;
+    }
+
+    public Integer getLandCertUseCategory() {
+        return landCertUseCategory;
+    }
+
+    public void setLandCertUseCategory(Integer landCertUseCategory) {
+        this.landCertUseCategory = landCertUseCategory;
+    }
+
+    public Integer getHouseCertUseCategory() {
+        return houseCertUseCategory;
+    }
+
+    public void setHouseCertUseCategory(Integer houseCertUseCategory) {
+        this.houseCertUseCategory = houseCertUseCategory;
     }
 }
