@@ -58,7 +58,7 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label">
-                基础设施建设费<span class="symbol required"></span>
+                基础设施配套费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">

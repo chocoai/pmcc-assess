@@ -79,12 +79,12 @@
             handleId: "economicIndicatorsModelHandleCommon",
             name: "待删除经济指标"
         },
-        declareEconomicIndicators:{
+        declareEconomicIndicators: {
             idA: "declareEconomicIndicatorsModelCommonA",
             idB: "declareEconomicIndicatorsModelCommonB",
             name: "经济指标",
-            tree:"declareEconomicIndicatorsModelCommonBTree",
-            handleId:"declareEconomicIndicatorsModelCommonHandleA"
+            tree: "declareEconomicIndicatorsModelCommonBTree",
+            handleId: "declareEconomicIndicatorsModelCommonHandleA"
         }
 
     };
@@ -124,8 +124,8 @@
                 if (!commonDeclareApplyModel.isNotBlank(number)) {
                     number = "";
                 }
-                if (commonDeclareApplyModel.isNotBlank(location)&&commonDeclareApplyModel.isNotBlank(number)) {
-                    text = provinceShort+year +location + "不动产权"+ "第" + number + "号";
+                if (commonDeclareApplyModel.isNotBlank(location) && commonDeclareApplyModel.isNotBlank(number)) {
+                    text = provinceShort + year + location + "不动产权" + "第" + number + "号";
                     engine.find("input[name='certName']").val(text);
                 }
             }
@@ -181,19 +181,19 @@
                     buildingNumber = buildingNumber + "栋";
                 }
                 /* if (commonDeclareApplyModel.isNotBlank(district)) {
-                     AssessCommon.getAreaById(district, function (data) {
-                         if (!commonDeclareApplyModel.isNotBlank(data)) {
-                             district = "";
-                         } else {
-                             district = data.name;
-                         }
-                         text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                         engine.find("input[name='beLocated']").val(text);
-                     });
+                 AssessCommon.getAreaById(district, function (data) {
+                 if (!commonDeclareApplyModel.isNotBlank(data)) {
+                 district = "";
                  } else {
-                     district = "";
-                     text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                     engine.find("input[name='beLocated']").val(text);
+                 district = data.name;
+                 }
+                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                 engine.find("input[name='beLocated']").val(text);
+                 });
+                 } else {
+                 district = "";
+                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                 engine.find("input[name='beLocated']").val(text);
                  }*/
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                 engine.find("input[name='beLocated']").val(text);
@@ -287,19 +287,19 @@
                     buildingNumber = buildingNumber + "栋";
                 }
                 /* if (commonDeclareApplyModel.isNotBlank(district)) {
-                     AssessCommon.getAreaById(district, function (data) {
-                         if (!commonDeclareApplyModel.isNotBlank(data)) {
-                             district = "";
-                         } else {
-                             district = data.name;
-                         }
-                         text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                         engine.find("input[name='beLocated']").val(text);
-                     });
+                 AssessCommon.getAreaById(district, function (data) {
+                 if (!commonDeclareApplyModel.isNotBlank(data)) {
+                 district = "";
                  } else {
-                     district = "";
-                     text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                     engine.find("input[name='beLocated']").val(text);
+                 district = data.name;
+                 }
+                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                 engine.find("input[name='beLocated']").val(text);
+                 });
+                 } else {
+                 district = "";
+                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                 engine.find("input[name='beLocated']").val(text);
                  }*/
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                 engine.find("input[name='beLocated']").val(text);
@@ -396,19 +396,19 @@
                     buildingNumber = buildingNumber + "栋";
                 }
                 /* if (commonDeclareApplyModel.isNotBlank(district)) {
-                     AssessCommon.getAreaById(district, function (data) {
-                         if (!commonDeclareApplyModel.isNotBlank(data)) {
-                             district = "";
-                         } else {
-                             district = data.name;
-                         }
-                         text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                         engine.find("input[name='beLocated']").val(text);
-                     });
+                 AssessCommon.getAreaById(district, function (data) {
+                 if (!commonDeclareApplyModel.isNotBlank(data)) {
+                 district = "";
                  } else {
-                     district = "";
-                     text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                     engine.find("input[name='beLocated']").val(text);
+                 district = data.name;
+                 }
+                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                 engine.find("input[name='beLocated']").val(text);
+                 });
+                 } else {
+                 district = "";
+                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                 engine.find("input[name='beLocated']").val(text);
                  }*/
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                 engine.find("input[name='beLocated']").val(text);
@@ -657,30 +657,52 @@
      * @type {{getHtmlA: commonDeclareApplyModel.declareEconomicIndicators.getHtmlA, getHtmlB: commonDeclareApplyModel.declareEconomicIndicators.getHtmlB}}
      */
     commonDeclareApplyModel.declareEconomicIndicators = {
-        getHtmlA:function () {
-            var html = $("#"+commonDeclareApplyModel.config.declareEconomicIndicators.idA).html() ;
-            return html ;
+        getHtmlA: function () {
+            var html = $("#" + commonDeclareApplyModel.config.declareEconomicIndicators.idA).html();
+            return html;
         },
-        getHtmlB:function () {
-            var html = $("#"+commonDeclareApplyModel.config.declareEconomicIndicators.idB).html() ;
-            return html ;
+        getHtmlB: function () {
+            var html = $("#" + commonDeclareApplyModel.config.declareEconomicIndicators.idB).html();
+            return html;
         },
-        treeGirdParse:function (target) {
-            if (target){
-                target.find('#' + commonDeclareApplyModel.config.declareEconomicIndicators.tree).treegrid() ;
-            }else {
+        treeGirdParse: function (target) {
+            if (target) {
+                target.find('#' + commonDeclareApplyModel.config.declareEconomicIndicators.tree).treegrid();
+            } else {
                 $('#' + commonDeclareApplyModel.config.declareEconomicIndicators.tree).treegrid();
             }
         },
-        addChild:function (that,template) {
+        addChild: function (that, template, data) {
             var tr = $(that).closest('tr');
             var childs = tr.treegrid('getChildNodes');
-            var html = $('#' + template).html() ;
-            html = html.replace('{name}',"") ;
-            html = html.replace('{salabilityNumber}',"") ;
-            html = html.replace('{assessSalabilityNumber}',"") ;
-            html = html.replace('{planIndex}',"") ;
-            html = html.replace('{remark}',"") ;
+            var html = $('#' + template).html();
+            var name = "";
+            var salabilityNumber = "";
+            var assessSalabilityNumber = "";
+            var planIndex = "";
+            var remark = "";
+            if (commonDeclareApplyModel.isNotBlank(data)) {
+                if (commonDeclareApplyModel.isNotBlank(data.name)) {
+                    name = data.name;
+                }
+                if (commonDeclareApplyModel.isNotBlank(data.salabilityNumber)) {
+                    salabilityNumber = data.salabilityNumber;
+                }
+                if (commonDeclareApplyModel.isNotBlank(data.assessSalabilityNumber)) {
+                    assessSalabilityNumber = data.assessSalabilityNumber;
+                }
+                if (commonDeclareApplyModel.isNotBlank(data.planIndex)) {
+                    planIndex = data.planIndex;
+                }
+                if (commonDeclareApplyModel.isNotBlank(data.remark)) {
+                    remark = data.remark;
+                }
+            }
+            html = html.replace('{name}', name);
+            html = html.replace('{salabilityNumber}', salabilityNumber);
+            html = html.replace('{assessSalabilityNumber}', assessSalabilityNumber);
+            html = html.replace('{planIndex}', planIndex);
+            html = html.replace('{remark}', remark);
             if (childs.length <= 0) {
                 tr.after(html);
             } else {
@@ -693,215 +715,232 @@
                 }
             }
             var form = $(that).closest('form');
-            commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse(form) ;
+            commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse(form);
         },
-        totalHandle:function (key,that) {
-            var table = $(that).closest("table") ;
-            if (table.size() == 0){
+        //初次添加模板子类
+        firstLoadChild: function (target) {
+            var table = target.find("table");
+            var undergroundBuildingArea = ['地下商业', '物业及休闲活动用房', '设备用房', '非机动车停车位', '机动车停车位'];//地下建筑面积
+            var groundBuildingArea = ['住宅', '商业', ' 办公', '宾馆', '健身活动用', '物管用房'];//地上计入容积率建筑面积
+            var groundExcludBuildingArea = ['业主活动用房', '机动车停车位'];//地上不计入容积率建筑面积
+            target.find("table").find("tbody").find("tr").each(function (i, tr) {
+                var ele = $(tr);
+                var dataKey = ele.attr('data-key');
+                var role = ele.attr('data-role');
+                if (role == 'parent') {
+                    switch (dataKey) {
+                        case 'undergroundBuildingArea': {
+                            var td = ele.find("td").first();
+                            $.each(undergroundBuildingArea, function (i, name) {
+                                commonDeclareApplyModel.declareEconomicIndicators.addChild(td[0], 'undergroundBuildingAreaTemplate', {name: name});
+                            });
+                        }
+                            break;
+                        case 'groundBuildingArea': {
+                            var td = ele.find("td").first();
+                            $.each(groundBuildingArea, function (i, name) {
+                                commonDeclareApplyModel.declareEconomicIndicators.addChild(td[0], 'groundBuildingAreaTemplate', {name: name});
+                            });
+                        }
+                            break;
+                        case 'groundExcludBuildingArea': {
+                            var td = ele.find("td").first();
+                            $.each(groundBuildingArea, function (i, name) {
+                                commonDeclareApplyModel.declareEconomicIndicators.addChild(td[0], 'groundExcludBuildingAreaTemplate', {name: name});
+                            });
+                        }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        },
+        totalHandle: function (key, that) {
+            var table = $(that).closest("table");
+            if (table.size() == 0) {
                 return false;
             }
 
-            var tbody = table.find('tbody') ;
-            if (tbody.size() == 0){
+            var tbody = table.find('tbody');
+            if (tbody.size() == 0) {
                 return false;
             }
-            if (!commonDeclareApplyModel.isNotBlank(key)){
+            if (!commonDeclareApplyModel.isNotBlank(key)) {
                 return false;
             }
-            var size = tbody.children('tr').size() ;
+            var size = tbody.children('tr').size();
             var target = undefined;
             var planIndex = 0;
             var salabilityNumber = 0;
             var assessSalabilityNumber = 0;
-            for (var i = 0;i < size;i++){
-                var tr = tbody.children('tr')[i] ;
-                var ele = $(tr) ;
-                var dataKey = ele.attr('data-key') ;
-                var role = ele.attr('data-role') ;
+            for (var i = 0; i < size; i++) {
+                var tr = tbody.children('tr')[i];
+                var ele = $(tr);
+                var dataKey = ele.attr('data-key');
+                var role = ele.attr('data-role');
                 //当存在key时我们就匹配验证是否属于目标群数据
-                if (!commonDeclareApplyModel.isNotBlank(dataKey)){
-                    continue ;
+                if (!commonDeclareApplyModel.isNotBlank(dataKey)) {
+                    continue;
                 }
-                if (!commonDeclareApplyModel.isNotBlank(role)){
-                    continue ;
+                if (!commonDeclareApplyModel.isNotBlank(role)) {
+                    continue;
                 }
-                if (dataKey != key){
-                    continue ;
+                if (dataKey != key) {
+                    continue;
                 }
                 var blurCount = 0;
-                ele.find("input").each(function (i,item) {
+                ele.find("input").each(function (i, item) {
                     var fName = $(item).attr("onblur");
-                    if (commonDeclareApplyModel.isNotBlank(fName)){
+                    if (commonDeclareApplyModel.isNotBlank(fName)) {
                         blurCount++;
                     }
-                }) ;
-                if (role == 'parent'){
+                });
+                if (role == 'parent') {
                     target = ele
                 }
-                if (role == 'child'){
-                    if (blurCount == 0){
-                        continue ;
+                if (role == 'child') {
+                    if (blurCount == 0) {
+                        continue;
                     }
-                    var planIndexEle = ele.find("input[name='planIndex']") ;
-                    if (planIndexEle.size() != 0){
-                        var value = planIndexEle.val() ;
-                        if (value){
-                            planIndex += Number(value) ;
+                    var planIndexEle = ele.find("input[name='planIndex']");
+                    if (planIndexEle.size() != 0) {
+                        var value = planIndexEle.val();
+                        if (value) {
+                            planIndex += Number(value);
                         }
                     }
-                    var salabilityNumberEle = ele.find("input[name='salabilityNumber']") ;
-                    if (salabilityNumberEle.size() != 0){
-                        if (salabilityNumberEle.val()){
-                            salabilityNumber += Number(salabilityNumberEle.val()) ;
+                    var salabilityNumberEle = ele.find("input[name='salabilityNumber']");
+                    if (salabilityNumberEle.size() != 0) {
+                        if (salabilityNumberEle.val()) {
+                            salabilityNumber += Number(salabilityNumberEle.val());
                         }
                     }
-                    var assessSalabilityNumberEle = ele.find("input[name='assessSalabilityNumber']") ;
-                    if (assessSalabilityNumberEle.size() != 0){
-                        if (assessSalabilityNumberEle.val()){
-                            assessSalabilityNumber += Number(assessSalabilityNumberEle.val()) ;
+                    var assessSalabilityNumberEle = ele.find("input[name='assessSalabilityNumber']");
+                    if (assessSalabilityNumberEle.size() != 0) {
+                        if (assessSalabilityNumberEle.val()) {
+                            assessSalabilityNumber += Number(assessSalabilityNumberEle.val());
                         }
                     }
                 }
             }
-            if (target){
-                if (tbody.size() == 0){
+            if (target) {
+                if (tbody.size() == 0) {
                     return false;
                 }
-            }else {
+            } else {
                 return false;
             }
-            if (planIndex != 0){
-                if (target.find("input[name='planIndex']").size() != 0){
-                    target.find("input[name='planIndex']").val(planIndex) ;
+            if (planIndex != 0) {
+                if (target.find("input[name='planIndex']").size() != 0) {
+                    target.find("input[name='planIndex']").val(planIndex);
                 }
             }
-            if (salabilityNumber != 0){
-                if (target.find("input[name='salabilityNumber']").size() != 0){
-                    target.find("input[name='salabilityNumber']").val(salabilityNumber) ;
+            if (salabilityNumber != 0) {
+                if (target.find("input[name='salabilityNumber']").size() != 0) {
+                    target.find("input[name='salabilityNumber']").val(salabilityNumber);
                 }
             }
-            if (assessSalabilityNumber != 0){
-                if (target.find("input[name='assessSalabilityNumber']").size() != 0){
-                    target.find("input[name='assessSalabilityNumber']").val(assessSalabilityNumber) ;
+            if (assessSalabilityNumber != 0) {
+                if (target.find("input[name='assessSalabilityNumber']").size() != 0) {
+                    target.find("input[name='assessSalabilityNumber']").val(assessSalabilityNumber);
                 }
             }
         },
-        initFormContent:function (arrData ,frm) {
-            var table = frm.find("table") ;
-            var tbody = table.find('tbody') ;
-            tbody.find("tr").each(function (i,tr) {
-                var dataKey = $(tr).attr('data-key') ;
-                var role = $(tr).attr('data-role') ;
-                var text = commonDeclareApplyModel.declareEconomicIndicators.getElementText($(tr)) ;
-                $.each(arrData ,function (i,item) {
-                    if (item.customKey == dataKey){
-                        if (item.name == text){
-                            $(tr).find("td").find("input[name='planIndex']").first().val(item.planIndex) ;
-                            $(tr).find("td").find("input[name='remark']").first().val(item.remark) ;
-                            $(tr).find("td").find("input[name='salabilityNumber']").first().val(item.salabilityNumber) ;
-                            $(tr).find("td").find("input[name='assessSalabilityNumber']").first().val(item.assessSalabilityNumber) ;
-                            if ($(tr).find("td").find("input[name='id']").size() != 0){
-                                $(tr).find("td").find("input[name='id']").first().val(item.id) ;
-                            }
-                            if(commonDeclareApplyModel.isNotBlank(item.childData)){
-                                var childData = JSON.parse(item.childData) ;
-                                var template = item.customKey+'Template' ;
-                                if(commonDeclareApplyModel.isNotBlankObject(childData)){
-                                    $.each(childData , function (i, cdData) {
-                                        var element = $("#"+template).html();
-                                        element = element.replace('{name}',cdData.name) ;
-                                        element = element.replace('{salabilityNumber}',cdData.salabilityNumber) ;
-                                        element = element.replace('{assessSalabilityNumber}',cdData.assessSalabilityNumber) ;
-                                        element = element.replace('{planIndex}',cdData.planIndex) ;
-                                        element = element.replace('{remark}',cdData.remark) ;
-                                        //确定写入位置
-                                        var childs = $(tr).treegrid('getChildNodes');
-                                        if (childs.length <= 0) {
-                                            $(tr).after(element) ;
+        initFormContent: function (arrData, frm) {//赋值
+            var table = frm.find("table");
+            var tbody = table.find('tbody');
+            tbody.find("tr").each(function (i, tr) {
+                var dataKey = $(tr).attr('data-key');
+                var role = $(tr).attr('data-role');
+                var text = $(tr).find("td").first().text();
+                $.each(arrData, function (i, item) {
+                    if (item.customKey == dataKey && item.name == text) {
+                        $(tr).find("td").find("input[name='planIndex']").first().val(item.planIndex);
+                        $(tr).find("td").find("input[name='remark']").first().val(item.remark);
+                        $(tr).find("td").find("input[name='salabilityNumber']").first().val(item.salabilityNumber);
+                        $(tr).find("td").find("input[name='assessSalabilityNumber']").first().val(item.assessSalabilityNumber);
+                        if ($(tr).find("td").find("input[name='id']").size() != 0) {
+                            $(tr).find("td").find("input[name='id']").first().val(item.id);
+                        }
+                        if (commonDeclareApplyModel.isNotBlank(item.childData)) {
+                            var childData = JSON.parse(item.childData);
+                            var template = item.customKey + 'Template';
+                            if (commonDeclareApplyModel.isNotBlankObject(childData)) {
+                                $.each(childData, function (i, cdData) {
+                                    var element = $("#" + template).html();
+                                    element = element.replace('{name}', cdData.name);
+                                    element = element.replace('{salabilityNumber}', cdData.salabilityNumber);
+                                    element = element.replace('{assessSalabilityNumber}', cdData.assessSalabilityNumber);
+                                    element = element.replace('{planIndex}', cdData.planIndex);
+                                    element = element.replace('{remark}', cdData.remark);
+                                    //确定写入位置
+                                    var childs = $(tr).treegrid('getChildNodes');
+                                    if (childs.length <= 0) {
+                                        $(tr).after(element);
+                                    } else {
+                                        //如果最后一个子项下还有子项则在子项的子项后添加元素
+                                        var subChilds = $(childs.get(childs.length - 1)).treegrid('getChildNodes');
+                                        if (subChilds.length <= 0) {
+                                            $(childs.get(childs.length - 1)).after(element);
                                         } else {
-                                            //如果最后一个子项下还有子项则在子项的子项后添加元素
-                                            var subChilds = $(childs.get(childs.length - 1)).treegrid('getChildNodes');
-                                            if (subChilds.length <= 0) {
-                                                $(childs.get(childs.length - 1)).after(element);
-                                            } else {
-                                                $(subChilds.get(subChilds.length - 1)).after(element);
-                                            }
+                                            $(subChilds.get(subChilds.length - 1)).after(element);
                                         }
-                                        commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse(frm) ;
-                                    }) ;
-                                }
+                                    }
+                                    commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse(frm);
+                                });
                             }
                         }
                     }
-                }) ;
-            }) ;
+                });
+            });
         },
-        getFormData:function (planDetailsId , frmHead,frmContent) {
-            var itemArray = [] ;
-            var handParams = ['otherBuildingArea'] ;//非固定key的数组
-            var table = frmContent.find("table") ;
-            var tbody = table.find('tbody') ;
-            tbody.find("tr").each(function (i,tr) {
-                var item = {} ;
-                var dataKey = $(tr).attr('data-key') ;
-                var role = $(tr).attr('data-role') ;
-                if(jQuery.inArray(dataKey,handParams) == -1){
-                    item.name = commonDeclareApplyModel.declareEconomicIndicators.getElementText($(tr)) ;
-                    item.customKey = dataKey ;
-                    item.salabilityNumber = $(tr).find("input[name='salabilityNumber']").first().val()  ;
-                    item.assessSalabilityNumber = $(tr).find("input[name='assessSalabilityNumber']").first().val()  ;
-                    item.planIndex = $(tr).find("input[name='planIndex']").first().val()  ;
-                    item.remark = $(tr).find("input[name='remark']").first().val()  ;
+        getFormData: function (planDetailsId, frmHead, frmContent) {//收集数据
+            var itemArray = [];
+            var table = frmContent.find("table");
+            var tbody = table.find('tbody');
+            tbody.find("tr").each(function (i, tr) {
+                var item = {};
+                var dataKey = $(tr).attr('data-key');
+                var role = $(tr).attr('data-role');
+                if (role == 'parent') {
+                    var childData = [];
+                    tbody.find("tr").filter(function (index) {
+                        if ($(this).attr('data-key') != dataKey) {
+                            return false;
+                        }
+                        if ($(this).attr('data-role') != 'child') {
+                            return false;
+                        }
+                        return true;
+                    }).each(function (i, n) {
+                        var target = $(n);
+                        var temp = {};
+                        temp.planDetailsId = planDetailsId;
+                        temp.name = target.find("td").find("input[name='name']").first().val();
+                        temp.planIndex = target.find("td").find("input[name='planIndex']").first().val();
+                        temp.remark = target.find("td").find("input[name='remark']").first().val();
+                        temp.salabilityNumber = target.find("td").find("input[name='salabilityNumber']").first().val();
+                        temp.assessSalabilityNumber = target.find("td").find("input[name='assessSalabilityNumber']").first().val();
+                        childData.push(temp);
+                    });
+                    item.name = $(tr).find("td").first().text();
+                    item.customKey = dataKey;
+                    item.salabilityNumber = $(tr).find("input[name='salabilityNumber']").first().val();
+                    item.assessSalabilityNumber = $(tr).find("input[name='assessSalabilityNumber']").first().val();
+                    item.planIndex = $(tr).find("input[name='planIndex']").first().val();
+                    item.remark = $(tr).find("input[name='remark']").first().val();
                     item.planDetailsId = planDetailsId;
                     item.indicatorsHeadId = 0;
-                    itemArray.push(item) ;
-                }
-                //需要手动收集的数据
-                if (jQuery.inArray(dataKey,handParams) != -1){
-                    if (role == 'parent'){
-                        var childData = [] ;
-                        tbody.find("tr").filter(function (index) {
-                            if ($(this).attr('data-key')  != dataKey){
-                                return false;
-                            }
-                            if ($(this).attr('data-role')  != 'child'){
-                                return false;
-                            }
-                            return true;
-                        }).each(function (i,n) {
-                            var target = $(n) ;
-                            var temp = {} ;
-                            temp.planDetailsId = planDetailsId;
-                            temp.name = target.find("td").find("input[name='name']").first().val() ;
-                            temp.planIndex = target.find("td").find("input[name='planIndex']").first().val() ;
-                            temp.remark = target.find("td").find("input[name='remark']").first().val() ;
-                            temp.salabilityNumber = target.find("td").find("input[name='salabilityNumber']").first().val() ;
-                            temp.assessSalabilityNumber = target.find("td").find("input[name='assessSalabilityNumber']").first().val() ;
-                            childData.push(temp) ;
-                        });
-                        item.name = commonDeclareApplyModel.declareEconomicIndicators.getElementText($(tr)) ;
-                        item.customKey = dataKey ;
-                        item.salabilityNumber = $(tr).find("input[name='salabilityNumber']").first().val()  ;
-                        item.assessSalabilityNumber = $(tr).find("input[name='assessSalabilityNumber']").first().val()  ;
-                        item.planIndex = $(tr).find("input[name='planIndex']").first().val()  ;
-                        item.remark = $(tr).find("input[name='remark']").first().val()  ;
-                        item.planDetailsId = planDetailsId;
-                        item.indicatorsHeadId = 0;
-                        item.childData = JSON.stringify(childData) ;
-                        itemArray.push(item) ;
-                    }
+                    item.childData = JSON.stringify(childData);
+                    itemArray.push(item);
                 }
             });
-            var head = formSerializeArray(frmHead) ;
+            var head = formSerializeArray(frmHead);
             head.planDetailsId = planDetailsId;
-            return {head:head,content:itemArray} ;
-        },
-        getElementText: function (ele) {
-            var text =  text = ele.find("td").first().text()  ;
-            text = text.replace(/\s*/g,"");
-            return text ;
+            return {head: head, content: itemArray};
         }
-    } ;
+    };
 
 
 </script>
@@ -2148,7 +2187,8 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地分摊面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="土地分摊面积(数字)" name="landApportionArea" class="form-control" data-rule-maxlength="100"
+                           placeholder="土地分摊面积(数字)" name="landApportionArea" class="form-control"
+                           data-rule-maxlength="100"
                            data-rule-number='true'>
                 </div>
             </div>
@@ -3512,172 +3552,191 @@
 <script type="text/html" id="declareEconomicIndicatorsModelCommonB" data-title="经济指标content 或者经济指标2">
     <table class="table tree" id="declareEconomicIndicatorsModelCommonBTree">
         <thead>
-            <tr>
-                <th>规划项目名称</th>
-                <th>规划指标</th>
-                <th>可出售面积（㎡或车位个数）</th>
-                <th>评估出售面积（㎡或车位个数）</th>
-                <th>备注</th>
-            </tr>
+        <tr>
+            <th>规划项目名称</th>
+            <th>规划指标</th>
+            <th>可出售面积</th>
+            <th>个数</th>
+            <th>备注</th>
+        </tr>
         </thead>
-
         <tbody>
-
-            <tr class="treegrid-1" data-key="groundBuildingArea" data-title="地上计入容积率建筑面积" data-role="parent">
-                <td>一: 地上计入容积率建筑面积（㎡） </td>
-                <td> <input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-1-1 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-                <td> 住宅 </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-1-2 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-                <td> 商业 </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-1-3 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-                <td> 办公 </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-1-4 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-                <td> 宾馆 </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-1-5 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-                <td> 健身活动用房 </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-1-6 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-                <td> 物管用房 </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-
-            <tr class="treegrid-2" data-key="groundExcludBuildingArea" data-title="地上计入容积率建筑面积" data-role="parent">
-                <td>二: 地上不计入容积率建筑面积（㎡） </td>
-                <td> <input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-2-1 treegrid-parent-2" data-key="groundExcludBuildingArea" data-role="child">
-                <td>业主活动用房</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-2-2 treegrid-parent-2" data-key="groundExcludBuildingArea" data-role="child">
-                <td>机动车停车位</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-2-3 treegrid-parent-2" data-key="groundExcludBuildingArea" data-role="child">
-                <td>机动车停车位个数</td>
-                <td> <input type="text"  placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text"  placeholder="可出售车位个数" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text"  placeholder="评估出售车位个数" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-
-            <tr class="treegrid-3" data-key="undergroundBuildingArea" data-title="地下建筑面积" data-role="parent">
-                <td>三: 地下建筑面积（㎡） </td>
-                <td> <input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-3-1 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-                <td>地下商业</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-3-2 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-                <td>物业及休闲活动用房</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-3-3 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-                <td>设备用房</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-3-4 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-                <td>非机动车停车位</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-3-5 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-                <td>机动车停车位</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-            <tr class="treegrid-3-6 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-                <td>机动车停车位个数</td>
-                <td> <input type="text"  placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text"  placeholder="可出售车位个数" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text"  placeholder="评估出售车位个数" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-
-            <tr class="treegrid-4" data-key="otherBuildingArea"  data-role="parent">
-                <td>四:其他
-                    <a class="btn btn-xs btn-warning tooltips" data-placement="top"
-                       onclick="commonDeclareApplyModel.declareEconomicIndicators.addChild(this,'otherBuildingAreaTemplate');"><i
-                            class="fa fa-plus fa-white"></i></a></td>
-                <td> <input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-                <td> <input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-                <td> <input type="text" placeholder="备注" name="remark"  style="width: 100px;">  </td>
-            </tr>
-
+        <tr class="treegrid-1" data-key="groundBuildingArea" data-title="地上计入容积率建筑面积" data-role="parent">
+            <td>一: 地上计入容积率建筑面积<a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                     onclick="commonDeclareApplyModel.declareEconomicIndicators.addChild(this,'groundBuildingAreaTemplate');"><i
+                    class="fa fa-plus fa-white"></i></a></td>
+            <td><input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input type="text" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="备注" name="remark" style="width: 100px;"></td>
+        </tr>
+        <tr class="treegrid-2" data-key="groundExcludBuildingArea" data-title="地上不计入容积率建筑面积" data-role="parent">
+            <td>二: 地上不计入容积率建筑面积<a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                      onclick="commonDeclareApplyModel.declareEconomicIndicators.addChild(this,'groundExcludBuildingAreaTemplate');"><i
+                    class="fa fa-plus fa-white"></i></a></td>
+            <td><input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input type="text" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="备注" name="remark" style="width: 100px;"></td>
+        </tr>
+        <tr class="treegrid-3" data-key="undergroundBuildingArea" data-title="地下建筑面积" data-role="parent">
+            <td>三: 地下建筑面积<a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                onclick="commonDeclareApplyModel.declareEconomicIndicators.addChild(this,'undergroundBuildingAreaTemplate');"><i
+                    class="fa fa-plus fa-white"></i></a></td>
+            <td><input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input type="text" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="备注" name="remark" style="width: 100px;"></td>
+        </tr>
+        <tr class="treegrid-4" data-key="undergroundIncludedBuildingArea" data-title="地下不计入建筑面积" data-role="parent">
+            <td>四: 地下不计入建筑面积<a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                  onclick="commonDeclareApplyModel.declareEconomicIndicators.addChild(this,'undergroundIncludedBuildingAreaTemplate');"><i
+                    class="fa fa-plus fa-white"></i></a></td>
+            <td><input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input type="text" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="备注" name="remark" style="width: 100px;"></td>
+        </tr>
+        <tr class="treegrid-5" data-key="otherBuildingArea" data-role="parent">
+            <td>五: 其他<a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                   onclick="commonDeclareApplyModel.declareEconomicIndicators.addChild(this,'otherBuildingAreaTemplate');"><i
+                        class="fa fa-plus fa-white"></i></a></td>
+            <td><input type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input type="text" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input type="text" placeholder="备注" name="remark" style="width: 100px;"></td>
+        </tr>
         </tbody>
     </table>
 </script>
-<!-- 其他（可自己定义具体名称）模板 -->
-<script type="text/html" id="otherBuildingAreaTemplate">
-    <tr class="dynamic treegrid-4-1 treegrid-parent-4"  data-key="otherBuildingArea"  data-role="child">
+<script type="text/html" id="otherBuildingAreaTemplate" data-title="其他（可自己定义具体名称）模板">
+    <tr class="dynamic treegrid-5-1 treegrid-parent-5" data-key="otherBuildingArea" data-role="child">
         <td>
             <input type="text" name="name" placeholder="名称" value="{name}" style="width: 100px;">
             <a class="btn btn-xs btn-warning tooltips" data-placement="top"
                onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
         </td>
-        <td> <input type="text" value="{planIndex}" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('otherBuildingArea',this)" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-        <td> <input type="text" value="{salabilityNumber}" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('otherBuildingArea',this)" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-        <td> <input type="text" value="{assessSalabilityNumber}" onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('otherBuildingArea',this)" placeholder="评估出售面积" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-        <td> <input type="text" value="{remark}" placeholder="备注" name="remark"  style="width: 100px;">  </td>
+        <td><input type="text" value="{planIndex}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('otherBuildingArea',this)"
+                   placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" value="{salabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('otherBuildingArea',this)"
+                   placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" value="{assessSalabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('otherBuildingArea',this)"
+                   placeholder="个数" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
+    </tr>
+</script>
+<script type="text/html" id="undergroundIncludedBuildingAreaTemplate" data-title="地下不计入建筑面积">
+    <tr class="dynamic treegrid-4-1 treegrid-parent-4" data-key="undergroundIncludedBuildingArea" data-role="child">
+        <td>
+            <input type="text" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
+        <td><input type="text" value="{planIndex}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundIncludedBuildingArea',this)"
+                   placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" value="{salabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundIncludedBuildingArea',this)"
+                   placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" value="{assessSalabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundIncludedBuildingArea',this)"
+                   placeholder="个数" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
+    </tr>
+</script>
+<script type="text/html" id="undergroundBuildingAreaTemplate" data-title="地下建筑面积">
+    <tr class="dynamic treegrid-3-1 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
+        <td>
+            <input type="text" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
+        <td><input type="text" value="{planIndex}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)"
+                   placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" value="{salabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)"
+                   placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" value="{assessSalabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('undergroundBuildingArea',this)"
+                   placeholder="个数" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
+    </tr>
+</script>
+<script type="text/html" id="groundExcludBuildingAreaTemplate" data-title="地上不计入容积率建筑面积">
+    <tr class="dynamic treegrid-2-1 treegrid-parent-2" data-key="groundExcludBuildingArea" data-role="child">
+        <td>
+            <input type="text" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
+        <td><input type="text" value="{planIndex}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)"
+                   placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" value="{salabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)"
+                   placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" value="{assessSalabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundExcludBuildingArea',this)"
+                   placeholder="个数" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
+    </tr>
+</script>
+<script type="text/html" id="groundBuildingAreaTemplate" data-title="地上计入容积率建筑面积">
+    <tr class="dynamic treegrid-1-1 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
+        <td>
+            <input type="text" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
+        <td><input type="text" value="{planIndex}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)"
+                   placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" value="{salabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)"
+                   placeholder="可出售面积" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" value="{assessSalabilityNumber}"
+                   onblur="commonDeclareApplyModel.declareEconomicIndicators.totalHandle('groundBuildingArea',this)"
+                   placeholder="个数" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
     </tr>
 </script>
 <script type="text/html" id="declareEconomicIndicatorsModelCommonA" data-title="经济指标head 或者经济指标1">
@@ -3688,7 +3747,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="土地用途" name="certUse" class="form-control"
-                           >
+                    >
                 </div>
             </div>
             <div class="x-valid">
@@ -3708,7 +3767,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑结构</label>
@@ -3718,7 +3777,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label" >建筑限高（m）</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑限高（m）</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="建筑限高（m）" name="buildingHeightLimit" class="form-control"
@@ -3726,7 +3785,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label" >建筑基底占地面积（㎡)</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑基底占地面积（㎡)</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="建筑基底占地面积（㎡)" name="buildingBaseCoverage" class="form-control"
@@ -3734,7 +3793,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">设定容积率</label>
@@ -3758,7 +3817,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿地率</label>
@@ -3777,7 +3836,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label" >规划总建筑面积（㎡）</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">规划总建筑面积（㎡）</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="规划总建筑面积（㎡）" name="planTotalBuildArea" class="form-control"
@@ -3785,19 +3844,19 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label" >规划建设净用地面积（㎡）</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">规划建设净用地面积（㎡）</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="规划建设净用地面积（㎡）" name="planNetConstructionLandArea" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
-    
+
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label" >评估总建筑面积（㎡）<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估总建筑面积（㎡）<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
@@ -3806,9 +3865,9 @@
                            required="required">
                 </div>
             </div>
-    
+
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label" >评估用地面积（㎡）<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估用地面积（㎡）<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"

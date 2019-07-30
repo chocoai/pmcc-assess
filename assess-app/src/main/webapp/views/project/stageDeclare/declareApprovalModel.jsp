@@ -95,60 +95,53 @@
                 $('#' + commonDeclareApprovalModel.config.declareEconomicIndicators.tree).treegrid();
             }
         },
-        getElementText: function (ele) {
-            var text =  text = ele.find("td").first().text()  ;
-            text = text.replace(/\s*/g,"");
-            return text ;
-        },
         initFormContent:function (arrData,frm) {
-            var table = frm.find("table") ;
-            var tbody = table.find('tbody') ;
-            tbody.find("tr").each(function (i,tr) {
-                var dataKey = $(tr).attr('data-key') ;
-                var role = $(tr).attr('data-role') ;
-                var text = commonDeclareApprovalModel.declareEconomicIndicators.getElementText($(tr)) ;
-                $.each(arrData ,function (i,item) {
-                    if (item.customKey == dataKey){
-                        if (item.name == text){
-                            $(tr).find("td").find("input[name='planIndex']").first().val(item.planIndex) ;
-                            $(tr).find("td").find("input[name='remark']").first().val(item.remark) ;
-                            $(tr).find("td").find("input[name='salabilityNumber']").first().val(item.salabilityNumber) ;
-                            $(tr).find("td").find("input[name='assessSalabilityNumber']").first().val(item.assessSalabilityNumber) ;
-                            if ($(tr).find("td").find("input[name='id']").size() != 0){
-                                $(tr).find("td").find("input[name='id']").first().val(item.id) ;
-                            }
-                            if(commonDeclareApprovalModel.isNotBlank(item.childData)){
-                                var childData = JSON.parse(item.childData) ;
-                                var template = item.customKey+'Template' ;
-                                if(commonDeclareApprovalModel.isNotBlankObject(childData)){
-                                    $.each(childData , function (i, cdData) {
-                                        var element = $("#"+template).html();
-                                        element = element.replace('{name}',cdData.name) ;
-                                        element = element.replace('{salabilityNumber}',cdData.salabilityNumber) ;
-                                        element = element.replace('{assessSalabilityNumber}',cdData.assessSalabilityNumber) ;
-                                        element = element.replace('{planIndex}',cdData.planIndex) ;
-                                        element = element.replace('{remark}',cdData.remark) ;
-                                        //确定写入位置
-                                        var childs = $(tr).treegrid('getChildNodes');
-                                        if (childs.length <= 0) {
-                                            $(tr).after(element) ;
+            var table = frm.find("table");
+            var tbody = table.find('tbody');
+            tbody.find("tr").each(function (i, tr) {
+                var dataKey = $(tr).attr('data-key');
+                var role = $(tr).attr('data-role');
+                var text = $(tr).find("td").first().text();
+                $.each(arrData, function (i, item) {
+                    if (item.customKey == dataKey && item.name == text) {
+                        $(tr).find("td").find("input[name='planIndex']").first().val(item.planIndex);
+                        $(tr).find("td").find("input[name='remark']").first().val(item.remark);
+                        $(tr).find("td").find("input[name='salabilityNumber']").first().val(item.salabilityNumber);
+                        $(tr).find("td").find("input[name='assessSalabilityNumber']").first().val(item.assessSalabilityNumber);
+                        if ($(tr).find("td").find("input[name='id']").size() != 0) {
+                            $(tr).find("td").find("input[name='id']").first().val(item.id);
+                        }
+                        if (commonDeclareApprovalModel.isNotBlank(item.childData)) {
+                            var childData = JSON.parse(item.childData);
+                            var template = item.customKey + 'Template';
+                            if (commonDeclareApprovalModel.isNotBlankObject(childData)) {
+                                $.each(childData, function (i, cdData) {
+                                    var element = $("#" + template).html();
+                                    element = element.replace('{name}', cdData.name);
+                                    element = element.replace('{salabilityNumber}', cdData.salabilityNumber);
+                                    element = element.replace('{assessSalabilityNumber}', cdData.assessSalabilityNumber);
+                                    element = element.replace('{planIndex}', cdData.planIndex);
+                                    element = element.replace('{remark}', cdData.remark);
+                                    //确定写入位置
+                                    var childs = $(tr).treegrid('getChildNodes');
+                                    if (childs.length <= 0) {
+                                        $(tr).after(element);
+                                    } else {
+                                        //如果最后一个子项下还有子项则在子项的子项后添加元素
+                                        var subChilds = $(childs.get(childs.length - 1)).treegrid('getChildNodes');
+                                        if (subChilds.length <= 0) {
+                                            $(childs.get(childs.length - 1)).after(element);
                                         } else {
-                                            //如果最后一个子项下还有子项则在子项的子项后添加元素
-                                            var subChilds = $(childs.get(childs.length - 1)).treegrid('getChildNodes');
-                                            if (subChilds.length <= 0) {
-                                                $(childs.get(childs.length - 1)).after(element);
-                                            } else {
-                                                $(subChilds.get(subChilds.length - 1)).after(element);
-                                            }
+                                            $(subChilds.get(subChilds.length - 1)).after(element);
                                         }
-                                        commonDeclareApprovalModel.declareEconomicIndicators.treeGirdParse(frm) ;
-                                    }) ;
-                                }
+                                    }
+                                    commonDeclareApprovalModel.declareEconomicIndicators.treeGirdParse(frm);
+                                });
                             }
                         }
                     }
-                }) ;
-            }) ;
+                });
+            });
         }
     } ;
 
@@ -1690,167 +1683,144 @@
 </script>
 
 <script type="text/html" id="declareEconomicIndicatorsModelCommonB" data-title="经济指标content 或者经济指标2">
+
     <table class="table tree" id="declareEconomicIndicatorsModelCommonBTree">
         <thead>
         <tr>
             <th>规划项目名称</th>
             <th>规划指标</th>
-            <th>可出售面积（㎡或车位个数）</th>
-            <th>评估出售面积（㎡或车位个数）</th>
+            <th>可出售面积</th>
+            <th>个数</th>
             <th>备注</th>
         </tr>
         </thead>
-
         <tbody>
-
         <tr class="treegrid-1" data-key="groundBuildingArea" data-title="地上计入容积率建筑面积" data-role="parent">
-            <td>一: 地上计入容积率建筑面积（㎡） </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
+            <td>一: 地上计入容积率建筑面积</td>
+            <td><input type="text" readonly="readonly" disabled="disabled" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input type="text" readonly="readonly" disabled="disabled" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input type="text" readonly="readonly" disabled="disabled" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input type="text" readonly="readonly" disabled="disabled" placeholder="备注" name="remark" style="width: 100px;"></td>
         </tr>
-        <tr class="treegrid-1-1 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-            <td> 住宅 </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
+        <tr class="treegrid-2" data-key="groundExcludBuildingArea" data-title="地上不计入容积率建筑面积" data-role="parent">
+            <td>二: 地上不计入容积率建筑面积</td>
+            <td><input type="text" readonly="readonly" disabled="disabled" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input type="text" readonly="readonly" disabled="disabled" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input type="text" readonly="readonly" disabled="disabled" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input type="text" readonly="readonly" disabled="disabled" placeholder="备注" name="remark" style="width: 100px;"></td>
         </tr>
-        <tr class="treegrid-1-2 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-            <td> 商业 </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-1-3 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-            <td> 办公 </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled"  name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-1-4 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-            <td> 宾馆 </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-1-5 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-            <td> 健身活动用房 </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-1-6 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
-            <td> 物管用房 </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
-        </tr>
-
-        <tr class="treegrid-2" data-key="groundExcludBuildingArea" data-title="地上计入容积率建筑面积" data-role="parent">
-            <td>二: 地上不计入容积率建筑面积（㎡） </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-2-1 treegrid-parent-2" data-key="groundExcludBuildingArea" data-role="child">
-            <td>业主活动用房</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-2-2 treegrid-parent-2" data-key="groundExcludBuildingArea" data-role="child">
-            <td>机动车停车位</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-2-3 treegrid-parent-2" data-key="groundExcludBuildingArea" data-role="child">
-            <td>机动车停车位个数</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled"  style="width: 100px;">  </td>
-        </tr>
-
         <tr class="treegrid-3" data-key="undergroundBuildingArea" data-title="地下建筑面积" data-role="parent">
-            <td>三: 地下建筑面积（㎡） </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
+            <td>三: 地下建筑面积</td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="备注" name="remark" style="width: 100px;"></td>
         </tr>
-        <tr class="treegrid-3-1 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-            <td>地下商业</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
+        <tr class="treegrid-4" data-key="undergroundIncludedBuildingArea" data-title="地下不计入建筑面积" data-role="parent">
+            <td>四: 地下不计入建筑面积</td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="备注" name="remark" style="width: 100px;"></td>
         </tr>
-        <tr class="treegrid-3-2 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-            <td>物业及休闲活动用房</td>
-            <td> <input type="text" readonly="readonly" disabled="disabled" name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled" name="remark"  style="width: 100px;">  </td>
+        <tr class="treegrid-5" data-key="otherBuildingArea" data-role="parent">
+            <td>五: 其他</td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="规划指标" name="planIndex" data-rule-number="true" style="width: 100px;">
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="可出售面积" name="salabilityNumber" data-rule-number="true"
+                       style="width: 100px;"> ㎡
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="个数" name="assessSalabilityNumber" data-rule-number="true"
+                       style="width: 100px;">
+            </td>
+            <td><input readonly="readonly" disabled="disabled" type="text" placeholder="备注" name="remark" style="width: 100px;"></td>
         </tr>
-        <tr class="treegrid-3-3 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-            <td>设备用房</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-3-4 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-            <td>非机动车停车位</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-3-5 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-            <td>机动车停车位</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="remark"  style="width: 100px;">  </td>
-        </tr>
-        <tr class="treegrid-3-6 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
-            <td>机动车停车位个数</td>
-            <td> <input type="text"   readonly="readonly" disabled="disabled"  name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text"   readonly="readonly" disabled="disabled"  name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"   readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="remark"  style="width: 100px;">  </td>
-        </tr>
-
-        <tr class="treegrid-4" data-key="otherBuildingArea"  data-role="parent">
-            <td>四:其他</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-            <td> <input type="text"  readonly="readonly" disabled="disabled"  name="remark"  style="width: 100px;">  </td>
-        </tr>
-
         </tbody>
     </table>
 </script>
-<!-- 其他（可自己定义具体名称）模板 -->
-<script type="text/html" id="otherBuildingAreaTemplate">
-    <tr class="dynamic treegrid-4-1 treegrid-parent-4"  data-key="otherBuildingArea"  data-role="child">
-        <td><input type="text" name="name" disabled="disabled"  readonly="readonly" value="{name}" style="width: 100px;"></td>
-        <td> <input type="text" value="{planIndex}"  readonly="readonly" disabled="disabled"  name="planIndex" data-rule-number="true" style="width: 100px;"> </td>
-        <td> <input type="text" value="{salabilityNumber}"  readonly="readonly" disabled="disabled"  name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-        <td> <input type="text" value="{assessSalabilityNumber}"  readonly="readonly" disabled="disabled"  name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡</td>
-        <td> <input type="text" value="{remark}"  readonly="readonly" disabled="disabled"  name="remark"  style="width: 100px;">  </td>
+<script type="text/html" id="otherBuildingAreaTemplate" data-title="其他（可自己定义具体名称）模板">
+    <tr class="dynamic treegrid-5-1 treegrid-parent-5" data-key="otherBuildingArea" data-role="child">
+        <td>
+            <input type="text" readonly="readonly" disabled="disabled" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{planIndex}" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{salabilityNumber}" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{assessSalabilityNumber}" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
+    </tr>
+</script>
+<script type="text/html" id="undergroundIncludedBuildingAreaTemplate" data-title="地下不计入建筑面积">
+    <tr class="dynamic treegrid-4-1 treegrid-parent-4" data-key="undergroundIncludedBuildingArea" data-role="child">
+        <td>
+            <input type="text" readonly="readonly" disabled="disabled" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{planIndex}" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{salabilityNumber}" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{assessSalabilityNumber}" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
+    </tr>
+</script>
+<script type="text/html" id="undergroundBuildingAreaTemplate" data-title="地下建筑面积">
+    <tr class="dynamic treegrid-3-1 treegrid-parent-3" data-key="undergroundBuildingArea" data-role="child">
+        <td>
+            <input type="text" readonly="readonly" disabled="disabled" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{planIndex}" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{salabilityNumber}" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{assessSalabilityNumber}" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
+    </tr>
+</script>
+<script type="text/html" id="groundExcludBuildingAreaTemplate" data-title="地上不计入容积率建筑面积">
+    <tr class="dynamic treegrid-2-1 treegrid-parent-2" data-key="groundExcludBuildingArea" data-role="child">
+        <td>
+            <input type="text" readonly="readonly" disabled="disabled" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{planIndex}" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{salabilityNumber}" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{assessSalabilityNumber}" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
+    </tr>
+</script>
+<script type="text/html" id="groundBuildingAreaTemplate" data-title="地上计入容积率建筑面积">
+    <tr class="dynamic treegrid-1-1 treegrid-parent-1" data-key="groundBuildingArea" data-role="child">
+        <td>
+            <input type="text" readonly="readonly" disabled="disabled" name="name" placeholder="名称" value="{name}" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{planIndex}" name="planIndex" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{salabilityNumber}" name="salabilityNumber" data-rule-number="true" style="width: 100px;"> ㎡
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{assessSalabilityNumber}" name="assessSalabilityNumber" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" readonly="readonly" disabled="disabled" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
     </tr>
 </script>
 <script type="text/html" id="declareEconomicIndicatorsModelCommonA" data-title="经济指标head 或者经济指标1">

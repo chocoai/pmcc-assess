@@ -243,6 +243,7 @@ declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators = function (id
                     }) ;
                 }) ;
             }else {
+                declareCommon.firstLoadChildDeclareEconomicIndicators(element2) ;
                 declareCommon.initDeclareEconomicIndicators($("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm),$("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm),{centerId: centerData.id} ,function () {
                     $('#' + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.box).modal("show");
                 }) ;

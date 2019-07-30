@@ -386,6 +386,13 @@ declareCommon.appendDeclareEconomicIndicators = function (eleA,eleB) {
     commonDeclareApplyModel.declareEconomicIndicators.treeGirdParse(eleB) ;
 } ;
 
+declareCommon.firstLoadChildDeclareEconomicIndicators = function (target , callback) {
+    commonDeclareApplyModel.declareEconomicIndicators.firstLoadChild(target) ;
+    if (callback){
+        callback() ;
+    }
+};
+
 declareCommon.appendDeclareEconomicIndicatorsApproval = function (eleA,eleB) {
     eleA.empty();
     eleB.empty();

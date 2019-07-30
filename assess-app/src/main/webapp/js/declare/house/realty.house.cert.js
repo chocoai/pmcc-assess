@@ -237,6 +237,7 @@ assessCommonHouse.showAddModelDeclareEconomicIndicators = function (id) {
                     }) ;
                 }) ;
             }else {
+                declareCommon.firstLoadChildDeclareEconomicIndicators(element2) ;
                 declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm),$("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm) ,{centerId: centerData.id} ,function () {
                     $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
                 }) ;

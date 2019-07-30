@@ -435,7 +435,7 @@ public class DeclareRealtyLandCertService {
             declareRecord.setUnit(oo.getUnit());
             declareRecord.setFloor(oo.getFloor());
             declareRecord.setRoomNumber(oo.getRoomNumber());
-            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getCertUse()));
+            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getCertUseCategory()));
             declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
             declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
             declareRecord.setFloorArea(oo.getUseRightArea());

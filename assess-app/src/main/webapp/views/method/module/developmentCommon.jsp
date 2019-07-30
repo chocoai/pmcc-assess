@@ -542,7 +542,7 @@
                         <td>项目名称</td>
                         <td>规划建筑面积（㎡）</td>
                         <td>总可售面积售价(万元)</td>
-                        <td>可售面积或个数售价(万元)</td>
+                        <td>可售面积</td>
                         <td>单位售价（元/㎡）</td>
                         <td>说明</td>
                     </tr>
@@ -915,7 +915,12 @@
             <td>  </td>
             <td>  </td>
         </tr>
-
+        <tr class="treegrid-5-1 treegrid-parent-5" data-key="secondInstallationProject" data-role="child">
+            <td> 二装工程 子项 </td>
+            <td> <input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
         </tbody>
 
         <tfoot>
@@ -1124,13 +1129,19 @@
             <td>  </td>
             <td>  </td>
         </tr>
+        <tr class="treegrid-5-1 treegrid-parent-5" data-key="secondInstallationProject" data-role="child">
+            <td> 二装工程 子项 </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly"  placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"> </td>
+            <td>  </td>
+        </tr>
 
         </tbody>
 
         <tfoot>
         <tr class="treegrid-99" data-key="architecturalEngineering"  data-role="parent">
             <td>合计 </td>
-            <td> <input type="text"  class="form-control" readonly="readonly" " name="totalPrice"> </td>
+            <td> <input type="text"  class="form-control" readonly="readonly" name="totalPrice"> </td>
         </tr>
         </tfoot>
     </table>
@@ -1272,7 +1283,10 @@
                 <td>二装工程</td>
                 <td>  </td>
             </tr>
-
+            <tr class="treegrid-5-1 treegrid-parent-5" data-key="secondInstallationProject" data-role="child">
+                <td> 二装工程 子项 </td>
+                <td> <input type="text" onblur="developmentCommon.architecturalA.totalResult(this)" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
+            </tr>
         </tbody>
 
         <tfoot>
@@ -1418,6 +1432,10 @@
         <tr class="treegrid-5" data-key="secondInstallationProject"  data-role="parent">
             <td>二装工程</td>
             <td>  </td>
+        </tr>
+        <tr class="treegrid-5-1 treegrid-parent-5" data-key="secondInstallationProject" data-role="child">
+            <td> 二装工程 子项 </td>
+            <td> <input type="text" class="form-control" readonly="readonly"  onblur="" placeholder="单价(数字)" name="price" data-rule-number="true" style="width: 100px;"> </td>
         </tr>
 
         </tbody>

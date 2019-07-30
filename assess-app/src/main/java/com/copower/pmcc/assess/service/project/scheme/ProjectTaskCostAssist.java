@@ -17,6 +17,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -119,13 +120,13 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         this.saveAndUpdate(projectPlanDetails, processInsId, formData);
     }
 
-    private void saveAndUpdate(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException{
+    private void saveAndUpdate(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
         schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
-        List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(schemeInfo) ;
+        List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(schemeInfo);
         JSONObject jsonObject = JSON.parseObject(formData);
         String type = (String) jsonObject.get("type");
         MdCost mdCost = new MdCost();
@@ -151,14 +152,14 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             mdCost.setType(type);
             mdMarketCostService.saveAndUpdateMdCost(mdCost);
         }
-        if (mdCostBuilding != null){
+        if (mdCostBuilding != null) {
             mdCostBuilding.setJsonContent(formData);
-            mdMarketCostService.saveAndUpdateMdCostBuilding(mdCostBuilding,mdCost) ;
+            mdMarketCostService.saveAndUpdateMdCostBuilding(mdCostBuilding, mdCost);
             mdCost.setPrice(mdCostBuilding.getAssessPrice());
         }
-        if (mdCostConstruction != null){
+        if (mdCostConstruction != null) {
             mdCostConstruction.setJsonContent(formData);
-            mdMarketCostService.saveAndUpdateMdCostConstruction(mdCostConstruction,mdCost);
+            mdMarketCostService.saveAndUpdateMdCostConstruction(mdCostConstruction, mdCost);
             mdCost.setPrice(mdCostConstruction.getConstructionAssessmentPriceCorrecting());
         }
 
@@ -166,14 +167,14 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             mdMarketCostService.saveAndUpdateMdCost(mdCost);
         }
 
-        if (CollectionUtils.isNotEmpty(schemeInfoList)){
-            for (SchemeInfo oo:schemeInfoList){
+        if (CollectionUtils.isNotEmpty(schemeInfoList)) {
+            for (SchemeInfo oo : schemeInfoList) {
                 oo.setMethodDataId(mdCost.getId());
-                oo.setProcessInsId(StringUtils.isNotEmpty(processInsId)?processInsId:"0");
+                oo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
                 schemeInfoService.saveSchemeInfo(oo);
             }
-        }else {
-            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId)?processInsId:"0");
+        } else {
+            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
             schemeInfo.setMethodDataId(mdCost.getId());
             schemeInfoService.saveSchemeInfo(schemeInfo);
         }
@@ -197,47 +198,12 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         MdCost mdCost = new MdCost();
         MdCostConstruction mdCostConstruction = new MdCostConstruction();
         MdCostBuilding mdCostBuilding = new MdCostBuilding();
-        DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter = new DeclareBuildEngineeringAndEquipmentCenter();
         DeclareEconomicIndicatorsHead declareEconomicIndicatorsHead = new DeclareEconomicIndicatorsHead();
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = Lists.newArrayList();
+        setViewBaseParam(projectPlanDetails, modelAndView, centerList);
         SchemeInfo select = new SchemeInfo();
         select.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.COST).getId());
         select.setPlanDetailsId(projectPlanDetails.getId());
-        if (projectPlanDetails.getJudgeObjectId() != null) {
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-            if (schemeJudgeObject != null) {
-                Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
-                if (areaGroupId != null) {
-                    SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
-                    if (schemeAreaGroup != null) {
-                        modelAndView.addObject(StringUtils.uncapitalize(SchemeAreaGroup.class.getSimpleName()), schemeAreaGroup);
-                        modelAndView.addObject("dataInfrastructureList", dataInfrastructureService.calculatingMethod(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict()));
-                    }
-                }
-                if (schemeJudgeObject.getDeclareRecordId() != null) {
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    if (declareRecord != null) {
-                        modelAndView.addObject(StringUtils.uncapitalize(DeclareRecord.class.getSimpleName()), declareRecord);
-                        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
-                            query.setType(DeclareRealtyHouseCert.class.getSimpleName());
-                            query.setHouseId(declareRecord.getDataTableId());
-                            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-                            if (CollectionUtils.isNotEmpty(centerList)) {
-                                declareBuildEngineeringAndEquipmentCenter = centerList.stream().findFirst().get();
-                            }
-                        }
-                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
-                            query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
-                            query.setRealEstateId(declareRecord.getDataTableId());
-                            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-                            if (CollectionUtils.isNotEmpty(centerList)) {
-                                declareBuildEngineeringAndEquipmentCenter = centerList.stream().findFirst().get();
-                            }
-                        }
-                    }
-                }
-            }
-        }
         List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(select);
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
             if (schemeInfoList.stream().anyMatch(oo -> oo.getMethodDataId() != null)) {
@@ -272,15 +238,55 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         if (mdCost != null) {
             modelAndView.addObject(StringUtils.uncapitalize(MdCost.class.getSimpleName()), mdCost);
         }
-        if (declareBuildEngineeringAndEquipmentCenter != null) {
-            modelAndView.addObject(StringUtils.uncapitalize(DeclareBuildEngineeringAndEquipmentCenter.class.getSimpleName()), declareBuildEngineeringAndEquipmentCenter);
-        }
-        if (declareBuildEngineeringAndEquipmentCenter != null && declareBuildEngineeringAndEquipmentCenter.getIndicatorId() != null) {
-            declareEconomicIndicatorsHead = declareEconomicIndicatorsHeadService.getByDeclareEconomicIndicatorsHeadId(declareBuildEngineeringAndEquipmentCenter.getIndicatorId());
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            modelAndView.addObject(StringUtils.uncapitalize(DeclareBuildEngineeringAndEquipmentCenter.class.getSimpleName()), centerList.get(0));
+            if (centerList.stream().anyMatch(oo -> oo.getIndicatorId() != null)) {
+                declareEconomicIndicatorsHead = declareEconomicIndicatorsHeadService.getByDeclareEconomicIndicatorsHeadId(centerList.stream().filter(oo -> oo.getIndicatorId() != null).findFirst().get().getIndicatorId());
+            }
         }
         if (declareEconomicIndicatorsHead != null) {
             modelAndView.addObject(StringUtils.uncapitalize(DeclareEconomicIndicatorsHead.class.getSimpleName()), declareEconomicIndicatorsHead);
         }
+    }
+
+    private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, List<DeclareBuildEngineeringAndEquipmentCenter> buildEngineeringAndEquipmentCenterList) {
+        if (projectPlanDetails.getJudgeObjectId() != null) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+            if (schemeJudgeObject != null) {
+                Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
+                if (areaGroupId != null) {
+                    SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
+                    if (schemeAreaGroup != null) {
+                        modelAndView.addObject(StringUtils.uncapitalize(SchemeAreaGroup.class.getSimpleName()), schemeAreaGroup);
+                        modelAndView.addObject("dataInfrastructureList", dataInfrastructureService.calculatingMethod(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict()));
+                    }
+                }
+                if (schemeJudgeObject.getDeclareRecordId() != null) {
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                    if (declareRecord != null) {
+                        modelAndView.addObject(StringUtils.uncapitalize(DeclareRecord.class.getSimpleName()), declareRecord);
+                        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
+                            query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+                            query.setHouseId(declareRecord.getDataTableId());
+                            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                            if (CollectionUtils.isNotEmpty(centerList)) {
+                                buildEngineeringAndEquipmentCenterList.addAll(centerList);
+                            }
+                        }
+                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
+                            query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+                            query.setRealEstateId(declareRecord.getDataTableId());
+                            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                            if (CollectionUtils.isNotEmpty(centerList)) {
+                                buildEngineeringAndEquipmentCenterList.addAll(centerList);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
     }
