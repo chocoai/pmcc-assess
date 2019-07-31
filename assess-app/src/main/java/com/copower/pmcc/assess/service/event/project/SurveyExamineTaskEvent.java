@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,12 @@ public class SurveyExamineTaskEvent extends ProjectTaskEvent {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processExecution.getProcessInstanceId());
         //更新各项表单任务状态
         surveyCommonService.updateExamineTaskStatus(projectPlanDetails.getPid(), commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
+
+        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
+        if(planDetails!=null){
+            planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
+            projectPlanDetailsService.updateProjectPlanDetails(planDetails); //更新父级案例信息状态为完成
+        }
         super.processFinishExecute(processExecution);
     }
 }
