@@ -93,6 +93,10 @@
                                         onclick="dataBuilder.prototype.loadDataDicList()">
                                     查询
                                 </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="dataBuilder.prototype.getOldData()">
+                                    获取两年前数据
+                                </button>
 
                             </div>
                         </div>
@@ -174,8 +178,28 @@
             if(row.sourceSiteUrl) {
                 window.open(row.sourceSiteUrl, "");
             }
-        }
+        },
+        getOldData : function () {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/netInfoRecordController/getOldData",
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('获取数据成功');
+                }
+                else {
+                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
+    }
+
+
 
 </script>
 

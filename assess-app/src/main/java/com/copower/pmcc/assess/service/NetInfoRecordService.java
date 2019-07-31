@@ -47,8 +47,6 @@ public class NetInfoRecordService {
 
     //抓取数据
     public void climbingData() {
-        //来源淘宝网
-        this.getNetInfoFromTB();
         //来源京东司法
         this.getNetInfoFromJDSF();
         //来源京东资产
@@ -63,6 +61,8 @@ public class NetInfoRecordService {
         this.getNetInfoFromGGZYYA();
         //公共资源交易平台-成都
         this.getNetInfoFromGGZYCD();
+        //来源淘宝网
+        this.getNetInfoFromTB();
     }
 
     //来源淘宝网
