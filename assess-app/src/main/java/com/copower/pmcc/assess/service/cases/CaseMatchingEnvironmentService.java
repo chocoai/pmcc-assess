@@ -75,6 +75,7 @@ public class CaseMatchingEnvironmentService {
         vo.setTypeName(baseDataDicService.getNameById(NumberUtils.isNumber(caseMatchingEnvironment.getType()) ? Integer.parseInt(caseMatchingEnvironment.getType()) : null));
         vo.setCategoryName(baseDataDicService.getNameById(caseMatchingEnvironment.getCategory()));
         vo.setInfluenceDegreeName(baseDataDicService.getNameById(caseMatchingEnvironment.getInfluenceDegree()));
+        vo.setHumanImpactName(baseDataDicService.getNameById(caseMatchingEnvironment.getHumanImpact()));
         return vo;
     }
 

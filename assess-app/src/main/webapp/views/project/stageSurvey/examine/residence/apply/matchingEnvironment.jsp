@@ -79,13 +79,8 @@
                                             影响结论<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <select required="required" name="humanImpact" onchange="" class="form-control  ">
-                                                <option value="0">不确定</option>
-                                                <option value="1">差</option>
-                                                <option value="2">较差</option>
-                                                <option value="3">一般</option>
-                                                <option value="4">好</option>
-                                                <option value="5">非常好</option>
+                                            <select name="humanImpact"
+                                                    class="form-control search-select select2 humanImpact">
                                             </select>
                                         </div>
                                     </div>

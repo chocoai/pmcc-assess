@@ -12,6 +12,8 @@ public class CaseMatchingEnvironmentVo extends CaseMatchingEnvironment {
 
     private String categoryName;
 
+    private String humanImpactName;
+
     private String influenceDegreeName;
 
     public String getTypeName() {
@@ -36,5 +38,13 @@ public class CaseMatchingEnvironmentVo extends CaseMatchingEnvironment {
 
     public void setInfluenceDegreeName(String influenceDegreeName) {
         this.influenceDegreeName = influenceDegreeName;
+    }
+
+    public String getHumanImpactName() {
+        return humanImpactName;
+    }
+
+    public void setHumanImpactName(String humanImpactName) {
+        this.humanImpactName = humanImpactName;
     }
 }
