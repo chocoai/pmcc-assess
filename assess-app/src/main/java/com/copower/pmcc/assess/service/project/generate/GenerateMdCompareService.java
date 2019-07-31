@@ -409,7 +409,7 @@ public class GenerateMdCompareService {
                     }
                 }
                 if(isIndex){
-                    builder.write(df.format(scoreTotal.divide(num)));
+                    builder.write(df.format(scoreTotal.divide(num,2, BigDecimal.ROUND_HALF_UP)));
                 }else {
                     builder.write(content.toString());
                 }
@@ -443,7 +443,7 @@ public class GenerateMdCompareService {
                     }
                 }
                 if(isIndex){
-                    builder.write(df.format(scoreTotal.divide(num)));
+                    builder.write(df.format(scoreTotal.divide(num,2, BigDecimal.ROUND_HALF_UP)));
                 }else {
                     content.deleteCharAt(content.length()-1).toString();
                     builder.write(content.toString());
@@ -472,7 +472,7 @@ public class GenerateMdCompareService {
                     }
                 }
                 if(isIndex){
-                    builder.write(df.format(scoreTotal.divide(num)));
+                    builder.write(df.format(scoreTotal.divide(num,2, BigDecimal.ROUND_HALF_UP)));
                 }else {
                     builder.write(content.toString());
                 }
@@ -500,7 +500,7 @@ public class GenerateMdCompareService {
                     }
                 }
                 if(isIndex){
-                    builder.write(df.format(scoreTotal.divide(num)));
+                    builder.write(df.format(scoreTotal.divide(num,2, BigDecimal.ROUND_HALF_UP)));
                 }else {
                     builder.write(content.toString());
                 }
@@ -529,7 +529,7 @@ public class GenerateMdCompareService {
                     }
                 }
                 if(isIndex){
-                    builder.write(df.format(scoreTotal.divide(num)));
+                    builder.write(df.format(scoreTotal.divide(num,2, BigDecimal.ROUND_HALF_UP)));
                 }else {
                     builder.write(content.toString());
                 }
@@ -560,7 +560,7 @@ public class GenerateMdCompareService {
                     }
                 }
                 if(isIndex){
-                    builder.write(df.format(scoreTotal.divide(num)));
+                    builder.write(df.format(scoreTotal.divide(num,2, BigDecimal.ROUND_HALF_UP)));
                 }else {
                     builder.write(content.toString());
                 }
