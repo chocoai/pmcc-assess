@@ -136,21 +136,8 @@ public class BasicMatchingEnvironmentService {
         vo.setTypeName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEnvironment.getType()) ? Integer.parseInt(basicMatchingEnvironment.getType()) : null));
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingEnvironment.getCategory()));
         vo.setInfluenceDegreeName(baseDataDicService.getNameById(basicMatchingEnvironment.getInfluenceDegree()));
-        final List<KeyValueDto> keyValueDtos = Lists.newArrayList(
-                new KeyValueDto("0", "不确定"),
-                new KeyValueDto("1", "差"),
-                new KeyValueDto("2", "较差"),
-                new KeyValueDto("3", "一般"),
-                new KeyValueDto("4", "好"),
-                new KeyValueDto("5", "非常好")
-        );
-        if (StringUtils.isNotBlank(basicMatchingEnvironment.getHumanImpact())){
-            keyValueDtos.forEach(keyValueDto -> {
-                if (Objects.equal(keyValueDto.getKey(),basicMatchingEnvironment.getHumanImpact())){
-                    vo.setHumanImpact(keyValueDto.getValue());
-                }
-            });
-        }
+        vo.setHumanImpactName(baseDataDicService.getNameById(basicMatchingEnvironment.getHumanImpact()));
+
         return vo;
     }
 

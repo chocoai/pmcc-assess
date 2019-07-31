@@ -349,7 +349,7 @@
                 type: 'post',
                 success: function (result) {
                     if (result) {
-                        if (result.data <= 5) {
+                        if (result.data <= 30) {
                             $("#showZtree"+ that.attr('plan-id')).hide();
                             projectDetails.loadTaskList({
                                 target: $('#plan_task_list' + that.attr('plan-id')),

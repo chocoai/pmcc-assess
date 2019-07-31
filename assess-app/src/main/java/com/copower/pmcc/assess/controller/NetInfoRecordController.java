@@ -3,10 +3,13 @@ package com.copower.pmcc.assess.controller;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +41,8 @@ public class NetInfoRecordController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private NetInfoRecordService netInfoRecordService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
@@ -72,4 +77,14 @@ public class NetInfoRecordController {
         return bootstrapTableVo;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getOldData", name = "获取前两年数据", method = RequestMethod.POST)
+    public HttpResult getOldData() {
+        try {
+            netInfoRecordService.climbingData();
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }

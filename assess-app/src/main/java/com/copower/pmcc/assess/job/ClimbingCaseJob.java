@@ -43,7 +43,7 @@ public class ClimbingCaseJob {
         logger.info("----ClimbingCaseJob, start---------");
 
         //抓取数据
-        netInfoRecordService.climbingData();
+        //netInfoRecordService.climbingData();
 
         logger.info("----ClimbingCaseJob, end---------");
     }

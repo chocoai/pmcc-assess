@@ -144,8 +144,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             //修改监听器
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyExamineTaskEvent.class.getSimpleName());
             planDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-            //更新父级案例信息状态为运行中
-            projectPlanDetailsService.updateProjectPlanDetails(planDetails);
+            projectPlanDetailsService.updateProjectPlanDetails(planDetails); //更新父级案例信息状态为运行中
         }
     }
 

@@ -124,33 +124,8 @@
 
     var taskCaseIndex = {};
 
-    //检查是否添加任务
     taskCaseIndex.checkAssignmentTask = function (mustUseBox) {
         submit(mustUseBox);
-        //先不做任务检查
-        <%--Loading.progressShow();--%>
-        <%--$.ajax({--%>
-        <%--url: "${pageContext.request.contextPath}/surveyCaseStudy/checkAssignmentTask",--%>
-        <%--data: {--%>
-        <%--planDetailsId: "${projectPlanDetails.id}"--%>
-        <%--},--%>
-        <%--type: "post",--%>
-        <%--dataType: "json",--%>
-        <%--success: function (result) {--%>
-        <%--Loading.progressHide();--%>
-        <%--console.log("=====");--%>
-        <%--console.log(result.data + "=====");--%>
-        <%--if (result.data) {--%>
-        <%--submit(mustUseBox);--%>
-        <%--$('#plan_details_modal').modal('hide');--%>
-        <%--} else {--%>
-        <%--Alert("请添加一条任务");--%>
-        <%--}--%>
-        <%--},--%>
-        <%--error: function (result) {--%>
-        <%--Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);--%>
-        <%--}--%>
-        <%--});--%>
     };
 
     //加载案例数据
@@ -500,86 +475,6 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-
-    </div>
-
-    <%--这部分功能暂不开放 1--%>
-    <div style="display:none;">
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                    开始时间
-                </label>
-                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                    <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
-                           id="planStartDate" name="planStartDate"
-                           class="form-control dbdate">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                    结束时间
-                </label>
-                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                    <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
-                           id="planEndDate" name="planEndDate"
-                           class="form-control dbdate">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                责任人
-            </label>
-            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                <input type="hidden" placeholder="责任人" maxlength="50"
-                       id="executeUserAccount"
-                       name="executeUserAccount" class="form-control">
-                <input type="text" placeholder="责任人" maxlength="50" id="executeUserName"
-                       name="executeUserName" class="form-control" readonly="readonly"
-                       onclick="taskCaseIndex.selectEmployee()">
-            </div>
-            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                责任部门
-            </label>
-            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                <input type="hidden" placeholder="责任部门" maxlength="50"
-                       id="executeDepartmentId"
-                       name="executeDepartmentId" class="form-control">
-                <input type="text" placeholder="责任部门" maxlength="50"
-                       id="executeDepartmentName"
-                       name="executeDepartmentName" class="form-control"
-                       onclick="taskCaseIndex.selectDepartment()"
-                       readonly="readonly">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                    计划工时
-                </label>
-                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                    <input type="text" placeholder="计划工时" data-rule-number='true'
-                           maxlength="5"
-                           id="planHours" name="planHours"
-                           class="form-control">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                    权重占比
-                </label>
-                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                    <input type="text" placeholder="权重占比" data-rule-number='true'
-                           maxlength="5"
-                           id="proportion" name="proportion"
-                           class="form-control">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- . -->
 </script>
 
 </html>

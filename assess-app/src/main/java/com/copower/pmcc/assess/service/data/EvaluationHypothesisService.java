@@ -206,7 +206,7 @@ public class EvaluationHypothesisService {
         if (CollectionUtils.isEmpty(hypothesisList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy年MM月dd日");
         //对应委估对象
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
         Integer order = 0;
@@ -533,7 +533,11 @@ public class EvaluationHypothesisService {
                     }
                     //转让限制
                     if (StringUtils.isNotBlank(surveyAssetInventory.getTransferLimit())) {
-                        limitContent.append(generateCommonMethod.convertNumber(Lists.newArrayList(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
+                        if (judgeObjectList.size() == 1) {
+                            limitContent.append("委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
+                        } else {
+                            limitContent.append(generateCommonMethod.convertNumber(Lists.newArrayList(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
+                        }
                     } else {
                         limit.append(judgeObject.getNumber()).append(",");
                     }
@@ -551,17 +555,18 @@ public class EvaluationHypothesisService {
                     String number = getSubstitutionPrincipleName(havePledge.toString());
                     content.append(number).append("委估对象").append(pledgeRemark).append(";");
                 } else {
-                    content.append("所有委估对象无抵押。");
+                    content.append(judgeObjectList.size() == 1 ? "委估对象无抵押。" : "所有委估对象无抵押。");
                 }
                 if (StringUtils.isNotBlank(noPledge) && StringUtils.isNotBlank(havePledge)) {
                     String number = getSubstitutionPrincipleName(noPledge.toString());
-                    content.append(number).append("所有委估对象无抵押。");
+                    content.append(number).append("委估对象无抵押。");
                 }
                 if (StringUtils.isNotBlank(haveOther)) {
                     String number = getSubstitutionPrincipleName(haveOther.toString());
                     content.append(number).append("委估对象").append(otherRemark).append(";");
                 } else {
-                    content.append("所有委估对象无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷。");
+                    content.append(judgeObjectList.size() == 1 ? "委估对象无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷。" :
+                            "所有委估对象无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷。");
                 }
                 if (StringUtils.isNotBlank(noOther) && StringUtils.isNotBlank(haveOther)) {
                     String number = getSubstitutionPrincipleName(noOther.toString());

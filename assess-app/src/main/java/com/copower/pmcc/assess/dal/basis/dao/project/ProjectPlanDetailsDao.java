@@ -169,7 +169,7 @@ public class ProjectPlanDetailsDao {
 
     public Integer getTotalPlans(Integer planId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andPlanIdEqualTo(planId).andPidGreaterThan(0);
+        example.createCriteria().andPlanIdEqualTo(planId);
         return projectPlanDetailsMapper.countByExample(example);
     }
 }

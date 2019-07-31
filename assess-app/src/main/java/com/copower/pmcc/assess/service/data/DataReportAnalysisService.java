@@ -328,7 +328,7 @@ public class DataReportAnalysisService {
             return "";
         }
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
-        if (CollectionUtils.isEmpty(reportAnalysisList)){
+        if (CollectionUtils.isEmpty(reportAnalysisList)) {
             return "";
         }
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);//区域下委估对象
@@ -411,7 +411,8 @@ public class DataReportAnalysisService {
             builder.append(erpAreaService.getSysAreaName(basicEstate.getDistrict())).append(basicEstate.getBlockName());
             if (basicEstate.getBlockId() != null) {
                 DataBlock block = dataBlockService.getDataBlockById(basicEstate.getBlockId());
-                builder.append(block.getRemark());
+                if (block != null)
+                    builder.append(block.getRemark());
             }
             entry.getValue().forEach(o -> resultMap.put(generateCommonMethod.parseIntJudgeNumber(o.getNumber()), builder.toString()));
         }

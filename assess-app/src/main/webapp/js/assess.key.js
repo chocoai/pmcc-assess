@@ -143,6 +143,7 @@ AssessDicKey.estate_school_gradation = "estate.school.gradation";//学校级次
 AssessDicKey.estate_school_level = "estate.school.level";//学校等级
 AssessDicKey.estate_environment_category = "estate.environment.category";//影响因素
 AssessDicKey.estate_environment_type = "estate.environment.type";//环境类型
+AssessDicKey.estate_environment_result = "estate.environment.result";//影响结论
 AssessDicKey.estate_environment_influence_degree = "estate.environment.Influence.degree";//影响程度
 AssessDicKey.estate_finance_service_content = "estate.finance.service.content";//服务类别
 AssessDicKey.estate_finance_nature = "estate.finance.nature";//金融机构性质

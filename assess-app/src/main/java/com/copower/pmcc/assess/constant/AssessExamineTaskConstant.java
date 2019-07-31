@@ -14,7 +14,7 @@ public class AssessExamineTaskConstant {
     public static final String FC_RESIDENCE = "fc.residence";//房产——住宅商业办公
     public static final String FC_INDUSTRY = "fc.industry";//房产——工业仓储
     public static final String FC_STRUCTURE = "fc.structure";//房产——构筑物
-    public static final String FC_CONSTRUCTION_IN_PROGRESS = "fc.construction.in.progress";//房产——在建工程
+    public static final String FC_CIP = "fc.construction.in.progress";//房产——在建工程
 
     public static final String BLOCK = "block";//版块
     public static final String ESTATE = "estate";//楼盘
