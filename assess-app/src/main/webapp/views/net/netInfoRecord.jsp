@@ -121,7 +121,7 @@
             provinceTarget: $("#province"),
             cityTarget: $("#city"),
             districtTarget: $("#district"),
-            provinceValue:'',
+            provinceValue: '',
             cityValue: '',
             districtValue: ''
         })
@@ -137,12 +137,12 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'title',title: '标题', width: '20%'});
+            cols.push({field: 'title', title: '标题', width: '20%'});
             cols.push({field: 'province', title: '省', width: '10%'});
             cols.push({field: 'city', title: '市', width: '10%'});
             cols.push({field: 'sourceSiteName', title: '来源网站', width: '20%'});
             cols.push({
-                field: 'gmtCreated', title: '抓取时间',width: '10%', formatter: function (value, row, index) {
+                field: 'gmtCreated', title: '抓取时间', width: '10%', formatter: function (value, row, index) {
                     return formatDate(row.gmtCreated, false);
                 }
             });
@@ -150,7 +150,7 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看详情" onclick="dataBuilder.prototype.openItem('  + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看详情" onclick="dataBuilder.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -172,33 +172,34 @@
                 }
             });
         },
-        openItem:function (index) {
+        openItem: function (index) {
             var row = $("#transaction_List").bootstrapTable('getData')[index];
             console.log(row);
-            if(row.sourceSiteUrl) {
+            if (row.sourceSiteUrl) {
                 window.open(row.sourceSiteUrl, "");
             }
         },
-        getOldData : function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/netInfoRecordController/getOldData",
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('获取数据成功');
+        getOldData: function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/netInfoRecordController/getOldData",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        Loading.progressHide();
+                        toastr.success('获取数据成功');
+                    }
+                    else {
+                        Alert("获取数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-                else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+            })
+        }
     }
-    }
-
 
 
 </script>
