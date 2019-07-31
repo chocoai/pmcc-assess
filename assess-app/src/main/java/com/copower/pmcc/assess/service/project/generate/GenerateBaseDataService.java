@@ -841,17 +841,17 @@ public class GenerateBaseDataService {
                 break;
                 case LandCertificateField3: {
                     String value = null;
-                    if (declareRealtyLandCert.getCertUse() != null) {
-                        value = baseDataDicService.getNameById(declareRealtyLandCert.getCertUse());
+                    if (declareRealtyLandCert.getCertUseCategory() != null) {
+                        value = baseDataDicService.getNameById(declareRealtyLandCert.getCertUseCategory());
                     }
                     if (StringUtils.isEmpty(value)) {
-                        if (declareRealtyRealEstateCert.getLandCertUse() != null) {
-                            value = baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUse());
+                        if (declareRealtyRealEstateCert.getLandCertUseCategory() != null) {
+                            value = baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory());
                         }
                     }
                     if (StringUtils.isEmpty(value)) {
-                        if (declareRealtyHouseCert.getCertUse() != null) {
-                            value = baseDataDicService.getNameById(declareRealtyHouseCert.getCertUse());
+                        if (declareRealtyHouseCert.getCertUseCategory() != null) {
+                            value = baseDataDicService.getNameById(declareRealtyHouseCert.getCertUseCategory());
                         }
                     }
                     if (StringUtils.isNotEmpty(value)) {
