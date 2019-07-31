@@ -295,11 +295,11 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setUnit(oo.getUnit());
             declareRecord.setFloor(oo.getFloor());
             declareRecord.setRoomNumber(oo.getRoomNumber());
-            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getHouseCertUse()));
+            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getHouseCertUseCategory()));
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setHousingStructure(oo.getHousingStructure());
             declareRecord.setNature(baseDataDicService.getNameById(oo.getNature()));
-            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getLandCertUse()));
+            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getLandCertUseCategory()));
             declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
             declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
