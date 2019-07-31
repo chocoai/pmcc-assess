@@ -14,7 +14,7 @@
                 勘察设计和前期工程费率<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label class="form-control">${mdDevelopment.f20}</label>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                 建筑安装工程费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <div class="input-group">
                         <label class="form-control">${mdDevelopment.f21}</label>
                         <span class="input-group-btn">
@@ -42,19 +42,28 @@
                 基础设施配套费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label class="form-control">${mdDevelopment.f22}</label>
                 </div>
             </div>
         </div>
 
+
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                公共配套设施建设费<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <label class="col-sm-1 control-label">
+                    公共配套设施建设费<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
                     <label class="form-control">${mdDevelopment.f23}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.f23Explain}</label>
                 </div>
             </div>
         </div>
@@ -64,7 +73,7 @@
                 开发期间税费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label class="form-control">${mdDevelopment.f24}</label>
                 </div>
             </div>
@@ -75,7 +84,7 @@
                 其它工程费率<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label class="form-control">${mdDevelopment.f25}</label>
                 </div>
             </div>
@@ -86,8 +95,17 @@
                 不可预见费率<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label class="form-control">${mdDevelopment.f27}</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <div class="col-sm-12">
+                    <table class="table table-bordered" id="underConstructionMdDevelopmentInfrastructureChildrenTable">
+
+                    </table>
                 </div>
             </div>
         </div>
@@ -529,6 +547,25 @@
         }) ;
         target.modal("show");
     }
+
+
+    function loadMdDevelopmentInfrastructureChildrenTable() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'number', title: '金额'});
+        cols.push({field: 'tax', title: '税费'});
+        $("#underConstructionMdDevelopmentInfrastructureChildrenTable").bootstrapTable('destroy');
+        TableInit('underConstructionMdDevelopmentInfrastructureChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdDevelopment.id}&planDetailsId=${mdDevelopment.planDetailsId}&type=engineering", cols, {}, {
+            showColumns: true,
+            showRefresh: true,
+            search: false
+        });
+    }
+
+
+    $(function () {
+        loadMdDevelopmentInfrastructureChildrenTable() ;
+    });
 </script>
 
 

@@ -79,11 +79,11 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_basic_building" domainObjectName="BasicBuilding">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_basic_building" domainObjectName="BasicBuilding">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_basic_building_property_service_item" domainObjectName="BasicBuildingPropertyServiceItem">
+        <table tableName="tb_md_development_infrastructure_children" domainObjectName="MdDevelopmentInfrastructureChildren">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

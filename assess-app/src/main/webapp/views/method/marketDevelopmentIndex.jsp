@@ -365,6 +365,9 @@
             //开启编辑
             developmentCommon.parameter.editableInit();
         }
+
+        landEngineering.loadMdDevelopmentInfrastructureChildrenTable() ;
+        underConstruction.loadMdDevelopmentInfrastructureChildrenTable() ;
     };
 
     $(document).ready(function () {

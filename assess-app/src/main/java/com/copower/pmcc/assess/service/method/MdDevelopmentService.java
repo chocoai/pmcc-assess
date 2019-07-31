@@ -3,8 +3,6 @@ package com.copower.pmcc.assess.service.method;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentEngineeringDao;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -33,11 +31,9 @@ public class MdDevelopmentService {
     @Autowired
     private MdDevelopmentDao mdDevelopmentDao;
     @Autowired
-    private MdDevelopmentLandDao mdDevelopmentLandDao;
-    @Autowired
-    private MdDevelopmentEngineeringDao mdDevelopmentEngineeringDao;
-    @Autowired
     private MdArchitecturalObjService mdArchitecturalObjService;
+    @Autowired
+    private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public MdDevelopment initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -51,14 +47,6 @@ public class MdDevelopmentService {
 
     public MdDevelopment getMdDevelopmentById(Integer id) {
         return mdDevelopmentDao.getMdDevelopmentById(id);
-    }
-
-    public MdDevelopmentEngineering getByMdDevelopmentEngineeringId(Integer id) {
-        return mdDevelopmentEngineeringDao.getByMdDevelopmentEngineeringId(id);
-    }
-
-    public MdDevelopmentLand getByMdDevelopmentLandId(Integer id) {
-        return mdDevelopmentLandDao.getByMdDevelopmentLandId(id);
     }
 
     public void saveAndUpdateMdDevelopment(MdDevelopment oo) {
@@ -79,33 +67,16 @@ public class MdDevelopmentService {
                 mdArchitecturalObjService.saveMdArchitecturalObj(po) ;
             }
         }
-    }
-
-
-    public List<MdDevelopmentEngineering> getMdDevelopmentEngineeringList(MdDevelopmentEngineering oo) {
-        return mdDevelopmentEngineeringDao.getMdDevelopmentEngineeringList(oo);
-    }
-
-    public void saveAndUpdateMdDevelopmentEngineering(MdDevelopmentEngineering oo) {
-        if (oo.getId() == null || oo.getId() == 0) {
-            oo.setCreator(commonService.thisUserAccount());
-            mdDevelopmentEngineeringDao.addMdDevelopmentEngineering(oo);
-        } else {
-            mdDevelopmentEngineeringDao.updateMdDevelopmentEngineering(oo);
+        MdDevelopmentInfrastructureChildren infrastructureChildren = new MdDevelopmentInfrastructureChildren();
+        infrastructureChildren.setPlanDetailsId(oo.getPlanDetailsId());
+        infrastructureChildren.setPid(0);
+        List<MdDevelopmentInfrastructureChildren> childrenList = mdDevelopmentInfrastructureChildrenService.getMdDevelopmentInfrastructureChildrenListByExample(infrastructureChildren) ;
+        if (CollectionUtils.isNotEmpty(childrenList)){
+            for (MdDevelopmentInfrastructureChildren po:childrenList){
+                po.setPid(oo.getId());
+                mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(po) ;
+            }
         }
-    }
-
-    public void saveAndUpdateMdDevelopmentLand(MdDevelopmentLand oo) {
-        if (oo.getId() == null || oo.getId() == 0) {
-            oo.setCreator(commonService.thisUserAccount());
-            mdDevelopmentLandDao.addMdDevelopmentLand(oo);
-        } else {
-            mdDevelopmentLandDao.updateMdDevelopmentLand(oo);
-        }
-    }
-
-    public List<MdDevelopmentLand> getMdDevelopmentLandList(MdDevelopmentLand mdDevelopmentLand) {
-        return mdDevelopmentLandDao.getMdDevelopmentLandList(mdDevelopmentLand);
     }
 
     public MdDevelopmentVo getMdDevelopmentVo(MdDevelopment mdDevelopment, boolean format) {
@@ -133,6 +104,9 @@ public class MdDevelopmentService {
                 }
                 if (jsonObject.get("f23") != null) {
                     vo.setF23((String) jsonObject.get("f23"));
+                }
+                if (jsonObject.get("f23Explain") != null) {
+                    vo.setF23Explain((String) jsonObject.get("f23Explain"));
                 }
                 if (jsonObject.get("f24") != null) {
                     vo.setF24((String) jsonObject.get("f24"));

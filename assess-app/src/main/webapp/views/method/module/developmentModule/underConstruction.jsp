@@ -62,46 +62,59 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="f22"
-                            class="form-control search-select select2" required="required" onchange="underConstruction.calculationD22(this)">
-                        <option>请选择</option>
-                        <option value="10">2009-2032  金额 10</option>
-                        <c:forEach items="${dataInfrastructureList}" var="item">
-                            <c:if test="${item.infrastructureSupportingFacilities != 0}">
-                                <c:if test="${mdDevelopment.f22 != item.infrastructureSupportingFacilities}">
-                                    <option value="${item.infrastructureSupportingFacilities}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
-                                </c:if>
-                                <c:if test="${mdDevelopment.f22 == item.infrastructureSupportingFacilities}">
-                                    <option value="${item.infrastructureSupportingFacilities}" selected="selected">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
-                                </c:if>
-                            </c:if>
-                        </c:forEach>
-                    </select>
+                    <input type="text" required="required" readonly="readonly"
+                           placeholder="基础设施配套费"  class="form-control"
+                           name="f22" onblur="checkParams(this);underConstruction.calculationD22(this)" value="${mdDevelopment.f22}">
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                公共配套设施建设费<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
+                <div class="col-sm-12">
+                    <div id="toolbarConstructionMdDevelopmentInfrastructureChildrenTable" style="display: none">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="underConstruction.deleteMdDevelopmentInfrastructureChildrenTable('#underConstructionMdDevelopmentInfrastructureChildrenTable')">删除</button>
+                            <button type="button" class="btn btn-primary" onclick="underConstruction.editMdDevelopmentInfrastructureChildrenTable('#underConstructionMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',true)">编辑</button>
+                            <button type="button" class="btn btn-primary" onclick="underConstruction.editMdDevelopmentInfrastructureChildrenTable('#underConstructionMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',false)">添加</button>
+                        </div>
+                    </div>
+                    <table class="table table-bordered" id="underConstructionMdDevelopmentInfrastructureChildrenTable">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    公共配套设施建设费<span class="symbol required"></span>
+                </label>
+                <div class="x-valid">
+                    <div class="col-sm-3">
+                        <input type="text" required="required"
+                               placeholder="公共配套设施建设费"  class="form-control"
+                               name="f23" onblur="checkParams(this);underConstruction.calculationD23(this)" value="${mdDevelopment.f23}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
                 <div class="col-sm-3">
-                    <select name="f23"
-                            class="form-control search-select select2 " required="required" onchange="underConstruction.calculationD23(this)">
-                        <option>请选择</option>
-                        <option value="10">2009-2032  金额 10</option>
-                        <c:forEach items="${dataInfrastructureList}" var="item">
-                            <c:if test="${item.communalFacilities != 0}">
-                                <c:if test="${mdDevelopment.f23 != item.communalFacilities}">
-                                    <option value="${item.communalFacilities}">${item.timeSlot} 金额:${item.communalFacilities}</option>
-                                </c:if>
-                                <c:if test="${mdDevelopment.f23 == item.communalFacilities}">
-                                    <option value="${item.communalFacilities}" selected="selected">${item.timeSlot} 金额:${item.communalFacilities}</option>
-                                </c:if>
-                            </c:if>
-                        </c:forEach>
-                    </select>
+                    <c:if test="${empty mdDevelopment.f23Explain}">
+                        <input type="text"
+                               placeholder="说明" class="form-control"
+                               name="f23Explain" value="医疗卫生、文化体育、教育、社区服务">
+                    </c:if>
+                    <c:if test="${!empty mdDevelopment.f23Explain}">
+                        <input type="text"
+                               placeholder="说明" class="form-control"
+                               name="f23Explain" value="${mdDevelopment.f23Explain}">
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -110,10 +123,15 @@
             <label class="col-sm-1 control-label">
                 开发期间税费<span class="symbol required"></span>
             </label>
-            <div class="x-valid">
-                <div class="col-sm-3">
-                    <select name="f24"
-                            class="form-control search-select select2 " required="required" onchange="underConstruction.calculationD24()">
+            <div class="col-sm-3">
+                <div class="input-group">
+                    <input type="text" required="required"
+                           placeholder="开发期间税费"  class="form-control"
+                           name="f24" onblur="checkParams(this);underConstruction.calculationD24(this)" value="${mdDevelopment.f24}">
+                    <span class="input-group-btn">
+                        </span>
+                    <select name="f24Value" required="required"
+                            class="form-control" onchange="underConstruction.calculationF24(this)">
                         <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">

@@ -2,6 +2,8 @@
 <script>
     var landEngineering = {};
     landEngineering.target = $("#mdDevelopmentLandFrm");
+    landEngineering.infrastructureChildrenTable = $("#landMdDevelopmentInfrastructureChildrenTable");
+    landEngineering.infrastructureFooterHtml = "#landEngineeringMdDevelopmentInfrastructureFooter";
     landEngineering.fixed = 2; //小数点保留2位
     landEngineering.fixedMax = 4; //小数点保留4位
     landEngineering.fixedMin = 0; //小数点保留0位
@@ -21,9 +23,9 @@
         }
         this.target.find("input[name='f18']").val(c.toFixed(landEngineering.fixed));
         this.target.find("input[name='f20']").trigger('blur');
-        this.target.find("select[name='f22']").trigger('change');
-        this.target.find("select[name='f23']").trigger('change');
-        this.target.find("select[name='f24']").trigger('change');
+        this.target.find("input[name='f22']").trigger('blur');
+        this.target.find("input[name='f23']").trigger('blur');
+        this.target.find("input[name='f24']").trigger('blur');
         this.target.find("input[name='f25']").trigger('blur');
     };
 
@@ -61,7 +63,7 @@
     landEngineering.calculationD22 = function () {
         console.log("calculationD22");
         var f18 = this.target.find("input[name='f18']").val();
-        var f22 = this.target.find("select[name='f22']").val();
+        var f22 = this.target.find("input[name='f22']").val();
         if (!AssessCommon.isNumber(f18)) {
             return false;
         }
@@ -77,7 +79,7 @@
     landEngineering.calculationD23 = function () {
         console.log("calculationD23");
         var f18 = this.target.find("input[name='f18']").val();
-        var f23 = this.target.find("select[name='f23']").val();
+        var f23 = this.target.find("input[name='f23']").val();
         if (!AssessCommon.isNumber(f18)) {
             return false;
         }
@@ -93,7 +95,7 @@
     landEngineering.calculationD24 = function () {
         console.log("calculationD24");
         var f18 = this.target.find("input[name='f18']").val();
-        var f24 = this.target.find("select[name='f24']").val();
+        var f24 = this.target.find("input[name='f24']").val();
         if (!AssessCommon.isNumber(f18)) {
             return false;
         }
@@ -103,6 +105,14 @@
         var c = Number(f24) * Number(f18) / 10000;
         landEngineering.target.find("input[name='d24']").val(c.toFixed(landEngineering.fixed));
         this.target.find(".d26").trigger('blur');
+    };
+
+    landEngineering.calculationF24 = function (_this) {
+        var val = $(_this).val() ;
+        if (!AssessCommon.isNumber(val)) {
+            return false;
+        }
+        landEngineering.target.find("input[name='f24']").val(val).trigger('blur');
     };
 
     //单元格Dd25
@@ -587,6 +597,96 @@
             }
         })
     } ;
+
+    landEngineering.loadMdDevelopmentInfrastructureChildrenTable = function () {
+        var pid = 0;
+        if (developmentCommon.isNotBlank('${mdDevelopment}')){
+            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                pid = '${mdDevelopment.id}' ;
+            }
+        }
+        developmentCommon.infrastructureChildren.loadTable(pid,'${projectPlanDetails.id}','land',landEngineering.infrastructureChildrenTable,$("#toolbarMdDevelopmentInfrastructureChildrenTable")) ;
+        landEngineering.writeMdDevelopmentInfrastructureChildrenTable() ;
+    };
+
+    landEngineering.deleteMdDevelopmentInfrastructureChildrenTable = function (table) {
+        var rows = $(table).bootstrapTable('getSelections');
+        if (rows.length >= 1) {
+            var data = [];
+            $.each(rows, function (i, item) {
+                data.push(item.id);
+            });
+            developmentCommon.infrastructureChildren.delete(data , function () {
+                toastr.success('删除成功!');
+                landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
+                landEngineering.writeMdDevelopmentInfrastructureChildrenTable() ;
+            });
+        } else {
+            toastr.success('至少勾选一个!');
+        }
+    };
+
+    landEngineering.editMdDevelopmentInfrastructureChildrenTable = function (table,box ,flag) {
+        var target = $(box) ;
+        var frm = target.find("form") ;
+        var pid = 0;
+        if (developmentCommon.isNotBlank('${mdDevelopment}')){
+            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                pid = '${mdDevelopment.id}' ;
+            }
+        }
+        if (flag){
+            var rows = $(table).bootstrapTable('getSelections');
+            if (rows.length == 1) {
+                var data = rows[0];
+                frm.initForm(data);
+                target.find(".modal-footer").empty().append($(landEngineering.infrastructureFooterHtml).html()) ;
+                target.modal('show');
+            } else {
+                toastr.success('勾选一个!');
+            }
+        }else {
+            frm.clearAll();
+            frm.initForm({pid:pid});
+            target.find(".modal-footer").empty().append($(landEngineering.infrastructureFooterHtml).html()) ;
+            target.modal('show');
+        }
+    };
+
+    landEngineering.saveMdDevelopmentInfrastructureChildrenTable = function (_this) {
+        var target = $(_this).parent().parent().parent().parent() ;
+        var frm = target.find("form") ;
+        if (!frm.valid()) {
+            return false ;
+        }
+        var data = formSerializeArray(frm);
+        data.planDetailsId = '${projectPlanDetails.id}' ;
+        data.type = 'land' ;
+        developmentCommon.infrastructureChildren.save(data , function () {
+            toastr.success('添加成功!');
+            target.modal('hide');
+            landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
+            landEngineering.writeMdDevelopmentInfrastructureChildrenTable() ;
+        });
+    } ;
+
+    landEngineering.writeMdDevelopmentInfrastructureChildrenTable = function () {
+        var pid = 0;
+        if (developmentCommon.isNotBlank('${mdDevelopment}')){
+            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                pid = '${mdDevelopment.id}' ;
+            }
+        }
+        developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid} ,function (item) {
+            var result = 0;
+            if (item.length >= 1){
+                $.each(item,function (i,n) {
+                    result += Number(n.number) ;
+                });
+            }
+            landEngineering.target.find("input[name='f22']").val(result).trigger('blur');
+        }) ;
+    };
 
     /**
      math.sqrt(4) 开方

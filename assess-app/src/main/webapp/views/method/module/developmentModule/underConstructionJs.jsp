@@ -2,6 +2,8 @@
 <script>
     var underConstruction = {};
     underConstruction.target = $("#mdDevelopmentEngineeringFrm");
+    underConstruction.infrastructureChildrenTable = $("#underConstructionMdDevelopmentInfrastructureChildrenTable");
+    underConstruction.infrastructureFooterHtml = "#underConstructionMdDevelopmentInfrastructureFooter";
     underConstruction.fixed = 2; //小数点保留2位
     underConstruction.fixedMax = 4; //小数点保留4位
     underConstruction.fixedMin = 0; //小数点保留0位
@@ -21,9 +23,9 @@
         }
         this.target.find("input[name='f18']").val(c.toFixed(underConstruction.fixed));
         this.target.find("input[name='f20']").trigger('blur');
-        this.target.find("select[name='f22']").trigger('change');
-        this.target.find("select[name='f23']").trigger('change');
-        this.target.find("select[name='f24']").trigger('change');
+        this.target.find("input[name='f22']").trigger('blur');
+        this.target.find("input[name='f23']").trigger('blur');
+        this.target.find("input[name='f24']").trigger('blur');
         this.target.find("input[name='f25']").trigger('blur');
     };
 
@@ -61,7 +63,7 @@
     underConstruction.calculationD22 = function () {
         console.log("calculationD22");
         var f18 = this.target.find("input[name='f18']").val();
-        var f22 = this.target.find("select[name='f22']").val();
+        var f22 = this.target.find("input[name='f22']").val();
         if (!AssessCommon.isNumber(f18)) {
             return false;
         }
@@ -77,7 +79,7 @@
     underConstruction.calculationD23 = function () {
         console.log("calculationD23");
         var f18 = this.target.find("input[name='f18']").val();
-        var f23 = this.target.find("select[name='f23']").val();
+        var f23 = this.target.find("input[name='f23']").val();
         if (!AssessCommon.isNumber(f18)) {
             return false;
         }
@@ -93,7 +95,7 @@
     underConstruction.calculationD24 = function () {
         console.log("calculationD24");
         var f18 = this.target.find("input[name='f18']").val();
-        var f24 = this.target.find("select[name='f24']").val();
+        var f24 = this.target.find("input[name='f24']").val();
         if (!AssessCommon.isNumber(f18)) {
             return false;
         }
@@ -103,6 +105,14 @@
         var c = Number(f24) * Number(f18) / 10000;
         underConstruction.target.find("input[name='d24']").val(c.toFixed(underConstruction.fixed));
         this.target.find(".d26").trigger('blur');
+    };
+
+    underConstruction.calculationF24 = function (_this) {
+        var val = $(_this).val() ;
+        if (!AssessCommon.isNumber(val)) {
+            return false;
+        }
+        underConstruction.target.find("input[name='f24']").val(val).trigger('blur');
     };
 
     //单元格Dd25
@@ -587,6 +597,97 @@
             }
         })
     } ;
+
+    underConstruction.loadMdDevelopmentInfrastructureChildrenTable = function () {
+        var pid = 0;
+        if (developmentCommon.isNotBlank('${mdDevelopment}')){
+            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                pid = '${mdDevelopment.id}' ;
+            }
+        }
+        developmentCommon.infrastructureChildren.loadTable(pid,'${projectPlanDetails.id}','engineering',underConstruction.infrastructureChildrenTable,$("#toolbarConstructionMdDevelopmentInfrastructureChildrenTable")) ;
+        underConstruction.writeMdDevelopmentInfrastructureChildrenTable() ;
+    };
+
+    underConstruction.deleteMdDevelopmentInfrastructureChildrenTable = function (table) {
+        var rows = $(table).bootstrapTable('getSelections');
+        if (rows.length >= 1) {
+            var data = [];
+            $.each(rows, function (i, item) {
+                data.push(item.id);
+            });
+            developmentCommon.infrastructureChildren.delete(data , function () {
+                toastr.success('删除成功!');
+                underConstruction.infrastructureChildrenTable.bootstrapTable('refresh');
+                underConstruction.writeMdDevelopmentInfrastructureChildrenTable() ;
+            });
+        } else {
+            toastr.success('至少勾选一个!');
+        }
+    };
+
+    underConstruction.editMdDevelopmentInfrastructureChildrenTable = function (table,box ,flag) {
+        var target = $(box) ;
+        var frm = target.find("form") ;
+        var pid = 0;
+        if (developmentCommon.isNotBlank('${mdDevelopment}')){
+            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                pid = '${mdDevelopment.id}' ;
+            }
+        }
+        if (flag){
+            var rows = $(table).bootstrapTable('getSelections');
+            if (rows.length == 1) {
+                var data = rows[0];
+                frm.initForm(data);
+                target.find(".modal-footer").empty().append($(underConstruction.infrastructureFooterHtml).html()) ;
+                target.modal('show');
+            } else {
+                toastr.success('勾选一个!');
+            }
+        }else {
+            frm.clearAll();
+            frm.initForm({pid:pid});
+            target.find(".modal-footer").empty().append($(underConstruction.infrastructureFooterHtml).html()) ;
+            target.modal('show');
+        }
+    };
+
+    underConstruction.saveMdDevelopmentInfrastructureChildrenTable = function (_this) {
+        var target = $(_this).parent().parent().parent().parent() ;
+        var frm = target.find("form") ;
+        if (!frm.valid()) {
+            return false ;
+        }
+        var data = formSerializeArray(frm);
+        data.planDetailsId = '${projectPlanDetails.id}' ;
+        data.type = 'engineering' ;
+        developmentCommon.infrastructureChildren.save(data , function () {
+            toastr.success('添加成功!');
+            target.modal('hide');
+            underConstruction.infrastructureChildrenTable.bootstrapTable('refresh');
+            underConstruction.writeMdDevelopmentInfrastructureChildrenTable() ;
+        });
+    } ;
+
+    underConstruction.writeMdDevelopmentInfrastructureChildrenTable = function () {
+        var pid = 0;
+        if (developmentCommon.isNotBlank('${mdDevelopment}')){
+            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
+                pid = '${mdDevelopment.id}' ;
+            }
+        }
+        developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid} ,function (item) {
+            var result = 0;
+            if (item.length >= 1){
+                $.each(item,function (i,n) {
+                    result += Number(n.number) ;
+                });
+            }
+            underConstruction.target.find("input[name='f22']").val(result).trigger('blur');
+        }) ;
+    };
+
 
     /**
      math.sqrt(4) 开方
