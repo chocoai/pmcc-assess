@@ -27,16 +27,16 @@ public class SurveyExamineTaskEvent extends ProjectTaskEvent {
     private CommonService commonService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
+    public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         //更新案例任务状态
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processExecution.getProcessInstanceId());
         //更新各项表单任务状态
         surveyCommonService.updateExamineTaskStatus(projectPlanDetails.getPid(), commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
 
-        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
-        if(planDetails!=null){
-            planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
-            projectPlanDetailsService.updateProjectPlanDetails(planDetails); //更新父级案例信息状态为完成
+        ProjectPlanDetails parentPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
+        if (parentPlanDetails != null && parentPlanDetails.getProjectPhaseId() == null) {
+            parentPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
+            projectPlanDetailsService.updateProjectPlanDetails(parentPlanDetails); //更新父级案例信息状态为完成
         }
         super.processFinishExecute(processExecution);
     }
