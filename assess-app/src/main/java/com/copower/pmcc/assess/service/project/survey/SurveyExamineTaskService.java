@@ -389,6 +389,49 @@ public class SurveyExamineTaskService {
     }
 
     /**
+     * 保存在建工程相关任务
+     * @param planDetailsId
+     * @throws BusinessException
+     */
+    public void saveCIPTask(Integer planDetailsId) throws BusinessException {
+        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
+
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE_CIP, projectInfo.getProjectCategoryId());
+        ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
+        BeanUtils.copyProperties(planDetails, taskPlanDetails);
+        taskPlanDetails.setId(null);
+        taskPlanDetails.setPid(planDetails.getId());
+        SysUserDto sysUser = erpRpcUserService.getSysUser(commonService.thisUserAccount());
+        taskPlanDetails.setProjectPhaseId(projectPhase.getId());
+        taskPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
+        taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+        taskPlanDetails.setBisLastLayer(true);
+        taskPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+        taskPlanDetails.setCreator(commonService.thisUserAccount());
+        taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(commonService.thisUserAccount())));
+        projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);
+
+        //添加任务
+        ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
+        projectTask.setProjectId(planDetails.getProjectId());
+        projectTask.setProjectName(projectInfo.getProjectName());
+        projectTask.setPlanEndTime(planDetails.getPlanEndDate());
+        projectTask.setPlanId(planDetails.getPlanId());
+        projectTask.setPlanDetailsId(taskPlanDetails.getId());
+        projectTask.setModel(ResponsibileModelEnum.TASK.getId());
+        projectTask.setConclusion(ResponsibileModelEnum.TASK.getName());
+        projectTask.setUserAccount(commonService.thisUserAccount());
+        projectTask.setBisEnable(true);
+        projectTask.setAppKey(applicationConstant.getAppKey());
+        projectTask.setPlanDetailsName(String.format("%s[%s]", workStage.getWorkStageName(), taskPlanDetails.getProjectPhaseName()));
+        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.TASK, projectTask);
+        projectTask.setCreator(commonService.thisUserAccount());
+        bpmRpcProjectTaskService.saveProjectTask(projectTask);
+    }
+
+    /**
      * 任务分派
      *
      * @param planDetailsId
@@ -398,9 +441,6 @@ public class SurveyExamineTaskService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void examineTaskAssignment(Integer planDetailsId, String examineFormType, ExamineTypeEnum examineTypeEnum, Integer transactionType) throws BusinessException {
-        if (this.checkAssignmentTask(planDetailsId)) {
-            throw new BusinessException("请不要重复添加");
-        }
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());

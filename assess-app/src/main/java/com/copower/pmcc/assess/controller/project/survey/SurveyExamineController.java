@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -217,7 +218,14 @@ public class SurveyExamineController {
                 projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
                 surveyExamineTaskService.examineTaskAssignment(projectPlanDetails.getId(), examineFormType, ExamineTypeEnum.EXPLORE, null);
             } else {
-                surveyExamineTaskService.examineTaskAssignment(planDetailsId, examineFormType, ExamineTypeEnum.EXPLORE, null);
+                if (surveyExamineTaskService.checkAssignmentTask(planDetailsId)) {
+                    throw new BusinessException("请不要重复添加");
+                }
+                if(AssessExamineTaskConstant.FC_CIP.equals(examineFormType)){
+                    surveyExamineTaskService.saveCIPTask(planDetailsId);
+                }else{
+                    surveyExamineTaskService.examineTaskAssignment(planDetailsId, examineFormType, ExamineTypeEnum.EXPLORE, null);
+                }
             }
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
