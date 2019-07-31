@@ -1044,8 +1044,8 @@ public class GenerateMdCompareService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
-        StringBuilder stringBuilder = new StringBuilder();
+//        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+//        StringBuilder stringBuilder = new StringBuilder();
         //获取比较法公式
         DataMethodFormula formula = new DataMethodFormula();
         BaseDataDic compareType = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
@@ -1069,17 +1069,42 @@ public class GenerateMdCompareService {
      */
     public void GenerateTable(String fieldName, DocumentBuilder builder, List<MdMarketCompareItem> data, Boolean isIndex) throws Exception {
         List<DataSetUseField> useFieldList = dataSetUseFieldService.getCacheSetUseFieldList(fieldName);
+
+        //房屋坐落放在第一行
         for (DataSetUseField useField : useFieldList) {
-            if (!useField.getFieldName().equals(MethodCompareFieldEnum.FLOOR.getKey())) {
+            if (useField.getFieldName().equals(MethodCompareFieldEnum.LOCATION.getKey())) {
                 builder.insertCell();
                 builder.write(MethodCompareFieldEnum.getNameByKey(useField.getFieldName()));
                 if (CollectionUtils.isNotEmpty(data)) {
                     for (MdMarketCompareItem caseItem : data) {
-                        MdMarketCompare mdMarketCompare = mdMarketCompareService.getMdMarketCompare(caseItem.getMcId());
                         List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                         for (MarketCompareItemDto item2 : dtos) {
-                            //楼层跳过，最后处理
-                            if (item2.getName().equals(MethodCompareFieldEnum.FLOOR.getKey())) {
+                            if (item2.getName().equals(MethodCompareFieldEnum.LOCATION.getKey())) {
+                                builder.insertCell();
+                                if (isIndex) {
+                                    builder.write(item2.getScore().toString());
+                                } else {
+                                    builder.write(item2.getValue());
+                                }
+                            }
+                        }
+                    }
+                }
+                builder.endRow();
+            }
+        }
+        //其他数据
+        for (DataSetUseField useField : useFieldList) {
+            if (!useField.getFieldName().equals(MethodCompareFieldEnum.FLOOR.getKey())&&!useField.getFieldName().equals(MethodCompareFieldEnum.LOCATION.getKey())) {
+                builder.insertCell();
+                builder.write(MethodCompareFieldEnum.getNameByKey(useField.getFieldName()));
+                if (CollectionUtils.isNotEmpty(data)) {
+                    for (MdMarketCompareItem caseItem : data) {
+                        //MdMarketCompare mdMarketCompare = mdMarketCompareService.getMdMarketCompare(caseItem.getMcId());
+                        List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                        for (MarketCompareItemDto item2 : dtos) {
+                            //坐落、楼层跳过，单独处理
+                            if (item2.getName().equals(MethodCompareFieldEnum.FLOOR.getKey())||item2.getName().equals(MethodCompareFieldEnum.LOCATION.getKey())) {
                                 continue;
                             }
 

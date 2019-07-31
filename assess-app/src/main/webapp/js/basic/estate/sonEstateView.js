@@ -2101,6 +2101,9 @@ var matchingEnvironment;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_environment_influence_degree, item.influenceDegree, function (html, data) {
                 $("#" + matchingEnvironment.prototype.config().frm).find("select.influenceDegree").empty().html(html);
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_environment_result, item.humanImpact, function (html, data) {
+                $("#" + matchingEnvironment.prototype.config().frm).find("select.humanImpact").empty().html(html);
+            });
         },
         initRemarkInfo:function () {
             var frm = $("#" + matchingEnvironment.prototype.config().frm) ;
