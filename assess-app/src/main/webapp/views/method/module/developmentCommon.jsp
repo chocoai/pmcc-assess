@@ -154,11 +154,11 @@
         }
     };
 
-    developmentCommon.saveMdArchitecturalObj = function (data, type, databaseName, pid, callback) {
+    developmentCommon.saveMdArchitecturalObj = function (data, type, databaseName, pid,planDetailsId, callback) {
         var item = {
             forData: JSON.stringify(data),
             type: type,
-            planDetailsId: '${projectPlanDetails.id}',
+            planDetailsId: planDetailsId,
             pid: pid,
             databaseName: databaseName
         };

@@ -529,7 +529,7 @@
             target.find(".panel-body").append(developmentCommon.architecturalB.getHtmlDetail());
             developmentCommon.architecturalB.treeGirdParse(target);
         }
-        developmentCommon.architecturalB.get("engineering" , function (data) {
+        developmentCommon.architecturalB.getData("engineering",AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}',function (data) {
             var item = undefined ;
             if (data.length >= 1){
                 var n = data[0] ;

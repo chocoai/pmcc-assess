@@ -130,6 +130,11 @@ public class DeclareRealtyRealEstateCertService {
             if (flag) {
                 oo.setCreator(commonService.thisUserAccount());
                 declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(oo);
+                DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
+                center.setPlanDetailsId(oo.getPlanDetailsId());
+                center.setRealEstateId(oo.getId());
+                center.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+                declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
                 successCount++;
             }
         }

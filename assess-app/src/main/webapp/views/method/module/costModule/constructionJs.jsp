@@ -388,13 +388,7 @@
                 target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
                 developmentCommon.architecturalB.treeGirdParse(target);
             }
-            var pid = 0;
-            if (developmentCommon.isNotBlank('${mdCostConstruction}')){
-                if (developmentCommon.isNotBlank('${mdCostConstruction.id}')){
-                    pid = '${mdCostConstruction.id}' ;
-                }
-            }
-            developmentCommon.architecturalB.getData("mdCostConstruction",AssessDBKey.MdCost,pid,'${projectPlanDetails.id}',function (data) {
+            developmentCommon.architecturalB.getData("engineering",AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}',function (data) {
                 var item = undefined ;
                 if (data.length >= 1){
                     var n = data[0] ;
@@ -422,16 +416,9 @@
             }
             value = Number(value);
             construction.target.find("input[name='constructionInstallationEngineeringFee']").val(value.toFixed(construction.fixed)).trigger('blur');
-
             var data = developmentCommon.architecturalB.getFomData(table);
-            var pid = 0;
-            if (developmentCommon.isNotBlank('${mdCostConstruction}')){
-                if (developmentCommon.isNotBlank('${mdCostConstruction.id}')){
-                    pid = '${mdCostConstruction.id}' ;
-                }
-            }
-            developmentCommon.saveMdArchitecturalObj(data , "mdCostConstruction" ,AssessDBKey.MdCost,pid , function () {
-
+            developmentCommon.saveMdArchitecturalObj(data , "engineering" ,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}' , function () {
+                toastr.success('保存成功!');
             }) ;
             target.modal("hide");
         }

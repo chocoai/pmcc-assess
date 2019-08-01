@@ -543,7 +543,7 @@
                 target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
                 developmentCommon.architecturalB.treeGirdParse(target);
             }
-            developmentCommon.architecturalB.get("engineering" , function (data) {
+            developmentCommon.architecturalB.getData("engineering",AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}',function (data) {
                 var item = undefined ;
                 if (data.length >= 1){
                     var n = data[0] ;
@@ -574,14 +574,8 @@
             underConstruction.target.find("input[name='d21']").trigger('blur');
             underConstruction.target.find("input[name='d20']").trigger('blur');
             var data = developmentCommon.architecturalB.getFomData(table);
-            var pid = 0;
-            if (developmentCommon.isNotBlank('${mdDevelopment}')){
-                if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
-                    pid = '${mdDevelopment.id}' ;
-                }
-            }
-            developmentCommon.saveMdArchitecturalObj(data , "engineering" ,AssessDBKey.MdDevelopment,pid , function () {
-
+            developmentCommon.saveMdArchitecturalObj(data , "engineering" ,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}' , function () {
+                toastr.success('保存成功!');
             }) ;
             target.modal("hide");
         }

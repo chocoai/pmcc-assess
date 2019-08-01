@@ -580,8 +580,8 @@
                     pid = '${mdDevelopment.id}' ;
                 }
             }
-            developmentCommon.saveMdArchitecturalObj(data , "land" , AssessDBKey.MdDevelopment,pid, function () {
-
+            developmentCommon.saveMdArchitecturalObj(data , "land" , AssessDBKey.MdDevelopment,pid,'${projectPlanDetails.id}', function () {
+                toastr.success('保存成功!');
             }) ;
             target.modal("hide");
         }

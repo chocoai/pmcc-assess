@@ -443,13 +443,7 @@
             target.find(".panel-body").append(developmentCommon.architecturalB.getHtmlDetail());
             developmentCommon.architecturalB.treeGirdParse(target);
         }
-        var pid = 0;
-        if (developmentCommon.isNotBlank('${mdCostConstruction}')){
-            if (developmentCommon.isNotBlank('${mdCostConstruction.id}')){
-                pid = '${mdCostConstruction.id}' ;
-            }
-        }
-        developmentCommon.architecturalB.getData("mdCostConstruction",AssessDBKey.MdCost,pid,'${projectPlanDetails.id}',function (data) {
+        developmentCommon.architecturalB.getData("engineering",AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}',function (data) {
             var item = undefined ;
             if (data.length >= 1){
                 var n = data[0] ;
