@@ -549,15 +549,17 @@ public class Test {
     public void getNetInfoFromTB() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -2); //得到前2天
+            calendar.add(Calendar.DATE, -730); //得到前2天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String formatDate = sdf.format(date);
+            Date now = new Date();
+            String nowDate = sdf.format(now);
             String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "资产", "无形资产"};
             List<String> types = Arrays.asList(needContentType);
             Map<String, String> strHrefs = Maps.newHashMap();//用于记录地址
             String urlInfo = "https://sf.taobao.com/item_list.htm?auction_source=0&sorder=2&st_param=-1&auction_start_seg=&" +
-                    "auction_start_from=" + formatDate + "&auction_start_to=" + formatDate + "&&spm=a213w.3064813.9001.2";
+                    "auction_start_from=" + formatDate + "&auction_start_to=" + nowDate + "&&spm=a213w.3064813.9001.2";
             Elements elements = getContent(urlInfo, ".condition", "GBK");
             Elements a = elements.get(0).select("li a");
             for (Element item : a) {
@@ -657,7 +659,7 @@ public class Test {
     public void getNetInfoFromJDSF() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -1); //得到前1天
+            calendar.add(Calendar.DATE, -730); //得到前1天
             Date date = calendar.getTime();
             String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "无形资产"};
             Map<String, List<String>> strHrefs = Maps.newHashMap();
@@ -721,12 +723,12 @@ public class Test {
 
     }
 
-    //来源京东资产
+    //来源京东资产5
     @org.junit.Test
     public void getNetInfoFromJDZC() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -1); //得到前1天
+            calendar.add(Calendar.DATE, -730); //得到前1天
             Date date = calendar.getTime();
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             Map<String, String> needContentType = Maps.newHashMap();
@@ -788,12 +790,12 @@ public class Test {
 
     }
 
-    //中国拍卖行业协会网-司法
+    //中国拍卖行业协会网-司法4
     @org.junit.Test
     public void getNetInfoFromZGSF() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -10); //得到前1天
+            calendar.add(Calendar.DATE, -730); //得到前1天
             Date date = calendar.getTime();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
@@ -888,12 +890,12 @@ public class Test {
 
     }
 
-    //中国拍卖行业协会网-标的
+    //中国拍卖行业协会网-标的3
     @org.junit.Test
     public void getNetInfoFromZGBD() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -1); //得到前1天
+            calendar.add(Calendar.DATE, -730); //得到前1天
             Date date = calendar.getTime();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
@@ -969,7 +971,7 @@ public class Test {
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(zgsfDto.getName());
                         netInfoRecord.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
-                        String content = getContent(zgsfDto.getName(), entry.getKey(), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
+                        String content = getContent(zgsfDto.getName(), entry.getKey().substring(0, entry.getKey().indexOf("_")), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("中国拍卖行业协会网-标的");
@@ -990,7 +992,7 @@ public class Test {
     public void getNetInfoFromGPW() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -1); //得到前1天
+            calendar.add(Calendar.DATE, -730); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String[] needContentType = new String[]{"房产", "土地", "股权", "无形资产", "林权矿权"};
@@ -1082,12 +1084,12 @@ public class Test {
 
     }
 
-    //公共资源交易平台-雅安
+    //公共资源交易平台-雅安(1)
     @org.junit.Test
     public void getNetInfoFromGGZYYA() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -10); //得到前1天
+            calendar.add(Calendar.DATE, -730); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1115,6 +1117,7 @@ public class Test {
                     List<String> fieldNames = Lists.newArrayList();
                     for (int k = 0; k < tdElements.size(); k++) {
                         Elements select = tdElements.get(k).select("td");
+                        if (select.size() != tdElements.get(0).select("td").size()) continue;
                         if (k == 0) {
                             for (int f = 0; f < length; f++) {
                                 String fieldName = checkNull(select, f);
@@ -1125,7 +1128,7 @@ public class Test {
                         List<String> fieldValues = Lists.newArrayList();
                         for (int j = 0; j < length; j++) {
                             String fieldValue = checkNull(select, j);
-                            fieldValues.add(fieldValue);
+                            fieldValues.add(delHtmlTags(fieldValue));
                         }
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         String title = itemContent.get(i).childNodes().get(3).childNodes().get(0).toString();
@@ -1155,7 +1158,7 @@ public class Test {
     public void getNetInfoFromGGZYCD() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -5); //得到前1天
+            calendar.add(Calendar.DATE, -730); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1188,12 +1191,15 @@ public class Test {
                 List<String> fieldNames = Lists.newArrayList();
                 for (int k = 0; k < tdElements.size(); k++) {
                     Elements select = tdElements.get(k).select("td");
-                    Integer one = tdElements.get(0).select("th").size();
-                    if (one == 0) {
-                        one = tdElements.get(0).select("td").size();
+                    Elements one = tdElements.get(0).select("td");
+                    if (one.size() == 0) {
+                        one = tdElements.get(0).select("th");
                     }
-                    Integer tow = tdElements.get(1).select("td").size();
-                    if (one == tow) {
+                    if (select == null || select.size() == 0) {
+                        select = tdElements.get(k).select("th");
+                    }
+                    Elements tow = tdElements.get(1).select("td");
+                    if (one.size() == tow.size()) {
                         if (k == 0) {
                             for (int f = 0; f < length; f++) {
                                 String fieldName = checkNull(select, f);
@@ -1210,7 +1216,7 @@ public class Test {
                     List<String> fieldValues = Lists.newArrayList();
                     for (int j = 0; j < length; j++) {
                         String fieldValue = checkNull(select, j);
-                        fieldValues.add(fieldValue);
+                        fieldValues.add(delHtmlTags(fieldValue));
                     }
                     NetInfoRecord netInfoRecord = new NetInfoRecord();
                     netInfoRecord.setProvince("四川");
@@ -1281,6 +1287,10 @@ public class Test {
             //设置用户代理
             httpUrl.setRequestProperty("User-agent", "  Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0");
             httpUrl.setRequestProperty("Host", url.getHost());
+            httpUrl.setConnectTimeout(6000); // 6s
+            httpUrl.setReadTimeout(6000);
+            httpUrl.setUseCaches(false);
+
             InputStream is = httpUrl.getInputStream();
             String contentEncoding = httpUrl.getContentEncoding();
             BufferedReader br = null;
@@ -1329,7 +1339,50 @@ public class Test {
 
         htmlStr = htmlStr.replaceAll("&nbsp;", "");
         return htmlStr.trim(); // 返回文本字符串
+
+
     }
 
+    /**
+     * 计算两个日期相距年份，只计算年月日
+     *
+     * @param startDate   开始日期
+     * @param endDate   结束日期
+     * @return
+     */
+    public String getDistanceAge(Date startDate, Date endDate) throws Exception {
+        //去掉时分秒
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String s1 = sdf.format(startDate);
+        String s2 = sdf.format(endDate);
+        Date formatStartDate =  sdf.parse(s1);
+        Date formatEndDate =  sdf.parse(s2);
 
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(formatStartDate);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(formatEndDate);
+        Integer year1 = cal1.get(Calendar.YEAR);
+        Integer year2 = cal2.get(Calendar.YEAR);
+
+        //相差年份的天数(如2010-2018，包括2018，这九年的总共天数)
+        Integer timeDistance = 0;
+        for (int i = year1; i <= year2; i++) {
+            //闰年
+            if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {
+                timeDistance += 366;
+            } else {
+                timeDistance += 365;
+            }
+        }
+
+        //平均年份天数（相差年份的天数/计算的年份）
+        Integer ages = year2 - year1 + 1;
+        BigDecimal averageDay = new BigDecimal(timeDistance).divide(new BigDecimal(ages), 2, BigDecimal.ROUND_HALF_UP);
+        //开始日期与结束日期相差天数
+        Long days =  (formatEndDate.getTime() - formatStartDate.getTime()) / (1000 * 3600 * 24);
+        //相差年份
+        BigDecimal distanceAge = new BigDecimal(days).divide(averageDay, 2, BigDecimal.ROUND_HALF_UP);
+        return distanceAge.toString();
+    }
 }
