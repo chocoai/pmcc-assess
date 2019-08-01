@@ -430,4 +430,15 @@ public class ProjectInfoController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getProjectById", name = "根据id获取项目信息", method = RequestMethod.GET)
+    public HttpResult getProjectById(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(id)));
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("获取项目信息异常");
+        }
+    }
+
 }
