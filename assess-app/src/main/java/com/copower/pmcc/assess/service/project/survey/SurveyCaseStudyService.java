@@ -17,6 +17,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -114,9 +116,9 @@ public class SurveyCaseStudyService {
         }else {
             planDetails.setProjectPhaseName(projectPlanDetails.getProjectPhaseName());
         }
-        planDetails.setPlanStartDate(projectPlanDetails.getPlanStartDate());
-        planDetails.setPlanEndDate(projectPlanDetails.getPlanEndDate());
-        planDetails.setPlanHours(projectPlanDetails.getPlanHours());
+        planDetails.setPlanStartDate(new Date());
+        planDetails.setPlanEndDate(new Date());
+        planDetails.setPlanHours(new BigDecimal("1"));
         planDetails.setProportion(projectPlanDetails.getProportion());
         planDetails.setBisStart(false);
         planDetails.setBisLastLayer(false);

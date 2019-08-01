@@ -105,7 +105,7 @@ public class GenerateCommonMethod {
      * @param type
      * @throws Exception
      */
-    public String getAssetInventoryCommon(String fieldName, BaseDataDic type, Integer declareRecordId,ProjectInfo projectInfo) throws Exception {
+    public String getAssetInventoryCommon(String fieldName, BaseDataDic type, Integer declareRecordId, ProjectInfo projectInfo) throws Exception {
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         Set<SurveyAssetInventoryContent> surveyAssetInventoryContentSet = Sets.newHashSet();
         Set<String> stringSet = Sets.newHashSet();
@@ -145,7 +145,6 @@ public class GenerateCommonMethod {
             return null;
         }
     }
-
 
 
     /**
@@ -995,29 +994,34 @@ public class GenerateCommonMethod {
      * @return
      */
     public String trimText(String str) {
-        return trim(str,true,false);
+        return trim(str, true, false);
     }
+
     public String trim(String str) {
-        return trim(str,true);
+        return trim(str, true);
     }
-    public String trim(String str,Boolean removeTag) {
-        return trim(str,removeTag,true);
+
+    public String trim(String str, Boolean removeTag) {
+        return trim(str, removeTag, true);
     }
 
     /**
      * 替换为标准格式
+     *
      * @param str
-     * @param removeTag 是否移除html标签
+     * @param removeTag       是否移除html标签
      * @param containFullStop 末尾是否包含句号
      * @return
      */
-    public String trim(String str,Boolean removeTag,Boolean containFullStop) {
+    public String trim(String str, Boolean removeTag, Boolean containFullStop) {
         if (StringUtils.isBlank(str)) return str;
-        if(removeTag){
+        if (removeTag) {
             str = StringUtils.strip(str.replaceAll("^<[^>]+>|<[^>]+>$", ""), "。");
             str += "。";
         }
-        str = str.replaceAll(",+", ",").replaceAll(";+", ";")
+
+        str = str.replaceAll(",", "，").replaceAll(";", "；")
+                .replaceAll(",+", ",").replaceAll(";+", ";")
                 .replaceAll("，+", "，").replaceAll("、+", "、")
                 .replaceAll("。+", "。").replaceAll("；+", "；")
                 .replaceAll("，\\s+。", "。").replaceAll("；\\s。", "。")
@@ -1027,11 +1031,9 @@ public class GenerateCommonMethod {
                 .replaceAll("，。", "。").replaceAll("。，", "，")
                 .replaceAll("；。", "。").replaceAll("。；", "；");
 
-        str=str.replaceAll("[，|,|，|、|;|；|.|。]+$", containFullStop?"。":"");
+        str = str.replaceAll("[，|,|，|、|;|；|.|。]+$", containFullStop ? "。" : "");
         return str;
     }
-
-
 
 
     /**

@@ -313,7 +313,7 @@ public class GenerateHouseEntityService {
                                     stringBuilder.append(obj.getRemark());
                                 }
                                 if (StringUtils.isEmpty(obj.getRemark()) && StringUtils.isNotEmpty(obj.getMaterialName())) {
-                                    stringBuilder.append("装修材料").append(obj.getMaterialName());
+                                    stringBuilder.append(obj.getMaterialName());
                                 }
                                 if (StringUtils.isNotEmpty(stringBuilder.toString())) {
                                     stringList.add(stringBuilder.toString());

@@ -129,12 +129,12 @@ public class GenerateLoactionService {
                 if (Objects.equal(new Integer(oo.getType()), baseDataDic.getId())) {
                     if (StringUtils.isNotBlank(oo.getRemark())) {
                         builder.append(oo.getRemark());
-                    } else if (StringUtils.isNotBlank(oo.getHumanImpact())) {
-                        String name = baseDataDicService.getNameById(oo.getHumanImpact());
+                    } else if (StringUtils.isNotBlank(oo.getHumanImpactName())) {
+                        String name = oo.getHumanImpactName();
                         if ("无".equals(name)) {
-                            builder.append(oo.getHumanImpact()).append(oo.getCategoryName());
+                            builder.append("无").append(oo.getCategoryName());
                         } else {
-                            builder.append(oo.getCategoryName()).append(oo.getHumanImpact());
+                            builder.append(oo.getCategoryName()).append(name);
                         }
                     }
                     if (StringUtils.isNotBlank(builder.toString())) {

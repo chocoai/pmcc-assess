@@ -185,7 +185,7 @@ public class MdMarketCompareFieldService extends BaseService {
                         case TEMPORARY_ROAD_CONDITION://临街（路）状况
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateLoactionService.getFaceStreetExtend(basicApply));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TEMPORARY_ROAD_CONDITION.getKey(), stringBuilder.toString()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TEMPORARY_ROAD_CONDITION.getKey(), stringBuilder.length() <= 0 ? "不临街" : stringBuilder.toString()));
                             break;
                         case FLOOR://楼栋楼层
                             stringBuilder = new StringBuilder();
@@ -224,12 +224,12 @@ public class MdMarketCompareFieldService extends BaseService {
                             if (StringUtils.isNotBlank(trafficCharges)) {
                                 stringBuilder.append(String.format("%s", trafficCharges));
                             }
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRAFFIC_CONDITIONS.getKey(),generateCommonMethod.trimText(stringBuilder.toString()) ));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRAFFIC_CONDITIONS.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case URBAN_INFRASTRUCTURE://外部基础设施
                             stringBuilder = new StringBuilder();
                             stringBuilder.append(generateLoactionService.getExternalInfrastructure(basicApply));
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.URBAN_INFRASTRUCTURE.getKey(),generateCommonMethod.trimText(stringBuilder.toString())));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.URBAN_INFRASTRUCTURE.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case PUBLIC_SERVICE_FACILITIES://公共服务设施
                             stringBuilder = new StringBuilder();
@@ -296,10 +296,20 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_AREA.getKey(), buildingArea));
                             break;
                         case FLOOR_HEIGHT://层高
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey(), String.valueOf(examineBuilding.getFloorHeight() == null ? "" : examineBuilding.getFloorHeight())));
+                            String floorHeight = StringUtils.isBlank(examineBuilding.getFloorHeight()) ? "" : (examineBuilding.getFloorHeight() + "米");
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey(), floorHeight));
                             break;
                         case NET_HEIGHT://净高
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NET_HEIGHT.getKey(), String.valueOf(examineBuilding.getNetHeight() == null ? "" : examineBuilding.getNetHeight())));
+                            BigDecimal clearHeight = null;
+                            if (CollectionUtils.isNotEmpty(roomList)) {
+                                for (BasicHouseRoom o : roomList) {
+                                    if (StringUtils.isNotBlank(o.getRoomType()) && o.getRoomType().contains("客厅")) {
+                                        clearHeight = o.getClearHeight();
+                                    }
+                                }
+                                clearHeight = clearHeight == null ? roomList.get(0).getClearHeight() : clearHeight;
+                            }
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.NET_HEIGHT.getKey(), clearHeight == null ? "" : (clearHeight + "米")));
                             break;
                         case BUILDING_SCALE://建筑规模
                             stringBuilder = new StringBuilder();
@@ -513,6 +523,10 @@ public class MdMarketCompareFieldService extends BaseService {
 
                         /*-------------------------------------------------------------土地相关*/
 
+                        case Annual_Coefficient:
+                            break;
+                        case VolumeRatio_Coefficient:
+                            break;
                         case LAND_NAME://地块名称
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_NAME.getKey(), examineEstate.getName()));
                             break;
@@ -634,13 +648,13 @@ public class MdMarketCompareFieldService extends BaseService {
             int size = intelligentVoList.size();
             for (int j = 0; j < intelligentVoList.size(); j++) {
                 stringBuilder.append("电路采用");
-                if(StringUtils.isNotBlank(intelligentVoList.get(j).getGradeName())){
+                if (StringUtils.isNotBlank(intelligentVoList.get(j).getGradeName())) {
                     stringBuilder.append(intelligentVoList.get(j).getGradeName());
                 }
-                if(StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName())){
+                if (StringUtils.isNotBlank(intelligentVoList.get(j).getSwitchCircuitName())) {
                     stringBuilder.append(intelligentVoList.get(j).getSwitchCircuitName());
                 }
-                if(StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName())){
+                if (StringUtils.isNotBlank(intelligentVoList.get(j).getLayingMethodName())) {
                     stringBuilder.append(intelligentVoList.get(j).getLayingMethodName()).append("铺设");
                 }
                 if (StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
