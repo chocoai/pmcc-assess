@@ -9,13 +9,13 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -48,6 +48,8 @@ public class MdIncomeDateSectionService {
     private MdIncomeLeaseDao mdIncomeLeaseDao;
     @Autowired
     private MdIncomeLeaseCostDao mdIncomeLeaseCostDao;
+    @Autowired
+    private PublicService publicService;
 
     /**
      * 保存数据
@@ -56,12 +58,10 @@ public class MdIncomeDateSectionService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void saveDateSection(MdIncomeDateSection mdIncomeDateSection) {
-        int diffDays = 0;
+        BigDecimal yearCount = new BigDecimal("0");
         if (mdIncomeDateSection.getEndDate() != null){
-            //计算相差年份
-            diffDays = DateUtils.diffDate(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate());
+            yearCount=publicService.diffDateYear(mdIncomeDateSection.getEndDate(),mdIncomeDateSection.getBeginDate());
         }
-        BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 1, BigDecimal.ROUND_HALF_UP);
         if (mdIncomeDateSection.getId() != null && mdIncomeDateSection.getId() > 0) {
             mdIncomeDateSection.setYearCount(yearCount);
             mdIncomeDateSectionDao.updateDateSection(mdIncomeDateSection);

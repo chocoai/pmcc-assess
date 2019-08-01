@@ -9,9 +9,9 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.method.*;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -70,7 +70,7 @@ public class MdIncomeService {
     @Autowired
     private MdIncomeForecastMonthDao mdIncomeForecastMonthDao;
     @Autowired
-    private DataTaxRateAllocationService dataTaxRateAllocationService;
+    private PublicService publicService;
     @Autowired
     private MdIncomeForecastAnalyseDao mdIncomeForecastAnalyseDao;
 
@@ -890,9 +890,7 @@ public class MdIncomeService {
      */
     public BigDecimal getLandSurplusYear(Date landUseEndDate, Date valueTimePoint) {
         if (landUseEndDate == null || valueTimePoint == null) return null;
-        BigDecimal landSurplusYear = new BigDecimal(DateUtils.diffDate(landUseEndDate, valueTimePoint));
-        landSurplusYear = landSurplusYear.divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
-        return landSurplusYear;
+        return publicService.diffDateYear(landUseEndDate,valueTimePoint);
     }
 
     /**
@@ -905,8 +903,7 @@ public class MdIncomeService {
      */
     public BigDecimal getHouseSurplusYear(Date completedTime, Date valueTimePoint, Integer canUseYear) {
         if (completedTime == null || valueTimePoint == null || canUseYear == null) return null;
-        BigDecimal usedYear = new BigDecimal(DateUtils.diffDate(valueTimePoint, completedTime)).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal houseSurplusYear = new BigDecimal(canUseYear).subtract(usedYear);
+        BigDecimal houseSurplusYear = new BigDecimal(canUseYear).subtract(publicService.diffDateYear(valueTimePoint,completedTime));
         return houseSurplusYear;
     }
 }

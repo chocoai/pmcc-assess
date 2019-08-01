@@ -20,10 +20,7 @@ import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.utils.FileUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
-import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -41,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -360,6 +358,41 @@ public class PublicService {
         BigDecimal maxDecimal = var1.compareTo(var2) > 0 ? var1 : var2;
         BigDecimal minDecimal = var1.compareTo(var2) < 0 ? var1 : var2;
         return maxDecimal.divide(minDecimal, 2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")).multiply(new BigDecimal("100")).intValue();
+    }
+
+    /**
+     * 计算两个日期相距年份，只计算年月日
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @return
+     */
+    public BigDecimal diffDateYear(Date endDate, Date startDate) {
+        if (startDate == null || endDate == null)
+            throw new IllegalArgumentException();
+        if (DateUtils.compareDate(startDate, endDate) > 0)
+            throw new IllegalArgumentException();
+
+        Integer year1 = DateUtils.getYear(startDate);
+        Integer year2 = DateUtils.getYear(endDate);
+        //相差年份的天数(如2010-2018，包括2018，这九年的总共天数)
+        Integer timeDistance = 0;
+        for (int i = year1; i <= year2; i++) {
+            //闰年
+            if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {
+                timeDistance += DateUtils.DAYS_PER_YEAR + 1;
+            } else {
+                timeDistance += DateUtils.DAYS_PER_YEAR;
+            }
+        }
+        //平均年份天数（相差年份的天数/计算的年份）
+        Integer ages = year2 - year1 + 1;
+        BigDecimal averageDay = new BigDecimal(timeDistance).divide(new BigDecimal(ages), 2, BigDecimal.ROUND_HALF_UP);
+        //开始日期与结束日期相差天数
+        int days = DateUtils.diffDate(endDate, startDate);
+        //相差年份
+        BigDecimal distanceAge = new BigDecimal(days).divide(averageDay, 2, BigDecimal.ROUND_HALF_UP);
+        return distanceAge;
     }
 
     /**

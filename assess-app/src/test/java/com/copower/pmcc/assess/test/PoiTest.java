@@ -50,14 +50,14 @@ public class PoiTest {
 
 
     @Test
-    public void  testFun(){
-        BigDecimal incomeTotal=new BigDecimal("696.30");
-        BigDecimal getManagementCostRatio=new BigDecimal("0.015");
-        BigDecimal getReplacementValue=new BigDecimal("1500");
-        BigDecimal getMaintenanceCostRatio=new BigDecimal("0.015");
-        BigDecimal getAdditionalRatio=new BigDecimal("0.1165");
-        BigDecimal getInsurancePremiumRatio=new BigDecimal("0.0015");
-        BigDecimal getLandUseTax=new BigDecimal("0");
+    public void testFun() {
+        BigDecimal incomeTotal = new BigDecimal("696.30");
+        BigDecimal getManagementCostRatio = new BigDecimal("0.015");
+        BigDecimal getReplacementValue = new BigDecimal("1500");
+        BigDecimal getMaintenanceCostRatio = new BigDecimal("0.015");
+        BigDecimal getAdditionalRatio = new BigDecimal("0.1165");
+        BigDecimal getInsurancePremiumRatio = new BigDecimal("0.0015");
+        BigDecimal getLandUseTax = new BigDecimal("0");
 
         BigDecimal total = incomeTotal.multiply(getManagementCostRatio);//管理费
         total = total.add(getReplacementValue.multiply(getMaintenanceCostRatio));//维护保养费
@@ -68,14 +68,14 @@ public class PoiTest {
     }
 
     @Test
-    public void diff(){
-       System.out.print( DateUtils.diffDate(DateUtils.convertDate("2019-06-19 09:00:00"),DateUtils.convertDate("2019-06-18 9:00:00")));
+    public void diff() {
+        System.out.print(DateUtils.diffDate(DateUtils.convertDate("2019-06-19 09:00:00"), DateUtils.convertDate("2019-06-18 9:00:00")));
     }
 
     @org.junit.Test
     public void readExcel() {
         try {
-           System.out.print(getPeriodAmend(new BigDecimal("0.07"),new BigDecimal("70"),new BigDecimal("29.36")));
+            System.out.print(getPeriodAmend(new BigDecimal("0.07"), new BigDecimal("70"), new BigDecimal("29.36")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,12 +85,12 @@ public class PoiTest {
         if (rewardRate == null || legalAge == null || surplusYear == null) return null;
 
         BigDecimal pow1 = new BigDecimal(Math.pow(rewardRate.add(new BigDecimal("1")).doubleValue(), surplusYear.doubleValue()));
-        BigDecimal temp1 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow1,4,BigDecimal.ROUND_HALF_UP));
+        BigDecimal temp1 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow1, 4, BigDecimal.ROUND_HALF_UP));
 
         BigDecimal pow2 = new BigDecimal(Math.pow(rewardRate.add(new BigDecimal("1")).doubleValue(), legalAge.doubleValue()));
-        BigDecimal temp2 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow2,4,BigDecimal.ROUND_HALF_UP));
+        BigDecimal temp2 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow2, 4, BigDecimal.ROUND_HALF_UP));
 
-        return temp1.divide(temp2,4,BigDecimal.ROUND_HALF_UP);
+        return temp1.divide(temp2, 4, BigDecimal.ROUND_HALF_UP);
     }
 
     @Test
@@ -447,7 +447,7 @@ public class PoiTest {
     public void testReplaceWord2() throws Exception {
         Document document = new Document("D:\\test\\template.doc");
         DocumentBuilder builder = new DocumentBuilder(document);
-        builder.moveToMergeField("${评估思路}",true,false);
+        builder.moveToMergeField("${评估思路}", true, false);
         builder.writeln("fffffffffffffff");
 
         document.save("D:\\test\\template1.doc");
@@ -466,15 +466,56 @@ public class PoiTest {
         int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
         int year = aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR);
         System.out.println(result);
-        if(result < 0){
+        if (result < 0) {
             result = 1;
-        }else if(result == 0){
+        } else if (result == 0) {
             result = surplus <= 0 ? 1 : 0;
-        }else{
+        } else {
             result = 0;
         }
         System.out.println(result);
         System.out.println("相差年份：" + ((Math.abs(year)) + result));
+    }
+
+
+    /**
+     * 计算两个日期相距年份，只计算年月日
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @return
+     */
+    public BigDecimal getDistanceAge(Date endDate,Date startDate) {
+        if (startDate == null || endDate == null)
+            throw new IllegalArgumentException();
+        if (DateUtils.compareDate(startDate, endDate) > 0)
+            throw new IllegalArgumentException();
+
+        Integer year1 = DateUtils.getYear(startDate);
+        Integer year2 = DateUtils.getYear(endDate);
+        //相差年份的天数(如2010-2018，包括2018，这九年的总共天数)
+        Integer timeDistance = 0;
+        for (int i = year1; i <= year2; i++) {
+            //闰年
+            if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {
+                timeDistance += 366;
+            } else {
+                timeDistance += 365;
+            }
+        }
+        //平均年份天数（相差年份的天数/计算的年份）
+        Integer ages = year2 - year1 + 1;
+        BigDecimal averageDay = new BigDecimal(timeDistance).divide(new BigDecimal(ages), 2, BigDecimal.ROUND_HALF_UP);
+        //开始日期与结束日期相差天数
+        int days = DateUtils.diffDate(endDate, startDate);
+        //相差年份
+        BigDecimal distanceAge = new BigDecimal(days).divide(averageDay, 2, BigDecimal.ROUND_HALF_UP);
+        return distanceAge;
+    }
+
+    @org.junit.Test
+    public void testComputeDate() throws Exception {
+        System.out.print(getDistanceAge(DateUtils.convertDate("2059-03-13"), DateUtils.convertDate("2019-03-13")));
     }
 }
 

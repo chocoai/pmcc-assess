@@ -8,10 +8,7 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetLandTransactionDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetResultAnnouncementDao;
-import com.copower.pmcc.assess.dal.basis.entity.NetAuctionInfo;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
-import com.copower.pmcc.assess.dal.basis.entity.NetLandTransaction;
-import com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncement;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
@@ -1343,46 +1340,5 @@ public class Test {
 
     }
 
-    /**
-     * 计算两个日期相距年份，只计算年月日
-     *
-     * @param startDate   开始日期
-     * @param endDate   结束日期
-     * @return
-     */
-    public String getDistanceAge(Date startDate, Date endDate) throws Exception {
-        //去掉时分秒
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String s1 = sdf.format(startDate);
-        String s2 = sdf.format(endDate);
-        Date formatStartDate =  sdf.parse(s1);
-        Date formatEndDate =  sdf.parse(s2);
 
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(formatStartDate);
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(formatEndDate);
-        Integer year1 = cal1.get(Calendar.YEAR);
-        Integer year2 = cal2.get(Calendar.YEAR);
-
-        //相差年份的天数(如2010-2018，包括2018，这九年的总共天数)
-        Integer timeDistance = 0;
-        for (int i = year1; i <= year2; i++) {
-            //闰年
-            if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {
-                timeDistance += 366;
-            } else {
-                timeDistance += 365;
-            }
-        }
-
-        //平均年份天数（相差年份的天数/计算的年份）
-        Integer ages = year2 - year1 + 1;
-        BigDecimal averageDay = new BigDecimal(timeDistance).divide(new BigDecimal(ages), 2, BigDecimal.ROUND_HALF_UP);
-        //开始日期与结束日期相差天数
-        Long days =  (formatEndDate.getTime() - formatStartDate.getTime()) / (1000 * 3600 * 24);
-        //相差年份
-        BigDecimal distanceAge = new BigDecimal(days).divide(averageDay, 2, BigDecimal.ROUND_HALF_UP);
-        return distanceAge.toString();
-    }
 }

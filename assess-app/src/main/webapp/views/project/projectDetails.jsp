@@ -32,12 +32,12 @@
                             <a class="btn btn-danger" href="javascript://"
                                onclick="projectDetails.finishProject()"><i class="fa fa-check">&nbsp;</i>完成</a>
                             <%--<c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">--%>
-                                <%--<a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i--%>
-                                        <%--class="fa fa-pause">&nbsp;</i>暂停</a>--%>
+                            <%--<a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i--%>
+                            <%--class="fa fa-pause">&nbsp;</i>暂停</a>--%>
                             <%--</c:if>--%>
                             <%--<c:if test="${projectStatusEnum=='pause'}">--%>
-                                <%--<a class="btn btn-success" href="javascript://"--%>
-                                   <%--onclick="projectDetails.restartProject()"><i class="fa fa-reply">&nbsp;</i>重启</a>--%>
+                            <%--<a class="btn btn-success" href="javascript://"--%>
+                            <%--onclick="projectDetails.restartProject()"><i class="fa fa-reply">&nbsp;</i>重启</a>--%>
                             <%--</c:if>--%>
                             <c:if test="${projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
                                 <a class="btn btn-primary" href="javascript://"
@@ -350,14 +350,14 @@
                 success: function (result) {
                     if (result) {
                         if (result.data <= 30) {
-                            $("#showZtree"+ that.attr('plan-id')).hide();
+                            $("#showZtree" + that.attr('plan-id')).hide();
                             projectDetails.loadTaskList({
                                 target: $('#plan_task_list' + that.attr('plan-id')),
                                 projectId: '${projectInfo.id}',
                                 planId: that.attr('plan-id')
                             });
                         } else {
-                            $("#showZtree"+ that.attr('plan-id')).show();
+                            $("#showZtree" + that.attr('plan-id')).show();
                             ztreeInit({
                                 target: $('#ztree' + that.attr('plan-id')),
                                 projectId: '${projectInfo.id}',
@@ -383,7 +383,7 @@
                             if (result.data.planExecutor) {
                                 html += '<div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip" data-original-title="责任人">' + result.data.planExecutor + '</div>';
                             }
-                            if (result.data.projectStatus == 'finish' && '${projectInfo.projectStatus}' != 'finish') {
+                            if ('${projectInfo.projectStatus}' != 'finish' && '${isPM}' == 'true') {
                                 html += '<div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启" onclick="projectDetails.replyPlan(' + planId + ');"><i class="fa fa-reply"></i></div>';
                             }
                             if (result.data.planExecutUrl) {
@@ -907,14 +907,14 @@
             cols.push({
                 field: 'amount', title: '开票金额', formatter: function (value, row, index) {
                     if (value) {
-                        return (Number(value)/100).toFixed(2);
+                        return (Number(value) / 100).toFixed(2);
                     }
                 }
             });
             cols.push({
                 field: 'thisBalance', title: '收款金额', formatter: function (value, row, index) {
                     if (value) {
-                        return (Number(value)/100).toFixed(2);
+                        return (Number(value) / 100).toFixed(2);
                     }
                 }
             });

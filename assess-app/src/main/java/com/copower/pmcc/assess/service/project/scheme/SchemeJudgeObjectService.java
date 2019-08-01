@@ -435,8 +435,6 @@ public class SchemeJudgeObjectService {
         StringBuilder numberBuilder = new StringBuilder();
         BigDecimal floorAreaTotal = new BigDecimal("0");
         BigDecimal evaluationAreaTotal = new BigDecimal("0");
-        StringBuilder rpdBuilder = new StringBuilder();
-        StringBuilder collateralBuilder = new StringBuilder();
         List<String> ownershipList = Lists.newArrayList();
         List<String> seatList = Lists.newArrayList();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
