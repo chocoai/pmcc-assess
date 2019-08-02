@@ -65,10 +65,15 @@ public class ReportDesignerController {
         }
     }
 
-    @GetMapping(value = "/workLog",name = "出勤汇总报表页面")
+    @GetMapping(value = "/workLog",name = "工作日志报表页面")
     public ModelAndView summary() {
         ModelAndView modelAndView = commonService.baseView("/reportManage/workLog");
         return modelAndView;
     }
 
+    @GetMapping(value = "/projectFinance",name = "项目收款报表页面")
+    public ModelAndView projectFinance() {
+        ModelAndView modelAndView = commonService.baseView("/reportManage/projectFinance");
+        return modelAndView;
+    }
 }
