@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
+import com.aspose.words.ControlChar;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
@@ -319,10 +320,12 @@ public class DataReportAnalysisService {
 
     /**
      * 获取上报告的变现分析数据 (注意这个方法用在小微快贷的报告,因此和上面得方法是不同得，此方法只有部分)
-     *
+     * @param projectInfo
+     * @param areaGroupId
      * @return
+     * @throws Exception
      */
-    public String getReportLiquidity2(ProjectInfo projectInfo, Integer areaGroupId) throws Exception {
+    public String getReportLiquidityLittle(ProjectInfo projectInfo, Integer areaGroupId) throws Exception {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
         if (baseDataDic == null) {
             return "";
@@ -339,57 +342,61 @@ public class DataReportAnalysisService {
             estateLiquidityAnalysisDto.setEstateName(entry.getKey().getName());
             analysisDtoMap.put(entry.getKey().getName(), estateLiquidityAnalysisDto);
         }
-        StringBuilder stringBuilder = new StringBuilder();
-
+        StringBuilder stringBuilder = new StringBuilder(8);
         for (int i = 0; i < reportAnalysisList.size(); i++) {
             DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
-
-            //估价对象区位分析与估价区位分析 =
-            if (AssessReportFieldConstant.ZONE_BIT_ANALYSIS.equals(dataReportAnalysis.getFieldName()) || AssessReportFieldConstant.LOCATION_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
-                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getLocationAnalysis(estateGroupMap))));
-            }
-            //变现能力通用性分析
-            if (AssessReportFieldConstant.UNIVERSALITY_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
-                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getUniversalityAnalysis(estateGroupMap, projectInfo.getId(), analysisDtoMap))));
-            }
-            //独立性分析
-            if (AssessReportFieldConstant.INDEPENDENCE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
-                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getIndependenceAnalysis(judgeObjectList))));
-            }
-            //可分割分析
-            if (AssessReportFieldConstant.DIVISIBLE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
-                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getDivisibleAnalysis(judgeObjectList))));
-            }
-            //价值大小分析
-            if (AssessReportFieldConstant.VALUE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
-                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportAnalysis.getTemplate()));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(this.getValueAnalysis(judgeObjectList, areaGroupId))));
-            }
-            //变现能力综述
-            if (AssessReportFieldConstant.CASHABILITY_SUMMARY.equals(dataReportAnalysis.getFieldName())) {
-                DataReportTemplateItem templateItem = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.CASHABILITY_SUMMARY_CONTENT);
-                HashSet<String> stringHashSet = Sets.newHashSet();
-                for (Map.Entry<String, EstateLiquidityAnalysisDto> entry : analysisDtoMap.entrySet()) {
-                    EstateLiquidityAnalysisDto analysisDto = entry.getValue();
-                    String s = templateItem.getTemplate()
-                            .replace("#{通用性}", StringUtils.isEmpty(analysisDto.getGenerality()) ? "" : String.format(analysisDto.getGenerality()))
-                            .replace("#{独立使用性}", StringUtils.isEmpty(analysisDto.getIndependence()) ? "" : String.format(analysisDto.getIndependence()))
-                            .replace("#{单个产权面积}", StringUtils.isEmpty(analysisDto.getPropertyRight()) ? "" : String.format(analysisDto.getPropertyRight()));
-                    String mobility = "好";
-                    if (analysisDto.getGenerality().contains("弱") || analysisDto.getIndependence().contains("差")) {
-                        mobility = "较差";
+            String fieldName = dataReportAnalysis.getFieldName();
+            switch (fieldName) {
+                case AssessReportFieldConstant.ZONE_BIT_ANALYSIS://估价对象区位分析与估价区位分析
+                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(StringUtils.trim(generateCommonMethod.trim(getLocationAnalysis(estateGroupMap)))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 2));
+                    break;
+                case AssessReportFieldConstant.LOCATION_ANALYSIS://估价对象区位分析与估价区位分析
+                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getLocationAnalysis(estateGroupMap))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 2));
+                    break;
+                case AssessReportFieldConstant.UNIVERSALITY_ANALYSIS://变现能力通用性分析
+                    stringBuilder.append(StringUtils.repeat(" ",1)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(StringUtils.trimToEmpty(generateCommonMethod.trim(this.getUniversalityAnalysis(estateGroupMap, projectInfo.getId(), analysisDtoMap)))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 2));
+                    break;
+                case AssessReportFieldConstant.INDEPENDENCE_ANALYSIS://独立性分析
+                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getIndependenceAnalysis(judgeObjectList))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 2));
+                    break;
+                case AssessReportFieldConstant.DIVISIBLE_ANALYSIS://可分割分析
+                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getDivisibleAnalysis(judgeObjectList))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 2));
+                    break;
+                case AssessReportFieldConstant.VALUE_ANALYSIS: //价值大小分析
+                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getValueAnalysis(judgeObjectList, areaGroupId))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    break;
+                case AssessReportFieldConstant.CASHABILITY_SUMMARY://变现能力综述
+                {
+                    DataReportTemplateItem templateItem = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.CASHABILITY_SUMMARY_CONTENT);
+                    HashSet<String> stringHashSet = Sets.newHashSet();
+                    if (templateItem ==null){
+                        continue;
                     }
-                    if (analysisDto.getGenerality().contains("一般") || analysisDto.getGenerality().contains("一般") || analysisDto.getGenerality().contains("适中")) {
-                        mobility = "较好";
+                    if (!analysisDtoMap.isEmpty()){
+                        for (Map.Entry<String, EstateLiquidityAnalysisDto> entry : analysisDtoMap.entrySet()) {
+                            EstateLiquidityAnalysisDto analysisDto = entry.getValue();
+                            String s = templateItem.getTemplate()
+                                    .replace("#{通用性}", StringUtils.isEmpty(analysisDto.getGenerality()) ? "" : String.format(analysisDto.getGenerality()))
+                                    .replace("#{独立使用性}", StringUtils.isEmpty(analysisDto.getIndependence()) ? "" : String.format(analysisDto.getIndependence()))
+                                    .replace("#{单个产权面积}", StringUtils.isEmpty(analysisDto.getPropertyRight()) ? "" : String.format(analysisDto.getPropertyRight()));
+                            String mobility = "好";
+                            if (analysisDto.getGenerality().contains("弱") || analysisDto.getIndependence().contains("差")) {
+                                mobility = "较差";
+                            }
+                            if (analysisDto.getGenerality().contains("一般") || analysisDto.getGenerality().contains("一般") || analysisDto.getGenerality().contains("适中")) {
+                                mobility = "较好";
+                            }
+                            s = s.replace("#{流动性}", mobility);
+                            stringHashSet.add(generateCommonMethod.trim(s));
+                        }
                     }
-                    s = s.replace("#{流动性}", mobility);
-                    stringHashSet.add(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(s)));
+                    if (CollectionUtils.isNotEmpty(stringHashSet)) {
+                        stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(StringUtils.join(stringHashSet, ""))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    }
                 }
-                stringHashSet.forEach(o -> stringBuilder.append(o));
+                break;
+                default:
+                    break;
             }
         }
         return stringBuilder.toString();

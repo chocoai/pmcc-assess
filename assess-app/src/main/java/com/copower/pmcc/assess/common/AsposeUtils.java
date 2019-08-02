@@ -3,11 +3,13 @@ package com.copower.pmcc.assess.common;
 import com.aspose.words.*;
 import com.aspose.words.Shape;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -25,6 +28,14 @@ import java.util.regex.Pattern;
  * Created by kings on 2018-6-6.
  */
 public class AsposeUtils {
+    //字体名称
+    public static String FontFamily = "font-family";
+    //字体大小
+    public static String FontSize = "font-size";
+    //字体缩进
+    public static String TextIndent = "text-indent";
+    //行高
+    public static String LineHeight = "line-height";
     /**
      * 仿宋_GB2312
      */
@@ -270,26 +281,26 @@ public class AsposeUtils {
      * @param map      key为被替换内容 value为替换内容
      * @throws Exception
      */
-    public static Map<String,String> replaceText(String filePath, Map<String, String> map) throws Exception {
+    public static Map<String, String> replaceText(String filePath, Map<String, String> map) throws Exception {
         if (StringUtils.isBlank(filePath)) {
             throw new Exception("error: empty file path");
         }
         if (map == null || map.isEmpty()) {
             throw new Exception("error: empty map");
         }
-        Map<String,String> stringMap = Maps.newLinkedHashMap();
+        Map<String, String> stringMap = Maps.newLinkedHashMap();
         Document doc = new Document(filePath);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
             if (StringUtils.isNotBlank(stringStringEntry.getKey())) {
                 try {
                     doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
                 } catch (Exception e) {
-                    stringMap.put(stringStringEntry.getKey(),stringStringEntry.getValue()) ;
+                    stringMap.put(stringStringEntry.getKey(), stringStringEntry.getValue());
                 }
             }
         }
         doc.save(filePath);
-        return stringMap ;
+        return stringMap;
     }
 
     /**
@@ -455,8 +466,8 @@ public class AsposeUtils {
                     String imgPath = imgPathList.get(index);
                     File file = new File(imgPath);
                     BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
-                    int width = maxWidth/colCount;
-                    int height = maxWidth/colCount;
+                    int width = maxWidth / colCount;
+                    int height = maxWidth / colCount;
                     if (imgPathList.size() == 1) {
                         height = 250;
                     }
@@ -681,17 +692,18 @@ public class AsposeUtils {
      * @return
      */
     public static String getWarpCssHtml(String html, List<KeyValueDto> keyValueDtoList) {
-        return getWarpElementCssHtml(html,"div",keyValueDtoList) ;
+        return getWarpElementCssHtml(html, "div", keyValueDtoList);
     }
 
     /**
      * 例如: <element style='font-family:仿宋_GB2312;font-size:14pt;line-height:100%;'>html</element>
+     *
      * @param html
      * @param element
      * @param keyValueDtoList
      * @return
      */
-    public static String getWarpElementCssHtml(String html,String element, List<KeyValueDto> keyValueDtoList) {
+    public static String getWarpElementCssHtml(String html, String element, List<KeyValueDto> keyValueDtoList) {
         StringBuilder stringBuilder = new StringBuilder(8);
         stringBuilder.append("<").append(element).append(" ");
         if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
@@ -722,10 +734,10 @@ public class AsposeUtils {
         return getWarpCssHtml(html, keyValueDtoList);
     }
 
-    public static String getWarpElementCssHtml(String html,String element, String key, String value) {
+    public static String getWarpElementCssHtml(String html, String element, String key, String value) {
         List<KeyValueDto> keyValueDtoList = new ArrayList<>(1);
         keyValueDtoList.add(new KeyValueDto(key, value));
-        return getWarpElementCssHtml(html, element,keyValueDtoList);
+        return getWarpElementCssHtml(html, element, keyValueDtoList);
     }
 
     public static List<KeyValueDto> getKeyValueDtoList() {
@@ -737,7 +749,7 @@ public class AsposeUtils {
         return keyValueDtoList;
     }
 
-    public static void insertHtml(DocumentBuilder builder,String html, boolean useBuilderFormatting){
+    public static void insertHtml(DocumentBuilder builder, String html, boolean useBuilderFormatting) {
         try {
             builder.insertHtml(html, useBuilderFormatting);
         } catch (Exception e) {
@@ -749,7 +761,7 @@ public class AsposeUtils {
         }
     }
 
-    public static void insertHtml(DocumentBuilder builder,String html){
+    public static void insertHtml(DocumentBuilder builder, String html) {
         try {
             builder.insertHtml(html);
         } catch (Exception e) {
@@ -761,7 +773,7 @@ public class AsposeUtils {
         }
     }
 
-    public Node insertDocument2(DocumentBuilder builder ,Document srcDoc, int importFormatMode){
+    public Node insertDocument2(DocumentBuilder builder, Document srcDoc, int importFormatMode) {
         try {
             return builder.insertDocument(srcDoc, importFormatMode);
         } catch (Exception e) {
@@ -773,4 +785,174 @@ public class AsposeUtils {
         }
         return null;
     }
+
+    public static void write(DocumentBuilder builder, String value) {
+        try {
+            builder.write(value);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static void setDefaultDocumentBuilder(DocumentBuilder builder, AsposeSettingParameter parameter) throws Exception {
+        if (builder == null) {
+            return;
+        }
+        //设置字体名称
+        if (StringUtils.isNotBlank(parameter.getFontFamily())) {
+            builder.getFont().setName(parameter.getFontFamily());
+        }
+        //设置字体大小
+        if (parameter.getFontSize() != null) {
+            builder.getFont().setSize(parameter.getFontSize());
+        }
+        //获取段落格式化工具
+        ParagraphFormat paragraphFormat = builder.getParagraphFormat();
+        //设置左缩进
+        if (parameter.getLeftIndent() != null) {
+            paragraphFormat.setLeftIndent(parameter.getLeftIndent());
+        }
+        //设置行间距 可以理解为行高
+        if (parameter.getLineSpacing() != null) {
+            paragraphFormat.setLineSpacing(parameter.getLineSpacing());
+        }
+        //设置右缩进
+        if (parameter.getRightIndent() != null) {
+            paragraphFormat.setRightIndent(parameter.getRightIndent());
+        }
+        //设置后空间
+        if (parameter.getSpaceAfter() != null) {
+            paragraphFormat.setSpaceAfter(parameter.getSpaceAfter());
+        }
+        //设置首行缩进
+        if (parameter.getFirstLineIndent() != null) {
+            paragraphFormat.setFirstLineIndent(parameter.getFirstLineIndent());
+        }
+        if (parameter.getAlignment() != null){
+            paragraphFormat.setAlignment(parameter.getAlignment());
+        }
+    }
+
+    public static void setDefaultRun( Run run,AsposeSettingParameter parameter)throws Exception{
+        //设置字体名称
+        if (StringUtils.isNotBlank(parameter.getFontFamily())) {
+            run.getFont().setName(parameter.getFontFamily());
+        }
+        //设置字体大小
+        if (parameter.getFontSize() != null) {
+            run.getFont().setSize(parameter.getFontSize());
+        }
+    }
+
+    public static AsposeSettingParameter getAsposeSettingParameter() {
+        AsposeSettingParameter parameter = null;
+        if (parameter == null) {
+            parameter = new AsposeUtils().new AsposeSettingParameter();
+        }
+        return parameter;
+    }
+
+    public class AsposeSettingParameter implements Serializable {
+        //居中
+        public Integer Alignment_CENTER = ParagraphAlignment.CENTER;
+        //两端对齐
+        public Integer Alignment_JUSTIFY = ParagraphAlignment.JUSTIFY;
+        private String fontFamily;
+        private Double fontSize;
+        private Double leftIndent;
+        private Double lineSpacing;
+        private Double rightIndent;
+        private Double spaceAfter;
+        private Double firstLineIndent;
+        private Integer alignment;
+
+        public String getFontFamily() {
+            return fontFamily;
+        }
+
+        public AsposeSettingParameter setFontFamily(String fontFamily) {
+            this.fontFamily = fontFamily;
+            return this;
+        }
+
+        public Double getFontSize() {
+            return fontSize;
+        }
+
+        public AsposeSettingParameter setFontSize(Double fontSize) {
+            this.fontSize = fontSize;
+            return this;
+        }
+
+        public Double getLeftIndent() {
+            return leftIndent;
+        }
+
+        public AsposeSettingParameter setLeftIndent(Double leftIndent) {
+            this.leftIndent = leftIndent;
+            return this;
+        }
+
+        public Double getLineSpacing() {
+            return lineSpacing;
+        }
+
+        public AsposeSettingParameter setLineSpacing(Double lineSpacing) {
+            this.lineSpacing = lineSpacing;
+            return this;
+        }
+
+        public Double getRightIndent() {
+            return rightIndent;
+        }
+
+        public AsposeSettingParameter setRightIndent(Double rightIndent) {
+            this.rightIndent = rightIndent;
+            return this;
+        }
+
+        public Double getSpaceAfter() {
+            return spaceAfter;
+        }
+
+        public AsposeSettingParameter setSpaceAfter(Double spaceAfter) {
+            this.spaceAfter = spaceAfter;
+            return this;
+        }
+
+        public Double getFirstLineIndent() {
+            return firstLineIndent;
+        }
+
+        public AsposeSettingParameter setFirstLineIndent(Double firstLineIndent) {
+            this.firstLineIndent = firstLineIndent;
+            return this;
+        }
+
+        public Integer getAlignment() {
+            return alignment;
+        }
+
+        public AsposeSettingParameter setAlignment(Integer alignment) {
+            this.alignment = alignment;
+            return this;
+        }
+
+        @Override
+        public String toString() {
+            return "AsposeSettingParameter{" +
+                    "Alignment_CENTER=" + Alignment_CENTER +
+                    ", Alignment_JUSTIFY=" + Alignment_JUSTIFY +
+                    ", fontFamily='" + fontFamily + '\'' +
+                    ", fontSize=" + fontSize +
+                    ", leftIndent=" + leftIndent +
+                    ", lineSpacing=" + lineSpacing +
+                    ", rightIndent=" + rightIndent +
+                    ", spaceAfter=" + spaceAfter +
+                    ", firstLineIndent=" + firstLineIndent +
+                    ", alignment=" + alignment +
+                    '}';
+        }
+    }
+
 }
