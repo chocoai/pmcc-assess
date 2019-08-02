@@ -61,16 +61,6 @@ public class NetInfoRecordController {
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         String provinceName = erpAreaService.getSysAreaName(province);
         String cityName = erpAreaService.getSysAreaName(city);
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        Date endTime = null;
-//        Date afterDate = null;
-//        if (StringUtil.isNotEmpty(queryEndTime)) {
-//            endTime = sdf.parse(queryEndTime);
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(endTime);
-//            calendar.add(Calendar.DAY_OF_MONTH, +1); //得到后1天
-//            afterDate = calendar.getTime();
-//        }
         Date startTimeParse = null;
         Date endTimeParse = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
