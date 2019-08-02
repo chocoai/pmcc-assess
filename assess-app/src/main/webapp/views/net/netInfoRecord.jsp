@@ -81,11 +81,32 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    抓取日期
+                                    开始日期
                                 </label>
                                 <div class="col-sm-2">
-                                    <input placeholder="抓取日期" id="queryEndTime" data-date-format="yyyy-mm-dd"
+                                    <input placeholder="开始日期" id="queryStartTime" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate roomTime">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    结束日期
+                                </label>
+                                <div class="col-sm-2">
+                                    <input placeholder="结束日期" id="queryEndTime" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate roomTime">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    类型
+                                </label>
+                                <div class="col-sm-2">
+                                    <input type="text" data-rule-maxlength="50"
+                                           placeholder="类型" id="queryType" name="queryType"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -137,16 +158,22 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'title', title: '标题', width: '20%'});
+            cols.push({field: 'title', title: '标题', width: '15%'});
             cols.push({field: 'province', title: '省', width: '10%'});
             cols.push({field: 'city', title: '市', width: '10%'});
-            cols.push({field: 'sourceSiteName', title: '来源网站', width: '20%'});
+            cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%'});
+            cols.push({field: 'type', title: '类型', width: '10%'});
             cols.push({
-                field: 'gmtCreated', title: '抓取时间', width: '10%', formatter: function (value, row, index) {
-                    return formatDate(row.gmtCreated, false);
+                field: 'beginTime', title: '开始时间', width: '10%', formatter: function (value, row, index) {
+                    return formatDate(row.beginTime, false);
                 }
             });
-            cols.push({field: 'content', title: '内容', width: '30%'});
+            cols.push({
+                field: 'endTime', title: '结束时间', width: '10%', formatter: function (value, row, index) {
+                    return formatDate(row.endTime, false);
+                }
+            });
+            cols.push({field: 'content', title: '内容', width: '25%'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -162,6 +189,8 @@
                 province: $("#province").val(),
                 city: $("#city").val(),
                 queryContent: $("#queryContent").val(),
+                queryType: $("#queryType").val(),
+                queryStartTime: $("#queryStartTime").val(),
                 queryEndTime: $("#queryEndTime").val()
             }, {
                 showColumns: false,

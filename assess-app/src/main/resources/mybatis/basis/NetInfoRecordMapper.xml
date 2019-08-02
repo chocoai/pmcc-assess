@@ -7,6 +7,10 @@
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="notice_date" property="noticeDate" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="source_site_name" property="sourceSiteName" jdbcType="VARCHAR" />
     <result column="source_site_url" property="sourceSiteUrl" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -72,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, province, city, title, content, source_site_name, source_site_url, creator, gmt_created, 
-    gmt_modified
+    id, province, city, title, content, type, notice_date, begin_time, end_time, source_site_name, 
+    source_site_url, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordExample" >
     select
@@ -110,13 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_net_info_record (province, city, title, 
-      content, source_site_name, source_site_url, 
-      creator, gmt_created, gmt_modified
-      )
+      content, type, notice_date, 
+      begin_time, end_time, source_site_name, 
+      source_site_url, creator, gmt_created, 
+      gmt_modified)
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{sourceSiteName,jdbcType=VARCHAR}, #{sourceSiteUrl,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{content,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{noticeDate,jdbcType=VARCHAR}, 
+      #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{sourceSiteName,jdbcType=VARCHAR}, 
+      #{sourceSiteUrl,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +141,18 @@
       </if>
       <if test="content != null" >
         content,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="noticeDate != null" >
+        notice_date,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
       </if>
       <if test="sourceSiteName != null" >
         source_site_name,
@@ -164,6 +182,18 @@
       </if>
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeDate != null" >
+        #{noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="sourceSiteName != null" >
         #{sourceSiteName,jdbcType=VARCHAR},
@@ -206,6 +236,18 @@
       <if test="record.content != null" >
         content = #{record.content,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeDate != null" >
+        notice_date = #{record.noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null" >
+        begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.sourceSiteName != null" >
         source_site_name = #{record.sourceSiteName,jdbcType=VARCHAR},
       </if>
@@ -233,6 +275,10 @@
       city = #{record.city,jdbcType=VARCHAR},
       title = #{record.title,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      notice_date = #{record.noticeDate,jdbcType=VARCHAR},
+      begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
       source_site_name = #{record.sourceSiteName,jdbcType=VARCHAR},
       source_site_url = #{record.sourceSiteUrl,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -256,6 +302,18 @@
       </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeDate != null" >
+        notice_date = #{noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="sourceSiteName != null" >
         source_site_name = #{sourceSiteName,jdbcType=VARCHAR},
@@ -281,6 +339,10 @@
       city = #{city,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      notice_date = #{noticeDate,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
       source_site_name = #{sourceSiteName,jdbcType=VARCHAR},
       source_site_url = #{sourceSiteUrl,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
