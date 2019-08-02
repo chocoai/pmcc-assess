@@ -57,10 +57,12 @@ public class UReportService {
         List<Map> mapList = ddlMySqlAssist.customTableSelect(sql.toString());
         if (CollectionUtils.isEmpty(mapList)) return null;
         List<Integer> publicProjectIds = LangUtils.transform(mapList, o -> {
-            return Integer.valueOf(String.valueOf(o.get("public_project_id")));
+            String idString = objectToString(o.get("public_project_id"));
+            if (StringUtils.isNotEmpty(idString)) return Integer.valueOf(idString);
+            return 0;
         });
         List<FinancialBillMakeOutProjectDto> makeOutList = financeRpcToolService.getProjectBillMakeOutList(publicProjectIds);
-        if(CollectionUtils.isNotEmpty(makeOutList)){
+        if (CollectionUtils.isNotEmpty(makeOutList)) {
             Map<Integer, FinancialBillMakeOutProjectDto> entity = FormatUtils.mappingSingleEntity(makeOutList, o -> o.getProjectId());
         }
         List<UProjectFinanceVo> list = Lists.newArrayList();
@@ -72,7 +74,7 @@ public class UReportService {
             vo.setConsignorName(objectToString(map.get("cs_entrustment_unit")));
             vo.setReportUseUnitName(objectToString(map.get("u_use_unit")));
             vo.setReportNumber(objectToString(map.get("number_value")));
-           // vo.setReportNumberCreated(DateUtils.convertDate(String.valueOf(map.get("gmt_created"))));
+            // vo.setReportNumberCreated(DateUtils.convertDate(String.valueOf(map.get("gmt_created"))));
             vo.setContractName(objectToString(map.get("contract_name")));
             vo.setContractPrice(objectToString(map.get("contract_price")));
 
@@ -82,8 +84,8 @@ public class UReportService {
         return list;
     }
 
-    private String objectToString(Object obj){
-        if(obj==null)return "";
+    private String objectToString(Object obj) {
+        if (obj == null) return "";
         return StringUtils.defaultString(String.valueOf(obj));
     }
 }
