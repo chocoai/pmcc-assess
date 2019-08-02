@@ -37,7 +37,7 @@ public class NetInfoRecordDao {
      * @param queryTitle
      * @return
      */
-    public List<NetInfoRecord> getNetInfoRecordListByName(String queryTitle, String queryWebName, String provinceName, String cityName, String queryContent, Date endTime, Date afterDate) {
+    public List<NetInfoRecord> getNetInfoRecordListByName(String queryTitle, String queryWebName, String provinceName, String cityName, String queryContent,String queryType, Date queryStratTime, Date queryEndTime) {
         NetInfoRecordExample example = new NetInfoRecordExample();
         NetInfoRecordExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(queryTitle)) {
@@ -55,8 +55,14 @@ public class NetInfoRecordDao {
         if (StringUtils.isNotBlank(queryContent)) {
             criteria.andContentLike(String.format("%s%s%s", "%", queryContent, "%"));
         }
-        if (endTime!=null) {
-            criteria.andGmtCreatedBetween(endTime,afterDate);
+        if (StringUtils.isNotBlank(queryType)) {
+            criteria.andTypeLike(String.format("%s%s%s", "%", queryType, "%"));
+        }
+        if (queryStratTime!=null) {
+            criteria.andBeginTimeGreaterThanOrEqualTo(queryStratTime);
+        }
+        if (queryEndTime!=null) {
+            criteria.andEndTimeLessThanOrEqualTo(queryEndTime);
         }
         example.setOrderByClause("id desc");
         return netInfoRecordMapper.selectByExample(example);

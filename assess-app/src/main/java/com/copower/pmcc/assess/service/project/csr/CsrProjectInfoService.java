@@ -123,13 +123,9 @@ public class CsrProjectInfoService {
     @Autowired
     private BaseReplaceRecordService baseReplaceRecordService;
     @Autowired
-    private BaseReportService baseReportService;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
-    private DatabaseJdbcService databaseJdbcService;
 
     /**
      * 获取vo
@@ -677,7 +673,7 @@ public class CsrProjectInfoService {
                     for (String tableName : tableSet) {
                         switch (tableName) {
                             case AssessTableNameConstant.CSR_BORROWER:
-                                objectMap = databaseJdbcService.getObjectSingle(AssessTableNameConstant.CSR_BORROWER, integer);
+                                objectMap = null;
                                 if (objectMap != null)
                                     map.put(tableName, objectMap);
                                 break;
@@ -695,7 +691,7 @@ public class CsrProjectInfoService {
                                 break;
                             case AssessTableNameConstant.CSR_PROJECT_INFO:
                                 sql = String.format("select * from %s where id=%s", tableName, csrProjectId);
-                                objectMap = databaseJdbcService.getObjectSingle(sql, new Object[0]);
+                                objectMap = null;
                                 if (objectMap != null)
                                     map.put(tableName, objectMap);
                                 break;
@@ -860,7 +856,7 @@ public class CsrProjectInfoService {
         for (String sjhth : integerList) {
             SysAttachmentDto attachment = new SysAttachmentDto();
             attachment.setTableName("sheet1");
-            attachment.setFieldsName("report");
+            attachment.setFieldsName("ureport");
             try {
                 List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where sjhth='" + sjhth + "'");
                 attachment.setFileName(String.format("%s%s-%s号%s的报告", String.valueOf(mapList.get(0).get("role")), String.valueOf(mapList.get(0).get("version")), String.valueOf(mapList.get(0).get
@@ -870,7 +866,7 @@ public class CsrProjectInfoService {
                 //
 
                 BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName("single.csr");
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("report.type.preaudit");
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("ureport.type.preaudit");
                 Integer templateId = null;
 
                 SysAttachmentDto ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment);

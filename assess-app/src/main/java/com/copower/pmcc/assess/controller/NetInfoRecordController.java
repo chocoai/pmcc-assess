@@ -55,23 +55,25 @@ public class NetInfoRecordController {
 
     @ResponseBody
     @RequestMapping(value = "/getInfoRecordList", name = "信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryEndTime) throws Exception {
+    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent,String queryType, String queryStartTime, String queryEndTime) throws Exception {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         String provinceName = erpAreaService.getSysAreaName(province);
         String cityName = erpAreaService.getSysAreaName(city);
+        Date startTimeParse = null;
+        Date endTimeParse = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date endTime = null;
-        Date afterDate = null;
-        if (StringUtil.isNotEmpty(queryEndTime)) {
-            endTime = sdf.parse(queryEndTime);
+        if (StringUtil.isNotEmpty(queryStartTime))
+            startTimeParse = sdf.parse(queryStartTime);
+        if (StringUtil.isNotEmpty(queryEndTime)){
+            endTimeParse = sdf.parse(queryEndTime);
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(endTime);
+            calendar.setTime(endTimeParse);
             calendar.add(Calendar.DAY_OF_MONTH, +1); //得到后1天
-            afterDate = calendar.getTime();
+            endTimeParse = calendar.getTime();
         }
-        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent, endTime, afterDate);
+        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent,queryType, startTimeParse, endTimeParse);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(netInfoRecords) ? new ArrayList<NetInfoRecord>() : netInfoRecords);
         return bootstrapTableVo;
