@@ -386,16 +386,10 @@ public class GenerateReportService {
                 }
                 //建行个贷变现能力分析
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY2.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "100%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk2(keyValueDtoList));
+                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
                 }
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY3.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "11pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "100%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk2(keyValueDtoList));
+                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
                 }
                 //风险提示
                 if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {
@@ -423,35 +417,20 @@ public class GenerateReportService {
                 }
                 //特别提示
                 if (Objects.equal(BaseReportFieldEnum.HotTip.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, ""));
+                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
                 }
                 //建行个贷特别提示
                 if (Objects.equal(BaseReportFieldEnum.HotTip2.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, BaseReportFieldEnum.HotTipBank.name()));
+                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
                 }
                 if (Objects.equal(BaseReportFieldEnum.HotTip4.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "11pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, BaseReportFieldEnum.HotTipBank.name()));
+                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
                 }
                 if (Objects.equal(BaseReportFieldEnum.HotTipBank.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "10pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, BaseReportFieldEnum.HotTipBank.name()));
+                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
                 }
                 if (Objects.equal(BaseReportFieldEnum.Atypism2.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "10pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip(keyValueDtoList, BaseReportFieldEnum.HotTipBank.name()));
+                    generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
                 }
                 //作业结束时间
                 if (Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), name)) {
@@ -573,26 +552,22 @@ public class GenerateReportService {
                 }
                 //坐落
                 if (Objects.equal(BaseReportFieldEnum.Seat2.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectSeatList(true));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeatText());
                 }
                 if (Objects.equal(BaseReportFieldEnum.Seat.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectSeatList(false));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeatText());
                 }
                 //建行个贷权证号
                 if (Objects.equal(BaseReportFieldEnum.CERT_NAME1.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "9.0pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList(keyValueDtoList));
+                    AsposeUtils.AsposeSettingParameter parameter = AsposeUtils.getAsposeSettingParameter();
+                    parameter.setFontFamily("仿宋_GB2312").setFontSize(9.0).setLineSpacing(10.00) ;
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertText());
                 }
                 if (Objects.equal(BaseReportFieldEnum.CERT_NAME2.getName(), name)) {
-                    keyValueDtoList.add(new KeyValueDto("font-family", "宋体"));
-                    keyValueDtoList.add(new KeyValueDto("font-size", "10.0pt"));
-                    keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList(keyValueDtoList));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertText());
                 }
                 if (Objects.equal(BaseReportFieldEnum.CERT_NAME3.getName(), name)) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertNameList2());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertText());
                 }
                 //证载用途
                 if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
@@ -619,7 +594,7 @@ public class GenerateReportService {
                 }
                 //评估总价分述
                 if (Objects.equal(BaseReportFieldEnum.AssessPriceClassification.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessPriceClassification());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessPriceClassification());
                 }
                 //评估总价
                 if (Objects.equal(BaseReportFieldEnum.AssessTotal.getName(), name)) {
@@ -661,7 +636,7 @@ public class GenerateReportService {
                 }
                 //户型
                 if (Objects.equal(BaseReportFieldEnum.unitType.getName(), name)) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordUnitType());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordUnitType());
                 }
                 //装修状况
                 if (Objects.equal(BaseReportFieldEnum.DecorationStatus.getName(), name)) {
