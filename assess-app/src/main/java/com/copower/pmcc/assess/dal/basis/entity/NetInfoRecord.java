@@ -13,6 +13,14 @@ public class NetInfoRecord {
 
     private String content;
 
+    private String type;
+
+    private String noticeDate;
+
+    private Date beginTime;
+
+    private Date endTime;
+
     private String sourceSiteName;
 
     private String sourceSiteUrl;
@@ -61,6 +69,38 @@ public class NetInfoRecord {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    public String getNoticeDate() {
+        return noticeDate;
+    }
+
+    public void setNoticeDate(String noticeDate) {
+        this.noticeDate = noticeDate == null ? null : noticeDate.trim();
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public String getSourceSiteName() {
