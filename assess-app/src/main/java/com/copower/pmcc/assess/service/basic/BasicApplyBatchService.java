@@ -472,10 +472,10 @@ public class BasicApplyBatchService {
                     stringBuilder.append("/");
                 }
             }
+            vo.setFullName(stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString());
         }else {
             vo.setFullName(basicApplyBatch.getEstateName());
         }
-        vo.setFullName(stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString());
         return vo;
     }
 
