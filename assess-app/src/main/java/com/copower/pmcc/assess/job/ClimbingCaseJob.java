@@ -28,7 +28,7 @@ public class ClimbingCaseJob {
      */
     public void climbing(){
         RLock lock = redissonClient.getLock(JOB_RUNNING_LOCK_KEY);
-        // 尝试加锁,最多等待10秒,上锁以后20秒自动解锁
+        // 尝试加锁,最多等待10秒,上锁以后20*60秒自动解锁
         boolean res = false;
         try {
             res = lock.tryLock(10, 20*60, TimeUnit.SECONDS);
@@ -43,7 +43,7 @@ public class ClimbingCaseJob {
         logger.info("----ClimbingCaseJob, start---------");
 
         //抓取数据
-        //netInfoRecordService.climbingData();
+        netInfoRecordService.climbingData();
 
         logger.info("----ClimbingCaseJob, end---------");
     }
