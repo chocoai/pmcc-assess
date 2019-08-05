@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -62,13 +63,14 @@ public class UReportService {
             return 0;
         });
         List<FinancialBillMakeOutProjectDto> makeOutList = financeRpcToolService.getProjectBillMakeOutList(publicProjectIds);
+        Map<Integer, FinancialBillMakeOutProjectDto> mapFinance = null;
         if (CollectionUtils.isNotEmpty(makeOutList)) {
-            Map<Integer, FinancialBillMakeOutProjectDto> entity = FormatUtils.mappingSingleEntity(makeOutList, o -> o.getProjectId());
+            mapFinance = FormatUtils.mappingSingleEntity(makeOutList, o -> o.getProjectId());
         }
         List<UProjectFinanceVo> list = Lists.newArrayList();
         for (Map map : mapList) {
             UProjectFinanceVo vo = new UProjectFinanceVo();
-            vo.setId(Integer.valueOf(String.valueOf(map.get("id"))));
+            vo.setId(objectToInteger(map.get("id")));
             vo.setProjectName(objectToString(map.get("project_name")));
             vo.setProjectManagerName(objectToString(map.get("user_account_manager")));
             vo.setConsignorName(objectToString(map.get("cs_entrustment_unit")));
@@ -77,8 +79,19 @@ public class UReportService {
             // vo.setReportNumberCreated(DateUtils.convertDate(String.valueOf(map.get("gmt_created"))));
             vo.setContractName(objectToString(map.get("contract_name")));
             vo.setContractPrice(objectToString(map.get("contract_price")));
-
-
+            Integer publicProjectId = objectToInteger(map.get("id"));
+            if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
+                FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
+                if(makeOutProjectDto.getAmount()!=null){
+                    vo.setAmount(objectToString(makeOutProjectDto.getAmount()/100L));
+                }
+                if(makeOutProjectDto.getActualAmount()!=null){
+                    vo.setActualAmount(objectToString(makeOutProjectDto.getActualAmount()/100L));
+                }
+                if(makeOutProjectDto.getPayAmount()!=null){
+                    vo.setPayAmount(objectToString(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                }
+            }
             list.add(vo);
         }
         return list;
@@ -87,5 +100,12 @@ public class UReportService {
     private String objectToString(Object obj) {
         if (obj == null) return "";
         return StringUtils.defaultString(String.valueOf(obj));
+    }
+
+    private Integer objectToInteger(Object obj) {
+        String string = objectToString(obj);
+        if (StringUtils.isNotBlank(string) && StringUtils.isNumeric(string))
+            return Integer.valueOf(string);
+        return 0;
     }
 }
