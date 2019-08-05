@@ -107,9 +107,9 @@ public class UReportService {
         });
         List<FinancialBillMakeOutProjectDto> makeOutList = null;
         try {
-            makeOutList = financeRpcToolService.getProjectBillMakeOutList(Lists.newArrayList(0));
+            makeOutList = financeRpcToolService.getProjectBillMakeOutList(LangUtils.filter(publicProjectIds, o -> o.intValue() > 0));
         } catch (Exception e) {
-
+            logger.error(e.getMessage(),e);
         }
         Map<Integer, FinancialBillMakeOutProjectDto> mapFinance = null;
         if (CollectionUtils.isNotEmpty(makeOutList)) {
@@ -128,7 +128,7 @@ public class UReportService {
             vo.setProjectManagerName(userAccountManager);
             vo.setConsignorName(objectToString(map.get("cs_entrustment_unit")));
             String useUnit = objectToString(map.get("u_use_unit"));
-            if(StringUtil.isNotEmpty(useUnit)){
+            if (StringUtil.isNotEmpty(useUnit)) {
                 CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(useUnit));
                 if (customer != null) {
                     useUnit = customer.getName();

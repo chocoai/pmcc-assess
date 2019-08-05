@@ -90,7 +90,7 @@
                         </div>
                     </form>
                     <iframe id="report_iframe" width="100%" height="100%"
-                            src="${pageContext.request.contextPath}/ureport/preview?_u=erp:项目开票收款.ureport.xml&_i=1&_r=1"
+                            src="${pageContext.request.contextPath}/ureport/preview?_u=erp:projectFinance.ureport.xml&_i=1&_r=1"
                             frameborder="0" scrolling="auto"></iframe>
                 </div>
             </div>
@@ -111,7 +111,7 @@
 
     function statisticsByCondition(){
         var data = formParams("query_form");
-        document.getElementById('report_iframe').src="${pageContext.request.contextPath}/ureport/preview?_u=erp:项目开票收款.ureport.xml&_i=1&_r=1&queryProjectName="+data.queryProjectName+ "&queryConsignorName="+data.queryConsignorName+
+        document.getElementById('report_iframe').src="${pageContext.request.contextPath}/ureport/preview?_u=erp:projectFinance.ureport.xml&_i=1&_r=1&queryProjectName="+data.queryProjectName+ "&queryConsignorName="+data.queryConsignorName+
             "&queryReportUseUnitName="+data.queryReportUseUnitName+"&queryReportNumber="+data.queryReportNumber+"&queryStartTime="+data.queryStartTime+"&queryEndTime="+data.queryEndTime;
     }
 
