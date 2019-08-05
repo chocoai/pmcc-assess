@@ -27,13 +27,57 @@
                     <form id="query_form" class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
-                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    项目名称
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <input id="queryProjectName" name="queryProjectName" class="form-control"  placeholder="项目名称"/>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-md-2 col-sm-2 col-xs-12">
-                                    <input id="queryTitle" name="queryTitle" class="form-control"  placeholder="标题"/>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    委托人
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input id="queryConsignorName" name="queryConsignorName" class="form-control"  placeholder="委托人"/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    报告使用单位
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input id="queryReportUseUnitName" name="queryReportUseUnitName" class="form-control" type="hidden"/>
+                                    <input id="queryUseUnitName" name="queryUseUnitName" class="form-control"  placeholder="报告使用单位"
+                                           onclick="selectCustomer(this)" readonly="readonly"/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    报告文号
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input id="queryReportNumber" name="queryReportNumber" class="form-control"  placeholder="报告文号"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    开始时间
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input id="queryStartTime" name="queryStartTime" class="form-control date-picker dbdate"
+                                           data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    结束时间
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input id="queryEndTime" name="queryEndTime" class="form-control date-picker dbdate"
+                                           data-date-format="yyyy-mm-dd"  placeholder="结束时间"/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -58,7 +102,7 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
-
+<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="application/javascript">
     $(function () {
         changeFrameHeight();
@@ -67,7 +111,8 @@
 
     function statisticsByCondition(){
         var data = formParams("query_form");
-        document.getElementById('report_iframe').src="${pageContext.request.contextPath}/ureport/preview?_u=erp:workLog.ureport.xml&_i=1&_r=1&queryProjectName="+data.queryProjectName+"&queryTitle="+data.queryTitle;
+        document.getElementById('report_iframe').src="${pageContext.request.contextPath}/ureport/preview?_u=erp:项目开票收款.ureport.xml&_i=1&_r=1&queryProjectName="+data.queryProjectName+ "&queryConsignorName="+data.queryConsignorName+
+            "&queryReportUseUnitName="+data.queryReportUseUnitName+"&queryReportNumber="+data.queryReportNumber+"&queryStartTime="+data.queryStartTime+"&queryEndTime="+data.queryEndTime;
     }
 
 
@@ -78,6 +123,26 @@
 
     window.onresize = function () {
         changeFrameHeight();
+    };
+
+    function selectCustomer(this_) {
+        //选择客户
+        crmCustomer.select({
+            multi: false,//是否允许多选
+            companyId:"${companyId}",
+            onSelected: function (nodes) {
+                $("#queryReportUseUnitName").val(nodes[0].id);
+                $("#queryUseUnitName").val(nodes[0].name);
+                $.ajax({
+                    type: "get",
+                    url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
+                    data: "crmId=" + nodes[0].id,
+                    success: function (msg) {
+
+                    }
+                });
+            }
+        });
     };
 </script>
 </html>
