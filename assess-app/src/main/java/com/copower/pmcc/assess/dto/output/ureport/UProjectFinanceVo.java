@@ -7,14 +7,18 @@ import java.util.Date;
  */
 public class UProjectFinanceVo {
     private Integer id;
-    private String projectName;//项目名称
-    private String consignorName;//委托人
-    private String reportUseUnitName;//报告使用单位
-    private String reportNumber;//报告文号
-    private Date reportNumberCreated;//报告文号创建时间
-    private String projectManagerName;//项目经理
+    private String projectName;//项目名称 -查询
+    private String consignorName;//委托人 -查询
+    private String reportUseUnitName;//报告使用单位 -查询
+    private String reportNumber;//报告文号 -查询
+    private Date reportNumberCreated;//报告文号创建时间 -查询
+    private String projectManagerName;//项目经理 -查询
     private String contractName;//合同名称
     private String contractPrice;//合同金额
+    private String amount;//开票金额
+    private String actualAmount;//实际金额
+    private String payAmount;//支付金额
+
 
     public Integer getId() {
         return id;
@@ -86,5 +90,29 @@ public class UProjectFinanceVo {
 
     public void setContractPrice(String contractPrice) {
         this.contractPrice = contractPrice;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(String actualAmount) {
+        this.actualAmount = actualAmount;
+    }
+
+    public String getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(String payAmount) {
+        this.payAmount = payAmount;
     }
 }

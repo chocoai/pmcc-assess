@@ -1083,7 +1083,7 @@
         {caseCaseDifference}
     </tr>
     <tr data-name="weight">
-        <td>权重</td>
+        <td>加权权重</td>
         <td></td>
         {caseWeight}
     </tr>
@@ -1093,7 +1093,7 @@
         {caseWeightDescription}
     </tr>
     <tr data-name="averagePrice">
-        <td>加权平均价</td>
+        <td>测算价</td>
         <td data-item-id="{evaluationId}">{averagePrice}</td>
         <td></td>
         <td></td>
@@ -1150,7 +1150,7 @@
         {caseCaseDifference}
     </tr>
     <tr>
-        <td>权重</td>
+        <td>加权权重</td>
         <td></td>
         {caseWeight}
     </tr>
@@ -1160,7 +1160,7 @@
         {caseWeightDescription}
     </tr>
     <tr>
-        <td>加权平均价</td>
+        <td>测算价</td>
         <td>{averagePrice}</td>
         <td></td>
         <td></td>
