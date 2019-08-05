@@ -151,7 +151,7 @@
             landFrm.find(development.config.land.parameter).empty().append(html);
             landFrm.find("input[name='unsaleableBuildingArea']").attr('readonly', 'readonly');
             if (development.isNotBlankObject(head)){
-                developmentCommon.parameter.initData(landFrm.find("table").first(),head) ;
+                developmentCommon.parameter.initData(landFrm.find("table").first(),head,false) ;
             }
         }
 
@@ -162,7 +162,7 @@
             engineeringFrm.find(development.config.engineering.parameter).empty().append(html);
             engineeringFrm.find("input[name='unsaleableBuildingArea']").attr('readonly', 'readonly');
             if (development.isNotBlankObject(head)){
-                developmentCommon.parameter.initData(engineeringFrm.find("table").first(),head) ;
+                developmentCommon.parameter.initData(engineeringFrm.find("table").first(),head,false) ;
             }
         }
     };

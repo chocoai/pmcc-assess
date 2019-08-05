@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.DataInfrastructureEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -11,7 +10,6 @@ import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
-import com.copower.pmcc.assess.service.method.MdDevelopmentInfrastructureChildrenService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -20,7 +18,6 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -58,8 +55,6 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     @Autowired
     private DeclareRecordService declareRecordService;
-    @Autowired
-    private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     final String JSON_STRING = "Json";
 
@@ -67,21 +62,21 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentIndex", "", 0, "0", "");
         //初始化支撑数据
-        setViewParam(projectPlanDetails, modelAndView, true);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentApproval", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails, modelAndView, false);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentIndex", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails, modelAndView, false);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -93,7 +88,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setViewParam(projectPlanDetails, modelAndView, false);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -156,7 +151,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
      *
      * @param modelAndView
      */
-    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, boolean apply) {
+    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo select = new SchemeInfo();
         select.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.DEVELOPMENT).getId());
         select.setProjectId(projectPlanDetails.getProjectId());
@@ -177,10 +172,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         }
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
-        setViewBaseParam(projectPlanDetails, modelAndView, apply);
+        setViewBaseParam(projectPlanDetails, modelAndView);
     }
 
-    private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, boolean apply) {
+    private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter = new DeclareBuildEngineeringAndEquipmentCenter();
         if (projectPlanDetails.getJudgeObjectId() == null) {
             return;
@@ -193,23 +188,6 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
             if (schemeAreaGroup != null) {
                 List<InfrastructureVo> dataInfrastructureList = dataInfrastructureService.calculatingMethod(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
-                if (apply) {
-                    if (CollectionUtils.isNotEmpty(dataInfrastructureList)) {
-                        List<String> typeList = Arrays.asList("land","engineering");
-                        for (InfrastructureVo oo : dataInfrastructureList) {
-                            if (Objects.equal(DataInfrastructureEnum.InfrastructureSupportingFacilities.getName(), oo.getType())) {
-                                for (String type:typeList){
-                                    MdDevelopmentInfrastructureChildren po = new MdDevelopmentInfrastructureChildren();
-                                    po.setPid(0);
-                                    po.setPlanDetailsId(projectPlanDetails.getId());
-                                    po.setNumber(oo.getInfrastructureSupportingFacilities());
-                                    po.setType(type);
-                                    mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(po);
-                                }
-                            }
-                        }
-                    }
-                }
                 modelAndView.addObject("dataInfrastructureList", dataInfrastructureList);
                 modelAndView.addObject(StringUtils.uncapitalize(SchemeAreaGroup.class.getSimpleName()), schemeAreaGroup);
             }

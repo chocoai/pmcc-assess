@@ -154,7 +154,7 @@
         }
     };
 
-    developmentCommon.saveMdArchitecturalObj = function (data, type, databaseName, pid,planDetailsId, callback) {
+    developmentCommon.saveMdArchitecturalObj = function (data, type, databaseName, pid, planDetailsId, callback) {
         var item = {
             forData: JSON.stringify(data),
             type: type,
@@ -319,38 +319,53 @@
                 }
             });
         },
-        initData: function (table, data) {
+        initData: function (table, data, equals) {
             if (table.size() == 0) {
                 return false;
             }
             var buildArea = 0;
             var maySaleArea = 0;
             var maySaleAreaNext = 0;
-            var unitPrice = 0;
             table.find("tbody").find("tr").each(function (i, tr) {
                 var dataKey = $(tr).attr('data-key');
                 var name = $(tr).find("td").first().text();
                 $.each(data, function (j, item) {
-                    if (item.dataKey == dataKey) {
-                        if (item.name == name) {
+                    if (item.name == name) {
+                        if (equals) {
+                        } else {
+                            equals = item.dataKey == dataKey;
+                        }
+                        if (equals) {
                             if (AssessCommon.isNumber(item.buildArea)) {
                                 buildArea += Number(item.buildArea);
-                            }
-                            if (AssessCommon.isNumber(item.maySaleArea)) {
-                                maySaleArea += Number(item.maySaleArea);
                             }
                             if (AssessCommon.isNumber(item.maySaleAreaNext)) {
                                 maySaleAreaNext += Number(item.maySaleAreaNext);
                             }
                             if (AssessCommon.isNumber(item.unitPrice)) {
-                                unitPrice += Number(item.unitPrice);
+                                var multiply = math.bignumber(0);
+                                if (AssessCommon.isNumber(item.number)) {
+                                    multiply = math.add(multiply, math.bignumber(item.number));
+                                }
+                                if (AssessCommon.isNumber(item.maySaleAreaNext)) {
+                                    multiply = math.add(multiply, math.bignumber(item.maySaleAreaNext));
+                                }
+                                if (!AssessCommon.isNumber(item.maySaleArea)) {
+
+                                }
+                                var c = math.chain(math.bignumber(item.unitPrice)).multiply(multiply).done();
+                                item.maySaleArea = c.toString() ;
+                            }
+                            if (AssessCommon.isNumber(item.maySaleArea)) {
+                                maySaleArea += Number(item.maySaleArea);
                             }
                             $(tr).find("td").eq(1).find("a").text(item.buildArea);
                             $(tr).find("td").eq(2).find("a").text(item.maySaleArea);
                             $(tr).find("td").eq(3).find("a").text(item.maySaleAreaNext);
-                            $(tr).find("td").eq(4).find("a").text(item.unitPrice);
-                            $(tr).find("td").eq(5).find("a").text(item.number);
-                            $(tr).find("td").eq(6).find("a").text(item.remark);
+                            $(tr).find("td").eq(4).find("a").text(item.number);
+                            $(tr).find("td").eq(5).find("a").text(item.unitPrice);
+                            $(tr).find("td").eq(6).find("a").text(item.assessArea);
+                            $(tr).find("td").eq(7).find("a").text(item.remark);
                         }
                     }
                 });
@@ -358,31 +373,30 @@
             table.find("tfoot").find("input[name='buildArea']").val(buildArea);
             table.find("tfoot").find("input[name='maySaleArea']").val(maySaleArea);
             table.find("tfoot").find("input[name='maySaleAreaNext']").val(maySaleAreaNext);
-            table.find("tfoot").find("input[name='unitPrice']").val(unitPrice);
-
         },
         getFomData: function (table) {
             var data = [];
             table.find("tbody").find("tr").each(function (i, tr) {
                 var item = {};
                 var dataKey = $(tr).attr('data-key');
-                var role = $(tr).attr('data-role');
                 item.name = $(tr).find("td").first().text();
                 item.buildArea = $(tr).find("td").eq(1).find("a").text();
                 item.maySaleArea = $(tr).find("td").eq(2).find("a").text();
                 item.maySaleAreaNext = $(tr).find("td").eq(3).find("a").text();
-                item.unitPrice = $(tr).find("td").eq(4).find("a").text();
-                item.number = $(tr).find("td").eq(5).find("a").text();
-                item.remark = $(tr).find("td").eq(6).find("a").text();
+                item.number = $(tr).find("td").eq(4).find("a").text();
+                item.unitPrice = $(tr).find("td").eq(5).find("a").text();
+                item.assessArea = $(tr).find("td").eq(6).find("a").text();
+                item.remark = $(tr).find("td").eq(7).find("a").text();
                 item.dataKey = dataKey;
-                item.role = role;
                 data.push(item);
             });
+            console.log(data) ;
             return data;
         },
         editableInit: function (callback) {
+            var handle = $("." + developmentCommon.config.commonParameter.handle);
             developmentCommon.parameter.getDeclareEconomicIndicatorsContentList(function (data) {
-                $("." + developmentCommon.config.commonParameter.handle).find("table").each(function () {
+                handle.find("table").each(function () {
                     var table = $(this);
                     table.find("tbody").find("tr").each(function () {
                         var tr = $(this);
@@ -402,7 +416,7 @@
                                                 developmentCommon.parameter.handleCalculationA(value);
                                             }
                                             if (fun.indexOf('handleCalculationB') != -1) {
-                                                developmentCommon.parameter.handleCalculationB(value);
+                                                developmentCommon.parameter.handleCalculationB(tr, value);
                                             }
                                             if (fun.indexOf('handleCalculationC') != -1) {
                                                 developmentCommon.parameter.handleCalculationC(value, target);
@@ -426,38 +440,42 @@
                             });
                         });
                     });
-                });
-                $("." + developmentCommon.config.commonParameter.handle).find("table").each(function () {
-                    var table = $(this);
-                    table.find("tbody").find("tr").each(function () {
-                        var tr = $(this);
-                        //赋值
-                        var name = tr.find("td").first().text();
-                        if (data.length > 0) {
-                            for (var j = 0; j < data.length; j++) {
-                                var item = data[j];
-                                if (item.name == name) {
-                                    if (developmentCommon.isNotBlank(item.planIndex)) {
-                                        tr.find("td").eq(1).find("a").text(item.planIndex);
-                                    }
-                                    if (developmentCommon.isNotBlank(item.salabilityNumber)) {
-                                        tr.find("td").eq(2).find("a").text(item.salabilityNumber);
-                                    }
-                                    if (developmentCommon.isNotBlank(item.assessSalabilityNumber)) {
-                                        tr.find("td").eq(3).find("a").text(item.assessSalabilityNumber);
-                                    }
-                                    if (developmentCommon.isNotBlank(item.remark)) {
-                                        tr.find("td").eq(6).find("a").text(item.remark);
-                                    }
-                                    break;
-                                }
+                    var item = [];
+                    var dataA = [];
+                    if (data.length >= 1) {
+                        dataA = data.concat([]);
+                    }
+                    if (dataA.length >= 1) {
+                        $.each(dataA, function (i, obj) {
+                            var vo = {};
+                            if (obj.childData) {
+                                var childData = JSON.parse(obj.childData);
+                                dataA = dataA.concat(childData);
                             }
-                        }
-                    });
-                    //填充值以后触发
-                    developmentCommon.parameter.handleCalculationWrite(table.find("tfoot").find("input[name='buildArea']"), 0, developmentCommon.parameter.handleCalculationA.name);
-                    developmentCommon.parameter.handleCalculationWrite(table.find("tfoot").find("input[name='maySaleArea']"), 0, developmentCommon.parameter.handleCalculationB.name);
-                    developmentCommon.parameter.handleCalculationWrite(table.find("tfoot").find("input[name='maySaleAreaNext']"), 0, developmentCommon.parameter.handleCalculationC.name);
+                        });
+                    }
+                    if (dataA.length >= 1) {
+                        $.each(dataA, function (i, obj) {
+                            var vo = {};
+                            if (obj.planIndex) {
+                                vo.buildArea = obj.planIndex;
+                            }
+                            if (obj.salabilityNumber) {
+                                vo.maySaleAreaNext = obj.salabilityNumber;
+                            }
+                            if (obj.assessSalabilityNumber) {
+                                vo.number = obj.assessSalabilityNumber;
+                            }
+                            if (obj.remark) {
+                                vo.remark = obj.remark;
+                            }
+                            if (obj.name) {
+                                vo.name = obj.name;
+                            }
+                            item.push(vo);
+                        });
+                    }
+                    developmentCommon.parameter.initData(table, item, true);
                 });
                 if (callback) {
                     callback();
@@ -470,65 +488,63 @@
                 that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='buildArea']"), value, that.handleCalculationA.name);
             });
         },
-        handleCalculationB: function (value) {
+        handleCalculationB: function (tr, data) {
             var that = this;
+            if (tr.size() == 0) {
+                return false;
+            }
+            var unitPrice = tr.find("a[data-key='unitPrice']").text();
+            var maySaleAreaNext = tr.find("a[data-key='maySaleAreaNext']").text();
+            var number = tr.find("a[data-key='number']").text();
+            var multiply = null;
+            if (data.unitPrice) {
+                unitPrice = data.unitPrice;
+                multiply = math.bignumber(0);
+                if (AssessCommon.isNumber(number)) {
+                    multiply = math.add(multiply, math.bignumber(number));
+                }
+                if (AssessCommon.isNumber(maySaleAreaNext)) {
+                    multiply = math.add(multiply, math.bignumber(maySaleAreaNext));
+                }
+            }
+            if (data.maySaleAreaNext) {
+                multiply = math.bignumber(data.maySaleAreaNext);
+                if (AssessCommon.isNumber(number)) {
+                    multiply = math.add(multiply, math.bignumber(number));
+                }
+            }
+            if (data.number) {
+                multiply = math.bignumber(data.number);
+                if (AssessCommon.isNumber(maySaleAreaNext)) {
+                    multiply = math.add(multiply, math.bignumber(maySaleAreaNext));
+                }
+            }
+            if (multiply != null) {
+                if (AssessCommon.isNumber(unitPrice)) {
+                    var c = math.chain(math.bignumber(unitPrice)).multiply(multiply).done();
+                    data.maySaleArea = c.toString();
+                }
+            }
+            if (data.maySaleArea) {
+                tr.find("a[data-key='maySaleArea']").text(data.maySaleArea);
+            }
             $("." + developmentCommon.config.commonParameter.handle).each(function () {
-                that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='maySaleArea']"), value, that.handleCalculationB.name);
+                that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='maySaleArea']"), data.maySaleArea, that.handleCalculationB.name);
             });
         },
         handleCalculationC: function (value, target) {
             var that = this;
-            var tr = target.closest("tr");
-            var unitPrice = tr.find("a[data-key='unitPrice']").text();
-            if (AssessCommon.isNumber(unitPrice)) {
-                var c = math.multiply(math.bignumber(value), math.bignumber(unitPrice)).toString();
-                var maySaleArea = tr.find("a[data-key='maySaleArea']").text();
-                if (AssessCommon.isNumber(maySaleArea)) {
-                    c = math.add(math.bignumber(c), math.bignumber(maySaleArea)).toString();
-                }
-                tr.find("a[data-key='maySaleArea']").text(c);
-                this.handleCalculationB(null);
-            }
+            this.handleCalculationB(target.closest("tr"), {maySaleAreaNext: value});
             $("." + developmentCommon.config.commonParameter.handle).each(function () {
                 that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='maySaleAreaNext']"), value, that.handleCalculationC.name);
             });
         },
         handleCalculationD: function (value, target) {
             var that = this;
-            var tr = target.closest("tr");
-            var maySaleAreaNext = tr.find("a[data-key='maySaleAreaNext']").text();
-            var number = tr.find("a[data-key='number']").text();
-            if (AssessCommon.isNumber(maySaleAreaNext)) {
-                var c = math.multiply(math.bignumber(value), math.bignumber(maySaleAreaNext)).toString();
-                var maySaleArea = tr.find("a[data-key='maySaleArea']").text();
-                if (AssessCommon.isNumber(maySaleArea)) {
-                    c = math.add(math.bignumber(c), math.bignumber(maySaleArea)).toString();
-                }
-                tr.find("a[data-key='maySaleArea']").text(c);
-            }
-            if (AssessCommon.isNumber(number)) {
-                var c = math.multiply(math.bignumber(value), math.bignumber(number)).toString();
-                var maySaleArea = tr.find("a[data-key='maySaleArea']").text();
-                if (AssessCommon.isNumber(maySaleArea)) {
-                    c = math.add(math.bignumber(c), math.bignumber(maySaleArea)).toString();
-                }
-                tr.find("a[data-key='maySaleArea']").text(c);
-            }
-            this.handleCalculationB(null);
+            this.handleCalculationB(target.closest("tr"), {unitPrice: value});
         },
         handleCalculationE: function (value, target) {
-            var that = this;
-            var tr = target.closest("tr");
-            var unitPrice = tr.find("a[data-key='unitPrice']").text();
-            if (AssessCommon.isNumber(unitPrice)) {
-                var c = math.multiply(math.bignumber(value), math.bignumber(unitPrice)).toString();
-                var maySaleArea = tr.find("a[data-key='maySaleArea']").text();
-                if (AssessCommon.isNumber(maySaleArea)) {
-                    c = math.add(math.bignumber(c), math.bignumber(maySaleArea)).toString();
-                }
-                tr.find("a[data-key='maySaleArea']").text(c);
-                this.handleCalculationB(null);
-            }
+            this.handleCalculationB(target.closest("tr"), {number: value});
         },
         handleCalculationWrite: function (input, value, fun) {
             var table = input.closest('table');
@@ -567,7 +583,7 @@
     };
 
     developmentCommon.infrastructureChildren = {
-        getDataList:function (data,callback) {
+        getDataList: function (data, callback) {
             $.ajax({
                 type: "get",
                 url: "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getMdDevelopmentInfrastructureChildrenList",
@@ -586,11 +602,11 @@
                 }
             });
         },
-        save:function (data,callback) {
+        save: function (data, callback) {
             $.ajax({
                 type: "post",
                 url: "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/save",
-                data: {forData:JSON.stringify(data)},
+                data: {forData: JSON.stringify(data)},
                 success: function (result) {
                     if (result.ret) {
                         if (callback) {
@@ -605,11 +621,11 @@
                 }
             });
         },
-        delete:function (data,callback) {
+        delete: function (data, callback) {
             $.ajax({
                 type: "post",
                 url: "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/delete",
-                data: {id:data.join(",")},
+                data: {id: data.join(",")},
                 success: function (result) {
                     if (result.ret) {
                         if (callback) {
@@ -624,29 +640,29 @@
                 }
             });
         },
-        loadTable:function (pid,planDetailsId,type,selectId,toolbar) {
+        loadTable: function (pid, planDetailsId, type, selectId, toolbar) {
             var cols = [];
             cols.push({checkbox: true});
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'number', title: '金额'});
             cols.push({field: 'tax', title: '税费'});
             selectId.bootstrapTable('destroy');
-            TableInit(selectId.attr("id"), "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=" + pid+"&planDetailsId="+planDetailsId+"&type="+type, cols, {}, {
+            TableInit(selectId.attr("id"), "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=" + pid + "&planDetailsId=" + planDetailsId + "&type=" + type, cols, {}, {
                 showColumns: true,
                 showRefresh: true,
                 search: false
             });
-            if (toolbar.size() != 0){
-                var bootstrapTable = selectId.closest(".bootstrap-table") ;
-                if (bootstrapTable.size() != 0){
-                    var fixedTableToolbar = bootstrapTable.find(".fixed-table-toolbar") ;
-                    if (fixedTableToolbar.size() != 0){
-                        fixedTableToolbar.append(toolbar.html()) ;
+            if (toolbar.size() != 0) {
+                var bootstrapTable = selectId.closest(".bootstrap-table");
+                if (bootstrapTable.size() != 0) {
+                    var fixedTableToolbar = bootstrapTable.find(".fixed-table-toolbar");
+                    if (fixedTableToolbar.size() != 0) {
+                        fixedTableToolbar.append(toolbar.html());
                     }
                 }
             }
         }
-    } ;
+    };
 
 </script>
 
@@ -669,8 +685,9 @@
                         <td>规划建筑面积（㎡）</td>
                         <td>总可售面积售价(万元)</td>
                         <td>可售面积</td>
-                        <td>单位售价（元/㎡）</td>
                         <td>个数</td>
+                        <td>单位售价（元/㎡）</td>
+                        <td>评估面积</td>
                         <td>说明</td>
                     </tr>
                     </thead>
@@ -685,10 +702,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -701,10 +719,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -717,10 +736,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -733,10 +753,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -749,10 +770,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -765,10 +787,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -781,10 +804,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -797,10 +821,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -813,10 +838,11 @@
                         <td><a onclick="developmentCommon.parameter.handleCalculationC"
                                data-key="maySaleAreaNext">0.00</a>
                         </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
                         <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
                         </td>
+                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
+                        </td>
+                        <td><a data-key="assessArea">0.00</a></td>
                         <td><a data-key="remark"></a>
                         </td>
                     </tr>
@@ -837,7 +863,7 @@
                         <td colspan="2"><input type="text" class="form-control" name="maySaleAreaNext"
                                                readonly="readonly" value="0.00"
                                                onblur="developmentCommon.parameter.handleCalculation('{funA3}')"></td>
-                        <td colspan="2"><input type="text" name="unsaleableBuildingArea"
+                        <td colspan="3"><input type="text" name="unsaleableBuildingArea"
                                                onblur="developmentCommon.parameter.handleCalculation('{funA5}')"
                                                placeholder="不可售建筑面积" class="form-control"
                                                value="${mdDevelopment.unsaleableBuildingArea}"></td>
@@ -1827,7 +1853,8 @@
     <button type="button" data-dismiss="modal" class="btn btn-default">
         取消
     </button>
-    <button type="button" class="btn btn-primary" onclick="landEngineering.saveMdDevelopmentInfrastructureChildrenTable(this)">
+    <button type="button" class="btn btn-primary"
+            onclick="landEngineering.saveMdDevelopmentInfrastructureChildrenTable(this)">
         保存
     </button>
 </script>
@@ -1837,7 +1864,8 @@
     <button type="button" data-dismiss="modal" class="btn btn-default">
         取消
     </button>
-    <button type="button" class="btn btn-primary" onclick="underConstruction.saveMdDevelopmentInfrastructureChildrenTable(this)">
+    <button type="button" class="btn btn-primary"
+            onclick="underConstruction.saveMdDevelopmentInfrastructureChildrenTable(this)">
         保存
     </button>
 </script>

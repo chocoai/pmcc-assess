@@ -63,7 +63,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text" required="required" readonly="readonly"
+                    <input type="text" required="required"
                            placeholder="基础设施配套费"  class="form-control"
                            name="f22" onblur="checkParams(this);landEngineering.calculationD22(this)" value="${mdDevelopment.f22}">
                 </div>
@@ -135,7 +135,12 @@
                         <select name="f24Value" required="required"
                                 class="form-control" onchange="landEngineering.calculationF24(this)">
                             <option>请选择</option>
-                            <option value="10">2009-2032  金额 10</option>
+                            <c:if test="${mdDevelopment.f24 == 10}">
+                                <option value="10" selected="selected">2009-2032  金额 10</option>
+                            </c:if>
+                            <c:if test="${mdDevelopment.f24 != 10}">
+                                <option value="10">2009-2032  金额 10</option>
+                            </c:if>
                             <c:forEach items="${dataInfrastructureList}" var="item">
                                 <c:if test="${item.devTaxTotal != 0}">
                                     <c:if test="${mdDevelopment.f24 != item.devTaxTotal}">

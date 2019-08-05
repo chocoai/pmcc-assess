@@ -210,7 +210,6 @@
                 <div class="col-sm-11">
                     <select name="infrastructureCost"
                             class="form-control search-select select2" onchange="construction.calculationE13()" required="required">
-                        <option>请选择</option>
                         <option value="10">2009-2032 金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
                             <c:if test="${item.infrastructureSupportingFacilities != 0}">
@@ -235,7 +234,6 @@
                 <div class="col-sm-11">
                     <select name="infrastructureMatchingCost"
                             class="form-control search-select select2 " onchange="construction.calculationE14()" required="required">
-                        <option>请选择</option>
                         <option value="10">2009-2032 金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
                             <c:if test="${item.communalFacilities != 0}">
@@ -260,7 +258,6 @@
                 <div class="col-sm-11">
                     <select name="devDuring"
                             class="form-control search-select select2 " onchange="construction.calculationE15();" required="required">
-                        <option>请选择</option>
                         <option value="10">2009-2032 金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
                             <c:if test="${item.devTaxTotal != 0}">

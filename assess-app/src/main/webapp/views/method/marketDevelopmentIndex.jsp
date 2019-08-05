@@ -231,6 +231,7 @@
     };
 
     development.getFomData = function () {
+        var fixedMax = 2;
         var head = formSerializeArray($(development.config.frm)) ;
         var frm = undefined;
         var headTable = undefined;
@@ -248,11 +249,11 @@
         data.headContent = JSON.stringify(headData) ;
         data.type = data.development ;
         data.planDetailsId = '${projectPlanDetails.id}' ;
-        data.price = data.d47 ;
-        data.assessPrice = data.d41 ;
-        data.constructionCostSubtotal = frm.find(".d26").html() ;
-        data.interestInvestment = frm.find(".f34").html() ;
-        data.investmentProfit = frm.find(".f35").html() ;
+        data.price = Number(data.d47).toFixed(fixedMax) ;
+        data.assessPrice = Number(data.d41).toFixed(fixedMax) ;
+        data.constructionCostSubtotal = Number(frm.find(".d26").html()).toFixed(fixedMax) ;
+        data.interestInvestment = Number(frm.find(".f34").html()).toFixed(fixedMax) ;
+        data.investmentProfit = Number(frm.find(".f35").html()).toFixed(fixedMax) ;
         return data ;
     };
 
@@ -355,10 +356,10 @@
             developmentCommon.parameter.editableInit(function () {
                 var type = '${mdDevelopment.type}' ;
                 if (type == '1'){
-                    developmentCommon.parameter.initData(landFrm.find("table").first(),head) ;
+                    developmentCommon.parameter.initData(landFrm.find("table").first(),head,false) ;
                 }
                 if (type == '2'){
-                    developmentCommon.parameter.initData(engineeringFrm.find("table").first(),head) ;
+                    developmentCommon.parameter.initData(engineeringFrm.find("table").first(),head,false) ;
                 }
             });
         }else {

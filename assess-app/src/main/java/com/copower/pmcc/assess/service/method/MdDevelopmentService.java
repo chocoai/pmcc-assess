@@ -111,6 +111,9 @@ public class MdDevelopmentService {
                 if (jsonObject.get("f24") != null) {
                     vo.setF24((String) jsonObject.get("f24"));
                 }
+                if (jsonObject.get("f24Value") != null) {
+                    vo.setF24Value((String) jsonObject.get("f24Value"));
+                }
                 if (jsonObject.get("f25") != null) {
                     vo.setF25(changeHundred((String) jsonObject.get("f25"), format));
                 }

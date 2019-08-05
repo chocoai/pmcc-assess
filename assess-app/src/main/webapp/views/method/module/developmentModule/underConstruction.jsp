@@ -62,7 +62,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text" required="required" readonly="readonly"
+                    <input type="text" required="required"
                            placeholder="基础设施配套费"  class="form-control"
                            name="f22" onblur="checkParams(this);underConstruction.calculationD22(this)" value="${mdDevelopment.f22}">
                 </div>

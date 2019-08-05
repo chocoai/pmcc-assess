@@ -47,6 +47,8 @@ public class MdDevelopmentVo extends MdDevelopment {
     private String d46;
     private String d46Explain;
 
+    private String f24Value;
+
     private String unsaleableBuildingArea;
 
     public String getF20() {
@@ -359,5 +361,13 @@ public class MdDevelopmentVo extends MdDevelopment {
 
     public void setF23Explain(String f23Explain) {
         this.f23Explain = f23Explain;
+    }
+
+    public String getF24Value() {
+        return f24Value;
+    }
+
+    public void setF24Value(String f24Value) {
+        this.f24Value = f24Value;
     }
 }

@@ -34,17 +34,17 @@
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
                                 <button id="btn_submit" class="btn btn-success"
-                                        onclick="taskCaseIndex.checkAssignmentTask(false);">
+                                        onclick="submit(false);">
                                     直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                                 <button id="btn_submit" class="btn btn-primary"
-                                        onclick="taskCaseIndex.checkAssignmentTask(true);">
+                                        onclick="submit(true);">
                                     提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:when>
                             <c:otherwise>
                                 <button id="btn_submit" class="btn btn-success"
-                                        onclick="taskCaseIndex.checkAssignmentTask();">
+                                        onclick="submit(true);">
                                     提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:otherwise>

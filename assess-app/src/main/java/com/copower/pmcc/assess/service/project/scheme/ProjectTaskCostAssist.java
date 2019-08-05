@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -230,6 +231,9 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             }
         }
         if (mdCostConstruction != null) {
+            if (mdCostConstruction.getInfrastructureCost() != null){
+                mdCostConstruction.setInfrastructureCost(new BigDecimal(mdCostConstruction.getInfrastructureCost().toPlainString()));
+            }
             modelAndView.addObject(StringUtils.uncapitalize(MdCostConstruction.class.getSimpleName()), mdCostConstruction);
         }
         if (mdCostBuilding != null) {

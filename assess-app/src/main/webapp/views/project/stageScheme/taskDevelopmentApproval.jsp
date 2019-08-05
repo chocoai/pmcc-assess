@@ -5,6 +5,7 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
+    <script src="${pageContext.request.contextPath}/assets/math/6.0.2/math.js"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">

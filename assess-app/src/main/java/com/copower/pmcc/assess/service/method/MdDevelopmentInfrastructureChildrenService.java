@@ -9,6 +9,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,19 @@ public class MdDevelopmentInfrastructureChildrenService {
         }else {
             mdDevelopmentInfrastructureChildren.setCreator(commonService.thisUserAccount());
             return mdDevelopmentInfrastructureChildrenDao.addMdDevelopmentInfrastructureChildren(mdDevelopmentInfrastructureChildren) ;
+        }
+    }
+
+
+    public void clear(){
+        MdDevelopmentInfrastructureChildren oo = new MdDevelopmentInfrastructureChildren();
+        oo.setPid(0);
+        oo.setCreator(commonService.thisUserAccount());
+        List<MdDevelopmentInfrastructureChildren> childrenList = getMdDevelopmentInfrastructureChildrenListByExample(oo);
+        if (CollectionUtils.isNotEmpty(childrenList)){
+            for (MdDevelopmentInfrastructureChildren po:childrenList){
+                deleteMdDevelopmentInfrastructureChildrenById(po.getId()) ;
+            }
         }
     }
 
