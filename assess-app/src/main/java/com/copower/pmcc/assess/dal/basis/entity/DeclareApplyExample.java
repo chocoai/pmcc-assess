@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -812,6 +813,196 @@ public class DeclareApplyExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaIsNull() {
+            addCriterion("assess_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaIsNotNull() {
+            addCriterion("assess_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaEqualTo(BigDecimal value) {
+            addCriterion("assess_area =", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaNotEqualTo(BigDecimal value) {
+            addCriterion("assess_area <>", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaGreaterThan(BigDecimal value) {
+            addCriterion("assess_area >", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_area >=", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaLessThan(BigDecimal value) {
+            addCriterion("assess_area <", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_area <=", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaIn(List<BigDecimal> values) {
+            addCriterion("assess_area in", values, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaNotIn(List<BigDecimal> values) {
+            addCriterion("assess_area not in", values, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_area between", value1, value2, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_area not between", value1, value2, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyIsNull() {
+            addCriterion("assess_money is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyIsNotNull() {
+            addCriterion("assess_money is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyEqualTo(BigDecimal value) {
+            addCriterion("assess_money =", value, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyNotEqualTo(BigDecimal value) {
+            addCriterion("assess_money <>", value, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyGreaterThan(BigDecimal value) {
+            addCriterion("assess_money >", value, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_money >=", value, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyLessThan(BigDecimal value) {
+            addCriterion("assess_money <", value, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_money <=", value, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyIn(List<BigDecimal> values) {
+            addCriterion("assess_money in", values, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyNotIn(List<BigDecimal> values) {
+            addCriterion("assess_money not in", values, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_money between", value1, value2, "assessMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessMoneyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_money not between", value1, value2, "assessMoney");
             return (Criteria) this;
         }
     }
