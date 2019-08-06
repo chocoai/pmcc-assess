@@ -85,14 +85,6 @@
                         <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                         <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
                         <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    自定义名称<span class="symbol required"></span>
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">${declare.name}</label>
-                                </div>
-                            </div>
 
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -127,6 +119,31 @@
                                 </div>
                             </div>
                         </div>
+                        <c:forTokens items="${declare.name}" delims="," var="item" varStatus="status">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        自定义名称<span class="symbol required"></span>
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                        <label class="form-control">${item}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        附件
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                        <div id="_other_Enclosure${status.index+1}"></div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(function () {
+                                        declareCommon.showFile('other_Enclosure${status.index+1}', AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false, 'other_Enclosure${status.index+1}');
+                                    });
+                                </script>
+                            </div>
+                        </c:forTokens>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1   control-label">
@@ -138,14 +155,7 @@
                             </div>
 
 
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    其它附件
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                    <div id="_other_Enclosure"></div>
-                                </div>
-                            </div>
+
 
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -450,7 +460,7 @@
         declareApprovalFun.houseLoadList();
         declareApprovalFun.landLoadList();
 
-        var fileArr = [AssessUploadKey.PROJECT_PROXY ,AssessUploadKey.OTHER_Enclosure ,AssessUploadKey.ASSESS_REPORT_Enclosure ] ;
+        var fileArr = [AssessUploadKey.PROJECT_PROXY  ,AssessUploadKey.ASSESS_REPORT_Enclosure ] ;
         $.each(fileArr,function (i,n) {
             declareCommon.showFile(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false, n);
         });
