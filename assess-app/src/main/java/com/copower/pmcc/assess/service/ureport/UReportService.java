@@ -11,6 +11,9 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.finance.api.dto.FinancialBillMakeOutProjectDto;
 import com.copower.pmcc.finance.api.provider.FinanceRpcToolService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -54,6 +57,8 @@ public class UReportService {
         String queryReportNumber = "";
         String queryStartTime = "";
         String queryEndTime = "";
+        Integer pageIndex = objectToInteger(maps.get("_pageIndex"));
+        Integer fixRows = objectToInteger(maps.get("_fixRows"));
         if (maps.get("queryProjectName") != null) {
             queryProjectName = (String) maps.get("queryProjectName");
         }
@@ -98,7 +103,9 @@ public class UReportService {
         if (StringUtil.isNotEmpty(queryEndTime)) {
             sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
         }
+        Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
         List<Map> mapList = ddlMySqlAssist.customTableSelect(sql.toString());
+        page.getTotal();
         if (CollectionUtils.isEmpty(mapList)) return Lists.newArrayList();
         List<Integer> publicProjectIds = LangUtils.transform(mapList, o -> {
             String idString = objectToString(o.get("public_project_id"));
@@ -109,7 +116,7 @@ public class UReportService {
         try {
             makeOutList = financeRpcToolService.getProjectBillMakeOutList(LangUtils.filter(publicProjectIds, o -> o.intValue() > 0));
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
         }
         Map<Integer, FinancialBillMakeOutProjectDto> mapFinance = null;
         if (CollectionUtils.isNotEmpty(makeOutList)) {
