@@ -2247,18 +2247,16 @@ public class GenerateBaseDataService {
                     continue;
                 }
                 for (String account : stringList) {
-                    for (AdPersonalEnum personalEnum : AdPersonalEnum.values()) {
-                        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, personalEnum.getValue());
-                        if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)){
-                            continue;
-                        }
-                        for (AdPersonalQualificationDto qualificationDto:adPersonalQualificationDtoList){
-                            if (StringUtils.isNotBlank(qualificationDto.getCertificateNo())){
-                                linkedList.add(userAccountName);
-                                linkedList.add(String.format("注册证号:%s",qualificationDto.getCertificateNo()));
-                                AsposeUtils.writeWordTitle(documentBuilder, linkedList) ;
-                                linkedList.clear();
-                            }
+                    List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, generateReportInfo.getQualificationType());
+                    if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)){
+                        continue;
+                    }
+                    for (AdPersonalQualificationDto qualificationDto:adPersonalQualificationDtoList){
+                        if (StringUtils.isNotBlank(qualificationDto.getCertificateNo())){
+                            linkedList.add(userAccountName);
+                            linkedList.add(String.format("注册证号:%s",qualificationDto.getCertificateNo()));
+                            AsposeUtils.writeWordTitle(documentBuilder, linkedList) ;
+                            linkedList.clear();
                         }
                     }
                 }
