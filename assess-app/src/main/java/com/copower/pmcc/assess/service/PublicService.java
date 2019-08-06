@@ -370,8 +370,8 @@ public class PublicService {
     public BigDecimal diffDateYear(Date endDate, Date startDate) {
         if (startDate == null || endDate == null)
             throw new IllegalArgumentException();
-        if (DateUtils.compareDate(startDate, endDate) > 0)
-            throw new IllegalArgumentException();
+//        if (DateUtils.compareDate(startDate, endDate) > 0)
+//            throw new IllegalArgumentException();
 
         Integer year1 = DateUtils.getYear(startDate);
         Integer year2 = DateUtils.getYear(endDate);

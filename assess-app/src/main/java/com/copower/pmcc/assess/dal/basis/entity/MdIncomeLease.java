@@ -12,6 +12,8 @@ public class MdIncomeLease {
 
     private Integer mcId;
 
+    private String rentalIncomeRemark;
+
     private BigDecimal rentalIncome;
 
     private BigDecimal rentals;
@@ -76,6 +78,14 @@ public class MdIncomeLease {
 
     public void setMcId(Integer mcId) {
         this.mcId = mcId;
+    }
+
+    public String getRentalIncomeRemark() {
+        return rentalIncomeRemark;
+    }
+
+    public void setRentalIncomeRemark(String rentalIncomeRemark) {
+        this.rentalIncomeRemark = rentalIncomeRemark == null ? null : rentalIncomeRemark.trim();
     }
 
     public BigDecimal getRentalIncome() {

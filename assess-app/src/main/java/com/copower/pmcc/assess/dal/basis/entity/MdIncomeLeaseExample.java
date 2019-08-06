@@ -346,6 +346,76 @@ public class MdIncomeLeaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andRentalIncomeRemarkIsNull() {
+            addCriterion("rental_income_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkIsNotNull() {
+            addCriterion("rental_income_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkEqualTo(String value) {
+            addCriterion("rental_income_remark =", value, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkNotEqualTo(String value) {
+            addCriterion("rental_income_remark <>", value, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkGreaterThan(String value) {
+            addCriterion("rental_income_remark >", value, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("rental_income_remark >=", value, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkLessThan(String value) {
+            addCriterion("rental_income_remark <", value, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkLessThanOrEqualTo(String value) {
+            addCriterion("rental_income_remark <=", value, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkLike(String value) {
+            addCriterion("rental_income_remark like", value, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkNotLike(String value) {
+            addCriterion("rental_income_remark not like", value, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkIn(List<String> values) {
+            addCriterion("rental_income_remark in", values, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkNotIn(List<String> values) {
+            addCriterion("rental_income_remark not in", values, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkBetween(String value1, String value2) {
+            addCriterion("rental_income_remark between", value1, value2, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalIncomeRemarkNotBetween(String value1, String value2) {
+            addCriterion("rental_income_remark not between", value1, value2, "rentalIncomeRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andRentalIncomeIsNull() {
             addCriterion("rental_income is null");
             return (Criteria) this;
