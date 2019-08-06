@@ -576,76 +576,6 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIsNull() {
-            addCriterion("json_content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentIsNotNull() {
-            addCriterion("json_content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentEqualTo(String value) {
-            addCriterion("json_content =", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotEqualTo(String value) {
-            addCriterion("json_content <>", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentGreaterThan(String value) {
-            addCriterion("json_content >", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
-            addCriterion("json_content >=", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLessThan(String value) {
-            addCriterion("json_content <", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLessThanOrEqualTo(String value) {
-            addCriterion("json_content <=", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLike(String value) {
-            addCriterion("json_content like", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotLike(String value) {
-            addCriterion("json_content not like", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentIn(List<String> values) {
-            addCriterion("json_content in", values, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotIn(List<String> values) {
-            addCriterion("json_content not in", values, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentBetween(String value1, String value2) {
-            addCriterion("json_content between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotBetween(String value1, String value2) {
-            addCriterion("json_content not between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
         public Criteria andDevelopLandAreaTaxIsNull() {
             addCriterion("develop_land_area_tax is null");
             return (Criteria) this;
@@ -1323,6 +1253,76 @@ public class MdCostConstructionExample {
 
         public Criteria andInfrastructureMatchingCostNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("infrastructure_matching_cost not between", value1, value2, "infrastructureMatchingCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainIsNull() {
+            addCriterion("infrastructure_matching_cost_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainIsNotNull() {
+            addCriterion("infrastructure_matching_cost_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainEqualTo(String value) {
+            addCriterion("infrastructure_matching_cost_explain =", value, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainNotEqualTo(String value) {
+            addCriterion("infrastructure_matching_cost_explain <>", value, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainGreaterThan(String value) {
+            addCriterion("infrastructure_matching_cost_explain >", value, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("infrastructure_matching_cost_explain >=", value, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainLessThan(String value) {
+            addCriterion("infrastructure_matching_cost_explain <", value, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainLessThanOrEqualTo(String value) {
+            addCriterion("infrastructure_matching_cost_explain <=", value, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainLike(String value) {
+            addCriterion("infrastructure_matching_cost_explain like", value, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainNotLike(String value) {
+            addCriterion("infrastructure_matching_cost_explain not like", value, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainIn(List<String> values) {
+            addCriterion("infrastructure_matching_cost_explain in", values, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainNotIn(List<String> values) {
+            addCriterion("infrastructure_matching_cost_explain not in", values, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainBetween(String value1, String value2) {
+            addCriterion("infrastructure_matching_cost_explain between", value1, value2, "infrastructureMatchingCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureMatchingCostExplainNotBetween(String value1, String value2) {
+            addCriterion("infrastructure_matching_cost_explain not between", value1, value2, "infrastructureMatchingCostExplain");
             return (Criteria) this;
         }
 

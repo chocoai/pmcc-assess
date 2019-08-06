@@ -84,7 +84,26 @@
                         <input type="hidden" name="id" value="${declare.id}">
                         <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                         <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                        <div class="form-group">
 
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    评估面积<span class="symbol required"></span>
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control">${declare.assessArea}</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    评估金额<span class="symbol required"></span>
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control">${declare.assessMoney}</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托单位</label>
@@ -100,13 +119,50 @@
                                 </div>
                             </div>
                         </div>
+                        <c:forTokens items="${declare.name}" delims="," var="item" varStatus="status">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        自定义名称<span class="symbol required"></span>
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                        <label class="form-control">${item}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        附件
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                        <div id="_other_Enclosure${status.index+1}"></div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(function () {
+                                        declareCommon.showFile('other_Enclosure${status.index+1}', AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false, 'other_Enclosure${status.index+1}');
+                                    });
+                                </script>
+                            </div>
+                        </c:forTokens>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1   control-label">
                                     估价委托书
                                 </label>
-                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  ">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
                                     <div id="_project_proxy"></div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    评估报告
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <div id="_assess_report_enclosure"></div>
                                 </div>
                             </div>
                         </div>
@@ -403,7 +459,11 @@
         declareApprovalFun.realEstateloadList();
         declareApprovalFun.houseLoadList();
         declareApprovalFun.landLoadList();
-        declareCommon.showFile(AssessUploadKey.PROJECT_PROXY, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false);
+
+        var fileArr = [AssessUploadKey.PROJECT_PROXY  ,AssessUploadKey.ASSESS_REPORT_Enclosure ] ;
+        $.each(fileArr,function (i,n) {
+            declareCommon.showFile(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false, n);
+        });
     });
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>

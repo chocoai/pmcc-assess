@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2019-1-14.
@@ -36,12 +35,19 @@ public class ProjectNumberRecordService {
     @Autowired
     private CommonService commonService;
 
+
+
     public List<String> getReportNumberList(Integer projectId, Integer reportType) {
-        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getNumberList(projectId, reportType);
-        if (CollectionUtils.isEmpty(numberList)) return null;
-        List<String> list = LangUtils.transform(numberList.stream().filter(o -> o.getBisDelete() == Boolean.FALSE).collect(Collectors.toList()), o -> o.getNumberValue());
+        ProjectNumberRecord where=new ProjectNumberRecord();
+        where.setBisDelete(false);
+        where.setProjectId(projectId);
+        where.setReportType(reportType);
+        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
+        List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
         return list;
     }
+
+
 
     /**
      * 获取文号记录数据

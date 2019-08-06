@@ -134,14 +134,16 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                全年月份数
+                                月租金收入说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <label class="form-control" data-name="monthNumber"></label>
+                                <label class="form-control" data-name="rentalIncomeRemark"></label>
                             </div>
                         </div>
+
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
@@ -230,6 +232,16 @@
                             </label>
                             <div class="col-sm-4">
                                 <label class="form-control" data-name="additionalCaptureRemark"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                全年月份数
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control" data-name="monthNumber"></label>
                             </div>
                         </div>
                     </div>

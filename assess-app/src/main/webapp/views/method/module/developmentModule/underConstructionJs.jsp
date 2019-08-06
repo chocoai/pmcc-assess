@@ -75,6 +75,49 @@
         this.target.find(".d26").trigger('blur');
     };
 
+    underConstruction.calculationF22 = function (_this) {
+        var item = $(_this).find('option:selected') ;
+        var pid = item.attr('data-key') ;
+        var type = item.attr('data-type') ;
+        if (pid){
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataInfrastructureChildren/getDataList",
+                type: "get",
+                dataType: "json",
+                data: {pid:pid,type:type},
+                success: function (result) {
+                    if (result.ret) {
+                        var arr = [] ;
+                        var data = result.data ;
+                        if (data.length == 0){
+                            return false ;
+                        }
+                        $.each(data,function (i,n) {
+                            var obj = {name:n.name,number:n.number,tax:n.tax} ;
+                            obj.planDetailsId = '${projectPlanDetails.id}' ;
+                            obj.type = 'engineering' ;
+                            obj.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
+                            arr.push(obj) ;
+                        });
+                        developmentCommon.infrastructureChildren.saveArray(arr,function () {
+                            toastr.success('添加成功!');
+                            underConstruction.infrastructureChildrenTable.bootstrapTable('refresh');
+                            underConstruction.writeMdDevelopmentInfrastructureChildrenTable() ;
+                        });
+                    } else {
+                        Alert("失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }else {
+            toastr.success('无子项!');
+        }
+    };
+
+
     //单元格d23
     underConstruction.calculationD23 = function () {
         console.log("calculationD23");
@@ -623,12 +666,7 @@
     underConstruction.editMdDevelopmentInfrastructureChildrenTable = function (table,box ,flag) {
         var target = $(box) ;
         var frm = target.find("form") ;
-        var pid = 0;
-        if (developmentCommon.isNotBlank('${mdDevelopment}')){
-            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
-                pid = '${mdDevelopment.id}' ;
-            }
-        }
+        var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
         if (flag){
             var rows = $(table).bootstrapTable('getSelections');
             if (rows.length == 1) {
@@ -656,6 +694,7 @@
         var data = formSerializeArray(frm);
         data.planDetailsId = '${projectPlanDetails.id}' ;
         data.type = 'engineering' ;
+        data.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
         developmentCommon.infrastructureChildren.save(data , function () {
             toastr.success('添加成功!');
             target.modal('hide');
@@ -665,13 +704,8 @@
     } ;
 
     underConstruction.writeMdDevelopmentInfrastructureChildrenTable = function () {
-        var pid = 0;
-        if (developmentCommon.isNotBlank('${mdDevelopment}')){
-            if (developmentCommon.isNotBlank('${mdDevelopment.id}')){
-                pid = '${mdDevelopment.id}' ;
-            }
-        }
-        developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid} ,function (item) {
+        var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
+        developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid,type:"engineering"} ,function (item) {
             var result = 0;
             if (item.length >= 1){
                 $.each(item,function (i,n) {

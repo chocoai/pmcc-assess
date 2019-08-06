@@ -27,14 +27,14 @@ public class ProjectNumberRecordDao {
     /**
      * 报告编号
      *
-     * @param year
+     * @param projectId
      * @param reportType
      * @return
      */
-    public List<ProjectNumberRecord> getNumberList(Integer year, Integer reportType) {
+    public List<ProjectNumberRecord> getNumberList(Integer projectId, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andYearEqualTo(year).andReportTypeEqualTo(reportType);
+        criteria.andProjectIdEqualTo(projectId).andReportTypeEqualTo(reportType);
         example.setOrderByClause("number desc");
         return projectNumberRecordMapper.selectByExample(example);
     }

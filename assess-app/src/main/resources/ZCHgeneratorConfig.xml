@@ -83,9 +83,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_md_development_infrastructure_children" domainObjectName="MdDevelopmentInfrastructureChildren">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_md_development_infrastructure_children" domainObjectName="MdDevelopmentInfrastructureChildren">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_declare_record" domainObjectName="DeclareRecord">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -168,9 +168,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_md_income_lease" domainObjectName="MdIncomeLease">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_md_cost_building" domainObjectName="MdCostBuilding">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

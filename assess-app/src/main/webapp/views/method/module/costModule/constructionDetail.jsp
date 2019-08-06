@@ -147,7 +147,7 @@
                 <label class="col-sm-1 control-label">
                     勘察设计和前期工程费率<span class="symbol required"></span>
                 </label>
-                <div class="col-sm-11">
+                <div class="col-sm-3">
 
                     <label  class="form-control"> ${mdCostConstruction.reconnaissanceDesign} </label>
 
@@ -162,7 +162,7 @@
                 建筑安装工程费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <div class="input-group">
 
                         <label  class="form-control"> ${mdCostConstruction.constructionInstallationEngineeringFee} </label>
@@ -185,20 +185,39 @@
                 基础设施建设费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label  class="form-control"> ${mdCostConstruction.infrastructureCost} </label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                公共配套设施建设费<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-12">
+                    <table class="table table-bordered" id="landMdCostConstructionChildrenTable">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    公共配套设施建设费<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
                     <label  class="form-control"> ${mdCostConstruction.infrastructureMatchingCost} </label>
 
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label   class="form-control">${mdCostConstruction.infrastructureMatchingCostExplain}</label>
                 </div>
             </div>
         </div>
@@ -208,7 +227,7 @@
                 开发期间税费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label  class="form-control"> ${mdCostConstruction.devDuring} </label>
 
                 </div>
@@ -220,7 +239,7 @@
                 其它工程费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label  class="form-control"> ${mdCostConstruction.otherEngineeringCost} </label>
                 </div>
             </div>
@@ -461,4 +480,22 @@
         }) ;
         target.modal("show");
     }
+
+    function loadMdDevelopmentInfrastructureChildrenTable() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'number', title: '金额'});
+        cols.push({field: 'tax', title: '税费'});
+        $("#landMdCostConstructionChildrenTable").bootstrapTable('destroy');
+        TableInit('landMdCostConstructionChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdCostConstruction.id}&planDetailsId=${projectPlanDetails.id}&type=engineering", cols, {}, {
+            showColumns: true,
+            showRefresh: true,
+            search: false
+        });
+    }
+
+
+    $(function () {
+        loadMdDevelopmentInfrastructureChildrenTable() ;
+    });
 </script>
