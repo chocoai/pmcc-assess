@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DeclareApply {
@@ -24,6 +25,12 @@ public class DeclareApply {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String name;
+
+    private BigDecimal assessArea;
+
+    private BigDecimal assessMoney;
 
     public Integer getId() {
         return id;
@@ -111,5 +118,29 @@ public class DeclareApply {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public BigDecimal getAssessArea() {
+        return assessArea;
+    }
+
+    public void setAssessArea(BigDecimal assessArea) {
+        this.assessArea = assessArea;
+    }
+
+    public BigDecimal getAssessMoney() {
+        return assessMoney;
+    }
+
+    public void setAssessMoney(BigDecimal assessMoney) {
+        this.assessMoney = assessMoney;
     }
 }

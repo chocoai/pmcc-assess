@@ -603,6 +603,11 @@
             });
         },
         save: function (data, callback) {
+           var item = [] ;
+           item.push(data) ;
+            developmentCommon.infrastructureChildren.saveArray(item,callback) ;
+        },
+        saveArray: function (data, callback) {
             $.ajax({
                 type: "post",
                 url: "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/save",
@@ -1866,6 +1871,17 @@
     </button>
     <button type="button" class="btn btn-primary"
             onclick="underConstruction.saveMdDevelopmentInfrastructureChildrenTable(this)">
+        保存
+    </button>
+</script>
+
+
+<script type="text/html" id="underConstructionMdDevelopmentInfrastructureFooterX">
+    <button type="button" data-dismiss="modal" class="btn btn-default">
+        取消
+    </button>
+    <button type="button" class="btn btn-primary"
+            onclick="construction.saveMdDevelopmentInfrastructureChildrenTable(this)">
         保存
     </button>
 </script>

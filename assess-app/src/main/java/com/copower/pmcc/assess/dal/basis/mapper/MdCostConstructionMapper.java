@@ -16,15 +16,21 @@ public interface MdCostConstructionMapper {
 
     int insertSelective(MdCostConstruction record);
 
+    List<MdCostConstruction> selectByExampleWithBLOBs(MdCostConstructionExample example);
+
     List<MdCostConstruction> selectByExample(MdCostConstructionExample example);
 
     MdCostConstruction selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") MdCostConstruction record, @Param("example") MdCostConstructionExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") MdCostConstruction record, @Param("example") MdCostConstructionExample example);
+
     int updateByExample(@Param("record") MdCostConstruction record, @Param("example") MdCostConstructionExample example);
 
     int updateByPrimaryKeySelective(MdCostConstruction record);
+
+    int updateByPrimaryKeyWithBLOBs(MdCostConstruction record);
 
     int updateByPrimaryKey(MdCostConstruction record);
 }

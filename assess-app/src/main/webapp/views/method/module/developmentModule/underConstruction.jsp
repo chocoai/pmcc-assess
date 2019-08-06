@@ -61,10 +61,29 @@
                 基础设施配套费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-3">
-                    <input type="text" required="required"
-                           placeholder="基础设施配套费"  class="form-control"
-                           name="f22" onblur="checkParams(this);underConstruction.calculationD22(this)" value="${mdDevelopment.f22}">
+                <div class="col-sm-5">
+                    <div class="input-group">
+                        <input type="text" required="required"
+                               placeholder="基础设施配套费"  class="form-control"
+                               name="f22" onblur="checkParams(this);underConstruction.calculationD22(this)" value="${mdDevelopment.f22}">
+
+                        <span class="input-group-btn">
+                        </span>
+                        <select name="f22Value"
+                                class="form-control" onchange="underConstruction.calculationF22(this)">
+                            <c:forEach items="${dataInfrastructureList}" var="item">
+                                <c:if test="${item.infrastructureSupportingFacilities != 0}">
+                                    <c:if test="${mdDevelopment.f22 != item.infrastructureSupportingFacilities}">
+                                        <option value="${item.infrastructureSupportingFacilities}" data-key="${item.id}" data-type="${item.type}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
+                                    </c:if>
+                                    <c:if test="${mdDevelopment.f22 == item.infrastructureSupportingFacilities}">
+                                        <option value="${item.infrastructureSupportingFacilities}" selected="selected"  data-key="${item.id}"  data-type="${item.type}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+                            <option value="100">2012-2017 金额100</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,11 +147,9 @@
                     <input type="text" required="required"
                            placeholder="开发期间税费"  class="form-control"
                            name="f24" onblur="checkParams(this);underConstruction.calculationD24(this)" value="${mdDevelopment.f24}">
-                    <span class="input-group-btn">
-                        </span>
-                    <select name="f24Value" required="required"
+                    <span class="input-group-btn"></span>
+                    <select name="f24Value"
                             class="form-control" onchange="underConstruction.calculationF24(this)">
-                        <option>请选择</option>
                         <option value="10">2009-2032  金额 10</option>
                         <c:forEach items="${dataInfrastructureList}" var="item">
                             <c:if test="${item.devTaxTotal != 0}">

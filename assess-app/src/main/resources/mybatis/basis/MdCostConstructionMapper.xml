@@ -9,7 +9,6 @@
     <result column="interest_investment" property="interestInvestment" jdbcType="VARCHAR" />
     <result column="construction_subtotal" property="constructionSubtotal" jdbcType="VARCHAR" />
     <result column="land_get_cost_total" property="landGetCostTotal" jdbcType="VARCHAR" />
-    <result column="json_content" property="jsonContent" jdbcType="VARCHAR" />
     <result column="develop_land_area_tax" property="developLandAreaTax" jdbcType="DECIMAL" />
     <result column="develop_build_area_tax" property="developBuildAreaTax" jdbcType="DECIMAL" />
     <result column="develop_year_number_tax" property="developYearNumberTax" jdbcType="DECIMAL" />
@@ -21,6 +20,7 @@
     <result column="construction_installation_engineering_fee" property="constructionInstallationEngineeringFee" jdbcType="DECIMAL" />
     <result column="infrastructure_cost" property="infrastructureCost" jdbcType="DECIMAL" />
     <result column="infrastructure_matching_cost" property="infrastructureMatchingCost" jdbcType="DECIMAL" />
+    <result column="infrastructure_matching_cost_explain" property="infrastructureMatchingCostExplain" jdbcType="VARCHAR" />
     <result column="dev_during" property="devDuring" jdbcType="DECIMAL" />
     <result column="other_engineering_cost" property="otherEngineeringCost" jdbcType="DECIMAL" />
     <result column="unforeseen_expenses" property="unforeseenExpenses" jdbcType="DECIMAL" />
@@ -41,6 +41,9 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="additional_cost_land_acquisition" property="additionalCostLandAcquisition" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" extends="BaseResultMap" >
+    <result column="json_content" property="jsonContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -102,16 +105,35 @@
   </sql>
   <sql id="Base_Column_List" >
     id, construction_assessment_price_correcting, construction_assessment_value, investment_profit, 
-    interest_investment, construction_subtotal, land_get_cost_total, json_content, develop_land_area_tax, 
+    interest_investment, construction_subtotal, land_get_cost_total, develop_land_area_tax, 
     develop_build_area_tax, develop_year_number_tax, land_purchase_price, land_purchase_price_explain, 
     land_get_relevant, land_get_relevant_explain, reconnaissance_design, construction_installation_engineering_fee, 
-    infrastructure_cost, infrastructure_matching_cost, dev_during, other_engineering_cost, 
-    unforeseen_expenses, unforeseen_expenses_explain, management_expense, management_expense_explain, 
-    sales_fee, sales_fee_explain, interest_investment_tax, interest_investment_tax_explain, 
-    sales_tax_and_additional, sales_tax_and_additional_explain, investment_profit_tax, 
-    investment_profit_tax_explain, construction_assessment_value2, creator, gmt_modified, 
-    gmt_created, pid, additional_cost_land_acquisition
+    infrastructure_cost, infrastructure_matching_cost, infrastructure_matching_cost_explain, 
+    dev_during, other_engineering_cost, unforeseen_expenses, unforeseen_expenses_explain, 
+    management_expense, management_expense_explain, sales_fee, sales_fee_explain, interest_investment_tax, 
+    interest_investment_tax_explain, sales_tax_and_additional, sales_tax_and_additional_explain, 
+    investment_profit_tax, investment_profit_tax_explain, construction_assessment_value2, 
+    creator, gmt_modified, gmt_created, pid, additional_cost_land_acquisition
   </sql>
+  <sql id="Blob_Column_List" >
+    json_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_md_cost_construction
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
     <if test="distinct" >
@@ -126,9 +148,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_md_cost_construction
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -148,12 +172,12 @@
     </selectKey>
     insert into tb_md_cost_construction (construction_assessment_price_correcting, construction_assessment_value, 
       investment_profit, interest_investment, construction_subtotal, 
-      land_get_cost_total, json_content, develop_land_area_tax, 
-      develop_build_area_tax, develop_year_number_tax, 
-      land_purchase_price, land_purchase_price_explain, 
-      land_get_relevant, land_get_relevant_explain, 
-      reconnaissance_design, construction_installation_engineering_fee, 
-      infrastructure_cost, infrastructure_matching_cost, 
+      land_get_cost_total, develop_land_area_tax, develop_build_area_tax, 
+      develop_year_number_tax, land_purchase_price, 
+      land_purchase_price_explain, land_get_relevant, 
+      land_get_relevant_explain, reconnaissance_design, 
+      construction_installation_engineering_fee, infrastructure_cost, 
+      infrastructure_matching_cost, infrastructure_matching_cost_explain, 
       dev_during, other_engineering_cost, unforeseen_expenses, 
       unforeseen_expenses_explain, management_expense, 
       management_expense_explain, sales_fee, sales_fee_explain, 
@@ -162,15 +186,16 @@
       investment_profit_tax, investment_profit_tax_explain, 
       construction_assessment_value2, creator, 
       gmt_modified, gmt_created, pid, 
-      additional_cost_land_acquisition)
+      additional_cost_land_acquisition, json_content
+      )
     values (#{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, #{constructionAssessmentValue,jdbcType=VARCHAR}, 
       #{investmentProfit,jdbcType=VARCHAR}, #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
-      #{landGetCostTotal,jdbcType=VARCHAR}, #{jsonContent,jdbcType=VARCHAR}, #{developLandAreaTax,jdbcType=DECIMAL}, 
-      #{developBuildAreaTax,jdbcType=DECIMAL}, #{developYearNumberTax,jdbcType=DECIMAL}, 
-      #{landPurchasePrice,jdbcType=DECIMAL}, #{landPurchasePriceExplain,jdbcType=VARCHAR}, 
-      #{landGetRelevant,jdbcType=DECIMAL}, #{landGetRelevantExplain,jdbcType=VARCHAR}, 
-      #{reconnaissanceDesign,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
-      #{infrastructureCost,jdbcType=DECIMAL}, #{infrastructureMatchingCost,jdbcType=DECIMAL}, 
+      #{landGetCostTotal,jdbcType=VARCHAR}, #{developLandAreaTax,jdbcType=DECIMAL}, #{developBuildAreaTax,jdbcType=DECIMAL}, 
+      #{developYearNumberTax,jdbcType=DECIMAL}, #{landPurchasePrice,jdbcType=DECIMAL}, 
+      #{landPurchasePriceExplain,jdbcType=VARCHAR}, #{landGetRelevant,jdbcType=DECIMAL}, 
+      #{landGetRelevantExplain,jdbcType=VARCHAR}, #{reconnaissanceDesign,jdbcType=DECIMAL}, 
+      #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, #{infrastructureCost,jdbcType=DECIMAL}, 
+      #{infrastructureMatchingCost,jdbcType=DECIMAL}, #{infrastructureMatchingCostExplain,jdbcType=VARCHAR}, 
       #{devDuring,jdbcType=DECIMAL}, #{otherEngineeringCost,jdbcType=DECIMAL}, #{unforeseenExpenses,jdbcType=DECIMAL}, 
       #{unforeseenExpensesExplain,jdbcType=VARCHAR}, #{managementExpense,jdbcType=DECIMAL}, 
       #{managementExpenseExplain,jdbcType=VARCHAR}, #{salesFee,jdbcType=DECIMAL}, #{salesFeeExplain,jdbcType=VARCHAR}, 
@@ -179,7 +204,8 @@
       #{investmentProfitTax,jdbcType=DECIMAL}, #{investmentProfitTaxExplain,jdbcType=VARCHAR}, 
       #{constructionAssessmentValue2,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, #{pid,jdbcType=INTEGER}, 
-      #{additionalCostLandAcquisition,jdbcType=DECIMAL})
+      #{additionalCostLandAcquisition,jdbcType=DECIMAL}, #{jsonContent,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -204,9 +230,6 @@
       </if>
       <if test="landGetCostTotal != null" >
         land_get_cost_total,
-      </if>
-      <if test="jsonContent != null" >
-        json_content,
       </if>
       <if test="developLandAreaTax != null" >
         develop_land_area_tax,
@@ -240,6 +263,9 @@
       </if>
       <if test="infrastructureMatchingCost != null" >
         infrastructure_matching_cost,
+      </if>
+      <if test="infrastructureMatchingCostExplain != null" >
+        infrastructure_matching_cost_explain,
       </if>
       <if test="devDuring != null" >
         dev_during,
@@ -301,6 +327,9 @@
       <if test="additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition,
       </if>
+      <if test="jsonContent != null" >
+        json_content,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="constructionAssessmentPriceCorrecting != null" >
@@ -320,9 +349,6 @@
       </if>
       <if test="landGetCostTotal != null" >
         #{landGetCostTotal,jdbcType=VARCHAR},
-      </if>
-      <if test="jsonContent != null" >
-        #{jsonContent,jdbcType=VARCHAR},
       </if>
       <if test="developLandAreaTax != null" >
         #{developLandAreaTax,jdbcType=DECIMAL},
@@ -356,6 +382,9 @@
       </if>
       <if test="infrastructureMatchingCost != null" >
         #{infrastructureMatchingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="infrastructureMatchingCostExplain != null" >
+        #{infrastructureMatchingCostExplain,jdbcType=VARCHAR},
       </if>
       <if test="devDuring != null" >
         #{devDuring,jdbcType=DECIMAL},
@@ -417,6 +446,9 @@
       <if test="additionalCostLandAcquisition != null" >
         #{additionalCostLandAcquisition,jdbcType=DECIMAL},
       </if>
+      <if test="jsonContent != null" >
+        #{jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" resultType="java.lang.Integer" >
@@ -448,9 +480,6 @@
       </if>
       <if test="record.landGetCostTotal != null" >
         land_get_cost_total = #{record.landGetCostTotal,jdbcType=VARCHAR},
-      </if>
-      <if test="record.jsonContent != null" >
-        json_content = #{record.jsonContent,jdbcType=VARCHAR},
       </if>
       <if test="record.developLandAreaTax != null" >
         develop_land_area_tax = #{record.developLandAreaTax,jdbcType=DECIMAL},
@@ -484,6 +513,9 @@
       </if>
       <if test="record.infrastructureMatchingCost != null" >
         infrastructure_matching_cost = #{record.infrastructureMatchingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.infrastructureMatchingCostExplain != null" >
+        infrastructure_matching_cost_explain = #{record.infrastructureMatchingCostExplain,jdbcType=VARCHAR},
       </if>
       <if test="record.devDuring != null" >
         dev_during = #{record.devDuring,jdbcType=DECIMAL},
@@ -545,7 +577,56 @@
       <if test="record.additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition = #{record.additionalCostLandAcquisition,jdbcType=DECIMAL},
       </if>
+      <if test="record.jsonContent != null" >
+        json_content = #{record.jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tb_md_cost_construction
+    set id = #{record.id,jdbcType=INTEGER},
+      construction_assessment_price_correcting = #{record.constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
+      construction_assessment_value = #{record.constructionAssessmentValue,jdbcType=VARCHAR},
+      investment_profit = #{record.investmentProfit,jdbcType=VARCHAR},
+      interest_investment = #{record.interestInvestment,jdbcType=VARCHAR},
+      construction_subtotal = #{record.constructionSubtotal,jdbcType=VARCHAR},
+      land_get_cost_total = #{record.landGetCostTotal,jdbcType=VARCHAR},
+      develop_land_area_tax = #{record.developLandAreaTax,jdbcType=DECIMAL},
+      develop_build_area_tax = #{record.developBuildAreaTax,jdbcType=DECIMAL},
+      develop_year_number_tax = #{record.developYearNumberTax,jdbcType=DECIMAL},
+      land_purchase_price = #{record.landPurchasePrice,jdbcType=DECIMAL},
+      land_purchase_price_explain = #{record.landPurchasePriceExplain,jdbcType=VARCHAR},
+      land_get_relevant = #{record.landGetRelevant,jdbcType=DECIMAL},
+      land_get_relevant_explain = #{record.landGetRelevantExplain,jdbcType=VARCHAR},
+      reconnaissance_design = #{record.reconnaissanceDesign,jdbcType=DECIMAL},
+      construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      infrastructure_cost = #{record.infrastructureCost,jdbcType=DECIMAL},
+      infrastructure_matching_cost = #{record.infrastructureMatchingCost,jdbcType=DECIMAL},
+      infrastructure_matching_cost_explain = #{record.infrastructureMatchingCostExplain,jdbcType=VARCHAR},
+      dev_during = #{record.devDuring,jdbcType=DECIMAL},
+      other_engineering_cost = #{record.otherEngineeringCost,jdbcType=DECIMAL},
+      unforeseen_expenses = #{record.unforeseenExpenses,jdbcType=DECIMAL},
+      unforeseen_expenses_explain = #{record.unforeseenExpensesExplain,jdbcType=VARCHAR},
+      management_expense = #{record.managementExpense,jdbcType=DECIMAL},
+      management_expense_explain = #{record.managementExpenseExplain,jdbcType=VARCHAR},
+      sales_fee = #{record.salesFee,jdbcType=DECIMAL},
+      sales_fee_explain = #{record.salesFeeExplain,jdbcType=VARCHAR},
+      interest_investment_tax = #{record.interestInvestmentTax,jdbcType=DECIMAL},
+      interest_investment_tax_explain = #{record.interestInvestmentTaxExplain,jdbcType=VARCHAR},
+      sales_tax_and_additional = #{record.salesTaxAndAdditional,jdbcType=DECIMAL},
+      sales_tax_and_additional_explain = #{record.salesTaxAndAdditionalExplain,jdbcType=VARCHAR},
+      investment_profit_tax = #{record.investmentProfitTax,jdbcType=DECIMAL},
+      investment_profit_tax_explain = #{record.investmentProfitTaxExplain,jdbcType=VARCHAR},
+      construction_assessment_value2 = #{record.constructionAssessmentValue2,jdbcType=DECIMAL},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      pid = #{record.pid,jdbcType=INTEGER},
+      additional_cost_land_acquisition = #{record.additionalCostLandAcquisition,jdbcType=DECIMAL},
+      json_content = #{record.jsonContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -559,7 +640,6 @@
       interest_investment = #{record.interestInvestment,jdbcType=VARCHAR},
       construction_subtotal = #{record.constructionSubtotal,jdbcType=VARCHAR},
       land_get_cost_total = #{record.landGetCostTotal,jdbcType=VARCHAR},
-      json_content = #{record.jsonContent,jdbcType=VARCHAR},
       develop_land_area_tax = #{record.developLandAreaTax,jdbcType=DECIMAL},
       develop_build_area_tax = #{record.developBuildAreaTax,jdbcType=DECIMAL},
       develop_year_number_tax = #{record.developYearNumberTax,jdbcType=DECIMAL},
@@ -571,6 +651,7 @@
       construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
       infrastructure_cost = #{record.infrastructureCost,jdbcType=DECIMAL},
       infrastructure_matching_cost = #{record.infrastructureMatchingCost,jdbcType=DECIMAL},
+      infrastructure_matching_cost_explain = #{record.infrastructureMatchingCostExplain,jdbcType=VARCHAR},
       dev_during = #{record.devDuring,jdbcType=DECIMAL},
       other_engineering_cost = #{record.otherEngineeringCost,jdbcType=DECIMAL},
       unforeseen_expenses = #{record.unforeseenExpenses,jdbcType=DECIMAL},
@@ -616,9 +697,6 @@
       <if test="landGetCostTotal != null" >
         land_get_cost_total = #{landGetCostTotal,jdbcType=VARCHAR},
       </if>
-      <if test="jsonContent != null" >
-        json_content = #{jsonContent,jdbcType=VARCHAR},
-      </if>
       <if test="developLandAreaTax != null" >
         develop_land_area_tax = #{developLandAreaTax,jdbcType=DECIMAL},
       </if>
@@ -651,6 +729,9 @@
       </if>
       <if test="infrastructureMatchingCost != null" >
         infrastructure_matching_cost = #{infrastructureMatchingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="infrastructureMatchingCostExplain != null" >
+        infrastructure_matching_cost_explain = #{infrastructureMatchingCostExplain,jdbcType=VARCHAR},
       </if>
       <if test="devDuring != null" >
         dev_during = #{devDuring,jdbcType=DECIMAL},
@@ -712,10 +793,13 @@
       <if test="additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition = #{additionalCostLandAcquisition,jdbcType=DECIMAL},
       </if>
+      <if test="jsonContent != null" >
+        json_content = #{jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
     set construction_assessment_price_correcting = #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       construction_assessment_value = #{constructionAssessmentValue,jdbcType=VARCHAR},
@@ -723,7 +807,6 @@
       interest_investment = #{interestInvestment,jdbcType=VARCHAR},
       construction_subtotal = #{constructionSubtotal,jdbcType=VARCHAR},
       land_get_cost_total = #{landGetCostTotal,jdbcType=VARCHAR},
-      json_content = #{jsonContent,jdbcType=VARCHAR},
       develop_land_area_tax = #{developLandAreaTax,jdbcType=DECIMAL},
       develop_build_area_tax = #{developBuildAreaTax,jdbcType=DECIMAL},
       develop_year_number_tax = #{developYearNumberTax,jdbcType=DECIMAL},
@@ -735,6 +818,50 @@
       construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
       infrastructure_cost = #{infrastructureCost,jdbcType=DECIMAL},
       infrastructure_matching_cost = #{infrastructureMatchingCost,jdbcType=DECIMAL},
+      infrastructure_matching_cost_explain = #{infrastructureMatchingCostExplain,jdbcType=VARCHAR},
+      dev_during = #{devDuring,jdbcType=DECIMAL},
+      other_engineering_cost = #{otherEngineeringCost,jdbcType=DECIMAL},
+      unforeseen_expenses = #{unforeseenExpenses,jdbcType=DECIMAL},
+      unforeseen_expenses_explain = #{unforeseenExpensesExplain,jdbcType=VARCHAR},
+      management_expense = #{managementExpense,jdbcType=DECIMAL},
+      management_expense_explain = #{managementExpenseExplain,jdbcType=VARCHAR},
+      sales_fee = #{salesFee,jdbcType=DECIMAL},
+      sales_fee_explain = #{salesFeeExplain,jdbcType=VARCHAR},
+      interest_investment_tax = #{interestInvestmentTax,jdbcType=DECIMAL},
+      interest_investment_tax_explain = #{interestInvestmentTaxExplain,jdbcType=VARCHAR},
+      sales_tax_and_additional = #{salesTaxAndAdditional,jdbcType=DECIMAL},
+      sales_tax_and_additional_explain = #{salesTaxAndAdditionalExplain,jdbcType=VARCHAR},
+      investment_profit_tax = #{investmentProfitTax,jdbcType=DECIMAL},
+      investment_profit_tax_explain = #{investmentProfitTaxExplain,jdbcType=VARCHAR},
+      construction_assessment_value2 = #{constructionAssessmentValue2,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      pid = #{pid,jdbcType=INTEGER},
+      additional_cost_land_acquisition = #{additionalCostLandAcquisition,jdbcType=DECIMAL},
+      json_content = #{jsonContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
+    update tb_md_cost_construction
+    set construction_assessment_price_correcting = #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
+      construction_assessment_value = #{constructionAssessmentValue,jdbcType=VARCHAR},
+      investment_profit = #{investmentProfit,jdbcType=VARCHAR},
+      interest_investment = #{interestInvestment,jdbcType=VARCHAR},
+      construction_subtotal = #{constructionSubtotal,jdbcType=VARCHAR},
+      land_get_cost_total = #{landGetCostTotal,jdbcType=VARCHAR},
+      develop_land_area_tax = #{developLandAreaTax,jdbcType=DECIMAL},
+      develop_build_area_tax = #{developBuildAreaTax,jdbcType=DECIMAL},
+      develop_year_number_tax = #{developYearNumberTax,jdbcType=DECIMAL},
+      land_purchase_price = #{landPurchasePrice,jdbcType=DECIMAL},
+      land_purchase_price_explain = #{landPurchasePriceExplain,jdbcType=VARCHAR},
+      land_get_relevant = #{landGetRelevant,jdbcType=DECIMAL},
+      land_get_relevant_explain = #{landGetRelevantExplain,jdbcType=VARCHAR},
+      reconnaissance_design = #{reconnaissanceDesign,jdbcType=DECIMAL},
+      construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      infrastructure_cost = #{infrastructureCost,jdbcType=DECIMAL},
+      infrastructure_matching_cost = #{infrastructureMatchingCost,jdbcType=DECIMAL},
+      infrastructure_matching_cost_explain = #{infrastructureMatchingCostExplain,jdbcType=VARCHAR},
       dev_during = #{devDuring,jdbcType=DECIMAL},
       other_engineering_cost = #{otherEngineeringCost,jdbcType=DECIMAL},
       unforeseen_expenses = #{unforeseenExpenses,jdbcType=DECIMAL},

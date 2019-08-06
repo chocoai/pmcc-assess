@@ -32,9 +32,13 @@ public class MdDevelopmentInfrastructureChildrenController {
     @PostMapping(value = "/save")
     public HttpResult save(String forData){
         try {
-            MdDevelopmentInfrastructureChildren mdDevelopmentInfrastructureChildren = JSONObject.parseObject(forData,MdDevelopmentInfrastructureChildren.class) ;
-            mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(mdDevelopmentInfrastructureChildren);
-            return HttpResult.newCorrectResult(200, mdDevelopmentInfrastructureChildren);
+            List<MdDevelopmentInfrastructureChildren> childrenList = JSONObject.parseArray(forData,MdDevelopmentInfrastructureChildren.class) ;
+            if (CollectionUtils.isNotEmpty(childrenList)){
+                for (MdDevelopmentInfrastructureChildren mdDevelopmentInfrastructureChildren:childrenList){
+                    mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(mdDevelopmentInfrastructureChildren);
+                }
+            }
+            return HttpResult.newCorrectResult(200, childrenList);
         } catch (Exception e) {
             logger.error("异常", e);
             return HttpResult.newErrorResult(500, e);
