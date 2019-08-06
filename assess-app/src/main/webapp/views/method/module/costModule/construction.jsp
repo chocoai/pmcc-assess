@@ -164,7 +164,7 @@
                 <label class="col-sm-1 control-label">
                     勘察设计和前期工程费率<span class="symbol required"></span>
                 </label>
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <input type="text" name="reconnaissanceDesign" onblur="cost.checkParams(this);construction.calculationE11()"
                            placeholder="勘察设计和前期工程费率" class="form-control x-percent"
                            required="required" value="${mdCostConstruction.reconnaissanceDesign}" data-value="${mdCostConstruction.reconnaissanceDesign}">
@@ -179,7 +179,7 @@
                 建筑安装工程费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" readonly="readonly"
                                placeholder="建筑安装工程费" class="form-control" onblur="construction.calculationE12()"
@@ -207,45 +207,76 @@
                 基础设施建设费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
-                    <select name="infrastructureCost"
-                            class="form-control search-select select2" onchange="construction.calculationE13()" required="required">
-                        <option value="10">2009-2032 金额 10</option>
-                        <c:forEach items="${dataInfrastructureList}" var="item">
-                            <c:if test="${item.infrastructureSupportingFacilities != 0}">
-                                <c:if test="${mdCostConstruction.infrastructureCost != item.infrastructureSupportingFacilities}">
-                                    <option value="${item.infrastructureSupportingFacilities}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
+                <div class="col-sm-5">
+                    <div class="input-group">
+                        <input type="text" required="required"
+                               placeholder="基础设施配套费"  class="form-control"
+                               name="infrastructureCost" onblur="cost.checkParams(this);construction.calculationE13(this)" value="${mdCostConstruction.infrastructureCost}">
+                        <span class="input-group-btn">
+                        </span>
+                        <select name="infrastructureCostValue"
+                                class="form-control" onchange="construction.calculationE13Select(this)">
+                            <c:forEach items="${dataInfrastructureList}" var="item">
+                                <c:if test="${item.infrastructureSupportingFacilities != 0}">
+                                    <c:if test="${mdCostConstruction.infrastructureCost != item.infrastructureSupportingFacilities}">
+                                        <option value="${item.infrastructureSupportingFacilities}" data-key="${item.id}" data-type="${item.type}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
+                                    </c:if>
+                                    <c:if test="${mdCostConstruction.infrastructureCost == item.infrastructureSupportingFacilities}">
+                                        <option value="${item.infrastructureSupportingFacilities}" selected="selected"  data-key="${item.id}"  data-type="${item.type}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
+                                    </c:if>
                                 </c:if>
-                                <c:if test="${mdCostConstruction.infrastructureCost == item.infrastructureSupportingFacilities}">
-                                    <option value="${item.infrastructureSupportingFacilities}" selected="selected">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
-                                </c:if>
-                            </c:if>
-                        </c:forEach>
-                    </select>
+                            </c:forEach>
+                            <option value="100">2012-2017 金额100</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                公共配套设施建设费<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
-                <div class="col-sm-11">
-                    <select name="infrastructureMatchingCost"
-                            class="form-control search-select select2 " onchange="construction.calculationE14()" required="required">
-                        <option value="10">2009-2032 金额 10</option>
-                        <c:forEach items="${dataInfrastructureList}" var="item">
-                            <c:if test="${item.communalFacilities != 0}">
-                                <c:if test="${mdCostConstruction.infrastructureMatchingCost != item.communalFacilities}">
-                                    <option value="${item.communalFacilities}">${item.timeSlot} 金额:${item.communalFacilities}</option>
-                                </c:if>
-                                <c:if test="${mdCostConstruction.infrastructureMatchingCost == item.communalFacilities}">
-                                    <option value="${item.communalFacilities}" selected="selected">${item.timeSlot} 金额:${item.communalFacilities}</option>
-                                </c:if>
-                            </c:if>
-                        </c:forEach>
-                    </select>
+                <div class="col-sm-12">
+                    <div id="toolbarMdCostConstructionChildrenTable" style="display: none">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="construction.deleteMdDevelopmentInfrastructureChildrenTable('#landMdCostConstructionChildrenTable')">删除</button>
+                            <button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentInfrastructureChildrenTable('#landMdCostConstructionChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',true)">编辑</button>
+                            <button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentInfrastructureChildrenTable('#landMdCostConstructionChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',false)">添加</button>
+                        </div>
+                    </div>
+                    <table class="table table-bordered" id="landMdCostConstructionChildrenTable">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    公共配套设施建设费<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" required="required"
+                           placeholder="公共配套设施建设费" class="form-control" onblur="cost.checkParams(this);construction.calculationE14()"
+                           name="infrastructureMatchingCost" value="${mdCostConstruction.infrastructureMatchingCost}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <c:if test="${empty mdCostConstruction.infrastructureMatchingCostExplain}">
+                        <input type="text"
+                               placeholder="说明" class="form-control"
+                               name="infrastructureMatchingCostExplain" value="医疗卫生、文化体育、教育、社区服务">
+                    </c:if>
+                    <c:if test="${!empty mdCostConstruction.infrastructureMatchingCostExplain}">
+                        <input type="text"
+                               placeholder="说明" class="form-control"
+                               name="infrastructureMatchingCostExplain" value="${mdCostConstruction.infrastructureMatchingCostExplain}">
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -255,21 +286,29 @@
                 开发期间税费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
-                    <select name="devDuring"
-                            class="form-control search-select select2 " onchange="construction.calculationE15();" required="required">
-                        <option value="10">2009-2032 金额 10</option>
-                        <c:forEach items="${dataInfrastructureList}" var="item">
-                            <c:if test="${item.devTaxTotal != 0}">
-                                <c:if test="${mdCostConstruction.devDuring != item.devTaxTotal}">
-                                    <option value="${item.devTaxTotal}">${item.timeSlot} 金额:${item.devTaxTotal}</option>
+                <div class="col-sm-5">
+                    <div class="input-group">
+                        <input type="text" required="required"
+                               placeholder="公共配套设施建设费" class="form-control" onblur="cost.checkParams(this);construction.calculationE15()"
+                               name="devDuring" value="${mdCostConstruction.devDuring}">
+                        <span class="input-group-btn">
+                        </span>
+                        <select name="devDuring2"
+                                class="form-control " onchange="construction.calculationE15Select(this);" >
+                            <option value="10">2009-2032 金额 10</option>
+                            <c:forEach items="${dataInfrastructureList}" var="item">
+                                <c:if test="${item.devTaxTotal != 0}">
+                                    <c:if test="${mdCostConstruction.devDuring != item.devTaxTotal}">
+                                        <option value="${item.devTaxTotal}">${item.timeSlot} 金额:${item.devTaxTotal}</option>
+                                    </c:if>
+                                    <c:if test="${mdCostConstruction.devDuring == item.devTaxTotal}">
+                                        <option value="${item.devTaxTotal}" selected="selected">${item.timeSlot} 金额:${item.devTaxTotal}</option>
+                                    </c:if>
                                 </c:if>
-                                <c:if test="${mdCostConstruction.devDuring == item.devTaxTotal}">
-                                    <option value="${item.devTaxTotal}" selected="selected">${item.timeSlot} 金额:${item.devTaxTotal}</option>
-                                </c:if>
-                            </c:if>
-                        </c:forEach>
-                    </select>
+                            </c:forEach>
+                        </select>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -279,7 +318,7 @@
                 其它工程费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <input type="text" value="${mdCostConstruction.otherEngineeringCost}" onblur="cost.checkParams(this);construction.calculationE16()"
                            placeholder="其它工程费" required class="form-control" name="otherEngineeringCost">
                 </div>

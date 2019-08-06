@@ -266,6 +266,8 @@
                 }
             });
         };
+
+        construction.loadMdDevelopmentInfrastructureChildrenTable() ;
     });
 
 </script>

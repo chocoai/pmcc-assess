@@ -18,8 +18,6 @@ public class MdCostConstruction {
 
     private String landGetCostTotal;
 
-    private String jsonContent;
-
     private BigDecimal developLandAreaTax;
 
     private BigDecimal developBuildAreaTax;
@@ -41,6 +39,8 @@ public class MdCostConstruction {
     private BigDecimal infrastructureCost;
 
     private BigDecimal infrastructureMatchingCost;
+
+    private String infrastructureMatchingCostExplain;
 
     private BigDecimal devDuring;
 
@@ -81,6 +81,8 @@ public class MdCostConstruction {
     private Integer pid;
 
     private BigDecimal additionalCostLandAcquisition;
+
+    private String jsonContent;
 
     public Integer getId() {
         return id;
@@ -136,14 +138,6 @@ public class MdCostConstruction {
 
     public void setLandGetCostTotal(String landGetCostTotal) {
         this.landGetCostTotal = landGetCostTotal == null ? null : landGetCostTotal.trim();
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
     public BigDecimal getDevelopLandAreaTax() {
@@ -232,6 +226,14 @@ public class MdCostConstruction {
 
     public void setInfrastructureMatchingCost(BigDecimal infrastructureMatchingCost) {
         this.infrastructureMatchingCost = infrastructureMatchingCost;
+    }
+
+    public String getInfrastructureMatchingCostExplain() {
+        return infrastructureMatchingCostExplain;
+    }
+
+    public void setInfrastructureMatchingCostExplain(String infrastructureMatchingCostExplain) {
+        this.infrastructureMatchingCostExplain = infrastructureMatchingCostExplain == null ? null : infrastructureMatchingCostExplain.trim();
     }
 
     public BigDecimal getDevDuring() {
@@ -392,5 +394,13 @@ public class MdCostConstruction {
 
     public void setAdditionalCostLandAcquisition(BigDecimal additionalCostLandAcquisition) {
         this.additionalCostLandAcquisition = additionalCostLandAcquisition;
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 }
