@@ -62,9 +62,15 @@
                 formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += String.format('<a id="item_design" target="_blank" class="re btn btn-xs btn-primary" href="${pageContext.request.contextPath}/ureport/designer?_u={0}{1}"><i class="fa fa-edit"></i>设计报表</a>', 'erp:', row.reportName);
-                    str += '<a class="re btn btn-xs btn-warning" href="deleteReport('+row.reportName+')"><i class="fa fa-remove"></i>删除</a>';
+                    str += '<a id="item_del" class="btn btn-xs btn-warning" href="javascript:void(0)" >删除</a>';
                     str += '</div>';
                     return str;
+                },
+                events: {
+                    'click #item_del': function (e, value, row, index) {
+                        //删除
+                        reportDesignerObj.deleteReport(row.reportName);
+                    }
                 }
             });
 
@@ -119,7 +125,7 @@
                 Loading.progressShow("正在删除...");
                 $.ajax({
                     url: "${pageContext.request.contextPath}/assessReport/deleteReport",
-                    type: "post",
+                    type: "get",
                     dataType: "json",
                     data: {reportName: name},
                     success: function (result) {
