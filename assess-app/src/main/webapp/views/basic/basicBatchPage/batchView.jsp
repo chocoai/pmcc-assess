@@ -378,6 +378,7 @@
                     var node = zTreeObj.getSelectedNodes()[0];
                     node.id = result.data.id;
                     node.name = result.data.name;
+                    node.displayName = result.data.displayName;
                     node.pid = result.data.pid;
                     zTreeObj.updateNode(node, false);
                     $('#detail_modal_b').modal('hide');
