@@ -107,13 +107,24 @@ assessCommonHouse.deleteHouse = function () {
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要删除的数据");
     } else {
+        var idArray = [];
+        var idCenters = [];
+        var bisRecord = 0;
+        $.each(rows, function (i, item) {
+            idArray.push(item.id);
+            idCenters.push(item.centerId);
+            if (declareCommon.isNotBlank(item.bisRecord)){
+                if (item.bisRecord){
+                    bisRecord++;
+                }
+            }
+        });
+        if (bisRecord != 0){
+            toastr.info("其中包括了已经参与查勘任务的权证,请重新选择");
+            $("#" + assessCommonHouse.config.table).bootstrapTable('uncheckAll');
+            return false ;
+        }
         Alert("确认要删除么？", 2, null, function () {
-            var idArray = [];
-            var idCenters = [];
-            $.each(rows, function (i, item) {
-                idArray.push(item.id);
-                idCenters.push(item.centerId);
-            });
             declareCommon.deleteHouseData(idArray.join(","), function () {
                 declareCommon.deleteDeclareBuildCenter(idCenters.join(","), function () {
                     toastr.success('删除成功');

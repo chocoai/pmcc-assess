@@ -198,6 +198,14 @@ declareCommon.getHouseColumn = function () {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
         }
     });
+    cols.push({
+        field: 'bisRecord', title: '是否参与查勘任务', formatter: function (value, row, index) {
+            if (row.bisRecord){
+                return "已经参与" ;
+            }
+            return "暂时没有参与下一阶段任务";
+        }
+    });
     cols.push({field: 'certName', title: '房屋权证号'});
     cols.push({field: 'beLocated', title: '房屋坐落'});
     cols.push({field: 'ownership', title: '房屋所有权人'});
@@ -217,6 +225,14 @@ declareCommon.getRealEstateColumn = function () {
     cols.push({field: 'evidenceArea', title: '证载面积'});
     cols.push({field: 'certName', title: '不动产权证号'});
     cols.push({field: 'beLocated', title: '房屋坐落'});
+    cols.push({
+        field: 'bisRecord', title: '是否参与查勘任务', formatter: function (value, row, index) {
+            if (row.bisRecord){
+                return "已经参与" ;
+            }
+            return "暂时没有参与下一阶段任务";
+        }
+    });
     return cols;
 };
 

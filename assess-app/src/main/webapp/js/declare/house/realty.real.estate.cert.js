@@ -155,9 +155,24 @@ declareRealtyRealEstateCert.deleteData = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (rows.length >= 1) {
         var arr = [] ;
+        var idCenters = [];
+        var bisRecord = 0;
         $.each(rows, function (i, n) {
             arr.push(n.id);
+            if (n.centerId){
+                idCenters.push(n.centerId);
+            }
+            if (declareCommon.isNotBlank(n.bisRecord)){
+                if (n.bisRecord){
+                    bisRecord++;
+                }
+            }
         });
+        if (bisRecord != 0){
+            toastr.info("其中包括了已经参与查勘任务的权证,请重新选择");
+            $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('uncheckAll');
+            return false ;
+        }
         Alert("是否删除", 2, null,
             function () {
                 declareCommon.deleteDeclareRealtyData(arr.join(","),function () {
