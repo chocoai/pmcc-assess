@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.declare;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExtend;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -31,6 +32,8 @@ public class DeclareRecordService {
     private DeclareRecordExtendService declareRecordExtendService;
     @Autowired
     private DeclareRecordDao declareRecordDao;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
     /**
      * 获取申报 扩展表
@@ -122,6 +125,16 @@ public class DeclareRecordService {
     public List<DeclareRecord> getDeclareRecordListByIds(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) return null;
         return declareRecordDao.getDeclareRecordListByIds(ids);
+    }
+
+    public void reStartDeclareApplyByDeclareRecordId(List<Integer> declareRecordIds,Integer projectId){
+        if (CollectionUtils.isEmpty(declareRecordIds)){
+            return;
+        }
+        if (projectId == null){
+            return;
+        }
+        schemeJudgeObjectService.reStartDeclareApplyByDeclareRecordId(declareRecordIds, projectId);
     }
 
 }

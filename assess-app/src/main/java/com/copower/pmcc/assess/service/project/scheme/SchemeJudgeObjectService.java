@@ -41,6 +41,7 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -743,5 +744,38 @@ public class SchemeJudgeObjectService {
 
     public List<SchemeJudgeObject> getListByIds(List<Integer> judgeIds) {
         return schemeJudgeObjectDao.getListByIds(judgeIds);
+    }
+
+    /**
+     * 重启申报阶段后根据申报记录id更新一下估价对象
+     * @param declareRecordIds
+     * @param projectId
+     */
+    public void reStartDeclareApplyByDeclareRecordId(List<Integer> declareRecordIds,Integer projectId){
+        List<SchemeJudgeObject> schemeJudgeObjectList = getJudgeObjectListByProjectId(projectId) ;
+        if (CollectionUtils.isEmpty(schemeJudgeObjectList)){
+            return;
+        }
+        for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
+            if (schemeJudgeObject.getDeclareRecordId() == null){
+                continue;
+            }
+            //确保属于更新的是重启后修改的申报数据
+            if (!declareRecordIds.contains(schemeJudgeObject.getDeclareRecordId())){
+                continue;
+            }
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId()) ;
+            if (declareRecord == null){
+                continue;
+            }
+            schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
+            schemeJudgeObject.setCertName(declareRecord.getName());
+            schemeJudgeObject.setOwnership(declareRecord.getOwnership());
+            schemeJudgeObject.setSeat(declareRecord.getSeat());
+            schemeJudgeObject.setCertUse(declareRecord.getCertUse());
+            schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
+            schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
+            schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject) ;
+        }
     }
 }
