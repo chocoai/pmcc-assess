@@ -31,6 +31,12 @@
             <groupId>com.copower</groupId>
             <artifactId>hr-api</artifactId>
             <version>1.0.16</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>erp-api</artifactId>
+                    <groupId>com.copower</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
@@ -41,6 +47,12 @@
             <groupId>com.copower</groupId>
             <artifactId>crm-api</artifactId>
             <version>1.0.20</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>erp-api</artifactId>
+                    <groupId>com.copower</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
@@ -51,6 +63,12 @@
             <groupId>com.copower</groupId>
             <artifactId>finance-api</artifactId>
             <version>1.0.3</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>erp-api</artifactId>
+                    <groupId>com.copower</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>

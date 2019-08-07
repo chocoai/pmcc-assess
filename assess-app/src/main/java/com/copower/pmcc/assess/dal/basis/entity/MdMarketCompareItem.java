@@ -52,6 +52,12 @@ public class MdMarketCompareItem {
 
     private BigDecimal evaluatePrice;
 
+    private BigDecimal locationFactorRatio;
+
+    private BigDecimal equityFactorRatio;
+
+    private BigDecimal entityFactorRatio;
+
     private String creator;
 
     private Date gmtCreated;
@@ -248,6 +254,30 @@ public class MdMarketCompareItem {
 
     public void setEvaluatePrice(BigDecimal evaluatePrice) {
         this.evaluatePrice = evaluatePrice;
+    }
+
+    public BigDecimal getLocationFactorRatio() {
+        return locationFactorRatio;
+    }
+
+    public void setLocationFactorRatio(BigDecimal locationFactorRatio) {
+        this.locationFactorRatio = locationFactorRatio;
+    }
+
+    public BigDecimal getEquityFactorRatio() {
+        return equityFactorRatio;
+    }
+
+    public void setEquityFactorRatio(BigDecimal equityFactorRatio) {
+        this.equityFactorRatio = equityFactorRatio;
+    }
+
+    public BigDecimal getEntityFactorRatio() {
+        return entityFactorRatio;
+    }
+
+    public void setEntityFactorRatio(BigDecimal entityFactorRatio) {
+        this.entityFactorRatio = entityFactorRatio;
     }
 
     public String getCreator() {

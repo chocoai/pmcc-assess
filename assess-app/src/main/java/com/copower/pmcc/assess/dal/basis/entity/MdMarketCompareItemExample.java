@@ -1626,6 +1626,186 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andLocationFactorRatioIsNull() {
+            addCriterion("location_factor_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioIsNotNull() {
+            addCriterion("location_factor_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioEqualTo(BigDecimal value) {
+            addCriterion("location_factor_ratio =", value, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioNotEqualTo(BigDecimal value) {
+            addCriterion("location_factor_ratio <>", value, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioGreaterThan(BigDecimal value) {
+            addCriterion("location_factor_ratio >", value, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("location_factor_ratio >=", value, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioLessThan(BigDecimal value) {
+            addCriterion("location_factor_ratio <", value, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("location_factor_ratio <=", value, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioIn(List<BigDecimal> values) {
+            addCriterion("location_factor_ratio in", values, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioNotIn(List<BigDecimal> values) {
+            addCriterion("location_factor_ratio not in", values, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("location_factor_ratio between", value1, value2, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationFactorRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("location_factor_ratio not between", value1, value2, "locationFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioIsNull() {
+            addCriterion("equity_factor_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioIsNotNull() {
+            addCriterion("equity_factor_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioEqualTo(BigDecimal value) {
+            addCriterion("equity_factor_ratio =", value, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioNotEqualTo(BigDecimal value) {
+            addCriterion("equity_factor_ratio <>", value, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioGreaterThan(BigDecimal value) {
+            addCriterion("equity_factor_ratio >", value, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("equity_factor_ratio >=", value, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioLessThan(BigDecimal value) {
+            addCriterion("equity_factor_ratio <", value, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("equity_factor_ratio <=", value, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioIn(List<BigDecimal> values) {
+            addCriterion("equity_factor_ratio in", values, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioNotIn(List<BigDecimal> values) {
+            addCriterion("equity_factor_ratio not in", values, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("equity_factor_ratio between", value1, value2, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquityFactorRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("equity_factor_ratio not between", value1, value2, "equityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioIsNull() {
+            addCriterion("entity_factor_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioIsNotNull() {
+            addCriterion("entity_factor_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioEqualTo(BigDecimal value) {
+            addCriterion("entity_factor_ratio =", value, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioNotEqualTo(BigDecimal value) {
+            addCriterion("entity_factor_ratio <>", value, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioGreaterThan(BigDecimal value) {
+            addCriterion("entity_factor_ratio >", value, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("entity_factor_ratio >=", value, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioLessThan(BigDecimal value) {
+            addCriterion("entity_factor_ratio <", value, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("entity_factor_ratio <=", value, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioIn(List<BigDecimal> values) {
+            addCriterion("entity_factor_ratio in", values, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioNotIn(List<BigDecimal> values) {
+            addCriterion("entity_factor_ratio not in", values, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("entity_factor_ratio between", value1, value2, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityFactorRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("entity_factor_ratio not between", value1, value2, "entityFactorRatio");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

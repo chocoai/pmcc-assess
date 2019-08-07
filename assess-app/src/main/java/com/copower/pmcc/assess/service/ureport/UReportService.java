@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.ureport;
 
+import com.bstek.ureport.build.BeanPageDataSet;
 import com.copower.pmcc.assess.dto.output.ureport.UProjectFinanceVo;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
@@ -50,7 +51,7 @@ public class UReportService {
      * @param maps
      * @return
      */
-    public List<UProjectFinanceVo> getUProjectFinanceVoList(String dsname, String datasetName, Map<String, Object> maps) throws Exception {
+    public BeanPageDataSet getUProjectFinanceVoList(String dsname, String datasetName, Map<String, Object> maps) throws Exception {
         String queryProjectName = "";
         String queryConsignorName = "";
         String queryReportUseUnitName = "";
@@ -103,68 +104,68 @@ public class UReportService {
         if (StringUtil.isNotEmpty(queryEndTime)) {
             sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
         }
+        List<UProjectFinanceVo> list = Lists.newArrayList();
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
         List<Map> mapList = ddlMySqlAssist.customTableSelect(sql.toString());
-        page.getTotal();
-        if (CollectionUtils.isEmpty(mapList)) return Lists.newArrayList();
-        List<Integer> publicProjectIds = LangUtils.transform(mapList, o -> {
-            String idString = objectToString(o.get("public_project_id"));
-            if (StringUtils.isNotEmpty(idString)) return Integer.valueOf(idString);
-            return 0;
-        });
-        List<FinancialBillMakeOutProjectDto> makeOutList = null;
-        try {
-            makeOutList = financeRpcToolService.getProjectBillMakeOutList(LangUtils.filter(publicProjectIds, o -> o.intValue() > 0));
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+        if(CollectionUtils.isNotEmpty(mapList)){
+            List<Integer> publicProjectIds = LangUtils.transform(mapList, o -> {
+                String idString = objectToString(o.get("public_project_id"));
+                if (StringUtils.isNotEmpty(idString)) return Integer.valueOf(idString);
+                return 0;
+            });
+            List<FinancialBillMakeOutProjectDto> makeOutList = null;
+            try {
+                makeOutList = financeRpcToolService.getProjectBillMakeOutList(LangUtils.filter(publicProjectIds, o -> o.intValue() > 0));
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+            Map<Integer, FinancialBillMakeOutProjectDto> mapFinance = null;
+            if (CollectionUtils.isNotEmpty(makeOutList)) {
+                mapFinance = FormatUtils.mappingSingleEntity(makeOutList, o -> o.getProjectId());
+            }
+            for (Map map : mapList) {
+                UProjectFinanceVo vo = new UProjectFinanceVo();
+                vo.setId(objectToInteger(map.get("id")));
+                vo.setProjectName(objectToString(map.get("project_name")));
+                String userAccountManager = objectToString(map.get("user_account_manager"));
+                if (StringUtil.isNotEmpty(userAccountManager)) {
+                    SysUserDto sysUser = erpRpcUserService.getSysUser(userAccountManager);
+                    userAccountManager = sysUser.getUserName();
+                }
+                vo.setProjectManagerName(userAccountManager);
+                vo.setConsignorName(objectToString(map.get("cs_entrustment_unit")));
+                String useUnit = objectToString(map.get("u_use_unit"));
+                if (StringUtil.isNotEmpty(useUnit)) {
+                    CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(useUnit));
+                    if (customer != null) {
+                        useUnit = customer.getName();
+                    }
+                }
+                vo.setReportUseUnitName(useUnit);
+                vo.setReportNumber(objectToString(map.get("number_value")));
+                Object gmt_created = map.get("gmt_created");
+                if (gmt_created != null) {
+                    vo.setReportNumberCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
+                }
+                vo.setContractName(objectToString(map.get("contract_name")));
+                vo.setContractPrice(objectToString(map.get("contract_price")));
+                Integer publicProjectId = objectToInteger(map.get("id"));
+                if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
+                    FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
+                    if (makeOutProjectDto.getAmount() != null) {
+                        vo.setAmount(objectToString(makeOutProjectDto.getAmount() / 100L));
+                    }
+                    if (makeOutProjectDto.getActualAmount() != null) {
+                        vo.setActualAmount(objectToString(makeOutProjectDto.getActualAmount() / 100L));
+                    }
+                    if (makeOutProjectDto.getPayAmount() != null) {
+                        vo.setPayAmount(objectToString(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                    }
+                }
+                list.add(vo);
+            }
         }
-        Map<Integer, FinancialBillMakeOutProjectDto> mapFinance = null;
-        if (CollectionUtils.isNotEmpty(makeOutList)) {
-            mapFinance = FormatUtils.mappingSingleEntity(makeOutList, o -> o.getProjectId());
-        }
-        List<UProjectFinanceVo> list = Lists.newArrayList();
-        for (Map map : mapList) {
-            UProjectFinanceVo vo = new UProjectFinanceVo();
-            vo.setId(objectToInteger(map.get("id")));
-            vo.setProjectName(objectToString(map.get("project_name")));
-            String userAccountManager = objectToString(map.get("user_account_manager"));
-            if (StringUtil.isNotEmpty(userAccountManager)) {
-                SysUserDto sysUser = erpRpcUserService.getSysUser(userAccountManager);
-                userAccountManager = sysUser.getUserName();
-            }
-            vo.setProjectManagerName(userAccountManager);
-            vo.setConsignorName(objectToString(map.get("cs_entrustment_unit")));
-            String useUnit = objectToString(map.get("u_use_unit"));
-            if (StringUtil.isNotEmpty(useUnit)) {
-                CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(useUnit));
-                if (customer != null) {
-                    useUnit = customer.getName();
-                }
-            }
-            vo.setReportUseUnitName(useUnit);
-            vo.setReportNumber(objectToString(map.get("number_value")));
-            Object gmt_created = map.get("gmt_created");
-            if (gmt_created != null) {
-                vo.setReportNumberCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
-            }
-            vo.setContractName(objectToString(map.get("contract_name")));
-            vo.setContractPrice(objectToString(map.get("contract_price")));
-            Integer publicProjectId = objectToInteger(map.get("id"));
-            if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
-                FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
-                if (makeOutProjectDto.getAmount() != null) {
-                    vo.setAmount(objectToString(makeOutProjectDto.getAmount() / 100L));
-                }
-                if (makeOutProjectDto.getActualAmount() != null) {
-                    vo.setActualAmount(objectToString(makeOutProjectDto.getActualAmount() / 100L));
-                }
-                if (makeOutProjectDto.getPayAmount() != null) {
-                    vo.setPayAmount(objectToString(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
-                }
-            }
-            list.add(vo);
-        }
-        return list;
+        return new BeanPageDataSet(list,page.getPages());
     }
 
     private String objectToString(Object obj) {
