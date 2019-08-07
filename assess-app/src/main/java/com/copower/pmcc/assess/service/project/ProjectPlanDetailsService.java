@@ -170,56 +170,6 @@ public class ProjectPlanDetailsService {
     }
 
     /**
-     * 获取项目下所有计划详细任务
-     *
-     * @param projectId
-     * @return
-     */
-    public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectId(Integer projectId) {
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByProjectId(projectId);
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
-
-        //获取当前人该项目下待处理的任务
-        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-        projectResponsibilityDto.setProjectId(projectId);
-        projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
-        projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
-        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-
-        //判断任务是否结束，如果结束只能查看详情
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsVos)) {
-            for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
-                if (StringUtils.equals(projectPlanDetailsVo.getStatus(), SysProjectEnum.FINISH.getValue()))
-                    continue;
-                if (StringUtils.equals(projectInfo.getProjectStatus(), ProjectStatusEnum.FINISH.getKey()))
-                    continue;
-                if (StringUtils.equals(projectInfo.getProjectStatus(), ProjectStatusEnum.CLOSE.getKey()))
-                    continue;
-                //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
-                if (projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
-                        && StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())) {
-                    //可细项再分配
-                    projectPlanDetailsVo.setCanAssignment(true);
-                }
-
-                if (CollectionUtils.isNotEmpty(projectTaskList)) {
-                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                        if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
-                            if (responsibilityDto.getUrl().contains("?")) {
-                                projectPlanDetailsVo.setDisplayUrl(String.format("%s&responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
-                            } else {
-                                projectPlanDetailsVo.setDisplayUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return projectPlanDetailsVos;
-    }
-
-    /**
      * 项目详情阶段任务信息
      *
      * @param projectId
@@ -237,9 +187,9 @@ public class ProjectPlanDetailsService {
         projectResponsibilityDto.setPlanId(planId);
         projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
         projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
-        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getAgentProjectTaskList(projectResponsibilityDto);
 
-        //获取该阶段下正在运行的待审批任务
+        //获取该阶段下正在运行的待审批
         List<String> processInsIds = Lists.newArrayList();
         for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
             if (StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())) {
@@ -278,14 +228,11 @@ public class ProjectPlanDetailsService {
                         if (CollectionUtils.isNotEmpty(projectTaskList)) {
                             for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
                                 if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
-                                    if (responsibilityDto.getUserAccount().contains(commonService.thisUserAccount())) {
-                                        String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
-                                        projectPlanDetailsVo.setExcuteUrl(executeUrl);
-
-                                        //设置粘贴
-                                        if (phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                                            projectPlanDetailsVo.setCanPaste(true);
-                                        }
+                                    String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
+                                    projectPlanDetailsVo.setExcuteUrl(executeUrl);
+                                    //设置粘贴
+                                    if (phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+                                        projectPlanDetailsVo.setCanPaste(true);
                                     }
                                 }
                             }

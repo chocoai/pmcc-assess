@@ -3,19 +3,19 @@ package com.copower.pmcc.assess.service.project.change;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.manage.ProjectCloseDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.manage.ProjectCloseDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectClose;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanTaskAll;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectCloseEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -65,7 +65,6 @@ public class ProjectCloseService {
     private ProjectCloseDao projectCloseDao;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
-
     @Autowired
     private ProjectPauseService projectPauseService;
     @Autowired
@@ -73,7 +72,7 @@ public class ProjectCloseService {
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
     private ProjectPlanDao projectPlanDao;
     @Autowired
@@ -194,17 +193,16 @@ public class ProjectCloseService {
             projectInfoService.updateProjectInfo(projectInfo);
         }
         //关闭审批中的工作成果
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByProjectId(projectInfo.getId());
+        List<ProjectPlanDetails> projectPlanDetailsVos = projectPlanDetailsDao.getProjectPlanDetailsByProjectId(projectInfo.getId());
         if(CollectionUtils.isNotEmpty(projectPlanDetailsVos)){
-            List<ProjectPlanDetailsVo> filter = LangUtils.filter(projectPlanDetailsVos, o -> {
+            List<ProjectPlanDetails> filter = LangUtils.filter(projectPlanDetailsVos, o -> {
                 return ProcessStatusEnum.RUN.getValue().equals(o.getStatus());
             });
             if (CollectionUtils.isNotEmpty(filter)) {
-                for (ProjectPlanDetailsVo item : filter) {
+                for (ProjectPlanDetails item : filter) {
                     if (!bpmRpcActivitiProcessManageService.isEnded(item.getProcessInsId())) {
                         bpmRpcActivitiProcessManageService.closeProcess(item.getProcessInsId());
                     }
-
                 }
             }
         }
