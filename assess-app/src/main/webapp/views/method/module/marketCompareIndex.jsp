@@ -369,7 +369,7 @@
                         if (item.remark) {
                             text += '<span style="font-size: 12px;color: red;font-weight: normal;">(' + item.remark + ')<span>';
                         }
-                        bodyHtml += '<tr data-field-id="' + item.id + '" data-field-parent-id="' + item.pid + '" onclick="marketCompare.childrenToggle(this);">'
+                        bodyHtml += '<tr data-field-id="' + item.id + '" data-field-parent-id="' + item.pid + '" data-group="' + item.fieldName + '" onclick="marketCompare.childrenToggle(this);">'
                             + '<td colspan="' + colspan + '" style="font-weight: 800;font-size: 16px;cursor: pointer;">'
                             + text + ' <i class="fa fa-angle-double-down"></i></td></tr>';
                     } else {
@@ -432,7 +432,9 @@
                 caseCaseDifference += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].caseDifference) + '</td>';
 
                 var weightHtml = getTempHtml("pWeightTemp", defaluts.readonly);
-                weightHtml = weightHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{value}/g, toString(defaluts.cases[j].weight));
+                weightHtml = weightHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{locationFactorRatio}/g, toString(defaluts.cases[j].locationFactorRatio))
+                    .replace(/{equityFactorRatio}/g, toString(defaluts.cases[j].equityFactorRatio)).replace(/{entityFactorRatio}/g, toString(defaluts.cases[j].entityFactorRatio))
+                    .replace(/{value}/g, toString(defaluts.cases[j].weight));
                 caseWeight += weightHtml;
 
                 var weightDescHtml = getTempHtml("pWeightDescTemp", defaluts.readonly);
@@ -473,15 +475,31 @@
             //计算比准价格
             $.each(caseItemIdArray, function (i, item) {
                 //先找到该案例的成交价，再将成交价与测算值依次相乘，最后将结果保留两位小数
+                //交易情况、市场状况、单价内涵、区位状况、权益状况、实体状况 的各项测算值保留4位小数 再与案例成交价相乘计算结果
                 var price = table.find('tr[data-bisprice="true"]').closest('tbody').find('td[data-item-id=' + item + '].p_text').text();
                 if (price && AssessCommon.isNumber(price)) {
                     var specificPrice = price = parseFloat(price);
-                    table.find('tr[data-name="ratio"]').each(function () {
-                        var ratio = $(this).find('td[data-item-id=' + item + ']').text();
-                        if (ratio && AssessCommon.isNumber(ratio)) {
-                            specificPrice = specificPrice * parseFloat(ratio);
-                        }
-                    })
+                    var situationTr = table.find('tr[data-group="trading.transaction.situation"][data-name="ratio"]');
+                    var situationRatio = situationTr.find('td[data-item-id=' + item + ']').text();
+                    situationRatio = iTofixed(parseFloat(situationRatio), 4);//交易情况因素
+
+                    var tradingTimeTr = table.find('tr[data-group="trading.time"][data-name="ratio"]');
+                    var tradingTimeRatio = tradingTimeTr.find('td[data-item-id=' + item + ']').text();
+                    tradingTimeRatio = iTofixed(parseFloat(tradingTimeRatio), 4);//市场状况因素
+
+                    var priceConnotationTr = table.find('tr[data-group="price.connotation"][data-name="ratio"]');
+                    var priceConnotationRatio = priceConnotationTr.find('td[data-item-id=' + item + ']').text();
+                    priceConnotationRatio = iTofixed(parseFloat(priceConnotationRatio), 4);//单价内容因素
+                    var locationConditionRatio = marketCompare.getGroupFactorValue("location.condition",item);//区位修正因素
+                    var equityConditionRatio = marketCompare.getGroupFactorValue("equity.condition",item);//权益修正因素
+                    var entityConditionRatio = marketCompare.getGroupFactorValue("entity.condition",item);//实体修正因素
+
+                    specificPrice = price * parseFloat(situationRatio)* parseFloat(tradingTimeRatio)* parseFloat(priceConnotationRatio)
+                        * parseFloat(locationConditionRatio)* parseFloat(equityConditionRatio)* parseFloat(entityConditionRatio);
+                    table.find('input[data-name="locationFactorRatio"][data-item-id=' + item + ']').val(locationConditionRatio);
+                    table.find('input[data-name="equityFactorRatio"][data-item-id=' + item + ']').val(equityConditionRatio);
+                    table.find('input[data-name="entityFactorRatio"][data-item-id=' + item + ']').val(entityConditionRatio);
+
                     if (marketCompare.isLand) {
                         var annualTr = table.find('tr[data-name="annualCoefficient"]');
                         var evaluationAnnual = annualTr.find('td[data-item-id=' + evaluationItemId + ']').find('span').text();
@@ -585,6 +603,17 @@
             } else {
                 marketCompare.price = averagePrice;
             }
+        }
+
+        //获取大分组下各个因素值
+        marketCompare.getGroupFactorValue = function (groupName, caseItemId) {
+            var dataFieldId = $("#tb_md_mc_item_list").find('tr[data-group="' + groupName + '"]').attr('data-field-id');
+            var factorValue = 1;
+            $("#tb_md_mc_item_list").find('tbody[data-field-parent-id=' + dataFieldId + ']').each(function () {
+                var ratio = $(this).find('tr[data-name=ratio]').find('td[data-item-id=' + caseItemId + ']').text();
+                factorValue = factorValue * parseFloat(ratio);
+            })
+            return iTofixed(factorValue,4);
         }
 
         //切换
@@ -756,6 +785,9 @@
                 caseItem.caseDifference = table.find('tr[data-name="caseDifference"]').find('td[data-item-id=' + item + ']').text();
                 caseItem.weight = table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').find('a').text();
                 caseItem.weightDescription = table.find('tr[data-name="weightDescription"]').find('td[data-item-id=' + item + ']').find('a').text();
+                caseItem.locationFactorRatio = table.find('input[data-name="locationFactorRatio"][data-item-id=' + item + ']').val();
+                caseItem.equityFactorRatio = table.find('input[data-name="equityFactorRatio"][data-item-id=' + item + ']').val();
+                caseItem.entityFactorRatio = table.find('input[data-name="entityFactorRatio"][data-item-id=' + item + ']').val();
                 if (caseItem.weight == '空') {
                     caseItem.weight = '';
                 }
@@ -1290,8 +1322,10 @@
 <%--权重模板--%>
 <script type="text/html" id="pWeightTemp">
     <td class="p_weight" data-item-id="{itemId}">
-        <a href="javascript://" data-original-title="权重"
-           class="editable editable-click editable-pre-wrapped">{value}</a>
+        <input type="hidden" data-name="locationFactorRatio" data-item-id="{itemId}" value="{locationFactorRatio}">
+        <input type="hidden" data-name="equityFactorRatio" data-item-id="{itemId}" value="{equityFactorRatio}">
+        <input type="hidden" data-name="entityFactorRatio" data-item-id="{itemId}" value="{entityFactorRatio}">
+        <a href="javascript://" data-original-title="权重" class="editable editable-click editable-pre-wrapped">{value}</a>
     </td>
 </script>
 

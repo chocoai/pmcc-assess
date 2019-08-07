@@ -612,6 +612,8 @@ public class GenerateLoactionService {
                 }
                 stringBuffer.append(dataBlock.getName());
             }
+        } else {
+            stringBuffer.append(basicEstate.getBlockName());
         }
         stringBuffer.append(baseDataDicService.getNameById(basicEstate.getPosition()));
         return stringBuffer.toString();
