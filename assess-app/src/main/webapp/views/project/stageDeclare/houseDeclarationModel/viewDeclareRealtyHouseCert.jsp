@@ -18,9 +18,7 @@
                              data-toggle="modal"> 新增
                         </div>
                         <div type="button" class="btn btn-primary" onclick="assessCommonHouse.editHouse()"> 编辑</div>
-                        <c:if test="${projectPlanDetails.bisRestart ne true}">
-                            <div type="button" class="btn btn-primary" onclick="assessCommonHouse.deleteHouse()"> 删除</div>
-                        </c:if>
+                        <div type="button" class="btn btn-primary" onclick="assessCommonHouse.deleteHouse()"> 删除</div>
                         <div type="button" class="btn btn-primary" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)"> 下载模板</div>
                         <div type="button" class="btn btn-primary" onclick="$('#ajaxFileUploadHouse').val('').trigger('click')"> 导入</div>
                     </div>
