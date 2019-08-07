@@ -369,6 +369,7 @@ public class DeclareRealtyHouseCertService {
         if (CollectionUtils.isEmpty(lists)){
             return;
         }
+        List<Integer> declareRecordIdList = Lists.newArrayList();
         for (DeclareRealtyHouseCert oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo, declareRecord);
@@ -383,6 +384,7 @@ public class DeclareRealtyHouseCertService {
                     continue;
                 }
                 declareRecord.setId(declareRecordList.stream().findFirst().get().getId());
+                declareRecordIdList.add(declareRecord.getId()) ;
             }
             declareRecord.setDataFromType("房产证");
             declareRecord.setName(oo.getCertName());
@@ -441,6 +443,9 @@ public class DeclareRealtyHouseCertService {
             } catch (Exception e1) {
                 logger.error("写入失败!", e1);
             }
+        }
+        if (bisRecord){
+            declareRecordService.reStartDeclareApplyByDeclareRecordId(declareRecordIdList,declareApply.getProjectId());
         }
     }
 }
