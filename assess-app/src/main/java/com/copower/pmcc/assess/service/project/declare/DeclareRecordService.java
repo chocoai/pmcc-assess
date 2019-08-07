@@ -50,6 +50,10 @@ public class DeclareRecordService {
         return null;
     }
 
+    public List<DeclareRecord> getDeclareRecordListByDataTableId(String dataTableName,Integer dataTableId,Integer projectId){
+        return declareRecordDao.getDeclareRecordListByDataTableId(dataTableName, dataTableId, projectId) ;
+    }
+
 
     public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) throws BusinessException {
         if (declareRecord == null) {

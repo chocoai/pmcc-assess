@@ -336,7 +336,7 @@ public class BasicApplyTransferService {
                 example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
 
                 SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(basicUnitNew.getId());
+                attachmentDto.setTableId(basicUnitHuxing.getId());
                 baseAttachmentService.copyFtpAttachments(example,attachmentDto);
             }
         }
@@ -437,7 +437,7 @@ public class BasicApplyTransferService {
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
 
-            sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, houseOld.getApplyId(), appId));
+            sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.HOUSE, houseOld.getApplyId(), appId));
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return basicHouseNew;

@@ -394,8 +394,18 @@ public class DeclareRealtyLandCertService {
         return vo;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    /**
+     * 写入申报数据
+     * @param declareApply
+     */
     public void eventWriteDeclareApply(DeclareApply declareApply) {
+        //更新 放在之前
+        eventWriteDeclareApply(declareApply,true) ;
+        //写入新添加得申报数据
+        eventWriteDeclareApply(declareApply,false) ;
+    }
+
+    private void eventWriteDeclareApply(DeclareApply declareApply,boolean bisRecord){
         DeclareRecord declareRecord = null;
         if (declareApply == null) {
             return;
@@ -415,17 +425,30 @@ public class DeclareRealtyLandCertService {
         DeclareRealtyLandCert query = new DeclareRealtyLandCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
         query.setEnable(DeclareTypeEnum.MasterData.getKey());
-        query.setBisRecord(false);
+        query.setBisRecord(bisRecord);
         List<DeclareRealtyLandCert> lists = declareRealtyLandCertDao.getDeclareRealtyLandCertList(query);
+        if (CollectionUtils.isEmpty(lists)){
+            return;
+        }
         for (DeclareRealtyLandCert oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo, declareRecord);
             declareRecord.setId(null);
+            declareRecord.setName(oo.getLandCertName());
             declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
-            declareRecord.setRegistrationDate(oo.getRegistrationDate());
             declareRecord.setDataTableId(oo.getId());
-            declareRecord.setName(oo.getLandCertName());
+
+            if (bisRecord){
+                List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordListByDataTableId(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class) ,oo.getId(),declareApply.getProjectId()) ;
+                //当明确是更新的时候确找不到申报id那么则不再更新这条数据
+                if (CollectionUtils.isEmpty(declareRecordList)){
+                    continue;
+                }
+                declareRecord.setId(declareRecordList.stream().findFirst().get().getId());
+            }
+
+            declareRecord.setRegistrationDate(oo.getRegistrationDate());
             declareRecord.setOwnership(oo.getOwnership());
             declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
             declareRecord.setSeat(oo.getBeLocated());
@@ -488,8 +511,10 @@ public class DeclareRealtyLandCertService {
                 declareRecordExtend.setRegistrationAuthority(oo.getRegistrationAuthority());
                 declareRecordExtend.setDeclareId(declareId);
                 declareRecordExtendService.addDeclareRecord(declareRecordExtend) ;
-                oo.setBisRecord(true);
-                declareRealtyLandCertDao.updateDeclareRealtyLandCert(oo);
+                if (!bisRecord){
+                    oo.setBisRecord(true);
+                    declareRealtyLandCertDao.updateDeclareRealtyLandCert(oo);
+                }
             } catch (Exception e1) {
                 logger.error("写入失败!", e1);
             }
