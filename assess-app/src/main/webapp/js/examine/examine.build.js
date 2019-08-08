@@ -17,7 +17,7 @@
     ];
 
     buildingCommon.getBuildingId = function () {
-        var id = buildingCommon.buildingForm.find('[name=id]').val();
+        var id = buildingCommon.buildingForm.find('[name=id]').val()!=null?buildingCommon.buildingForm.find('[name=id]').val():buildingCommon.tableId;
         if (id) {
             return id;
         }

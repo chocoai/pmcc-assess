@@ -13,6 +13,8 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by zly on 2018/5/15.
  * 现场查勘主表
@@ -116,5 +118,13 @@ public class SurveySceneExploreService {
         where.setPlanDetailsId(planDetailsId);
         SurveySceneExplore surveySceneExplore = surveySceneExploreDao.getSurveySceneExplore(where);
         return surveySceneExplore;
+    }
+
+    //删除未完成数据
+    public void deleteUnfinishedData(){
+        List<SurveySceneExplore> unfinishedDatas = surveySceneExploreDao.getUnfinishedData();
+        for (SurveySceneExplore item: unfinishedDatas) {
+            surveySceneExploreDao.deleteSurveySceneExplore(item.getId());
+        }
     }
 }

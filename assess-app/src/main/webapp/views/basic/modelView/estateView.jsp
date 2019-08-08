@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- 非工业交通仓储 -->
-<c:if test="${basicApply.type == 0}">
+<!-- 非工业交通仓储 或 在建工程-->
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/examine/residence/apply/estate.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/residence/apply/estateLandState.jsp" %>
 </c:if>
@@ -34,8 +34,8 @@
 <%@include file="/views/project/stageSurvey/examine/residence/apply/matchingEnvironment.jsp" %>
 <%@include file="/views/project/stageSurvey/examine/residence/apply/matchingFinance.jsp" %>
 
-<!-- 非工业交通仓储 -->
-<c:if test="${basicApply.type == 0}">
+<!-- 非工业交通仓储 或 在建工程-->
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/examine/residence/apply/matchingEducation.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/residence/apply/matchingRecreation.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/residence/apply/matchingRestaurant.jsp" %>
@@ -51,8 +51,8 @@
 <%@include file="/views/project/stageSurvey/examine/residence/apply/matchingMainConversion.jsp" %>
 
 
-<!-- 非工业交通仓储 -->
-<c:if test="${basicApply.type == 0}">
+<!-- 非工业交通仓储 或 在建工程-->
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/examine/industry/apply/estateSupplyWater.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/industry/apply/estateSupplyDrainWater.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/industry/apply/estateSupplyPower.jsp" %>

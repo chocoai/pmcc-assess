@@ -1,14 +1,13 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -18,6 +17,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +46,8 @@ public class BasicApplyBatchController extends BaseController {
     private CommonService commonService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private BasicHouseService basicHouseService;
 
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -78,9 +80,10 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveItemData", name = "保存一条明细", method = {RequestMethod.POST})
-    public HttpResult saveItemData(BasicApplyBatchDetail basicApplyBatchDetail) {
+    public HttpResult saveItemData(String formData,Integer type) {
         try {
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail));
+            BasicApplyBatchDetail basicApplyBatchDetail = JSON.parseObject(formData, BasicApplyBatchDetail.class);
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail,type));
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
@@ -146,6 +149,17 @@ public class BasicApplyBatchController extends BaseController {
                 case "tb_basic_unit":
                     BasicUnit basicUnit = publicBasicService.getBasicUnitById(detailData.getTableId());
                     modelAndView.addObject("basicUnit", basicUnit);
+                    if(type!=null&&type.equals(3)){
+                        BasicHouse basicHouse = new BasicHouse();
+                        basicHouse.setUnitId(basicUnit.getId());
+                        List<BasicHouse> basicHouses = basicHouseService.basicHouseList(basicHouse);
+                        if(CollectionUtils.isNotEmpty(basicHouses))
+                            basicHouse = basicHouses.get(0);
+                        BasicHouseVo basicHouseVo = basicHouseService.getBasicHouseVo(basicHouse);
+                        modelAndView.addObject("basicHouse", basicHouseVo);
+                        BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByHouseId(basicHouse.getId());
+                        modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
+                    }
                     break;
                 case "tb_basic_house":
                     BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(detailData.getTableId());
@@ -325,5 +339,21 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("isApplyBatch", "show");
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
         modelAndView.addObject("unitPropertiesList", unitPropertiesList);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getHouseId", name = "获取在建工程houseId", method = {RequestMethod.POST})
+    public HttpResult getHouseId(Integer unitId) {
+        try {
+            BasicHouse basicHouse = new BasicHouse();
+            basicHouse.setUnitId(unitId);
+            List<BasicHouse> basicHouses = basicHouseService.basicHouseList(basicHouse);
+            if(CollectionUtils.isNotEmpty(basicHouses))
+                basicHouse = basicHouses.get(0);
+            return HttpResult.newCorrectResult(basicHouse);
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("保存数据异常");
+        }
     }
 }
