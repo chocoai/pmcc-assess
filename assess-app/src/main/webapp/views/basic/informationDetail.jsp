@@ -55,7 +55,8 @@
                                 </div>
                             </c:if>
                             <c:if test="${buildingType eq 'building'}">
-                                <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
+                                <div role="tabpanel" class="tab-pane fade" id="caseBuild"
+                                     aria-labelledby="profile-tab2">
                                     <%@include file="/views/basic/modelView/buildDetail.jsp" %>
                                 </div>
                             </c:if>
@@ -102,14 +103,58 @@
         industry.keyApp("${type}");
         $('#caseTab a').eq(0).tab('show');
 
-        houseCommon.detail('${basicApply.id}', function (data) {
-            if (data.basicHouseTrading) {
-                if (AssessCommon.isNumber(data.basicHouseTrading.tradingType)) {
-                    AssessCommon.getDataDicInfo(data.basicHouseTrading.tradingType, function (item) {
-                        houseCommon.loadTradingSellAndLeaseList(item.fieldName, false);
-                    });
+
+
+console.log("buildingType"+"${buildingType}"+" id:"+"${tableId}");
+
+        if ("estate"=="${buildingType}") {
+            $.each(estateCommon.estateFileControlIdArray, function (i, n) {
+                estateCommon.fileShow(n, AssessDBKey.BasicEstate, "${tableId}");
+            });
+        }
+        if ("building"=="${buildingType}") {
+            buildingCommon.tableId = "${tableId}";
+            $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
+                buildingCommon.fileShow(item);
+            });
+        }
+        if ("unit"=="${buildingType}") {
+            unitCommon.tableId = "${tableId}";
+            $.each(unitCommon.unitFileControlIdArray, function (i, item) {
+                unitCommon.fileShow(item);
+            });
+            if ("${type}" == "3") {
+                getHouseId("${tableId}");
+            }
+        }
+        if ("house"=="${buildingType}") {
+            houseCommon.tableId = "${tableId}";
+            $.each(houseCommon.houseFileControlIdArray, function (i, item) {
+                houseCommon.fileShow(item, false);
+            })
+        }
+    });
+
+    //获取在建工程houseId
+    function getHouseId(unitId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/getHouseId",
+            type: "post",
+            dataType: "json",
+            data: {unitId: unitId},
+            success: function (result) {
+                if (result.ret) {
+                    houseCommon.tableId = result.data.id;
+                    $.each(houseCommon.houseFileControlIdArray, function (i, item) {
+                        houseCommon.fileShow(item, false);
+                    })
+                    houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeSell, true);
+                    houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeLease, true);
+
+                } else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
                 }
             }
         });
-    });
+    }
 </script>

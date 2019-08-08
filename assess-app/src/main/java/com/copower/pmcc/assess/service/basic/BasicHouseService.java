@@ -842,7 +842,7 @@ public class BasicHouseService {
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
-        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(houseTrading));
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(houseTrading)!=null?basicHouseTradingService.getBasicHouseTradingVo(houseTrading):new BasicHouseTrading());
         initDemagedDegree(basicHouse);
         return objectMap;
     }

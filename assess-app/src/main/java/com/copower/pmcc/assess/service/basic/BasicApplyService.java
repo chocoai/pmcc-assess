@@ -319,7 +319,7 @@ public class BasicApplyService {
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsByPid)) {
                     for (ProjectPlanDetails data : projectPlanDetailsByPid) {
                         BasicApply basicApply = this.getBasicApplyByPlanDetailsId(data.getId());
-                        if(basicApply.getType().equals(basicApplyTypeId)) {
+                        if(basicApply != null && basicApply.getType().equals(basicApplyTypeId)) {
                             caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId()));
                         }
                     }

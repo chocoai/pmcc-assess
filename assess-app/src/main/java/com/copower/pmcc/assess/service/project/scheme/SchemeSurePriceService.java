@@ -16,6 +16,9 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2018-10-15.
@@ -61,6 +65,8 @@ public class SchemeSurePriceService {
     private PublicService publicService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private SchemeSurePriceFactorService schemeSurePriceFactorService;
 
     /**
      * 保存确定单价信息
@@ -99,17 +105,17 @@ public class SchemeSurePriceService {
         }
     }
 
-    public void deleteSurePriceAll(Integer projectId){
+    public void deleteSurePriceAll(Integer projectId) {
         SchemeSurePrice where = new SchemeSurePrice();
         where.setProjectId(projectId);
         List<SchemeSurePrice> schemeSurePriceList = schemeSurePriceDao.getSurePriceList(where);
-        if(CollectionUtils.isNotEmpty(schemeSurePriceList)){
+        if (CollectionUtils.isNotEmpty(schemeSurePriceList)) {
             for (SchemeSurePrice schemeSurePrice : schemeSurePriceList) {
                 SchemeSurePriceItem whereItem = new SchemeSurePriceItem();
                 where.setJudgeObjectId(schemeSurePrice.getJudgeObjectId());
                 List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(whereItem);
-                if(CollectionUtils.isNotEmpty(surePriceItemList))
-                    surePriceItemList.forEach(o->schemeSurePriceItemDao.deleteSurePriceItem(o.getId()));
+                if (CollectionUtils.isNotEmpty(surePriceItemList))
+                    surePriceItemList.forEach(o -> schemeSurePriceItemDao.deleteSurePriceItem(o.getId()));
                 schemeSurePriceDao.deleteSurePrice(schemeSurePrice.getId());
             }
         }
@@ -160,7 +166,7 @@ public class SchemeSurePriceService {
 
         List<SchemeSurePriceItem> priceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
         if (CollectionUtils.isEmpty(priceItemList)) {
-           return null;
+            return null;
         }
         //如果价格差异小于等于10% 自动设置对应权重 求取平均价
         List<BigDecimal> decimalList = LangUtils.transform(priceItemList, o -> o.getTrialPrice());
@@ -263,29 +269,86 @@ public class SchemeSurePriceService {
             schemeJudgeObject.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
             schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
         }
-
+        List<SchemeJudgeObject> childrenList = Lists.newArrayList();
         //如果是合并对象，则找出子项并更新子项的单价
         if (schemeJudgeObject.getBisMerge() == Boolean.TRUE) {
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(schemeJudgeObject.getId());
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                for (SchemeJudgeObject judgeObject : judgeObjectList) {
-                    //先检查是否调整过单价，如果调整过则不做更新处理
-                    if (judgeObject.getPrice() == null) {
-                        judgeObject.setPrice(schemeSurePriceApplyDto.getPrice());
-                        judgeObject.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
-                        schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
-
-                        //同步更新申报记录单价
-                        DeclareRecord declareRecord = declareRecordDao.getDeclareRecordById(judgeObject.getDeclareRecordId());
-                        declareRecord.setPrice(schemeSurePriceApplyDto.getPrice());
-                        declareRecordDao.updateDeclareRecord(declareRecord);
-                    }
-                }
+                childrenList.addAll(judgeObjectList);
             }
         } else {
             DeclareRecord declareRecord = declareRecordDao.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             declareRecord.setPrice(schemeSurePriceApplyDto.getPrice());
             declareRecordDao.updateDeclareRecord(declareRecord);
+        }
+        if (CollectionUtils.isNotEmpty(childrenList)) {
+            boolean bisRestart = false;
+            //重启之后对合并的子估价对象进行更新
+            if (projectPlanDetails.getBisRestart() != null) {
+                if (projectPlanDetails.getBisRestart()) {
+                    bisRestart = projectPlanDetails.getBisRestart();
+                }
+            }
+            for (SchemeJudgeObject judgeObject : childrenList) {
+                //先检查是否调整过单价，如果调整过则不做更新处理
+                if (judgeObject.getPrice() == null) {
+                    judgeObject.setPrice(schemeSurePriceApplyDto.getPrice());
+                    judgeObject.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
+                    schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
+
+                    //同步更新申报记录单价
+                    DeclareRecord declareRecord = declareRecordDao.getDeclareRecordById(judgeObject.getDeclareRecordId());
+                    declareRecord.setPrice(schemeSurePriceApplyDto.getPrice());
+                    declareRecordDao.updateDeclareRecord(declareRecord);
+                }
+                final Integer one = 1;
+                final Integer zero = 0;
+                Map<Integer, List<BigDecimal>> integerBigDecimalMap = Maps.newHashMap();
+                if (bisRestart) {
+                    //不更新作为标准的哪个估价对象
+                    if (!Objects.equal(judgeObject.getId(), schemeJudgeObject.getId()) && judgeObject.getDeclareRecordId() != null) {
+                        List<SchemeSurePriceFactor> schemeSurePriceFactorList = schemeSurePriceFactorService.getSurePriceFactors(judgeObject.getDeclareRecordId());
+                        if (CollectionUtils.isNotEmpty(schemeSurePriceFactorList)) {
+                            for (SchemeSurePriceFactor priceFactor : schemeSurePriceFactorList) {
+                                if (priceFactor.getType() == null || priceFactor.getCoefficient() == null) {
+                                    continue;
+                                }
+                                List<BigDecimal> bigDecimalList = integerBigDecimalMap.get(priceFactor.getType());
+                                if (CollectionUtils.isEmpty(bigDecimalList)) {
+                                    bigDecimalList = Lists.newArrayList();
+                                }
+                                bigDecimalList.add(priceFactor.getCoefficient());
+                                integerBigDecimalMap.put(priceFactor.getType(), bigDecimalList);
+                            }
+                        }
+                    }
+                }
+                if (!integerBigDecimalMap.isEmpty()) {
+                    List<BigDecimal> bigDecimalListA = Lists.newArrayList();
+                    List<BigDecimal> bigDecimalListB = Lists.newArrayList();
+                    for (Map.Entry<Integer, List<BigDecimal>> integerListEntry : integerBigDecimalMap.entrySet()) {
+                        if (Objects.equal(zero, integerListEntry.getKey())) {
+                            bigDecimalListA.addAll(integerListEntry.getValue());
+                        }
+                        if (Objects.equal(one, integerListEntry.getKey())) {
+                            bigDecimalListB.addAll(integerListEntry.getValue());
+                        }
+                    }
+                    BigDecimal temp = new BigDecimal(0);
+                    if (CollectionUtils.isNotEmpty(bigDecimalListA)) {
+                        double sum = bigDecimalListA.stream().mapToDouble(BigDecimal::doubleValue).sum();
+                        temp = temp.add(new BigDecimal(sum));
+                    }
+                    if (CollectionUtils.isNotEmpty(bigDecimalListB)) {
+                        double sum = bigDecimalListB.stream().mapToDouble(BigDecimal::doubleValue).sum();
+                        temp = temp.add(new BigDecimal(sum).multiply(schemeSurePriceApplyDto.getPrice()));
+                    }
+                    temp = temp.add(schemeSurePriceApplyDto.getPrice());
+                    judgeObject.setPrice(temp);
+                    judgeObject.setOriginalPrice(temp);
+                    schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
+                }
+            }
         }
     }
 }
