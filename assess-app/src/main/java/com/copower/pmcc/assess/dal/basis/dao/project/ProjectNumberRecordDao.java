@@ -39,6 +39,14 @@ public class ProjectNumberRecordDao {
         return projectNumberRecordMapper.selectByExample(example);
     }
 
+    public List<ProjectNumberRecord> getNumberByYear(Integer year, Integer reportType) {
+        ProjectNumberRecordExample example = new ProjectNumberRecordExample();
+        ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andYearEqualTo(year).andReportTypeEqualTo(reportType);
+        example.setOrderByClause("number desc");
+        return projectNumberRecordMapper.selectByExample(example);
+    }
+
     public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer year, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();

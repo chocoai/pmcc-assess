@@ -2221,15 +2221,20 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
         documentBuilder.getFont().setSize(14);
         documentBuilder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
-        documentBuilder.getCellFormat().getBorders().getLeft().setLineWidth(20.0);
-        documentBuilder.getCellFormat().getBorders().getRight().setLineWidth(20.0);
-        documentBuilder.getCellFormat().getBorders().getTop().setLineWidth(20.0);
-        documentBuilder.getCellFormat().getBorders().getBottom().setLineWidth(20.0);
+        documentBuilder.getCellFormat().getBorders().getLeft().setLineWidth(0.0);
+        documentBuilder.getCellFormat().getBorders().getRight().setLineWidth(2);
+        documentBuilder.getCellFormat().getBorders().getTop().setLineWidth(2.0);
+        documentBuilder.getCellFormat().getBorders().getBottom().setLineWidth(2.0);
+
+        documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
         //设置表格为无样式，即没有像什么边框那样的东西
         documentBuilder.getCellFormat().getBorders().setLineStyle(LineStyle.NONE);
         //设置具体宽度
-        documentBuilder.getCellFormat().setWidth(100);
-        documentBuilder.startTable();
+        documentBuilder.getCellFormat().setWidth(20);
+        documentBuilder.getCellFormat().setLeftPadding(-300);
+        Table table = documentBuilder.startTable();
         LinkedList<String> linkedList = Lists.newLinkedList();
         List<Integer> integerList = FormatUtils.transformString2Integer(generateReportInfo.getRealEstateAppraiser());
         if (CollectionUtils.isNotEmpty(integerList)) {
@@ -2253,7 +2258,7 @@ public class GenerateBaseDataService {
                     }
                     for (AdPersonalQualificationDto qualificationDto:adPersonalQualificationDtoList){
                         if (StringUtils.isNotBlank(qualificationDto.getCertificateNo())){
-                            linkedList.add(userAccountName);
+                            linkedList.add(String.format("%s%s",userAccountName,StringUtils.repeat("",3)));
                             linkedList.add(String.format("注册证号:%s",qualificationDto.getCertificateNo()));
                             AsposeUtils.writeWordTitle(documentBuilder, linkedList) ;
                             linkedList.clear();

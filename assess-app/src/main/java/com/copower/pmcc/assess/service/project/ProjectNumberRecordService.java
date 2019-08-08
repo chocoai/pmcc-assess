@@ -165,7 +165,7 @@ public class ProjectNumberRecordService {
 
         public ReportNumberService invoke() {
             PageHelper.startPage(0, 1);//取一条数据
-            List<ProjectNumberRecord> numberRecords = projectNumberRecordDao.getNumberList(year, reportType);
+            List<ProjectNumberRecord> numberRecords = projectNumberRecordDao.getNumberByYear(year, reportType);
             if (CollectionUtils.isEmpty(numberRecords)) {
                 reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
             } else {
