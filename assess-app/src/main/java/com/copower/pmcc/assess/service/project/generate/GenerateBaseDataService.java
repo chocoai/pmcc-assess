@@ -2258,7 +2258,7 @@ public class GenerateBaseDataService {
                     }
                     for (AdPersonalQualificationDto qualificationDto:adPersonalQualificationDtoList){
                         if (StringUtils.isNotBlank(qualificationDto.getCertificateNo())){
-                            linkedList.add(String.format("%s%s",userAccountName,StringUtils.repeat("",3)));
+                            linkedList.add(String.format("%s%s",StringUtils.repeat(" ",5),userAccountName));
                             linkedList.add(String.format("注册证号:%s",qualificationDto.getCertificateNo()));
                             AsposeUtils.writeWordTitle(documentBuilder, linkedList) ;
                             linkedList.clear();
