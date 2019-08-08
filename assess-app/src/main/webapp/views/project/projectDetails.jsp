@@ -81,6 +81,8 @@
                                     </c:forEach>
                                 </ul>
                             </div>
+                            <a class="btn btn-primary" href="javascript://"
+                               onclick="projectDetails.projectSubsequent()"></i>后续事项</a>
                         </div>
                     </div>
                 </div>
@@ -645,6 +647,12 @@
             });
         },
 
+        //后续事项
+        projectSubsequent: function () {
+            var url = "${pageContext.request.contextPath}/projectSubsequent/apply?projectId=" + ${projectInfo.id};
+            window.open(url, '_blank');
+        },
+
         //完成
         finishProject: function () {
             $.ajax({
@@ -945,6 +953,7 @@
         }
     };
 
+
 </script>
 <script type="application/javascript">
     var zTreeObj;
@@ -1171,6 +1180,7 @@
     function expandAll(flag) {
         zTreeObj.expandAll(flag);
     }
+
 
 </script>
 </html>
