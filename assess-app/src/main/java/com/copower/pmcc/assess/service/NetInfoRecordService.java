@@ -73,17 +73,15 @@ public class NetInfoRecordService {
     public void getNetInfoFromTB() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前2天
+            calendar.add(Calendar.DATE, -2); //得到前2天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String formatDate = sdf.format(date);
-            Date now = new Date();
-            String nowDate = sdf.format(now);
             String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "资产", "无形资产"};
             List<String> types = Arrays.asList(needContentType);
             Map<String, String> strHrefs = Maps.newHashMap();//用于记录地址
             String urlInfo = "https://sf.taobao.com/item_list.htm?auction_source=0&sorder=2&st_param=-1&auction_start_seg=&" +
-                    "auction_start_from=" + formatDate + "&auction_start_to=" + nowDate + "&&spm=a213w.3064813.9001.2";
+                    "auction_start_from=" + formatDate + "&auction_start_to=" + formatDate + "&&spm=a213w.3064813.9001.2";
             Elements elements = getContent(urlInfo, ".condition", "GBK");
             Elements a = elements.get(0).select("li a");
             for (Element item : a) {
@@ -209,7 +207,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromJDSF() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "无形资产"};
             Map<String, List<String>> strHrefs = Maps.newHashMap();
@@ -280,7 +278,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromJDZC() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             Map<String, String> needContentType = Maps.newHashMap();
@@ -349,7 +347,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromZGSF() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
@@ -461,7 +459,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromZGBD() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
@@ -570,7 +568,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromGPW() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String[] needContentType = new String[]{"房产", "土地", "股权", "无形资产", "林权矿权"};
@@ -676,7 +674,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromGGZYYA() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -746,7 +744,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromGGZYCD() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
