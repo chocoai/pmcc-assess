@@ -68,6 +68,7 @@ AssessDBKey.MdCost = "tb_md_cost";
 AssessDBKey.MdDevelopment = "tb_md_development";
 
 AssessDBKey.ProjectChangeLog = "tb_project_change_log";
+AssessDBKey.ProjectSubsequent = "tb_project_subsequent";
 /**
  * 项目分类key
  */

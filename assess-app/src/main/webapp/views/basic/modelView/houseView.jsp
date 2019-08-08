@@ -31,6 +31,7 @@
     <%@include file="/views/project/stageSurvey/examine/industry/apply/houseCorollaryEquipment.jsp" %>
 </c:if>
 
+<c:if test="${basicApply.type != 3}">
 <%@include file="/views/project/stageSurvey/examine/residence/apply/houseDamagedDegree.jsp" %>
-
+</c:if>
 <script src="${pageContext.request.contextPath}/js/basic/house/sonHouseView.js"></script>
