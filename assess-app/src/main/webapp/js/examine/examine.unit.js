@@ -16,7 +16,7 @@
     ];
 
     unitCommon.getUnitId = function () {
-        return unitCommon.unitForm.find('[name=id]').val();
+        return unitCommon.unitForm.find('[name=id]').val()!=null?unitCommon.unitForm.find('[name=id]').val():unitCommon.tableId;
     };
 
     unitCommon.getUnitNumber = function () {

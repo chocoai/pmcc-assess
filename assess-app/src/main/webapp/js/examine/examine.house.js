@@ -43,7 +43,7 @@
     ];
 
     houseCommon.getHouseId = function () {
-        return houseCommon.houseForm.find('[name=id]').val();
+        return houseCommon.houseForm.find('[name=id]').val()!=null?houseCommon.houseForm.find('[name=id]').val():houseCommon.tableId;
     };
 
     //户型选择

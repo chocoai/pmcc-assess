@@ -689,6 +689,8 @@ public class GenerateMdCompareService {
         }
         builder.endRow();
 
+        //是否显示权重
+        boolean flag = false;
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             //交易价格
             DataSetUseField tradingPrice = dataSetUseFieldService.getCacheSetUseFieldByFieldName(MethodCompareFieldEnum.TRADING_PRICE.getKey());
@@ -744,22 +746,62 @@ public class GenerateMdCompareService {
             }
             builder.endRow();
 
+            //单价内涵修正系数
+            builder.insertCell();
+            builder.write("单价内涵修正系数");
+            DataSetUseField priceConnotation = dataSetUseFieldService.getCacheSetUseFieldByFieldName(MethodCompareFieldEnum.PRICE_CONNOTATION.getKey());
+            for (MdMarketCompareItem item : caseItemList) {
+                builder.insertCell();
+                List<MarketCompareItemDto> dtos = JSON.parseArray(item.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto caseItem : dtos) {
+                    if (priceConnotation.getFieldName().equals(caseItem.getName())) {
+                        if (caseItem.getScore() != null) {
+                            builder.write(String.format("%.4f", caseItem.getRatio()));
+                        } else {
+                            builder.write("");
+                        }
+                    }
+                }
+            }
+            builder.endRow();
+
             //区位状况修正系数
             builder.insertCell();
             builder.write("区位状况修正系数");
-            this.getPartCoefficient("location.condition", caseItemList, builder);
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                if (caseItem.getLocationFactorRatio() != null) {
+                    builder.write(String.format("%.4f", caseItem.getLocationFactorRatio()));
+                }else{
+                    builder.write(String.format("%.4f", new BigDecimal("1")));
+                }
+            }
             builder.endRow();
 
             //实物状况修正系数
             builder.insertCell();
             builder.write("实物状况修正系数");
-            this.getPartCoefficient("entity.condition", caseItemList, builder);
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                if (caseItem.getEntityFactorRatio() != null) {
+                    builder.write(String.format("%.4f", caseItem.getEntityFactorRatio()));
+                }else{
+                    builder.write(String.format("%.4f", new BigDecimal("1")));
+                }
+            }
             builder.endRow();
 
             //权益状况修正系数
             builder.insertCell();
             builder.write("权益状况修正系数");
-            this.getPartCoefficient("equity.condition", caseItemList, builder);
+            for (MdMarketCompareItem caseItem : caseItemList) {
+                builder.insertCell();
+                if (caseItem.getEquityFactorRatio() != null) {
+                    builder.write(String.format("%.4f", caseItem.getEquityFactorRatio()));
+                }else{
+                    builder.write(String.format("%.4f", new BigDecimal("1")));
+                }
+            }
             builder.endRow();
 
             //比准价格
@@ -776,7 +818,6 @@ public class GenerateMdCompareService {
             builder.endRow();
 
             //权重
-            boolean flag = false;
             for (MdMarketCompareItem caseItem : caseItemList) {
                 if (StringUtils.isNotBlank(caseItem.getWeight())) {
                     flag = true;
@@ -802,7 +843,11 @@ public class GenerateMdCompareService {
         }
         //加权平均价
         builder.insertCell();
-        builder.write("加权平均价");
+        if(flag){
+            builder.write("加权平均价");
+        }else{
+            builder.write("算数平均价");
+        }
         builder.insertCell();
         if (mdMarketCompareItem.getAveragePrice() != null) {
             builder.write(mdMarketCompareItem.getAveragePrice().toString());

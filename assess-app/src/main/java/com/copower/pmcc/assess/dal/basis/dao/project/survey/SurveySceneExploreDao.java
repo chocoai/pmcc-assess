@@ -53,4 +53,16 @@ public class SurveySceneExploreDao {
         return null;
     }
 
+    public SurveySceneExplore getSurveySceneExploreById(Integer id) {
+        return surveySceneExploreMapper.selectByPrimaryKey(id);
+    }
+
+    //获取未完成数据
+    public List<SurveySceneExplore> getUnfinishedData() {
+        SurveySceneExploreExample example = new SurveySceneExploreExample();
+        SurveySceneExploreExample.Criteria criteria = example.createCriteria();
+        criteria.andBatchApplyIdIsNotNull();
+        criteria.andPlanDetailsIdIsNull();
+        return surveySceneExploreMapper.selectByExample(example);
+    }
 }

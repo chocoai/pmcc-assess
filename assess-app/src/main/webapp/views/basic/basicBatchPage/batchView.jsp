@@ -338,8 +338,9 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
             type: "post",
-            dataType: "json",
-            data: formData,
+            data: {
+                formData:JSON.stringify(formData),
+            },
             success: function (result) {
                 if (result.ret) {
                     console.log("id:" + result.data.id + "pid:" + result.data.pid);
@@ -369,7 +370,9 @@
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
             type: "post",
             dataType: "json",
-            data: formData,
+            data: {
+                formData:JSON.stringify(formData),
+            },
             success: function (result) {
                 if (result.ret) {
                     console.log("id:" + result.data.id + "pid:" + result.data.pid);

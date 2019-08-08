@@ -26,9 +26,19 @@
                         <div class="form-group">
                             <div>
                                 <label class="col-sm-1 control-label">
+                                    内容
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="50"
+                                           placeholder="内容" id="queryContent" name="queryContent"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
                                     标题
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50"
                                            placeholder="标题" id="queryTitle" name="queryTitle"
                                            class="form-control">
@@ -38,7 +48,7 @@
                                 <label class="col-sm-1 control-label">
                                     网站
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <select class="form-control" required id="queryWebName">
                                         <option value="">--请选择--</option>
                                         <c:if test="${not empty webTypes}">
@@ -49,10 +59,12 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">省
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <select id="province" name="province"
                                             class="form-control search-select select2" required="required">
                                     </select>
@@ -61,29 +73,29 @@
                             <div>
                                 <label class="col-sm-1 control-label">市
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <select id="city" name="city" class="form-control search-select select2"
                                             required="required">
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    内容
+                                    类型
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="内容" id="queryContent" name="queryContent"
+                                           placeholder="类型" id="queryType" name="queryType"
                                            class="form-control">
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group ">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     开始日期
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input placeholder="开始日期" id="queryStartTime" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate roomTime">
                                 </div>
@@ -92,33 +104,16 @@
                                 <label class="col-sm-1 control-label">
                                     结束日期
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input placeholder="结束日期" id="queryEndTime" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate roomTime">
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group ">
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    类型
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="类型" id="queryType" name="queryType"
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <button type="button" class="btn btn-primary"
                                         onclick="dataBuilder.prototype.loadDataDicList()">
                                     查询
                                 </button>
-                                <button type="button" class="btn btn-primary"
-                                        onclick="dataBuilder.prototype.getOldData()">
-                                    获取两年前数据
-                                </button>
-
                             </div>
                         </div>
                     </form>
@@ -139,12 +134,10 @@
     $(function () {
         dataBuilder.prototype.loadDataDicList();
         AssessCommon.initAreaInfo({
+            useDefaultText: false,
             provinceTarget: $("#province"),
             cityTarget: $("#city"),
-            districtTarget: $("#district"),
-            provinceValue: '',
-            cityValue: '',
-            districtValue: ''
+            districtTarget: $("#district")
         })
     });
     var dataBuilder = function () {

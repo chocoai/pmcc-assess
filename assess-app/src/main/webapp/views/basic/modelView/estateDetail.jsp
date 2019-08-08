@@ -3,8 +3,8 @@
 
 
 
-<!-- 非工业交通仓储 -->
-<c:if test="${basicApply.type == 0}">
+<!-- 非工业交通仓储 或 在建工程-->
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/examine/residence/detail/estate.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/residence/detail/estateLandState.jsp" %>
 </c:if>
@@ -28,8 +28,8 @@
 <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingEnvironment.jsp" %>
 <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingFinance.jsp" %>
 
-<!-- 非工业交通仓储 -->
-<c:if test="${basicApply.type == 0}">
+<!-- 非工业交通仓储 或 在建工程-->
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingEducation.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingRecreation.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingRestaurant.jsp" %>
@@ -45,8 +45,8 @@
 <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingMainConversion.jsp" %>
 
 
-<!-- 非工业交通仓储 -->
-<c:if test="${basicApply.type == 0}">
+<!-- 非工业交通仓储 或 在建工程-->
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/examine/industry/detail/estateSupplyWater.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/industry/detail/estateSupplyDrainWater.jsp" %>
     <%@include file="/views/project/stageSurvey/examine/industry/detail/estateSupplyPower.jsp" %>

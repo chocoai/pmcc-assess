@@ -67,6 +67,7 @@ AssessDBKey.DeclareBuildingPermit = "tb_declare_building_permit";
 AssessDBKey.MdCost = "tb_md_cost";
 AssessDBKey.MdDevelopment = "tb_md_development";
 
+AssessDBKey.ProjectChangeLog = "tb_project_change_log";
 /**
  * 项目分类key
  */

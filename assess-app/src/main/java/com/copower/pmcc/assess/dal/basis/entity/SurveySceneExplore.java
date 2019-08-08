@@ -25,6 +25,8 @@ public class SurveySceneExplore {
 
     private Date gmtModified;
 
+    private Integer batchApplyId;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class SurveySceneExplore {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getBatchApplyId() {
+        return batchApplyId;
+    }
+
+    public void setBatchApplyId(Integer batchApplyId) {
+        this.batchApplyId = batchApplyId;
     }
 }

@@ -264,21 +264,6 @@ public class BasicApplyBatchService {
     public void saveDraft(String formData) throws Exception {
         String jsonContent = null;
         JSONObject jsonObject = JSON.parseObject(formData);
-//        jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_APPLY.getVar());
-//        BasicApply basicApply = JSONObject.parseObject(jsonContent, BasicApply.class);
-//        //检查是否标注了楼盘
-//        if (!isDraft) {
-//            taggingValid(basicApply);
-//        }
-//
-//        if (basicApply.getId() == null || basicApply.getId() <= 0) {
-//            basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
-//            basicApply.setDraftFlag(isDraft);
-//            basicApply.setCreator(commonService.thisUserAccount());
-//            basicApplyService.saveBasicApply(basicApply);
-//        } else {
-//            basicApply = basicApplyService.getByBasicApplyId(basicApply.getId());
-//        }
 
         //楼盘过程数据
         BasicEstate basicEstate = null;
@@ -325,6 +310,20 @@ public class BasicApplyBatchService {
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
                 unitDetail.setName(basicUnit.getUnitNumber());
                 basicApplyBatchDetailDao.updateInfo(unitDetail);
+                //在建工程交易信息
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
+                BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
+                if (basicTrading != null) {
+                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
+                }
+                //在建工程完损度
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
+                List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonContent, BasicHouseDamagedDegree.class);
+                if (!org.springframework.util.CollectionUtils.isEmpty(damagedDegreeList)) {
+                    for (BasicHouseDamagedDegree degree : damagedDegreeList) {
+                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree);
+                    }
+                }
             }
         }
 
@@ -342,7 +341,8 @@ public class BasicApplyBatchService {
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
                 BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
                 if (basicTrading != null) {
-                    basicTrading.setId(null);
+                    BasicHouseTrading houseTradingOld = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+                    basicTrading.setId(houseTradingOld.getId());
                     basicTrading.setHouseId(house);
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
                 }

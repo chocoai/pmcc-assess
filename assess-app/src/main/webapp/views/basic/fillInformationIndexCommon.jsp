@@ -95,6 +95,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/unit/projectTaskCIPHouse.js"></script>
 <script type="text/javascript">
     $(function () {
 

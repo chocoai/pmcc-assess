@@ -42,7 +42,7 @@
     };
 
     estateCommon.getEstateId = function () {
-        var id = estateCommon.estateForm.find('[name=id]').val();
+        var id = estateCommon.estateForm.find('[name=id]').val()!=null?estateCommon.estateForm.find('[name=id]').val():estateCommon.tableId;
         if (id) {
             return id;
         }
