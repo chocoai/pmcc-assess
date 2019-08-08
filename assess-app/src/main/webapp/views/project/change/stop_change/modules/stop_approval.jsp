@@ -51,6 +51,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                附件
+                            </label>
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                <div id="_uploadFile"></div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -67,5 +77,16 @@
         console.log(json);
         var projectInfo = JSON.parse(json);
         projectStopApplyObj.projectStopForm.initForm(projectInfo);
+        //附件显示
+        FileUtils.getFileShows({
+            target: "uploadFile",
+            formData: {
+                tableName: AssessDBKey.ProjectChangeLog,
+                tableId: '${costsProjectChangeLog.id}'
+            },
+            editFlag: true,
+            deleteFlag: false
+        })
+
     });
 </script>

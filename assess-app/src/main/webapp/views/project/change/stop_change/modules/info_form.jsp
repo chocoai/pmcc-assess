@@ -41,7 +41,8 @@
                                 关闭原因
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="changeReason" name="changeReason" rows="4" required data-rule-maxlength="255" placeholder=""></textarea>
+                                <textarea class="form-control" id="changeReason" name="changeReason" rows="4" required
+                                          data-rule-maxlength="255" placeholder=""></textarea>
                             </div>
                         </div>
                     </div>
@@ -51,7 +52,19 @@
                                 可能影响
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="influence" name="influence" rows="4" required data-rule-maxlength="255" placeholder=""></textarea>
+                                <textarea class="form-control" id="influence" name="influence" rows="4" required
+                                          data-rule-maxlength="255" placeholder=""></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                附件
+                            </label>
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                <input id="uploadFile" type="file" multiple="false">
+                                <div id="_uploadFile"></div>
                             </div>
                         </div>
                     </div>
@@ -138,7 +151,7 @@
         //var json = '${el:toJsonString(projectInfo)}';
         var newRecord = '${costsProjectChangeLog.newRecord}';
 
-        if(newRecord != ""){
+        if (newRecord != "") {
             //变更的信息
             var projectInfo = JSON.parse(newRecord);
             console.log(projectInfo);
@@ -147,10 +160,31 @@
             projectStopApplyObj.projectStopForm.find('[name="id"]').val('${costsProjectChangeLog.id}');
         }
 
+        //附件
+        FileUtils.uploadFiles({
+            target: "uploadFile",
+            formData: {
+                tableName: AssessDBKey.ProjectChangeLog,
+                tableId: '${empty costsProjectChangeLog.id?0:costsProjectChangeLog.id}'
+            },
+            editFlag: true,
+            deleteFlag: true
+        });
+        FileUtils.getFileShows({
+            target: "uploadFile",
+            formData: {
+                tableName: AssessDBKey.ProjectChangeLog,
+                tableId: '${empty costsProjectChangeLog.id?0:costsProjectChangeLog.id}'
+            },
+            editFlag: true,
+            deleteFlag: true
+        })
+
+
     });
 
     //format oldRecord的date类型数据
-    projectStopApplyObj.formatDate = function(projectInfo) {
+    projectStopApplyObj.formatDate = function (projectInfo) {
         projectInfo.serviceStart = projectStopApplyObj.formatDates(projectInfo.serviceStart);
         projectInfo.serviceEnd = projectStopApplyObj.formatDates(projectInfo.serviceEnd);
         projectInfo.created = projectStopApplyObj.formatDateTime(projectInfo.created);
@@ -160,7 +194,7 @@
     }
 
     //日期
-    projectStopApplyObj.formatDates = function(inputTime) {
+    projectStopApplyObj.formatDates = function (inputTime) {
         var date = new Date(inputTime);
         var y = date.getFullYear();
         var m = date.getMonth() + 1;
@@ -171,7 +205,7 @@
     }
 
     //时间
-    projectStopApplyObj.formatDateTime = function(inputTime) {
+    projectStopApplyObj.formatDateTime = function (inputTime) {
         var date = new Date(inputTime);
         var y = date.getFullYear();
         var m = date.getMonth() + 1;

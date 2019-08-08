@@ -26,12 +26,15 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -68,6 +71,10 @@ public class ProjectStateChangeService extends BaseService {
     private InitiateUnitInformationService unitInformationService;
     @Autowired
     private InitiatePossessorService possessorService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
+    private ErpRpcAttachmentService erpRpcAttachmentService;
 
     /**
      * 通过项目id和变更类型获取数据
@@ -138,6 +145,15 @@ public class ProjectStateChangeService extends BaseService {
             costsProjectChangeLog.setCreator(commonService.thisUserAccount());
             costsProjectChangeLog.setStatus(ProcessStatusEnum.RUN.getValue());
             projectChangeLogMapper.addProjectChangeLog(costsProjectChangeLog);
+            //更新附件id
+            SysAttachmentDto queryParam = new SysAttachmentDto();
+            queryParam.setTableName(FormatUtils.entityNameConvertToTableName(ProjectChangeLog.class));
+            queryParam.setTableId(0);
+            queryParam.setCreater(commonService.thisUserAccount());
+            queryParam.setAppKey(applicationConstant.getAppKey());
+            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+            sysAttachmentDto.setTableId(costsProjectChangeLog.getId());
+            erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
         } catch (BusinessException e) {
             throw new BusinessException(e.getMessage());
         }
