@@ -18,7 +18,7 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-1 control-label">
-                        报告附件<span class="symbol required"></span>
+                        附件<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <input id="report_file" name="report_file" type="file" multiple="false">

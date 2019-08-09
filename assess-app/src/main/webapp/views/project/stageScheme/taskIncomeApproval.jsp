@@ -18,7 +18,7 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-1 control-label">
-                        报告附件
+                        附件
                     </label>
                     <div class="col-sm-3">
                         <div id="_report_file"></div>
