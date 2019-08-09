@@ -28,6 +28,16 @@ public class BaseService {
     }
 
     public void writeExceptionInfo(Exception e,String errorName){
+        writeExceptionInfo(log,e,errorName) ;
+    }
+
+    /**
+     * 编写一个日志书写模式
+     * @param logger
+     * @param e
+     * @param errorName
+     */
+    public void writeExceptionInfo(Logger logger,Exception e,String errorName){
         StringBuilder stringBuilder = new StringBuilder(8);
         stringBuilder.append("{") ;
         stringBuilder.append("时间:").append(DateUtils.format(new Date(), DateUtils.DATETIME_PATTERN)).append("操作人,").append(commonService.thisUserAccount());
@@ -44,7 +54,7 @@ public class BaseService {
             stringBuilder.append("]");
         }
         stringBuilder.append("}") ;
-        log.debug(stringBuilder.toString());
-        log.error(stringBuilder.toString(), e);
+        logger.debug(stringBuilder.toString());
+        logger.error(stringBuilder.toString(), e);
     }
 }
