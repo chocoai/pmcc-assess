@@ -60,6 +60,7 @@ public class UReportService {
         String queryEndTime = "";
         Integer pageIndex = objectToInteger(maps.get("_pageIndex"));
         Integer fixRows = objectToInteger(maps.get("_fixRows"));
+        Integer reportType = null;
         if (maps.get("queryProjectName") != null) {
             queryProjectName = (String) maps.get("queryProjectName");
         }
@@ -78,6 +79,9 @@ public class UReportService {
         if (maps.get("queryEndTime") != null) {
             queryEndTime = (String) maps.get("queryEndTime");
         }
+        if (maps.get("queryType") != null) {
+            reportType = objectToInteger(maps.get("queryType"));
+        }
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
                 " E.number_value,E.gmt_created" +
@@ -90,7 +94,7 @@ public class UReportService {
             sql.append(String.format(" AND A.project_name LIKE '%s%s%s'", "%", queryProjectName, "%"));
         }
         if (StringUtil.isNotEmpty(queryConsignorName)) {
-            sql.append(String.format(" AND C.cs_entrustment_unit LIKE '%s%s%s'", "%", queryConsignorName, "%"));
+            sql.append(String.format(" AND (C.cs_entrustment_unit LIKE '%s%s%s' OR C.cs_name LIKE '%s%s%s')", "%", queryConsignorName, "%", "%", queryConsignorName, "%"));
         }
         if (StringUtil.isNotEmpty(queryReportUseUnitName)) {
             sql.append(String.format(" AND D.u_use_unit = %s", queryReportUseUnitName));
@@ -104,10 +108,13 @@ public class UReportService {
         if (StringUtil.isNotEmpty(queryEndTime)) {
             sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
         }
+        if (reportType != null && !reportType.equals(0)) {
+            sql.append(String.format(" AND E.report_type = '%s'", reportType));
+        }
         List<UProjectFinanceVo> list = Lists.newArrayList();
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
         List<Map> mapList = ddlMySqlAssist.customTableSelect(sql.toString());
-        if(CollectionUtils.isNotEmpty(mapList)){
+        if (CollectionUtils.isNotEmpty(mapList)) {
             List<Integer> publicProjectIds = LangUtils.transform(mapList, o -> {
                 String idString = objectToString(o.get("public_project_id"));
                 if (StringUtils.isNotEmpty(idString)) return Integer.valueOf(idString);
@@ -133,7 +140,11 @@ public class UReportService {
                     userAccountManager = sysUser.getUserName();
                 }
                 vo.setProjectManagerName(userAccountManager);
-                vo.setConsignorName(objectToString(map.get("cs_entrustment_unit")));
+                String consignorName = objectToString(map.get("cs_entrustment_unit"));
+                if (StringUtil.isEmpty(consignorName)) {
+                    consignorName = objectToString(map.get("cs_name"));
+                }
+                vo.setConsignorName(consignorName);
                 String useUnit = objectToString(map.get("u_use_unit"));
                 if (StringUtil.isNotEmpty(useUnit)) {
                     CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(useUnit));
@@ -165,7 +176,7 @@ public class UReportService {
                 list.add(vo);
             }
         }
-        return new BeanPageDataSet(list,page.getPages());
+        return new BeanPageDataSet(list, page.getPages());
     }
 
     private String objectToString(Object obj) {

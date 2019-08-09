@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.controller.base;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.ReportProviderFileDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcReportProviderFileService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -25,6 +28,8 @@ public class ReportDesignerController {
     private ApplicationConstant applicationConstant;
     @Autowired
     private ErpRpcReportProviderFileService erpFileReportProvider;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
 
     @GetMapping(value = "/index")
@@ -74,6 +79,8 @@ public class ReportDesignerController {
     @GetMapping(value = "/projectFinance",name = "项目收款报表页面")
     public ModelAndView projectFinance() {
         ModelAndView modelAndView = commonService.baseView("/reportManage/projectFinance");
+        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
+        modelAndView.addObject("typeList", typeList);
         return modelAndView;
     }
 }
