@@ -7,16 +7,20 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -41,6 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,6 +78,10 @@ public class DeclareRealtyRealEstateCertService {
     private DeclareRecordExtendService declareRecordExtendService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private BaseService baseService;
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -116,7 +125,7 @@ public class DeclareRealtyRealEstateCertService {
                     continue;
                 }
                 oo = new DeclareRealtyRealEstateCert();
-                BeanUtils.copyProperties(declareRealtyRealEstateCert,oo);
+                BeanUtils.copyProperties(declareRealtyRealEstateCert, oo);
                 oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 oo.setId(null);
                 //excel处理
@@ -149,7 +158,53 @@ public class DeclareRealtyRealEstateCertService {
             return id;
         } else {
             declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
+            updateDeclareRealtyRealEstateCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyRealEstateCert);
             return null;
+        }
+    }
+
+    private void updateDeclareRealtyRealEstateCertAndUpdateDeclareRecordOrJudgeObject(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
+        if (declareRealtyRealEstateCert == null) {
+            return;
+        }
+        if (declareRealtyRealEstateCert.getId() == null) {
+            return;
+        }
+        if (declareRealtyRealEstateCert.getId() == 0) {
+            return;
+        }
+        DeclareRealtyRealEstateCert oo = getDeclareRealtyRealEstateCertById(declareRealtyRealEstateCert.getId()) ;
+        if (oo == null){
+            return;
+        }
+        declareRealtyRealEstateCert.setBisRecord(oo.getBisRecord());
+        declareRealtyRealEstateCert.setPlanDetailsId(oo.getPlanDetailsId());
+        if (declareRealtyRealEstateCert.getPlanDetailsId() == null) {
+            return;
+        }
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(declareRealtyRealEstateCert.getPlanDetailsId());
+        if (projectPlanDetails == null) {
+            return;
+        }
+        if (declareRealtyRealEstateCert.getBisRecord() == null) {
+            return;
+        }
+        if (!declareRealtyRealEstateCert.getBisRecord()) {
+            return;
+        }
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordListByDataTableId(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRealtyRealEstateCert.getId(), projectPlanDetails.getProjectId());
+        //当明确是更新的时候确找不到申报id那么则不再更新这条数据
+        if (CollectionUtils.isEmpty(declareRecordList)) {
+            return;
+        }
+        DeclareRecord declareRecord = new DeclareRecord();
+        setDeclareRealtyRealEstateCertForDeclareRecordProperties(declareRealtyRealEstateCert, declareRecord, projectPlanDetails.getProjectId());
+        declareRecord.setId(declareRecordList.stream().findFirst().get().getId());
+        try {
+            declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            declareRecordService.reStartDeclareApplyByDeclareRecordId(Arrays.asList(declareRecord.getId()), projectPlanDetails.getProjectId());
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
         }
     }
 
@@ -179,8 +234,8 @@ public class DeclareRealtyRealEstateCertService {
     }
 
 
-    public boolean deleteDeclareRealtyRealEstateCertById(Integer id){
-        return declareRealtyRealEstateCertDao.deleteDeclareRealtyRealEstateCertById(id) ;
+    public boolean deleteDeclareRealtyRealEstateCertById(Integer id) {
+        return declareRealtyRealEstateCertDao.deleteDeclareRealtyRealEstateCertById(id);
     }
 
     public DeclareRealtyRealEstateCertVo getDeclareRealtyRealEstateCertVo(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
@@ -199,10 +254,10 @@ public class DeclareRealtyRealEstateCertService {
         if (declareRealtyRealEstateCert.getUseStartDate() != null) {
             vo.setUseStartDateFmt(sdf.format(declareRealtyRealEstateCert.getUseStartDate()));
         }
-        if(declareRealtyRealEstateCert.getHouseCertUseCategory()!=null){
+        if (declareRealtyRealEstateCert.getHouseCertUseCategory() != null) {
             vo.setHouseCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));
         }
-        if(declareRealtyRealEstateCert.getLandCertUseCategory()!=null){
+        if (declareRealtyRealEstateCert.getLandCertUseCategory() != null) {
             vo.setLandCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory()));
         }
         if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getProvince())) {
@@ -262,16 +317,10 @@ public class DeclareRealtyRealEstateCertService {
 
     /**
      * 写入申报数据
+     *
      * @param declareApply
      */
     public void eventWriteDeclareApply(DeclareApply declareApply) {
-        //更新 放在之前
-        eventWriteDeclareApply(declareApply,true) ;
-        //写入新添加得申报数据
-        eventWriteDeclareApply(declareApply,false) ;
-    }
-
-    private void eventWriteDeclareApply(DeclareApply declareApply,boolean bisRecord){
         DeclareRecord declareRecord = null;
         if (declareApply == null) {
             return;
@@ -285,90 +334,79 @@ public class DeclareRealtyRealEstateCertService {
             }
         });
         boolean typeFlag = false;
-        if (CollectionUtils.isNotEmpty(baseProjectClassifyList)){
+        if (CollectionUtils.isNotEmpty(baseProjectClassifyList)) {
             typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(), projectInfo.getProjectCategoryId()));
         }
         DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
         query.setEnable(DeclareTypeEnum.MasterData.getKey());
-        query.setBisRecord(bisRecord);
+        query.setBisRecord(false);
         List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
-        if (CollectionUtils.isEmpty(lists)){
+        if (CollectionUtils.isEmpty(lists)) {
             return;
         }
-        List<Integer> declareRecordIdList = Lists.newArrayList();
-        for (DeclareRealtyRealEstateCert oo : lists) {
+        for (DeclareRealtyRealEstateCert declareRealtyRealEstateCert : lists) {
             declareRecord = new DeclareRecord();
-            BeanUtils.copyProperties(oo, declareRecord);
-            declareRecord.setId(null);
-            declareRecord.setProjectId(declareApply.getProjectId());
-            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class));
-            declareRecord.setDataTableId(oo.getId());
-            if (bisRecord){
-                List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordListByDataTableId(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class) ,oo.getId(),declareApply.getProjectId()) ;
-                //当明确是更新的时候确找不到申报id那么则不再更新这条数据
-                if (CollectionUtils.isEmpty(declareRecordList)){
-                    continue;
-                }
-                declareRecord.setId(declareRecordList.stream().findFirst().get().getId());
-                declareRecordIdList.add(declareRecord.getId()) ;
-            }
-            declareRecord.setName(oo.getCertName());
-            declareRecord.setOwnership(oo.getOwnership());
-            declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
-            declareRecord.setRegistrationDate(oo.getRegistrationDate());
-            declareRecord.setSeat(oo.getBeLocated());
-            declareRecord.setStreetNumber(oo.getStreetNumber());
-            declareRecord.setAttachedNumber(oo.getAttachedNumber());
-            declareRecord.setBuildingNumber(oo.getBuildingNumber());
-            declareRecord.setUnit(oo.getUnit());
-            declareRecord.setFloor(oo.getFloor());
-            declareRecord.setRoomNumber(oo.getRoomNumber());
-            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getHouseCertUseCategory()));
-            declareRecord.setFloorArea(oo.getEvidenceArea());
-            declareRecord.setHousingStructure(oo.getHousingStructure());
-            declareRecord.setNature(baseDataDicService.getNameById(oo.getNature()));
-            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getLandCertUseCategory()));
-            declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
-            declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
-            declareRecord.setLandUseEndDate(oo.getUseEndDate());
-            declareRecord.setLandUseRightArea(oo.getUseRightArea());
+            setDeclareRealtyRealEstateCertForDeclareRecordProperties(declareRealtyRealEstateCert, declareRecord, declareApply.getProjectId());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
-            if (oo.getLandCertGetQuestion() != null) {
-                String name = baseDataDicService.getNameById(oo.getLandCertGetQuestion());
-                if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_YES_NAME)){
-                    declareRecord.setHasCert(true);
-                    declareRecord.setDataFromType("不动产证");
-                }
-                if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_NO_NAME)){
-                    declareRecord.setHasCert(false);
-                    declareRecord.setDataFromType(oo.getCertName());
-                }
-            }
-            if (typeFlag){
+            if (typeFlag) {
                 declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_TRANSACTION).getId().toString());
             }
             try {
-                int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord) ;
+                int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                 DeclareRecordExtend declareRecordExtend = new DeclareRecordExtend();
                 declareRecordExtend.setCreator(commonService.thisUserAccount());
-                declareRecordExtend.setRegistrationAuthority(oo.getRegistrationAuthority());
+                declareRecordExtend.setRegistrationAuthority(declareRealtyRealEstateCert.getRegistrationAuthority());
                 declareRecordExtend.setDeclareId(declareId);
-                declareRecordExtendService.addDeclareRecord(declareRecordExtend) ;
-                if (!bisRecord){
-                    oo.setBisRecord(true);
-                    declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(oo);
-                }
+                declareRecordExtendService.addDeclareRecord(declareRecordExtend);
+                declareRealtyRealEstateCert.setBisRecord(true);
+                declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             } catch (Exception e1) {
-                logger.error("写入失败!", e1);
+                baseService.writeExceptionInfo(e1,"申报");
             }
-        }
-        if (bisRecord){
-            declareRecordService.reStartDeclareApplyByDeclareRecordId(declareRecordIdList,declareApply.getProjectId());
         }
     }
 
+    private void setDeclareRealtyRealEstateCertForDeclareRecordProperties(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, DeclareRecord declareRecord, Integer projectId) {
+        BeanUtils.copyProperties(declareRealtyRealEstateCert, declareRecord);
+        declareRecord.setId(null);
+        declareRecord.setProjectId(projectId);
+        declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class));
+        declareRecord.setDataTableId(declareRealtyRealEstateCert.getId());
+        declareRecord.setName(declareRealtyRealEstateCert.getCertName());
+        declareRecord.setOwnership(declareRealtyRealEstateCert.getOwnership());
+        declareRecord.setPublicSituation(baseDataDicService.getNameById(declareRealtyRealEstateCert.getPublicSituation()));
+        declareRecord.setRegistrationDate(declareRealtyRealEstateCert.getRegistrationDate());
+        declareRecord.setSeat(declareRealtyRealEstateCert.getBeLocated());
+        declareRecord.setStreetNumber(declareRealtyRealEstateCert.getStreetNumber());
+        declareRecord.setAttachedNumber(declareRealtyRealEstateCert.getAttachedNumber());
+        declareRecord.setBuildingNumber(declareRealtyRealEstateCert.getBuildingNumber());
+        declareRecord.setUnit(declareRealtyRealEstateCert.getUnit());
+        declareRecord.setFloor(declareRealtyRealEstateCert.getFloor());
+        declareRecord.setRoomNumber(declareRealtyRealEstateCert.getRoomNumber());
+        declareRecord.setCertUse(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));
+        declareRecord.setFloorArea(declareRealtyRealEstateCert.getEvidenceArea());
+        declareRecord.setHousingStructure(declareRealtyRealEstateCert.getHousingStructure());
+        declareRecord.setNature(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
+        declareRecord.setLandCertUse(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory()));
+        declareRecord.setLandRightType(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightType()));//权利类型
+        declareRecord.setLandRightNature(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightNature()));//权利性质
+        declareRecord.setLandUseEndDate(declareRealtyRealEstateCert.getUseEndDate());
+        declareRecord.setLandUseRightArea(declareRealtyRealEstateCert.getUseRightArea());
+
+        if (declareRealtyRealEstateCert.getLandCertGetQuestion() != null) {
+            String name = baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertGetQuestion());
+            if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_YES_NAME)) {
+                declareRecord.setHasCert(true);
+                declareRecord.setDataFromType("不动产证");
+            }
+            if (Objects.equal(name, BaseConstant.ASSESS_CertGetQuestion_NO_NAME)) {
+                declareRecord.setHasCert(false);
+                declareRecord.setDataFromType(declareRealtyRealEstateCert.getCertName());
+            }
+        }
+    }
 
 }

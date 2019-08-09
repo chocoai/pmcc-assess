@@ -25,6 +25,8 @@ public class GenerateReportInfo {
 
     private String processInsId;
 
+    private Integer projectCategoryId;
+
     private String status;
 
     private String creator;
@@ -119,6 +121,14 @@ public class GenerateReportInfo {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public Integer getProjectCategoryId() {
+        return projectCategoryId;
+    }
+
+    public void setProjectCategoryId(Integer projectCategoryId) {
+        this.projectCategoryId = projectCategoryId;
     }
 
     public String getStatus() {

@@ -445,37 +445,38 @@ public class BasicApplyBatchService {
                 }
             }
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        //楼栋
-        List<BasicApplyBatchDetail> buildingList = basicApplyBatchDetailService.getBuildingBatchDetailsByBatchId(basicApplyBatch.getId());
-        if (CollectionUtils.isNotEmpty(buildingList)) {
-            for (BasicApplyBatchDetail build : buildingList) {
-                stringBuilder.append(basicApplyBatch.getEstateName()).append(build.getName()).append("栋");
-                //获取单元
-                List<BasicApplyBatchDetail> unitDetails = basicApplyBatchDetailService.getUnitBatchDetailsByBatchId(basicApplyBatch.getId(), basicBuildingDao.getBasicBuildingById(build.getTableId()));
-                if (CollectionUtils.isNotEmpty(unitDetails)) {
-                    for (BasicApplyBatchDetail unit : unitDetails) {
-                        stringBuilder.append(unit.getName()).append("单元");
-                        //获取房屋
-                        List<BasicApplyBatchDetail> houseDetails = basicApplyBatchDetailService.getHouseBatchDetailsByBatchId(basicApplyBatch.getId(), basicUnitService.getBasicUnitById(unit.getTableId()));
-                        if (CollectionUtils.isNotEmpty(houseDetails)) {
-                            StringBuilder houseStr = new StringBuilder();
-                            for (BasicApplyBatchDetail house : houseDetails) {
-                                houseStr.append(house.getName()).append("、");
-                            }
-                            houseStr.deleteCharAt(houseStr.length() - 1).append("号");
-                            stringBuilder.append(houseStr);
-                        }
-                        stringBuilder.append("/");
-                    }
-                } else {
-                    stringBuilder.append("/");
-                }
-            }
-            vo.setFullName(stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString());
-        }else {
-            vo.setFullName(basicApplyBatch.getEstateName());
-        }
+//        StringBuilder stringBuilder = new StringBuilder();
+//        //楼栋
+//        List<BasicApplyBatchDetail> buildingList = basicApplyBatchDetailService.getBuildingBatchDetailsByBatchId(basicApplyBatch.getId());
+//        if (CollectionUtils.isNotEmpty(buildingList)) {
+//            for (BasicApplyBatchDetail build : buildingList) {
+//                stringBuilder.append(basicApplyBatch.getEstateName()).append(build.getName()).append("栋");
+//                //获取单元
+//                List<BasicApplyBatchDetail> unitDetails = basicApplyBatchDetailService.getUnitBatchDetailsByBatchId(basicApplyBatch.getId(), basicBuildingDao.getBasicBuildingById(build.getTableId()));
+//                if (CollectionUtils.isNotEmpty(unitDetails)) {
+//                    for (BasicApplyBatchDetail unit : unitDetails) {
+//                        stringBuilder.append(unit.getName()).append("单元");
+//                        //获取房屋
+//                        List<BasicApplyBatchDetail> houseDetails = basicApplyBatchDetailService.getHouseBatchDetailsByBatchId(basicApplyBatch.getId(), basicUnitService.getBasicUnitById(unit.getTableId()));
+//                        if (CollectionUtils.isNotEmpty(houseDetails)) {
+//                            StringBuilder houseStr = new StringBuilder();
+//                            for (BasicApplyBatchDetail house : houseDetails) {
+//                                houseStr.append(house.getName()).append("、");
+//                            }
+//                            houseStr.deleteCharAt(houseStr.length() - 1).append("号");
+//                            stringBuilder.append(houseStr);
+//                        }
+//                        stringBuilder.append("/");
+//                    }
+//                } else {
+//                    stringBuilder.append("/");
+//                }
+//            }
+//            vo.setFullName(stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString());
+//        }else {
+//            vo.setFullName(basicApplyBatch.getEstateName());
+//        }
+        vo.setFullName(basicApplyBatch.getEstateName());
         return vo;
     }
 

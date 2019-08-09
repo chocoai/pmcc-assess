@@ -27,13 +27,14 @@ import java.util.Map;
  */
 public class ZhaiQuanTest {
     public static void main(String[] args) throws Exception {
-        String area = "巴中";//生成报告区域
+        String area = "内江";//生成报告区域
+        final int newScale = 2;
 
-        String wordPath = "C:\\Users\\kings\\Desktop\\zhaiquan\\新客户原始报告模板定稿.doc";//报告模板文件
+        String wordPath = "D:\\zhaiquan\\新客户原始报告模板定稿.doc";//报告模板文件
 
-        String excelPath = "C:\\Users\\kings\\Desktop\\报告生成\\新客户原始报告数据-" + area + ".xlsx";//excle数据文件
+        String excelPath = "D:\\zhaiquan\\报告生成数据填写-" + area + ".xlsx";//excle数据文件
 
-        String newPath = "D:\\zhaiquan\\";//生成的报告文件输出路径
+        String newPath = "D:\\output\\";//生成的报告文件输出路径
 
         /*
         --------------------------------------------------------
@@ -204,8 +205,10 @@ public class ZhaiQuanTest {
                     case "zxfbl":
                     case "sfjdfbl":
                         BigDecimal bigDecimal = new BigDecimal(dto.getValue());
-                        bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        map.put(String.format("${%s}", dto.getKey()), bigDecimal.multiply(new BigDecimal("100")) + "%");
+//                        bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_DOWN);
+                        bigDecimal = bigDecimal.multiply(new BigDecimal(100));
+                        bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_DOWN);
+                        map.put(String.format("${%s}", dto.getKey()), bigDecimal.toString() + "%");
                         break;
                     case "bxhj":
                     case "bj":
@@ -220,7 +223,7 @@ public class ZhaiQuanTest {
                     case "xgsfhj":
                     case "bxjsr":
                         BigDecimal decimal = new BigDecimal(dto.getValue());
-                        decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        decimal = decimal.setScale(2, BigDecimal.ROUND_DOWN);
                         map.put(String.format("${%s}", dto.getKey()), decimal.toString());
                         break;
                     default:

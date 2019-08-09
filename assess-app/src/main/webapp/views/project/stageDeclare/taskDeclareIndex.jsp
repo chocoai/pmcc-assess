@@ -39,27 +39,6 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    评估面积<span class="symbol required"></span>
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessArea" class="form-control" placeholder="评估面积"
-                                           required value='${declare.assessArea}'/>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    评估金额<span class="symbol required"></span>
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessMoney" class="form-control" placeholder="评估金额"
-                                           required value='${declare.assessMoney}'/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     委托单位<span class="symbol required"></span>
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -90,7 +69,47 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    自定义<span class="symbol required"></span>
+                                    评估面积
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input name="assessArea" class="form-control" placeholder="评估面积" value='${declare.assessArea}'/>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    评估金额
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input name="assessMoney" class="form-control" placeholder="评估金额" value='${declare.assessMoney}'/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    估价委托书
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                    <div id="_project_proxy"></div>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    评估报告
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <input id="assess_report_enclosure" name="assess_report_enclosure" type="file" multiple="false">
+                                    <div id="_assess_report_enclosure"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    自定义
                                 </label>
                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <div class="btn  btn-success" onclick="appendHTML(this)"><i class="fa fa-plus"></i></div>
@@ -128,27 +147,6 @@
                                 </div>
                             </div>
                         </c:forTokens>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    估价委托书
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                    <input id="project_proxy" name="project_proxy" type="file" multiple="false">
-                                    <div id="_project_proxy"></div>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    评估报告
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                    <input id="assess_report_enclosure" name="assess_report_enclosure" type="file" multiple="false">
-                                    <div id="_assess_report_enclosure"></div>
-                                </div>
-                            </div>
-                        </div>
                     </form>
 
                 </div>
