@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseCostVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -87,6 +88,7 @@ public class GenerateMdIncomeService implements Serializable {
     private SchemeInfoService schemeInfoService;
     private DataMethodFormulaService dataMethodFormulaService;
     private GenerateCommonMethod generateCommonMethod;
+    private BaseService baseService;
 
     private final String name = "name";
     private final String ratio = "ratio";
@@ -435,8 +437,7 @@ public class GenerateMdIncomeService implements Serializable {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeDetermineRentalWay());
                 }
             } catch (Exception e) {
-                String error = e.getMessage();
-                logger.error(error, e);
+                baseService.writeExceptionInfo(e);
             }
         }
         //替换
@@ -1538,6 +1539,7 @@ public class GenerateMdIncomeService implements Serializable {
         this.schemeInfoService = SpringContextUtils.getBean(SchemeInfoService.class);
         this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
+        this.baseService = SpringContextUtils.getBean(BaseService.class);
     }
 
     private MdIncome getMdIncome() {

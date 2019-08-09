@@ -58,14 +58,19 @@ public class ZCHDemo {
 
     @org.junit.Test
     public void testC(){
-        Multimap<String,String> myMultimap = ArrayListMultimap.create();
-        myMultimap.put("Fruits", "Bannana");
-        myMultimap.put("Fruits", "Apple");
-        myMultimap.put("Fruits", "Pear");
-        myMultimap.put("Fruits", "Pear");
-        myMultimap.put("Vegetables", "Carrot");
-        Collection<String> collection = myMultimap.get("Fruits");
-        System.out.println(String.join(",",collection));
+        String s = null;
+        if (s == null){
+            try {
+                throw new Exception("");
+            } catch (Exception e) {
+                StackTraceElement[] stackTraceElements = e.getStackTrace();
+                if (stackTraceElements.length >= 1){
+                    for (StackTraceElement element:stackTraceElements){
+                        System.out.println(element);
+                    }
+                }
+            }
+        }
     }
 
 

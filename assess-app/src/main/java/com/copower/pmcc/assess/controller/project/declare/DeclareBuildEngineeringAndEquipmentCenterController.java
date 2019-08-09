@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DeclareBuildEngineeringAndEquipmentCenterController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseService baseService;
 
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
@@ -34,7 +37,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
                 declareBuildEngineeringAndEquipmentCenter = declareBuildEngineeringAndEquipmentCenterService.getDeclareBuildEngineeringAndEquipmentCenterById(id);
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            baseService.writeExceptionInfo(e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(declareBuildEngineeringAndEquipmentCenter);
@@ -46,7 +49,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
             Integer id = declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(declareBuildEngineeringAndEquipmentCenter);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
@@ -60,7 +63,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
                 return HttpResult.newErrorResult("异常");
             }
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
         }
     }
@@ -75,7 +78,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
             }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
         }
     }
@@ -86,7 +89,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
             declareBuildEngineeringAndEquipmentCenterService.deleteIds(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
         }
     }
@@ -97,7 +100,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
             declareBuildEngineeringAndEquipmentCenterService.deleteByType(type, centerId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
         }
     }

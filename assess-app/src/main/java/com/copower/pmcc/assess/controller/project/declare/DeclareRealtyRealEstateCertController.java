@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project.declare;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -31,6 +32,8 @@ public class DeclareRealtyRealEstateCertController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
+    @Autowired
+    private BaseService baseService;
 
     @ResponseBody
     @RequestMapping(value = "/getDeclareRealtyRealEstateCertById", method = {RequestMethod.GET}, name = "获取不动产维护")
@@ -41,7 +44,7 @@ public class DeclareRealtyRealEstateCertController {
                 declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(id);
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            baseService.writeExceptionInfo(e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCert));
@@ -92,7 +95,7 @@ public class DeclareRealtyRealEstateCertController {
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            baseService.writeExceptionInfo(e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return null;
@@ -106,7 +109,7 @@ public class DeclareRealtyRealEstateCertController {
             Integer id = declareRealtyRealEstateCertService.saveAndUpdateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
@@ -136,7 +139,7 @@ public class DeclareRealtyRealEstateCertController {
             }
             return HttpResult.newCorrectResult(declareRealtyRealEstateCertService.landLevels(declareRealtyRealEstateCert));
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
         }
     }
@@ -154,6 +157,7 @@ public class DeclareRealtyRealEstateCertController {
             String str = declareRealtyRealEstateCertService.importData(declareRealtyRealEstateCert,multipartFile);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }

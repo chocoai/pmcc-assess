@@ -168,7 +168,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_md_income_lease" domainObjectName="MdIncomeLease">
+        <table tableName="tb_generate_report_info" domainObjectName="GenerateReportInfo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

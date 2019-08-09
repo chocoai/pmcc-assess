@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
@@ -32,8 +33,6 @@ import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
@@ -64,8 +63,6 @@ public class GenerateReportService {
     @Autowired
     private ProjectPlanService projectPlanService;
     @Autowired
-    private BaseReportFieldService baseReportFieldService;
-    @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
     private ApplicationConstant applicationConstant;
@@ -77,7 +74,8 @@ public class GenerateReportService {
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private TaskExecutor executor;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseService baseService;
 
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         return schemeAreaGroupService.getAreaGroupList(projectId);
@@ -333,19 +331,7 @@ public class GenerateReportService {
             try {
                 handleReport(stringList.get(i), textMap, bookmarkMap, fileMap, preMap, generateBaseDataService, generateReportInfo, reportType);
             } catch (Exception e) {
-                StringBuilder stringBuilder = new StringBuilder(8);
-                stringBuilder.append("时间:").append(DateUtils.format(new Date(), DateUtils.DATETIME_PATTERN)).append("生成报告异常,").append("异常原因");
-                StackTraceElement stackTraceElement = e.getStackTrace()[0];
-                if (stackTraceElement != null){
-                    stringBuilder.append("[");
-                    stringBuilder.append("declaringClass:").append(stackTraceElement.getClassName()) ;
-                    stringBuilder.append("methodName:").append(stackTraceElement.getMethodName()) ;
-                    stringBuilder.append("fileName:").append(stackTraceElement.getFileName()) ;
-                    stringBuilder.append("lineNumber:").append(stackTraceElement.getLineNumber()) ;
-                    stringBuilder.append("]");
-                }
-                logger.debug(stringBuilder.toString());
-                logger.error(stringBuilder.toString(), e);
+                baseService.writeExceptionInfo(e,"报告生成");
             }
         }
         replaceWord(localPath, textMap, preMap, bookmarkMap, fileMap);
@@ -1081,9 +1067,7 @@ public class GenerateReportService {
                 try {
                     replaceHandleError(errorMap2, localPath);
                 } catch (Exception e) {
-                    String error = e.getMessage();
-                    logger.info(error, e);
-                    //docx 结尾的会出错
+                    baseService.writeExceptionInfo(e,"报告生成");
                 }
             }
         }

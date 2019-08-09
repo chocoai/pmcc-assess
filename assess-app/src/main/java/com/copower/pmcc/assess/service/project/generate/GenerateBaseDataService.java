@@ -25,6 +25,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -132,6 +133,7 @@ public class GenerateBaseDataService {
     private DataSetUseFieldService dataSetUseFieldService;
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     private BasicUnitHuxingService basicUnitHuxingService;
+    private BaseService baseService;
 
     /**
      * 构造器必须传入的参数
@@ -2474,7 +2476,7 @@ public class GenerateBaseDataService {
         try {
             result = dataReportAnalysisService.getReportLiquidityLittle(this.projectInfo, areaId);
         } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+            baseService.writeExceptionInfo(e1,"变现能力分析小微快贷");
         }
         return result;
     }
@@ -3128,7 +3130,7 @@ public class GenerateBaseDataService {
                         try {
                             s = generateEquityService.getLandEquity(entry.getKey(), entry.getValue());
                         } catch (Exception e) {
-                            logger.error("土地权益状况未获取到", e);
+                            baseService.writeExceptionInfo(e,"土地权益状况未获取到");
                         }
                         if (StringUtils.isNotBlank(s)) {
                             builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
@@ -3140,7 +3142,7 @@ public class GenerateBaseDataService {
                         try {
                             s = generateEquityService.getHouseEquity(entry.getValue(), projectId);
                         } catch (Exception e) {
-                            logger.error("房屋权益状况未获取到", e);
+                            baseService.writeExceptionInfo(e,"房屋权益状况未获取到");
                         }
                         if (StringUtils.isNotBlank(s)) {
                             builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
@@ -3153,7 +3155,7 @@ public class GenerateBaseDataService {
                         try {
                             s = generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId);
                         } catch (Exception e) {
-                            logger.error("土地权益状况未获取到", e);
+                            baseService.writeExceptionInfo(e,"土地权益状况未获取到");
                         }
                         if (StringUtils.isNotBlank(s)) {
                             builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
@@ -3449,6 +3451,7 @@ public class GenerateBaseDataService {
                         }
                         builder.endRow();
                     } catch (Exception e) {
+                        baseService.writeExceptionInfo(e,"估价结果一览表");
                     }
                 }
                 schemeJudgeObjectLinkedHashMap.clear();
@@ -4964,7 +4967,7 @@ public class GenerateBaseDataService {
             }
         }
         if (map.isEmpty()) return "";
-        return generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.judgeEachDescExtend(map, "", "。", false)));
+        return generateCommonMethod.judgeEachDescExtend(map, "", "。", false);
     }
 
     /**
@@ -5004,7 +5007,7 @@ public class GenerateBaseDataService {
                             builder.writeln(key);
                         }
                     } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
+                        baseService.writeExceptionInfo(e,"估价对象详细测算过程");
                     }
                 }
                 //收益法
@@ -5370,7 +5373,7 @@ public class GenerateBaseDataService {
                                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("%s%s", publicService.getUserNameByAccount(adCompanyQualificationDto.getUserAccount()), "注册证书复印件")), true);
                                 this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
                             } catch (Exception e1) {
-                                logger.error(e1.getMessage(), e1);
+                                baseService.writeExceptionInfo(e1,"注册房地产估价师注册证书复印件");
                             }
                         }
                     });
@@ -6045,6 +6048,7 @@ public class GenerateBaseDataService {
         this.declareBuildEngineeringAndEquipmentCenterService = SpringContextUtils.getBean(DeclareBuildEngineeringAndEquipmentCenterService.class);
         this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.basicUnitHuxingService = SpringContextUtils.getBean(BasicUnitHuxingService.class);
+        this.baseService = SpringContextUtils.getBean(BaseService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

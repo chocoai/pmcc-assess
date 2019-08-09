@@ -127,6 +127,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">评估类型(增加封面)</label>
+                                    <div class="col-sm-3">
+                                        <select name="projectCategoryId" class="form-control search-select select2">
+                                            <option>请选择</option>
+                                            <c:forEach items="${projectCategoryKeyValueDtoList}" var="projectCategoryKey">
+                                                <option value="${projectCategoryKey.key}">${projectCategoryKey.value}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -214,7 +227,6 @@
             async: false,
             success: function (result) {
                 if (result.ret) {
-//                    window.location.reload();
                     initFormSchemeReportGeneration({id:id} ,$(that).closest('form') ,areaGroupId) ;
                 }
             },

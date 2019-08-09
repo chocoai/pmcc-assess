@@ -40,42 +40,25 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     private InitiateConsignorService initiateConsignorService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareIndex", "", 0, "0", "");
-        DeclareApply declare = declarePublicService.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
-        if(declare == null){
-            declare = new DeclareApply();
-        }
-        modelAndView.addObject("declare",declare);
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
-        InitiateConsignorVo consignor = initiateConsignorService.getDataByProjectId(projectPlanDetails.getProjectId());
-        modelAndView.addObject("consignor", StringUtils.isEmpty(consignor.getCsEntrustmentUnit())?consignor.getCsName():consignor.getCsEntrustmentUnit());
-        List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
-        modelAndView.addObject("certificateTypes",certificateTypes);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareApproval", processInsId, boxId, taskId, agentUserAccount);
-        DeclareApply declare = declarePublicService.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
-        modelAndView.addObject("declare",declare);
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareIndex", processInsId, boxId, taskId, agentUserAccount);
-        DeclareApply declare = declarePublicService.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
-        modelAndView.addObject("declare",declare);
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
-        List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
-        modelAndView.addObject("certificateTypes",certificateTypes);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -87,10 +70,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        DeclareApply declare = declarePublicService.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
-        modelAndView.addObject("declare",declare);
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -107,5 +87,21 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         declarePublicService.editCommitTask(projectPlanDetails, processInsId, formData);
+    }
+
+
+    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        DeclareApply declare = declarePublicService.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
+        if (declare == null) {
+            declare = new DeclareApply();
+        }
+        modelAndView.addObject("declare", declare);
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
+        modelAndView.addObject(StringUtils.uncapitalize(DeclareApply.class.getSimpleName()), declare);
+        InitiateConsignorVo consignor = initiateConsignorService.getDataByProjectId(projectPlanDetails.getProjectId());
+        modelAndView.addObject("consignor", StringUtils.isEmpty(consignor.getCsEntrustmentUnit()) ? consignor.getCsName() : consignor.getCsEntrustmentUnit());
+        List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
+        modelAndView.addObject("certificateTypes", certificateTypes);
     }
 }
