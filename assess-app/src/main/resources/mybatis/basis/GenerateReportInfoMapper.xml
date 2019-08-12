@@ -13,7 +13,7 @@
     <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="VARCHAR" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
+    <result column="assess_category" property="assessCategory" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -80,7 +80,7 @@
   <sql id="Base_Column_List" >
     id, project_id, project_plan_id, qualification_type, investigations_start_date, investigations_end_date, 
     report_issuance_date, home_work_end_time, real_estate_appraiser, area_group_id, process_ins_id, 
-    project_category_id, status, creator, gmt_created, gmt_modified
+    assess_category, status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfoExample" >
     select
@@ -120,13 +120,13 @@
       investigations_start_date, investigations_end_date, 
       report_issuance_date, home_work_end_time, 
       real_estate_appraiser, area_group_id, process_ins_id, 
-      project_category_id, status, creator, 
+      assess_category, status, creator, 
       gmt_created, gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{projectPlanId,jdbcType=INTEGER}, #{qualificationType,jdbcType=VARCHAR}, 
       #{investigationsStartDate,jdbcType=TIMESTAMP}, #{investigationsEndDate,jdbcType=TIMESTAMP}, 
       #{reportIssuanceDate,jdbcType=TIMESTAMP}, #{homeWorkEndTime,jdbcType=TIMESTAMP}, 
       #{realEstateAppraiser,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{projectCategoryId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{assessCategory,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo" >
@@ -165,8 +165,8 @@
       <if test="processInsId != null" >
         process_ins_id,
       </if>
-      <if test="projectCategoryId != null" >
-        project_category_id,
+      <if test="assessCategory != null" >
+        assess_category,
       </if>
       <if test="status != null" >
         status,
@@ -212,8 +212,8 @@
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="projectCategoryId != null" >
-        #{projectCategoryId,jdbcType=INTEGER},
+      <if test="assessCategory != null" >
+        #{assessCategory,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -271,8 +271,8 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="record.projectCategoryId != null" >
-        project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
+      <if test="record.assessCategory != null" >
+        assess_category = #{record.assessCategory,jdbcType=INTEGER},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
@@ -304,7 +304,7 @@
       real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
+      assess_category = #{record.assessCategory,jdbcType=INTEGER},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -346,8 +346,8 @@
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="projectCategoryId != null" >
-        project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      <if test="assessCategory != null" >
+        assess_category = #{assessCategory,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -376,7 +376,7 @@
       real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      assess_category = #{assessCategory,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

@@ -795,63 +795,63 @@ public class GenerateReportInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdIsNull() {
-            addCriterion("project_category_id is null");
+        public Criteria andAssessCategoryIsNull() {
+            addCriterion("assess_category is null");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdIsNotNull() {
-            addCriterion("project_category_id is not null");
+        public Criteria andAssessCategoryIsNotNull() {
+            addCriterion("assess_category is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdEqualTo(Integer value) {
-            addCriterion("project_category_id =", value, "projectCategoryId");
+        public Criteria andAssessCategoryEqualTo(Integer value) {
+            addCriterion("assess_category =", value, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdNotEqualTo(Integer value) {
-            addCriterion("project_category_id <>", value, "projectCategoryId");
+        public Criteria andAssessCategoryNotEqualTo(Integer value) {
+            addCriterion("assess_category <>", value, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdGreaterThan(Integer value) {
-            addCriterion("project_category_id >", value, "projectCategoryId");
+        public Criteria andAssessCategoryGreaterThan(Integer value) {
+            addCriterion("assess_category >", value, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("project_category_id >=", value, "projectCategoryId");
+        public Criteria andAssessCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("assess_category >=", value, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdLessThan(Integer value) {
-            addCriterion("project_category_id <", value, "projectCategoryId");
+        public Criteria andAssessCategoryLessThan(Integer value) {
+            addCriterion("assess_category <", value, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdLessThanOrEqualTo(Integer value) {
-            addCriterion("project_category_id <=", value, "projectCategoryId");
+        public Criteria andAssessCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("assess_category <=", value, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdIn(List<Integer> values) {
-            addCriterion("project_category_id in", values, "projectCategoryId");
+        public Criteria andAssessCategoryIn(List<Integer> values) {
+            addCriterion("assess_category in", values, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdNotIn(List<Integer> values) {
-            addCriterion("project_category_id not in", values, "projectCategoryId");
+        public Criteria andAssessCategoryNotIn(List<Integer> values) {
+            addCriterion("assess_category not in", values, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdBetween(Integer value1, Integer value2) {
-            addCriterion("project_category_id between", value1, value2, "projectCategoryId");
+        public Criteria andAssessCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("assess_category between", value1, value2, "assessCategory");
             return (Criteria) this;
         }
 
-        public Criteria andProjectCategoryIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("project_category_id not between", value1, value2, "projectCategoryId");
+        public Criteria andAssessCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("assess_category not between", value1, value2, "assessCategory");
             return (Criteria) this;
         }
 

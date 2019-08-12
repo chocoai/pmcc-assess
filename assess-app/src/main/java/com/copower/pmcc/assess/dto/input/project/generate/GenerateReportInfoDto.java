@@ -30,6 +30,11 @@ public class GenerateReportInfoDto implements Serializable {
     private String qualificationType;
 
     private Integer areaGroupId;
+    private String processInsId;
+
+    private Integer assessCategory;
+
+    private String status;
 
     private String creator;
 
@@ -119,5 +124,29 @@ public class GenerateReportInfoDto implements Serializable {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getProcessInsId() {
+        return processInsId;
+    }
+
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId;
+    }
+
+    public Integer getAssessCategory() {
+        return assessCategory;
+    }
+
+    public void setAssessCategory(Integer assessCategory) {
+        this.assessCategory = assessCategory;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
