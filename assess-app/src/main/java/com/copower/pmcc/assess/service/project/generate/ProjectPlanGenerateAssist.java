@@ -1,15 +1,13 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
+import com.copower.pmcc.assess.common.enums.AssessTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +41,6 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private GenerateReportInfoService generateReportInfoService;
-    @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
@@ -77,13 +72,8 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         modelAndView.addObject("qualificationTypes", qualificationTypes);
         modelAndView.addObject("generationVos", generateReportInfoService.initGenerateReportInfo(projectPlan.getProjectId(),projectPlan.getId()));
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
-        //获取到类型 类别 范围
-        List<String> keys = Arrays.asList(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE,AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE) ;
-        for (String key:keys){
-            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(key);
-            if (baseProjectClassify != null){
-                keyValueDtoList.add(new KeyValueDto(baseProjectClassify.getId().toString(),baseProjectClassify.getName())) ;
-            }
+        for (AssessTypeEnum typeEnum:AssessTypeEnum.values()){
+            keyValueDtoList.add(new KeyValueDto(typeEnum.getNumber().toString(),typeEnum.getDec())) ;
         }
         modelAndView.addObject("projectCategoryKeyValueDtoList", keyValueDtoList);
     }

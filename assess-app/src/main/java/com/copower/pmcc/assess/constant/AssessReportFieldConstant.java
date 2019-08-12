@@ -14,6 +14,10 @@ public class AssessReportFieldConstant {
     public static final String INCOME_TEMPLATE = "income.template";  //收益法模板
     public static final String BASE_LAND_PRICE_TEMPLATE = "base.land.price.template";  //基准地价模板
 
+    public static final String COVER_HOUSE_TEMPLATE = "cover.house.template";  //房产评估
+    public static final String COVER_LAND_TEMPLATE = "cover.land.template";  //土地评估
+    public static final String COVER_ASSETS_TEMPLATE = "cover.assets.template";  //资产评估
+
 
     public static final String REPLACE_PRINCIPLE = "replace.principle";  //替代原则
     public static final String INCOME_RENT = "md.income.rent"; //收益法出租

@@ -76,6 +76,8 @@ public class GenerateReportService {
     private TaskExecutor executor;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private BaseReportFieldService baseReportFieldService;
 
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         return schemeAreaGroupService.getAreaGroupList(projectId);
@@ -271,7 +273,7 @@ public class GenerateReportService {
         String text = PoiUtils.getWordContent(tempDir);
         if (StringUtils.isNotEmpty(text)) {
             //取出word中表格数据
-            Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(text);
+            Matcher m = Pattern.compile(AsposeUtils.reportReplaceString).matcher(text);
             while (m.find()) {
                 stringList.add(m.group());
             }
@@ -326,6 +328,10 @@ public class GenerateReportService {
         Map<String, String> bookmarkMap = Maps.newHashMap();
         Map<String, String> fileMap = Maps.newHashMap();
         List<String> stringList = Lists.newArrayList(stringSet);
+        //评估类型(添加一个封面)
+        if (generateReportInfo.getAssessCategory() != null){
+            generateBaseDataService.handleReportCover(generateReportInfo.getAssessCategory(),localPath,baseAttachmentService,baseReportFieldService) ;
+        }
         final int threadCount = 10;
         for (int i = 0; i < stringList.size(); i++) {
             try {

@@ -9,11 +9,9 @@ import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CnNumberUtils;
 import com.copower.pmcc.assess.common.FileUtils;
+import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.*;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
+import com.copower.pmcc.assess.constant.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
@@ -31,6 +29,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
 import com.copower.pmcc.assess.service.data.*;
@@ -243,6 +242,70 @@ public class GenerateBaseDataService {
         builder.insertImage(imageFullPath, 100L, 100L);
         document.save(localPath);
         return localPath;
+    }
+
+    /**
+     * 评估类型(添加一个封面)
+     * @param type
+     * @param localPath
+     * @param baseAttachmentService
+     * @param baseReportFieldService
+     * @throws Exception
+     */
+    public void handleReportCover(Integer type, String localPath, BaseAttachmentService baseAttachmentService, BaseReportFieldService baseReportFieldService) throws Exception {
+        String key = null;
+        if (Objects.equal(type, AssessTypeEnum.ASSESS_TYPE_ENUM_ASSETS.getNumber())) {
+            key = AssessReportFieldConstant.COVER_ASSETS_TEMPLATE;
+        }
+        if (Objects.equal(type, AssessTypeEnum.ASSESS_TYPE_ENUM_LAND.getNumber())) {
+            key = AssessReportFieldConstant.COVER_LAND_TEMPLATE;
+        }
+        if (Objects.equal(type, AssessTypeEnum.ASSESS_TYPE_ENUM_HOUSE.getNumber())) {
+            key = AssessReportFieldConstant.COVER_HOUSE_TEMPLATE;
+        }
+        if (StringUtils.isEmpty(key)) {
+            return;
+        }
+        Document document = new Document(localPath);
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
+        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByFieldName(key);
+        if (baseReportField == null) {
+            return;
+        }
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(baseReportField.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportField.class));
+        if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
+            return;
+        }
+        String replacePath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
+        //处理封面的内容
+        replaceCover(replacePath);
+        //aspose 版本过低不需要这样操作
+        if (false) {
+            documentBuilder.insertBreak(BreakType.PAGE_BREAK);
+        }
+        String value = RandomStringUtils.randomNumeric(15);
+        documentBuilder.write(value);
+        IReplacingCallback callback = new IReplacingCallback() {
+            @Override
+            public int replacing(ReplacingArgs e) throws Exception {
+                DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                builder.moveTo(e.getMatchNode());
+                Document document = new Document(replacePath);
+                builder.insertDocument(document, 0);
+                return 0;
+            }
+        };
+        document.getRange().replace(Pattern.compile(value), callback, false);
+        if (PoiUtils.isWord2003(localPath)) {
+            document.save(localPath, SaveFormat.DOC);
+        }
+        if (PoiUtils.isWord2007(localPath)) {
+            document.save(localPath, SaveFormat.DOCX);
+        }
+    }
+
+    private void replaceCover(String path){
+
     }
 
 
@@ -2242,12 +2305,12 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(integerList)) {
             for (Integer id : integerList) {
                 DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
-                if (dataQualificationVo == null){
+                if (dataQualificationVo == null) {
                     continue;
                 }
-                String userAccountName = " " ;
+                String userAccountName = " ";
                 if (StringUtils.isNotBlank(dataQualificationVo.getUserAccountName())) {
-                    userAccountName = dataQualificationVo.getUserAccountName() ;
+                    userAccountName = dataQualificationVo.getUserAccountName();
                 }
                 List<String> stringList = FormatUtils.transformString2List(dataQualificationVo.getUserAccount());
                 if (CollectionUtils.isEmpty(stringList)) {
@@ -2255,14 +2318,14 @@ public class GenerateBaseDataService {
                 }
                 for (String account : stringList) {
                     List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, generateReportInfo.getQualificationType());
-                    if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)){
+                    if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)) {
                         continue;
                     }
-                    for (AdPersonalQualificationDto qualificationDto:adPersonalQualificationDtoList){
-                        if (StringUtils.isNotBlank(qualificationDto.getCertificateNo())){
-                            linkedList.add(String.format("%s%s",StringUtils.repeat(" ",5),userAccountName));
-                            linkedList.add(String.format("注册证号:%s",qualificationDto.getCertificateNo()));
-                            AsposeUtils.writeWordTitle(documentBuilder, linkedList) ;
+                    for (AdPersonalQualificationDto qualificationDto : adPersonalQualificationDtoList) {
+                        if (StringUtils.isNotBlank(qualificationDto.getCertificateNo())) {
+                            linkedList.add(String.format("%s%s", StringUtils.repeat(" ", 5), userAccountName));
+                            linkedList.add(String.format("注册证号:%s", qualificationDto.getCertificateNo()));
+                            AsposeUtils.writeWordTitle(documentBuilder, linkedList);
                             linkedList.clear();
                         }
                     }
@@ -2476,7 +2539,7 @@ public class GenerateBaseDataService {
         try {
             result = dataReportAnalysisService.getReportLiquidityLittle(this.projectInfo, areaId);
         } catch (Exception e1) {
-            baseService.writeExceptionInfo(e1,"变现能力分析小微快贷");
+            baseService.writeExceptionInfo(e1, "变现能力分析小微快贷");
         }
         return result;
     }
@@ -3130,7 +3193,7 @@ public class GenerateBaseDataService {
                         try {
                             s = generateEquityService.getLandEquity(entry.getKey(), entry.getValue());
                         } catch (Exception e) {
-                            baseService.writeExceptionInfo(e,"土地权益状况未获取到");
+                            baseService.writeExceptionInfo(e, "土地权益状况未获取到");
                         }
                         if (StringUtils.isNotBlank(s)) {
                             builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
@@ -3142,7 +3205,7 @@ public class GenerateBaseDataService {
                         try {
                             s = generateEquityService.getHouseEquity(entry.getValue(), projectId);
                         } catch (Exception e) {
-                            baseService.writeExceptionInfo(e,"房屋权益状况未获取到");
+                            baseService.writeExceptionInfo(e, "房屋权益状况未获取到");
                         }
                         if (StringUtils.isNotBlank(s)) {
                             builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
@@ -3155,7 +3218,7 @@ public class GenerateBaseDataService {
                         try {
                             s = generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId);
                         } catch (Exception e) {
-                            baseService.writeExceptionInfo(e,"土地权益状况未获取到");
+                            baseService.writeExceptionInfo(e, "土地权益状况未获取到");
                         }
                         if (StringUtils.isNotBlank(s)) {
                             builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
@@ -3451,7 +3514,7 @@ public class GenerateBaseDataService {
                         }
                         builder.endRow();
                     } catch (Exception e) {
-                        baseService.writeExceptionInfo(e,"估价结果一览表");
+                        baseService.writeExceptionInfo(e, "估价结果一览表");
                     }
                 }
                 schemeJudgeObjectLinkedHashMap.clear();
@@ -5007,7 +5070,7 @@ public class GenerateBaseDataService {
                             builder.writeln(key);
                         }
                     } catch (Exception e) {
-                        baseService.writeExceptionInfo(e,"估价对象详细测算过程");
+                        baseService.writeExceptionInfo(e, "估价对象详细测算过程");
                     }
                 }
                 //收益法
@@ -5373,7 +5436,7 @@ public class GenerateBaseDataService {
                                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("%s%s", publicService.getUserNameByAccount(adCompanyQualificationDto.getUserAccount()), "注册证书复印件")), true);
                                 this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
                             } catch (Exception e1) {
-                                baseService.writeExceptionInfo(e1,"注册房地产估价师注册证书复印件");
+                                baseService.writeExceptionInfo(e1, "注册房地产估价师注册证书复印件");
                             }
                         }
                     });
