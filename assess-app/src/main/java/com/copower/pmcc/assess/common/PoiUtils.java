@@ -8,6 +8,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -32,11 +33,12 @@ public class PoiUtils {
 
     /**
      * apache poi word 替换方式
+     *
      * @param map
      * @param path
      * @throws Exception
      */
-    public static void replaceText(Map<String,String> map,String path)throws Exception{
+    public static void replaceText(Map<String, String> map, String path) throws Exception {
         if (isWord2003(path)) {
             org.apache.poi.hwpf.HWPFDocument hwpfDocument = new org.apache.poi.hwpf.HWPFDocument(new FileInputStream(path));
             org.apache.poi.hwpf.usermodel.Range range = hwpfDocument.getRange();
@@ -105,10 +107,10 @@ public class PoiUtils {
                                         xwpfParagraphList.forEach(paragraph -> {
                                             if (StringUtils.isNotEmpty(paragraph.getText())) {
                                                 stringBuilder.append(paragraph.getText());
-                                            }else {
+                                            } else {
                                                 paragraph.getRuns().forEach(xwpfRun -> {
                                                     try {
-                                                        stringBuilder.append(xwpfRun.getText(0)) ;
+                                                        stringBuilder.append(xwpfRun.getText(0));
                                                     } catch (Exception e) {
                                                     }
                                                 });
@@ -148,6 +150,20 @@ public class PoiUtils {
         return stringBuilder.toString();
     }
 
+    public static String getWordText(String path) throws Exception {
+        String text = "";
+        FileInputStream in;
+        try {
+            in = new FileInputStream(path);
+            WordExtractor extractor = new WordExtractor(in);
+            text = extractor.getText();
+            in.close();
+        } catch (Exception e) {
+            throw e;
+        }
+        return text;
+    }
+
     /**
      * 获取word内容 ,注意的是获取的是word 当中 所有也就是其中就算是有表格同样可以获取
      *
@@ -162,7 +178,7 @@ public class PoiUtils {
         if (isWord2007(path)) {
             XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
             XWPFWordExtractor extractor = new XWPFWordExtractor(xwpfDocument);
-            stringBuilder.append(extractor.getText()) ;
+            stringBuilder.append(extractor.getText());
             List<org.apache.poi.xwpf.usermodel.XWPFTable> xwpfTableList = getWordXWPFTable(path);
             if (CollectionUtils.isNotEmpty(xwpfTableList)) {
                 xwpfTableList.forEach(table -> {
@@ -177,10 +193,10 @@ public class PoiUtils {
                                         xwpfParagraphList.forEach(paragraph -> {
                                             if (StringUtils.isNotEmpty(paragraph.getText())) {
                                                 stringBuilder.append(paragraph.getText());
-                                            }else {
+                                            } else {
                                                 paragraph.getRuns().forEach(xwpfRun -> {
                                                     try {
-                                                        stringBuilder.append(xwpfRun.getText(0)) ;
+                                                        stringBuilder.append(xwpfRun.getText(0));
                                                     } catch (Exception e) {
                                                     }
                                                 });
@@ -202,7 +218,7 @@ public class PoiUtils {
                 text = hwpfDocument.getDocumentText();
             }
             if (StringUtils.isNotEmpty(text)) {
-                stringBuilder.append(text) ;
+                stringBuilder.append(text);
             }
             List<org.apache.poi.hwpf.usermodel.Table> tableList = PoiUtils.getWordHwpfTable(path);
             if (CollectionUtils.isNotEmpty(tableList)) {

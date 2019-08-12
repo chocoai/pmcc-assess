@@ -304,8 +304,64 @@ public class GenerateBaseDataService {
         }
     }
 
-    private void replaceCover(String path){
+    private void replaceCover(String path)throws Exception{
+        Document document = new Document(path);
+        List<String> stringList = Lists.newArrayList();
+        String text = null;
+        try {
+            text = PoiUtils.getWordContent(path);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            try {
+                text = PoiUtils.getWordText(path);
+            } catch (Exception e1) {
+                baseService.writeExceptionInfo(e1);
+                try {
+                    text = PoiUtils.getWordTableContent(path);
+                } catch (Exception e2) {
+                    baseService.writeExceptionInfo(e2);
+                }
+            }
+        }
+        if (StringUtils.isNotEmpty(text)) {
+            //取出word中表格数据
+            Matcher m = Pattern.compile(AsposeUtils.reportReplaceString).matcher(text);
+            while (m.find()) {
+                stringList.add(m.group());
+            }
+        }
+        //获取普通段落
+        List<String> regexList = AsposeUtils.getRegexList(document, AsposeUtils.reportReplaceString);
+        if (CollectionUtils.isNotEmpty(regexList)) {
+            stringList.addAll(regexList);
+        }
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            //去除重复
+            List<String> strings = stringList.stream().distinct().collect(Collectors.toList());
+            stringList.clear();
+            stringList.addAll(strings);
+        }
+        //获取待替换文本的集合
+        List<String> regexS = generateCommonMethod.specialTreatment(stringList);
+        //获取所有书签集合
+        BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
+        if (bookmarkCollection.getCount() >= 1) {
+            for (int i = 0; i < bookmarkCollection.getCount(); i++) {
+                regexS.add(bookmarkCollection.get(i).getName()) ;
+            }
+        }
+        if (CollectionUtils.isEmpty(regexS)){
+            return;
+        }
+        Map<String,String> fileMap = Maps.newHashMap();
+        for (String s:regexS){
+            if (Objects.equal(BaseReportFieldEnum.ReportHouseQrCode.getName(), s)) {
 
+            }
+        }
+        if (!fileMap.isEmpty()){
+            AsposeUtils.replaceTextToFile(path, fileMap);
+        }
     }
 
 

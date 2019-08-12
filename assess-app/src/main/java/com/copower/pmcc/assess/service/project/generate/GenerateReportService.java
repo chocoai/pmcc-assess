@@ -193,15 +193,13 @@ public class GenerateReportService {
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             dir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
         }
-        if (PoiUtils.isWord2003(dir)) {
-            Document doc = new Document(dir);
-            Document clone = doc.deepClone();
-//            dir = generateCommonMethod.getLocalPath(null,"docx") ;
-//            clone.save(dir, SaveFormat.DOCX);
-        }
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
+        //评估类型(添加一个封面)
+        if (generateReportInfo.getAssessCategory() != null){
+            generateBaseDataService.handleReportCover(generateReportInfo.getAssessCategory(),dir,baseAttachmentService,baseReportFieldService) ;
+        }
         //count 计数器,防止  枚举虽然定义了，但是没有写对应的方法，因此递归设置最多的次数
         int count = 0;
         //最大递归次数 , 最好是不要过大 (ps max-count 就是递归次数)
@@ -328,10 +326,6 @@ public class GenerateReportService {
         Map<String, String> bookmarkMap = Maps.newHashMap();
         Map<String, String> fileMap = Maps.newHashMap();
         List<String> stringList = Lists.newArrayList(stringSet);
-        //评估类型(添加一个封面)
-        if (generateReportInfo.getAssessCategory() != null){
-            generateBaseDataService.handleReportCover(generateReportInfo.getAssessCategory(),localPath,baseAttachmentService,baseReportFieldService) ;
-        }
         final int threadCount = 10;
         for (int i = 0; i < stringList.size(); i++) {
             try {
