@@ -24,7 +24,7 @@
                     <div class="form-group">
                         <div>
                             <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                标题<span class="symbol required"></span>
+                                标题
                             </label>
                             <div class="col-md-3 col-sm-3 col-xs-12">
                                 <label class="form-control">${projectSubsequent.title}</label>
@@ -76,7 +76,7 @@
                 tableName: AssessDBKey.ProjectSubsequent,
                 tableId: '${projectSubsequent.id}'
             },
-            editFlag: true,
+            editFlag: false,
             deleteFlag: false
         })
 

@@ -215,6 +215,21 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h3>
+                        后续事项
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <table class="table table-bordered" id="tb_subsequentList">
+                    </table>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
                         项目日志
                     </h3>
                     <div class="clearfix"></div>
@@ -315,6 +330,7 @@
 
         projectDetails.getRuningTab().tab('show');
         projectDetails.loadDocumentSend();
+        projectDetails.loadSubsequent();
         projectDetails.loadProjectLog();
         projectDetails.loadProjectLegwork();
         projectDetails.loadProjectBill();
@@ -845,6 +861,25 @@
             });
             $("#tb_documentSendList").bootstrapTable('destroy');
             TableInit("tb_documentSendList", "${pageContext.request.contextPath}/documentSend/getDocumentSendVoList", cols, {
+                projectId: ${projectInfo.id}
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //后续事项
+        loadSubsequent: function () {
+            var cols = [];
+            cols.push({field: 'title', title: '标题'});
+            cols.push({field: 'content', title: '内容'});
+            cols.push({field: 'suggestion', title: '处理意见'});
+            $("#tb_subsequentList").bootstrapTable('destroy');
+            TableInit("tb_subsequentList", "${pageContext.request.contextPath}/projectSubsequent/getSubsequentList", cols, {
                 projectId: ${projectInfo.id}
             }, {
                 showColumns: false,
