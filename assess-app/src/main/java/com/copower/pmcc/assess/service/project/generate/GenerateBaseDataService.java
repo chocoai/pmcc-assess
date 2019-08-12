@@ -205,10 +205,7 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.baseReportTemplate.getReportType());
-        String imageDirPath = baseAttachmentService.createTempDirPath();
-        String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
-        com.copower.pmcc.erp.common.utils.FileUtils.folderMake(imageDirPath);
-        String imageFullPath = imageDirPath + File.separator + imageName;
+        String imageFullPath = generateCommonMethod.getLocalPath(RandomStringUtils.randomAscii(5),"jpg") ;
         String qrCode = null;
         if (qrcodeRecode != null) {
             qrCode = qrcodeRecode.getQrcode();
@@ -356,12 +353,36 @@ public class GenerateBaseDataService {
         Map<String,String> fileMap = Maps.newHashMap();
         for (String s:regexS){
             if (Objects.equal(BaseReportFieldEnum.ReportHouseQrCode.getName(), s)) {
-
+                fileMap.put(String.format("${%s}",s),toolHouseQrCode()) ;
             }
         }
         if (!fileMap.isEmpty()){
             AsposeUtils.replaceTextToFile(path, fileMap);
         }
+    }
+
+    /**
+     * 房产二维码
+     * @return
+     * @throws Exception
+     */
+    private String toolHouseQrCode()throws Exception{
+        String localPath = generateCommonMethod.getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        String imageFullPath = generateCommonMethod.getLocalPath("","jpg") ;
+        ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
+        projectDocumentDto.setProjectName(projectInfo.getProjectName());
+        projectDocumentDto.setCustomer(getPrincipal());
+        projectDocumentDto.setDocumentNumber(getWordNumber());
+        projectDocumentDto.setReportDate(getValueTimePoint());
+        projectDocumentDto.setReportMember(projectInfo.getUserAccountManagerName());
+        projectDocumentDto.setAppKey(applicationConstant.getAppKey());
+        projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+        FileUtils.base64ToImage(projectDocumentDto.getQrcode(), imageFullPath);
+        builder.insertImage(imageFullPath, 100L, 100L);
+        document.save(localPath);
+        return localPath;
     }
 
 
