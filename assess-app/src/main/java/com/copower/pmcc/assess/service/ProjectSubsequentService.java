@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectSubsequentDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectSubsequent;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.event.project.ProjectSubsequentServiceEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -88,7 +89,7 @@ public class ProjectSubsequentService {
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectSubsequent.class));
-        //  processInfo.setProcessEventExecutor(ProjectSchemeChangeEvent.class);
+        processInfo.setProcessEventExecutor(ProjectSubsequentServiceEvent.class);
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setTableId(projectSubsequent.getId());
         processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getName());
