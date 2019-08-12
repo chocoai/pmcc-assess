@@ -11,6 +11,7 @@ public enum BaseReportFieldEnum implements Serializable {
     ReportNumber("文号"),
     ReportNumber2("报告编号"),//文号中的具体编号
     ReportQrcode("报告二维码"),
+    ReportHouseQrCode("房产二维码"),
     ReportUnitString("报告使用单位"),
     RegistrationDate("登记时间"),
     ReportingCategories("报告类别"),

@@ -395,6 +395,9 @@
         data.areaGroupId = areaId;
         data.projectPlanId = '${projectPlan.id}';
         data.projectId = '${projectPlan.projectId}';
+        if (!AssessCommon.isNumber(data.assessCategory)){
+            data.assessCategory = null;
+        }
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/generate",
