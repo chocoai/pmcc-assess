@@ -31,7 +31,8 @@
                                     项目名称
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryProjectName" name="queryProjectName" class="form-control"  placeholder="项目名称"/>
+                                    <input id="queryProjectName" name="queryProjectName" class="form-control"
+                                           placeholder="项目名称"/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -39,7 +40,8 @@
                                     委托人
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryConsignorName" name="queryConsignorName" class="form-control"  placeholder="委托人"/>
+                                    <input id="queryConsignorName" name="queryConsignorName" class="form-control"
+                                           placeholder="委托人"/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -47,8 +49,10 @@
                                     报告使用单位
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryReportUseUnitName" name="queryReportUseUnitName" class="form-control" type="hidden"/>
-                                    <input id="queryUseUnitName" name="queryUseUnitName" class="form-control"  placeholder="报告使用单位"
+                                    <input id="queryReportUseUnitName" name="queryReportUseUnitName"
+                                           class="form-control" type="hidden"/>
+                                    <input id="queryUseUnitName" name="queryUseUnitName" class="form-control"
+                                           placeholder="报告使用单位"
                                            onclick="selectCustomer(this)" readonly="readonly"/>
                                 </div>
                             </div>
@@ -57,7 +61,8 @@
                                     报告文号
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryReportNumber" name="queryReportNumber" class="form-control"  placeholder="报告文号"/>
+                                    <input id="queryReportNumber" name="queryReportNumber" class="form-control"
+                                           placeholder="报告文号"/>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +72,8 @@
                                     开始时间
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryStartTime" name="queryStartTime" class="form-control date-picker dbdate"
+                                    <input id="queryStartTime" name="queryStartTime"
+                                           class="form-control date-picker dbdate"
                                            data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
                                 </div>
                             </div>
@@ -77,7 +83,7 @@
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <input id="queryEndTime" name="queryEndTime" class="form-control date-picker dbdate"
-                                           data-date-format="yyyy-mm-dd"  placeholder="结束时间"/>
+                                           data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -93,7 +99,19 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    选择人员
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input type="hidden" id="queryUserAccount" name="queryUserAccount">
+                                    <input type="text" data-rule-maxlength="50" readonly
+                                           placeholder="选择人员" onclick="personSelect()"
+                                           id="queryUserAccountName" name="queryUserAccountName" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                     <button type="button" class="btn btn-success" onclick="statisticsByCondition()">
@@ -123,10 +141,10 @@
     });
 
 
-    function statisticsByCondition(){
+    function statisticsByCondition() {
         var data = formParams("query_form");
-        document.getElementById('report_iframe').src="${pageContext.request.contextPath}/ureport/preview?_u=erp:projectFinance.ureport.xml&_i=1&_r=1&queryProjectName="+data.queryProjectName+ "&queryConsignorName="+data.queryConsignorName+
-            "&queryReportUseUnitName="+data.queryReportUseUnitName+"&queryReportNumber="+data.queryReportNumber+"&queryStartTime="+data.queryStartTime+"&queryEndTime="+data.queryEndTime+"&queryType="+data.queryType;
+        document.getElementById('report_iframe').src = "${pageContext.request.contextPath}/ureport/preview?_u=erp:projectFinance.ureport.xml&_i=1&_r=1&queryProjectName=" + data.queryProjectName + "&queryConsignorName=" + data.queryConsignorName +
+            "&queryReportUseUnitName=" + data.queryReportUseUnitName + "&queryReportNumber=" + data.queryReportNumber + "&queryStartTime=" + data.queryStartTime + "&queryEndTime=" + data.queryEndTime + "&queryType=" + data.queryType+ "&queryUserAccount=" + data.queryUserAccount;
     }
 
 
@@ -143,7 +161,7 @@
         //选择客户
         crmCustomer.select({
             multi: false,//是否允许多选
-            companyId:"${companyId}",
+            companyId: "${companyId}",
             onSelected: function (nodes) {
                 $("#queryReportUseUnitName").val(nodes[0].id);
                 $("#queryUseUnitName").val(nodes[0].name);
@@ -158,5 +176,22 @@
             }
         });
     };
+
+
+    //选择人员
+    function personSelect () {
+        erpEmployee.select({
+            onSelected: function (data) {
+                if (data.account) {
+                    $("#queryUserAccountName").val(data.name);
+                    $("#queryUserAccount").val(data.account);
+                }
+                else {
+                    $("#queryUserAccountName").val('');
+                    $("#queryUserAccount").val('');
+                }
+            }
+        });
+    }
 </script>
 </html>
