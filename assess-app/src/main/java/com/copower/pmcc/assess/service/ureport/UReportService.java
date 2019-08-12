@@ -58,6 +58,7 @@ public class UReportService {
         String queryReportNumber = "";
         String queryStartTime = "";
         String queryEndTime = "";
+        String queryUserAccount = "";
         Integer pageIndex = objectToInteger(maps.get("_pageIndex"));
         Integer fixRows = objectToInteger(maps.get("_fixRows"));
         Integer reportType = null;
@@ -81,6 +82,9 @@ public class UReportService {
         }
         if (maps.get("queryType") != null) {
             reportType = objectToInteger(maps.get("queryType"));
+        }
+        if (maps.get("queryUserAccount") != null) {
+            queryUserAccount = (String) maps.get("queryUserAccount");
         }
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
@@ -107,6 +111,9 @@ public class UReportService {
         }
         if (StringUtil.isNotEmpty(queryEndTime)) {
             sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
+        }
+        if (StringUtil.isNotEmpty(queryUserAccount)) {
+            sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
         }
         if (reportType != null && !reportType.equals(0)) {
             sql.append(String.format(" AND E.report_type = '%s'", reportType));

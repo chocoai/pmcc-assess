@@ -5,6 +5,7 @@ import com.copower.pmcc.bpm.api.dto.SysWorkLogVo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.StringUtil;
 import org.slf4j.Logger;
@@ -49,13 +50,12 @@ public class WorkLogService {
         }
         Date startTimeParse = null;
         Date endTimeParse = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (StringUtil.isNotEmpty(queryStartTime))
-            startTimeParse = sdf.parse(queryStartTime);
+            startTimeParse = DateUtils.convertDate(queryEndTime);
         if (StringUtil.isNotEmpty(queryEndTime))
-            endTimeParse = sdf.parse(queryEndTime);
+            endTimeParse =  DateUtils.convertDate(queryEndTime);
         Integer departmentId = commonService.thisUser().getDepartmentId();
-        BootstrapTableVo workLogList = bpmRpcToolsService.getWorkLogListByDepartment(departmentId, applicationConstant.getAppKey(), queryProjectName, queryTitle, startTimeParse, endTimeParse, 0, 0);
+        BootstrapTableVo workLogList = bpmRpcToolsService.getWorkLogListByDepartment(departmentId, "王", queryProjectName, queryTitle, startTimeParse, endTimeParse, 0, 0);
         List<SysWorkLogVo> list = workLogList.getRows();
         for (SysWorkLogVo item : list) {
             item.setContent(publicService.delHtmlTags(item.getContent()));

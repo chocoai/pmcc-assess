@@ -65,8 +65,10 @@ public class NetInfoRecordService {
         this.getNetInfoFromGPW();
         //公共资源交易平台-雅安
         this.getNetInfoFromGGZYYA();
-        //公共资源交易平台-成都
+        //公共资源交易平台-成都(土地矿权)
         this.getNetInfoFromGGZYCD();
+        //公共资源交易平台-成都（资产资源）
+        this.getNetInfoFromGGZYCD2();
         //来源淘宝网
         this.getNetInfoFromTB();
     }
@@ -742,7 +744,7 @@ public class NetInfoRecordService {
     }
 
 
-    //公共资源交易平台-成都
+    //公共资源交易平台-成都(土地矿权)
     public void getNetInfoFromGGZYCD() {
         try {
             Calendar calendar = Calendar.getInstance();
@@ -822,6 +824,77 @@ public class NetInfoRecordService {
                         for (int m = 0; m < fieldValues.size(); m++) {
                             content.append(fieldValues.get(m) + "；");
                         }
+                    }
+
+                    content.append("发布时间：" + publishtimeStr + "；");
+                    content.append("地址：" + address.replaceAll("\n", "").substring(1, address.length() - 2) + "；");
+                    netInfoRecord.setContent(content.toString());
+                    netInfoRecordDao.addInfo(netInfoRecord);
+                }
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //公共资源交易平台-成都（资产资源）
+    public void getNetInfoFromGGZYCD2() {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1); //得到前1天
+            Date date = calendar.getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            String urlInfo = "https://www.cdggzy.com/site/AssetResource/DealNoticeList.aspx";
+            Elements elements = getContent(urlInfo, ".row.contentitem", "");
+            for (Element item : elements) {
+
+                Elements publishtimeElement = item.select(".publishtime");
+                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1);
+                Date publishtime = sdf.parse(publishtimeStr);
+                if (publishtime == null || publishtime.compareTo(date) < 1) break;
+
+                Elements addressElement = item.select(".col-xs-1");
+                String address = addressElement.get(0).childNodes().get(0).toString();
+                String titleStr = item.select("a").get(0).childNodes().get(0).toString();
+                String link = item.select("a").get(0).attributes().get("href");
+
+                Elements tableElementHrefs = getContent(link, ".noticecontent", "");
+                if (tableElementHrefs.size() <= 0) {
+                    continue;
+                }
+                Elements tableElements = tableElementHrefs.select("table");
+                Elements tdElements = null;
+                if (tableElements.size() > 1) {
+                    tdElements = tableElements.get(1).select("tr");
+                } else {
+                    tdElements = tableElements.get(0).select("tr");
+                }
+                Integer length = tdElements.get(0).select("th").size() != 0 ? tdElements.get(0).select("th").size() : tdElements.get(0).select("tb").size();
+                //获取字段名称
+                for (int k = 0; k < tdElements.size(); k++) {
+                    Elements select = tdElements.get(k).select("td");
+                    if (select.size() == 0) continue;
+                    List<String> fieldValues = Lists.newArrayList();
+                    for (int j = 0; j < length; j++) {
+                        try{
+                            String fieldValue = checkNull(select, j);
+                            fieldValues.add(publicService.delHtmlTags(fieldValue));
+                        }catch (Exception e){}
+                    }
+                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                    netInfoRecord.setProvince("四川");
+                    netInfoRecord.setCity("成都");
+                    netInfoRecord.setSourceSiteUrl(link);
+                    netInfoRecord.setBeginTime(publishtime);
+                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
+                    netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
+                    StringBuilder content = new StringBuilder();
+                    for (int m = 0; m < fieldValues.size(); m++) {
+                        content.append(fieldValues.get(m) + "；");
                     }
 
                     content.append("发布时间：" + publishtimeStr + "；");

@@ -72,16 +72,28 @@ public class ProjectPlanSurveyService {
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
         //案例调查任务和他项权利任务与项目挂钩
         if (CollectionUtils.isEmpty(projectPhases)) return;
-        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)
-                || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT));
+        List<ProjectPhase> filter = LangUtils.filter(projectPhases,
+                o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)
+                || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT)
+                        || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.SCENE_EXPLORE_CIP));
         if (CollectionUtils.isNotEmpty(filter)) {//案例调查任务
             projectPhases.removeAll(filter);
+            String projectManager = projectMemberService.getProjectManager(projectId);
             for (ProjectPhase projectPhase : filter) {
                 ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
                 projectPlanDetail.setProjectWorkStageId(workStageId);
                 projectPlanDetail.setPlanId(planId);
                 projectPlanDetail.setProjectId(projectId);
+                projectPlanDetail.setExecuteUserAccount(projectManager);
+                SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
+                if (sysUser != null) {
+                    projectPlanDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
+                }
                 projectPlanDetail.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                projectPlanDetail.setPlanStartDate(new Date());
+                projectPlanDetail.setPlanEndDate(new Date());
+                projectPlanDetail.setBisEnable(true);
+                projectPlanDetail.setProcessInsId("0");
                 projectPlanDetail.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                 projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
                 projectPlanDetail.setPid(0);
@@ -91,7 +103,7 @@ public class ProjectPlanSurveyService {
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
             }
         }
-        generatePlanDetails(planId, projectId, workStageId, projectPhases, declareRecords,false);
+        generatePlanDetails(planId, projectId, workStageId, projectPhases, declareRecords);
     }
 
     /**
@@ -108,12 +120,11 @@ public class ProjectPlanSurveyService {
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
         if (CollectionUtils.isNotEmpty(declareRecords)) {
             ProjectPlan projectPlan = projectPlanService.getProjectPlan(projectId, currStageSort + 1);
-            if (projectPlan != null)
-                generatePlanDetails(projectPlan.getId(), projectId, projectPlan.getWorkStageId(), projectPhases, declareRecords,true);
+            generatePlanDetails(projectPlan.getId(), projectId, projectPlan.getWorkStageId(), projectPhases, declareRecords);
         }
     }
 
-    private void generatePlanDetails(Integer planId, Integer projectId, Integer workStageId, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords,boolean appendTask)  {
+    private void generatePlanDetails(Integer planId, Integer projectId, Integer workStageId, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords) {
         int i = 1;
         ProjectPlanDetails projectPlanDetails = null;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
@@ -158,9 +169,8 @@ public class ProjectPlanSurveyService {
                 try {
                     projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetail, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
                 } catch (BpmException e) {
-                    logger.error(e.getMessage(),e);
+                    logger.error(e.getMessage(), e);
                 }
-                //projectPlanDetailsList.add(projectPlanDetail);
             }
             declareRecord.setBisGenerate(true);
             try {
@@ -169,6 +179,5 @@ public class ProjectPlanSurveyService {
                 logger.error(e.getMessage(), e);
             }
         }
-
     }
 }

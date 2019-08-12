@@ -317,6 +317,7 @@ public class ProjectInfoService {
             projectPlan.setProjectStatus(ProjectStatusEnum.WAIT.getKey());
             projectPlan.setBisRestart(false);
             projectPlan.setStageSort(i);
+            projectPlan.setSpecificGravity(item.getSpecificGravity());
             projectPlanDao.addProjectPlan(projectPlan);
             i++;//系统对不同项目进行分别排序，你处理某些阶段不需要执行的问题
         }

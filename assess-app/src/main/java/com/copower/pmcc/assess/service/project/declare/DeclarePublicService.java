@@ -1079,12 +1079,11 @@ public class DeclarePublicService {
             declareApply.setId(declare.getId());
         }
         declareApplyService.saveDeclareApply(declareApply);
-        if (org.apache.commons.lang3.StringUtils.isBlank(processInsId)) {
+        if (StringUtils.isBlank(processInsId)) {
             declareApplyService.writeToDeclareRecord(declareApply);
             if (projectPlanDetails.getBisRestart() == Boolean.TRUE) {
                 ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-                if (projectPlan != null)
-                    projectPlanSurveyService.appendPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
+                projectPlanSurveyService.appendPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
             }
         } else {
             //修改监听器
