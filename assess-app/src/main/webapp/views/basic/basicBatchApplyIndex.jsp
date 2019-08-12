@@ -28,10 +28,68 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <%@include file="/views/basic/basicBatchPage/batchView.jsp" %>
+                    <form id="basicBatchApplyFrm" class="form-horizontal">
+                        <input type="hidden" name="id" value="${applyBatch.id}">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    省
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <select name="province" class="form-control search-select select2" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    市
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <select name="city" class="form-control search-select select2" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    楼盘名称
+                                </label>
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                    <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
+                                    <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
+                                           required value="${applyBatch.estateName}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 checkbox-inline">
+                                <input type="radio" id="applyFormType0" name="type" value="0">
+                                <label for="applyFormType0">非工业交通仓储</label>
+                            </span>
 
+                            <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
+                                <input type="radio" id="applyFormType1" name="type" value="1">
+                                <label for="applyFormType1">工业交通仓储</label>
+                            </span>
+                            <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
+                                <input type="radio" id="applyFormType2" name="type" value="2">
+                                <label for="applyFormType2">构筑物</label>
+                            </span>
+                            <a id="saveApplyInfoBtn" class="btn btn-warning" onclick="saveApplyInfo(this);">
+                                <c:if test="${empty applyBatch}">
+                                    添加楼栋单元房屋
+                                </c:if>
+                                <c:if test="${!empty applyBatch}">
+                                    查看楼栋单元房屋
+                                </c:if>
+                            </a>
+                        </div>
+                    </form>
+                    <div id="showTree" style="display: none">
+                    <%@include file="/views/basic/basicBatchTool/batchTreeTool.jsp" %>
+                    </div>
                 </div>
             </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div style="text-align: center;">
@@ -64,6 +122,30 @@
 </html>
 
 <script type="text/javascript">
+    $(function () {
+        if (${!empty applyBatch}) {
+            AssessCommon.initAreaInfo({
+                provinceTarget: $("#basicBatchApplyFrm").find('[name=province]'),
+                cityTarget: $("#basicBatchApplyFrm").find('[name=city]'),
+                provinceValue: '${applyBatch.province}',
+                cityValue: '${applyBatch.city}'
+            });
+
+            $("#basicBatchApplyFrm").find("input[type='radio'][name='type'][value='${applyBatch.type}']").trigger('click');
+            batchTreeTool.ztreeInit(JSON.parse('${el:toJsonString(applyBatch)}'));
+        } else {
+            //定位成功回调方法
+            mapPosition.getCurrentCity(function (province, city) {
+                AssessCommon.initAreaInfo({
+                    provinceTarget: $("#basicBatchApplyFrm").find('[name=province]'),
+                    cityTarget: $("#basicBatchApplyFrm").find('[name=city]'),
+                    provinceDefaultText: province,
+                    cityDefaultText: city
+                });
+            });
+        }
+    });
+
     //申请提交
     function submit() {
         if ("${processInsId}" != "0") {
@@ -154,4 +236,45 @@
             }
         });
     }
+</script>
+
+<script type="text/javascript">
+
+    //添加楼栋等信息
+    function saveApplyInfo(_this) {
+        if (!$("#basicBatchApplyFrm").valid()) {
+            return false;
+        }
+        var radioValue = $("#basicBatchApplyFrm").find("input[type='radio']:checked").val();
+        if (!radioValue) {
+            Alert("请选择类型");
+            return false;
+        }
+        var formData = formParams("basicBatchApplyFrm");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/saveApplyInfo",
+            type: "post",
+            dataType: "json",
+            data: formData,
+            success: function (result) {
+                console.log(result.data)
+                if (result.ret) {
+                    $(_this).hide();
+                    $("#basicBatchApplyFrm").find("input[name='id']").val(result.data.id);
+                    $("#estateId").val(result.data.estateId);
+                    $("#basicBatchApplyFrm").find("input").attr("readonly", "readonly");
+                    $("#basicBatchApplyFrm").find("select").attr("disabled", "disabled");
+                    $("#basicBatchApplyFrm").find("input[type='radio']").on('click', function () {
+                        return false;
+                    });
+                    $("#showTree").show();
+                    batchTreeTool.ztreeInit(result.data);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        });
+    }
+
+
 </script>

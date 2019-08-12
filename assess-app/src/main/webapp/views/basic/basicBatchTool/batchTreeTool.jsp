@@ -3,85 +3,26 @@
 <html lang="en" class="no-js">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<form id="basicBatchApplyFrm" class="form-horizontal">
-    <input type="hidden" name="id" value="${applyBatch.id}">
-    <div class="form-group">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                省
-            </label>
-            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                <select name="province" class="form-control search-select select2" required>
-                </select>
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                市
-            </label>
-            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                <select name="city" class="form-control search-select select2" required>
-                </select>
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                楼盘名称
-            </label>
-            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
-                <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
-                       required value="${applyBatch.estateName}">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-                            <span class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 checkbox-inline">
-                                <input type="radio" id="applyFormType0" name="type" value="0">
-                                <label for="applyFormType0">非工业交通仓储</label>
-                            </span>
 
-        <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
-                                <input type="radio" id="applyFormType1" name="type" value="1">
-                                <label for="applyFormType1">工业交通仓储</label>
-                            </span>
-        <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
-                                <input type="radio" id="applyFormType2" name="type" value="2">
-                                <label for="applyFormType2">构筑物</label>
-                            </span>
-        <a id="saveApplyInfoBtn" class="btn btn-warning" onclick="saveApplyInfo(this);">
-            <c:if test="${empty applyBatch}">
-                添加楼栋单元房屋
-            </c:if>
-            <c:if test="${!empty applyBatch}">
-                查看楼栋单元房屋
-            </c:if>
-        </a>
-    </div>
-    <div id="showTree" style="display: none">
-
-        <div class="form-group">
-            <a class="btn btn-xs btn-default" onclick="showAddModal()">
-                新增
-            </a>
-            <a class="btn btn-xs btn-success" onclick="getAndEditDetail();">
-                编辑
-            </a>
-            <a class="btn btn-xs btn-warning" onclick="deleteDetail();">
-                删除
-            </a>
-            <a class="btn btn-xs btn-default" onclick="fillInformation();">
-                填写或修改信息
-            </a>
-        </div>
-        <div class="col-md-3">
-            <ul id="ztree" class="ztree"></ul>
-        </div>
-        <div class="col-md-9">
-        </div>
-
-    </div>
-</form>
+<div class="form-group">
+    <a class="btn btn-xs btn-default" onclick="batchTreeTool.showAddModal()">
+        新增
+    </a>
+    <a class="btn btn-xs btn-success" onclick=" batchTreeTool.getAndEditDetail();">
+        编辑
+    </a>
+    <a class="btn btn-xs btn-warning" onclick=" batchTreeTool.deleteDetail();">
+        删除
+    </a>
+    <a class="btn btn-xs btn-default" onclick="batchTreeTool.fillInformation();">
+        填写或修改信息
+    </a>
+</div>
+<div class="col-md-3">
+    <ul id="ztree" class="ztree"></ul>
+</div>
+<div class="col-md-9">
+</div>
 
 
 <!-- end: MAIN CONTAINER -->
@@ -119,7 +60,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" id="btnSave" class="btn btn-primary" onclick="saveItemData()">
+                    <button type="button" id="btnSave" class="btn btn-primary" onclick="batchTreeTool.saveItemData()">
                         保存
                     </button>
                 </div>
@@ -160,7 +101,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="editItemData()">
+                    <button type="button" class="btn btn-primary" onclick="batchTreeTool.editItemData()">
                         保存
                     </button>
                 </div>
@@ -169,34 +110,11 @@
     </div>
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
-
 </html>
+
+
 <script type="text/javascript">
-    $(function () {
-        if (${!empty applyBatch}) {
-            AssessCommon.initAreaInfo({
-                provinceTarget: $("#basicBatchApplyFrm").find('[name=province]'),
-                cityTarget: $("#basicBatchApplyFrm").find('[name=city]'),
-                provinceValue: '${applyBatch.province}',
-                cityValue: '${applyBatch.city}'
-            });
-
-            $("#basicBatchApplyFrm").find("input[type='radio'][name='type'][value='${applyBatch.type}']").trigger('click');
-            ztreeInit("${applyBatch.estateName}");
-        } else {
-            //定位成功回调方法
-            mapPosition.getCurrentCity(function (province, city) {
-                AssessCommon.initAreaInfo({
-                    provinceTarget: $("#basicBatchApplyFrm").find('[name=province]'),
-                    cityTarget: $("#basicBatchApplyFrm").find('[name=city]'),
-                    provinceDefaultText: province,
-                    cityDefaultText: city
-                });
-            });
-        }
-    });
-
+    var batchApply = undefined;
     var setting = {
         data: {
             key: {
@@ -227,12 +145,17 @@
         }
     };
 
-    //初始化
-    function ztreeInit(estateName) {
+    var batchTreeTool = function () {
+
+    };
+
+    //初始化tree
+    batchTreeTool.ztreeInit = function (data) {
+        batchApply = data;
         zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{
             "id": 0,
             "pid": 0,
-            "displayName": estateName,
+            "displayName": data.estateName,
             "isParent": true
         }]);
         //展开第一级，选中根节点
@@ -241,49 +164,12 @@
 
         zTreeObj.expandNode(rootNode, true, false, true);
     }
-</script>
-
-<script type="text/javascript">
-
-    //添加楼栋等信息
-    function saveApplyInfo(_this) {
-        if (!$("#basicBatchApplyFrm").valid()) {
-            return false;
-        }
-        var radioValue = $("#basicBatchApplyFrm").find("input[type='radio']:checked").val();
-        if (!radioValue) {
-            Alert("请选择类型");
-            return false;
-        }
-        var formData = formParams("basicBatchApplyFrm");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/saveApplyInfo",
-            type: "post",
-            dataType: "json",
-            data: formData,
-            success: function (result) {
-                if (result.ret) {
-                    $(_this).hide();
-                    $("#basicBatchApplyFrm").find("input[name='id']").val(result.data.id);
-                    $("#estateId").val(result.data.estateId);
-                    $("#basicBatchApplyFrm").find("input").attr("readonly", "readonly");
-                    $("#basicBatchApplyFrm").find("select").attr("disabled", "disabled");
-                    $("#basicBatchApplyFrm").find("input[type='radio']").on('click', function () {
-                        return false;
-                    });
-                    $("#showTree").show();
-                    ztreeInit(result.data.estateName);
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        });
-    }
 
     //添加数据打开modal
-    function showAddModal() {
+    batchTreeTool.showAddModal = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         var level = node.level;
+        console.log(level)
         var html = "";
         switch (level) {
             case 0: {
@@ -323,14 +209,15 @@
             }
         }
         $("#frm_detail").find("#detailContent").empty().append(html);
-        var applyBatchId = $("#basicBatchApplyFrm").find("input[name='id']").val();
-        $("#frm_detail").find("input[name='applyBatchId']").val(applyBatchId);
+        console.log($("#detailContent").html() + "***")
+        $("#frm_detail").find("input[name='applyBatchId']").val(batchApply.id);
         $("#frm_detail").find("input[name='pid']").val(node.id);
         $("#detail_modal").modal();
+        console.log($("#detailContent").html() + "*2*2*")
     }
 
     //保存明细
-    function saveItemData() {
+    batchTreeTool.saveItemData = function () {
         if (!$("#frm_detail").valid()) {
             return false;
         }
@@ -339,7 +226,7 @@
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
             type: "post",
             data: {
-                formData:JSON.stringify(formData),
+                formData: JSON.stringify(formData),
             },
             success: function (result) {
                 if (result.ret) {
@@ -361,7 +248,7 @@
     }
 
     //编辑明细
-    function editItemData() {
+    batchTreeTool.editItemData = function () {
         if (!$("#frm_detail").valid()) {
             return false;
         }
@@ -371,7 +258,7 @@
             type: "post",
             dataType: "json",
             data: {
-                formData:JSON.stringify(formData),
+                formData: JSON.stringify(formData),
             },
             success: function (result) {
                 if (result.ret) {
@@ -393,7 +280,7 @@
     }
 
     //删除明细
-    function deleteDetail() {
+    batchTreeTool.deleteDetail = function () {
         bootbox.confirm("确认要删除么？", function (result) {
             if (result) {
                 var node = zTreeObj.getSelectedNodes()[0];
@@ -424,7 +311,7 @@
     }
 
     //编辑数据打开modal
-    function showEditModal(data) {
+    batchTreeTool.showEditModal = function (data) {
         var node = zTreeObj.getSelectedNodes()[0];
         var level = node.level;
         var html = "";
@@ -467,7 +354,7 @@
     }
 
     //编辑明细
-    function getAndEditDetail() {
+    batchTreeTool.getAndEditDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.id == 0) {
             Alert("请重新选择。");
@@ -480,20 +367,22 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    showEditModal(result.data);
+                    batchTreeTool.showEditModal(result.data);
                 }
             }
         })
     }
 
     //进入填写信息页面
-    function fillInformation() {
+    batchTreeTool.fillInformation = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         var estateId = 0;
         if (node.id == 0) {
-            estateId = $("#basicBatchApplyFrm").find("input[name='estateId']").val();
+            //estateId = $("#basicBatchApplyFrm").find("input[name='estateId']").val();
+            estateId = batchApply.estateId;
         }
-        var type = $("#basicBatchApplyFrm").find("input[type='radio'][name='type']:checked").val();
+        //var type = $("#basicBatchApplyFrm").find("input[type='radio'][name='type']:checked").val();
+        var type = batchApply.type;
         window.open('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId);
     }
 
