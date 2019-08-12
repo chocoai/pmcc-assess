@@ -62,17 +62,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <%--<div class="x-valid">--%>
-                                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">--%>
-                                    <%--选择人员--%>
-                                <%--</label>--%>
-                                <%--<div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">--%>
-                                    <%--<input type="hidden" id="queryUserAccount" name="queryUserAccount">--%>
-                                    <%--<input type="text" data-rule-maxlength="50" readonly--%>
-                                           <%--placeholder="选择人员" onclick="personSelect()"--%>
-                                           <%--id="queryUserAccountName" name="queryUserAccountName" class="form-control">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    选择人员
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input type="hidden" id="queryUserAccount" name="queryUserAccount">
+                                    <input type="text" data-rule-maxlength="50" readonly
+                                           placeholder="选择人员" onclick="personSelect()"
+                                           id="queryUserAccountName" name="queryUserAccountName" class="form-control">
+                                </div>
+                            </div>
                             <div class="x-valid">
                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                     <button type="button" class="btn btn-success" onclick="statisticsByCondition()">
@@ -105,7 +105,7 @@
     function statisticsByCondition(){
         var data = formParams("query_form");
         document.getElementById('report_iframe').src="${pageContext.request.contextPath}/ureport/preview?_u=erp:workLog.ureport.xml&_i=1&_r=1&queryProjectName="+ data.queryProjectName+"&queryTitle="+data.queryTitle+
-            "&queryStartTime="+data.queryStartTime+"&queryEndTime="+data.queryEndTime;
+            "&queryStartTime="+data.queryStartTime+"&queryEndTime="+data.queryEndTime+"&queryUserAccountName="+data.queryUserAccountName;
     }
 
 
