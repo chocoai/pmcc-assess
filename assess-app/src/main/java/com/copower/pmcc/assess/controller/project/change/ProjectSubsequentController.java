@@ -13,6 +13,7 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,4 +124,9 @@ public class ProjectSubsequentController extends BaseController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getSubsequentList", name = "后续事项列表", method = RequestMethod.GET)
+    public BootstrapTableVo getDocumentSendVoList(Integer projectId) {
+        return projectSubsequentService.getDocumentSendVoList(projectId);
+    }
 }
