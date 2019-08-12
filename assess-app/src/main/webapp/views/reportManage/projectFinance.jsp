@@ -30,25 +30,39 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     项目名称
                                 </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input id="queryProjectName" name="queryProjectName" class="form-control"
                                            placeholder="项目名称"/>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    委托人
+                                    项目经理
                                 </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryConsignorName" name="queryConsignorName" class="form-control"
-                                           placeholder="委托人"/>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input type="hidden" id="queryUserAccount" name="queryUserAccount">
+                                    <input type="text" data-rule-maxlength="50" readonly
+                                           placeholder="项目经理" onclick="personSelect()"
+                                           id="queryUserAccountName" name="queryUserAccountName" class="form-control">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    委托人
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input id="queryConsignorName" name="queryConsignorName" class="form-control"
+                                           placeholder="委托人"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     报告使用单位
                                 </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input id="queryReportUseUnitName" name="queryReportUseUnitName"
                                            class="form-control" type="hidden"/>
                                     <input id="queryUseUnitName" name="queryUseUnitName" class="form-control"
@@ -58,39 +72,9 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    报告文号
+                                    报告类型
                                 </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryReportNumber" name="queryReportNumber" class="form-control"
-                                           placeholder="报告文号"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    开始时间
-                                </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryStartTime" name="queryStartTime"
-                                           class="form-control date-picker dbdate"
-                                           data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    结束时间
-                                </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input id="queryEndTime" name="queryEndTime" class="form-control date-picker dbdate"
-                                           data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    贷款类型
-                                </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <select name='queryType' class='form-control  search-select select2'>
                                         <option value="0">-请选择-</option>
                                         <c:forEach var="item" items="${typeList}">
@@ -101,17 +85,34 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    选择人员
+                                    报告文号
                                 </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="hidden" id="queryUserAccount" name="queryUserAccount">
-                                    <input type="text" data-rule-maxlength="50" readonly
-                                           placeholder="选择人员" onclick="personSelect()"
-                                           id="queryUserAccountName" name="queryUserAccountName" class="form-control">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input id="queryReportNumber" name="queryReportNumber" class="form-control"
+                                           placeholder="报告文号"/>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    开始时间
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input id="queryStartTime" name="queryStartTime"
+                                           class="form-control date-picker dbdate"
+                                           data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    结束时间
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input id="queryEndTime" name="queryEndTime" class="form-control date-picker dbdate"
+                                           data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                </div>
+                            </div>
                             <div class="x-valid">
                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                     <button type="button" class="btn btn-success" onclick="statisticsByCondition()">
