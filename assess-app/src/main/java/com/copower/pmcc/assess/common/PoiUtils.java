@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.common;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -523,20 +522,20 @@ public class PoiUtils {
         CellStyle cellStyle = workbook.createCellStyle();
         Font font = getFontStyle(workbook, "微软雅黑");
         cellStyle.setFont(font);
-        cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);        //单元格垂直居中
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);        //单元格垂直居中
         //设置边框
-        cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
-        cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+        cellStyle.setBorderBottom(BorderStyle.THIN); //下边框
+        cellStyle.setBorderLeft(BorderStyle.THIN);//左边框
+        cellStyle.setBorderTop(BorderStyle.THIN);//上边框
+        cellStyle.setBorderRight(BorderStyle.THIN);//右边框
         return cellStyle;
     }
 
     public static void setStyle(CellStyle cellStyle) {
-        cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
-        cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+        cellStyle.setBorderBottom(BorderStyle.THIN); //下边框
+        cellStyle.setBorderLeft(BorderStyle.THIN);//左边框
+        cellStyle.setBorderTop(BorderStyle.THIN);//上边框
+        cellStyle.setBorderRight(BorderStyle.THIN);//右边框
     }
 
 
