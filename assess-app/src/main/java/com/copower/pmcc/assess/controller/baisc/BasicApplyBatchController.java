@@ -2,7 +2,10 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
@@ -17,7 +20,6 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,10 +82,13 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveItemData", name = "保存一条明细", method = {RequestMethod.POST})
-    public HttpResult saveItemData(String formData,Integer type) {
+    public HttpResult saveItemData(String formData, Integer type) {
         try {
             BasicApplyBatchDetail basicApplyBatchDetail = JSON.parseObject(formData, BasicApplyBatchDetail.class);
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail,type));
+            if (basicApplyBatchDetail.getBisStandard() == null) {
+                basicApplyBatchDetail.setBisStandard(false);
+            }
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail, type));
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
@@ -149,17 +154,6 @@ public class BasicApplyBatchController extends BaseController {
                 case "tb_basic_unit":
                     BasicUnit basicUnit = publicBasicService.getBasicUnitById(detailData.getTableId());
                     modelAndView.addObject("basicUnit", basicUnit);
-                    if(type!=null&&type.equals(3)){
-                        BasicHouse basicHouse = new BasicHouse();
-                        basicHouse.setUnitId(basicUnit.getId());
-                        List<BasicHouse> basicHouses = basicHouseService.basicHouseList(basicHouse);
-                        if(CollectionUtils.isNotEmpty(basicHouses))
-                            basicHouse = basicHouses.get(0);
-                        BasicHouseVo basicHouseVo = basicHouseService.getBasicHouseVo(basicHouse);
-                        modelAndView.addObject("basicHouse", basicHouseVo);
-                        BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByHouseId(basicHouse.getId());
-                        modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
-                    }
                     break;
                 case "tb_basic_house":
                     BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(detailData.getTableId());
@@ -341,19 +335,4 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("unitPropertiesList", unitPropertiesList);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getHouseId", name = "获取在建工程houseId", method = {RequestMethod.POST})
-    public HttpResult getHouseId(Integer unitId) {
-        try {
-            BasicHouse basicHouse = new BasicHouse();
-            basicHouse.setUnitId(unitId);
-            List<BasicHouse> basicHouses = basicHouseService.basicHouseList(basicHouse);
-            if(CollectionUtils.isNotEmpty(basicHouses))
-                basicHouse = basicHouses.get(0);
-            return HttpResult.newCorrectResult(basicHouse);
-        } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
-            return HttpResult.newErrorResult("保存数据异常");
-        }
-    }
 }

@@ -169,7 +169,6 @@
     batchTreeTool.showAddModal = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         var level = node.level;
-        console.log(level)
         var html = "";
         switch (level) {
             case 0: {
@@ -200,6 +199,12 @@
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
                 html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "是否标准";
+                html += "</label>";
+                html += " <div class='col-sm-4'>";
+                html += "<input type='checkbox' id='bisStandard' name='bisStandard' value='true'checked='checked'>";
+                html += "</div>";
                 break;
             }
             case 3: {
@@ -209,11 +214,9 @@
             }
         }
         $("#frm_detail").find("#detailContent").empty().append(html);
-        console.log($("#detailContent").html() + "***")
         $("#frm_detail").find("input[name='applyBatchId']").val(batchApply.id);
         $("#frm_detail").find("input[name='pid']").val(node.id);
         $("#detail_modal").modal();
-        console.log($("#detailContent").html() + "*2*2*")
     }
 
     //保存明细
@@ -230,7 +233,6 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    console.log("id:" + result.data.id + "pid:" + result.data.pid);
                     toastr.success('保存成功');
                     //ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
                     var node = zTreeObj.getSelectedNodes()[0];
@@ -262,7 +264,6 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    console.log("id:" + result.data.id + "pid:" + result.data.pid);
                     toastr.success('保存成功');
                     //ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
                     var node = zTreeObj.getSelectedNodes()[0];
@@ -344,12 +345,19 @@
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required>";
                 html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "是否标准";
+                html += "</label>";
+                html += "<div class='col-sm-4'>";
+                html += "<input type='checkbox' id='bisStandard_b' name='bisStandard' value='true' checked='checked'>";
+                html += "</div>";
                 break;
             }
         }
         $("#frm_detail_b").clearAll();
         $("#frm_detail_b").find("#detailContent_b").empty().append(html);
         $("#frm_detail_b").initForm(data);
+        $("#bisStandard_b").prop("checked", data.bisStandard);
         $("#detail_modal_b").modal();
     }
 

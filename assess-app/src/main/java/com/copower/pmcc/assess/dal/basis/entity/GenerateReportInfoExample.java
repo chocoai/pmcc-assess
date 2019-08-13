@@ -795,6 +795,206 @@ public class GenerateReportInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andQueryCodeIsNull() {
+            addCriterion("query_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeIsNotNull() {
+            addCriterion("query_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeEqualTo(String value) {
+            addCriterion("query_code =", value, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeNotEqualTo(String value) {
+            addCriterion("query_code <>", value, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeGreaterThan(String value) {
+            addCriterion("query_code >", value, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("query_code >=", value, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeLessThan(String value) {
+            addCriterion("query_code <", value, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeLessThanOrEqualTo(String value) {
+            addCriterion("query_code <=", value, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeLike(String value) {
+            addCriterion("query_code like", value, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeNotLike(String value) {
+            addCriterion("query_code not like", value, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeIn(List<String> values) {
+            addCriterion("query_code in", values, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeNotIn(List<String> values) {
+            addCriterion("query_code not in", values, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeBetween(String value1, String value2) {
+            addCriterion("query_code between", value1, value2, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andQueryCodeNotBetween(String value1, String value2) {
+            addCriterion("query_code not between", value1, value2, "queryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateIsNull() {
+            addCriterion("record_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateIsNotNull() {
+            addCriterion("record_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateEqualTo(Date value) {
+            addCriterion("record_date =", value, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateNotEqualTo(Date value) {
+            addCriterion("record_date <>", value, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateGreaterThan(Date value) {
+            addCriterion("record_date >", value, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("record_date >=", value, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateLessThan(Date value) {
+            addCriterion("record_date <", value, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateLessThanOrEqualTo(Date value) {
+            addCriterion("record_date <=", value, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateIn(List<Date> values) {
+            addCriterion("record_date in", values, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateNotIn(List<Date> values) {
+            addCriterion("record_date not in", values, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateBetween(Date value1, Date value2) {
+            addCriterion("record_date between", value1, value2, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordDateNotBetween(Date value1, Date value2) {
+            addCriterion("record_date not between", value1, value2, "recordDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoIsNull() {
+            addCriterion("record_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoIsNotNull() {
+            addCriterion("record_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoEqualTo(String value) {
+            addCriterion("record_no =", value, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoNotEqualTo(String value) {
+            addCriterion("record_no <>", value, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoGreaterThan(String value) {
+            addCriterion("record_no >", value, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoGreaterThanOrEqualTo(String value) {
+            addCriterion("record_no >=", value, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoLessThan(String value) {
+            addCriterion("record_no <", value, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoLessThanOrEqualTo(String value) {
+            addCriterion("record_no <=", value, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoLike(String value) {
+            addCriterion("record_no like", value, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoNotLike(String value) {
+            addCriterion("record_no not like", value, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoIn(List<String> values) {
+            addCriterion("record_no in", values, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoNotIn(List<String> values) {
+            addCriterion("record_no not in", values, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoBetween(String value1, String value2) {
+            addCriterion("record_no between", value1, value2, "recordNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecordNoNotBetween(String value1, String value2) {
+            addCriterion("record_no not between", value1, value2, "recordNo");
+            return (Criteria) this;
+        }
+
         public Criteria andAssessCategoryIsNull() {
             addCriterion("assess_category is null");
             return (Criteria) this;

@@ -24,6 +24,8 @@ public class GenerateReportInfoDto implements Serializable {
     private Date reportIssuanceDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date homeWorkEndTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date recordDate;
 
     private String realEstateAppraiser;
 
@@ -33,6 +35,9 @@ public class GenerateReportInfoDto implements Serializable {
     private String processInsId;
 
     private Integer assessCategory;
+    private String queryCode;
+
+    private String recordNo;
 
     private String status;
 
@@ -148,5 +153,29 @@ public class GenerateReportInfoDto implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getQueryCode() {
+        return queryCode;
+    }
+
+    public void setQueryCode(String queryCode) {
+        this.queryCode = queryCode;
+    }
+
+    public String getRecordNo() {
+        return recordNo;
+    }
+
+    public void setRecordNo(String recordNo) {
+        this.recordNo = recordNo;
+    }
+
+    public Date getRecordDate() {
+        return recordDate;
+    }
+
+    public void setRecordDate(Date recordDate) {
+        this.recordDate = recordDate;
     }
 }

@@ -90,6 +90,32 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">查询码</label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${generationVo.queryCode}</label>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">备案号</label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${generationVo.recordNo}</label>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        备案日期
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control"><fmt:formatDate
+                                                value='${generationVo.recordDate}'
+                                                pattern='yyyy-MM-dd'/></label>
+                                    </div>
+                                </div>
+                            </div>
                             <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                 <div class="form-group">
                                     <div class="x-valid">

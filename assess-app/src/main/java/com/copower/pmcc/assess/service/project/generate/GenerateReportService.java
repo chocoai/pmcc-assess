@@ -198,7 +198,7 @@ public class GenerateReportService {
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
         //评估类型(添加一个封面)
         if (generateReportInfo.getAssessCategory() != null){
-            generateBaseDataService.handleReportCover(generateReportInfo.getAssessCategory(),dir,baseAttachmentService,baseReportFieldService) ;
+            generateBaseDataService.handleReportCover(generateReportInfo,dir,baseAttachmentService,baseReportFieldService) ;
         }
         //count 计数器,防止  枚举虽然定义了，但是没有写对应的方法，因此递归设置最多的次数
         int count = 0;
@@ -342,6 +342,22 @@ public class GenerateReportService {
         if (Objects.equal(BaseReportFieldEnum.ReportNumber.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber());
         }
+        //查询码
+        if (Objects.equal(BaseReportFieldEnum.queryCode.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateReportInfo.getQueryCode());
+        }
+        //备案号
+        if (Objects.equal(BaseReportFieldEnum.recordNo.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateReportInfo.getRecordNo());
+        }
+        //备案日期
+        if (Objects.equal(BaseReportFieldEnum.recordDate.getName(), name)) {
+            String reportIssuanceStr = "";
+            if (generateReportInfo.getRecordDate() != null) {
+                reportIssuanceStr = DateUtils.format(generateReportInfo.getRecordDate(), DateUtils.DATE_CHINESE_PATTERN);
+            }
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, reportIssuanceStr);
+        }
         //报告编号
         if (Objects.equal(BaseReportFieldEnum.ReportNumber2.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber2());
@@ -474,6 +490,9 @@ public class GenerateReportService {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, qualificationDto.getOrganizationName());
             }
             //房地产估价机构
+            if (Objects.equal(BaseReportFieldEnum.XIEHE_RealEstateValuationAgencyHouse.getName(), name)) {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, qualificationDto.getOrganizationName());
+            }
             if (Objects.equal(BaseReportFieldEnum.XIEHE_RealEstateValuationAgency.getName(), name)) {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, qualificationDto.getOrganizationName());
             }
@@ -498,6 +517,10 @@ public class GenerateReportService {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, qualificationDto.getCertificateEffectiveDate());
             }
             //房地产估价机构信息
+            if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationHouseInfo.getName(), name)) {
+                generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getXIEHE_organizationInfo(qualificationDto));
+            }
+            //估价机构信息
             if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationInfo.getName(), name)) {
                 generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getXIEHE_organizationInfo(qualificationDto));
             }
@@ -507,8 +530,16 @@ public class GenerateReportService {
             }
         }
         //注册房产估价师及注册号
+        if (Objects.equal(BaseReportFieldEnum.RegisteredHouseRealEstateValuerAndNumber.getName(), name)) {
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportInfo));
+        }
+        //注册估价师及注册号
         if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportInfo));
+        }
+        //注册估价师
+        if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuer.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuer(generateReportInfo));
         }
         //注册房地产估价师注册证书复印件
         if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerValuationInstitution.getName(), name)) {
@@ -545,6 +576,10 @@ public class GenerateReportService {
         //价值类型
         if (Objects.equal(BaseReportFieldEnum.ValueType.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueType());
+        }
+        //物业类型
+        if (Objects.equal(BaseReportFieldEnum.PROPERTY_TYPE.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPROPERTY_TYPE());
         }
         //价值类型描述
         if (Objects.equal(BaseReportFieldEnum.ValueTypeDesc.getName(), name)) {
@@ -873,6 +908,10 @@ public class GenerateReportService {
         //估价对象权属
         if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, null, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectSheet());
+        }
+        //权属证号
+        if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectNumber.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectNumber());
         }
         //分类评估方法结果
         if (Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {

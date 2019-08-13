@@ -201,11 +201,7 @@ public class GenerateBaseDataService {
         //1.先从本地查看是否已生成过二维码
         //2.如果已生成直接返回已生成的二维码
         //3.如果没有生成则调用接口生成二维码并记录数据到本地
-        String localPath = getLocalPath();
-        Document document = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.baseReportTemplate.getReportType());
-        String imageFullPath = generateCommonMethod.getLocalPath(RandomStringUtils.randomAscii(5),"jpg") ;
         String qrCode = null;
         if (qrcodeRecode != null) {
             qrCode = qrcodeRecode.getQrcode();
@@ -235,36 +231,33 @@ public class GenerateBaseDataService {
             projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
             erpRpcToolsService.saveProjectDocument(projectDocumentDto);
         }
-        FileUtils.base64ToImage(qrCode, imageFullPath);
-        builder.insertImage(imageFullPath, 100L, 100L);
-        document.save(localPath);
-        return localPath;
+        return toolBaseOrCode(qrCode,100L,100L);
     }
 
     /**
      * 评估类型(添加一个封面)
-     * @param type
+     * @param generateReportInfo
      * @param localPath
      * @param baseAttachmentService
      * @param baseReportFieldService
      * @throws Exception
      */
-    public void handleReportCover(Integer type, String localPath, BaseAttachmentService baseAttachmentService, BaseReportFieldService baseReportFieldService) throws Exception {
+    public void handleReportCover(GenerateReportInfo generateReportInfo, String localPath, BaseAttachmentService baseAttachmentService, BaseReportFieldService baseReportFieldService) throws Exception {
         String key = null;
-        if (Objects.equal(type, AssessTypeEnum.ASSESS_TYPE_ENUM_ASSETS.getNumber())) {
+        Document document = new Document(localPath);
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
+        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessTypeEnum.ASSESS_TYPE_ENUM_ASSETS.getNumber())) {
             key = AssessReportFieldConstant.COVER_ASSETS_TEMPLATE;
         }
-        if (Objects.equal(type, AssessTypeEnum.ASSESS_TYPE_ENUM_LAND.getNumber())) {
+        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessTypeEnum.ASSESS_TYPE_ENUM_LAND.getNumber())) {
             key = AssessReportFieldConstant.COVER_LAND_TEMPLATE;
         }
-        if (Objects.equal(type, AssessTypeEnum.ASSESS_TYPE_ENUM_HOUSE.getNumber())) {
+        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessTypeEnum.ASSESS_TYPE_ENUM_HOUSE.getNumber())) {
             key = AssessReportFieldConstant.COVER_HOUSE_TEMPLATE;
         }
         if (StringUtils.isEmpty(key)) {
             return;
         }
-        Document document = new Document(localPath);
-        DocumentBuilder documentBuilder = new DocumentBuilder(document);
         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByFieldName(key);
         if (baseReportField == null) {
             return;
@@ -275,13 +268,10 @@ public class GenerateBaseDataService {
         }
         String replacePath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
         //处理封面的内容
-        replaceCover(replacePath);
-        //aspose 版本过低不需要这样操作
-        if (false) {
-            documentBuilder.insertBreak(BreakType.PAGE_BREAK);
-        }
+        replaceCover(replacePath,generateReportInfo);
         String value = RandomStringUtils.randomNumeric(15);
         documentBuilder.write(value);
+        documentBuilder.insertBreak(BreakType.PAGE_BREAK);
         IReplacingCallback callback = new IReplacingCallback() {
             @Override
             public int replacing(ReplacingArgs e) throws Exception {
@@ -301,7 +291,7 @@ public class GenerateBaseDataService {
         }
     }
 
-    private void replaceCover(String path)throws Exception{
+    private void replaceCover(String path,GenerateReportInfo generateReportInfo)throws Exception{
         Document document = new Document(path);
         List<String> stringList = Lists.newArrayList();
         String text = null;
@@ -353,7 +343,26 @@ public class GenerateBaseDataService {
         Map<String,String> fileMap = Maps.newHashMap();
         for (String s:regexS){
             if (Objects.equal(BaseReportFieldEnum.ReportHouseQrCode.getName(), s)) {
-                fileMap.put(String.format("${%s}",s),toolHouseQrCode()) ;
+                fileMap.put(String.format("${%s}",s),toolOrCode(String.format("http://gjszcxt.cirea.org.cn/?number=%s",generateReportInfo.getQueryCode()),60d,60d)) ;
+            }
+            if (Objects.equal(BaseReportFieldEnum.ReportASSETSQrCode.getName(), s)) {
+                fileMap.put(String.format("${%s}",s),toolOrCode(String.format("http://47.94.11.33:8035/TongYiBianMa/Index?_TYBM_H_=%s",generateReportInfo.getRecordNo()),80d,80d)) ;
+            }
+            if (Objects.equal(BaseReportFieldEnum.ReportLandQrCode.getName(), s)) {
+                StringBuilder stringBuilder = new StringBuilder(8) ;
+                stringBuilder.append("http://rd.wechat.com/qrcode/confirm?block_type=101&content=") ;
+                stringBuilder.append("").append("备案号:").append(generateReportInfo.getRecordNo()).append(";").append(StringUtils.repeat("\n\r\t",1)) ;
+                stringBuilder.append("").append("报告名称:").append(getValuationProjectName()).append(";").append(StringUtils.repeat("\n\r\t",1));
+                stringBuilder.append("").append("估价单位:").append(getEntrustmentUnit()).append(";").append(StringUtils.repeat("\n\r\t",1)) ;
+                String reportIssuanceStr = null;
+                if (generateReportInfo.getReportIssuanceDate() != null) {
+                    reportIssuanceStr = DateUtils.format(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
+                } else {
+                    reportIssuanceStr = DateUtils.format(getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
+                }
+                stringBuilder.append("").append("报告日期:").append(reportIssuanceStr).append(";").append(StringUtils.repeat("\n\r\t",1)) ;
+                stringBuilder.append("&lang=zh_CN&scene=4") ;
+                fileMap.put(String.format("${%s}",s),toolOrCode(String.format("%s",stringBuilder.toString()),80d,80d)) ;
             }
         }
         if (!fileMap.isEmpty()){
@@ -361,26 +370,18 @@ public class GenerateBaseDataService {
         }
     }
 
-    /**
-     * 房产二维码
-     * @return
-     * @throws Exception
-     */
-    private String toolHouseQrCode()throws Exception{
+    private String toolOrCode(String url,double width, double height)throws Exception{
+        String qrCode = erpRpcToolsService.generateQRCode(url) ;
+        return toolBaseOrCode(qrCode,width,height);
+    }
+
+    private String toolBaseOrCode(String qrCode,double width, double height)throws Exception{
         String localPath = generateCommonMethod.getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         String imageFullPath = generateCommonMethod.getLocalPath("","jpg") ;
-        ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
-        projectDocumentDto.setProjectName(projectInfo.getProjectName());
-        projectDocumentDto.setCustomer(getPrincipal());
-        projectDocumentDto.setDocumentNumber(getWordNumber());
-        projectDocumentDto.setReportDate(getValueTimePoint());
-        projectDocumentDto.setReportMember(projectInfo.getUserAccountManagerName());
-        projectDocumentDto.setAppKey(applicationConstant.getAppKey());
-        projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
-        FileUtils.base64ToImage(projectDocumentDto.getQrcode(), imageFullPath);
-        builder.insertImage(imageFullPath, 100L, 100L);
+        FileUtils.base64ToImage(qrCode, imageFullPath);
+        builder.insertImage(imageFullPath, width, height);
         document.save(localPath);
         return localPath;
     }
@@ -761,6 +762,27 @@ public class GenerateBaseDataService {
             }
             if (StringUtils.isNotEmpty(val)) {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), val);
+            }
+        }
+        String value = "/";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", false);
+        }
+        return value;
+    }
+
+    public String getPROPERTY_TYPE(){
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply != null || basicApply.getId() != null) {
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                BasicBuildingVo basicBuildingVo = generateBaseExamineService.getBasicBuilding();
+                if (basicBuildingVo != null) {
+                    if (StringUtils.isNotEmpty(basicBuildingVo.getPropertyTypeName())) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()),basicBuildingVo.getPropertyTypeName()) ;
+                    }
+                }
             }
         }
         String value = "/";
@@ -2055,6 +2077,21 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    public String getEquityStatusObjectNumber(){
+        LinkedList<String> linkedLists = new LinkedList<String>();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList){
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null) {
+                continue;
+            }
+            if (StringUtils.isNotBlank(declareRecord.getName())){
+                linkedLists.add(declareRecord.getName());
+            }
+        }
+        return StringUtils.join(linkedLists,"") ;
+    }
+
     /**
      * 变现分析表
      */
@@ -2352,7 +2389,7 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 注册房产估价师及注册号
+     * 注册估价师及注册号
      *
      * @param generateReportInfo
      * @throws Exception
@@ -2414,8 +2451,23 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    public String getRegisteredRealEstateValuer(GenerateReportInfo generateReportInfo)  {
+        StringBuilder stringBuilder = new StringBuilder(8) ;
+        List<Integer> integerList = FormatUtils.transformString2Integer(generateReportInfo.getRealEstateAppraiser());
+        if (CollectionUtils.isNotEmpty(integerList)) {
+            for (Integer id : integerList) {
+                DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
+                if (dataQualificationVo != null) {
+                    stringBuilder.append(dataQualificationVo.getUserAccountName()) ;
+                }
+
+            }
+        }
+        return stringBuilder.toString();
+    }
+
     /**
-     * 房地产估价机构信息
+     * 估价机构信息
      *
      * @return
      * @throws Exception

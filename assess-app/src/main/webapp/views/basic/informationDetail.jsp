@@ -123,9 +123,6 @@ console.log("buildingType"+"${buildingType}"+" id:"+"${tableId}");
             $.each(unitCommon.unitFileControlIdArray, function (i, item) {
                 unitCommon.fileShow(item);
             });
-            if ("${type}" == "3") {
-                getHouseId("${tableId}");
-            }
         }
         if ("house"=="${buildingType}") {
             houseCommon.tableId = "${tableId}";
@@ -134,27 +131,4 @@ console.log("buildingType"+"${buildingType}"+" id:"+"${tableId}");
             })
         }
     });
-
-    //获取在建工程houseId
-    function getHouseId(unitId) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/getHouseId",
-            type: "post",
-            dataType: "json",
-            data: {unitId: unitId},
-            success: function (result) {
-                if (result.ret) {
-                    houseCommon.tableId = result.data.id;
-                    $.each(houseCommon.houseFileControlIdArray, function (i, item) {
-                        houseCommon.fileShow(item, false);
-                    })
-                    houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeSell, true);
-                    houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeLease, true);
-
-                } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            }
-        });
-    }
 </script>
