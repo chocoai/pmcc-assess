@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
+<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js?v=1.0"></script>
 <script>
     var objProject = {};
 
@@ -969,25 +969,6 @@
                             $("#" + objProject.config.unit_information.frm).find("input[name='uUseUnitName']").val(msg.data.fullName);
                             $("#" + objProject.config.unit_information.frm).find("select[name='uUnitProperties']").val(msg.data.unitProperties).trigger("selected");
                             objProject.loadCustomerFieldList(node.id, node.name);
-                            //2019-06-11之后不再写入数据了 , 并且也不再清除了 ,待删除数据
-                            if (false) {
-                                var query = {
-                                    cType: objProject.config.unit_information.contacts.nodeKey,
-                                    cPid: objProject.isNotBlank('${projectInfo.unitInformationVo.id}') ? '${projectInfo.unitInformationVo.id}' : '0'
-                                };
-                                //清除报告使用单位写入的联系人
-                                objProject.commonContacts.clear(
-                                    query,
-                                    function () {
-                                        query.customerId = msg.data.id;
-                                        //crm数据库获取联系人并且在本地数据库写入联系人
-                                        objProject.commonContacts.writeCustomerLinkmanInContacts(query, function () {
-                                            //把本地数据库写入的联系人展示出来
-                                            objProject.unit_information.loadContactList();
-                                        });
-                                    }
-                                );
-                            }
                         }
                     });
                 });

@@ -202,7 +202,7 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                其他收入
+                                年其他收入
                             </label>
                             <div class="col-sm-4">
                                 <label class="form-control" data-name="otherIncome"></label>
@@ -513,7 +513,7 @@
                 return AssessCommon.pointToPercent(value);
             }
         });
-        cols.push({field: 'otherIncome', title: '其他收入'});
+        cols.push({field: 'otherIncome', title: '年其他收入'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

@@ -3,7 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
+    <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js?v=1.0"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">

@@ -22,9 +22,9 @@
                 <form id="project_subsequent_form" class="form-horizontal">
                     <input type="hidden" name="id" value="${projectSubsequent.id}">
                     <div class="form-group">
-                        <div>
+                        <div class="x-valid">
                             <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                标题
+                                标题<span class="symbol required"></span>
                             </label>
                             <div class="col-md-3 col-sm-3 col-xs-12">
                                 <input type="text" placeholder="" name="title" class="form-control"
@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                内容
+                                内容<span class="symbol required"></span>
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
                                 <textarea class="form-control" name="content" id="content" rows="4"  required
@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                处理意见
+                                处理意见<span class="symbol required"></span>
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
                                 <textarea class="form-control" id="suggestion" name="suggestion" rows="4" required
@@ -80,6 +80,9 @@
 
     //申请提交
     projectSubsequent.commit = function () {
+        if(!$("#project_subsequent_form").valid()){
+            return false;
+        }
         var data = formParams("project_subsequent_form");
         data.projectId = "${projectInfo.id}";
         Loading.progressShow("正在提交数据...");

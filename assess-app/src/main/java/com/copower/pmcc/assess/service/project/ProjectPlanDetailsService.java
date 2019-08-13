@@ -764,8 +764,7 @@ public class ProjectPlanDetailsService {
         if (commonPhaseIds.contains(copyPlanDetails.getProjectPhaseId())) {
             if (commonPhaseIds.contains(pastePlanDetails.getProjectPhaseId())) {
                 basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getPid());
-            }
-            if (pastePlanDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())) {
+            }else if (pastePlanDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())) {
                 //查看有无子项，无子项先生成子项，有子项则跳过
                 List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
                 if (CollectionUtils.isNotEmpty(detailsList)) return;

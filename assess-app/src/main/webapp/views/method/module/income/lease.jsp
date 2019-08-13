@@ -137,20 +137,27 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                月租金收入说明<span class="symbol required"></span>
+                                全年月份数<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="rentalIncomeRemark" placeholder="月租金收入说明"
-                                       class="form-control"
+                                <input type="text" name="monthNumber" placeholder="全年月份数" class="form-control"
                                        required="required">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                月租金收入说明
+                            </label>
+                            <div class="col-sm-10">
+                                <textarea name="rentalIncomeRemark" placeholder="月租金收入说明" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 出租率<span class="symbol required"></span>
@@ -216,10 +223,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                月其他收入<span class="symbol required"></span>
+                                年其他收入<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="otherIncome" placeholder="月其他收入" data-rule-number="true"
+                                <input type="text" name="otherIncome" placeholder="年其他收入" readonly="readonly"
                                        class="form-control" required="required">
                             </div>
                         </div>
@@ -251,17 +258,6 @@
                             <div class="col-sm-4">
                                 <input type="text" name="additionalCaptureRemark" placeholder="有效收缴率说明"
                                        class="form-control"
-                                       required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                全年月份数<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="monthNumber" placeholder="全年月份数" class="form-control"
                                        required="required">
                             </div>
                         </div>
@@ -647,7 +643,7 @@
                 return AssessCommon.pointToPercent(value);
             }
         });
-        cols.push({field: 'otherIncome', title: '其他收入'});
+        cols.push({field: 'otherIncome', title: '年其他收入'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -1003,11 +999,9 @@
         //押金*押金利率
         var form = $(_this).closest('form');
         var deposit = form.find('[name=deposit]').val();
-        var monthNumber = form.find('[name=monthNumber]').val();
         var depositRate = form.find('[name=depositRate]').attr('data-value');
-        if (AssessCommon.isNumber(deposit) && AssessCommon.isNumber(depositRate) && AssessCommon.isNumber(monthNumber)) {
+        if (AssessCommon.isNumber(deposit) && AssessCommon.isNumber(depositRate)) {
             deposit = parseFloat(deposit);
-            monthNumber = parseFloat(monthNumber);
             depositRate = parseFloat(depositRate);
             form.find('[name=otherIncome]').val((deposit * depositRate).toFixed(2));
         }
