@@ -9,19 +9,19 @@
     <div class="main_container">
         <div class="right_col" id="basicApplyId" role="main" style="margin-left: 0">
 
-                <div class="x_content">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-success" data-mode="reference"
-                                           onclick="projectData.prototype.showModel();"
-                                           value="引用项目中的楼盘">
-                                </div>
+            <div class="x_content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input type="button" class="btn btn-success" data-mode="reference"
+                                       onclick="projectData.prototype.showModel();"
+                                       value="引用项目中的楼盘">
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
+            </div>
 
             <%@include file="/views/basic/fillInformationIndexCommon.jsp" %>
             <div class="x_panel">
@@ -109,9 +109,6 @@
         //初始单元信息
         if("unit"=="${buildingType}") {
             unitCommon.initById("${tableId}", basicCommon.showUnitTab("add"));
-            if("${type}" == "3"){
-                getHouseId("${tableId}");
-            }
         }
         //初始房屋信息
         if("house"=="${buildingType}") {
@@ -196,10 +193,6 @@
         }
         if ("unit"=="${buildingType}") {
             item.basicUnit = formSerializeArray(unitCommon.unitForm);
-            if("${type}"=="3"){
-                item.basicTrading = formSerializeArray(projectTaskCIPHouse.houseTradingForm);
-                item.basicDamagedDegree = damagedDegree.getFormData();
-            }
         }
         if ("house"=="${buildingType}") {
             item.basicHouse = formSerializeArray(houseCommon.houseForm);
@@ -209,20 +202,4 @@
         return item;
     };
 
-    //获取在建工程houseId
-    function getHouseId(unitId){
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/getHouseId",
-            type: "post",
-            dataType: "json",
-            data: {unitId:unitId},
-            success: function (result) {
-                if (result.ret) {
-                    projectTaskCIPHouse.initById(result.data.id);
-                } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            }
-        });
-    }
 </script>

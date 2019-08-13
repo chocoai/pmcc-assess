@@ -744,6 +744,66 @@ public class BasicApplyBatchDetailExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andBisStandardIsNull() {
+            addCriterion("bis_standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardIsNotNull() {
+            addCriterion("bis_standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardEqualTo(Boolean value) {
+            addCriterion("bis_standard =", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotEqualTo(Boolean value) {
+            addCriterion("bis_standard <>", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardGreaterThan(Boolean value) {
+            addCriterion("bis_standard >", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_standard >=", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardLessThan(Boolean value) {
+            addCriterion("bis_standard <", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_standard <=", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardIn(List<Boolean> values) {
+            addCriterion("bis_standard in", values, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotIn(List<Boolean> values) {
+            addCriterion("bis_standard not in", values, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_standard between", value1, value2, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_standard not between", value1, value2, "bisStandard");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

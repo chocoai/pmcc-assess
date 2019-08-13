@@ -102,14 +102,6 @@ public class BasicApplyBatchDetailService {
                     unit.setBuildingId(this.getParentTableId(basicApplyBatchDetail));
                     basicUnitService.saveAndUpdateBasicUnit(unit);
                     basicApplyBatchDetail.setTableId(unit.getId());
-                    if (type != null && type.equals(3)) {
-                        BasicHouse house = new BasicHouse();
-                        house.setUnitId(unit.getId());
-                        basicHouseService.saveAndUpdateBasicHouse(house);
-                        BasicHouseTrading houseTrading = new BasicHouseTrading();
-                        houseTrading.setHouseId(house.getId());
-                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading);
-                    }
                     break;
                 case "tb_basic_house":
                     BasicHouse house = new BasicHouse();

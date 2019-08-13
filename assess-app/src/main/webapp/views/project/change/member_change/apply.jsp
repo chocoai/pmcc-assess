@@ -226,8 +226,6 @@
                 if (data.base) {
                     var selectUsers = data.account;
 
-                    console.debug(selectUsers);
-
                     $.ajax({
                         url: "${pageContext.request.contextPath}/member.change/addMember",
                         data: {
@@ -292,8 +290,6 @@
                 if (data.base) {
                     var selectUser = data.account;
 
-                    console.debug(selectUser);
-
                     $.ajax({
                         url: "${pageContext.request.contextPath}/member.change/replaceMember",
                         data: {
@@ -326,18 +322,13 @@
     memberChangeObj.replaceManage = function (oldManager) {
         var src =  oldManager;
         var oldManagerAccount = src.split("_").pop();
-        console.log(oldManagerAccount);
         erpEmployee.select({
             multi:false,
             currOrgId:'${projectInfo.departmentId}',
             value: oldManager,
             onSelected: function (data) {
-                console.log("+===========");
-                console.log(data.account);
                 if (data.account) {
-                    console.log("1")
                     var selectUser = data.account;
-                    console.log("2")
                     memberChangeObj.replaceManageAccount(oldManagerAccount,selectUser);
                 } else {
                     Alert("未选择成员!");

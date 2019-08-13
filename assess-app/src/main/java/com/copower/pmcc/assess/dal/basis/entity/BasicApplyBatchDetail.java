@@ -23,6 +23,8 @@ public class BasicApplyBatchDetail {
 
     private Date gmtModified;
 
+    private Boolean bisStandard;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class BasicApplyBatchDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Boolean getBisStandard() {
+        return bisStandard;
+    }
+
+    public void setBisStandard(Boolean bisStandard) {
+        this.bisStandard = bisStandard;
     }
 }

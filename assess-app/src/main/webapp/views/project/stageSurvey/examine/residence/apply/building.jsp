@@ -121,7 +121,7 @@
                     建筑使用年限<span class="symbol required"></span>
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <c:if test="${basicApply.type == 0 || basicApply.type==null}">
+                    <c:if test="${basicApply.type == 0 || basicApply.type==null || basicApply.type == 3}">
                         <select name="residenceUseYear" required class="form-control residenceUseYear search-select select2">
                         </select>
                     </c:if>
