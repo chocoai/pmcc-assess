@@ -52,30 +52,7 @@
 <input type="hidden" id="mdIncomeJSON" value='${mdIncomeJSON}'>
 <input type="hidden" id="incomeSelfSupportJSON" value='${incomeSelfSupportJSON}'>
 
-<script type="text/javascript">
-    $(function () {
-        FileUtils.uploadFiles({
-            target: "report_file",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_md_income",
-                tableId: '${mdIncome.id}',
-                projectId: "${projectInfo.id}"
-            },
-            editFlag: true,
-            deleteFlag: true
-        });
-        FileUtils.getFileShows({
-            target: "report_file",
-            formData: {
-                tableName: "tb_md_income",
-                tableId: '${mdIncome.id}'
-            },
-            editFlag: true,
-            deleteFlag: true
-        })
-    });
-</script>
+
 <script type="application/javascript">
     function submit() {
 
