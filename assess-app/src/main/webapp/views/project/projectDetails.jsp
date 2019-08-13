@@ -401,12 +401,11 @@
                             if (result.data.planExecutor) {
                                 html += '<div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip" data-original-title="责任人">' + result.data.planExecutor + '</div>';
                             }
-                            if ('${projectInfo.projectStatus}' != 'finish' && '${isPM}' == 'true') {
-                                html += '<div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启" onclick="projectDetails.replyPlan(' + planId + ');"><i class="fa fa-reply"></i></div>';
-                            }
                             if (result.data.planExecutUrl) {
                                 var btnClass = result.data.processInsId == "-1" ? "success" : "primary";
                                 html += '<div class="btn btn-sm btn-' + btnClass + '" data-placement="top" data-toggle="tooltip" onclick="projectDetails.taskOpenWin(\'' + result.data.planExecutUrl + '\')" data-original-title="处理"><i class="fa fa-arrow-right"></i> </div>';
+                            }else if ('${projectInfo.projectStatus}' != 'finish' && '${isPM}' == 'true' && result.data.status != 'runing') {
+                                html += '<div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启" onclick="projectDetails.replyPlan(' + planId + ');"><i class="fa fa-reply"></i></div>';
                             }
                             html += '<div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="查看" onclick="window.open(\'' + result.data.planDisplayUrl + '\')"><i class="fa fa-search"></i></div>';
                             html += '</div>';

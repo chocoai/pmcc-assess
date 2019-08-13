@@ -89,7 +89,7 @@
                                             <small>
                                                 <input type="button" class="btn btn-success btn-xs"
                                                        onclick="addLiveSituationFile(${declareRecord.id})"
-                                                       value="新增实况照片">
+                                                       value="新增照片">
                                             </small>
                                             <small>
                                                 <input type="button" class="btn btn-success btn-xs"
@@ -280,32 +280,32 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">名称</label>
+                                        <label class="col-sm-1 control-label">名称<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control"
+                                            <input type="text" class="form-control" required
                                                    name="fileName" placeholder="名称">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">排序</label>
+                                        <label class="col-sm-1 control-label">排序<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control"
+                                            <input type="text" class="form-control" required
                                                    name="sorting" placeholder="排序">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">对应查勘部位</label>
+                                        <label class="col-sm-1 control-label">对应查勘部位<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select name="certifyPart" class="form-control search-select certifyPart select2">
+                                            <select name="certifyPart" class="form-control search-select certifyPart select2" required>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附件类别</label>
+                                        <label class="col-sm-1 control-label">附件类别<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select name="certifyPartCategory" class="form-control search-select certifyPartCategory select2">
+                                            <select name="certifyPartCategory" class="form-control search-select certifyPartCategory select2" required>
                                             </select>
                                         </div>
                                     </div>
@@ -348,7 +348,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         关闭
                     </button>
-                    <button type="button" onclick="saveItemFileData()" class="btn btn-default">
+                    <button type="button" onclick="saveItemFileData()" class="btn btn-primary">
                         保存
                     </button>
                 </div>

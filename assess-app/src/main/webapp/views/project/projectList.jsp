@@ -158,7 +158,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
+<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js?v=1.0"></script>
 <script type="application/javascript">
     $(function () {
         loadProjectList();

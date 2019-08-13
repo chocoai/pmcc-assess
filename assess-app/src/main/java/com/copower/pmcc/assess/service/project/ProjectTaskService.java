@@ -99,7 +99,7 @@ public class ProjectTaskService {
             processInfo.setWorkStageId(projectWorkStage.getId());
 
             try {
-                processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, projectTaskDto.getNextApproval(), false);
+                processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, projectTaskDto.getNextApproval(), false);
 
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
@@ -138,19 +138,14 @@ public class ProjectTaskService {
 
         //不走流程时更新任务状态
         if (!projectPhase.getBisUseBox() && !projectTaskDto.getMustUseBox()) {
+            boolean isReStart = projectPlanDetails.getBisRestart();
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetails.setBisRestart(false);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-            projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
+            if (isReStart == Boolean.FALSE)
+                projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
         }
         bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());
-
-        //更新当前数据为最新
-        if (projectPlanDetails.getReturnDetailsId() > 0) {
-            ProjectPlanDetails projectPlanDetailsById = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getReturnDetailsId());
-            projectPlanDetailsById.setBisNew(false);
-            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetailsById);
-        }
 
         if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
             try {

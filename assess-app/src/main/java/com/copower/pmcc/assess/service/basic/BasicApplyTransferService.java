@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDao;
@@ -104,7 +105,7 @@ public class BasicApplyTransferService {
 
             SysAttachmentDto attachmentDto = new SysAttachmentDto();
             attachmentDto.setTableId(basicEstateNew.getId());
-            baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+            baseAttachmentService.copyFtpAttachments(example, attachmentDto);
             if (basicEstateLandStateOld != null) {
                 BasicEstateLandState basicEstateLandStateNew = new BasicEstateLandState();
                 BeanUtils.copyProperties(basicEstateLandStateOld, basicEstateLandStateNew);
@@ -231,7 +232,7 @@ public class BasicApplyTransferService {
 
             SysAttachmentDto attachmentDto = new SysAttachmentDto();
             attachmentDto.setTableId(basicBuildingNew.getId());
-            baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+            baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
             StringBuilder sqlBuilder = new StringBuilder();
             SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
@@ -287,16 +288,16 @@ public class BasicApplyTransferService {
             example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
             SysAttachmentDto attachmentDto = new SysAttachmentDto();
             attachmentDto.setTableId(basicUnitNew.getId());
-            baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+            baseAttachmentService.copyFtpAttachments(example, attachmentDto);
         }
+        List<BasicUnitHuxing> basicUnitHuxingList = null;
         BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
-        if (unitOld != null) {
-            if (unitOld.getId() != null) {
-                queryBasicUnitHuxing.setUnitId(unitOld.getId());
-            }
+        if (unitOld != null && unitOld.getId() != null) {
+            queryBasicUnitHuxing.setUnitId(unitOld.getId());
+            basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(queryBasicUnitHuxing);
         }
-        List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(queryBasicUnitHuxing);
-        if (basicUnitNew != null&&basicUnitNew.getId() != null) {
+
+        if (basicUnitNew != null && basicUnitNew.getId() != null) {
             this.copyBasicHuxing(basicUnitHuxingList, basicUnitNew);
 
             StringBuilder sqlBuilder = new StringBuilder();
@@ -334,10 +335,11 @@ public class BasicApplyTransferService {
                 SysAttachmentDto example = new SysAttachmentDto();
                 example.setTableId(unitHuxing.getId());
                 example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                example.setFieldsName(ExamineFileUpLoadFieldEnum.houseLatestFamilyPlanV.getName());
 
                 SysAttachmentDto attachmentDto = new SysAttachmentDto();
                 attachmentDto.setTableId(basicUnitHuxing.getId());
-                baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+                baseAttachmentService.copyFtpAttachments(example, attachmentDto);
             }
         }
     }
@@ -380,7 +382,7 @@ public class BasicApplyTransferService {
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
         BasicHouseDamagedDegree queryHouseDamagedDegree = new BasicHouseDamagedDegree();
 
-        if (houseOld != null&&houseOld.getId() != null) {
+        if (houseOld != null && houseOld.getId() != null) {
             queryRoom.setHouseId(houseOld.getId());
             queryBasicHouseCorollaryEquipment.setHouseId(houseOld.getId());
             queryHouseDamagedDegree.setHouseId(houseOld.getId());
@@ -391,13 +393,13 @@ public class BasicApplyTransferService {
         example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
         SysAttachmentDto attachmentDto = new SysAttachmentDto();
         attachmentDto.setTableId(basicHouseNew.getId());
-        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
         basicHouseDamagedDegreeList = basicHouseDamagedDegreeDao.getDamagedDegreeList(queryHouseDamagedDegree);
 
-        if (basicHouseNew != null&&basicHouseNew.getId() != null) {
+        if (basicHouseNew != null && basicHouseNew.getId() != null) {
             this.copyBasicHouseRoom(basicHouseRoomList, basicHouseNew);
             this.copyBasicCorollaryEquipment(basicHouseCorollaryEquipmentList, basicHouseNew);
             this.copyBasicDamagedDegree(basicHouseDamagedDegreeList, basicHouseNew);
@@ -461,7 +463,7 @@ public class BasicApplyTransferService {
                     example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
                     SysAttachmentDto attachmentDto = new SysAttachmentDto();
                     attachmentDto.setTableId(basicHouseCorollaryEquipment.getId());
-                    baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+                    baseAttachmentService.copyFtpAttachments(example, attachmentDto);
                 } catch (Exception e1) {
                     logger.error(e1.getMessage(), e1);
                 }
