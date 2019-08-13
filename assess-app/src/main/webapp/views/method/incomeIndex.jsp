@@ -94,8 +94,18 @@
                     <label class="col-sm-1 control-label">
                         租约限制说明<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-11">
+                    <div class="col-sm-8">
                         <textarea name="restrictionExplain" class="form-control" required></textarea>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        租约限制附件
+                    </label>
+                    <div class="col-sm-2">
+                        <input id="restrictionExplainEnclosure" placeholder="上传附件" name="restrictionExplainEnclosure" class="form-control" type="file">
+                        <div id="_restrictionExplainEnclosure"></div>
                     </div>
                 </div>
             </div>
@@ -180,8 +190,45 @@
             $("#frm_income").find("[name=operationMode][value=${mdIncome.operationMode}]").trigger('click');
             $("#frm_income").find("[name=leaseMode][value=${mdIncome.leaseMode}]").trigger('click');
         }
-    })
+        $.each(incomeIndex.fileArrayId,function (i,n) {
+            incomeIndex.showFile(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);
+            incomeIndex.fileUpload(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);
+        }) ;
+    });
     var incomeIndex = {};
+    incomeIndex.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
+
+    incomeIndex.fileArrayId = ["restrictionExplainEnclosure","report_file"] ;
+
+    incomeIndex.fileUpload = function (target, tableName, id, deleteFlag, fieldsName) {
+        FileUtils.uploadFiles({
+            target: target,
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName
+            },
+            deleteFlag: deleteFlag
+        });
+    };
+
+    incomeIndex.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
+        FileUtils.getFileShows({
+            target: target,
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName
+            },
+            deleteFlag: deleteFlag
+        })
+    };
 
     //新增时间段
     incomeIndex.addDateSection = function () {

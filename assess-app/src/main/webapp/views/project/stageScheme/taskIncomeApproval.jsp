@@ -35,19 +35,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <input type="hidden" id="mdIncomeJSON" value='${mdIncomeJSON}'>
 <input type="hidden" id="incomeSelfSupportJSON" value='${incomeSelfSupportJSON}'>
-<script type="text/javascript">
-    $(function () {
-        FileUtils.getFileShows({
-            target: "report_file",
-            formData: {
-                tableName: "tb_md_income",
-                tableId: '${mdIncome.id}'
-            },
-            editFlag: false,
-            deleteFlag: false
-        })
-    })
-</script>
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");

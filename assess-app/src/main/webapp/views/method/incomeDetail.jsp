@@ -93,8 +93,16 @@
                     <label class="col-sm-1 control-label">
                         租约限制说明<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-11">
-                        <textarea name="restrictionExplain" class="form-control" required></textarea>
+                    <div class="col-sm-8">
+                        <label>${mdIncome.restrictionExplain}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        租约限制附件
+                    </label>
+                    <div class="col-sm-2">
+                        <div id="_restrictionExplainEnclosure"></div>
                     </div>
                 </div>
             </div>
@@ -125,8 +133,32 @@
             $("#frm_income").find("[name=formType][value=${mdIncome.formType}]").trigger('click');
             $("#frm_income").find(':radio').attr('disabled', 'disabled');
         }
+        $.each(incomeIndex.fileArrayId,function (i,n) {
+            incomeIndex.showFile(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);
+        }) ;
     })
     var incomeIndex = {};
+
+    incomeIndex.fileArrayId = ["restrictionExplainEnclosure","report_file"] ;
+
+    incomeIndex.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
+
+    incomeIndex.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
+        FileUtils.getFileShows({
+            target: target,
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName
+            },
+            deleteFlag: deleteFlag
+        })
+    };
 
     //加载时间段列表信息
     incomeIndex.loadDateSectionList = function (operationMode) {
