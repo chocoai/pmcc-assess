@@ -25,6 +25,12 @@ public class GenerateReportInfo {
 
     private String processInsId;
 
+    private String queryCode;
+
+    private Date recordDate;
+
+    private String recordNo;
+
     private Integer assessCategory;
 
     private String status;
@@ -121,6 +127,30 @@ public class GenerateReportInfo {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public String getQueryCode() {
+        return queryCode;
+    }
+
+    public void setQueryCode(String queryCode) {
+        this.queryCode = queryCode == null ? null : queryCode.trim();
+    }
+
+    public Date getRecordDate() {
+        return recordDate;
+    }
+
+    public void setRecordDate(Date recordDate) {
+        this.recordDate = recordDate;
+    }
+
+    public String getRecordNo() {
+        return recordNo;
+    }
+
+    public void setRecordNo(String recordNo) {
+        this.recordNo = recordNo == null ? null : recordNo.trim();
     }
 
     public Integer getAssessCategory() {

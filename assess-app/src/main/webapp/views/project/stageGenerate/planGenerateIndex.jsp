@@ -129,6 +129,34 @@
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        备案日期
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text"  name="recordDate" placeholder="备案日期"
+                                               class="form-control date-picker dbdate"
+                                               data-date-format="yyyy-mm-dd"
+                                               pattern='yyyy-MM-dd'
+                                               value="<fmt:formatDate value='${generationVo.recordDate}' pattern='yyyy-MM-dd'/>">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">查询码</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="queryCode" class="form-control" placeholder="查询码">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">备案号</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="recordNo" class="form-control" placeholder="备案号">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
                                     <label class="col-sm-1 control-label">评估类型(增加封面)</label>
                                     <div class="col-sm-3">
                                         <select name="assessCategory" class="form-control search-select select2">
@@ -335,6 +363,7 @@
                     fileShow(n + "" + areaGroupId, true, info.id);
                 });
             });
+            frm.initForm(info);
             dataQualificationShow(info.qualificationType, info.realEstateAppraiser, frm);
         }
     }

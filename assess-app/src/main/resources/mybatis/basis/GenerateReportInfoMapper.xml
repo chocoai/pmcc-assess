@@ -13,6 +13,9 @@
     <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="VARCHAR" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="query_code" property="queryCode" jdbcType="VARCHAR" />
+    <result column="record_date" property="recordDate" jdbcType="TIMESTAMP" />
+    <result column="record_no" property="recordNo" jdbcType="VARCHAR" />
     <result column="assess_category" property="assessCategory" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -80,7 +83,8 @@
   <sql id="Base_Column_List" >
     id, project_id, project_plan_id, qualification_type, investigations_start_date, investigations_end_date, 
     report_issuance_date, home_work_end_time, real_estate_appraiser, area_group_id, process_ins_id, 
-    assess_category, status, creator, gmt_created, gmt_modified
+    query_code, record_date, record_no, assess_category, status, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfoExample" >
     select
@@ -120,12 +124,14 @@
       investigations_start_date, investigations_end_date, 
       report_issuance_date, home_work_end_time, 
       real_estate_appraiser, area_group_id, process_ins_id, 
+      query_code, record_date, record_no, 
       assess_category, status, creator, 
       gmt_created, gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{projectPlanId,jdbcType=INTEGER}, #{qualificationType,jdbcType=VARCHAR}, 
       #{investigationsStartDate,jdbcType=TIMESTAMP}, #{investigationsEndDate,jdbcType=TIMESTAMP}, 
       #{reportIssuanceDate,jdbcType=TIMESTAMP}, #{homeWorkEndTime,jdbcType=TIMESTAMP}, 
       #{realEstateAppraiser,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
+      #{queryCode,jdbcType=VARCHAR}, #{recordDate,jdbcType=TIMESTAMP}, #{recordNo,jdbcType=VARCHAR}, 
       #{assessCategory,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -164,6 +170,15 @@
       </if>
       <if test="processInsId != null" >
         process_ins_id,
+      </if>
+      <if test="queryCode != null" >
+        query_code,
+      </if>
+      <if test="recordDate != null" >
+        record_date,
+      </if>
+      <if test="recordNo != null" >
+        record_no,
       </if>
       <if test="assessCategory != null" >
         assess_category,
@@ -211,6 +226,15 @@
       </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="queryCode != null" >
+        #{queryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="recordDate != null" >
+        #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordNo != null" >
+        #{recordNo,jdbcType=VARCHAR},
       </if>
       <if test="assessCategory != null" >
         #{assessCategory,jdbcType=INTEGER},
@@ -271,6 +295,15 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.queryCode != null" >
+        query_code = #{record.queryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recordDate != null" >
+        record_date = #{record.recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recordNo != null" >
+        record_no = #{record.recordNo,jdbcType=VARCHAR},
+      </if>
       <if test="record.assessCategory != null" >
         assess_category = #{record.assessCategory,jdbcType=INTEGER},
       </if>
@@ -304,6 +337,9 @@
       real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      query_code = #{record.queryCode,jdbcType=VARCHAR},
+      record_date = #{record.recordDate,jdbcType=TIMESTAMP},
+      record_no = #{record.recordNo,jdbcType=VARCHAR},
       assess_category = #{record.assessCategory,jdbcType=INTEGER},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -346,6 +382,15 @@
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="queryCode != null" >
+        query_code = #{queryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="recordDate != null" >
+        record_date = #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordNo != null" >
+        record_no = #{recordNo,jdbcType=VARCHAR},
+      </if>
       <if test="assessCategory != null" >
         assess_category = #{assessCategory,jdbcType=INTEGER},
       </if>
@@ -376,6 +421,9 @@
       real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      query_code = #{queryCode,jdbcType=VARCHAR},
+      record_date = #{recordDate,jdbcType=TIMESTAMP},
+      record_no = #{recordNo,jdbcType=VARCHAR},
       assess_category = #{assessCategory,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
