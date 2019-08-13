@@ -122,6 +122,8 @@ public class BaseAttachmentService {
         return getAttachmentList(sysAttachment);
     }
 
+
+
     public List<SysAttachmentDto> getAttachmentList(List<Integer> tableIds, SysAttachmentDto sysAttachmentDto) {
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         return erpRpcAttachmentService.getAttachmentListByTableIds(tableIds, sysAttachmentDto);

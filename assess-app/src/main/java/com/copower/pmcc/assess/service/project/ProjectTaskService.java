@@ -70,11 +70,13 @@ public class ProjectTaskService {
 
     @Transactional(rollbackFor = Exception.class)
     public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
-
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectTaskDto.getProjectDetailsId());
         projectPlanDetails.setTaskSubmitTime(new Date());
         projectPlanDetails.setBisStart(true);
-        projectPlanDetails.setActualHours(projectTaskDto.getActualHours());
+        if (projectPlanDetails.getActualHours() != null)
+            projectPlanDetails.setActualHours(projectTaskDto.getActualHours().add(projectPlanDetails.getActualHours()));
+        else
+            projectPlanDetails.setActualHours(projectTaskDto.getActualHours());
         projectPlanDetails.setTaskRemarks(projectTaskDto.getTaskRemarks());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
