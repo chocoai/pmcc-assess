@@ -9,7 +9,6 @@ import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyBatchVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
@@ -176,6 +175,7 @@ public class BasicApplyBatchService {
     public BasicApplyBatch getInfoById(Integer id) {
         return basicApplyBatchDao.getInfoById(id);
     }
+
     //删除
     public void deleteBasicBatchApply(Integer id) {
         basicApplyBatchDao.deleteInfo(id);
@@ -310,20 +310,6 @@ public class BasicApplyBatchService {
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
                 unitDetail.setName(basicUnit.getUnitNumber());
                 basicApplyBatchDetailDao.updateInfo(unitDetail);
-                //在建工程交易信息
-                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
-                BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
-                if (basicTrading != null) {
-                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
-                }
-                //在建工程完损度
-                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
-                List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonContent, BasicHouseDamagedDegree.class);
-                if (!org.springframework.util.CollectionUtils.isEmpty(damagedDegreeList)) {
-                    for (BasicHouseDamagedDegree degree : damagedDegreeList) {
-                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree);
-                    }
-                }
             }
         }
 

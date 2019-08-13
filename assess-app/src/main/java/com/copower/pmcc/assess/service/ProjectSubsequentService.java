@@ -3,10 +3,10 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectSubsequentDao;
-import com.copower.pmcc.assess.dal.basis.entity.DocumentSend;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectSubsequent;
-import com.copower.pmcc.assess.dto.output.document.DocumentSendVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectSubsequentVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectSubsequentServiceEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -31,13 +31,16 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -59,7 +62,7 @@ public class ProjectSubsequentService {
     @Autowired
     private ErpRpcAttachmentService erpRpcAttachmentService;
     @Autowired
-    private PublicService publicService;
+    private BaseAttachmentService baseAttachmentService;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -165,8 +168,29 @@ public class ProjectSubsequentService {
         ProjectSubsequent subsequent = new ProjectSubsequent();
         subsequent.setProjectId(projectId);
         List<ProjectSubsequent> list = projectSubsequentDao.getProjectSubsequent(subsequent);
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(list) ? new ArrayList<ProjectSubsequent>() : list);
+        List<ProjectSubsequentVo> vos = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(list)) {
+            vos = LangUtils.transform(list, o -> getProjectSubsequentVo(o));
+        }
+        vo.setRows(vos);
         vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public ProjectSubsequentVo getProjectSubsequentVo(ProjectSubsequent projectSubsequent) {
+        if (projectSubsequent == null) {
+            return null;
+        }
+        ProjectSubsequentVo vo = new ProjectSubsequentVo();
+        BeanUtils.copyProperties(projectSubsequent, vo);
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(projectSubsequent.getId(), null, FormatUtils.entityNameConvertToTableName(ProjectSubsequent.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
+            }
+            vo.setFileViewName(builder.toString());
+        }
         return vo;
     }
 

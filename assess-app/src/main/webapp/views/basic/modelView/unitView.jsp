@@ -13,19 +13,10 @@
     <%@include file="/views/project/stageSurvey/examine/industry/apply/unit.jsp" %>
 </c:if>
 
-<!-- 在建工程 -->
-<c:if test="${basicApply.type == 3}">
-    <%@include file="/views/project/stageSurvey/examine/residence/apply/houseTrading.jsp" %>
-</c:if>
 
 <%@include file="/views/project/stageSurvey/examine/residence/apply/unitDecorate.jsp" %>
 <%@include file="/views/project/stageSurvey/examine/residence/apply/unitHuxing.jsp" %>
 <%@include file="/views/project/stageSurvey/examine/residence/apply/unitElevator.jsp" %>
 
-<!-- 在建工程 -->
-<c:if test="${basicApply.type == 3}">
-<%@include file="/views/project/stageSurvey/examine/residence/apply/houseDamagedDegree.jsp" %>
-    <script src="${pageContext.request.contextPath}/js/basic/house/sonHouseView.js"></script>
-</c:if>
 <script src="${pageContext.request.contextPath}/js/basic/unit/sonUnitView.js"></script>
 

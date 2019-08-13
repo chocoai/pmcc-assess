@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -104,18 +103,9 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <c:choose>
-                        <c:when test="${basicApply.type == 3}">
-                            <button type="button" class="btn btn-primary" onclick="projectTaskCIPHouse.saveTradingSellAndLease()">
-                                保存
-                            </button>
-                        </c:when>
-                        <c:otherwise>
-                            <button type="button" class="btn btn-primary" onclick="houseCommon.saveTradingSellAndLease()">
-                                保存
-                            </button>
-                        </c:otherwise>
-                    </c:choose>
+                    <button type="button" class="btn btn-primary" onclick="houseCommon.saveTradingSellAndLease()">
+                        保存
+                    </button>
                 </div>
             </form>
         </div>

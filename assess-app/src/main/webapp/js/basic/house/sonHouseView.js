@@ -1682,15 +1682,11 @@ var damagedDegree = {};
 
 //加载完损度数据列表
 damagedDegree.loadDamagedDegreeList = function () {
-    var houseId = houseCommon.getHouseId();
-    if(!houseId){
-        houseId = projectTaskCIPHouse.getHouseId();
-    }
     $.ajax({
         url: getContextPath() + '/basicHouseDamagedDegree/getDamagedDegreeList',
         type: 'get',
         data: {
-            houseId: houseId
+            houseId: houseCommon.getHouseId()
         },
         success: function (result) {
             if (result.ret && result.data) {
@@ -1866,11 +1862,7 @@ damagedDegree.saveDamagedDegreeDetail = function () {
     }
     var data = formParams("damagedDegreeDetailForm");
     data.houseId = houseCommon.getHouseId();
-    if(!data.houseId){
-        data.houseId = projectTaskCIPHouse.getHouseId();
-    }
     data.damagedDegreeId = $("#damagedDegreeId").val();
-    console.log(data);
     $.ajax({
         url: getContextPath() + "/basicHouseDamagedDegree/saveAndUpdateDamagedDegreeDetail",
         data: data,

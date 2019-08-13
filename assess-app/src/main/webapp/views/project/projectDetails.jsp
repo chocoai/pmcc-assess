@@ -878,6 +878,7 @@
             cols.push({field: 'title', title: '标题'});
             cols.push({field: 'content', title: '内容'});
             cols.push({field: 'suggestion', title: '处理意见'});
+            cols.push({field: 'fileViewName', title: '附件'});
             $("#tb_subsequentList").bootstrapTable('destroy');
             TableInit("tb_subsequentList", "${pageContext.request.contextPath}/projectSubsequent/getSubsequentList", cols, {
                 projectId: ${projectInfo.id}
