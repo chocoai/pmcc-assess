@@ -39,7 +39,7 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
         if (projectPlanDetails != null && projectPlanDetails.getBisRestart() == Boolean.TRUE) {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
             if (projectPlan != null)
-                projectPlanSurveyService.appendPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
+                projectPlanSurveyService.appendSurveyPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
         }
         super.processFinishExecute(processExecution);//数据写入record记录表中后再执行进入下阶段
     }

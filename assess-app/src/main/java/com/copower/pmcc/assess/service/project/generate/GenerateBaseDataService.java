@@ -1973,7 +1973,7 @@ public class GenerateBaseDataService {
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         String hotTipCompy = getHotTipBank(false);
         Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> hashMap = getSurveyAssetInventoryRightMapAndSchemeJudgeObject();
-        BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE);
+        BaseDataDic projectClassify = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.HOUSE_INVENTORY_RIGHT_CATEGORY_PLEDGE);
         List<Integer> integerList = Lists.newArrayList();
         if (!hashMap.isEmpty()) {
             hashMap.entrySet().stream().forEach(entry -> {

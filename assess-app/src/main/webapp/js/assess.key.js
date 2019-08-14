@@ -112,6 +112,7 @@ AssessDicKey.project_initiate_urgency = "project.initiate.urgency";//紧急程�
 AssessDicKey.data_company_reputation = "data.company.reputation";//公司信誉
 AssessDicKey.dataLoanType="data.loan.type";//贷款类型
 AssessDicKey.certifyPart="certify.part";//相关证明对应查勘部位
+AssessDicKey.houseInventoryRightCategory="project.survey.house.inventory.right.category";//房产他权类别
 
 //楼盘
 AssessDicKey.estate_position = "estate.position";//楼盘方位

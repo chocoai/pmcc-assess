@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyJudgeObjectGroupDto;
@@ -135,7 +135,7 @@ public class SurveyAssetInventoryRightRecordService {
         List<SurveyAssetInventoryRightRecord> rightRecords = getListByProjectId(projectId);
         List<SurveyJudgeObjectGroupDto> list = Lists.newArrayList();
         //他权其它
-        BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER);
+        BaseDataDic projectClassify = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.HOUSE_INVENTORY_RIGHT_CATEGORY_OTHER);
         List<SurveyAssetInventory> inventoryList = surveyAssetInventoryService.getDataByDeclareIds(LangUtils.transform(judgeObjects, o -> o.getDeclareRecordId()));
         Map<Integer, String> transferLimitMap = FormatUtils.mappingSingleEntity(inventoryList, o -> o.getDeclareRecordId(), o -> o.getTransferLimit());
         if (CollectionUtils.isEmpty(rightRecords)) {

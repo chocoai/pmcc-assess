@@ -51,13 +51,11 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryIndex", "", 0, "0", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        List<BaseDataDic> inventoryRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
         List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentService.initAssetInventoryContent(projectPlanDetails, declareRecord);
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(list);
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
-        modelAndView.addObject("inventoryRightTypeList", inventoryRightTypeList); //数据字典
         modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
         modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
         //证载用途
@@ -118,8 +116,6 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.initAssetInventoryContent(projectPlanDetails,declareRecord);
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(surveyAssetInventoryContents);
         modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
-        List<BaseDataDic> inventoryRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
-        modelAndView.addObject("inventoryRightTypeList", inventoryRightTypeList);
         //土地类型
         BaseProjectClassify houseLand = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
         modelAndView.addObject("houseLand",houseLand.getId());

@@ -29,7 +29,7 @@ public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
     @Transactional(rollbackFor = Exception.class)
     public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
         //1.根据申报数据生成任务数据
-        projectPlanSurveyService.initPlanDetails(projectPlan);
+        projectPlanSurveyService.initSurveyPlanDetails(projectPlan);
         projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
         projectPlan.setBisAutoComplete(true);
         projectPlanService.updateProjectPlan(projectPlan);

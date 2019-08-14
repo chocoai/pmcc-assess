@@ -101,9 +101,6 @@ public class SurveyAssetInventoryRightService {
     }
 
     public List<SurveyAssetInventoryRightVo> getVoList(List<SurveyAssetInventoryRight> list) {
-        if (CollectionUtils.isEmpty(list)) {
-            return null;
-        }
         return LangUtils.transform(list, p -> {
             return getSurveyAssetInventoryRightVo(p);
         });
@@ -112,12 +109,7 @@ public class SurveyAssetInventoryRightService {
     public SurveyAssetInventoryRightVo getSurveyAssetInventoryRightVo(SurveyAssetInventoryRight right){
         SurveyAssetInventoryRightVo surveyAssetInventoryRightVo = new SurveyAssetInventoryRightVo();
         BeanUtils.copyProperties(right, surveyAssetInventoryRightVo);
-        if (right.getCategory() != null) {
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(right.getCategory());
-            if (projectClassify != null) {
-                surveyAssetInventoryRightVo.setCategoryName(projectClassify.getName());
-            }
-        }
+        surveyAssetInventoryRightVo.setCategoryName(baseDataDicService.getNameById(right.getCategory()));
         if (right.getType() != null) {
             BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(right.getType());
             if (projectClassify != null) {
@@ -177,7 +169,7 @@ public class SurveyAssetInventoryRightService {
         int rowCount = sheet.getLastRowNum() + 1 - startRowNumber;//数据总行数
         StringBuilder errorMsg = new StringBuilder();
         int successCount = 0;//导入成功数据条数
-        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
+        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.HOUSE_INVENTORY_RIGHT_CATEGORY);
         for (int i = startRowNumber; i <= sheet.getLastRowNum(); i++) {
             try {
                 Row row = sheet.getRow(i);

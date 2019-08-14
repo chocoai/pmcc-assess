@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
@@ -223,32 +222,14 @@ public class SchemeAreaGroupService {
                             schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
                         }
                         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
-                        //获取到房屋中的出租占用情况描述
-                        BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId(), projectInfo.getProjectCategoryId());
-                        //取得他权中的担保权备注信息
-                        SurveyAssetInventory assetInventory = surveyAssetInventoryService.getDataByDeclareId(declareRecord.getId());
-                        List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightService.surveyAssetInventoryRights(assetInventory.getPlanDetailId());
-                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_GUARANTEE);
-                        if (baseDataDic != null && CollectionUtils.isNotEmpty(inventoryRights)) {
-                            StringBuilder stringBuilder = new StringBuilder();
-                            for (SurveyAssetInventoryRight inventoryRight : inventoryRights) {
-                                if (baseDataDic.getId().equals(inventoryRight.getCategory())) {
-                                    stringBuilder.append(inventoryRight.getRemark());
-                                }
-                            }
-                        }
-
                         schemeJudgeObject.setPid(0);
                         schemeJudgeObject.setBisSplit(false);
                         schemeJudgeObject.setSorting(i);
                         schemeJudgeObject.setCreator(commonService.thisUserAccount());
                         schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
-                        //schemeJudgeObjectService.makeJudgeObjectPosition(Lists.newArrayList(schemeJudgeObject.getId()));
-
                         //反写申报数据的区域id
                         declareRecord.setAreaGroupId(areaGroup.getId());
                         declareRecordDao.updateDeclareRecord(declareRecord);
-
                         removeList.add(declareRecord);//已被添加到区域的数据下次循环移除掉
                         i++;
                     }

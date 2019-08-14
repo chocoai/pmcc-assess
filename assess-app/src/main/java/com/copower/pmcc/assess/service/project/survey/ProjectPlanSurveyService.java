@@ -55,12 +55,12 @@ public class ProjectPlanSurveyService {
     private ProjectWorkStageService projectWorkStageService;
 
     /**
-     * 初始化阶段任务
+     * 初始化查勘阶段任务
      *
      * @param projectPlan
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initPlanDetails(ProjectPlan projectPlan) {
+    public void initSurveyPlanDetails(ProjectPlan projectPlan) {
         //判断该阶段是否已有任务
         List<ProjectPlanDetailsVo> planDetailsVoList = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(projectPlan.getId());
         if (CollectionUtils.isNotEmpty(planDetailsVoList)) return;
@@ -72,10 +72,10 @@ public class ProjectPlanSurveyService {
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
         //案例调查任务和他项权利任务与项目挂钩
         if (CollectionUtils.isEmpty(projectPhases)) return;
-        List<ProjectPhase> filter = LangUtils.filter(projectPhases,
-                o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)
-                || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT)
-                        || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.SCENE_EXPLORE_CIP));
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
+        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)
+                || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT));
         if (CollectionUtils.isNotEmpty(filter)) {//案例调查任务
             projectPhases.removeAll(filter);
             String projectManager = projectMemberService.getProjectManager(projectId);
@@ -101,15 +101,20 @@ public class ProjectPlanSurveyService {
                 projectPlanDetail.setProjectPhaseId(projectPhase.getId());
                 projectPlanDetail.setSorting(10000);
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
+                try {
+                    projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetail, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+                } catch (BpmException e) {
+                    logger.error("查勘添加task任务"+e.getMessage(),e);
+                }
             }
         }
-        generatePlanDetails(planId, projectId, workStageId, projectPhases, declareRecords);
+        generateSurveyPlanDetails(planId, projectInfo, projectWorkStage, projectPhases, declareRecords);
     }
 
     /**
      * 追加清查查勘任务
      */
-    public void appendPlanDetails(Integer projectId, Integer currStageSort) {
+    public void appendSurveyPlanDetails(Integer projectId, Integer currStageSort) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         List<ProjectPhase> projectPhases = Lists.newArrayList();
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
@@ -120,21 +125,20 @@ public class ProjectPlanSurveyService {
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
         if (CollectionUtils.isNotEmpty(declareRecords)) {
             ProjectPlan projectPlan = projectPlanService.getProjectPlan(projectId, currStageSort + 1);
-            generatePlanDetails(projectPlan.getId(), projectId, projectPlan.getWorkStageId(), projectPhases, declareRecords);
+            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+            generateSurveyPlanDetails(projectPlan.getId(), projectInfo, projectWorkStage, projectPhases, declareRecords);
         }
     }
 
-    private void generatePlanDetails(Integer planId, Integer projectId, Integer workStageId, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords) {
+    private void generateSurveyPlanDetails(Integer planId, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords) {
         int i = 1;
         ProjectPlanDetails projectPlanDetails = null;
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
-        String projectManager = projectMemberService.getProjectManager(projectId);
+        String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
         for (DeclareRecord declareRecord : declareRecords) {
             projectPlanDetails = new ProjectPlanDetails();
-            projectPlanDetails.setProjectWorkStageId(workStageId);
+            projectPlanDetails.setProjectWorkStageId(projectWorkStage.getId());
             projectPlanDetails.setPlanId(planId);
-            projectPlanDetails.setProjectId(projectId);
+            projectPlanDetails.setProjectId(projectInfo.getId());
             projectPlanDetails.setProjectPhaseName(declareRecord.getName());
             projectPlanDetails.setDeclareRecordId(declareRecord.getId());
             projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
@@ -144,9 +148,9 @@ public class ProjectPlanSurveyService {
             int j = 0;
             for (ProjectPhase projectPhase : projectPhases) {
                 ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
-                projectPlanDetail.setProjectWorkStageId(workStageId);
+                projectPlanDetail.setProjectWorkStageId(projectWorkStage.getId());
                 projectPlanDetail.setPlanId(planId);
-                projectPlanDetail.setProjectId(projectId);
+                projectPlanDetail.setProjectId(projectInfo.getId());
                 projectPlanDetail.setProjectPhaseName(projectPhase.getProjectPhaseName());
                 projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
                 projectPlanDetail.setPid(projectPlanDetails.getId());

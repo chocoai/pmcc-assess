@@ -94,7 +94,6 @@ public class SchemeProgrammeController {
         modelAndView.addObject("otherMethodList", mdCommonService.getOtherMethodList(projectInfoVo.getProjectCategoryId()));//其它方法
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
-        modelAndView.addObject("inventoryRightTypeList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE));
         modelAndView.addObject("planId", planId);
         BaseDataDic entrustPurposeData = baseDataDicService.getDataDicById(projectInfoVo.getEntrustPurpose());
         String valueDateExplain = baseDataDicService.getValueByKey("valueDateExplain", entrustPurposeData);
