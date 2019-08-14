@@ -50,6 +50,9 @@ public class NetInfoRecordController {
         String[] webTypeStr = new String[]{"公拍网", "淘宝司法拍卖网", "京东司法拍卖网", "京东资产拍卖网", "中国拍卖行业协会网-司法", "中国拍卖行业协会网-标的", "公共资源交易平台-雅安", "公共资源交易平台-成都"};
         List<String> webTypes = Arrays.asList(webTypeStr);
         modelAndView.addObject("webTypes", webTypes);
+        String[] unitListStr = new String[]{"建筑面积", "土地面积", "生产能力"};
+        List<String> unitList = Arrays.asList(unitListStr);
+        modelAndView.addObject("unitList", unitList);
         return modelAndView;
     }
 
@@ -88,5 +91,32 @@ public class NetInfoRecordController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getNetInfoRecordById", method = {RequestMethod.GET}, name = "通过id获取信息")
+    public HttpResult getById(Integer id) {
+        NetInfoRecord netInfoRecord = null;
+        try {
+            if (id != null) {
+                netInfoRecord = netInfoRecordDao.getInfoById(id);
+            }
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(String.format("异常! %s", e.getMessage()));
+        }
+        return HttpResult.newCorrectResult(netInfoRecord);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateNetInfoRecord", method = {RequestMethod.POST}, name = "保存")
+    public HttpResult saveAndUpdate(NetInfoRecord netInfoRecord) {
+        try {
+            if (netInfoRecord.getId() != null && !netInfoRecord.getId().equals(0)) {
+                netInfoRecordDao.updateInfo(netInfoRecord);
+            }
+            return HttpResult.newCorrectResult("保存 success!");
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("保存异常");
+        }
     }
 }
