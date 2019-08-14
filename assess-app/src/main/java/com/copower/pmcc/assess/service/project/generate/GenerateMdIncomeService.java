@@ -2,9 +2,7 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.aspose.words.BookmarkCollection;
-import com.aspose.words.Document;
-import com.aspose.words.DocumentBuilder;
+import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
@@ -33,6 +31,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -52,6 +51,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -60,6 +61,7 @@ import java.util.stream.Collectors;
  * @description:收益法报告字段处理
  */
 public class GenerateMdIncomeService implements Serializable {
+    private final LinkedList<String> chineseNumbers = Lists.newLinkedList(Arrays.asList("一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"));
     private Integer miId;
     private Integer projectId;
     private Integer areaId;
@@ -162,9 +164,9 @@ public class GenerateMdIncomeService implements Serializable {
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getRestrictionExplain());
                 }
-                //收益法月租金收入
+                //收益法确定客观月租金
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MonthRentalIncome.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.MonthRentalIncome));
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getMonthRentalIncome());
                 }
                 //月份数
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MonthNumber.getName())) {
@@ -402,7 +404,7 @@ public class GenerateMdIncomeService implements Serializable {
                 }
                 //收益法公式
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeMethodFormula.getName())) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeMethodFormula());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeMethodFormula());
                 }
                 //收益法报酬率
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomePayBack.getName())) {
@@ -434,7 +436,7 @@ public class GenerateMdIncomeService implements Serializable {
                 }
                 //收益法确定月租金方式
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeDetermineRentalWay.getName())) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeDetermineRentalWay());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeDetermineRentalWay());
                 }
             } catch (Exception e) {
                 baseService.writeExceptionInfo(e);
@@ -461,7 +463,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    public String getIncomeRegionalCities() throws Exception {
+    private synchronized String getIncomeRegionalCities() throws Exception {
         String s = getSchemeAreaGroup().getAreaName();
         if (StringUtils.isNotBlank(s)) {
             return s;
@@ -475,7 +477,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:31
      */
-    public String getIncomeAssessmentArea() throws Exception {
+    private synchronized String getIncomeAssessmentArea() throws Exception {
         BigDecimal bigDecimal = getSchemeJudgeObject().getEvaluationArea();
         if (bigDecimal != null) {
             return String.format("%s%s", bigDecimal.toString(), "㎡");
@@ -489,7 +491,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:18
      */
-    public String getIncomebuildingStructureType() throws Exception {
+    private synchronized String getIncomebuildingStructureType() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         if (basicApply != null) {
@@ -509,7 +511,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:10
      */
-    public String getIncomeCompletionTime() throws Exception {
+    private synchronized String getIncomeCompletionTime() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         if (basicApply != null) {
@@ -529,7 +531,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 10:34
      */
-    public String getIncomeUsedLife() throws Exception {
+    private synchronized String getIncomeUsedLife() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
@@ -553,7 +555,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 13:41
      */
-    public String getIncomeBuildEconomicLife() throws Exception {
+    private synchronized String getIncomeBuildEconomicLife() throws Exception {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
@@ -561,10 +563,12 @@ public class GenerateMdIncomeService implements Serializable {
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             if (generateBaseExamineService.getBasicBuilding() != null) {
                 if (generateBaseExamineService.getBasicBuilding().getResidenceUseYear() != null) {
-                    return baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getResidenceUseYear());
+                    String v = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getResidenceUseYear());
+                    return generateCommonMethod.getNumber(v);
                 }
                 if (generateBaseExamineService.getBasicBuilding().getIndustryUseYear() != null) {
-                    return dataBuildingNewRateService.getByiDdataBuildingNewRate(generateBaseExamineService.getBasicBuilding().getIndustryUseYear()).getDurableLife().toString();
+                    String v = dataBuildingNewRateService.getByiDdataBuildingNewRate(generateBaseExamineService.getBasicBuilding().getIndustryUseYear()).getDurableLife().toString();
+                    return generateCommonMethod.getNumber(v);
                 }
             }
         }
@@ -577,7 +581,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 10:27
      */
-    public String getIncomeValuePoint() throws Exception {
+    private synchronized String getIncomeValuePoint() throws Exception {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         if (schemeAreaGroup.getValueTimePoint() != null) {
             return DateUtils.formatDate(schemeAreaGroup.getValueTimePoint(), DateUtils.DATE_CHINESE_PATTERN);
@@ -591,7 +595,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:05
      */
-    public String getIncomeSurplusLandUseYear() throws Exception {
+    private synchronized String getIncomeSurplusLandUseYear() throws Exception {
         if (getMdIncome().getLandRemainingYear() != null) {
             return getMdIncome().getLandRemainingYear().toString();
         }
@@ -604,7 +608,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 13:54
      */
-    public String getIncomeHouseSurplusYear() throws Exception {
+    private synchronized String getIncomeHouseSurplusYear() throws Exception {
         if (getMdIncome().getHouseRemainingYear() != null) {
             return getMdIncome().getHouseRemainingYear().toString();
         }
@@ -617,7 +621,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:01
      */
-    public String getIncomeYears() throws Exception {
+    private synchronized String getIncomeYears() throws Exception {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         List<Double> doubleList = Lists.newArrayList(new Double(0));
         if (CollectionUtils.isNotEmpty(leaseVoList)) {
@@ -634,34 +638,89 @@ public class GenerateMdIncomeService implements Serializable {
     }
 
     /**
+     * 收益法确定客观月租金
+     *
+     * @return
+     * @throws Exception
+     */
+    private synchronized String getMonthRentalIncome() throws Exception {
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        String localPath = getLocalPath();
+        final List<KeyValueDto> keyValueDtoList = Lists.newArrayList(new KeyValueDto("text-indent", "2em"), new KeyValueDto("font-family", "仿宋_GB2312"), new KeyValueDto("font-size", "14.0pt"));
+        List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList().stream().sorted(new Comparator<MdIncomeLeaseVo>() {
+            @Override
+            public int compare(MdIncomeLeaseVo o1, MdIncomeLeaseVo o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            for (int i = 0; i < leaseVoList.size(); i++) {
+                MdIncomeLeaseVo vo = leaseVoList.get(i);
+                if (vo.getMcId() != null) {
+                    String path = getMdComparePath(vo.getMcId());
+                    if (StringUtils.isNotBlank(path)) {
+                        String value = String.join("", "第", getChineseNumber(new Integer(i)), "段", "调用比较法测算");
+                        builder.insertHtml(AsposeUtils.getWarpCssHtml(value, keyValueDtoList));
+                        document.appendDocument(new Document(path), ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                    }
+                } else {
+                    //没有调用市场比较法则说出收入来源说明
+                    if (StringUtils.isNotBlank(vo.getRentalIncomeRemark())) {
+                        String value = String.join("", "第", getChineseNumber(new Integer(i)), "段", "租金收入来源", ":", vo.getRentalIncomeRemark(), ";");
+                        builder.insertHtml(AsposeUtils.getWarpCssHtml(value, keyValueDtoList));
+                    }
+                }
+                if (vo.getRentalIncome() != null) {
+                    String value = String.join("", DateUtils.format(vo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN), "-", DateUtils.format(vo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN), ":", vo.getRentalIncome().toString(), ";");
+                    value = String.join("", "第", getChineseNumber(i), "段", value);
+                    builder.insertHtml(AsposeUtils.getWarpCssHtml(value, keyValueDtoList), false);
+                }
+            }
+
+        }
+        document.save(localPath);
+        return localPath;
+    }
+
+    /**
      * 功能描述: 收益法中的比较法
      *
      * @author: zch
      * @date: 2019/2/28 14:13
      */
-    private String getIncomeGetMdCompare() throws Exception {
+    private synchronized String getIncomeGetMdCompare() throws Exception {
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
         List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList();
-        if (CollectionUtils.isNotEmpty(leaseVoList)){
-            if (leaseVoList.stream().anyMatch(oo -> oo.getMcId() != null)){
-                Integer mcId = leaseVoList.stream().filter(oo -> oo.getMcId() != null).findFirst().get().getMcId() ;
-                GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), mcId, areaId);
-                String compareFile = generateMdCompareService.generateCompareFile();
-                File file = new File(compareFile);
-                if (file.isFile()) {
-                    return compareFile;
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            for (MdIncomeLeaseVo vo : leaseVoList) {
+                if (vo.getMcId() != null) {
+                    String path = getMdComparePath(vo.getMcId());
+                    if (StringUtils.isNotBlank(path)) {
+                        document.appendDocument(new Document(path), ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                    }
                 }
             }
         }
-        Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
         builder.write("");
         String localPath = getLocalPath();
-        document.save(localPath) ;
+        document.save(localPath);
         return localPath;
     }
 
+    private String getMdComparePath(Integer mcId) throws Exception {
+        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), mcId, areaId);
+        String compareFile = generateMdCompareService.generateCompareFile();
+        File file = new File(compareFile);
+        if (file.isFile()) {
+            return compareFile;
+        }
+        return null;
+    }
+
     //收益法单价内涵
-    public String getIncomeUnitPriceConnotation() throws Exception {
+    private synchronized String getIncomeUnitPriceConnotation() throws Exception {
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         if (basicApply != null) {
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -674,10 +733,7 @@ public class GenerateMdIncomeService implements Serializable {
     }
 
     //收益法确定月租金方式
-    public String getIncomeDetermineRentalWay() throws Exception {
-        String localPath = getLocalPath();
-        Document document = new Document();
-        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
+    private synchronized String getIncomeDetermineRentalWay() throws Exception {
         List<MdIncomeLeaseVo> mdIncomeLeaseList = getMdIncomeLeaseList();
         boolean flag = false;
         if (CollectionUtils.isNotEmpty(mdIncomeLeaseList)) {
@@ -690,9 +746,7 @@ public class GenerateMdIncomeService implements Serializable {
         if (!flag) {
             val = "租金采用市场调查方法求取:比较价格V=调查价格×∑修正系数";
         }
-        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(val), false);
-        document.save(localPath);
-        return localPath;
+        return val;
     }
 
     /**
@@ -701,35 +755,22 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 16:37
      */
-    public String getIncomeMethodFormula() throws Exception {
-        String localPath = getLocalPath();
-        Document document = new Document();
-        List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
-        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
-        List<DataEvaluationMethod> dataEvaluationMethodList = evaluationMethodService.getMethodAllList();
-        DataEvaluationMethod dataEvaluationMethod = null;
-        BaseDataDic byFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
-        if (CollectionUtils.isNotEmpty(dataEvaluationMethodList)) {
-            if (dataEvaluationMethodList.stream().anyMatch(oo -> Objects.equal(byFieldName.getName(), oo.getName()))) {
-                dataEvaluationMethod = dataEvaluationMethodList.stream().filter(oo -> Objects.equal(byFieldName.getName(), oo.getName())).findFirst().get();
-            }
-        }
-        if (dataEvaluationMethod != null) {
-            List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethod.getMethod());
+    private synchronized String getIncomeMethodFormula() throws Exception {
+        String s = "";
+        BaseDataDic income = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
+        if (income != null) {
+            List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(income.getId());
             if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
                 if (StringUtils.isNotBlank(dataMethodFormulaList.stream().findFirst().get().getFormula())) {
-                    String s = null;
                     if (leaseVoList.size() == 1) {
                         s = dataMethodFormulaList.stream().findFirst().get().getFormula();
                     } else {
                         s = "V1+V2";
                     }
-                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(s), false);
                 }
             }
         }
-        document.save(localPath);
-        return localPath;
+        return s;
     }
 
     /**
@@ -738,7 +779,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:44
      */
-    public String getTerminationDateLand() throws Exception {
+    private synchronized String getTerminationDateLand() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
@@ -755,7 +796,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:35
      */
-    public String getIncomeSetUse() {
+    private synchronized String getIncomeSetUse() {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getSetUse() != null) {
             DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
@@ -772,7 +813,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:21
      */
-    public String getPropertyRightCertificateIncomeLaw() throws Exception {
+    private synchronized String getPropertyRightCertificateIncomeLaw() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
@@ -797,7 +838,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @return
      * @throws Exception
      */
-    public String getRestrictionExplain() {
+    private synchronized String getRestrictionExplain() {
         if (StringUtils.isNotBlank(getMdIncome().getRestrictionExplain())) {
             return getMdIncome().getRestrictionExplain();
         }
@@ -810,10 +851,13 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 16:28
      */
-    public String getTenancyrestrictionReamrk() throws Exception {
-        StringBuilder builder = new StringBuilder(8);
+    public synchronized String getTenancyrestrictionReamrk() throws Exception {
+        String value = "不考虑估价对象租赁因素影响";
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
-        if (leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+        if (CollectionUtils.isEmpty(leaseVoList)) {
+            return value;
+        }
+        List<MdIncomeLeaseCostVo> target = leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
             if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
                 return false;
             }
@@ -821,23 +865,20 @@ public class GenerateMdIncomeService implements Serializable {
                 return false;
             }
             return true;
-        }).count() >= 1) {
-            leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
-                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
-                    return false;
-                }
-                if (StringUtils.isEmpty(mdIncomeLeaseCostVo.getAdditional())) {
-                    return false;
-                }
-                return true;
-            }).forEach(mdIncomeLeaseCostVo -> {
-                this.appendElement(builder, mdIncomeLeaseCostVo.getAdditional(), mdIncomeLeaseCostVo.getBeginDate(), mdIncomeLeaseCostVo.getEndDate());
-            });
+        }).sorted(new Comparator<MdIncomeLeaseCostVo>() {
+            @Override
+            public int compare(MdIncomeLeaseCostVo o1, MdIncomeLeaseCostVo o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }.reversed()).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(target)) {
+            return value;
         }
-        if (StringUtils.isEmpty(builder.toString().trim())) {
-            builder.append("不考虑估价对象租赁因素影响");
+        final Map<Integer, String> map = Maps.newHashMap();
+        for (int i = 0; i < target.size(); i++) {
+            map.put(new Integer(i), target.get(i).getAdditional());
         }
-        return builder.toString();
+        return this.toEachDesc(map, "", "", ";");
     }
 
     /**
@@ -855,89 +896,89 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    public String getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
-        StringBuilder builder = new StringBuilder(8);
+    private synchronized String getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseVo> mdIncomeLeaseList = getMdIncomeLeaseList();
-        if (CollectionUtils.isNotEmpty(mdIncomeLeaseList)) {
-            if (mdIncomeLeaseList.stream().filter(costVo -> {
-                if (costVo.getBeginDate() == null || costVo.getEndDate() == null) {
-                    return false;
-                }
-                return true;
-            }).count() >= 1) {
-                mdIncomeLeaseList.stream().filter(incomeLeaseVo -> {
-                    if (incomeLeaseVo.getBeginDate() == null || incomeLeaseVo.getEndDate() == null) {
-                        return false;
-                    }
-                    return true;
-                }).forEach(mdIncomeLeaseVo -> {
-                    BigDecimal cost = null;
-                    String value = null;
-                    switch (incomeEnum) {
-                        case MonthRentalIncome:
-                            cost = mdIncomeLeaseVo.getRentalIncome();
-                            break;
-                        case IncomeAdditionalCapture:
-                            if (NumberUtils.isNumber(mdIncomeLeaseVo.getAdditionalCapture())) {
-                                BigDecimal bigDecimal = new BigDecimal(mdIncomeLeaseVo.getAdditionalCapture());
-                                bigDecimal = bigDecimal.multiply(new BigDecimal(100));
-                                bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
-                                value = String.format("%s%s", bigDecimal.toString(), "%");
-                            }
-                            break;
-                        case IncomeAdditionalCaptureRemark:
-                            value = mdIncomeLeaseVo.getAdditionalCaptureRemark();
-                            break;
-                        case IncomeAdditionalCaptureCost:
-                            if (NumberUtils.isNumber(mdIncomeLeaseVo.getAdditionalCapture())) {
-                                MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseVo.getSectionId());
-                                if (mdIncomeDateSection != null) {
-                                    cost = mdIncomeDateSection.getIncomeTotal().multiply(new BigDecimal(mdIncomeLeaseVo.getAdditionalCapture()));
-                                }
-                            }
-                            break;
-                        case MonthNumber:
-                            if (mdIncomeLeaseVo.getMonthNumber() != null) {
-                                cost = new BigDecimal(mdIncomeLeaseVo.getMonthNumber());
-                            }
-                            break;
-                        case IncomeDepositCost:
-                            if (mdIncomeLeaseVo.getDeposit() != null && mdIncomeLeaseVo.getDepositRate() != null) {
-                                cost = mdIncomeLeaseVo.getDeposit().multiply(mdIncomeLeaseVo.getDepositRate());
-                            }
-                            break;
-                        case Rentals:
-                            cost = mdIncomeLeaseVo.getRentals();
-                            break;
-                        case YearDepositRate:
-                            cost = mdIncomeLeaseVo.getDepositRate().multiply(new BigDecimal(100));
-                            break;
-                        case OtherIncome:
-                            cost = mdIncomeLeaseVo.getOtherIncome();
-                            break;
-                        case IncomeDepositExplain:
-                            value = mdIncomeLeaseVo.getDepositRemark();
-                            break;
-                        case OtherIncomeExplain:
-                            value = mdIncomeLeaseVo.getOtherIncomeRemark();
-                            break;
-                        default:
-                            break;
-                    }
-                    if (cost != null) {
-                        cost = cost.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        this.appendElement(builder, cost.toString(), mdIncomeLeaseVo.getBeginDate(), mdIncomeLeaseVo.getEndDate());
-                    }
-                    if (StringUtils.isNotBlank(value)) {
-                        this.appendElement(builder, value, mdIncomeLeaseVo.getBeginDate(), mdIncomeLeaseVo.getEndDate());
-                    }
-                });
+        if (CollectionUtils.isEmpty(mdIncomeLeaseList)) {
+            return errorStr;
+        }
+        String separator = "";
+        final Map<Integer, String> map = Maps.newHashMap();
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        mdIncomeLeaseList.stream().filter(incomeLeaseVo -> {
+            if (incomeLeaseVo.getBeginDate() == null || incomeLeaseVo.getEndDate() == null) {
+                return false;
             }
+            return true;
+        }).sorted(new Comparator<MdIncomeLeaseVo>() {
+            @Override
+            public int compare(MdIncomeLeaseVo o1, MdIncomeLeaseVo o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }.reversed()).forEach(mdIncomeLeaseVo -> {
+            BigDecimal cost = null;
+            String value = null;
+            switch (incomeEnum) {
+                case IncomeAdditionalCapture:
+                    if (NumberUtils.isNumber(mdIncomeLeaseVo.getAdditionalCapture())) {
+                        BigDecimal bigDecimal = new BigDecimal(mdIncomeLeaseVo.getAdditionalCapture());
+                        bigDecimal = bigDecimal.multiply(new BigDecimal(100));
+                        bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        value = String.format("%s%s", bigDecimal.toString(), "%");
+                    }
+                    break;
+                case IncomeAdditionalCaptureRemark:
+                    value = mdIncomeLeaseVo.getAdditionalCaptureRemark();
+                    break;
+                case IncomeAdditionalCaptureCost:
+                    if (NumberUtils.isNumber(mdIncomeLeaseVo.getAdditionalCapture())) {
+                        MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseVo.getSectionId());
+                        if (mdIncomeDateSection != null) {
+                            cost = mdIncomeDateSection.getIncomeTotal().multiply(new BigDecimal(mdIncomeLeaseVo.getAdditionalCapture()));
+                        }
+                    }
+                    break;
+                case MonthNumber:
+                    if (mdIncomeLeaseVo.getMonthNumber() != null) {
+                        cost = new BigDecimal(mdIncomeLeaseVo.getMonthNumber());
+                    }
+                    break;
+                case IncomeDepositCost:
+                    if (mdIncomeLeaseVo.getDeposit() != null && mdIncomeLeaseVo.getDepositRate() != null) {
+                        value = String.join("", mdIncomeLeaseVo.getDeposit().toString(), " * ", mdIncomeLeaseVo.getDepositRate().toString(), " = ", mdIncomeLeaseVo.getDeposit().multiply(mdIncomeLeaseVo.getDepositRate()).setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    break;
+                case Rentals:
+                    cost = mdIncomeLeaseVo.getRentals();
+                    break;
+                case YearDepositRate:
+                    cost = mdIncomeLeaseVo.getDepositRate().multiply(new BigDecimal(100));
+                    break;
+                case OtherIncome:
+                    cost = mdIncomeLeaseVo.getOtherIncome();
+                    break;
+                case IncomeDepositExplain:
+                    value = mdIncomeLeaseVo.getDepositRemark();
+                    break;
+                case OtherIncomeExplain:
+                    value = mdIncomeLeaseVo.getOtherIncomeRemark();
+                    break;
+                default:
+                    break;
+            }
+            if (cost != null) {
+                cost = cost.setScale(2, BigDecimal.ROUND_HALF_UP);
+                map.put(atomicInteger.get(), cost.toString());
+                atomicInteger.incrementAndGet();
+            }
+            if (StringUtils.isNotBlank(value)) {
+                map.put(atomicInteger.get(), value);
+                atomicInteger.incrementAndGet();
+            }
+        });
+        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.IncomeDepositCost.getName())) {
+            separator = ControlChar.LINE_BREAK;
         }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(errorStr);
-        }
-        return builder.toString();
+        return this.toEachDesc(map, "", "", separator);
     }
 
 
@@ -947,89 +988,92 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    public String getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
-        StringBuilder builder = new StringBuilder(8);
+    private synchronized String getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
-        if (CollectionUtils.isNotEmpty(leaseVoList)) {
-            if (leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
-                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
-                    return false;
-                }
-                return true;
-            }).count() >= 1) {
-                leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
-                    if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
-                        return false;
-                    }
-                    return true;
-                }).forEach(mdIncomeLeaseCostVo -> {
-                    BigDecimal cost = null;
-                    String value = null;
-                    MdIncomeDateSection mdIncomeDateSection = null;
-                    switch (incomeEnum) {
-                        case ReplacementCost:
-                            if (mdIncomeLeaseCostVo.getReplacementValue() != null) {
-                                cost = mdIncomeLeaseCostVo.getReplacementValue();
-                            }
-                            break;
-                        case GrossIncome:
-                            mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
-                            if (mdIncomeDateSection != null) {
-                                if (mdIncomeDateSection.getIncomeTotal() != null) {
-                                    cost = mdIncomeDateSection.getIncomeTotal();
-                                }
-                            }
-                            break;
-                        case AnnualOperatingCost:
-                            mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
-                            if (mdIncomeDateSection != null) {
-                                if (mdIncomeDateSection.getCostTotal() != null) {
-                                    cost = mdIncomeDateSection.getCostTotal();
-                                }
-                            }
-                            break;
-                        case RentGrowthForecast:
-                            mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
-                            if (mdIncomeDateSection != null) {
-                                if (mdIncomeDateSection.getRentalGrowthRate() != null) {
-                                    cost = mdIncomeDateSection.getRentalGrowthRate();
-                                }
-                            }
-                            break;
-                        case AnnualNetIncome:
-                            mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
-                            if (mdIncomeDateSection != null) {
-                                if (NumberUtils.isNumber(mdIncomeDateSection.getNetProfit())) {
-                                    cost = new BigDecimal(mdIncomeDateSection.getNetProfit());
-                                }
-                            }
-                            break;
-                        case TransactionTaxeFeeExplain:
-                            value = mdIncomeLeaseCostVo.getTransactionTaxeFeeExplain();
-                            break;
-                        case RentalGrowthRateExplain:
-                            mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
-                            if (mdIncomeDateSection != null) {
-                                value = mdIncomeDateSection.getRentalGrowthRateExplain();
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    if (cost != null) {
-                        cost = cost.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        this.appendElement(builder, cost.toString(), mdIncomeLeaseCostVo.getBeginDate(), mdIncomeLeaseCostVo.getEndDate());
-                    }
-                    if (StringUtils.isNotBlank(value)) {
-                        this.appendElement(builder, value, mdIncomeLeaseCostVo.getBeginDate(), mdIncomeLeaseCostVo.getEndDate());
-                    }
-                });
+        if (CollectionUtils.isEmpty(leaseVoList)) {
+            return errorStr;
+        }
+        final Map<Integer, String> map = Maps.newHashMap();
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        String separator = "";
+        leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+            if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                return false;
             }
+            return true;
+        }).sorted(new Comparator<MdIncomeLeaseCostVo>() {
+            @Override
+            public int compare(MdIncomeLeaseCostVo o1, MdIncomeLeaseCostVo o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }.reversed()).forEach(mdIncomeLeaseCostVo -> {
+            BigDecimal cost = null;
+            String value = null;
+            MdIncomeDateSection mdIncomeDateSection = null;
+            switch (incomeEnum) {
+                case ReplacementCost:
+                    if (mdIncomeLeaseCostVo.getReplacementValue() != null) {
+                        cost = mdIncomeLeaseCostVo.getReplacementValue();
+                    }
+                    break;
+                case GrossIncome:
+                    mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+                    if (mdIncomeDateSection != null) {
+                        if (mdIncomeDateSection.getIncomeTotal() != null) {
+                            cost = mdIncomeDateSection.getIncomeTotal();
+                        }
+                    }
+                    break;
+                case AnnualOperatingCost:
+                    mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+                    if (mdIncomeDateSection != null) {
+                        if (mdIncomeDateSection.getCostTotal() != null) {
+                            cost = mdIncomeDateSection.getCostTotal();
+                        }
+                    }
+                    break;
+                case RentGrowthForecast:
+                    mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+                    if (mdIncomeDateSection != null) {
+                        if (mdIncomeDateSection.getRentalGrowthRate() != null) {
+                            cost = mdIncomeDateSection.getRentalGrowthRate();
+                        }
+                    }
+                    break;
+                case AnnualNetIncome:
+                    mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+                    if (mdIncomeDateSection != null) {
+                        if (NumberUtils.isNumber(mdIncomeDateSection.getNetProfit())) {
+                            cost = new BigDecimal(mdIncomeDateSection.getNetProfit());
+                        }
+                    }
+                    break;
+                case TransactionTaxeFeeExplain:
+                    value = mdIncomeLeaseCostVo.getTransactionTaxeFeeExplain();
+                    break;
+                case RentalGrowthRateExplain:
+                    mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+                    if (mdIncomeDateSection != null) {
+                        value = mdIncomeDateSection.getRentalGrowthRateExplain();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (cost != null) {
+                cost = cost.setScale(2, BigDecimal.ROUND_HALF_UP);
+                map.put(atomicInteger.get(), cost.toString());
+                atomicInteger.incrementAndGet();
+            }
+            if (StringUtils.isNotBlank(value)) {
+                map.put(atomicInteger.get(), value);
+                atomicInteger.incrementAndGet();
+            }
+        });
+        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.AnnualOperatingCost.getName())) {
+            separator = ControlChar.LINE_BREAK;
         }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(errorStr);
-        }
-        return builder.toString();
+        return this.toEachDesc(map, "", "", separator);
     }
 
 
@@ -1039,72 +1083,70 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    public String getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
-        StringBuilder builder = new StringBuilder(8);
+    private synchronized String getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
-        if (CollectionUtils.isNotEmpty(leaseVoList)) {
-            if (leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
-                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
-                    return false;
-                }
-                return true;
-            }).count() >= 1) {
-                leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
-                    if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
-                        return false;
-                    }
-                    return true;
-                }).forEach(mdIncomeLeaseCostVo -> {
-                    BigDecimal cost = null;
-                    switch (incomeEnum) {
-                        case IncomeTransaction:
-                            if (mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio() != null) {
-                                cost = mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio();
-                            }
-                            break;
-                        case MaintenanceCost:
-                            if (mdIncomeLeaseCostVo.getMaintenanceCostRatio() != null) {
-                                cost = mdIncomeLeaseCostVo.getMaintenanceCostRatio();
-                            }
-                            break;
-                        case InsurancePremiumCost:
-                            if (mdIncomeLeaseCostVo.getInsurancePremiumRatio() != null) {
-                                cost = mdIncomeLeaseCostVo.getInsurancePremiumRatio();
-                            }
-                            break;
-                        case ManagementCost:
-                            if (mdIncomeLeaseCostVo.getManagementCostRatio() != null) {
-                                cost = mdIncomeLeaseCostVo.getManagementCostRatio();
-                            }
-                            break;
-                        case IncomeAdditionalRatioCost:
-                            if (mdIncomeLeaseCostVo.getAdditionalRatio() != null) {
-                                cost = mdIncomeLeaseCostVo.getAdditionalRatio();
-                            }
-                            break;
-                        case LandUseCost:
-                            if (mdIncomeLeaseCostVo.getLandUseTax() != null) {
-                                cost = mdIncomeLeaseCostVo.getLandUseTax();
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
-                    if (mdIncomeDateSection != null) {
-                        if (mdIncomeDateSection.getIncomeTotal() != null) {
-                            BigDecimal multiply = cost.multiply(mdIncomeDateSection.getIncomeTotal());
-                            multiply = multiply.setScale(2, BigDecimal.ROUND_HALF_UP);
-                            this.appendElement(builder, multiply.toString(), mdIncomeDateSection.getBeginDate(), mdIncomeDateSection.getEndDate());
-                        }
-                    }
-                });
+        if (CollectionUtils.isEmpty(leaseVoList)) {
+            return errorStr;
+        }
+        final Map<Integer, String> map = Maps.newHashMap();
+        final AtomicInteger value = new AtomicInteger(0);
+        leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+            if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                return false;
             }
-        }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(errorStr);
-        }
-        return builder.toString();
+            return true;
+        }).sorted(new Comparator<MdIncomeLeaseCostVo>() {
+            @Override
+            public int compare(MdIncomeLeaseCostVo o1, MdIncomeLeaseCostVo o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }.reversed()).forEach(mdIncomeLeaseCostVo -> {
+            BigDecimal cost = null;
+            switch (incomeEnum) {
+                case IncomeTransaction:
+                    if (mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio() != null) {
+                        cost = mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio();
+                    }
+                    break;
+                case MaintenanceCost:
+                    if (mdIncomeLeaseCostVo.getMaintenanceCostRatio() != null) {
+                        cost = mdIncomeLeaseCostVo.getMaintenanceCostRatio();
+                    }
+                    break;
+                case InsurancePremiumCost:
+                    if (mdIncomeLeaseCostVo.getInsurancePremiumRatio() != null) {
+                        cost = mdIncomeLeaseCostVo.getInsurancePremiumRatio();
+                    }
+                    break;
+                case ManagementCost:
+                    if (mdIncomeLeaseCostVo.getManagementCostRatio() != null) {
+                        cost = mdIncomeLeaseCostVo.getManagementCostRatio();
+                    }
+                    break;
+                case IncomeAdditionalRatioCost:
+                    if (mdIncomeLeaseCostVo.getAdditionalRatio() != null) {
+                        cost = mdIncomeLeaseCostVo.getAdditionalRatio();
+                    }
+                    break;
+                case LandUseCost:
+                    if (mdIncomeLeaseCostVo.getLandUseTax() != null) {
+                        cost = mdIncomeLeaseCostVo.getLandUseTax();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+            if (mdIncomeDateSection != null) {
+                if (mdIncomeDateSection.getIncomeTotal() != null) {
+                    BigDecimal multiply = cost.multiply(mdIncomeDateSection.getIncomeTotal());
+                    multiply = multiply.setScale(2, BigDecimal.ROUND_HALF_UP);
+                    map.put(value.get(), multiply.toString());
+                    value.incrementAndGet();
+                }
+            }
+        });
+        return this.toEachDesc(map, "", "", "");
     }
 
     /**
@@ -1113,125 +1155,123 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    public String getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum incomeEnum) {
-        StringBuilder builder = new StringBuilder(8);
+    private synchronized String getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
-        if (CollectionUtils.isNotEmpty(leaseVoList)) {
-            if (leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
-                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
-                    return false;
-                }
-                return true;
-            }).count() >= 1) {
-                leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
-                    if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
-                        return false;
-                    }
-                    return true;
-                }).forEach(mdIncomeLeaseCostVo -> {
-                    BigDecimal decimal = null;
-                    switch (incomeEnum) {
-                        case IncomesalesTaxRatio:
-                            if (mdIncomeLeaseCostVo.getSalesTaxRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getSalesTaxRatio();
-                            }
-                            break;
-                        case IncomesalesTaxRatioCorrect:
-                            if (mdIncomeLeaseCostVo.getSalesTaxRatio() != null) {
-                                decimal = new BigDecimal(1 + mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue());
-                                decimal = decimal.multiply(mdIncomeLeaseCostVo.getSalesTaxRatio());
-                            }
-                            break;
-                        case IncomePropertyTax:
-                            if (mdIncomeLeaseCostVo.getPropertyTaxRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getPropertyTaxRatio();
-                            }
-                            break;
-                        case IncomePropertyTaxCorrect:
-                            if (mdIncomeLeaseCostVo.getSalesTaxRatio() != null && mdIncomeLeaseCostVo.getPropertyTaxRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getPropertyTaxRatio().multiply(new BigDecimal(1).add(mdIncomeLeaseCostVo.getSalesTaxRatio()));
-                            }
-                            break;
-                        case IncomeCityLocalEducationTaxCorrect:
-                            if (mdIncomeLeaseCostVo.getConstructionTaxRatio() == null) {
-                                break;
-                            }
-                            if (mdIncomeLeaseCostVo.getEducationRatio() == null) {
-                                break;
-                            }
-                            if (mdIncomeLeaseCostVo.getLocalEducationRatio() == null) {
-                                break;
-                            }
-                            if (mdIncomeLeaseCostVo.getSalesTaxRatio() == null) {
-                                break;
-                            }
-                            BigDecimal start = mdIncomeLeaseCostVo.getConstructionTaxRatio().add(mdIncomeLeaseCostVo.getEducationRatio()).add(mdIncomeLeaseCostVo.getLocalEducationRatio());
-                            BigDecimal end = new BigDecimal(1 + mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue()).multiply(mdIncomeLeaseCostVo.getSalesTaxRatio());
-                            decimal = start.multiply(end);
-                            break;
-                        case IncomestampTax:
-                            if (mdIncomeLeaseCostVo.getStampDutyRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getStampDutyRatio();
-                            }
-                            break;
-                        case IncomeconstructionTaxRatio:
-                            if (mdIncomeLeaseCostVo.getConstructionTaxRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getConstructionTaxRatio();
-                            }
-                            break;
-                        case IncomeEducationRatio:
-                            if (mdIncomeLeaseCostVo.getEducationRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getEducationRatio();
-                            }
-                            break;
-                        case IncomeLocalEducationRatio:
-                            if (mdIncomeLeaseCostVo.getLocalEducationRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getLocalEducationRatio();
-                            }
-                            break;
-                        case IncomeTransactionTax:
-                            if (mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio();
-                            }
-                            break;
-                        case LandUseTax:
-                            if (mdIncomeLeaseCostVo.getLandUseTax() != null) {
-                                decimal = mdIncomeLeaseCostVo.getLandUseTax();
-                            }
-                            break;
-                        case InsurancePremiumTax:
-                            if (mdIncomeLeaseCostVo.getInsurancePremiumRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getInsurancePremiumRatio();
-                            }
-                            break;
-                        case MaintenanceCostRatio:
-                            if (mdIncomeLeaseCostVo.getMaintenanceCostRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getMaintenanceCostRatio();
-                            }
-                            break;
-                        case ManagementCostTax:
-                            if (mdIncomeLeaseCostVo.getManagementCostRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getManagementCostRatio();
-                            }
-                            break;
-                        case IncomeAdditionalRatio:
-                            if (mdIncomeLeaseCostVo.getAdditionalRatio() != null) {
-                                decimal = mdIncomeLeaseCostVo.getAdditionalRatio();
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    if (decimal != null) {
-                        this.appendElement(builder, generateCommonMethod.getPercentileSystem(decimal), mdIncomeLeaseCostVo.getBeginDate(), mdIncomeLeaseCostVo.getEndDate());
-                    }
-                });
+        if (CollectionUtils.isEmpty(leaseVoList)) {
+            return errorStr;
+        }
+        final Map<Integer, String> map = Maps.newHashMap();
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+            if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                return false;
             }
-        }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(errorStr);
-        }
-        return builder.toString();
+            return true;
+        }).sorted(new Comparator<MdIncomeLeaseCostVo>() {
+            @Override
+            public int compare(MdIncomeLeaseCostVo o1, MdIncomeLeaseCostVo o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }.reversed()).forEach(mdIncomeLeaseCostVo -> {
+            BigDecimal decimal = null;
+            switch (incomeEnum) {
+                case IncomesalesTaxRatio:
+                    if (mdIncomeLeaseCostVo.getSalesTaxRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getSalesTaxRatio();
+                    }
+                    break;
+                case IncomesalesTaxRatioCorrect:
+                    if (mdIncomeLeaseCostVo.getSalesTaxRatio() != null) {
+                        decimal = new BigDecimal(1 + mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue());
+                        decimal = decimal.multiply(mdIncomeLeaseCostVo.getSalesTaxRatio());
+                    }
+                    break;
+                case IncomePropertyTax:
+                    if (mdIncomeLeaseCostVo.getPropertyTaxRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getPropertyTaxRatio();
+                    }
+                    break;
+                case IncomePropertyTaxCorrect:
+                    if (mdIncomeLeaseCostVo.getSalesTaxRatio() != null && mdIncomeLeaseCostVo.getPropertyTaxRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getPropertyTaxRatio().multiply(new BigDecimal(1).add(mdIncomeLeaseCostVo.getSalesTaxRatio()));
+                    }
+                    break;
+                case IncomeCityLocalEducationTaxCorrect:
+                    if (mdIncomeLeaseCostVo.getConstructionTaxRatio() == null) {
+                        break;
+                    }
+                    if (mdIncomeLeaseCostVo.getEducationRatio() == null) {
+                        break;
+                    }
+                    if (mdIncomeLeaseCostVo.getLocalEducationRatio() == null) {
+                        break;
+                    }
+                    if (mdIncomeLeaseCostVo.getSalesTaxRatio() == null) {
+                        break;
+                    }
+                    BigDecimal start = mdIncomeLeaseCostVo.getConstructionTaxRatio().add(mdIncomeLeaseCostVo.getEducationRatio()).add(mdIncomeLeaseCostVo.getLocalEducationRatio());
+                    BigDecimal end = new BigDecimal(1 + mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue()).multiply(mdIncomeLeaseCostVo.getSalesTaxRatio());
+                    decimal = start.multiply(end);
+                    break;
+                case IncomestampTax:
+                    if (mdIncomeLeaseCostVo.getStampDutyRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getStampDutyRatio();
+                    }
+                    break;
+                case IncomeconstructionTaxRatio:
+                    if (mdIncomeLeaseCostVo.getConstructionTaxRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getConstructionTaxRatio();
+                    }
+                    break;
+                case IncomeEducationRatio:
+                    if (mdIncomeLeaseCostVo.getEducationRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getEducationRatio();
+                    }
+                    break;
+                case IncomeLocalEducationRatio:
+                    if (mdIncomeLeaseCostVo.getLocalEducationRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getLocalEducationRatio();
+                    }
+                    break;
+                case IncomeTransactionTax:
+                    if (mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio();
+                    }
+                    break;
+                case LandUseTax:
+                    if (mdIncomeLeaseCostVo.getLandUseTax() != null) {
+                        decimal = mdIncomeLeaseCostVo.getLandUseTax();
+                    }
+                    break;
+                case InsurancePremiumTax:
+                    if (mdIncomeLeaseCostVo.getInsurancePremiumRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getInsurancePremiumRatio();
+                    }
+                    break;
+                case MaintenanceCostRatio:
+                    if (mdIncomeLeaseCostVo.getMaintenanceCostRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getMaintenanceCostRatio();
+                    }
+                    break;
+                case ManagementCostTax:
+                    if (mdIncomeLeaseCostVo.getManagementCostRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getManagementCostRatio();
+                    }
+                    break;
+                case IncomeAdditionalRatio:
+                    if (mdIncomeLeaseCostVo.getAdditionalRatio() != null) {
+                        decimal = mdIncomeLeaseCostVo.getAdditionalRatio();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (decimal != null) {
+                map.put(atomicInteger.get(), generateCommonMethod.getPercentileSystem(decimal));
+                atomicInteger.incrementAndGet();
+            }
+        });
+        return this.toEachDesc(map, "", "", "");
     }
 
     /**
@@ -1429,7 +1469,7 @@ public class GenerateMdIncomeService implements Serializable {
      *
      * @return
      */
-    private String getIncomePrice() {
+    private synchronized String getIncomePrice() {
         BigDecimal price = getMdIncome().getPrice();
         if (price != null) {
             return price.toString();
@@ -1561,6 +1601,48 @@ public class GenerateMdIncomeService implements Serializable {
         DocumentBuilder builder = new DocumentBuilder(doc);
         AsposeUtils.setDefaultFontSettings(builder);
         return builder;
+    }
+
+    /**
+     * 拼接map元素
+     *
+     * @param map
+     * @param explain
+     * @param symbol
+     * @param separator 分隔符
+     * @return
+     */
+    private String toEachDesc(Map<Integer, String> map, String explain, String symbol, String separator) {
+        if (map == null || map.size() <= 0) {
+            return "";
+        }
+
+        LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
+        stringSet.addAll(map.values());
+        if (map.values().size() == 1 || stringSet.size() == 1) {
+            return stringSet.stream().findFirst().get();
+        } else {
+            stringSet.clear();
+            map.entrySet().stream().sorted(new Comparator<Map.Entry<Integer, String>>() {
+                @Override
+                public int compare(Map.Entry<Integer, String> o1, Map.Entry<Integer, String> o2) {
+                    return o1.getKey().compareTo(o2.getKey());
+                }
+            }).forEach(integerStringEntry -> {
+                String string = String.join("", "第", getChineseNumber(integerStringEntry.getKey()), "段", StringUtils.isNotBlank(explain) ? explain : "", integerStringEntry.getValue(), StringUtils.isNotBlank(symbol) ? symbol : "");
+                stringSet.add(string);
+            });
+            return StringUtils.join(stringSet, separator);
+        }
+    }
+
+    private String getChineseNumber(Integer number) {
+        int len = chineseNumbers.size();
+        if (number < len) {
+            return chineseNumbers.get(number);
+        } else {
+            return String.valueOf(number.intValue());
+        }
     }
 
     private GenerateMdIncomeService() {

@@ -128,6 +128,106 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
+<div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">详情管理</h3>
+            </div>
+            <form id="frmFather" class="form-horizontal">
+                <input type="hidden" id="id" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            成交价
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <label class="form-control" name="currentPrice"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            估算价
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <label class="form-control" name="consultPrice"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            起始价
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <label class="form-control" name="initPrice"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            变现率
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <label class="form-control" name="liquidRatios"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            单位
+                                        </label>
+                                        <div class="col-sm-4">
+                                    <div class="input-group">
+                                                <input type="text" id="unitName" name="unitName" list="unitList" class="form-control">
+                                                <datalist id="unitList">
+                                                    <c:forEach var="item" items="${unitList}">
+                                                        <option value="${item}">${item}</option>
+                                                    </c:forEach>
+                                                </datalist>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            数量
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                   id="amount" name="amount" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="dataBuilder.prototype.saveData()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
@@ -147,6 +247,8 @@
         config: function () {
             var data = {};
             data.table = "transaction_List";
+            data.box = "divBoxFather";
+            data.frm = "frmFather";
             return data;
         },
         loadDataDicList: function () {
@@ -170,7 +272,8 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看详情" onclick="dataBuilder.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="详情及编辑" onclick="dataBuilder.prototype.getAndInit(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="dataBuilder.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -200,6 +303,49 @@
             if (row.sourceSiteUrl) {
                 window.open(row.sourceSiteUrl, "");
             }
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/netInfoRecordController/getNetInfoRecordById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + dataBuilder.prototype.config().frm).clearAll();
+                        $("#" + dataBuilder.prototype.config().frm).initForm(result.data);
+                        $('#' + dataBuilder.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        saveData: function () {
+            if (!$("#" + dataBuilder.prototype.config().frm).valid()) {
+                return false;
+            }
+            var data = formParams(dataBuilder.prototype.config().frm);
+            $.ajax({
+                url: "${pageContext.request.contextPath}/netInfoRecordController/updateNetInfoRecord",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#' + dataBuilder.prototype.config().box).modal('hide');
+                        dataBuilder.prototype.loadDataDicList();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
         },
         getOldData: function () {
             Loading.progressShow();

@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.service.ureport;
 
 import com.bstek.ureport.build.BeanPageDataSet;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.ureport.UProjectFinanceVo;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -42,6 +45,8 @@ public class UReportService {
     private ErpRpcUserService erpRpcUserService;
     @Autowired
     private CrmRpcCustomerService crmRpcCustomerService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 项目开票收款报表
@@ -61,7 +66,6 @@ public class UReportService {
         String queryUserAccount = "";
         Integer pageIndex = objectToInteger(maps.get("_pageIndex"));
         Integer fixRows = objectToInteger(maps.get("_fixRows"));
-        Integer reportType = null;
         if (maps.get("queryProjectName") != null) {
             queryProjectName = (String) maps.get("queryProjectName");
         }
@@ -80,20 +84,31 @@ public class UReportService {
         if (maps.get("queryEndTime") != null) {
             queryEndTime = (String) maps.get("queryEndTime");
         }
-        if (maps.get("queryType") != null) {
-            reportType = objectToInteger(maps.get("queryType"));
-        }
         if (maps.get("queryUserAccount") != null) {
             queryUserAccount = (String) maps.get("queryUserAccount");
         }
+        //评估报告
+        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+        Integer preauditId = preauditReport.getId();
+        //技术报告
+        BaseDataDic technologyReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
+        Integer technologyId = technologyReport.getId();
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
+
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
-                " E.number_value,E.gmt_created" +
+                " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,A.gmt_created" +
                 " FROM tb_project_info A " +
                 " LEFT JOIN tb_project_member B ON A.id=B.project_id" +
                 " LEFT JOIN tb_initiate_consignor C ON A.id=C.project_id" +
-                " LEFT JOIN tb_initiate_unit_information D ON A.id=D.project_id" +
-                " LEFT JOIN tb_project_number_record E ON A.id=E.project_id WHERE 1=1");
+                " LEFT JOIN tb_initiate_unit_information D ON A.id=D.project_id");
+        sql.append(String.format(" LEFT JOIN tb_project_number_record E ON (A.id=E.project_id and E.report_type = %s)", preauditId));
+        sql.append(String.format(" LEFT JOIN tb_project_number_record F ON (A.id=F.project_id and F.report_type = %s)", technologyId));
+        sql.append(String.format(" LEFT JOIN tb_project_number_record G ON (A.id=G.project_id and G.report_type = %s)", resultId));
+        sql.append(" WHERE 1=1");
+
         if (StringUtil.isNotEmpty(queryProjectName)) {
             sql.append(String.format(" AND A.project_name LIKE '%s%s%s'", "%", queryProjectName, "%"));
         }
@@ -105,19 +120,19 @@ public class UReportService {
         }
         if (StringUtil.isNotEmpty(queryReportNumber)) {
             sql.append(String.format(" AND E.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
+            sql.append(String.format(" OR F.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
+            sql.append(String.format(" OR G.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
         }
         if (StringUtil.isNotEmpty(queryStartTime)) {
-            sql.append(String.format(" AND Date(E.gmt_created) >= '%s'", queryStartTime));
+            sql.append(String.format(" AND Date(A.gmt_created) >= '%s'", queryStartTime));
         }
         if (StringUtil.isNotEmpty(queryEndTime)) {
-            sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(A.gmt_created) <= '%s'", queryEndTime));
         }
         if (StringUtil.isNotEmpty(queryUserAccount)) {
             sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
         }
-        if (reportType != null && !reportType.equals(0)) {
-            sql.append(String.format(" AND E.report_type = '%s'", reportType));
-        }
+
         List<UProjectFinanceVo> list = Lists.newArrayList();
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
         List<Map> mapList = ddlMySqlAssist.customTableSelect(sql.toString());
@@ -160,10 +175,12 @@ public class UReportService {
                     }
                 }
                 vo.setReportUseUnitName(useUnit);
-                vo.setReportNumber(objectToString(map.get("number_value")));
+                vo.setPreauditNumber(objectToString(map.get("preaudit_number")));
+                vo.setTechnologyNumber(objectToString(map.get("technology_number")));
+                vo.setResultNumber(objectToString(map.get("result_number")));
                 Object gmt_created = map.get("gmt_created");
                 if (gmt_created != null) {
-                    vo.setReportNumberCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
+                    vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
                 }
                 vo.setContractName(objectToString(map.get("contract_name")));
                 vo.setContractPrice(objectToString(map.get("contract_price")));

@@ -3,13 +3,19 @@ package com.copower.pmcc.assess.test;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import jodd.util.URLDecoder;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.*;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Created by zch on 2019/7/17.
@@ -66,6 +72,30 @@ public class ZCHDemo {
         strTest = URLDecoder.decode(strTest, "UTF-8");//解码
         System.out.println(strTest);
         System.out.println(URLDecoder.decode("http://rd.wechat.com/qrcode/confirm?block_type=101&content=%3Cbr%3E%E5%A4%87%E6%A1%88%E5%8F%B7:54584585458%3C/br%3E%3Cbr%3E%E6%8A%A5%E5%91%8A%E5%90%8D%E7%A7%B0:%E9%99%B6%E8%82%B2%E8%B7%AF%E5%8F%B728%E5%8F%B7%E7%BB%B5%E4%B8%96%E6%BA%AA%E5%9C%B0%E6%B9%BE4%E6%9C%9F%E9%99%843%E5%8F%B72%E6%A0%8B3%E5%8D%95%E5%85%832%E5%B1%822505%E5%8F%B7%E5%8A%9E%E5%85%AC%E7%94%A8%E9%80%94%E6%88%BF%E5%9C%B0%E4%BA%A7%E6%8B%8D%E5%8D%96%E8%AF%84%E4%BC%B0%3C/br%3E%3Cbr%3E%E4%BC%B0%E4%BB%B7%E5%8D%95%E4%BD%8D:%E4%B8%8A%E6%B5%B7%E5%9F%BA%E5%88%86%E6%96%87%E5%8C%96%E4%BC%A0%E6%92%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%3C/br%3E%3Cbr%3E%E6%8A%A5%E5%91%8A%E6%97%A5%E6%9C%9F:2019%E5%B9%B408%E6%9C%8801%E6%97%A5%3C/br%3E&lang=zh_CN&scene=4", "UTF-8"));
+    }
+
+    @Test
+    public void testFilter(){
+        List<String> stringList = Arrays.asList("a","b","v");
+        stringList = new ArrayList<>() ;
+        List<String> list = stringList.stream().filter(s -> NumberUtils.isNumber(s)).collect(Collectors.toList());
+        System.out.println(list.size());
+    }
+
+    @Test
+    public void testForeach(){
+        final AtomicInteger value = new AtomicInteger(0);
+        List<String> stringList = Arrays.asList("a","b","v");
+        stringList.forEach(s -> {
+            System.out.println(value.get());
+            value.incrementAndGet();
+        });
+    }
+
+    @Test
+    public void testStringJoin(){
+        String prefix = String.join("","2","2") ;
+        System.out.println(prefix);
     }
 
     @org.junit.Test
