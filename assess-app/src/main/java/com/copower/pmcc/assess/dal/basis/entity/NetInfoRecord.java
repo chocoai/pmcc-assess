@@ -31,6 +31,18 @@ public class NetInfoRecord {
 
     private Date gmtModified;
 
+    private String currentPrice;
+
+    private String consultPrice;
+
+    private String initPrice;
+
+    private String liquidRatios;
+
+    private String unitName;
+
+    private Integer amount;
+
     public Integer getId() {
         return id;
     }
@@ -141,5 +153,53 @@ public class NetInfoRecord {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(String currentPrice) {
+        this.currentPrice = currentPrice == null ? null : currentPrice.trim();
+    }
+
+    public String getConsultPrice() {
+        return consultPrice;
+    }
+
+    public void setConsultPrice(String consultPrice) {
+        this.consultPrice = consultPrice == null ? null : consultPrice.trim();
+    }
+
+    public String getInitPrice() {
+        return initPrice;
+    }
+
+    public void setInitPrice(String initPrice) {
+        this.initPrice = initPrice == null ? null : initPrice.trim();
+    }
+
+    public String getLiquidRatios() {
+        return liquidRatios;
+    }
+
+    public void setLiquidRatios(String liquidRatios) {
+        this.liquidRatios = liquidRatios == null ? null : liquidRatios.trim();
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName == null ? null : unitName.trim();
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }

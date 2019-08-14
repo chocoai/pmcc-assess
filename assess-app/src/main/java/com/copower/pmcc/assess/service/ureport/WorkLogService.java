@@ -61,7 +61,6 @@ public class WorkLogService {
         if (StringUtil.isNotEmpty(queryEndTime))
             endTimeParse = DateUtils.convertDate(queryEndTime);
         Integer departmentId = commonService.thisUser().getDepartmentId();
-        Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
         BootstrapTableVo workLogList = bpmRpcToolsService.getWorkLogListByDepartment(departmentId, queryUserAccountName, queryProjectName, queryTitle, startTimeParse, endTimeParse, pageIndex, fixRows);
         List<SysWorkLogVo> list = workLogList.getRows();
         for (SysWorkLogVo item : list) {

@@ -466,9 +466,9 @@
         form.find('[name=inventoryRightRecordId]').val(inventoryRightRecordId);
         uploadFileCommon(commonField.inventoryRightFile + value, AssessDBKey.SurveyAssetInventoryRight, 0);
         showFileCommon(commonField.inventoryRightFile + value, AssessDBKey.SurveyAssetInventoryRight, 0);
-        AssessCommon.loadProjectClassifyListByField(AssessProjectClassifyKey.singleHousetaskRightCategory, null, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.houseInventoryRightCategory,null,function (html) {
             form.find("select[name='category']").empty().html(html).trigger('change');
-        });
+        })
         //日期触发
         DatepickerUtils.parse();
     }
@@ -512,26 +512,7 @@
 
     function changeRemark(that,value) {
         var form = $("#" + commonField.inventoryFrm + value);
-        var id = form.find("select[name='category']").val() ;
-        if(id){
-            $.ajax({
-                url: getContextPath() + '/baseProjectClassify/getProjectClassifyInfo',
-                type: 'get',
-                data: {id: id},
-                dataType: 'json',
-                success: function (result) {
-                    var text = result.data.remark ;
-                    if (text){
-                        if (text.toString().length == 0){
-                            text = "无" ;
-                        }
-                    }else {
-                        text = "无" ;
-                    }
-                    form.find("textarea[name='remark']").val(text) ;
-                }
-            })
-        }
+        form.find("textarea[name='remark']").val($(that).find('option:selected').attr('title')) ;
     }
 
     /**

@@ -1083,7 +1083,7 @@ public class DeclarePublicService {
             declareApplyService.writeToDeclareRecord(declareApply);
             if (projectPlanDetails.getBisRestart() == Boolean.TRUE) {
                 ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-                projectPlanSurveyService.appendPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
+                projectPlanSurveyService.appendSurveyPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
             }
         } else {
             //修改监听器

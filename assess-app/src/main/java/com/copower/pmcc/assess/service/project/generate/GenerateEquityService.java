@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectSimpleDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyJudgeObjectGroupDto;
@@ -335,7 +334,7 @@ public class GenerateEquityService {
      */
     public String getOverallMerit(Integer projectId, Map<Integer, SchemeJudgeObjectSimpleDto> judgeObjectSimpleDtoMap) throws Exception {
         //先找出有他权其它的权证数据
-        Integer otherId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER).getId();
+        Integer otherId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.HOUSE_INVENTORY_RIGHT_CATEGORY_OTHER).getId();
         SurveyAssetInventoryRight where = new SurveyAssetInventoryRight();
         where.setProjectId(projectId);
         where.setCategory(otherId);

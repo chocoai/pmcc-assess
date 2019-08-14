@@ -27,7 +27,7 @@ public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/planSurveyIndex", "", 0, "-1", "");
-        projectPlanSurveyService.initPlanDetails(projectPlan);
+        projectPlanSurveyService.initSurveyPlanDetails(projectPlan);
         return modelAndView;
     }
 

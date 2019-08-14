@@ -39,8 +39,6 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
     private ProjectMemberService projectMemberService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
-    @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

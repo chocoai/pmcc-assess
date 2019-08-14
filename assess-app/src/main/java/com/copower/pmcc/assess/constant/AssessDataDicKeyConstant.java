@@ -75,11 +75,11 @@ public class AssessDataDicKeyConstant {
     public static final String INVENTORY_CONTENT_DEFAULT_FOUR_TO_LAND = "project.survey.inventory.content.default.four.to.land"; //土地四至
 
 
-    public static final String INVENTORY_RIGHT_TYPE = "project.survey.inventory.right.type";//他权类型
-    public static final String INVENTORY_RIGHT_TYPE_HOUSE_LEASEHOLD = "project.survey.inventory.right.type.house.leasehold";//租赁权
-    public static final String INVENTORY_RIGHT_TYPE_HOUSE_GUARANTEE = "project.survey.inventory.right.type.house.guarantee";//担保权
-    public static final String INVENTORY_RIGHT_TYPE_HOUSE_PLEDGE = "project.survey.inventory.right.type.house.pledge";//房产抵押权
-    public static final String INVENTORY_RIGHT_TYPE_HOUSE_OTHER = "project.survey.inventory.right.type.house.other";//房产其他
+    public static final String HOUSE_INVENTORY_RIGHT_CATEGORY = "project.survey.house.inventory.right.category";//他权类型
+    public static final String HOUSE_INVENTORY_RIGHT_CATEGORY_PLEDGE = "project.survey.house.inventory.right.category.pledge";//房产抵押权
+    public static final String HOUSE_INVENTORY_RIGHT_CATEGORY_LEASEHOLD = "project.survey.house.inventory.right.category.leasehold";//房产租赁权
+    public static final String HOUSE_INVENTORY_RIGHT_CATEGORY_GUARANTEE = "project.survey.house.inventory.right.category.guarantee";//房产担保权
+    public static final String HOUSE_INVENTORY_RIGHT_CATEGORY_OTHER = "project.survey.house.inventory.right.category.other";//房产其他
 
     public static final String CERTIFICATE_HANDLING_TYPE = "certificate.handling.type"; //是否办证
     public static final String CERTIFICATE_HANDLING_TYPE_PASS = "certificate.handling.type.pass"; //可办证
@@ -95,7 +95,6 @@ public class AssessDataDicKeyConstant {
     public static final String MD_DEVELOPMENT = "md.development"; //假设开发法
     public static final String MD_BASE_LAND_PRICE = "md.base.land.price"; //基准地价修正法
     public static final String MD_COST_APPROACH = "md.cost.approach"; //成本逼近法
-    public static final String MD_STANDARD_ADJUSTMENT_PRICE = "md.standard.adjustment.price"; //标准价格调整法
 
     /*
      * 测算方法配置

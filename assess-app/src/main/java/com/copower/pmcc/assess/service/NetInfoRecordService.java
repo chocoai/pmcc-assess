@@ -26,9 +26,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -135,6 +137,10 @@ public class NetInfoRecordService {
                         if (itemContent != null) {
                             initPrice = itemContent.get(2).childNodes().get(0).toString().replace(",", "");
                         }
+                        netInfoRecord.setCurrentPrice(getRealMoney(tbsfDto.getCurrentPrice()));
+                        netInfoRecord.setConsultPrice(getRealMoney(tbsfDto.getConsultPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(initPrice));
+                        netInfoRecord.setLiquidRatios(getLiquidRatios(tbsfDto.getCurrentPrice(), tbsfDto.getConsultPrice()));
                         String content = getContent(tbsfDto.getTitle(), tbsfDto.getType(), tbsfDto.getCurrentPrice(), tbsfDto.getConsultPrice(), initPrice
                                 , DateUtils.format(tbsfDto.getEnd(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(tbsfDto.getStart(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
@@ -153,7 +159,7 @@ public class NetInfoRecordService {
                             Elements body = getContent(String.format("%s" + contentHref, "https:"), "body", "GBK");
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            netInfoRecordContent.setFullDescription(body.text());
+                            netInfoRecordContent.setFullDescription(body.html());
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
                         }
                     }
@@ -167,45 +173,7 @@ public class NetInfoRecordService {
 
     }
 
-    /**
-     * 拼接内容
-     *
-     * @param title        标题
-     * @param type         类型
-     * @param currentPrice 成交价
-     * @param consultPrice 估算价
-     * @param initPrice    起始价
-     * @param endTime      结束时间
-     * @param startTime    开始时间
-     * @return
-     */
-    public String getContent(String title, String type, String currentPrice, String consultPrice, String initPrice, String endTime, String startTime) {
-        StringBuilder content = new StringBuilder();
-        if (StringUtil.isNotEmpty(title)) {
-            content.append("标题：" + title + "。");
-        }
-        if (StringUtil.isNotEmpty(type)) {
-            content.append("类型：" + type + "。");
-        }
-        if (StringUtil.isNotEmpty(currentPrice)) {
-            content.append("成交价：" + currentPrice + "。");
-        }
-        if (StringUtil.isNotEmpty(consultPrice)) {
-            content.append("估算价：" + consultPrice + "。");
-        }
-        if (StringUtil.isNotEmpty(initPrice)) {
-            content.append("起始价：" + initPrice + "。");
-        }
-        if (StringUtil.isNotEmpty(startTime)) {
-            content.append("开始时间：" + startTime + "。");
-        }
-        if (StringUtil.isNotEmpty(endTime)) {
-            content.append("结束时间：" + endTime + "。");
-        }
 
-
-        return content.toString();
-    }
 
     //来源京东司法
     public void getNetInfoFromJDSF() {
@@ -217,8 +185,13 @@ public class NetInfoRecordService {
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             List<String> types = Arrays.asList(needContentType);
 
+            //首页
             String urlInfo = "http://auction.jd.com/sifa_list.html?callback=jQuery8159673&page=1&limit=40&paimaiStatus=2";
+            //获取数据地址
             String typeHref = "http://auction.jd.com/getJudicatureList.html?paimaiStatus=2";
+            //获取起始价地址
+            String initPriceHref = "https://api.m.jd.com/api?appid=paimai&functionId=getProductBasicInfo&body={%22paimaiId%22:%s}";
+
             Elements elements = getContent(urlInfo, ".sl-v-list", "");
             Elements a = elements.get(0).select("li a");
             for (Element item : a) {
@@ -263,7 +236,22 @@ public class NetInfoRecordService {
                         netInfoRecord.setEndTime(jdsfDto.getEndTime());
                         netInfoRecord.setBeginTime(jdsfDto.getStartTime());
                         netInfoRecord.setType(entry.getKey());
-                        String content = getContent(jdsfDto.getTitle(), entry.getKey(), jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr(), ""
+                        String initPrice = "";
+                        try{
+                            String replace = initPriceHref.replace("%s", jdsfDto.getId().toString());
+                            Elements initPriceElements = getContent(replace, "body", "");
+                            String initPriceData = initPriceElements.get(0).childNodes().get(0).toString();
+                            JSONObject initPriceStr = JSON.parseObject(initPriceData);
+                            initPriceStr = JSON.parseObject(initPriceStr.getString("data"));
+                            initPrice = JSON.parseObject(initPriceStr.getString("startPrice"), String.class);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        netInfoRecord.setCurrentPrice(getRealMoney(jdsfDto.getCurrentPriceStr()));
+                        netInfoRecord.setConsultPrice(getRealMoney(jdsfDto.getAssessmentPriceStr()));
+                        netInfoRecord.setInitPrice(getRealMoney(initPrice));
+                        netInfoRecord.setLiquidRatios(getLiquidRatios(jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr()));
+                        String content = getContent(jdsfDto.getTitle(), entry.getKey(), jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr(), initPrice
                                 , DateUtils.format(jdsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(jdsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("京东司法拍卖网");
@@ -332,6 +320,8 @@ public class NetInfoRecordService {
                         netInfoRecord.setBeginTime(jdzcDto.getStartTime());
                         netInfoRecord.setEndTime(jdzcDto.getEndTime());
                         netInfoRecord.setType(entry.getKey());
+                        netInfoRecord.setCurrentPrice(getRealMoney(jdzcDto.getCurrentPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(jdzcDto.getStartPrice()));
                         String content = getContent(jdzcDto.getTitle(), entry.getKey(), jdzcDto.getCurrentPrice(), "", jdzcDto.getStartPrice()
                                 , DateUtils.format(jdzcDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(jdzcDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
@@ -434,6 +424,10 @@ public class NetInfoRecordService {
                         netInfoRecord.setBeginTime(zgsfDto.getStartTime());
                         netInfoRecord.setEndTime(zgsfDto.getEndTime());
                         netInfoRecord.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
+                        netInfoRecord.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
+                        netInfoRecord.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
+                        netInfoRecord.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
                         String content = getContent(zgsfDto.getName(), entry.getKey().substring(0, entry.getKey().indexOf("_")), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
@@ -446,7 +440,7 @@ public class NetInfoRecordService {
                         if (contentBody.size() != 0 && contentBody != null) {
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            netInfoRecordContent.setFullDescription(contentBody.text());
+                            netInfoRecordContent.setFullDescription(contentBody.html());
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
                         }
                     }
@@ -542,6 +536,10 @@ public class NetInfoRecordService {
                         netInfoRecord.setBeginTime(zgsfDto.getStartTime());
                         netInfoRecord.setEndTime(zgsfDto.getEndTime());
                         netInfoRecord.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
+                        netInfoRecord.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
+                        netInfoRecord.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
+                        netInfoRecord.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
                         String content = getContent(zgsfDto.getName(), entry.getKey().substring(0, entry.getKey().indexOf("_")), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
@@ -554,7 +552,7 @@ public class NetInfoRecordService {
                         if (contentBody.size() != 0 && contentBody != null) {
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            netInfoRecordContent.setFullDescription(contentBody.text());
+                            netInfoRecordContent.setFullDescription(contentBody.html());
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
                         }
                     }
@@ -637,15 +635,32 @@ public class NetInfoRecordService {
                             netInfoRecord.setTitle(titleName);
                             netInfoRecord.setSourceSiteUrl(itemHref);
                             String consultPrice = info.get(0).childNodes().get(6).childNodes().get(2).childNodes().get(0).childNodes().get(0).toString();
+                            //单位可能是元或万元
+                            String moneyUnit = info.get(0).childNodes().get(6).childNodes().get(2).childNodes().get(1).toString();
+                            if(moneyUnit.contains("万")){
+                                NumberFormat format = NumberFormat.getInstance();
+                                BigDecimal bigDecimal = new BigDecimal(format.parse(consultPrice).doubleValue());
+                                consultPrice = bigDecimal.multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+                            }
                             Elements itemContent = getContent(itemHref, ".d-m-infos", "");
                             Elements currentPriceElements = itemContent.get(0).select(".price-red");
                             String currentPrice = currentPriceElements.get(0).childNodes().get(0).toString();
                             Elements tbody_tr = itemContent.get(0).select("tbody td");//consult_price
-                            String initPrice = tbody_tr.get(6).childNodes().get(1).childNodes().get(0).toString();
+                            //起拍价
+                            String initPrice = "";
+                            try{
+                                initPrice = tbody_tr.get(6).childNodes().get(1).childNodes().get(0).toString();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                             netInfoRecord.setProvince(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
                             netInfoRecord.setSourceSiteName("公拍网");
                             netInfoRecord.setEndTime(endTime);
                             netInfoRecord.setType(entry.getKey());
+                            netInfoRecord.setCurrentPrice(getRealMoney(currentPrice));
+                            netInfoRecord.setConsultPrice(getRealMoney(consultPrice));
+                            netInfoRecord.setInitPrice(getRealMoney(initPrice));
+                            netInfoRecord.setLiquidRatios(getLiquidRatios(currentPrice, consultPrice));
                             String content = getContent(titleName, entry.getKey(), currentPrice, consultPrice, initPrice
                                     , DateUtils.format(endTime, DateUtils.DATE_CHINESE_PATTERN), "");
                             netInfoRecord.setContent(content);
@@ -655,11 +670,11 @@ public class NetInfoRecordService {
                             if (contentBody.size() != 0 && contentBody != null) {
                                 NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                                 netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                                netInfoRecordContent.setFullDescription(contentBody.get(1).text());
+                                netInfoRecordContent.setFullDescription(contentBody.get(1).html());
                                 netInfoRecordContentDao.addInfo(netInfoRecordContent);
                             }
                         } catch (Exception e) {
-
+                            e.printStackTrace();
                         }
 
 
@@ -977,4 +992,68 @@ public class NetInfoRecordService {
         return null;
     }
 
+    /**
+     * 拼接内容
+     *
+     * @param title        标题
+     * @param type         类型
+     * @param currentPrice 成交价
+     * @param consultPrice 估算价
+     * @param initPrice    起始价
+     * @param endTime      结束时间
+     * @param startTime    开始时间
+     * @return
+     */
+    public String getContent(String title, String type, String currentPrice, String consultPrice, String initPrice, String endTime, String startTime) {
+        StringBuilder content = new StringBuilder();
+        if (StringUtil.isNotEmpty(title)) {
+            content.append("标题：" + title + "。");
+        }
+        if (StringUtil.isNotEmpty(type)) {
+            content.append("类型：" + type + "。");
+        }
+        if (StringUtil.isNotEmpty(currentPrice)) {
+            content.append("成交价：" + currentPrice + "。");
+        }
+        if (StringUtil.isNotEmpty(consultPrice)) {
+            content.append("估算价：" + consultPrice + "。");
+        }
+        if (StringUtil.isNotEmpty(initPrice)) {
+            content.append("起始价：" + initPrice + "。");
+        }
+        if (StringUtil.isNotEmpty(startTime)) {
+            content.append("开始时间：" + startTime + "。");
+        }
+        if (StringUtil.isNotEmpty(endTime)) {
+            content.append("结束时间：" + endTime + "。");
+        }
+
+
+        return content.toString();
+    }
+
+    //获取变现率（成交价/评估价）
+    public String getLiquidRatios(String currentPriceStr,String consultPriceStr)throws Exception{
+        if(StringUtil.isEmpty(currentPriceStr)||StringUtil.isEmpty(consultPriceStr))
+            return null;
+        BigDecimal verifyValue = new BigDecimal("0");
+        NumberFormat format = NumberFormat.getInstance();
+        BigDecimal currentPrice = new BigDecimal(format.parse(currentPriceStr).doubleValue());
+        BigDecimal consultPrice = new BigDecimal(format.parse(consultPriceStr).doubleValue());
+        //起始价，评估价不为0
+        if(verifyValue.compareTo(currentPrice)==0||verifyValue.compareTo(consultPrice)==0)
+            return null;
+        BigDecimal liquidRatiosValue = currentPrice.multiply(new BigDecimal("100")).divide(consultPrice,2, BigDecimal.ROUND_HALF_UP);
+        return String.format("%s%s",liquidRatiosValue,"%");
+    }
+
+    //price格式为000.00或者000,000.00统一格式为000.00
+    public String getRealMoney(String price) throws Exception{
+        NumberFormat format = NumberFormat.getInstance();
+        if (StringUtil.isNotEmpty(price)){
+            return new BigDecimal(format.parse(price).doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        }else{
+            return "";
+        }
+    }
 }
