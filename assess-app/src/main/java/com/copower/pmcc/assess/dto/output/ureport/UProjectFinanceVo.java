@@ -10,7 +10,9 @@ public class UProjectFinanceVo {
     private String projectName;//项目名称 -查询
     private String consignorName;//委托人 -查询
     private String reportUseUnitName;//报告使用单位 -查询
-    private String reportNumber;//报告文号 -查询
+    private String preauditNumber;//评估报告文号 -查询
+    private String technologyNumber;//技术报告文号 -查询
+    private String resultNumber;//结果报告文号 -查询
     private Date reportNumberCreated;//报告文号创建时间 -查询
     private String projectManagerName;//项目经理 -查询
     private String contractName;//合同名称
@@ -18,6 +20,7 @@ public class UProjectFinanceVo {
     private String amount;//开票金额
     private String actualAmount;//实际金额
     private String payAmount;//支付金额
+    private Date projectCreated;//立项时间 -查询
 
 
     public Integer getId() {
@@ -52,12 +55,28 @@ public class UProjectFinanceVo {
         this.reportUseUnitName = reportUseUnitName;
     }
 
-    public String getReportNumber() {
-        return reportNumber;
+    public String getPreauditNumber() {
+        return preauditNumber;
     }
 
-    public void setReportNumber(String reportNumber) {
-        this.reportNumber = reportNumber;
+    public void setPreauditNumber(String preauditNumber) {
+        this.preauditNumber = preauditNumber;
+    }
+
+    public String getTechnologyNumber() {
+        return technologyNumber;
+    }
+
+    public void setTechnologyNumber(String technologyNumber) {
+        this.technologyNumber = technologyNumber;
+    }
+
+    public String getResultNumber() {
+        return resultNumber;
+    }
+
+    public void setResultNumber(String resultNumber) {
+        this.resultNumber = resultNumber;
     }
 
     public Date getReportNumberCreated() {
@@ -114,5 +133,13 @@ public class UProjectFinanceVo {
 
     public void setPayAmount(String payAmount) {
         this.payAmount = payAmount;
+    }
+
+    public Date getProjectCreated() {
+        return projectCreated;
+    }
+
+    public void setProjectCreated(Date projectCreated) {
+        this.projectCreated = projectCreated;
     }
 }
