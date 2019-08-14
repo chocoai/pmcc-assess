@@ -50,7 +50,7 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     LandUseTax("收益法土地使用税"),
     IncomeAdditionalCapture("收益法有效收缴率"),
 
-    IncomeDepositCost("收益法押金收入"),
+    IncomeDepositCost("收益法押金利息收入"),
     IncomeAdditionalCaptureCost("收益法有效收缴费"),
     LandUseCost("收益法土地使用税费"),
     IncomeAdditionalRatioCost("收益法租赁税费"),
@@ -61,8 +61,8 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     OtherIncome("收益法其它收入"),
     ReplacementCost("收益法重置成本"),
     GrossIncome("收益法年有效毛收入"),
-    MonthRentalIncome("收益法月租金收入"),
-    AnnualOperatingCost("收益法年营运费用"),
+    MonthRentalIncome("收益法确定客观月租金"),
+    AnnualOperatingCost("收益法年运营费"),
     AnnualNetIncome("收益法年净收益"),
 
     IncomeOpportunityCostReamrk("收益法机会成本说明"),
