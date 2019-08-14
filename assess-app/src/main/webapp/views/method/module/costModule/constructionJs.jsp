@@ -10,7 +10,39 @@
     construction.infrastructureFooterHtml = "#underConstructionMdDevelopmentInfrastructureFooterX";
 
     construction.callCompareMethod = function (this_) {
-        toastr.success('暂时未提供!');
+        var mcId = construction.target.find('[name=mcId]').val();
+        var frame = layer.open({
+            type: 2,
+            title: '比较法',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '${pageContext.request.contextPath}/marketCompare/index?isLand=true&mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
+                    construction.target.find('[name=mcId]').val(iframe.marketCompare.mcId);
+                }
+            },
+            btnAlign: 'c',
+            btn: ['保存', '关闭'],
+            yes: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                iframe.saveResult(function (mcId, price) {
+                    construction.target.find('[name=mcId]').val(mcId);
+                    construction.target.find('[name=landPurchasePrice]').val(price);
+                    layer.closeAll('iframe');
+                });
+            },
+            btn2: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
+                    construction.target.find('[name=mcId]').val(iframe.marketCompare.mcId);
+                }
+            }
+        });
+        layer.full(frame);
     };
 
     construction.calculationE6 = function () {
@@ -155,7 +187,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-        }else {
+        } else {
             toastr.success('无子项!');
         }
     };

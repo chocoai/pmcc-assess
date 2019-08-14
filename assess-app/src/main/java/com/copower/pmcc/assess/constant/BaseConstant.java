@@ -27,10 +27,6 @@ public class BaseConstant {
     public static final String ASSESS_DATA_SET_USE_FIELD_LAND_AREA_FACTOR = "land.area.factor";
     public static final String ASSESS_DATA_SET_USE_FIELD_LAND_INDIVIDUAL_FACTOR = "land.individual.factor";
 
-    public static final String ASSESS_NUMBER_RULE_REPORT_RESULT_HOUSE = "report.result.house";//川协合房评
-    public static final String ASSESS_NUMBER_RULE_REPORT_RESULT_CONSULT = "report.result.consult";
-    public static final String ASSESS_NUMBER_RULE_REPORT_RESULT_LAND = "report.result.land";
-
     //估价对象中文显示名称
     public static final String ASSESS_JUDGE_OBJECT_CN_NAME = "号估价对象";
     public static final String ASSESS_CertGetQuestion_YES_NAME = "有权证";

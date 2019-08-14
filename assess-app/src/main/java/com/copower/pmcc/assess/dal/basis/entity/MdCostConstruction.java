@@ -18,11 +18,15 @@ public class MdCostConstruction {
 
     private String landGetCostTotal;
 
+    private String jsonContent;
+
     private BigDecimal developLandAreaTax;
 
     private BigDecimal developBuildAreaTax;
 
     private BigDecimal developYearNumberTax;
+
+    private Integer mcId;
 
     private BigDecimal landPurchasePrice;
 
@@ -82,8 +86,6 @@ public class MdCostConstruction {
 
     private BigDecimal additionalCostLandAcquisition;
 
-    private String jsonContent;
-
     public Integer getId() {
         return id;
     }
@@ -140,6 +142,14 @@ public class MdCostConstruction {
         this.landGetCostTotal = landGetCostTotal == null ? null : landGetCostTotal.trim();
     }
 
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
     public BigDecimal getDevelopLandAreaTax() {
         return developLandAreaTax;
     }
@@ -162,6 +172,14 @@ public class MdCostConstruction {
 
     public void setDevelopYearNumberTax(BigDecimal developYearNumberTax) {
         this.developYearNumberTax = developYearNumberTax;
+    }
+
+    public Integer getMcId() {
+        return mcId;
+    }
+
+    public void setMcId(Integer mcId) {
+        this.mcId = mcId;
     }
 
     public BigDecimal getLandPurchasePrice() {
@@ -394,13 +412,5 @@ public class MdCostConstruction {
 
     public void setAdditionalCostLandAcquisition(BigDecimal additionalCostLandAcquisition) {
         this.additionalCostLandAcquisition = additionalCostLandAcquisition;
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 }

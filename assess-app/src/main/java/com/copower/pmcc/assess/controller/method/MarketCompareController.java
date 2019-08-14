@@ -35,8 +35,9 @@ public class MarketCompareController {
     private SchemeJudgeObjectService schemeJudgeObjectService;
 
     @RequestMapping(value = "/index", name = "市场比较法测算")
-    public ModelAndView index(Integer mcId, Integer judgeObjectId) {
+    public ModelAndView index(Integer mcId, Integer judgeObjectId, Boolean isLand) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/marketCompareIndex");
+        isLand = isLand == null ? false : isLand;
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         MdMarketCompare marketCompare = null;
         if (mcId != null) {
@@ -54,7 +55,7 @@ public class MarketCompareController {
         modelAndView.addObject("casesJSON", JSON.toJSONString(mdMarketCompareService.getCaseListByMcId(marketCompare.getId())));
         modelAndView.addObject("mcId", marketCompare.getId());
         modelAndView.addObject("judgeObject", judgeObject);
-        modelAndView.addObject("isLand", false);
+        modelAndView.addObject("isLand", isLand);
         return modelAndView;
     }
 
@@ -153,9 +154,9 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/updateAnnualCoefficient", name = "更新年期修正系数", method = RequestMethod.POST)
-    public HttpResult updateAnnualCoefficient(Integer judgeObjectId,Integer mcId, Integer rewardRateId, BigDecimal rewardRate) {
+    public HttpResult updateAnnualCoefficient(Integer judgeObjectId, Integer mcId, Integer rewardRateId, BigDecimal rewardRate) {
         try {
-            return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(judgeObjectId,mcId, rewardRateId, rewardRate));
+            return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(judgeObjectId, mcId, rewardRateId, rewardRate));
         } catch (Exception e) {
             return HttpResult.newErrorResult("更新失败");
         }
@@ -163,7 +164,7 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/refreshData", name = "刷新", method = RequestMethod.POST)
-    public HttpResult refreshData(Integer mcId,Integer judgeObjectId) {
+    public HttpResult refreshData(Integer mcId, Integer judgeObjectId) {
         try {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.refreshData(mcId, judgeObjectId);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);

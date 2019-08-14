@@ -576,6 +576,76 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
+        public Criteria andJsonContentIsNull() {
+            addCriterion("json_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentIsNotNull() {
+            addCriterion("json_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentEqualTo(String value) {
+            addCriterion("json_content =", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotEqualTo(String value) {
+            addCriterion("json_content <>", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentGreaterThan(String value) {
+            addCriterion("json_content >", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
+            addCriterion("json_content >=", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLessThan(String value) {
+            addCriterion("json_content <", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLessThanOrEqualTo(String value) {
+            addCriterion("json_content <=", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLike(String value) {
+            addCriterion("json_content like", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotLike(String value) {
+            addCriterion("json_content not like", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentIn(List<String> values) {
+            addCriterion("json_content in", values, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotIn(List<String> values) {
+            addCriterion("json_content not in", values, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentBetween(String value1, String value2) {
+            addCriterion("json_content between", value1, value2, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotBetween(String value1, String value2) {
+            addCriterion("json_content not between", value1, value2, "jsonContent");
+            return (Criteria) this;
+        }
+
         public Criteria andDevelopLandAreaTaxIsNull() {
             addCriterion("develop_land_area_tax is null");
             return (Criteria) this;
@@ -753,6 +823,66 @@ public class MdCostConstructionExample {
 
         public Criteria andDevelopYearNumberTaxNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("develop_year_number_tax not between", value1, value2, "developYearNumberTax");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdIsNull() {
+            addCriterion("mc_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdIsNotNull() {
+            addCriterion("mc_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdEqualTo(Integer value) {
+            addCriterion("mc_id =", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdNotEqualTo(Integer value) {
+            addCriterion("mc_id <>", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdGreaterThan(Integer value) {
+            addCriterion("mc_id >", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("mc_id >=", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdLessThan(Integer value) {
+            addCriterion("mc_id <", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdLessThanOrEqualTo(Integer value) {
+            addCriterion("mc_id <=", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdIn(List<Integer> values) {
+            addCriterion("mc_id in", values, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdNotIn(List<Integer> values) {
+            addCriterion("mc_id not in", values, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdBetween(Integer value1, Integer value2) {
+            addCriterion("mc_id between", value1, value2, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("mc_id not between", value1, value2, "mcId");
             return (Criteria) this;
         }
 

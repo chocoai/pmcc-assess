@@ -205,7 +205,7 @@ public class MdMarketCompareService {
         //年期修正系数
         BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
-        if (basicHouse != null) {
+        if (basicHouse != null && basicHouse.getUseYear() != null) {
             BigDecimal legalAge = new BigDecimal(basicHouse.getUseYear());
             BigDecimal surplusYear = null;
             if (isCase) { //计算剩余年限=使用年限-已使用年限 已使用年限=评估基准日-交易时间
@@ -312,7 +312,7 @@ public class MdMarketCompareService {
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
                 BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
-                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup,schemeJudgeObject, basicApply, setUseFieldList, true));
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, true));
                 if (isLand) {//在估价对象中获取法定年限与剩余年限，如果未获取到则无年期修正系数
                     setCoefficient(areaGroup, schemeJudgeObject, mdMarketCompareItem, basicApply, true);
                 }
@@ -480,7 +480,7 @@ public class MdMarketCompareService {
         return keyValueDtos;
     }
 
-    public MdCompareInitParamVo refreshData(Integer mcId,Integer judgeObjectId){
+    public MdCompareInitParamVo refreshData(Integer mcId, Integer judgeObjectId) {
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(schemeJudgeObject.getSetUse());
@@ -489,7 +489,7 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setMcId(mcId);
         mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
         List<MdMarketCompareItem> marketCompareItemList = mdMarketCompareItemDao.getMarketCompareItemList(mdMarketCompareItem);
-        if(CollectionUtils.isNotEmpty(marketCompareItemList)){
+        if (CollectionUtils.isNotEmpty(marketCompareItemList)) {
             mdMarketCompareItem = marketCompareItemList.get(0);
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(mdMarketCompareItem.getPlanDetailsId());
             mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
@@ -507,12 +507,12 @@ public class MdMarketCompareService {
                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(caseItem.getPlanDetailsId());
                 BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
                 String newData = mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, true);
-                List<MarketCompareItemDto> newDataList = JSON.parseArray(newData ,MarketCompareItemDto.class ) ;
+                List<MarketCompareItemDto> newDataList = JSON.parseArray(newData, MarketCompareItemDto.class);
                 List<MarketCompareItemDto> oldDataList = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 //分值不改变
-                for (MarketCompareItemDto newItem: newDataList) {
-                    for (MarketCompareItemDto oldItem: oldDataList) {
-                        if(newItem.getName().equals(oldItem.getName())){
+                for (MarketCompareItemDto newItem : newDataList) {
+                    for (MarketCompareItemDto oldItem : oldDataList) {
+                        if (newItem.getName().equals(oldItem.getName())) {
                             newItem.setScore(oldItem.getScore());
                             newItem.setRatio(oldItem.getRatio());
                         }
