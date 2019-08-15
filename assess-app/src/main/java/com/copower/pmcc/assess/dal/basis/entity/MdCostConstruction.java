@@ -90,6 +90,8 @@ public class MdCostConstruction {
 
     private String devDuringExplain;
 
+    private String otherEngineeringCostExplain;
+
     public Integer getId() {
         return id;
     }
@@ -432,5 +434,13 @@ public class MdCostConstruction {
 
     public void setDevDuringExplain(String devDuringExplain) {
         this.devDuringExplain = devDuringExplain == null ? null : devDuringExplain.trim();
+    }
+
+    public String getOtherEngineeringCostExplain() {
+        return otherEngineeringCostExplain;
+    }
+
+    public void setOtherEngineeringCostExplain(String otherEngineeringCostExplain) {
+        this.otherEngineeringCostExplain = otherEngineeringCostExplain == null ? null : otherEngineeringCostExplain.trim();
     }
 }

@@ -268,6 +268,8 @@
         };
 
         construction.loadMdDevelopmentInfrastructureChildrenTable() ;
+
+        construction.inputBlurEvent() ;
     });
 
 </script>

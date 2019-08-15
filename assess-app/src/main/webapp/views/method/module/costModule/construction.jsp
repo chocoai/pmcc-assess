@@ -208,7 +208,7 @@
                 基础设施建设费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" required="required"
                                placeholder="基础设施配套费"  class="form-control"
@@ -327,6 +327,18 @@
                            placeholder="其它工程费" required class="form-control" name="otherEngineeringCost">
                 </div>
             </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="说明" class="form-control"
+                           name="otherEngineeringCostExplain" value="${mdCostConstruction.otherEngineeringCostExplain}">
+                </div>
+            </div>
+
         </div>
     </div>
 
