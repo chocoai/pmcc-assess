@@ -7,6 +7,10 @@
         </ul>
         <h3>
             市场比较法
+            <small id="small_select_evaluation">
+                <input type="button" class="btn btn-primary btn-xs" value="选择估价对象"
+                       onclick="marketCompare.loadCaseAll();">
+            </small>
             <small id="small_select_case">
                 <input type="button" class="btn btn-primary btn-xs" value="选择案例"
                        onclick="marketCompare.loadCaseAll();">

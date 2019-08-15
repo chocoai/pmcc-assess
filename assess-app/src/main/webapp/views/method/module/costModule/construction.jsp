@@ -19,14 +19,8 @@
                     开发土地面积(㎡)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <c:if test="${!empty mdCostConstruction.developLandAreaTax}">
                     <input type="text" name="developLandAreaTax"  onblur="cost.checkParams(this);construction.calculationE6();construction.calculationD8()"
                            placeholder=" 开发土地面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developLandAreaTax}">
-                    </c:if>
-                    <c:if test="${empty mdCostConstruction.developLandAreaTax}">
-                    <input type="text" name="developLandAreaTax"  onblur="cost.checkParams(this);construction.calculationE6();construction.calculationD8()"
-                           placeholder=" 开发土地面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${declareEconomicIndicatorsHead.assessUseLandArea}">
-                    </c:if>
                 </div>
             </div>
 
@@ -35,14 +29,8 @@
                     开发建筑面积(㎡)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <c:if test="${!empty mdCostConstruction.developBuildAreaTax}">
-                        <input type="text" name="developBuildAreaTax" onblur="cost.checkParams(this);construction.calculationE12();construction.calculationE13();construction.calculationE14();construction.calculationE15();construction.calculationE16();"
-                               placeholder="开发建筑面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developBuildAreaTax}">
-                    </c:if>
-                    <c:if test="${empty mdCostConstruction.developBuildAreaTax}">
-                        <input type="text" name="developBuildAreaTax" onblur="cost.checkParams(this);construction.calculationE12();construction.calculationE13();construction.calculationE14();construction.calculationE15();construction.calculationE16();"
-                               placeholder="开发建筑面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${declareEconomicIndicatorsHead.assessTotalBuildArea}">
-                    </c:if>
+                    <input type="text" name="developBuildAreaTax" onblur="cost.checkParams(this);construction.calculationE12();construction.calculationE13();construction.calculationE14();construction.calculationE15();construction.calculationE16();"
+                           placeholder="开发建筑面积(㎡)" class="form-control" data-rule-number='true' required="required" value="${mdCostConstruction.developBuildAreaTax}">
                 </div>
             </div>
 
@@ -76,12 +64,12 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地购买价格<span class="symbol required"></span>
+                    土地购买价格(万元)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" name="landPurchasePrice" placeholder="土地购买价格" data-rule-number="true" onblur="cost.checkParams(this);construction.calculationE6();"
-                               class="form-control" required="required" value="${mdCostConstruction.landPurchasePrice}" data-value="${mdCostConstruction.landPurchasePrice}">
+                               class="form-control" required="required" value="${mdCostConstruction.landPurchasePrice}">
                         <span class="input-group-btn">
                                         <input type="button" class="btn btn-primary" value="市场比较法"
                                                onclick="construction.callCompareMethod(this);">
@@ -129,12 +117,23 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地取得附加成本<span class="symbol required"></span>
+                    土地取得附加成本(万元)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <input type="text" name="additionalCostLandAcquisition"
                            placeholder="土地取得附加成本" class="form-control" data-rule-number='true' onblur="cost.checkParams(this);construction.calculationD8();"
                            required="required" value="${mdCostConstruction.additionalCostLandAcquisition}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="说明" class="form-control"
+                           name="additionalCostLandAcquisitionExplain" value="${mdCostConstruction.additionalCostLandAcquisitionExplain}">
                 </div>
             </div>
 
@@ -169,6 +168,17 @@
                     <input type="text" name="reconnaissanceDesign" onblur="cost.checkParams(this);construction.calculationE11()"
                            placeholder="勘察设计和前期工程费率" class="form-control x-percent"
                            required="required" value="${mdCostConstruction.reconnaissanceDesign}" data-value="${mdCostConstruction.reconnaissanceDesign}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="说明" class="form-control"
+                           name="reconnaissanceDesignExplain" value="${mdCostConstruction.reconnaissanceDesignExplain}">
                 </div>
             </div>
 

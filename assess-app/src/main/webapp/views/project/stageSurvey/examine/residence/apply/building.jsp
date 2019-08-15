@@ -43,7 +43,7 @@
                     总层数<span class="symbol required"></span>
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="总层数"
+                    <input type="text" placeholder="总层数" data-rule-number="true"
                            name="floorCount" class="form-control" required="required" value="${basicBuilding.floorCount}">
                 </div>
             </div>

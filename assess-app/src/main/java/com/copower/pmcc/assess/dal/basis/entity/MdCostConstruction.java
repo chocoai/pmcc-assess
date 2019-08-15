@@ -92,6 +92,10 @@ public class MdCostConstruction {
 
     private String otherEngineeringCostExplain;
 
+    private String additionalCostLandAcquisitionExplain;
+
+    private String reconnaissanceDesignExplain;
+
     public Integer getId() {
         return id;
     }
@@ -442,5 +446,21 @@ public class MdCostConstruction {
 
     public void setOtherEngineeringCostExplain(String otherEngineeringCostExplain) {
         this.otherEngineeringCostExplain = otherEngineeringCostExplain == null ? null : otherEngineeringCostExplain.trim();
+    }
+
+    public String getAdditionalCostLandAcquisitionExplain() {
+        return additionalCostLandAcquisitionExplain;
+    }
+
+    public void setAdditionalCostLandAcquisitionExplain(String additionalCostLandAcquisitionExplain) {
+        this.additionalCostLandAcquisitionExplain = additionalCostLandAcquisitionExplain == null ? null : additionalCostLandAcquisitionExplain.trim();
+    }
+
+    public String getReconnaissanceDesignExplain() {
+        return reconnaissanceDesignExplain;
+    }
+
+    public void setReconnaissanceDesignExplain(String reconnaissanceDesignExplain) {
+        this.reconnaissanceDesignExplain = reconnaissanceDesignExplain == null ? null : reconnaissanceDesignExplain.trim();
     }
 }
