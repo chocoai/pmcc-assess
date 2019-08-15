@@ -140,14 +140,7 @@ public class SurveyCaseStudyService {
         //先验证是否满足删除条件
         //需删除该计划任务下的子项任务，项目待提交的任务
         List<ProjectPlanDetails> list = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
-        if (CollectionUtils.isNotEmpty(list)) {
-            //检查任务是否允许删除
-            for (ProjectPlanDetails projectPlanDetails : list) {
-                if (!StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.NOPROCESS.getValue()))
-                    throw new BusinessException("任务已开始不允许删除");
-            }
-            surveyExamineTaskService.deletePlanDetailsAndTask(list);
-        }
+        surveyExamineTaskService.deletePlanDetailsAndTask(list);
         projectPlanDetailsService.deleteProjectPlanDetails(planDetailsId);
     }
 
