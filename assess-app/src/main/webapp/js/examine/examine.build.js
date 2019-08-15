@@ -169,21 +169,6 @@
         })
     };
 
-    //楼栋明细
-    buildingCommon.detail = function (applyId) {
-        $.ajax({
-            url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
-            type: 'get',
-            data: {applyId: applyId},
-            success: function (result) {
-                if (result.ret) {
-                    buildingCommon.showBuildingDetail(result.data.id);
-
-                }
-            }
-        })
-    }
-
     buildingCommon.showBuildingView = function (data) {
         buildingCommon.initForm(data) ;
     };
