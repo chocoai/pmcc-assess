@@ -154,6 +154,7 @@ public class MdMarketCompareService {
      */
     public MdMarketCompare initExplore(SchemeJudgeObject schemeJudgeObject, boolean isLand) {
         if (schemeJudgeObject == null) return null;
+        //检查估价对象是否有多个标准
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
         if (CollectionUtils.isEmpty(setUseFieldList)) return null;
@@ -176,6 +177,7 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setCreator(commonService.thisUserAccount());
 
         BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
+        //
         mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
         if (isLand) {//如果是土地比较法 则需额外处理 年期修正系数与容积率修正系数
             setCoefficient(areaGroup, schemeJudgeObject, mdMarketCompareItem, basicApply, false);

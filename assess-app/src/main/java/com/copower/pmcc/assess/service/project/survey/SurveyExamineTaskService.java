@@ -398,7 +398,7 @@ public class SurveyExamineTaskService {
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
 
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE_CIP, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE_CIP);
         ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
         BeanUtils.copyProperties(planDetails, taskPlanDetails);
         taskPlanDetails.setId(null);
