@@ -46,6 +46,8 @@
     <result column="infrastructure_cost_explain" property="infrastructureCostExplain" jdbcType="VARCHAR" />
     <result column="dev_during_explain" property="devDuringExplain" jdbcType="VARCHAR" />
     <result column="other_engineering_cost_explain" property="otherEngineeringCostExplain" jdbcType="VARCHAR" />
+    <result column="additional_cost_land_acquisition_explain" property="additionalCostLandAcquisitionExplain" jdbcType="VARCHAR" />
+    <result column="reconnaissance_design_explain" property="reconnaissanceDesignExplain" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -116,7 +118,8 @@
     interest_investment_tax_explain, sales_tax_and_additional, sales_tax_and_additional_explain, 
     investment_profit_tax, investment_profit_tax_explain, construction_assessment_value2, 
     creator, gmt_modified, gmt_created, pid, additional_cost_land_acquisition, infrastructure_cost_explain, 
-    dev_during_explain, other_engineering_cost_explain
+    dev_during_explain, other_engineering_cost_explain, additional_cost_land_acquisition_explain, 
+    reconnaissance_design_explain
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
@@ -170,7 +173,8 @@
       construction_assessment_value2, creator, 
       gmt_modified, gmt_created, pid, 
       additional_cost_land_acquisition, infrastructure_cost_explain, 
-      dev_during_explain, other_engineering_cost_explain
+      dev_during_explain, other_engineering_cost_explain, 
+      additional_cost_land_acquisition_explain, reconnaissance_design_explain
       )
     values (#{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, #{constructionAssessmentValue,jdbcType=VARCHAR}, 
       #{investmentProfit,jdbcType=VARCHAR}, #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
@@ -190,7 +194,8 @@
       #{constructionAssessmentValue2,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, #{pid,jdbcType=INTEGER}, 
       #{additionalCostLandAcquisition,jdbcType=DECIMAL}, #{infrastructureCostExplain,jdbcType=VARCHAR}, 
-      #{devDuringExplain,jdbcType=VARCHAR}, #{otherEngineeringCostExplain,jdbcType=VARCHAR}
+      #{devDuringExplain,jdbcType=VARCHAR}, #{otherEngineeringCostExplain,jdbcType=VARCHAR}, 
+      #{additionalCostLandAcquisitionExplain,jdbcType=VARCHAR}, #{reconnaissanceDesignExplain,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
@@ -328,6 +333,12 @@
       <if test="otherEngineeringCostExplain != null" >
         other_engineering_cost_explain,
       </if>
+      <if test="additionalCostLandAcquisitionExplain != null" >
+        additional_cost_land_acquisition_explain,
+      </if>
+      <if test="reconnaissanceDesignExplain != null" >
+        reconnaissance_design_explain,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="constructionAssessmentPriceCorrecting != null" >
@@ -458,6 +469,12 @@
       </if>
       <if test="otherEngineeringCostExplain != null" >
         #{otherEngineeringCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="additionalCostLandAcquisitionExplain != null" >
+        #{additionalCostLandAcquisitionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="reconnaissanceDesignExplain != null" >
+        #{reconnaissanceDesignExplain,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -602,6 +619,12 @@
       <if test="record.otherEngineeringCostExplain != null" >
         other_engineering_cost_explain = #{record.otherEngineeringCostExplain,jdbcType=VARCHAR},
       </if>
+      <if test="record.additionalCostLandAcquisitionExplain != null" >
+        additional_cost_land_acquisition_explain = #{record.additionalCostLandAcquisitionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reconnaissanceDesignExplain != null" >
+        reconnaissance_design_explain = #{record.reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -652,7 +675,9 @@
       additional_cost_land_acquisition = #{record.additionalCostLandAcquisition,jdbcType=DECIMAL},
       infrastructure_cost_explain = #{record.infrastructureCostExplain,jdbcType=VARCHAR},
       dev_during_explain = #{record.devDuringExplain,jdbcType=VARCHAR},
-      other_engineering_cost_explain = #{record.otherEngineeringCostExplain,jdbcType=VARCHAR}
+      other_engineering_cost_explain = #{record.otherEngineeringCostExplain,jdbcType=VARCHAR},
+      additional_cost_land_acquisition_explain = #{record.additionalCostLandAcquisitionExplain,jdbcType=VARCHAR},
+      reconnaissance_design_explain = #{record.reconnaissanceDesignExplain,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -789,6 +814,12 @@
       <if test="otherEngineeringCostExplain != null" >
         other_engineering_cost_explain = #{otherEngineeringCostExplain,jdbcType=VARCHAR},
       </if>
+      <if test="additionalCostLandAcquisitionExplain != null" >
+        additional_cost_land_acquisition_explain = #{additionalCostLandAcquisitionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="reconnaissanceDesignExplain != null" >
+        reconnaissance_design_explain = #{reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -836,7 +867,9 @@
       additional_cost_land_acquisition = #{additionalCostLandAcquisition,jdbcType=DECIMAL},
       infrastructure_cost_explain = #{infrastructureCostExplain,jdbcType=VARCHAR},
       dev_during_explain = #{devDuringExplain,jdbcType=VARCHAR},
-      other_engineering_cost_explain = #{otherEngineeringCostExplain,jdbcType=VARCHAR}
+      other_engineering_cost_explain = #{otherEngineeringCostExplain,jdbcType=VARCHAR},
+      additional_cost_land_acquisition_explain = #{additionalCostLandAcquisitionExplain,jdbcType=VARCHAR},
+      reconnaissance_design_explain = #{reconnaissanceDesignExplain,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
