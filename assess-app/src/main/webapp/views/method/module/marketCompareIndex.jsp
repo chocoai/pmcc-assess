@@ -243,7 +243,7 @@
             }
             marketCompare.mcId = defaluts.mcId;
             marketCompare.areaId = defaluts.areaId;
-            marketCompare.isLand = defaluts.isLand;
+            marketCompare.isLand = defaluts.isLand == 'true' ? true : false;
             marketCompare.evaluation = defaluts.evaluation;
             marketCompare.casesAll = defaluts.casesAll;
             marketCompare.judgeObjectId = defaluts.judgeObjectId;
@@ -479,28 +479,19 @@
                 var price = table.find('tr[data-bisprice="true"]').closest('tbody').find('td[data-item-id=' + item + '].p_text').text();
                 if (price && AssessCommon.isNumber(price)) {
                     var specificPrice = price = parseFloat(price);
-                    var situationTr = table.find('tr[data-group="trading.transaction.situation"][data-name="ratio"]');
-                    var situationRatio = situationTr.find('td[data-item-id=' + item + ']').text();
-                    situationRatio = iTofixed(parseFloat(situationRatio), 4);//交易情况因素
-
-                    var tradingTimeTr = table.find('tr[data-group="trading.time"][data-name="ratio"]');
-                    var tradingTimeRatio = tradingTimeTr.find('td[data-item-id=' + item + ']').text();
-                    tradingTimeRatio = iTofixed(parseFloat(tradingTimeRatio), 4);//市场状况因素
-
-                    var priceConnotationTr = table.find('tr[data-group="price.connotation"][data-name="ratio"]');
-                    var priceConnotationRatio = priceConnotationTr.find('td[data-item-id=' + item + ']').text();
-                    priceConnotationRatio = iTofixed(parseFloat(priceConnotationRatio), 4);//单价内容因素
-                    var locationConditionRatio = marketCompare.getGroupFactorValue("location.condition",item);//区位修正因素
-                    var equityConditionRatio = marketCompare.getGroupFactorValue("equity.condition",item);//权益修正因素
-                    var entityConditionRatio = marketCompare.getGroupFactorValue("entity.condition",item);//实体修正因素
-
-                    specificPrice = price * parseFloat(situationRatio)* parseFloat(tradingTimeRatio)* parseFloat(priceConnotationRatio)
-                        * parseFloat(locationConditionRatio)* parseFloat(equityConditionRatio)* parseFloat(entityConditionRatio);
-                    table.find('input[data-name="locationFactorRatio"][data-item-id=' + item + ']').val(locationConditionRatio);
-                    table.find('input[data-name="equityFactorRatio"][data-item-id=' + item + ']').val(equityConditionRatio);
-                    table.find('input[data-name="entityFactorRatio"][data-item-id=' + item + ']').val(entityConditionRatio);
-
                     if (marketCompare.isLand) {
+                        var locationConditionRatio = marketCompare.getGroupFactorValue("land.area.factor", item);//区位修正因素
+                        var equityConditionRatio = marketCompare.getGroupFactorValue("land.equity.condition", item);//权益修正因素
+                        var entityConditionRatio = marketCompare.getGroupFactorValue("land.individual.factor", item);//实体修正因素
+                        locationConditionRatio = AssessCommon.isNumber(locationConditionRatio) ? locationConditionRatio : 1;
+                        equityConditionRatio = AssessCommon.isNumber(equityConditionRatio) ? equityConditionRatio : 1;
+                        entityConditionRatio = AssessCommon.isNumber(entityConditionRatio) ? entityConditionRatio : 1;
+
+                        specificPrice = price * parseFloat(locationConditionRatio) * parseFloat(equityConditionRatio) * parseFloat(entityConditionRatio);
+                        table.find('input[data-name="locationFactorRatio"][data-item-id=' + item + ']').val(locationConditionRatio);
+                        table.find('input[data-name="equityFactorRatio"][data-item-id=' + item + ']').val(equityConditionRatio);
+                        table.find('input[data-name="entityFactorRatio"][data-item-id=' + item + ']').val(entityConditionRatio);
+
                         var annualTr = table.find('tr[data-name="annualCoefficient"]');
                         var evaluationAnnual = annualTr.find('td[data-item-id=' + evaluationItemId + ']').find('span').text();
                         var caseAnnual = annualTr.find('td[data-item-id=' + item + ']').text();
@@ -513,6 +504,34 @@
                         if (AssessCommon.isNumber(evaluationVolumeRatio) && AssessCommon.isNumber(caseVolumeRatio)) {
                             specificPrice = parseFloat(caseVolumeRatio) / parseFloat(evaluationVolumeRatio) * specificPrice;
                         }
+                    }else{
+                        var situationTr = table.find('tr[data-group="trading.transaction.situation"][data-name="ratio"]');
+                        var situationRatio = situationTr.find('td[data-item-id=' + item + ']').text();
+                        situationRatio = AssessCommon.isNumber(situationRatio) ? situationRatio : 1;
+                        situationRatio = iTofixed(parseFloat(situationRatio), 4);//交易情况因素
+
+                        var tradingTimeTr = table.find('tr[data-group="trading.time"][data-name="ratio"]');
+                        var tradingTimeRatio = tradingTimeTr.find('td[data-item-id=' + item + ']').text();
+                        tradingTimeRatio = AssessCommon.isNumber(tradingTimeRatio) ? tradingTimeRatio : 1;
+                        tradingTimeRatio = iTofixed(parseFloat(tradingTimeRatio), 4);//市场状况因素
+
+                        var priceConnotationTr = table.find('tr[data-group="price.connotation"][data-name="ratio"]');
+                        var priceConnotationRatio = priceConnotationTr.find('td[data-item-id=' + item + ']').text();
+                        priceConnotationRatio = AssessCommon.isNumber(priceConnotationRatio) ? priceConnotationRatio : 1;
+                        priceConnotationRatio = iTofixed(parseFloat(priceConnotationRatio), 4);//单价内容因素
+
+                        var locationConditionRatio = marketCompare.getGroupFactorValue("location.condition", item);//区位修正因素
+                        var equityConditionRatio = marketCompare.getGroupFactorValue("equity.condition", item);//权益修正因素
+                        var entityConditionRatio = marketCompare.getGroupFactorValue("entity.condition", item);//实体修正因素
+                        locationConditionRatio = AssessCommon.isNumber(locationConditionRatio) ? locationConditionRatio : 1;
+                        equityConditionRatio = AssessCommon.isNumber(equityConditionRatio) ? equityConditionRatio : 1;
+                        entityConditionRatio = AssessCommon.isNumber(entityConditionRatio) ? entityConditionRatio : 1;
+
+                        specificPrice = price * parseFloat(situationRatio) * parseFloat(tradingTimeRatio) * parseFloat(priceConnotationRatio)
+                            * parseFloat(locationConditionRatio) * parseFloat(equityConditionRatio) * parseFloat(entityConditionRatio);
+                        table.find('input[data-name="locationFactorRatio"][data-item-id=' + item + ']').val(locationConditionRatio);
+                        table.find('input[data-name="equityFactorRatio"][data-item-id=' + item + ']').val(equityConditionRatio);
+                        table.find('input[data-name="entityFactorRatio"][data-item-id=' + item + ']').val(entityConditionRatio);
                     }
 
                     specificPrice = iTofixed(specificPrice, 0);
@@ -613,7 +632,7 @@
                 var ratio = $(this).find('tr[data-name=ratio]').find('td[data-item-id=' + caseItemId + ']').text();
                 factorValue = factorValue * parseFloat(ratio);
             })
-            return iTofixed(factorValue,4);
+            return iTofixed(factorValue, 4);
         }
 
         //切换
@@ -1049,6 +1068,7 @@
                 data: {
                     projectPlanDetailsId: '${projectPlanDetails.id}',
                     mcId: marketCompare.mcId,
+                    isLand: marketCompare.isLand,
                     judgeObjectId: marketCompare.judgeObjectId
                 },
                 type: 'post',
@@ -1325,7 +1345,8 @@
         <input type="hidden" data-name="locationFactorRatio" data-item-id="{itemId}" value="{locationFactorRatio}">
         <input type="hidden" data-name="equityFactorRatio" data-item-id="{itemId}" value="{equityFactorRatio}">
         <input type="hidden" data-name="entityFactorRatio" data-item-id="{itemId}" value="{entityFactorRatio}">
-        <a href="javascript://" data-original-title="权重" class="editable editable-click editable-pre-wrapped">{value}</a>
+        <a href="javascript://" data-original-title="权重"
+           class="editable editable-click editable-pre-wrapped">{value}</a>
     </td>
 </script>
 

@@ -146,7 +146,7 @@ public class DataSetUseFieldService {
         if(BaseConstant.ASSESS_DATA_SET_USE_TYPE_HOUSE.equals(dataSetUseField.getType())){
             dataSetUseFieldVo.setTypeName("房产");
         }
-        if(BaseConstant.ASSESS_DATA_SET_USE_LAND_LAND.equals(dataSetUseField.getType())){
+        if(BaseConstant.ASSESS_DATA_SET_USE_TYPE_LAND.equals(dataSetUseField.getType())){
             dataSetUseFieldVo.setTypeName("土地");
         }
         return dataSetUseFieldVo;
@@ -155,7 +155,6 @@ public class DataSetUseFieldService {
 
     public DataSetUseField getCacheSetUseFieldByFieldName(String fieldName) {
         String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_SET_USE_FIELD_ITEM, fieldName);
-
         try {
             DataSetUseField sysSetUseField = LangUtils.singleCache(costsKeyPrefix, fieldName, DataSetUseField.class, o -> dataSetUseFieldDao.getSingleObject(o));
             return sysSetUseField;
