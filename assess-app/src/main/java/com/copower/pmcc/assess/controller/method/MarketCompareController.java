@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.dto.output.method.MdCompareCaseVo;
@@ -44,13 +45,14 @@ public class MarketCompareController {
             marketCompare = mdMarketCompareService.getMdMarketCompare(mcId);
         }
         if (marketCompare == null) {
-            marketCompare = mdMarketCompareService.initExplore(judgeObject, false);
+            marketCompare = mdMarketCompareService.initExplore(judgeObject, isLand);
         }
+        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getProjectId());
         modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationListByMcId(marketCompare.getId());
         modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
-        modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getSetUseFieldList(judgeObject.getSetUse())));
+        modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getSetUseFieldList(setUseFieldType)));
         modelAndView.addObject("evaluationJSON", JSON.toJSONString(evaluationObject));
         modelAndView.addObject("casesJSON", JSON.toJSONString(mdMarketCompareService.getCaseListByMcId(marketCompare.getId())));
         modelAndView.addObject("mcId", marketCompare.getId());
@@ -64,25 +66,6 @@ public class MarketCompareController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/marketCompareDetail");
 
         return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getInitParam", name = "获取市场比较法初始参数", method = RequestMethod.POST)
-    public HttpResult getInitParam(Integer mcId, Integer judgeObjectId) {
-        try {
-            SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getProjectId());
-            MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
-            mdCompareInitParamVo.setMcId(mcId);
-            mdCompareInitParamVo.setMarketCompare(mdMarketCompareService.getMdMarketCompare(mcId));
-            mdCompareInitParamVo.setCasesAll(caseAll);
-            mdCompareInitParamVo.setFields(mdMarketCompareService.getSetUseFieldList(judgeObject.getSetUse()));
-            mdCompareInitParamVo.setEvaluation(mdMarketCompareService.getEvaluationListByMcId(mcId));
-            mdCompareInitParamVo.setCases(mdMarketCompareService.getCaseListByMcId(mcId));
-            return HttpResult.newCorrectResult(mdCompareInitParamVo);
-        } catch (Exception e) {
-            return HttpResult.newErrorResult("保存失败");
-        }
     }
 
     @ResponseBody
@@ -164,9 +147,9 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/refreshData", name = "刷新", method = RequestMethod.POST)
-    public HttpResult refreshData(Integer mcId, Integer judgeObjectId) {
+    public HttpResult refreshData(Integer mcId, Integer judgeObjectId,Boolean isLand) {
         try {
-            MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.refreshData(mcId, judgeObjectId);
+            MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.refreshData(mcId, judgeObjectId,isLand);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
             return HttpResult.newErrorResult("保存失败");

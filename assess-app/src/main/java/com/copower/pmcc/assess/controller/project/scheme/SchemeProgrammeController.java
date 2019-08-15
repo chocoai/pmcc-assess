@@ -20,7 +20,6 @@ import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -52,8 +51,6 @@ public class SchemeProgrammeController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private DeclareRecordService declareRecordService;
     @Autowired
     private DataBestUseDescriptionService dataBestUseDescriptionService;
     @Autowired
