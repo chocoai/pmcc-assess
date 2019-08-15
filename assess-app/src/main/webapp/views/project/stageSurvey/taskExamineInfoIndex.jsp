@@ -218,7 +218,9 @@
             estateCommon.initForm({estate: data.basicEstate, land: data.basicEstateLandState});
         });
 
-        buildingCommon.detail(basicCommon.getApplyId());
+        buildingCommon.detail(basicCommon.getApplyId(),function(data){
+            buildingCommon.initForm(data);
+        });
 
         unitCommon.detail(basicCommon.getApplyId(), function (data) {
             unitCommon.initForm(data);

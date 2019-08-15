@@ -256,6 +256,47 @@
         })
     };
 
+
+    //楼盘明细
+    estateCommon.detail = function (applyId) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/getBasicEstateByApplyId',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    estateCommon.estateForm.initForm(result.data.basicEstate, function () {
+                        //附件显示
+                        $.each(estateCommon.estateFileControlIdArray, function (i, item) {
+                            estateCommon.fileShow(item);
+                        })
+                    });
+                    estateCommon.showEstateView(result.data) ;
+                    estateCommon.estateLandStateForm.initForm(result.data.basicEstateLandState, function () {
+                        if (result.data.basicEstateLandState.developmentDegreeContent) {
+                            var array = result.data.basicEstateLandState.developmentDegreeContent.split(',');
+                            AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
+                                if (resultData) {
+                                    var resultHtml = '';
+                                    $.each(resultData, function (i, item) {
+                                        resultHtml += '<span class="checkbox-inline"><input disabled="disabled" type="checkbox" ';
+                                        if ($.inArray(item.id.toString(), array) > -1) {
+                                            resultHtml += ' checked="checked" ';
+                                        }
+                                        resultHtml += ' id="developmentDegreeContent' + item.id + '" name="developmentDegreeContent" value="' + item.id + '">';
+                                        resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
+                                    })
+                                    $("#developmentDegreeContentContainer").html(resultHtml);
+                                }
+                            })
+                        }
+                    });
+                }
+            }
+        })
+    }
+
+
     /**
      * 楼盘信息 赋值
      * @param data

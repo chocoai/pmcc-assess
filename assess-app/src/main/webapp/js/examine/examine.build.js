@@ -154,20 +154,35 @@
     };
 
 
-    buildingCommon.detail = function (id) {
+    buildingCommon.detail = function (id,callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
             type: 'get',
             data: {applyId: id},
             success: function (result) {
                 if (result.ret) {
-                    if (result.data) {
-                        buildingCommon.initForm(result.data);
+                    if (callback) {
+                        callback(result.data);
                     }
                 }
             }
         })
     };
+
+    //楼栋明细
+    buildingCommon.detail = function (applyId) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
+            type: 'get',
+            data: {applyId: applyId},
+            success: function (result) {
+                if (result.ret) {
+                    buildingCommon.showBuildingDetail(result.data.id);
+
+                }
+            }
+        })
+    }
 
     buildingCommon.showBuildingView = function (data) {
         buildingCommon.initForm(data) ;
