@@ -2725,6 +2725,146 @@ public class MdCostConstructionExample {
             addCriterion("additional_cost_land_acquisition not between", value1, value2, "additionalCostLandAcquisition");
             return (Criteria) this;
         }
+
+        public Criteria andInfrastructureCostExplainIsNull() {
+            addCriterion("infrastructure_cost_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainIsNotNull() {
+            addCriterion("infrastructure_cost_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainEqualTo(String value) {
+            addCriterion("infrastructure_cost_explain =", value, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainNotEqualTo(String value) {
+            addCriterion("infrastructure_cost_explain <>", value, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainGreaterThan(String value) {
+            addCriterion("infrastructure_cost_explain >", value, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("infrastructure_cost_explain >=", value, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainLessThan(String value) {
+            addCriterion("infrastructure_cost_explain <", value, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainLessThanOrEqualTo(String value) {
+            addCriterion("infrastructure_cost_explain <=", value, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainLike(String value) {
+            addCriterion("infrastructure_cost_explain like", value, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainNotLike(String value) {
+            addCriterion("infrastructure_cost_explain not like", value, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainIn(List<String> values) {
+            addCriterion("infrastructure_cost_explain in", values, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainNotIn(List<String> values) {
+            addCriterion("infrastructure_cost_explain not in", values, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainBetween(String value1, String value2) {
+            addCriterion("infrastructure_cost_explain between", value1, value2, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCostExplainNotBetween(String value1, String value2) {
+            addCriterion("infrastructure_cost_explain not between", value1, value2, "infrastructureCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainIsNull() {
+            addCriterion("dev_during_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainIsNotNull() {
+            addCriterion("dev_during_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainEqualTo(String value) {
+            addCriterion("dev_during_explain =", value, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainNotEqualTo(String value) {
+            addCriterion("dev_during_explain <>", value, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainGreaterThan(String value) {
+            addCriterion("dev_during_explain >", value, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("dev_during_explain >=", value, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainLessThan(String value) {
+            addCriterion("dev_during_explain <", value, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainLessThanOrEqualTo(String value) {
+            addCriterion("dev_during_explain <=", value, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainLike(String value) {
+            addCriterion("dev_during_explain like", value, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainNotLike(String value) {
+            addCriterion("dev_during_explain not like", value, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainIn(List<String> values) {
+            addCriterion("dev_during_explain in", values, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainNotIn(List<String> values) {
+            addCriterion("dev_during_explain not in", values, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainBetween(String value1, String value2) {
+            addCriterion("dev_during_explain between", value1, value2, "devDuringExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevDuringExplainNotBetween(String value1, String value2) {
+            addCriterion("dev_during_explain not between", value1, value2, "devDuringExplain");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

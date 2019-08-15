@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceFactorService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -29,6 +32,8 @@ public class SchemeSurePriceController {
     private SchemeSurePriceService schemeSurePriceService;
     @Autowired
     private SchemeSurePriceFactorService schemeSurePriceFactorService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     @GetMapping(value = "/getSchemeSurePriceItemList", name = "获取确定单价明细数据信息")
     @ResponseBody
@@ -87,6 +92,18 @@ public class SchemeSurePriceController {
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             return HttpResult.newErrorResult("批量复制调整系数异常");
+        }
+    }
+
+    @PostMapping(value = "/updateCalculationSchemeSurePrice", name = "更新计算的估价对象单价")
+    @ResponseBody
+    public HttpResult updateCalculationSchemeSurePrice(String fomData,Integer planDetailsId) {
+        try {
+            schemeSurePriceService.submitSurePrice(JSONObject.parseObject(fomData,SchemeSurePriceApplyDto.class),
+                    projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId),null);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("更新计算的估价对象单价异常");
         }
     }
 }

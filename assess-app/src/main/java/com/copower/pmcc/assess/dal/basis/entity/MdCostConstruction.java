@@ -86,6 +86,10 @@ public class MdCostConstruction {
 
     private BigDecimal additionalCostLandAcquisition;
 
+    private String infrastructureCostExplain;
+
+    private String devDuringExplain;
+
     public Integer getId() {
         return id;
     }
@@ -412,5 +416,21 @@ public class MdCostConstruction {
 
     public void setAdditionalCostLandAcquisition(BigDecimal additionalCostLandAcquisition) {
         this.additionalCostLandAcquisition = additionalCostLandAcquisition;
+    }
+
+    public String getInfrastructureCostExplain() {
+        return infrastructureCostExplain;
+    }
+
+    public void setInfrastructureCostExplain(String infrastructureCostExplain) {
+        this.infrastructureCostExplain = infrastructureCostExplain == null ? null : infrastructureCostExplain.trim();
+    }
+
+    public String getDevDuringExplain() {
+        return devDuringExplain;
+    }
+
+    public void setDevDuringExplain(String devDuringExplain) {
+        this.devDuringExplain = devDuringExplain == null ? null : devDuringExplain.trim();
     }
 }

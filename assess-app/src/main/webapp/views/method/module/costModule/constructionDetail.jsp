@@ -70,7 +70,7 @@
                         <label  class="form-control"> ${mdCostConstruction.landPurchasePrice} </label>
                         <span class="input-group-btn">
                                         <input type="button" class="btn btn-primary" value="市场比较法"
-                                               onclick="">
+                                               onclick="callCompareMethod('${mdCostConstruction.mcId}');">
                                     </span>
                     </div>
                 </div>
@@ -189,6 +189,15 @@
                     <label  class="form-control"> ${mdCostConstruction.infrastructureCost} </label>
                 </div>
             </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label   class="form-control">${mdCostConstruction.infrastructureCostExplain}</label>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -230,6 +239,15 @@
                 <div class="col-sm-3">
                     <label  class="form-control"> ${mdCostConstruction.devDuring} </label>
 
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label   class="form-control">${mdCostConstruction.devDuringExplain}</label>
                 </div>
             </div>
         </div>
@@ -492,6 +510,37 @@
             showRefresh: true,
             search: false
         });
+    }
+
+    function callCompareMethod(mcId) {
+        if (mcId){
+            var frame = layer.open({
+                type: 2,
+                title: '市场比较法',
+                shadeClose: true,
+                shade: true,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: '${pageContext.request.contextPath}/marketCompare/index?mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}&readonly=true',
+                cancel: function (index, layero) {
+                    var iframe = window[layero.find('iframe')[0]['name']];
+                    if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
+                        $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+                    }
+                },
+                btnAlign: 'c',
+                btn: ['关闭'],
+                btn2: function (index, layero) {
+                    var iframe = window[layero.find('iframe')[0]['name']];
+                    if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
+                        $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+                    }
+                }
+            });
+            layer.full(frame);
+        }else {
+            toastr.success('未使用过比较法!');
+        }
     }
 
 
