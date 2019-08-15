@@ -11,6 +11,8 @@ public class DataSetUseField {
 
     private String fieldName;
 
+    private String type;
+
     private Integer setUse;
 
     private String level;
@@ -69,6 +71,14 @@ public class DataSetUseField {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName == null ? null : fieldName.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public Integer getSetUse() {

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
@@ -85,7 +86,7 @@ public class SchemeProgrammeController {
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
         modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(), projectInfoVo.getProjectCategoryId()));
-        modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldListByPid(0));
+        modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldsByType(BaseConstant.ASSESS_DATA_SET_USE_TYPE_HOUSE));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
         modelAndView.addObject("valueTypes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
         modelAndView.addObject("entrustmentPurposes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE));//委托目的

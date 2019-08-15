@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataSetUseFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataSetUseField;
+import com.copower.pmcc.assess.dto.output.data.DataSetUseFieldVo;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -15,7 +17,9 @@ import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +48,9 @@ public class DataSetUseFieldService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataSetUseField> list = dataSetUseFieldDao.getListObject(name, 0);
+        List<DataSetUseFieldVo> vos=LangUtils.transform(list,o->getDataSetUseFieldVo(o));
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<DataSetUseField>() : list);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? Lists.newArrayList() : vos);
         return bootstrapTableVo;
     }
 
@@ -135,6 +140,18 @@ public class DataSetUseFieldService {
         return dataSetUseFieldDao.getShowList(fieldName);
     }
 
+    public DataSetUseFieldVo getDataSetUseFieldVo(DataSetUseField dataSetUseField){
+        DataSetUseFieldVo dataSetUseFieldVo=new DataSetUseFieldVo();
+        BeanUtils.copyProperties(dataSetUseField,dataSetUseFieldVo);
+        if(BaseConstant.ASSESS_DATA_SET_USE_TYPE_HOUSE.equals(dataSetUseField.getType())){
+            dataSetUseFieldVo.setTypeName("房产");
+        }
+        if(BaseConstant.ASSESS_DATA_SET_USE_LAND_LAND.equals(dataSetUseField.getType())){
+            dataSetUseFieldVo.setTypeName("土地");
+        }
+        return dataSetUseFieldVo;
+    }
+
 
     public DataSetUseField getCacheSetUseFieldByFieldName(String fieldName) {
         String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_SET_USE_FIELD_ITEM, fieldName);
@@ -157,7 +174,6 @@ public class DataSetUseFieldService {
      */
     public List<DataSetUseField> getCacheSetUseFieldListByPid(Integer pid) {
         String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_SET_USE_PID, String.valueOf(pid));
-
         try {
             List<DataSetUseField> sysSetUseFields = LangUtils.listCache(rdsKey, pid, DataSetUseField.class, input -> dataSetUseFieldDao.getEnableListByPid(input));
             return sysSetUseFields;
@@ -169,14 +185,6 @@ public class DataSetUseFieldService {
     public List<DataSetUseField> getShowSetUseFieldListByPid(Integer pid) {
         return dataSetUseFieldDao.getShowListByPid(pid);
     }
-    /**
-     * 获取设定用途字段数据
-     *
-     * @return
-     */
-    public DataSetUseField getSetUseFieldByType(Integer type) {
-        return dataSetUseFieldDao.getSetUseFieldByType(type);
-    }
 
     /**
      * 获取缓存中的设定用途字段数据
@@ -185,14 +193,22 @@ public class DataSetUseFieldService {
      */
     public DataSetUseField getCacheSetUseFieldById(Integer id) {
         String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_SET_USE_ID, String.valueOf(id));
-
         try {
             DataSetUseField sysSetUseField = LangUtils.singleCache(rdsKey, id, DataSetUseField.class, o -> dataSetUseFieldDao.getSingleObject(o));
             return sysSetUseField;
         } catch (Exception e) {
             return dataSetUseFieldDao.getSingleObject(id);
         }
+    }
 
+    public List<DataSetUseField> getCacheSetUseFieldsByType(String type) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_SET_USE_TYPE, type);
+        try {
+            List<DataSetUseField> sysSetUseFields = LangUtils.listCache(rdsKey, type, DataSetUseField.class, o -> dataSetUseFieldDao.getSetUseFieldsByType(type));
+            return sysSetUseFields;
+        } catch (Exception e) {
+            return dataSetUseFieldDao.getSetUseFieldsByType(type);
+        }
     }
 
     public DataSetUseField getSetUseFieldById(Integer id) {
