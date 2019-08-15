@@ -30,8 +30,7 @@ public class DataSetUseFieldDao {
      */
     public List<DataSetUseField> getListObject(String name, Integer pid) {
         DataSetUseFieldExample example = new DataSetUseFieldExample();
-        DataSetUseFieldExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true).andBisDeleteEqualTo(false);
-
+        DataSetUseFieldExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(name)) {
             criteria.andNameLike("%" + name + "%");
         }
@@ -101,19 +100,13 @@ public class DataSetUseFieldDao {
     }
     //endregion
 
-    public DataSetUseField getSetUseFieldByType(Integer type) {
+    public List<DataSetUseField> getSetUseFieldsByType(String type) {
         DataSetUseFieldExample example = new DataSetUseFieldExample();
-        example.createCriteria().andSetUseEqualTo(type);
+        example.createCriteria().andTypeEqualTo(type).andBisEnableEqualTo(true)
+                .andBisShowEqualTo(true)
+                .andBisDeleteEqualTo(false);;
         List<DataSetUseField> list = dataSetUseFieldMapper.selectByExample(example);
-        if (CollectionUtils.isNotEmpty(list))
-            return list.get(0);
-        return null;
-    }
-
-    public List<DataSetUseField> getEnableListByPids(List<Integer> integers) {
-        DataSetUseFieldExample example = new DataSetUseFieldExample();
-        example.createCriteria().andPidIn(integers);
-        return dataSetUseFieldMapper.selectByExample(example);
+        return list;
     }
 
     /**

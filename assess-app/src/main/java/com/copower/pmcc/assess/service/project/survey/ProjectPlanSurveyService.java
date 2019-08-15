@@ -94,7 +94,7 @@ public class ProjectPlanSurveyService {
                 projectPlanDetail.setPlanEndDate(new Date());
                 projectPlanDetail.setBisEnable(true);
                 projectPlanDetail.setProcessInsId("0");
-                projectPlanDetail.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                projectPlanDetail.setStatus(ProcessStatusEnum.RUN.getValue());
                 projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
                 projectPlanDetail.setPid(0);
                 projectPlanDetail.setFirstPid(0);

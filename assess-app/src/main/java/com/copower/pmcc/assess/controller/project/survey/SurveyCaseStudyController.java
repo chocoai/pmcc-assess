@@ -67,7 +67,7 @@ public class SurveyCaseStudyController {
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("删除案例任务", e);
-            return HttpResult.newErrorResult("删除案例任务");
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 

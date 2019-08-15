@@ -87,6 +87,20 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
+                                            类型<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select name="type" class="form-control" required>
+                                                <option value="">-请选择-</option>
+                                                <option value="house">房产</option>
+                                                <option value="land">土地</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
                                             是否启用
                                         </label>
                                         <div class="col-sm-9">
@@ -308,6 +322,7 @@
     function loadSetUseFieldList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'typeName', title: '类型'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value) {
                 return getBoolChs(value);
@@ -349,6 +364,7 @@
     function saveSetUseField() {
         if ($("#frm").valid()) {
             var data = formParams("frm");
+            data.bisEnable = $("#bisEnable").prop("checked");
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/setUseField/saveSetUseField",
@@ -392,12 +408,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    $("#id").val(id);
-                    $("#name").val(result.data.name);
-                    $("#fieldName").val(result.data.fieldName);
-                    $("#bisEnable").prop("checked", result.data.bisEnable);
-                    $("#sorting").val(result.data.sorting);
-                    $("#remark").val(result.data.remark);
+                    $("#frm").clearAll().initForm(result.data);
                     $('#divBox').modal();
                 }
                 else {

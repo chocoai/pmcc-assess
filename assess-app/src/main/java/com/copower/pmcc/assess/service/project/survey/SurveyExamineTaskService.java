@@ -461,7 +461,7 @@ public class SurveyExamineTaskService {
         taskPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
         taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
         taskPlanDetails.setBisLastLayer(true);
-        taskPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+        taskPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
         taskPlanDetails.setCreator(commonService.thisUserAccount());
         taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(commonService.thisUserAccount())));
         projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);
