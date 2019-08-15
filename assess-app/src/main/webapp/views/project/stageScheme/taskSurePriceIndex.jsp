@@ -55,6 +55,12 @@
                                        value="${schemeSurePrice.price}">
                             </div>
                         </div>
+
+                        <div class="x-valid">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-success" onclick="updatePrice(this)">更新单价</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -265,6 +271,40 @@
         else {
             submitToServer(JSON.stringify(surePriceApply));
         }
+    }
+
+    function updatePrice() {
+        var surePriceApply = {};
+        var form = $("#sure_price_form");
+        if (!form.valid()) {
+            return false;
+        }
+        surePriceApply.id = form.find('[name=id]').val();
+        surePriceApply.judgeObjectId = '${projectPlanDetails.judgeObjectId}';
+        surePriceApply.weightExplain = form.find('[name=weightExplain]').val();
+        surePriceApply.price = form.find('[name=price]').val();
+        surePriceApply.surePriceItemList = [];
+        $("#tbody_data_section tr").each(function () {
+            var schemeSurePriceItem = {};
+            schemeSurePriceItem.id = $(this).find('[name=id]').val();
+            schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
+            surePriceApply.surePriceItemList.push(schemeSurePriceItem);
+        }) ;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
+            data: {
+                fomData:JSON.stringify(surePriceApply),planDetailsId:'${projectPlanDetails.id}'
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    window.location.reload(true);
+                } else {
+                    Alert("失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
     }
 
 
