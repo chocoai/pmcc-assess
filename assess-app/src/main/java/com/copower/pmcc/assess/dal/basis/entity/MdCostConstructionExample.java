@@ -2865,6 +2865,76 @@ public class MdCostConstructionExample {
             addCriterion("dev_during_explain not between", value1, value2, "devDuringExplain");
             return (Criteria) this;
         }
+
+        public Criteria andOtherEngineeringCostExplainIsNull() {
+            addCriterion("other_engineering_cost_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainIsNotNull() {
+            addCriterion("other_engineering_cost_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainEqualTo(String value) {
+            addCriterion("other_engineering_cost_explain =", value, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainNotEqualTo(String value) {
+            addCriterion("other_engineering_cost_explain <>", value, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainGreaterThan(String value) {
+            addCriterion("other_engineering_cost_explain >", value, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("other_engineering_cost_explain >=", value, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainLessThan(String value) {
+            addCriterion("other_engineering_cost_explain <", value, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainLessThanOrEqualTo(String value) {
+            addCriterion("other_engineering_cost_explain <=", value, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainLike(String value) {
+            addCriterion("other_engineering_cost_explain like", value, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainNotLike(String value) {
+            addCriterion("other_engineering_cost_explain not like", value, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainIn(List<String> values) {
+            addCriterion("other_engineering_cost_explain in", values, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainNotIn(List<String> values) {
+            addCriterion("other_engineering_cost_explain not in", values, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainBetween(String value1, String value2) {
+            addCriterion("other_engineering_cost_explain between", value1, value2, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherEngineeringCostExplainNotBetween(String value1, String value2) {
+            addCriterion("other_engineering_cost_explain not between", value1, value2, "otherEngineeringCostExplain");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -261,6 +261,15 @@
                     <label  class="form-control"> ${mdCostConstruction.otherEngineeringCost} </label>
                 </div>
             </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label   class="form-control">${mdCostConstruction.otherEngineeringCostExplain}</label>
+                </div>
+            </div>
         </div>
     </div>
 

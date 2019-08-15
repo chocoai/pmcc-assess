@@ -650,7 +650,7 @@
             cols.push({checkbox: true});
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'number', title: '金额'});
-            cols.push({field: 'tax', title: '税费'});
+//            cols.push({field: 'tax', title: '税费'});
             selectId.bootstrapTable('destroy');
             TableInit(selectId.attr("id"), "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=" + pid + "&planDetailsId=" + planDetailsId + "&type=" + type, cols, {}, {
                 showColumns: true,

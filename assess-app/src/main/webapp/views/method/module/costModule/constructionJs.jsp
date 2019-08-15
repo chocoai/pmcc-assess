@@ -55,7 +55,7 @@
         if (!AssessCommon.isNumber(d6)) {
             return false;
         }
-        var c = math.chain(d3).multiply(d6).divide(10000);
+        var c = math.chain(Number(d3)).multiply(Number(d6)).divide(10000);
         construction.target.find("input[name='e6']").val(c.value.toFixed(construction.fixed)).trigger('blur');
     };
 
@@ -69,7 +69,7 @@
         if (!AssessCommon.isNumber(d7)) {
             return false;
         }
-        var c = math.chain(e6).multiply(d7);
+        var c = math.chain(e6).multiply(Number(d7));
         construction.target.find("input[name='e7']").val(c.value.toFixed(construction.fixed)).trigger('blur');
     };
 
@@ -117,7 +117,7 @@
         if (!AssessCommon.isNumber(d12)) {
             return false;
         }
-        var c = math.chain(f3).multiply(d12).divide(10000);
+        var c = math.chain(Number(f3)).multiply(d12).divide(10000);
         construction.target.find("input[name='e12']").val(c.value.toFixed(construction.fixed)).trigger('blur');
     };
 
@@ -443,7 +443,7 @@
             return false;
         }
         var c = math.chain(e24).divide(1 - math.number(g24)).done();
-        c = c.toFixed(construction.fixed);
+        c = c.toFixed(construction.fixedMin);
         construction.target.find("input[name='constructionAssessmentValue']").val(c).trigger('blur');
         construction.target.find(".constructionAssessmentValue").html(c);
     };
@@ -459,7 +459,7 @@
             return false;
         }
         var c = math.chain(e25).multiply(10000).divide(f3).done();
-        c = c.toFixed(construction.fixed);
+        c = c.toFixed(construction.fixedMin);
         construction.target.find("input[name='constructionAssessmentPriceCorrecting']").val(c).trigger('blur');
         construction.target.find(".constructionAssessmentPriceCorrecting").html(c);
     };
@@ -586,6 +586,16 @@
             construction.target.find("input[name='infrastructureCost']").val(result).trigger('blur');
         });
     };
+
+    /**
+     * 触发事件
+     */
+    construction.inputBlurEvent = function () {
+        if (cost.isNotBlank('${mdCostConstruction.id}')){
+            console.log('inputBlurEvent') ;
+            construction.target.find("input").trigger('blur');
+        }
+    }
 
 
 </script>
