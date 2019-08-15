@@ -350,25 +350,8 @@ public class BasicApplyService {
 
     //获取查勘及案例的BasicApply
     public BasicApply getCaseBasicApply(Integer id, Integer projectPhaseId) throws Exception {
-       // Integer basicApplyId = null;
-        //现场查勘事项调查信息
-//        ProjectPhase projectSurveyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
-//        if (projectPhaseId.equals(projectSurveyPhase.getId())) {
-//            basicApplyId = surveySceneExploreService.getSurveySceneExplore(id).getBasicApplyId();
-//
-//        }
-//        //案例事项调查信息
-//        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-//        if (projectPhaseId.equals(projectCasePhase.getId())) {
-//            basicApplyId = surveyCaseStudyService.getSurveyCaseStudy(id).getBasicApplyId();
-//        }
         Integer applyPlanDetailsId = projectPlanDetailsService.getProjectPlanDetailsById(id).getPid();
         BasicApply basicApply = this.getBasicApplyByPlanDetailsId(applyPlanDetailsId);
-       // BasicApply basicApply = basicApplyDao.getBasicApplyById(basicApplyId);
-        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        if (caseEstateService.hasEstateByName(basicEstate.getName(), basicEstate.getProvince(), basicEstate.getCity())) {
-            throw new BusinessException("案例中已存在相同名称楼盘");
-        }
         return basicApply;
     }
 }
