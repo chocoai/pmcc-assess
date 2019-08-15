@@ -154,15 +154,15 @@
     };
 
 
-    buildingCommon.detail = function (id) {
+    buildingCommon.detail = function (id,callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
             type: 'get',
             data: {applyId: id},
             success: function (result) {
                 if (result.ret) {
-                    if (result.data) {
-                        buildingCommon.initForm(result.data);
+                    if (callback) {
+                        callback(result.data);
                     }
                 }
             }

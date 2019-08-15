@@ -99,13 +99,8 @@ public class MdMarketCompareService {
      *
      * @return
      */
-    public List<DataSetUseField> getSetUseFieldList(Integer setUseType) {
-        List<DataSetUseField> setUseFields = null;
-        if (setUseType != null) {
-            setUseFields = dataSetUseFieldService.getCacheSetUseFieldListByPid(setUseType);
-        }
-        if (CollectionUtils.isEmpty(setUseFields))
-            setUseFields = dataSetUseFieldService.getCacheSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE);
+    public List<DataSetUseField> getSetUseFieldList(String fieldName) {
+        List<DataSetUseField> setUseFields = dataSetUseFieldService.getCacheSetUseFieldList(fieldName);
         List<DataSetUseField> fieldList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(setUseFields)) {
             for (DataSetUseField setUseField : setUseFields) {
@@ -159,7 +154,8 @@ public class MdMarketCompareService {
      */
     public MdMarketCompare initExplore(SchemeJudgeObject schemeJudgeObject, boolean isLand) {
         if (schemeJudgeObject == null) return null;
-        List<DataSetUseField> setUseFieldList = getSetUseFieldList(schemeJudgeObject.getSetUse());
+        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
+        List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
         if (CollectionUtils.isEmpty(setUseFieldList)) return null;
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
         MdMarketCompare mdMarketCompare = new MdMarketCompare();
@@ -294,7 +290,8 @@ public class MdMarketCompareService {
         }
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
-        List<DataSetUseField> setUseFieldList = getSetUseFieldList(schemeJudgeObject.getSetUse());
+        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
+        List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
         //添加选择后的案例信息
         List<MdCompareCaseVo> list = JSONObject.parseArray(areaDescJson, MdCompareCaseVo.class);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -426,7 +423,6 @@ public class MdMarketCompareService {
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setProjectId(projectId);
         projectPlanDetails.setProjectPhaseId(projectPhase.getId());
-        projectPlanDetails.setBisStart(true);
         List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
         if (CollectionUtils.isEmpty(detailsList)) {
             return null;
@@ -461,8 +457,7 @@ public class MdMarketCompareService {
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
             BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
             if (basicHouse != null) {
-                //计算剩余年限=使用年限-已使用年限
-                //已使用年限=评估基准日-交易时间
+                //计算剩余年限=使用年限-已使用年限  //已使用年限=评估基准日-交易时间
                 BigDecimal legalAge = new BigDecimal(basicHouse.getUseYear());
                 int diffDays = DateUtils.diffDate(schemeAreaGroup.getValueTimePoint(), houseTrading.getTradingTime());
                 BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
@@ -480,10 +475,11 @@ public class MdMarketCompareService {
         return keyValueDtos;
     }
 
-    public MdCompareInitParamVo refreshData(Integer mcId, Integer judgeObjectId) {
+    public MdCompareInitParamVo refreshData(Integer mcId, Integer judgeObjectId,Boolean isLand) {
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
-        List<DataSetUseField> setUseFieldList = getSetUseFieldList(schemeJudgeObject.getSetUse());
+        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
+        List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
         //修改查勘信息
         MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
         mdMarketCompareItem.setMcId(mcId);
@@ -495,7 +491,6 @@ public class MdMarketCompareService {
             mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
             mdMarketCompareItemDao.updateMarketCompareItem(mdMarketCompareItem);
         }
-
 
         //所有案例信息
         MdMarketCompareItem mdMarketCompareItemCase = new MdMarketCompareItem();

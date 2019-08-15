@@ -88,16 +88,22 @@
         industry.keyApp("${basicApply.type}");
 
         if ("${basicApply.estatePartInMode}") {
-            estateCommon.detail('${basicApply.id}');
+            estateCommon.detail('${basicApply.id}', function (data) {
+                estateCommon.initForm({estate: data.basicEstate, land: data.basicEstateLandState});
+            });
         }
 
 
         if ("${basicApply.buildingPartInMode}") {
-            buildingCommon.detail('${basicApply.id}');
+            buildingCommon.detail('${basicApply.id}',function(data){
+                buildingCommon.initForm(data);
+            });
         }
 
         if ("${basicApply.unitPartInMode}") {
-            unitCommon.detail('${basicApply.id}');
+            unitCommon.detail('${basicApply.id}', function (data) {
+                unitCommon.initForm(data);
+            });
         }
 
         if ("${basicApply.housePartInMode}") {

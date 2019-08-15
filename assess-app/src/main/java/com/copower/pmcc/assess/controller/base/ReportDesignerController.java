@@ -83,4 +83,10 @@ public class ReportDesignerController {
         modelAndView.addObject("typeList", typeList);
         return modelAndView;
     }
+
+    @GetMapping(value = "/projectWorkItem",name = "项目工作事项报表页面")
+    public ModelAndView projectWorkItem() {
+        ModelAndView modelAndView = commonService.baseView("/reportManage/projectWorkItem");
+        return modelAndView;
+    }
 }
