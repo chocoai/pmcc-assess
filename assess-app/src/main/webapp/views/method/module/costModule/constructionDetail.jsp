@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="x_panel">
     <input type="hidden" name="id" value="${mdCostConstruction.id}">
     <input type="hidden" name="pid" value="${mdCost.id}">
@@ -94,7 +95,9 @@
                     土地取得相关税费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.landGetRelevant} </label>
+                    <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostConstruction.landGetRelevant}" type="percent"/>
+                    </label>
 
                 </div>
             </div>
@@ -120,6 +123,15 @@
 
                     <label  class="form-control"> ${mdCostConstruction.additionalCostLandAcquisition} </label>
 
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label   class="form-control">${mdCostConstruction.additionalCostLandAcquisitionExplain}</label>
                 </div>
             </div>
 
@@ -149,8 +161,19 @@
                 </label>
                 <div class="col-sm-3">
 
-                    <label  class="form-control"> ${mdCostConstruction.reconnaissanceDesign} </label>
+                    <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostConstruction.reconnaissanceDesign}" type="percent"/>
+                        </label>
 
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label   class="form-control">${mdCostConstruction.reconnaissanceDesignExplain}</label>
                 </div>
             </div>
 
@@ -293,7 +316,9 @@
                     不可预见费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.unforeseenExpenses} </label>
+                    <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostConstruction.unforeseenExpenses}" type="percent"/>
+                    </label>
                 </div>
             </div>
             <div class="x-valid">
@@ -312,7 +337,9 @@
                     管理费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.managementExpense} </label>
+                    <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostConstruction.managementExpense}" type="percent"/>
+                         </label>
                 </div>
             </div>
             <div class="x-valid">
@@ -331,7 +358,9 @@
                     销售费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.salesFee} </label>
+                    <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostConstruction.salesFee}" type="percent"/>
+                         </label>
                 </div>
             </div>
             <div class="x-valid">
@@ -350,7 +379,9 @@
                     投资利息率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.interestInvestmentTax} </label>
+                    <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostConstruction.interestInvestmentTax}" type="percent"/>
+                         </label>
                 </div>
             </div>
             <div class="x-valid">
@@ -369,7 +400,9 @@
                     销售税金及附加率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.salesTaxAndAdditional} </label>
+                    <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostConstruction.salesTaxAndAdditional}" type="percent"/>
+                         </label>
                 </div>
             </div>
             <div class="x-valid">
@@ -388,7 +421,9 @@
                     开发利润率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.investmentProfitTax} </label>
+                    <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostConstruction.investmentProfitTax}" type="percent"/>
+                         </label>
                 </div>
             </div>
             <div class="x-valid">

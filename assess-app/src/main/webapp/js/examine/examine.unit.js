@@ -40,25 +40,6 @@
         })
     };
 
-    //单元明细
-    unitCommon.detail = function (applyId) {
-        $.ajax({
-            url: getContextPath() + '/basicUnit/getBasicUnitByApplyId',
-            type: 'get',
-            data: {applyId: applyId},
-            success: function (result) {
-                if (result.ret) {
-                    unitCommon.unitForm.initForm(result.data,function () {
-                        //附件显示
-                        $.each(unitCommon.unitFileControlIdArray, function (i, item) {
-                            unitCommon.fileShow(item);
-                        })
-                    });
-                }
-            }
-        })
-    }
-
     unitCommon.initForm = function (data) {
         unitCommon.unitForm.clearAll();
         unitCommon.unitForm.initForm(data);

@@ -2935,6 +2935,146 @@ public class MdCostConstructionExample {
             addCriterion("other_engineering_cost_explain not between", value1, value2, "otherEngineeringCostExplain");
             return (Criteria) this;
         }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainIsNull() {
+            addCriterion("additional_cost_land_acquisition_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainIsNotNull() {
+            addCriterion("additional_cost_land_acquisition_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainEqualTo(String value) {
+            addCriterion("additional_cost_land_acquisition_explain =", value, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainNotEqualTo(String value) {
+            addCriterion("additional_cost_land_acquisition_explain <>", value, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainGreaterThan(String value) {
+            addCriterion("additional_cost_land_acquisition_explain >", value, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("additional_cost_land_acquisition_explain >=", value, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainLessThan(String value) {
+            addCriterion("additional_cost_land_acquisition_explain <", value, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainLessThanOrEqualTo(String value) {
+            addCriterion("additional_cost_land_acquisition_explain <=", value, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainLike(String value) {
+            addCriterion("additional_cost_land_acquisition_explain like", value, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainNotLike(String value) {
+            addCriterion("additional_cost_land_acquisition_explain not like", value, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainIn(List<String> values) {
+            addCriterion("additional_cost_land_acquisition_explain in", values, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainNotIn(List<String> values) {
+            addCriterion("additional_cost_land_acquisition_explain not in", values, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainBetween(String value1, String value2) {
+            addCriterion("additional_cost_land_acquisition_explain between", value1, value2, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdditionalCostLandAcquisitionExplainNotBetween(String value1, String value2) {
+            addCriterion("additional_cost_land_acquisition_explain not between", value1, value2, "additionalCostLandAcquisitionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainIsNull() {
+            addCriterion("reconnaissance_design_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainIsNotNull() {
+            addCriterion("reconnaissance_design_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainEqualTo(String value) {
+            addCriterion("reconnaissance_design_explain =", value, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainNotEqualTo(String value) {
+            addCriterion("reconnaissance_design_explain <>", value, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainGreaterThan(String value) {
+            addCriterion("reconnaissance_design_explain >", value, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("reconnaissance_design_explain >=", value, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainLessThan(String value) {
+            addCriterion("reconnaissance_design_explain <", value, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainLessThanOrEqualTo(String value) {
+            addCriterion("reconnaissance_design_explain <=", value, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainLike(String value) {
+            addCriterion("reconnaissance_design_explain like", value, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainNotLike(String value) {
+            addCriterion("reconnaissance_design_explain not like", value, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainIn(List<String> values) {
+            addCriterion("reconnaissance_design_explain in", values, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainNotIn(List<String> values) {
+            addCriterion("reconnaissance_design_explain not in", values, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainBetween(String value1, String value2) {
+            addCriterion("reconnaissance_design_explain between", value1, value2, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andReconnaissanceDesignExplainNotBetween(String value1, String value2) {
+            addCriterion("reconnaissance_design_explain not between", value1, value2, "reconnaissanceDesignExplain");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
