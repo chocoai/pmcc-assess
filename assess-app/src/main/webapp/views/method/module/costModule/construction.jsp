@@ -217,6 +217,7 @@
                         </span>
                         <select name="infrastructureCostValue"
                                 class="form-control" onchange="construction.calculationE13Select(this)">
+                                <option value="0">请选择</option>
                             <c:forEach items="${dataInfrastructureList}" var="item">
                                 <c:if test="${item.infrastructureSupportingFacilities != 0}">
                                     <c:if test="${mdCostConstruction.infrastructureCost != item.infrastructureSupportingFacilities}">
@@ -230,6 +231,16 @@
                             <option value="100">2012-2017 金额100</option>
                         </select>
                     </div>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="说明" class="form-control"
+                           name="infrastructureCostExplain" value="${mdCostConstruction.infrastructureCostExplain}">
                 </div>
             </div>
         </div>
@@ -287,29 +298,21 @@
                 开发期间税费<span class="symbol required"></span>
             </label>
             <div class="x-valid">
-                <div class="col-sm-5">
-                    <div class="input-group">
+                <div class="col-sm-3">
                         <input type="text" required="required"
                                placeholder="公共配套设施建设费" class="form-control" onblur="cost.checkParams(this);construction.calculationE15()"
                                name="devDuring" value="${mdCostConstruction.devDuring}">
-                        <span class="input-group-btn">
-                        </span>
-                        <select name="devDuring2"
-                                class="form-control " onchange="construction.calculationE15Select(this);" >
-                            <option value="10">2009-2032 金额 10</option>
-                            <c:forEach items="${dataInfrastructureList}" var="item">
-                                <c:if test="${item.devTaxTotal != 0}">
-                                    <c:if test="${mdCostConstruction.devDuring != item.devTaxTotal}">
-                                        <option value="${item.devTaxTotal}">${item.timeSlot} 金额:${item.devTaxTotal}</option>
-                                    </c:if>
-                                    <c:if test="${mdCostConstruction.devDuring == item.devTaxTotal}">
-                                        <option value="${item.devTaxTotal}" selected="selected">${item.timeSlot} 金额:${item.devTaxTotal}</option>
-                                    </c:if>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </div>
+                </div>
+            </div>
 
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="说明" class="form-control"
+                           name="devDuringExplain" value="${mdCostConstruction.devDuringExplain}">
                 </div>
             </div>
         </div>

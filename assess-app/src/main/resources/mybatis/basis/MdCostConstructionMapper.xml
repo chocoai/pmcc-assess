@@ -43,6 +43,8 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="additional_cost_land_acquisition" property="additionalCostLandAcquisition" jdbcType="DECIMAL" />
+    <result column="infrastructure_cost_explain" property="infrastructureCostExplain" jdbcType="VARCHAR" />
+    <result column="dev_during_explain" property="devDuringExplain" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -112,7 +114,8 @@
     management_expense, management_expense_explain, sales_fee, sales_fee_explain, interest_investment_tax, 
     interest_investment_tax_explain, sales_tax_and_additional, sales_tax_and_additional_explain, 
     investment_profit_tax, investment_profit_tax_explain, construction_assessment_value2, 
-    creator, gmt_modified, gmt_created, pid, additional_cost_land_acquisition
+    creator, gmt_modified, gmt_created, pid, additional_cost_land_acquisition, infrastructure_cost_explain, 
+    dev_during_explain
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
@@ -165,7 +168,8 @@
       investment_profit_tax, investment_profit_tax_explain, 
       construction_assessment_value2, creator, 
       gmt_modified, gmt_created, pid, 
-      additional_cost_land_acquisition)
+      additional_cost_land_acquisition, infrastructure_cost_explain, 
+      dev_during_explain)
     values (#{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, #{constructionAssessmentValue,jdbcType=VARCHAR}, 
       #{investmentProfit,jdbcType=VARCHAR}, #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
       #{landGetCostTotal,jdbcType=VARCHAR}, #{jsonContent,jdbcType=VARCHAR}, #{developLandAreaTax,jdbcType=DECIMAL}, 
@@ -183,7 +187,8 @@
       #{investmentProfitTax,jdbcType=DECIMAL}, #{investmentProfitTaxExplain,jdbcType=VARCHAR}, 
       #{constructionAssessmentValue2,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, #{pid,jdbcType=INTEGER}, 
-      #{additionalCostLandAcquisition,jdbcType=DECIMAL})
+      #{additionalCostLandAcquisition,jdbcType=DECIMAL}, #{infrastructureCostExplain,jdbcType=VARCHAR}, 
+      #{devDuringExplain,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -311,6 +316,12 @@
       <if test="additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition,
       </if>
+      <if test="infrastructureCostExplain != null" >
+        infrastructure_cost_explain,
+      </if>
+      <if test="devDuringExplain != null" >
+        dev_during_explain,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="constructionAssessmentPriceCorrecting != null" >
@@ -432,6 +443,12 @@
       </if>
       <if test="additionalCostLandAcquisition != null" >
         #{additionalCostLandAcquisition,jdbcType=DECIMAL},
+      </if>
+      <if test="infrastructureCostExplain != null" >
+        #{infrastructureCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="devDuringExplain != null" >
+        #{devDuringExplain,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -567,6 +584,12 @@
       <if test="record.additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition = #{record.additionalCostLandAcquisition,jdbcType=DECIMAL},
       </if>
+      <if test="record.infrastructureCostExplain != null" >
+        infrastructure_cost_explain = #{record.infrastructureCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.devDuringExplain != null" >
+        dev_during_explain = #{record.devDuringExplain,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -614,7 +637,9 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       pid = #{record.pid,jdbcType=INTEGER},
-      additional_cost_land_acquisition = #{record.additionalCostLandAcquisition,jdbcType=DECIMAL}
+      additional_cost_land_acquisition = #{record.additionalCostLandAcquisition,jdbcType=DECIMAL},
+      infrastructure_cost_explain = #{record.infrastructureCostExplain,jdbcType=VARCHAR},
+      dev_during_explain = #{record.devDuringExplain,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -742,6 +767,12 @@
       <if test="additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition = #{additionalCostLandAcquisition,jdbcType=DECIMAL},
       </if>
+      <if test="infrastructureCostExplain != null" >
+        infrastructure_cost_explain = #{infrastructureCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="devDuringExplain != null" >
+        dev_during_explain = #{devDuringExplain,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -786,7 +817,9 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       pid = #{pid,jdbcType=INTEGER},
-      additional_cost_land_acquisition = #{additionalCostLandAcquisition,jdbcType=DECIMAL}
+      additional_cost_land_acquisition = #{additionalCostLandAcquisition,jdbcType=DECIMAL},
+      infrastructure_cost_explain = #{infrastructureCostExplain,jdbcType=VARCHAR},
+      dev_during_explain = #{devDuringExplain,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
