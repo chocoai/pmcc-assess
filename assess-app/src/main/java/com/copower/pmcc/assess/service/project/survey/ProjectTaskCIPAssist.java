@@ -85,7 +85,11 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
+        SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
+        modelAndView.addObject("surveySceneExplore", surveySceneExplore);
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getInfoById(surveySceneExplore.getBatchApplyId()));
         return modelAndView;
     }
 
