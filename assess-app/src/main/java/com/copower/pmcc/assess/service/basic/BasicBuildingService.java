@@ -72,6 +72,8 @@ public class BasicBuildingService {
     private DataBuilderService dataBuilderService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -99,12 +101,12 @@ public class BasicBuildingService {
      * @return
      * @throws Exception
      */
-    public BasicBuildingVo getBasicBuildingById(Integer id) throws Exception {
+    public BasicBuildingVo getBasicBuildingById(Integer id) {
         BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(id);
         return getBasicBuildingVo(basicBuilding);
     }
 
-    public boolean update(BasicBuilding basicBuilding) throws Exception {
+    public boolean update(BasicBuilding basicBuilding) {
         return basicBuildingDao.updateBasicBuilding(basicBuilding);
     }
 
@@ -157,14 +159,17 @@ public class BasicBuildingService {
      * @throws Exception
      */
     public BasicBuildingVo getBasicBuildingByApplyId(Integer applyId) {
-        BasicBuilding where = new BasicBuilding();
-        where.setApplyId(applyId);
         if (applyId == null || applyId == 0) {
+            BasicBuilding where = new BasicBuilding();
+            where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
+            List<BasicBuilding> basicBuildings = basicBuildingDao.getBasicBuildingList(where);
+            if (CollectionUtils.isEmpty(basicBuildings)) return null;
+            return getBasicBuildingVo(basicBuildings.get(0));
+        } else {
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            return getBasicBuildingById(basicApply.getBasicBuildingId());
         }
-        List<BasicBuilding> basicBuildings = basicBuildingDao.getBasicBuildingList(where);
-        if (CollectionUtils.isEmpty(basicBuildings)) return null;
-        return getBasicBuildingVo(basicBuildings.stream().findFirst().get());
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) throws Exception {
@@ -206,16 +211,16 @@ public class BasicBuildingService {
         if (basicBuilding.getBeCompletedTime() != null) {
             vo.setBeCompletedTimeName(DateUtils.format(basicBuilding.getBeCompletedTime()));
         }
-        if (basicBuilding.getProperty()!=null){
+        if (basicBuilding.getProperty() != null) {
             DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
-            if (dataProperty != null){
+            if (dataProperty != null) {
                 vo.setPropertyName(dataProperty.getName());
                 vo.setDataProperty(dataPropertyService.getDataPropertyVo(dataProperty));
             }
         }
-        if (basicBuilding.getBuilder()!=null){
+        if (basicBuilding.getBuilder() != null) {
             DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(basicBuilding.getBuilder());
-            if (dataBuilder != null){
+            if (dataBuilder != null) {
                 vo.setBuildingName(dataBuilder.getName());
                 vo.setDataBuilder(dataBuilderService.getDataBuilderVo(dataBuilder));
             }
@@ -255,14 +260,18 @@ public class BasicBuildingService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
-        BasicBuilding where = new BasicBuilding();
-        where.setApplyId(applyId);
-        if (applyId.equals(0))
-            where.setCreator(commonService.thisUserAccount());
-        List<BasicBuilding> basicBuildingList = basicBuildingDao.getBasicBuildingList(where);
         BasicBuilding basicBuilding = null;
-        if (CollectionUtils.isEmpty(basicBuildingList)) return;
-        basicBuilding = basicBuildingList.get(0);
+        if (applyId.equals(0)) {
+            BasicBuilding where = new BasicBuilding();
+            where.setApplyId(applyId);
+            where.setCreator(commonService.thisUserAccount());
+            List<BasicBuilding> basicBuildingList = basicBuildingDao.getBasicBuildingList(where);
+            if (CollectionUtils.isEmpty(basicBuildingList)) return;
+            basicBuilding = basicBuildingList.get(0);
+        } else {
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            basicBuilding = getBasicBuildingById(basicApply.getBasicBuildingId());
+        }
 
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where building_id=%s;";
@@ -298,6 +307,7 @@ public class BasicBuildingService {
 
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
+
     /**
      * 将CaseBuilding下的子类 转移到 BasicBuilding下的子类中去 (用做过程数据)
      *
@@ -367,10 +377,9 @@ public class BasicBuildingService {
     }
 
 
-
-   //引用项目中的数据
+    //引用项目中的数据
     @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding getBasicBuildingFromProject(Integer applyId,Integer tableId) throws Exception {
+    public BasicBuilding getBasicBuildingFromProject(Integer applyId, Integer tableId) throws Exception {
         if (applyId == null) {
             throw new Exception("null point");
         }
@@ -381,7 +390,7 @@ public class BasicBuildingService {
             return null;
         }
         BasicBuilding basicBuilding = new BasicBuilding();
-        if(tableId!=null) {
+        if (tableId != null) {
             this.clearInvalidData2(tableId);
         }
         BeanUtils.copyProperties(oldbasicBuilding, basicBuilding);
@@ -389,16 +398,16 @@ public class BasicBuildingService {
         basicBuilding.setCreator(commonService.thisUserAccount());
         basicBuilding.setGmtCreated(null);
         basicBuilding.setGmtModified(null);
-        if(tableId!=null){
+        if (tableId != null) {
             basicBuilding.setId(tableId);
             basicBuilding.setApplyId(null);
-        }else{
+        } else {
             basicBuilding.setId(null);
         }
         this.saveAndUpdateBasicBuilding(basicBuilding);
 
         //删除原有的附件
-        if(tableId!=null) {
+        if (tableId != null) {
             SysAttachmentDto deleteExample = new SysAttachmentDto();
             deleteExample.setTableId(tableId);
             deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
@@ -428,7 +437,7 @@ public class BasicBuildingService {
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
-            if(tableId!=null){
+            if (tableId != null) {
                 basicEstateTagging.setApplyId(null);
                 basicEstateTagging.setTableId(tableId);
             }

@@ -336,7 +336,7 @@ public class PublicBasicService {
      * @throws Exception
      */
     private CaseUnit flowWriteCaseUnit(BasicApply basicApply, BasicUnit basicUnit, Integer caseBuildingId) throws Exception {
-        if(basicApply==null||basicUnit==null) return null;
+        if (basicApply == null || basicUnit == null) return null;
         CaseUnit caseUnit = new CaseUnit();
         BeanUtils.copyProperties(basicUnit, caseUnit);
         caseUnit.setBuildingId(caseBuildingId);
@@ -358,7 +358,7 @@ public class PublicBasicService {
         SysAttachmentDto attachmentDto = new SysAttachmentDto();
         attachmentDto.setTableId(caseUnit.getId());
         attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class));
-        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
         queryBasicUnitHuxing.setUnitId(basicUnit.getId());
@@ -470,7 +470,7 @@ public class PublicBasicService {
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
         basicHouseDamagedDegreeList = basicHouseDamagedDegreeService.getDamagedDegreeList(basicHouse.getId());
 
-        if (caseHouse != null&&caseHouse.getId() != null) {
+        if (caseHouse != null && caseHouse.getId() != null) {
             this.flowWriteCaseHouseRoom(basicHouseRoomList, caseHouse);
             this.flowWriteCaseCorollaryEquipment(basicHouseCorollaryEquipmentList, caseHouse);
             this.flowWriteCaseDamagedDegree(basicHouseDamagedDegreeList, caseHouse);
@@ -658,13 +658,12 @@ public class PublicBasicService {
     public void flowWrite(String processInsId) throws Exception {
         BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
         if (basicApply != null) {
-            BasicEstate basicEstate = this.getBasicEstateByAppId(basicApply.getId());
-            BasicEstateLandState basicEstateLandState = this.getEstateLandStateByAppId(basicApply.getId());
-            BasicBuilding basicBuilding = this.getBasicBuildingByAppId(basicApply.getId());
-            BasicUnit basicUnit = this.getBasicUnitByAppId(basicApply.getId());
-            BasicHouse basicHouse = this.getBasicHouseVoByAppId(basicApply.getId());
-            BasicHouseTrading basicTrading = this.getBasicHouseTradingByAppId(basicApply.getId());
-
+            BasicEstate basicEstate = this.getBasicEstateByAppId(basicApply);
+            BasicEstateLandState basicEstateLandState = this.getEstateLandStateByAppId(basicApply);
+            BasicBuilding basicBuilding = this.getBasicBuildingByAppId(basicApply);
+            BasicUnit basicUnit = this.getBasicUnitByAppId(basicApply);
+            BasicHouse basicHouse = this.getBasicHouseVoByAppId(basicApply);
+            BasicHouseTrading basicTrading = this.getBasicHouseTradingByAppId(basicApply);
             //1.如果楼盘升级，则新增一条楼盘数据，并将与该楼盘相关关联的楼栋数据关联id更新为新添加的楼盘数据id
             //2.楼栋与单元处理方式与楼盘一致
             Integer estateId = basicApply.getCaseEstateId();
@@ -938,7 +937,7 @@ public class PublicBasicService {
                 throw new BusinessException("楼盘位置信息还未标注");
             }
         }
-        if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode())&&basicApply.getType()!=2) {
+        if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode()) && basicApply.getType() != 2) {
             if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.BUILDING)) {
                 throw new BusinessException("楼栋位置信息还未标注");
             }
@@ -955,30 +954,22 @@ public class PublicBasicService {
         }
     }
 
-    public BasicEstateVo getBasicEstateByAppId(Integer appId) throws Exception {
-        BasicEstate basicEstate = new BasicEstate();
-        basicEstate.setApplyId(appId);
-        List<BasicEstate> basicEstates = basicEstateService.basicEstateList(basicEstate);
-        if (!ObjectUtils.isEmpty(basicEstates)) {
-            return basicEstateService.getBasicEstateVo(basicEstates.get(0));
-        } else {
-            return null;
-        }
+    public BasicEstateVo getBasicEstateByAppId(BasicApply basicApply) throws Exception {
+        BasicEstate estate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
+        if (estate == null) return null;
+        return basicEstateService.getBasicEstateVo(estate);
     }
 
     public BasicEstateVo getBasicEstateById(Integer id) throws Exception {
         return basicEstateService.getBasicEstateVo(basicEstateService.getBasicEstateById(id));
     }
 
-    public BasicEstateLandStateVo getEstateLandStateByAppId(Integer appId) throws Exception {
-        BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
-        basicEstateLandState.setApplyId(appId);
-        List<BasicEstateLandState> basicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(basicEstateLandState);
-        if (!ObjectUtils.isEmpty(basicEstateLandStateList)) {
-            return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateList.get(0));
-        } else {
-            return null;
-        }
+    public BasicEstateLandStateVo getEstateLandStateByAppId(BasicApply basicApply) throws Exception {
+        BasicEstateVo vo = getBasicEstateByAppId(basicApply);
+        if (vo == null) return null;
+        BasicEstateLandState basicEstateLandState = basicEstateLandStateService.getLandStateByEstateId(vo.getId());
+        if (basicEstateLandState == null) return null;
+        return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState);
     }
 
     public BasicEstateLandStateVo getEstateLandStateByEstateId(Integer estateId) throws Exception {
@@ -992,63 +983,36 @@ public class PublicBasicService {
         }
     }
 
-    public BasicBuildingVo getBasicBuildingByAppId(Integer appId) throws Exception {
-        BasicBuilding basicBuilding = new BasicBuilding();
-        basicBuilding.setApplyId(appId);
-        List<BasicBuilding> basicBuildingMains = basicBuildingService.basicBuildingList(basicBuilding);
-        if (!ObjectUtils.isEmpty(basicBuildingMains)) {
-            return basicBuildingService.getBasicBuildingVo(basicBuildingMains.get(0));
-        } else {
-            return null;
-        }
+    public BasicBuildingVo getBasicBuildingByAppId(BasicApply basicApply) throws Exception {
+        return basicBuildingService.getBasicBuildingById(basicApply.getBasicBuildingId());
     }
-
-
 
     public BasicBuildingVo getBasicBuildingById(Integer id) throws Exception {
         return basicBuildingService.getBasicBuildingVo(basicBuildingService.getBasicBuildingById(id));
     }
 
-    public BasicUnit getBasicUnitByAppId(Integer appId) throws Exception {
-        BasicUnit basicUnit = new BasicUnit();
-        basicUnit.setApplyId(appId);
-        List<BasicUnit> unitList = basicUnitService.basicUnitList(basicUnit);
-        if (!ObjectUtils.isEmpty(unitList)) {
-            return unitList.get(0);
-        } else {
-            return null;
-        }
+    public BasicUnit getBasicUnitByAppId(BasicApply basicApply) throws Exception {
+        return basicUnitService.getBasicUnitById(basicApply.getBasicUnitId());
     }
 
     public BasicUnit getBasicUnitById(Integer id) throws Exception {
         return basicUnitService.getBasicUnitById(id);
     }
 
-    public BasicHouseTradingVo getBasicHouseTradingByAppId(Integer appId) throws Exception {
-        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
-        basicHouseTrading.setApplyId(appId);
-        List<BasicHouseTrading> basicHouseTradingList = basicHouseTradingService.basicHouseTradingList(basicHouseTrading);
-        if (!ObjectUtils.isEmpty(basicHouseTradingList)) {
-            return basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingList.get(0));
-        } else {
-            return null;
-        }
+    public BasicHouseTradingVo getBasicHouseTradingByAppId(BasicApply basicApply) throws Exception {
+        BasicHouseVo basicHouseVo = getBasicHouseVoByAppId(basicApply);
+        if(basicHouseVo==null) return null;
+        return getBasicHouseTradingByHouseId(basicHouseVo.getId());
     }
 
     public BasicHouseTradingVo getBasicHouseTradingByHouseId(Integer houseId) throws Exception {
         return basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(houseId));
     }
 
-    public BasicHouseVo getBasicHouseVoByAppId(Integer appId) throws Exception {
-        BasicHouse basicHouse = new BasicHouse();
-        basicHouse.setApplyId(appId);
-        List<BasicHouse> basicHouseList = basicHouseService.basicHouseList(basicHouse);
-        if (!ObjectUtils.isEmpty(basicHouseList)) {
-            BasicHouseVo vo = basicHouseService.getBasicHouseVo(basicHouseList.get(0));
-            return vo;
-        } else {
-            return null;
-        }
+    public BasicHouseVo getBasicHouseVoByAppId(BasicApply basicApply) throws Exception {
+        BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
+        if (basicHouse == null) return null;
+        return basicHouseService.getBasicHouseVo(basicHouse);
     }
 
     public BasicHouseVo getBasicHouseVoById(Integer id) throws Exception {

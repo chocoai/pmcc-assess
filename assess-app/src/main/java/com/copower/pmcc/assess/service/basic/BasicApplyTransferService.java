@@ -550,12 +550,12 @@ public class BasicApplyTransferService {
             basicApplyService.saveBasicApply(basicApplycopy);
 
             //取数据
-            BasicEstate basicEstateOld = publicBasicService.getBasicEstateByAppId(basicApply.getId());
-            BasicEstateLandState basicEstateLandStateOld = publicBasicService.getEstateLandStateByAppId(basicApply.getId());
-            BasicBuilding basicBuildingOld = publicBasicService.getBasicBuildingByAppId(basicApply.getId());
-            BasicUnit basicUnitOld = publicBasicService.getBasicUnitByAppId(basicApply.getId());
-            BasicHouse basicHouseOld = publicBasicService.getBasicHouseVoByAppId(basicApply.getId());
-            BasicHouseTrading basicTradingOld = publicBasicService.getBasicHouseTradingByAppId(basicApply.getId());
+            BasicEstate basicEstateOld = publicBasicService.getBasicEstateByAppId(basicApply);
+            BasicEstateLandState basicEstateLandStateOld = publicBasicService.getEstateLandStateByAppId(basicApply);
+            BasicBuilding basicBuildingOld = publicBasicService.getBasicBuildingByAppId(basicApply);
+            BasicUnit basicUnitOld = publicBasicService.getBasicUnitByAppId(basicApply);
+            BasicHouse basicHouseOld = publicBasicService.getBasicHouseVoByAppId(basicApply);
+            BasicHouseTrading basicTradingOld = publicBasicService.getBasicHouseTradingByAppId(basicApply);
 
             BasicEstate basicEstateNew = this.copyBasicEstate(basicApplycopy.getId(), basicEstateOld, basicEstateLandStateOld);//处理楼盘
             BasicBuilding basicBuilding = this.copyBasicBuilding(basicApplycopy.getId(), basicBuildingOld, basicEstateNew.getId());//处理楼栋
@@ -607,12 +607,12 @@ public class BasicApplyTransferService {
         basicApplyService.saveBasicApply(targetBasicApply);
 
         //取数据
-        BasicEstate basicEstateSource = publicBasicService.getBasicEstateByAppId(sourceBasicApply.getId());
-        BasicEstateLandState basicEstateLandStateSource = publicBasicService.getEstateLandStateByAppId(sourceBasicApply.getId());
-        BasicBuilding basicBuildingSource = publicBasicService.getBasicBuildingByAppId(sourceBasicApply.getId());
-        BasicUnit basicUnitSource = publicBasicService.getBasicUnitByAppId(sourceBasicApply.getId());
-        BasicHouse basicHouseSource = publicBasicService.getBasicHouseVoByAppId(sourceBasicApply.getId());
-        BasicHouseTrading basicTradingSource = publicBasicService.getBasicHouseTradingByAppId(sourceBasicApply.getId());
+        BasicEstate basicEstateSource = publicBasicService.getBasicEstateByAppId(sourceBasicApply);
+        BasicEstateLandState basicEstateLandStateSource = publicBasicService.getEstateLandStateByAppId(sourceBasicApply);
+        BasicBuilding basicBuildingSource = publicBasicService.getBasicBuildingByAppId(sourceBasicApply);
+        BasicUnit basicUnitSource = publicBasicService.getBasicUnitByAppId(sourceBasicApply);
+        BasicHouse basicHouseSource = publicBasicService.getBasicHouseVoByAppId(sourceBasicApply);
+        BasicHouseTrading basicTradingSource = publicBasicService.getBasicHouseTradingByAppId(sourceBasicApply);
 
         BasicEstate basicEstateNew = this.copyBasicEstate(targetBasicApply.getId(), basicEstateSource, basicEstateLandStateSource);//处理楼盘
         BasicBuilding basicBuilding = this.copyBasicBuilding(targetBasicApply.getId(), basicBuildingSource, basicEstateNew.getId());//处理楼栋

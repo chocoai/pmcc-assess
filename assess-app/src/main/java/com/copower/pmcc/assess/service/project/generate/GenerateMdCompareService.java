@@ -121,7 +121,7 @@ public class GenerateMdCompareService {
     public MdMarketCompareItem getEvaluationItemList() throws Exception {
         if (evaluationItem != null)
             return this.evaluationItem;
-        MdMarketCompareItem marketCompareItem = mdMarketCompareService.getEvaluationListByMcId(getMarketCompare().getId());
+        MdMarketCompareItem marketCompareItem = mdMarketCompareService.getEvaluationByMcId(getMarketCompare().getId());
         this.evaluationItem = marketCompareItem;
         return marketCompareItem;
     }

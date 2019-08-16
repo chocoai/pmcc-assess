@@ -119,7 +119,7 @@ public class GenerateMdLandCompareService {
     public MdMarketCompareItem getEvaluationItem() {
         if (evaluationItem != null)
             return this.evaluationItem;
-        MdMarketCompareItem marketCompareItem = mdMarketCompareService.getEvaluationListByMcId(getMarketCompare().getId());
+        MdMarketCompareItem marketCompareItem = mdMarketCompareService.getEvaluationByMcId(getMarketCompare().getId());
         this.evaluationItem = marketCompareItem;
         return marketCompareItem;
     }

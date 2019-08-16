@@ -21,20 +21,20 @@ public class BasicBuildingDao {
     @Autowired
     private BasicBuildingMapper basicBuildingMapper;
 
-    public BasicBuilding getBasicBuildingById(Integer id)throws SQLException{
+    public BasicBuilding getBasicBuildingById(Integer id){
         return basicBuildingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicBuilding(BasicBuilding basicBuilding)throws SQLException{
+    public Integer addBasicBuilding(BasicBuilding basicBuilding){
         basicBuildingMapper.insertSelective(basicBuilding);
         return basicBuilding.getId();
     }
 
-    public boolean updateBasicBuilding(BasicBuilding basicBuilding)throws SQLException{
+    public boolean updateBasicBuilding(BasicBuilding basicBuilding){
         return basicBuildingMapper.updateByPrimaryKeySelective(basicBuilding)==1;
     }
 
-    public boolean deleteBasicBuilding(Integer id)throws SQLException{
+    public boolean deleteBasicBuilding(Integer id){
         return  basicBuildingMapper.deleteByPrimaryKey(id)==1;
     }
 

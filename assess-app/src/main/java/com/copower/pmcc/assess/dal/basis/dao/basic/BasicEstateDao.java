@@ -21,20 +21,20 @@ public class BasicEstateDao {
     @Autowired
     private BasicEstateMapper basicEstateMapper;
 
-    public BasicEstate getBasicEstateById(Integer id) throws SQLException {
+    public BasicEstate getBasicEstateById(Integer id)  {
         return basicEstateMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicEstate(BasicEstate basicEstate) throws SQLException {
+    public Integer addBasicEstate(BasicEstate basicEstate)  {
         basicEstateMapper.insertSelective(basicEstate);
         return basicEstate.getId();
     }
 
-    public boolean updateBasicEstate(BasicEstate basicEstate) throws SQLException {
+    public boolean updateBasicEstate(BasicEstate basicEstate)  {
         return basicEstateMapper.updateByPrimaryKeySelective(basicEstate) == 1;
     }
 
-    public boolean deleteBasicEstate(Integer id) throws SQLException {
+    public boolean deleteBasicEstate(Integer id)  {
         return basicEstateMapper.deleteByPrimaryKey(id) == 1;
     }
 

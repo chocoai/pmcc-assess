@@ -246,13 +246,18 @@ public class BasicEstateService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
-        BasicEstate where = new BasicEstate();
-        where.setApplyId(applyId);
-        if (applyId.equals(0))
+        BasicEstate estate =null;
+        if (applyId.equals(0)){
+            BasicEstate where = new BasicEstate();
+            where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
-        List<BasicEstate> estateList = basicEstateDao.basicEstateList(where);
-        if (CollectionUtils.isEmpty(estateList)) return;
-        BasicEstate estate = estateList.get(0);
+            List<BasicEstate> estateList = basicEstateDao.basicEstateList(where);
+            if (CollectionUtils.isEmpty(estateList)) return;
+            estate = estateList.get(0);
+        }else{
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            estate=basicEstateDao.getBasicEstateById(basicApply.getBasicEstateId());
+        }
 
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where estate_id=%s;";
@@ -320,13 +325,17 @@ public class BasicEstateService {
     }
 
     public BasicEstate getBasicEstateByApplyId(Integer applyId) {
-        BasicEstate where = new BasicEstate();
-        where.setApplyId(applyId);
-        if (applyId == null || applyId == 0)
+        if (applyId == null || applyId == 0){
+            BasicEstate where = new BasicEstate();
+            where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
-        List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
-        if (CollectionUtils.isEmpty(basicEstates)) return null;
-        return basicEstates.get(0);
+            List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
+            if (CollectionUtils.isEmpty(basicEstates)) return null;
+            return basicEstates.get(0);
+        }else{
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            return basicEstateDao.getBasicEstateById(basicApply.getBasicEstateId());
+        }
     }
 
 

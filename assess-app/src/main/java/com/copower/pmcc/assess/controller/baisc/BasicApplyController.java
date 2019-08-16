@@ -187,12 +187,12 @@ public class BasicApplyController extends BaseController {
         if (basicApply == null) {
             return;
         }
-        BasicUnit basicUnit = publicBasicService.getBasicUnitByAppId(basicApply.getId());
-        BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateByAppId(basicApply.getId());
-        BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getEstateLandStateByAppId(basicApply.getId());
-        BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByAppId(basicApply.getId());
-        BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply.getId());
-        BasicBuildingVo basicBuilding = publicBasicService.getBasicBuildingByAppId(basicApply.getId());
+        BasicUnit basicUnit = publicBasicService.getBasicUnitByAppId(basicApply);
+        BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateByAppId(basicApply);
+        BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getEstateLandStateByAppId(basicApply);
+        BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByAppId(basicApply);
+        BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply);
+        BasicBuildingVo basicBuilding = publicBasicService.getBasicBuildingByAppId(basicApply);
         if (basicApply != null) {
             modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
         }

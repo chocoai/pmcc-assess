@@ -24,6 +24,7 @@
 <input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
 <input type="hidden" id="casesJSON" value='${casesJSON}'>
 <input type="hidden" id="casesAllJSON" value='${casesAllJSON}'>
+<input type="hidden" id="standardJudgesJSON" value='${standardJudgesJSON}'>
 <script type="text/javascript">
     $(function () {
         //市场比较法信息初始化
@@ -32,6 +33,7 @@
             fields: JSON.parse($("#fieldsJSON").val()),
             evaluation: JSON.parse($("#evaluationJSON").val()),
             casesAll: JSON.parse($("#casesAllJSON").val()),
+            standardJudges: JSON.parse($("#standardJudgesJSON").val()),
             mcId: '${mcId}',
             isLand: '${isLand}',
             judgeObjectId: '${judgeObject.id}',

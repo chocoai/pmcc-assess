@@ -21,20 +21,20 @@ public class BasicUnitDao {
     @Autowired
     private BasicUnitMapper basicUnitMapper;
 
-    public BasicUnit getBasicUnitById(Integer id)throws SQLException{
+    public BasicUnit getBasicUnitById(Integer id){
         return basicUnitMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicUnit(BasicUnit basicUnit)throws SQLException{
+    public Integer addBasicUnit(BasicUnit basicUnit){
         basicUnitMapper.insertSelective(basicUnit);
         return basicUnit.getId();
     }
 
-    public boolean updateBasicUnit(BasicUnit basicUnit)throws SQLException{
+    public boolean updateBasicUnit(BasicUnit basicUnit){
         return basicUnitMapper.updateByPrimaryKeySelective(basicUnit)==1;
     }
 
-    public boolean deleteBasicUnit(Integer id)throws SQLException{
+    public boolean deleteBasicUnit(Integer id){
         return  basicUnitMapper.deleteByPrimaryKey(id)==1;
     }
 
@@ -61,7 +61,7 @@ public class BasicUnitDao {
         return basicUnitMapper.selectByExample(example);
     }
 
-    public List<BasicUnit> autoComplete(BasicUnit basicUnit)throws SQLException{
+    public List<BasicUnit> autoComplete(BasicUnit basicUnit){
        return this.basicUnitList(basicUnit);
     }
 }

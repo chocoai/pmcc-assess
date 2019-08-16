@@ -115,7 +115,6 @@ public class ProjectStateChangeService extends BaseService {
             JSONArray arry = new JSONArray("[" + costsProjectChangeLogs.get(i).getNewRecord() + "]");
             for (int j = 0; j < arry.length(); j++) {
                 JSONObject jsonObject = arry.getJSONObject(j);
-                String a = costsProjectChangeLogs.get(i).getStatus();
                 jsonObject.put("status", costsProjectChangeLogs.get(i).getStatus());
                 jsonObject.put("processInsId", costsProjectChangeLogs.get(i).getProcessInsId());
                 /**
@@ -302,7 +301,6 @@ public class ProjectStateChangeService extends BaseService {
                         if (!compareTwo(field1[i].get(class1), field2[j].get(class2))) {
                             Map<String, Object> map2 = new HashMap<String, Object>();
                             if (field1[i].getName().equals("valuationDate")) {
-                                SimpleDateFormat sdf2 = new SimpleDateFormat(" yyyy年MM月");
                                 map2.put(field1[i].getName(), field1[i].get(class1) + "-->" + field2[j].get(class2));
                             } else {
                                 map2.put(field1[i].getName(), field1[i].get(class1) + "-->" + field2[j].get(class2));

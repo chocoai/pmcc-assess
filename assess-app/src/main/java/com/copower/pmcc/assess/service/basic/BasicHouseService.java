@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -58,18 +57,6 @@ public class BasicHouseService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private BasicHouseTradingLeaseService basicHouseTradingLeaseService;
-    @Autowired
-    private BasicHouseTradingSellService basicHouseTradingSellService;
-    @Autowired
-    private BasicHouseWaterService basicHouseWaterService;
-    @Autowired
-    private BasicHouseIntelligentService basicHouseIntelligentService;
-    @Autowired
-    private BasicHouseFaceStreetService basicHouseFaceStreetService;
-    @Autowired
-    private BasicHouseEquipmentService basicHouseEquipmentService;
-    @Autowired
     private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
     @Autowired
     private CommonService commonService;
@@ -78,19 +65,7 @@ public class BasicHouseService {
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
-    private CaseHouseTradingSellService caseHouseTradingSellService;
-    @Autowired
-    private CaseHouseTradingLeaseService caseHouseTradingLeaseService;
-    @Autowired
     private CaseHouseRoomService caseHouseRoomService;
-    @Autowired
-    private CaseHouseEquipmentService caseHouseEquipmentService;
-    @Autowired
-    private CaseHouseFaceStreetService caseHouseFaceStreetService;
-    @Autowired
-    private CaseHouseIntelligentService caseHouseIntelligentService;
-    @Autowired
-    private CaseHouseWaterService caseHouseWaterService;
     @Autowired
     private CaseHouseCorollaryEquipmentService caseHouseCorollaryEquipmentService;
     @Autowired
@@ -102,10 +77,6 @@ public class BasicHouseService {
     @Autowired
     private CaseHouseTradingService caseHouseTradingService;
     @Autowired
-    private BasicHouseWaterDrainService basicHouseWaterDrainService;
-    @Autowired
-    private CaseHouseWaterDrainService caseHouseWaterDrainService;
-    @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
@@ -114,9 +85,9 @@ public class BasicHouseService {
     @Autowired
     private CaseHouseDamagedDegreeService caseHouseDamagedDegreeService;
     @Autowired
-    private ThreadPoolTaskExecutor taskExecutor;
-    @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -220,16 +191,21 @@ public class BasicHouseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
-        BasicHouse where = new BasicHouse();
-        where.setApplyId(applyId);
+        BasicHouse house =null;
         if (applyId == 0) {
+            BasicHouse where = new BasicHouse();
+            where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
+            List<BasicHouse> houseList = basicHouseDao.basicHouseList(where);
+            if (CollectionUtils.isNotEmpty(houseList)) {
+                house = houseList.get(0);
+            }
+        }else{
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            house=basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
         }
-        List<BasicHouse> houseList = basicHouseDao.basicHouseList(where);
-        if (CollectionUtils.isEmpty(houseList)) {
-            return;
-        }
-        BasicHouse house = houseList.get(0);
+        if(house==null) return;
+
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where house_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), house.getId()));
@@ -257,16 +233,7 @@ public class BasicHouseService {
      */
     public Map<String, Object> getBasicHouseByApplyId(Integer applyId) throws Exception {
         Map<String, Object> objectMap = Maps.newHashMap();
-        BasicHouse where = new BasicHouse();
-        where.setApplyId(applyId);
-        if (applyId == null || applyId == 0) {
-            where.setCreator(commonService.thisUserAccount());
-        }
-        List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
-        if (CollectionUtils.isEmpty(basicHouses)) {
-            return null;
-        }
-        BasicHouse basicHouse = basicHouses.get(0);
+        BasicHouse basicHouse = getHouseByApplyId(applyId);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
@@ -280,17 +247,20 @@ public class BasicHouseService {
     }
 
     public BasicHouse getHouseByApplyId(Integer applyId)  {
-        BasicHouse where = new BasicHouse();
-        where.setApplyId(applyId);
         if (applyId == null || applyId == 0) {
+            BasicHouse where = new BasicHouse();
+            where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
+            List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
+            if (CollectionUtils.isEmpty(basicHouses)) {
+                return null;
+            }
+            BasicHouse basicHouse = basicHouses.get(0);
+            return basicHouse;
+        }else{
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            return basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
         }
-        List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
-        if (CollectionUtils.isEmpty(basicHouses)) {
-            return null;
-        }
-        BasicHouse basicHouse = basicHouses.get(0);
-        return basicHouse;
     }
 
     /**
@@ -493,8 +463,6 @@ public class BasicHouseService {
                 logger.error(e.getMessage(),e);
             }
         }
-
-
 
         if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
             try {
