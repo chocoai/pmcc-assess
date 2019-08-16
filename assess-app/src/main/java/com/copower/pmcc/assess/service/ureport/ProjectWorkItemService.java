@@ -145,10 +145,13 @@ public class ProjectWorkItemService {
         String minutesStr = String.format("%s%s", "0.", actualHours.substring(actualHours.indexOf(".") + 1));
         BigDecimal minutesBigDecimalVal = new BigDecimal(minutesStr);
         String minutes = minutesBigDecimalVal.multiply(new BigDecimal("60")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-        if (minutesBigDecimalVal.compareTo(new BigDecimal("0")) != 0) {
-            return String.format("%s小时%s分钟", hours, minutes);
-        } else {
+        if (minutesBigDecimalVal.compareTo(new BigDecimal("0")) == 0) {
             return String.format("%s小时", hours);
         }
+        if (new BigDecimal(hours).compareTo(new BigDecimal("0")) == 0) {
+            return String.format("%s分钟", minutes);
+        }
+        return String.format("%s小时%s分钟", hours, minutes);
+
     }
 }
