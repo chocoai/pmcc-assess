@@ -123,6 +123,15 @@ public class BasicApplyService {
         return basicApplies;
     }
 
+    public BasicApply getBasicApplyOnly(BasicApply basicApply) {
+        List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
+        if (!ObjectUtils.isEmpty(basicApplies)) {
+            return basicApplies.get(0);
+        } else {
+            return null;
+        }
+    }
+
     public Integer saveBasicApply(BasicApply basicApply) {
         if (basicApply.getId() == null || basicApply.getId() == 0) {
             basicApply.setCreator(commonService.thisUserAccount());
