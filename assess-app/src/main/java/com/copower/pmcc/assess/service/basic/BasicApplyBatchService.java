@@ -296,6 +296,7 @@ public class BasicApplyBatchService {
                 basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_building", basicBuilding.getId());
                 buildingDetail.setName(basicBuilding.getBuildingNumber());
+                buildingDetail.setDisplayName(String.format("%s%s",basicBuilding.getBuildingNumber(),"栋"));
                 basicApplyBatchDetailDao.updateInfo(buildingDetail);
             }
         }
@@ -309,6 +310,7 @@ public class BasicApplyBatchService {
                 basicUnitService.saveAndUpdateBasicUnit(basicUnit);
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
                 unitDetail.setName(basicUnit.getUnitNumber());
+                unitDetail.setDisplayName(String.format("%s%s",basicUnit.getUnitNumber(),"单元"));
                 basicApplyBatchDetailDao.updateInfo(unitDetail);
             }
         }
@@ -322,6 +324,7 @@ public class BasicApplyBatchService {
                 Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", basicHouse.getId());
                 houseDetail.setName(basicHouse.getHouseNumber());
+                houseDetail.setDisplayName(basicHouse.getHouseNumber());
                 basicApplyBatchDetailDao.updateInfo(houseDetail);
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());

@@ -175,6 +175,7 @@
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_building");
                 html += "<label class='col-sm-2 control-label'>";
                 html += "楼栋编号";
+                html += "<span class='symbol required'></span>";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
@@ -185,6 +186,7 @@
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_unit");
                 html += "<label class='col-sm-2 control-label'>";
                 html += "单元编号";
+                html += "<span class='symbol required'></span>";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
@@ -195,18 +197,25 @@
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_house");
                 html += "<label class='col-sm-2 control-label'>";
                 html += "房号";
+                html += "<span class='symbol required'></span>";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
                 html += "</div>";
                 html += "<label class='col-sm-2 control-label'>";
                 html += "是否标准";
+                html += "<span class='symbol required'></span>";
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
-                html += "<input type='checkbox' id='bisStandard' name='bisStandard' value='true'checked='checked'>";
+                html += "<select id='bisStandard' name='bisStandard' required class='form-control'>";
+                html += "<option value=''>--请选择--</option>";
+                html += "<option value='true'>是</option>";
+                html += "<option value='false'>否</option>";
+                html += "</select>";
                 html += "</div>";
                 break;
             }
+
             case 3: {
                 Alert("房屋下无法继续添加节点。");
                 return false;
@@ -349,7 +358,11 @@
                 html += "是否标准";
                 html += "</label>";
                 html += "<div class='col-sm-4'>";
-                html += "<input type='checkbox' id='bisStandard_b' name='bisStandard' value='true' checked='checked'>";
+                html += "<select id='bisStandard_b' name='bisStandard' required class='form-control'>";
+                html += "<option value=''>--请选择--</option>";
+                html += "<option value='true'>是</option>";
+                html += "<option value='false'>否</option>";
+                html += "</select>";
                 html += "</div>";
                 break;
             }
@@ -357,7 +370,7 @@
         $("#frm_detail_b").clearAll();
         $("#frm_detail_b").find("#detailContent_b").empty().append(html);
         $("#frm_detail_b").initForm(data);
-        $("#bisStandard_b").prop("checked", data.bisStandard);
+        $("#bisStandard_b").val(''+data.bisStandard);
         $("#detail_modal_b").modal();
     }
 
@@ -391,7 +404,10 @@
         }
         //var type = $("#basicBatchApplyFrm").find("input[type='radio'][name='type']:checked").val();
         var type = batchApply.type;
-        window.open('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId);
+        openWin('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId, function () {
+            batchTreeTool.ztreeInit(batchApply);
+        })
+
     }
 
 </script>

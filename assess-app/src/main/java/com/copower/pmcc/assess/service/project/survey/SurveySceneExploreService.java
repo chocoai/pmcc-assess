@@ -120,6 +120,12 @@ public class SurveySceneExploreService {
         return surveySceneExplore;
     }
 
+    public SurveySceneExplore getSurveySceneExploreByBatchApplyId(Integer batchApplyId) {
+        SurveySceneExplore surveySceneExplore = new SurveySceneExplore();
+        surveySceneExplore.setBatchApplyId(batchApplyId);
+        return surveySceneExploreDao.getSurveySceneExplore(surveySceneExplore);
+    }
+
     //删除未完成数据
     public void deleteUnfinishedData(){
         List<SurveySceneExplore> unfinishedDatas = surveySceneExploreDao.getUnfinishedData();
