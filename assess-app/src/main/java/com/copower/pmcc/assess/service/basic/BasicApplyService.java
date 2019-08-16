@@ -108,14 +108,19 @@ public class BasicApplyService {
     }
 
     public BasicApply getBasicApplyByPlanDetailsId(Integer planDetailsId) {
-        BasicApply basicApply = new BasicApply();
-        basicApply.setPlanDetailsId(planDetailsId);
-        List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
+        List<BasicApply> basicApplies = getBasicApplyListByPlanDetailsId(planDetailsId);
         if (!ObjectUtils.isEmpty(basicApplies)) {
             return basicApplies.get(0);
         } else {
             return null;
         }
+    }
+
+    public List<BasicApply> getBasicApplyListByPlanDetailsId(Integer planDetailsId) {
+        BasicApply basicApply = new BasicApply();
+        basicApply.setPlanDetailsId(planDetailsId);
+        List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
+        return basicApplies;
     }
 
     public Integer saveBasicApply(BasicApply basicApply) {
