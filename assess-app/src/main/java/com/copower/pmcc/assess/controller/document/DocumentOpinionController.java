@@ -46,6 +46,7 @@ public class DocumentOpinionController {
     @Autowired
     private BaseDataDicService baseDataDicService;
 
+
     @RequestMapping(value = "/applyIndex/{templateId}&{projectId}&{reportFieldName}&{areaGroupId}&{reportTypeId}&{tableId}", name = "进入意见稿页面")
     public ModelAndView applyIndex(@PathVariable("templateId") Integer templateId, @PathVariable("projectId") Integer projectId, @PathVariable("reportFieldName") String reportFieldName,
                                    @PathVariable("areaGroupId") Integer areaGroupId, @PathVariable("reportTypeId") Integer reportTypeId, @PathVariable("tableId") Integer tableId) {
@@ -216,4 +217,5 @@ public class DocumentOpinionController {
     public BootstrapTableVo getDocumentOpinionVoList(Integer projectId) {
         return documentOpinionService.getDocumentOpinionVoList(projectId);
     }
+
 }
