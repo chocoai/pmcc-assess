@@ -66,8 +66,6 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     private DeclareRecordService declareRecordService;
     @Autowired
     private MdDevelopmentIncomeCategoryService mdDevelopmentIncomeCategoryService;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    final String JSON_STRING = "Json";
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -178,8 +176,6 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         if (mdDevelopment != null) {
             // StringUtils.uncapitalize 首字母小写
             modelAndView.addObject(StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment, true));
-            modelAndView.addObject(String.format("%s2", StringUtils.uncapitalize(MdDevelopment.class.getSimpleName())), mdDevelopmentService.getMdDevelopmentVo(mdDevelopment, false));
-            modelAndView.addObject(String.format("%s%s", StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()), JSON_STRING), JSON.toJSONString(mdDevelopmentService.getMdDevelopmentVo(mdDevelopment, false)));
         }
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);

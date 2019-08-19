@@ -282,8 +282,8 @@ public class GenerateMdDevelopmentService {
             }
             break;
             case Development_investmentProfitTax: {
-                if (StringUtils.isNotBlank(vo.getG35())) {
-                    return format.getG35();
+                if (vo.getInvestmentProfitTax() != null) {
+                    return vo.getInvestmentProfitTax().toString();
                 }
             }
             break;
@@ -294,38 +294,38 @@ public class GenerateMdDevelopmentService {
             }
             break;
             case Development_interestInvestmentTax: {
-                if (StringUtils.isNotBlank(vo.getG34())) {
-                    return format.getG34();
+                if (vo.getInterestInvestmentTax() != null) {
+                    return vo.getInterestInvestmentTax().toString();
                 }
             }
             break;
             case Development_DevelopmentDegreeCorrectionValue: {
-                if (StringUtils.isNotBlank(vo.getD46())) {
-                    return format.getD46();
+                if (vo.getDevelopmentDegreeRevision() != null) {
+                    return vo.getDevelopmentDegreeRevision().toString();
                 }
             }
             break;
             case Development_AmendmentStatusRights: {
-                if (StringUtils.isNotBlank(vo.getD44())) {
-                    return format.getD44();
+                if (vo.getAmendmentStatusRights() != null) {
+                    return vo.getAmendmentStatusRights().toString();
                 }
             }
             break;
             case Development_AmendmentStatusRightsRemark: {
-                if (StringUtils.isNotBlank(vo.getD44Explain())) {
-                    return format.getD44Explain();
+                if (StringUtils.isNotBlank(vo.getAmendmentStatusRightsExplain())) {
+                    return vo.getAmendmentStatusRightsExplain();
                 }
             }
             break;
             case Development_OtherAmendments: {
-                if (StringUtils.isNotBlank(vo.getD45())) {
-                    return format.getD45();
+                if (vo.getOtherAmendments() != null) {
+                    return vo.getOtherAmendments().toString();
                 }
             }
             break;
             case Development_OtherAmendmentsRemark: {
-                if (StringUtils.isNotBlank(vo.getD45Explain())) {
-                    return format.getD45Explain();
+                if (StringUtils.isNotBlank(vo.getOtherAmendmentsExplain())) {
+                    return vo.getOtherAmendmentsExplain();
                 }
             }
             break;
@@ -342,56 +342,56 @@ public class GenerateMdDevelopmentService {
             }
             break;
             case Development_reconnaissanceDesign: {
-                if (NumberUtils.isNumber(vo.getF20())) {
-                    return format.getF20();
+                if (vo.getReconnaissanceDesign() != null) {
+                    return vo.getReconnaissanceDesign().toString();
                 }
             }
             break;
             case Development_constructionInstallationEngineeringFee: {
-                if (NumberUtils.isNumber(vo.getF21())) {
-                    return format.getF21();
+                if (vo.getConstructionInstallationEngineeringFee() != null) {
+                    return vo.getConstructionInstallationEngineeringFee().toString();
                 }
             }
             break;
             case Development_infrastructureCost: {
-                if (NumberUtils.isNumber(vo.getF22())) {
-                    return format.getF22();
+                if (vo.getInterestInvestment() != null) {
+                    return vo.getInterestInvestment().toString();
                 }
             }
             break;
             case Development_infrastructureMatchingCost: {
-                if (NumberUtils.isNumber(vo.getF23())) {
-                    return format.getF23();
+                if (vo.getInfrastructureMatchingCost() != null) {
+                    return vo.getInfrastructureMatchingCost().toString();
                 }
             }
             break;
             case Development_devDuring: {
-                if (NumberUtils.isNumber(vo.getF24())) {
-                    return format.getF24();
+                if (vo.getDevDuring() != null) {
+                    return vo.getDevDuring().toString();
                 }
             }
             break;
             case Development_otherEngineeringCost: {
-                if (NumberUtils.isNumber(vo.getF25())) {
-                    return format.getF25();
+                if (vo.getOtherEngineeringCost() != null) {
+                    return vo.getOtherEngineeringCost().toString();
                 }
             }
             break;
             case Development_unforeseenExpensesTax: {
-                if (NumberUtils.isNumber(vo.getF27())) {
-                    return format.getF27();
+                if (vo.getUnforeseenExpenses() != null) {
+                    return vo.getUnforeseenExpenses().toString();
                 }
             }
             break;
             case Development_managementExpenseTax: {
-                if (NumberUtils.isNumber(vo.getG32())) {
-                    return format.getG32();
+                if (vo.getManagementExpense() != null) {
+                    return vo.getManagementExpense().toString();
                 }
             }
             break;
             case Development_landIncrementTax: {
-                if (NumberUtils.isNumber(vo.getF38())) {
-                    return format.getF38();
+                if (vo.getLandValueAddedTax() != null) {
+                    return vo.getLandValueAddedTax().toString();
                 }
             }
             break;
@@ -410,20 +410,20 @@ public class GenerateMdDevelopmentService {
             }
             break;
             case Development_deedCorrecting: {
-                if (NumberUtils.isNumber(vo.getF29())) {
-                    return format.getF29();
+                if (vo.getDeedTaxRate() != null) {
+                    return vo.getDeedTaxRate().toString();
                 }
             }
             break;
             case Development_transactionCostCorrecting: {
-                if (NumberUtils.isNumber(vo.getF30())) {
-                    return format.getF30();
+                if (vo.getTransactionTaxRate() != null) {
+                    return vo.getTransactionTaxRate().toString();
                 }
             }
             break;
             case Development_LandAcquisitionCost: {
-                if (NumberUtils.isNumber(vo.getF31())) {
-                    return format.getF31();
+                if (vo.getLandGetRelevant() != null) {
+                    return vo.getLandGetRelevant().toString();
                 }
             }
             break;
@@ -442,8 +442,8 @@ public class GenerateMdDevelopmentService {
             }
             break;
             case Development_salesFeeTax: {
-                if (NumberUtils.isNumber(vo.getG33())) {
-                    return format.getG33();
+                if (vo.getSalesFee() != null) {
+                    return vo.getSalesFee().toString();
                 }
             }
             break;
@@ -461,6 +461,9 @@ public class GenerateMdDevelopmentService {
             }
             break;
             case Development_SalesTaxAndAdditional:
+                if (vo.getSalesTaxAndAdditional() != null) {
+                    return vo.getSalesTaxAndAdditional().toString();
+                }
                 return errorStr;
             default: {
             }

@@ -78,10 +78,7 @@
                             <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default">${mdDevelopment.plannedBuildingArea}</label></td>
                             <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default">${mdDevelopment.totalSaleableAreaPrice}</label></td>
                             <td class="info">可售面积<label name="saleableArea" class="label label-default">${mdDevelopment.saleableArea}</label></td>
-                            <td class="active">
-                                ${mdDevelopment.unsaleableBuildingArea}
-                                <!-- 不可售建筑面积 -->
-                            </td>
+                            <td class="active">不可售建筑面积<label name="unsaleableBuildingArea" class="label label-default">${mdDevelopment.unsaleableBuildingArea}</label></td>
                         </tr>
                         </tfoot>
                     </table>
@@ -106,8 +103,7 @@
                     勘察设计和前期工程费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.reconnaissanceDesign}</label>
-                </div>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.reconnaissanceDesign}" type="percent"/></label>                </div>
             </div>
 
             <div class="x-valid">
@@ -203,7 +199,7 @@
                     其它工程费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.otherEngineeringCost}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.otherEngineeringCost}" type="percent"/></label>
                 </div>
             </div>
 
@@ -223,7 +219,7 @@
                     不可预见费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.unforeseenExpenses}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.unforeseenExpenses}" type="percent"/></label>
                 </div>
             </div>
 
@@ -265,7 +261,7 @@
                     契税率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.deedTaxRate}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.deedTaxRate}" type="percent"/></label>
                 </div>
             </div>
 
@@ -285,7 +281,7 @@
                     交易费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.transactionTaxRate}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.transactionTaxRate}" type="percent"/></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -304,7 +300,7 @@
                     管理费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.managementExpense}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.managementExpense}" type="percent"/></label>
                 </div>
             </div>
 
@@ -344,7 +340,7 @@
                     销售费用率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.salesFee}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesFee}" type="percent"/></label>
                 </div>
             </div>
 
@@ -364,7 +360,7 @@
                     投资利息率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.interestInvestmentTax}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.interestInvestmentTax}" type="percent"/></label>
                 </div>
             </div>
 
@@ -384,7 +380,7 @@
                     投资利润率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.investmentProfitTax}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.investmentProfitTax}" type="percent"/></label>
                 </div>
             </div>
 
@@ -404,7 +400,7 @@
                     销售环节增值税及附加<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.salesTaxAndAdditional}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesTaxAndAdditional}" type="percent"/></label>
 
                 </div>
             </div>
@@ -425,7 +421,7 @@
                     土地增值税<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.landValueAddedTax}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.landValueAddedTax}" type="percent"/></label>
 
                 </div>
             </div>
@@ -446,7 +442,7 @@
                     项目开发所得税<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.projectDevelopmentIncomeTax}</label>
+                    <label class="form-control"><fmt:formatNumber value="${mdDevelopment.projectDevelopmentIncomeTax}" type="percent"/></label>
                 </div>
             </div>
 
@@ -484,7 +480,7 @@
                 <div class="col-sm-3">
 
                     <div class="input-group">
-                        <label class="form-control">${mdDevelopment.remunerationRate}</label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.remunerationRate}" type="percent"/></label>
                         <span class="input-group-btn">
                                     <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
                               <input type="button" class="btn btn-primary" value="报酬率测算"

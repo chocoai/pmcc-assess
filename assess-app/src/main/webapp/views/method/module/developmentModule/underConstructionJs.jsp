@@ -743,9 +743,9 @@
         data.planDetailsId = '${projectPlanDetails.id}' ;
         data.type = underConstruction.type ;
         data.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
+        target.modal('hide');
         developmentCommon.loadIncomeCategorySave(data,function (item) {
             toastr.success('添加成功!');
-            target.modal('hide');
             underConstruction.incomeCategoryTable.bootstrapTable('refresh');
             underConstruction.writeMdDevelopmentIncomeCategoryTable(underConstruction.incomeCategoryTable,item) ;
         },function () {
@@ -829,12 +829,12 @@
         plannedBuildingArea = plannedBuildingArea.toString() ;
         totalSaleableAreaPrice = totalSaleableAreaPrice.toString() ;
         saleableArea = saleableArea.toString() ;
-        this.target.find("input[name='plannedBuildingArea']").val(plannedBuildingArea).trigger('blur');
         this.target.find("label[name='plannedBuildingArea']").html(plannedBuildingArea);
-        this.target.find("input[name='totalSaleableAreaPrice']").val(totalSaleableAreaPrice).trigger('blur');
         this.target.find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPrice);
-        this.target.find("input[name='saleableArea']").val(saleableArea).trigger('blur');
         this.target.find("label[name='saleableArea']").html(saleableArea);
+        this.target.find("input[name='plannedBuildingArea']").val(plannedBuildingArea).trigger('blur');
+        this.target.find("input[name='totalSaleableAreaPrice']").val(totalSaleableAreaPrice).trigger('blur');
+        this.target.find("input[name='saleableArea']").val(saleableArea).trigger('blur');
     };
 
     underConstruction.unsaleableBuildingAreaFunHandle = function () {
