@@ -18,7 +18,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>${projectPlanDetails.projectPhaseName}-${declareRecord.name}</h3>
+                    <h3>在建工程</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -42,7 +42,7 @@
                                     添加楼栋单元房屋
                                 </c:if>
                                 <c:if test="${!empty applyBatch}">
-                                    查看楼栋单元f房屋
+                                    查看楼栋单元房屋
                                 </c:if>
                             </a>
                         </div>

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
@@ -311,7 +312,7 @@ public class ProjectInfoController {
         //区域
         modelAndView.addObject("areaGroupList", schemeAreaGroupService.getAreaGroupList(projectId));
         //项目发文件
-        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("");
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("",baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());

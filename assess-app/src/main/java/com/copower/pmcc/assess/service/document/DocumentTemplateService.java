@@ -6,6 +6,8 @@ import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateBookmark;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateField;
 import com.copower.pmcc.assess.dto.output.DocumentTemplateFieldVo;
+import com.copower.pmcc.assess.dto.output.document.DocumentTemplateVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
@@ -14,11 +16,13 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +33,7 @@ import java.util.regex.Pattern;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2019-05-30
  * @time: 18:07
  */
@@ -43,6 +47,8 @@ public class DocumentTemplateService {
     private ErpRpcAttachmentService erpRpcAttachmentService;
     @Autowired
     private DocumentWordUtils documentWordUtils;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     ///region 模板
     public void saveTemplate(DocumentTemplate documentTemplate) throws BusinessException {
@@ -115,20 +121,33 @@ public class DocumentTemplateService {
         }
     }
 
-    public List<DocumentTemplate> getDocumentTemplateList(String search) {
+    public List<DocumentTemplate> getDocumentTemplateList(String search,Integer templateType) {
         if (StringUtils.isNotBlank(search)) {
             search = String.format("%%%s%%", search);
         }
-        List<DocumentTemplate> documentTemplateList = documentDao.getDocumentTemplateList(search);
+        List<DocumentTemplate> documentTemplateList = documentDao.getDocumentTemplateList(search, templateType);
         return documentTemplateList;
     }
-public DocumentTemplate getDocumentTemplate(Integer id)
-{
-    return documentDao.getDocumentTemplate(id);
-}
+
+    public DocumentTemplate getDocumentTemplate(Integer id) {
+        return documentDao.getDocumentTemplate(id);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void deleteDocumentTemplate(Integer id) {
         documentDao.deleteDocumentTemplate(id);
+    }
+
+    public DocumentTemplateVo getDocumentTemplateVo(DocumentTemplate documentTemplate) {
+        if (documentTemplate == null) {
+            return null;
+        }
+        DocumentTemplateVo vo = new DocumentTemplateVo();
+        BeanUtils.copyProperties(documentTemplate, vo);
+        if(documentTemplate.getTemplateType()!=null){
+            vo.setTemplateTypeName(baseDataDicService.getNameById(documentTemplate.getTemplateType()));
+        }
+        return vo;
     }
 
     ///endregion

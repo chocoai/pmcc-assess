@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.dal.basis.dao.document;
 
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dal.basis.mapper.DocumentSendMapper;
-import com.copower.pmcc.assess.dal.basis.mapper.DocumentTemplateBookmarkMapper;
-import com.copower.pmcc.assess.dal.basis.mapper.DocumentTemplateFieldMapper;
-import com.copower.pmcc.assess.dal.basis.mapper.DocumentTemplateMapper;
+import com.copower.pmcc.assess.dal.basis.mapper.*;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,8 @@ public class DocumentDao {
     private DocumentTemplateBookmarkMapper documentTemplateBookmarkMapper;
     @Autowired
     private DocumentTemplateFieldMapper documentTemplateFieldMapper;
+    @Autowired
+    private DocumentOpinionMapper documentOpinionMapper;
 
     ///region 项目发文
     public List<DocumentSend> getDocumentSendList(DocumentSend documentSend) {
@@ -61,11 +60,14 @@ public class DocumentDao {
         MybatisUtils.convertObj2Example(documentTemplate, example);
         return documentTemplateMapper.selectByExample(example);
     }
-    public List<DocumentTemplate> getDocumentTemplateList(String search) {
+    public List<DocumentTemplate> getDocumentTemplateList(String search, Integer templateType) {
         DocumentTemplateExample example = new DocumentTemplateExample();
        if(StringUtils.isNotBlank(search))
        {
            example.createCriteria().andTemplateNameLike(search);
+       }
+       if(templateType != null){
+           example.createCriteria().andTemplateTypeEqualTo(templateType);
        }
         return documentTemplateMapper.selectByExample(example);
     }
@@ -148,4 +150,28 @@ public class DocumentDao {
     }
     ///endregion
 
+
+    ///region 意见稿
+    public List<DocumentOpinion> getDocumentOpinionList(DocumentOpinion documentOpinion) {
+        DocumentOpinionExample example = new DocumentOpinionExample();
+        MybatisUtils.convertObj2Example(documentOpinion, example);
+        return documentOpinionMapper.selectByExampleWithBLOBs(example);
+    }
+
+    public DocumentOpinion getDocumentOpinion(Integer id) {
+        return documentOpinionMapper.selectByPrimaryKey(id);
+    }
+
+    public void addDocumentOpinion(DocumentOpinion documentOpinion) {
+        documentOpinionMapper.insertSelective(documentOpinion);
+    }
+
+    public void deleteDocumentOpinion(Integer id) {
+        documentOpinionMapper.deleteByPrimaryKey(id);
+    }
+
+    public void updateDocumentOpinion(DocumentOpinion documentOpinion) {
+        documentOpinionMapper.updateByPrimaryKeySelective(documentOpinion);
+    }
+    ///endregion
 }

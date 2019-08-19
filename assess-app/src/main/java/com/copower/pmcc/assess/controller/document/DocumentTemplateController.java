@@ -1,10 +1,14 @@
 package com.copower.pmcc.assess.controller.document;
 
 import com.copower.pmcc.assess.common.enums.document.DocumentBaseEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateBookmark;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateField;
 import com.copower.pmcc.assess.dto.output.DocumentTemplateFieldVo;
+import com.copower.pmcc.assess.dto.output.document.DocumentTemplateVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
@@ -36,7 +40,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2019-05-30
  * @time: 18:34
  */
@@ -49,12 +53,16 @@ public class DocumentTemplateController {
     private DocumentTemplateService documentTemplateService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @GetMapping(value = "/index", name = "模板首页")
     public ModelAndView homeMain() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/document/templateManage");
         List<CustomTableTypeDto> customSetType = CustomTableTypeEnum.getCustomSetType();
         modelAndView.addObject("customSetType", customSetType);
+        List<BaseDataDic> templateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE);
+        modelAndView.addObject("templateTypes", templateTypes);
         return modelAndView;
     }
 
@@ -65,9 +73,10 @@ public class DocumentTemplateController {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList(requestBaseParam.getSearch());
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList(requestBaseParam.getSearch(), null);
+        List<DocumentTemplateVo> transform = LangUtils.transform(documentTemplateList, o -> documentTemplateService.getDocumentTemplateVo(o));
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(documentTemplateList) ? new ArrayList<DocumentTemplate>() : documentTemplateList);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(transform) ? new ArrayList<DocumentTemplateVo>() : transform);
         return bootstrapTableVo;
     }
 
