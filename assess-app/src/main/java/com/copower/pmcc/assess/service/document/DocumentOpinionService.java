@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.document;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.DocumentWordUtils;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.document.DocumentBaseEnum;
 import com.copower.pmcc.assess.dal.basis.dao.document.DocumentDao;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentOpinion;
@@ -13,8 +14,10 @@ import com.copower.pmcc.assess.dto.output.DocumentTemplateFieldVo;
 import com.copower.pmcc.assess.dto.output.document.DocumentOpinionVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -48,6 +51,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.io.FileInputStream;
 import java.text.MessageFormat;
@@ -87,6 +91,10 @@ public class DocumentOpinionService {
     private PublicService publicService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     public List<DocumentOpinion> getDocumentOpinion(DocumentOpinion documentOpinion) {
         return documentDao.getDocumentOpinionList(documentOpinion);
@@ -330,6 +338,7 @@ public class DocumentOpinionService {
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         DocumentOpinion documentOpinion = new DocumentOpinion();
         documentOpinion.setProjectId(projectId);
+        documentOpinion.setStatus(ProjectStatusEnum.FINISH.getKey());
         List<DocumentOpinion> list = documentDao.getDocumentOpinionList(documentOpinion);
         List<DocumentOpinionVo> vos = LangUtils.transform(list, p -> getDocumentOpinionVo(p));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DocumentOpinionVo>() : vos);
@@ -342,6 +351,22 @@ public class DocumentOpinionService {
         DocumentOpinionVo vo = new DocumentOpinionVo();
         BeanUtils.copyProperties(documentOpinion, vo);
         vo.setUserName(publicService.getUserNameByAccount(documentOpinion.getCreator()));
+        if (documentOpinion.getReportTypeId() != null)
+            vo.setReportTypeName(baseDataDicService.getNameById(documentOpinion.getReportTypeId()));
+        if (documentOpinion.getAreaGroupId() != null)
+            vo.setAreaGroupName(schemeAreaGroupService.get(documentOpinion.getAreaGroupId()).getAreaName());
+        String fieldName = baseDataDicService.getDataDicById(documentOpinion.getReportTypeId()).getFieldName();
+        String reportFieldName = fieldName.toUpperCase().replace(".", "_");
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(documentOpinion.getId(), String.format("%s%s", reportFieldName, documentOpinion.getAreaGroupId()), FormatUtils.entityNameConvertToTableName(DocumentOpinion.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                if (sysAttachmentDto != null) {
+                    builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
+                }
+            }
+            vo.setFileViewName(builder.toString());
+        }
         return vo;
     }
 }

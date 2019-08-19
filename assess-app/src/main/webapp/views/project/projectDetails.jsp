@@ -215,6 +215,21 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h3>
+                        项目意见稿
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <table class="table table-bordered" id="tb_documentOpinionList">
+                    </table>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
                         后续事项
                     </h3>
                     <div class="clearfix"></div>
@@ -860,6 +875,25 @@
             });
             $("#tb_documentSendList").bootstrapTable('destroy');
             TableInit("tb_documentSendList", "${pageContext.request.contextPath}/documentSend/getDocumentSendVoList", cols, {
+                projectId: ${projectInfo.id}
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //项目意见稿
+        loadDocumentSend: function () {
+            var cols = [];
+            cols.push({field: 'areaGroupName', title: '区域名称'});
+            cols.push({field: 'reportTypeName', title: '报告类型'});
+            cols.push({field: 'fileViewName', title: '意见稿'});
+            $("#tb_documentOpinionList").bootstrapTable('destroy');
+            TableInit("tb_documentOpinionList", "${pageContext.request.contextPath}/documentOpinion/getDocumentOpinionVoList", cols, {
                 projectId: ${projectInfo.id}
             }, {
                 showColumns: false,
