@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveySceneExploreDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
@@ -10,6 +12,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,8 @@ public class SurveySceneExploreService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BasicApplyDao basicApplyDao;
 
     /**
      * 数据保存
@@ -52,8 +57,8 @@ public class SurveySceneExploreService {
         }
     }
 
-    public boolean updateSurveySceneExplore(SurveySceneExplore surveySceneExplore){
-        if (surveySceneExplore== null){
+    public boolean updateSurveySceneExplore(SurveySceneExplore surveySceneExplore) {
+        if (surveySceneExplore == null) {
             return false;
         }
         return surveySceneExploreDao.updateSurveySceneExplore(surveySceneExplore);
@@ -84,7 +89,7 @@ public class SurveySceneExploreService {
         try {
             declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
         } catch (Exception e) {
-            throw new  BusinessException("保存申报记录信息异常",e);
+            throw new BusinessException("保存申报记录信息异常", e);
         }
     }
 
@@ -120,11 +125,29 @@ public class SurveySceneExploreService {
         return surveySceneExplore;
     }
 
+    public SurveySceneExplore getSurveySceneExploreByBatchApplyId(Integer batchApplyId) {
+        SurveySceneExplore surveySceneExplore = new SurveySceneExplore();
+        surveySceneExplore.setBatchApplyId(batchApplyId);
+        return surveySceneExploreDao.getSurveySceneExplore(surveySceneExplore);
+    }
+
     //删除未完成数据
-    public void deleteUnfinishedData(){
+    public void deleteUnfinishedData() {
         List<SurveySceneExplore> unfinishedDatas = surveySceneExploreDao.getUnfinishedData();
-        for (SurveySceneExplore item: unfinishedDatas) {
+        if(CollectionUtils.isEmpty(unfinishedDatas)) return;
+        for (SurveySceneExplore item : unfinishedDatas) {
+            BasicApply basicApply = new BasicApply();
+            Integer pid = projectPlanDetailsService.getProjectPlanDetailsById(item.getPlanDetailsId()).getPid();
+            basicApply.setPlanDetailsId(pid);
+            List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(basicApply);
+            if(CollectionUtils.isNotEmpty(basicApplyList)) {
+                for (BasicApply basicApplyItem : basicApplyList) {
+                    basicApplyDao.deleteBasicApply(basicApplyItem.getId());
+                }
+            }
             surveySceneExploreDao.deleteSurveySceneExplore(item.getId());
         }
     }
+
+
 }

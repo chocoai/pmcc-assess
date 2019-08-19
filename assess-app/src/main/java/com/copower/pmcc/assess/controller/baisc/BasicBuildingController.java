@@ -44,7 +44,7 @@ public class BasicBuildingController {
     @RequestMapping(value = "/getBasicBuildingByApplyId", name = "获取数据", method = {RequestMethod.GET})
     public HttpResult getBasicBuildingByApplyId(Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(publicBasicService.getBasicBuildingByAppId(applyId));
+            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingByApplyId(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -15,7 +14,6 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
-import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -209,24 +207,10 @@ public class SurveyExamineController {
     @PostMapping(name = "现场查勘分派任务", value = "/examineTaskAssignment")
     public HttpResult examineTaskAssignment(Integer planDetailsId, String examineFormType, String operationType) {
         try {
-            if ("add".equals(operationType)) {//如果为新添加的查勘任务，则先添加上一级信息
-                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-                projectPlanDetails.setId(null);
-                projectPlanDetails.setProjectPhaseId(null);
-                projectPlanDetails.setBisLastLayer(false);
-                projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
-                surveyExamineTaskService.examineTaskAssignment(projectPlanDetails.getId(), examineFormType, ExamineTypeEnum.EXPLORE, null);
-            } else {
-                if (surveyExamineTaskService.checkAssignmentTask(planDetailsId)) {
-                    throw new BusinessException("请不要重复添加");
-                }
-                if(AssessExamineTaskConstant.FC_CIP.equals(examineFormType)){
-                    surveyExamineTaskService.saveCIPTask(planDetailsId);
-                }else{
-                    surveyExamineTaskService.examineTaskAssignment(planDetailsId, examineFormType, ExamineTypeEnum.EXPLORE, null);
-                }
+            if (surveyExamineTaskService.checkAssignmentTask(planDetailsId)) {
+                throw new BusinessException("请不要重复添加");
             }
+            surveyExamineTaskService.saveCIPTask(planDetailsId);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());

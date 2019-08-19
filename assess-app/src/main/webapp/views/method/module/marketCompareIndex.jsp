@@ -7,6 +7,10 @@
         </ul>
         <h3>
             市场比较法
+            <small id="small_select_evaluation">
+                <input type="button" class="btn btn-primary btn-xs" value="选择估价对象"
+                       onclick="marketCompare.loadStandardJudges();">
+            </small>
             <small id="small_select_case">
                 <input type="button" class="btn btn-primary btn-xs" value="选择案例"
                        onclick="marketCompare.loadCaseAll();">
@@ -80,6 +84,36 @@
         </div>
     </div>
 </div>
+<div id="modal_select_judge" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">选择估价对象</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>名称</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/html" id="selectCaseHtml">
     <tr>
         <th scope="row"><input type="checkbox" value="{planDetailsId}"></th>
@@ -88,7 +122,12 @@
         <td><input type="text" class="form-control" name="areaDesc" value="{areaDesc}"></td>
     </tr>
 </script>
-
+<script type="text/html" id="selectJudgeHtml">
+    <tr>
+        <td data-name="name">{name}</td>
+        <td><input type="button" class="btn btn-xs btn-warning" value="选择" onclick="marketCompare.selectStandardJudge('{id}');"></td>
+    </tr>
+</script>
 
 <script type="text/javascript">
     (function ($) {
@@ -213,6 +252,7 @@
         marketCompare.evaluation = {};
         marketCompare.judgeObjectId = 0;
         marketCompare.casesAll = [];
+        marketCompare.standardJudges = [];
         marketCompare.init = function (options) {
             var defaluts = {
                 marketCompare: undefined,//主表信息
@@ -220,6 +260,7 @@
                 evaluation: undefined,//委估对象
                 cases: undefined,//案例
                 casesAll: undefined,//所有案例
+                standardJudges: undefined,//标准估价对象
                 mcId: undefined,
                 judgeObjectId: undefined,
                 isLand: false,//是否为土地比较法
@@ -330,7 +371,7 @@
                         }
                     }
                 })
-                $("#small_select_case").hide();
+                $("#small_select_evaluation,#small_select_case").hide();
             }
         }
 
@@ -504,7 +545,7 @@
                         if (AssessCommon.isNumber(evaluationVolumeRatio) && AssessCommon.isNumber(caseVolumeRatio)) {
                             specificPrice = parseFloat(caseVolumeRatio) / parseFloat(evaluationVolumeRatio) * specificPrice;
                         }
-                    }else{
+                    } else {
                         var situationTr = table.find('tr[data-group="trading.transaction.situation"][data-name="ratio"]');
                         var situationRatio = situationTr.find('td[data-item-id=' + item + ']').text();
                         situationRatio = AssessCommon.isNumber(situationRatio) ? situationRatio : 1;
@@ -868,7 +909,6 @@
                     }
                 }
             })
-
         }
 
         //选择案例
@@ -927,6 +967,7 @@
                             fields: result.data.fields,
                             evaluation: result.data.evaluation,
                             casesAll: marketCompare.casesAll,
+                            standardJudges: marketCompare.standardJudges,
                             isLand: marketCompare.isLand,
                             areaId: marketCompare.areaId,
                             cases: result.data.cases
@@ -1084,6 +1125,7 @@
                             fields: result.data.fields,
                             evaluation: result.data.evaluation,
                             casesAll: marketCompare.casesAll,
+                            standardJudges: marketCompare.standardJudges,
                             isLand: marketCompare.isLand,
                             areaId: marketCompare.areaId,
                             cases: result.data.cases
@@ -1092,6 +1134,57 @@
                         marketCompare.save();
                     } else {
                         Alert('刷新异常，' + result.errmsg);
+                    }
+                }
+            })
+        }
+
+        //加载标准估价对象
+        marketCompare.loadStandardJudges = function () {
+            if (marketCompare.standardJudges) {
+                var html = '';
+                $.each(marketCompare.standardJudges, function (i, item) {
+                    var htmlTemp = $("#selectJudgeHtml").html();
+                    htmlTemp = htmlTemp.replace(/{planDetailsId}/, item.planDetailsId).replace(/{name}/, item.name);
+                    html += htmlTemp;
+                })
+                $("#modal_select_judge").find('tbody').empty().append(html);
+                $('#modal_select_judge').modal();
+            }
+        }
+
+        //选择标准估价对象
+        marketCompare.selectStandardJudge = function (applyId) {
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/marketCompare/selectJudge',
+                data: {
+                    mcId: marketCompare.mcId,
+                    isLand: marketCompare.isLand,
+                    judgeObjectId: marketCompare.judgeObjectId,
+                    applyId: applyId
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success("选择成功！");
+                        $('#modal_select_judge').modal('hide');
+                        marketCompare.init({
+                            mcId: result.data.mcId,
+                            judgeObjectId: result.data.judgeObjectId,
+                            marketCompare: result.data.marketCompare,
+                            fields: result.data.fields,
+                            evaluation: result.data.evaluation,
+                            casesAll: marketCompare.casesAll,
+                            standardJudges: marketCompare.standardJudges,
+                            isLand: marketCompare.isLand,
+                            areaId: marketCompare.areaId,
+                            cases: result.data.cases
+                        });
+                    } else {
+                        Alert('选择异常，' + result.errmsg);
                     }
                 }
             })

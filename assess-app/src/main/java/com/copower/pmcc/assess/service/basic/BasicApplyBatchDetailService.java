@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,7 +31,16 @@ public class BasicApplyBatchDetailService {
     private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-
+    @Autowired
+    private SurveySceneExploreService surveySceneExploreService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicApplyDao basicApplyDao;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     /**
      * 通过applyBatchId获取
@@ -112,11 +124,54 @@ public class BasicApplyBatchDetailService {
                     BasicHouseTrading houseTrading = new BasicHouseTrading();
                     houseTrading.setHouseId(house.getId());
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading);
+
                     break;
             }
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
+        //若房屋设置为标准，则存入basicApply
+        this.standardIntoBasicApply(basicApplyBatchDetail);
         return basicApplyBatchDetail;
+    }
+
+    //存入basicApply表单
+    public void standardIntoBasicApply(BasicApplyBatchDetail basicApplyBatchDetail)throws Exception{
+        if(!basicApplyBatchDetail.getTableName().equals("tb_basic_house"))
+            return;
+        BasicApply basicApply = new BasicApply();
+        basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
+        basicApply.setHouseNumber(basicHouseService.getBasicHouseById(basicApplyBatchDetail.getTableId()).getHouseNumber());
+        //单元
+        BasicApplyBatchDetail unitBatchDetail = basicApplyBatchDetailDao.getInfoById(basicApplyBatchDetail.getPid());
+        basicApply.setBasicUnitId(unitBatchDetail.getTableId());
+        basicApply.setUnitNumber(basicUnitService.getBasicUnitById(unitBatchDetail.getTableId()).getUnitNumber());
+        //楼栋
+        BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailDao.getInfoById(unitBatchDetail.getPid());
+        basicApply.setBasicBuildingId(buildBatchDetail.getTableId());
+        basicApply.setBuildingNumber(basicBuildingDao.getBasicBuildingById(buildBatchDetail.getTableId()).getBuildingNumber());
+        //楼盘id
+        BasicApplyBatch applyBatch = basicApplyBatchDao.getInfoById(basicApplyBatchDetail.getApplyBatchId());
+        basicApply.setBasicEstateId(applyBatch.getEstateId());
+        basicApply.setType(applyBatch.getType());
+        basicApply.setEstateName(basicEstateService.getBasicEstateById(applyBatch.getEstateId()).getName());
+        SurveySceneExplore sceneExplore = surveySceneExploreService.getSurveySceneExploreByBatchApplyId(applyBatch.getId());
+        if(sceneExplore==null){
+            return;
+        }
+        Integer pid = projectPlanDetailsService.getProjectPlanDetailsById(sceneExplore.getPlanDetailsId()).getPid();
+        basicApply.setPlanDetailsId(pid);
+        BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
+        if(basicApplyOnly!=null){
+            if(basicApplyBatchDetail.getBisStandard()==true){
+                return;
+            }else {
+                //取消标准时，删除原来的数据
+                basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
+                return;
+            }
+        }
+        if (basicApplyBatchDetail.getBisStandard()==true)
+        basicApplyService.saveBasicApply(basicApply);
     }
 
     /**
@@ -149,6 +204,13 @@ public class BasicApplyBatchDetailService {
                 break;
             case "tb_basic_house":
                 basicHouseService.deleteBasicHouse(basicApplyBatchDetail.getTableId());
+                BasicApply basicApply = new BasicApply();
+                basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
+                BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
+                //删除标准时，删除原来的数据
+                if(basicApplyOnly!=null) {
+                    basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
+                }
                 break;
         }
         return basicApplyBatchDetailDao.deleteInfo(id);

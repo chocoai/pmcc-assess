@@ -13,6 +13,14 @@ public class BasicApply {
 
     private Integer caseHouseId;
 
+    private Integer basicEstateId;
+
+    private Integer basicBuildingId;
+
+    private Integer basicUnitId;
+
+    private Integer basicHouseId;
+
     private Integer planDetailsId;
 
     private String processInsId;
@@ -91,6 +99,38 @@ public class BasicApply {
 
     public void setCaseHouseId(Integer caseHouseId) {
         this.caseHouseId = caseHouseId;
+    }
+
+    public Integer getBasicEstateId() {
+        return basicEstateId;
+    }
+
+    public void setBasicEstateId(Integer basicEstateId) {
+        this.basicEstateId = basicEstateId;
+    }
+
+    public Integer getBasicBuildingId() {
+        return basicBuildingId;
+    }
+
+    public void setBasicBuildingId(Integer basicBuildingId) {
+        this.basicBuildingId = basicBuildingId;
+    }
+
+    public Integer getBasicUnitId() {
+        return basicUnitId;
+    }
+
+    public void setBasicUnitId(Integer basicUnitId) {
+        this.basicUnitId = basicUnitId;
+    }
+
+    public Integer getBasicHouseId() {
+        return basicHouseId;
+    }
+
+    public void setBasicHouseId(Integer basicHouseId) {
+        this.basicHouseId = basicHouseId;
     }
 
     public Integer getPlanDetailsId() {

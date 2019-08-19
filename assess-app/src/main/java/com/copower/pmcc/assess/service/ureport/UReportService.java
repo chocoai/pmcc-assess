@@ -87,8 +87,8 @@ public class UReportService {
         if (maps.get("queryUserAccount") != null) {
             queryUserAccount = (String) maps.get("queryUserAccount");
         }
-        //评估报告
-        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+        //咨评报告
+        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT_CONSULTATION);
         Integer preauditId = preauditReport.getId();
         //技术报告
         BaseDataDic technologyReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);

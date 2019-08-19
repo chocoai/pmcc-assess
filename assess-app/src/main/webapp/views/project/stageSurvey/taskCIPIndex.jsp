@@ -126,6 +126,7 @@
         var formData = {};
         formData.id = $("#masterId").val();
         formData.planDetailsId = "${projectPlanDetails.id}";
+        formData.projectId = "${projectPlanDetails.projectId}";
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/projectTaskCIP/saveData",
@@ -160,14 +161,14 @@
         }
         var formData = formParams("basicBatchApplyFrm");
         var masterId = $("#masterId").val();
-
         $.ajax({
             url: "${pageContext.request.contextPath}/projectTaskCIP/saveApplyInfo",
             type: "post",
             dataType: "json",
             data: {
                 formData: JSON.stringify(formData),
-                masterId: masterId
+                masterId: masterId,
+                planDetailsId: '${projectPlanDetails.id}'
             },
             success: function (result) {
                 if (result.ret) {

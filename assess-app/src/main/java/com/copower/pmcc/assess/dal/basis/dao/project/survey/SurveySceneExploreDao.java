@@ -62,7 +62,7 @@ public class SurveySceneExploreDao {
         SurveySceneExploreExample example = new SurveySceneExploreExample();
         SurveySceneExploreExample.Criteria criteria = example.createCriteria();
         criteria.andBatchApplyIdIsNotNull();
-        criteria.andPlanDetailsIdIsNull();
+        criteria.andProjectIdIsNull();
         return surveySceneExploreMapper.selectByExample(example);
     }
 }

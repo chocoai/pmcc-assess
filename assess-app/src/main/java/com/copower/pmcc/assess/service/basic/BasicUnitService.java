@@ -68,6 +68,8 @@ public class BasicUnitService {
     private BasicEstateService basicEstateService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -144,13 +146,18 @@ public class BasicUnitService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
-        BasicUnit where = new BasicUnit();
-        where.setApplyId(applyId);
-        if (applyId.equals(0))
+        BasicUnit unit = null;
+        if (applyId.equals(0)) {
+            BasicUnit where = new BasicUnit();
+            where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
-        List<BasicUnit> unitList = basicUnitDao.basicUnitList(where);
-        if (CollectionUtils.isEmpty(unitList)) return;
-        BasicUnit unit = unitList.get(0);
+            List<BasicUnit> unitList = basicUnitDao.basicUnitList(where);
+            if (CollectionUtils.isEmpty(unitList)) return;
+            unit = unitList.get(0);
+        } else {
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            unit = basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
+        }
 
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where unit_id=%s;";
@@ -170,15 +177,18 @@ public class BasicUnitService {
      * @return
      * @throws Exception
      */
-    public BasicUnit getBasicUnitByApplyId(Integer applyId)  {
-        BasicUnit where = new BasicUnit();
-        where.setApplyId(applyId);
+    public BasicUnit getBasicUnitByApplyId(Integer applyId) {
         if (applyId == null || applyId == 0) {
+            BasicUnit where = new BasicUnit();
+            where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
+            List<BasicUnit> basicUnits = basicUnitDao.basicUnitList(where);
+            if (CollectionUtils.isEmpty(basicUnits)) return null;
+            return basicUnits.get(0);
+        } else {
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            return basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
         }
-        List<BasicUnit> basicUnits = basicUnitDao.basicUnitList(where);
-        if (CollectionUtils.isEmpty(basicUnits)) return null;
-        return basicUnits.get(0);
     }
 
     /**
@@ -234,7 +244,7 @@ public class BasicUnitService {
         SysAttachmentDto attachmentDto = new SysAttachmentDto();
         attachmentDto.setTableId(basicUnit.getId());
         attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
-        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         try {
             List<CaseUnitHuxingVo> caseUnitHuxingList = null;
@@ -258,7 +268,7 @@ public class BasicUnitService {
                     attachmentDto = new SysAttachmentDto();
                     attachmentDto.setTableId(id);
                     attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
-                    baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+                    baseAttachmentService.copyFtpAttachments(example, attachmentDto);
                 }
             }
         } catch (Exception e) {
@@ -289,7 +299,7 @@ public class BasicUnitService {
 
     //引用项目中数据
     @Transactional(rollbackFor = Exception.class)
-    public BasicUnit getBasicUnitByFromProject(Integer applyId,Integer tableId) throws Exception {
+    public BasicUnit getBasicUnitByFromProject(Integer applyId, Integer tableId) throws Exception {
         if (applyId == null) {
             throw new BusinessException("null point");
         }
@@ -300,7 +310,7 @@ public class BasicUnitService {
 
         this.clearInvalidData(0);
         BasicUnit basicUnit = new BasicUnit();
-        if(tableId!=null){
+        if (tableId != null) {
             clearInvalidData2(tableId);
         }
         BeanUtils.copyProperties(oldBasicUnit, basicUnit);
@@ -308,17 +318,17 @@ public class BasicUnitService {
         basicUnit.setCreator(commonService.thisUserAccount());
         basicUnit.setGmtCreated(null);
         basicUnit.setGmtModified(null);
-        if(tableId!=null){
+        if (tableId != null) {
             basicUnit.setId(tableId);
             basicUnit.setApplyId(null);
-        }else {
+        } else {
             basicUnit.setId(null);
         }
         this.saveAndUpdateBasicUnit(basicUnit);
 
 
         //删除原有的附件
-        if(tableId!=null) {
+        if (tableId != null) {
             SysAttachmentDto deleteExample = new SysAttachmentDto();
             deleteExample.setTableId(tableId);
             deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
@@ -337,7 +347,7 @@ public class BasicUnitService {
         SysAttachmentDto attachmentDto = new SysAttachmentDto();
         attachmentDto.setTableId(basicUnit.getId());
         attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
-        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
         oldBasicEstateTagging.setApplyId(applyId);
@@ -348,7 +358,7 @@ public class BasicUnitService {
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
-            if(tableId!=null){
+            if (tableId != null) {
                 basicEstateTagging.setApplyId(null);
                 basicEstateTagging.setTableId(tableId);
             }
@@ -379,7 +389,7 @@ public class BasicUnitService {
                     attachmentDto = new SysAttachmentDto();
                     attachmentDto.setTableId(id);
                     attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
-                    baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+                    baseAttachmentService.copyFtpAttachments(example, attachmentDto);
                 }
             }
         } catch (Exception e) {
@@ -405,7 +415,6 @@ public class BasicUnitService {
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         return basicUnit;
     }
-
 
 
     /**
