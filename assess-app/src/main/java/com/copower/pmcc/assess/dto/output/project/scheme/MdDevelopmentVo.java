@@ -49,7 +49,7 @@ public class MdDevelopmentVo extends MdDevelopment {
 
     private String f24Value;
 
-    private String unsaleableBuildingArea;
+
 
     public String getF20() {
         return f20;
@@ -347,13 +347,7 @@ public class MdDevelopmentVo extends MdDevelopment {
         this.d46Explain = d46Explain;
     }
 
-    public String getUnsaleableBuildingArea() {
-        return unsaleableBuildingArea;
-    }
 
-    public void setUnsaleableBuildingArea(String unsaleableBuildingArea) {
-        this.unsaleableBuildingArea = unsaleableBuildingArea;
-    }
 
     public String getF23Explain() {
         return f23Explain;

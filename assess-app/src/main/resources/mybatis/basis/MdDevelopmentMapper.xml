@@ -21,6 +21,52 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="total_saleable_area_price" property="totalSaleableAreaPrice" jdbcType="DECIMAL" />
+    <result column="saleable_area" property="saleableArea" jdbcType="DECIMAL" />
+    <result column="planned_building_area" property="plannedBuildingArea" jdbcType="DECIMAL" />
+    <result column="unsaleable_building_area" property="unsaleableBuildingArea" jdbcType="DECIMAL" />
+    <result column="reconnaissance_design" property="reconnaissanceDesign" jdbcType="DECIMAL" />
+    <result column="construction_installation_engineering_fee" property="constructionInstallationEngineeringFee" jdbcType="DECIMAL" />
+    <result column="infrastructure_cost" property="infrastructureCost" jdbcType="DECIMAL" />
+    <result column="infrastructure_matching_cost" property="infrastructureMatchingCost" jdbcType="DECIMAL" />
+    <result column="dev_during" property="devDuring" jdbcType="DECIMAL" />
+    <result column="other_engineering_cost" property="otherEngineeringCost" jdbcType="DECIMAL" />
+    <result column="unforeseen_expenses" property="unforeseenExpenses" jdbcType="DECIMAL" />
+    <result column="reconnaissance_design_explain" property="reconnaissanceDesignExplain" jdbcType="VARCHAR" />
+    <result column="infrastructure_cost_explain" property="infrastructureCostExplain" jdbcType="VARCHAR" />
+    <result column="infrastructure_matching_cost_explain" property="infrastructureMatchingCostExplain" jdbcType="VARCHAR" />
+    <result column="dev_during_explain" property="devDuringExplain" jdbcType="VARCHAR" />
+    <result column="other_engineering_cost_explain" property="otherEngineeringCostExplain" jdbcType="VARCHAR" />
+    <result column="unforeseen_expenses_explain" property="unforeseenExpensesExplain" jdbcType="VARCHAR" />
+    <result column="deed_tax_rate" property="deedTaxRate" jdbcType="DECIMAL" />
+    <result column="deed_tax_rate_explain" property="deedTaxRateExplain" jdbcType="VARCHAR" />
+    <result column="transaction_tax_rate" property="transactionTaxRate" jdbcType="DECIMAL" />
+    <result column="transaction_tax_rate_explain" property="transactionTaxRateExplain" jdbcType="VARCHAR" />
+    <result column="management_expense" property="managementExpense" jdbcType="DECIMAL" />
+    <result column="management_expense_explain" property="managementExpenseExplain" jdbcType="VARCHAR" />
+    <result column="land_get_relevant" property="landGetRelevant" jdbcType="DECIMAL" />
+    <result column="land_get_relevant_explain" property="landGetRelevantExplain" jdbcType="VARCHAR" />
+    <result column="sales_fee" property="salesFee" jdbcType="DECIMAL" />
+    <result column="sales_fee_explain" property="salesFeeExplain" jdbcType="VARCHAR" />
+    <result column="interest_investment_tax" property="interestInvestmentTax" jdbcType="DECIMAL" />
+    <result column="interest_investment_tax_explain" property="interestInvestmentTaxExplain" jdbcType="VARCHAR" />
+    <result column="investment_profit_tax" property="investmentProfitTax" jdbcType="DECIMAL" />
+    <result column="investment_profit_tax_explain" property="investmentProfitTaxExplain" jdbcType="VARCHAR" />
+    <result column="sales_tax_and_additional" property="salesTaxAndAdditional" jdbcType="DECIMAL" />
+    <result column="sales_tax_and_additional_explain" property="salesTaxAndAdditionalExplain" jdbcType="VARCHAR" />
+    <result column="land_value_added_tax" property="landValueAddedTax" jdbcType="DECIMAL" />
+    <result column="land_value_added_tax_explain" property="landValueAddedTaxExplain" jdbcType="VARCHAR" />
+    <result column="project_development_income_tax" property="projectDevelopmentIncomeTax" jdbcType="DECIMAL" />
+    <result column="project_development_income_tax_explain" property="projectDevelopmentIncomeTaxExplain" jdbcType="VARCHAR" />
+    <result column="remuneration_rate" property="remunerationRate" jdbcType="DECIMAL" />
+    <result column="statutory_life" property="statutoryLife" jdbcType="DECIMAL" />
+    <result column="remaining_years" property="remainingYears" jdbcType="DECIMAL" />
+    <result column="amendment_status_rights" property="amendmentStatusRights" jdbcType="DECIMAL" />
+    <result column="amendment_status_rights_explain" property="amendmentStatusRightsExplain" jdbcType="VARCHAR" />
+    <result column="other_amendments" property="otherAmendments" jdbcType="DECIMAL" />
+    <result column="other_amendments_explain" property="otherAmendmentsExplain" jdbcType="VARCHAR" />
+    <result column="development_degree_revision" property="developmentDegreeRevision" jdbcType="DECIMAL" />
+    <result column="development_degree_revision_explain" property="developmentDegreeRevisionExplain" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -84,7 +130,19 @@
     id, name, area, price, type, plan_details_id, construction_cost_subtotal, interest_investment, 
     investment_profit, assess_price, head_content, content, project_construction_period, 
     developed_year, remaining_development_year, reward_rate_id, creator, gmt_created, 
-    gmt_modified
+    gmt_modified, total_saleable_area_price, saleable_area, planned_building_area, unsaleable_building_area, 
+    reconnaissance_design, construction_installation_engineering_fee, infrastructure_cost, 
+    infrastructure_matching_cost, dev_during, other_engineering_cost, unforeseen_expenses, 
+    reconnaissance_design_explain, infrastructure_cost_explain, infrastructure_matching_cost_explain, 
+    dev_during_explain, other_engineering_cost_explain, unforeseen_expenses_explain, 
+    deed_tax_rate, deed_tax_rate_explain, transaction_tax_rate, transaction_tax_rate_explain, 
+    management_expense, management_expense_explain, land_get_relevant, land_get_relevant_explain, 
+    sales_fee, sales_fee_explain, interest_investment_tax, interest_investment_tax_explain, 
+    investment_profit_tax, investment_profit_tax_explain, sales_tax_and_additional, sales_tax_and_additional_explain, 
+    land_value_added_tax, land_value_added_tax_explain, project_development_income_tax, 
+    project_development_income_tax_explain, remuneration_rate, statutory_life, remaining_years, 
+    amendment_status_rights, amendment_status_rights_explain, other_amendments, other_amendments_explain, 
+    development_degree_revision, development_degree_revision_explain
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentExample" >
     select
@@ -126,14 +184,56 @@
       head_content, content, project_construction_period, 
       developed_year, remaining_development_year, 
       reward_rate_id, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, total_saleable_area_price, 
+      saleable_area, planned_building_area, unsaleable_building_area, 
+      reconnaissance_design, construction_installation_engineering_fee, 
+      infrastructure_cost, infrastructure_matching_cost, 
+      dev_during, other_engineering_cost, unforeseen_expenses, 
+      reconnaissance_design_explain, infrastructure_cost_explain, 
+      infrastructure_matching_cost_explain, dev_during_explain, 
+      other_engineering_cost_explain, unforeseen_expenses_explain, 
+      deed_tax_rate, deed_tax_rate_explain, transaction_tax_rate, 
+      transaction_tax_rate_explain, management_expense, 
+      management_expense_explain, land_get_relevant, 
+      land_get_relevant_explain, sales_fee, sales_fee_explain, 
+      interest_investment_tax, interest_investment_tax_explain, 
+      investment_profit_tax, investment_profit_tax_explain, 
+      sales_tax_and_additional, sales_tax_and_additional_explain, 
+      land_value_added_tax, land_value_added_tax_explain, 
+      project_development_income_tax, project_development_income_tax_explain, 
+      remuneration_rate, statutory_life, remaining_years, 
+      amendment_status_rights, amendment_status_rights_explain, 
+      other_amendments, other_amendments_explain, 
+      development_degree_revision, development_degree_revision_explain
+      )
     values (#{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
       #{type,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{constructionCostSubtotal,jdbcType=DECIMAL}, 
       #{interestInvestment,jdbcType=DECIMAL}, #{investmentProfit,jdbcType=DECIMAL}, #{assessPrice,jdbcType=DECIMAL}, 
       #{headContent,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{projectConstructionPeriod,jdbcType=DECIMAL}, 
       #{developedYear,jdbcType=DECIMAL}, #{remainingDevelopmentYear,jdbcType=DECIMAL}, 
       #{rewardRateId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{totalSaleableAreaPrice,jdbcType=DECIMAL}, 
+      #{saleableArea,jdbcType=DECIMAL}, #{plannedBuildingArea,jdbcType=DECIMAL}, #{unsaleableBuildingArea,jdbcType=DECIMAL}, 
+      #{reconnaissanceDesign,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
+      #{infrastructureCost,jdbcType=DECIMAL}, #{infrastructureMatchingCost,jdbcType=DECIMAL}, 
+      #{devDuring,jdbcType=DECIMAL}, #{otherEngineeringCost,jdbcType=DECIMAL}, #{unforeseenExpenses,jdbcType=DECIMAL}, 
+      #{reconnaissanceDesignExplain,jdbcType=VARCHAR}, #{infrastructureCostExplain,jdbcType=VARCHAR}, 
+      #{infrastructureMatchingCostExplain,jdbcType=VARCHAR}, #{devDuringExplain,jdbcType=VARCHAR}, 
+      #{otherEngineeringCostExplain,jdbcType=VARCHAR}, #{unforeseenExpensesExplain,jdbcType=VARCHAR}, 
+      #{deedTaxRate,jdbcType=DECIMAL}, #{deedTaxRateExplain,jdbcType=VARCHAR}, #{transactionTaxRate,jdbcType=DECIMAL}, 
+      #{transactionTaxRateExplain,jdbcType=VARCHAR}, #{managementExpense,jdbcType=DECIMAL}, 
+      #{managementExpenseExplain,jdbcType=VARCHAR}, #{landGetRelevant,jdbcType=DECIMAL}, 
+      #{landGetRelevantExplain,jdbcType=VARCHAR}, #{salesFee,jdbcType=DECIMAL}, #{salesFeeExplain,jdbcType=VARCHAR}, 
+      #{interestInvestmentTax,jdbcType=DECIMAL}, #{interestInvestmentTaxExplain,jdbcType=VARCHAR}, 
+      #{investmentProfitTax,jdbcType=DECIMAL}, #{investmentProfitTaxExplain,jdbcType=VARCHAR}, 
+      #{salesTaxAndAdditional,jdbcType=DECIMAL}, #{salesTaxAndAdditionalExplain,jdbcType=VARCHAR}, 
+      #{landValueAddedTax,jdbcType=DECIMAL}, #{landValueAddedTaxExplain,jdbcType=VARCHAR}, 
+      #{projectDevelopmentIncomeTax,jdbcType=DECIMAL}, #{projectDevelopmentIncomeTaxExplain,jdbcType=VARCHAR}, 
+      #{remunerationRate,jdbcType=DECIMAL}, #{statutoryLife,jdbcType=DECIMAL}, #{remainingYears,jdbcType=DECIMAL}, 
+      #{amendmentStatusRights,jdbcType=DECIMAL}, #{amendmentStatusRightsExplain,jdbcType=VARCHAR}, 
+      #{otherAmendments,jdbcType=DECIMAL}, #{otherAmendmentsExplain,jdbcType=VARCHAR}, 
+      #{developmentDegreeRevision,jdbcType=DECIMAL}, #{developmentDegreeRevisionExplain,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -195,6 +295,144 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="totalSaleableAreaPrice != null" >
+        total_saleable_area_price,
+      </if>
+      <if test="saleableArea != null" >
+        saleable_area,
+      </if>
+      <if test="plannedBuildingArea != null" >
+        planned_building_area,
+      </if>
+      <if test="unsaleableBuildingArea != null" >
+        unsaleable_building_area,
+      </if>
+      <if test="reconnaissanceDesign != null" >
+        reconnaissance_design,
+      </if>
+      <if test="constructionInstallationEngineeringFee != null" >
+        construction_installation_engineering_fee,
+      </if>
+      <if test="infrastructureCost != null" >
+        infrastructure_cost,
+      </if>
+      <if test="infrastructureMatchingCost != null" >
+        infrastructure_matching_cost,
+      </if>
+      <if test="devDuring != null" >
+        dev_during,
+      </if>
+      <if test="otherEngineeringCost != null" >
+        other_engineering_cost,
+      </if>
+      <if test="unforeseenExpenses != null" >
+        unforeseen_expenses,
+      </if>
+      <if test="reconnaissanceDesignExplain != null" >
+        reconnaissance_design_explain,
+      </if>
+      <if test="infrastructureCostExplain != null" >
+        infrastructure_cost_explain,
+      </if>
+      <if test="infrastructureMatchingCostExplain != null" >
+        infrastructure_matching_cost_explain,
+      </if>
+      <if test="devDuringExplain != null" >
+        dev_during_explain,
+      </if>
+      <if test="otherEngineeringCostExplain != null" >
+        other_engineering_cost_explain,
+      </if>
+      <if test="unforeseenExpensesExplain != null" >
+        unforeseen_expenses_explain,
+      </if>
+      <if test="deedTaxRate != null" >
+        deed_tax_rate,
+      </if>
+      <if test="deedTaxRateExplain != null" >
+        deed_tax_rate_explain,
+      </if>
+      <if test="transactionTaxRate != null" >
+        transaction_tax_rate,
+      </if>
+      <if test="transactionTaxRateExplain != null" >
+        transaction_tax_rate_explain,
+      </if>
+      <if test="managementExpense != null" >
+        management_expense,
+      </if>
+      <if test="managementExpenseExplain != null" >
+        management_expense_explain,
+      </if>
+      <if test="landGetRelevant != null" >
+        land_get_relevant,
+      </if>
+      <if test="landGetRelevantExplain != null" >
+        land_get_relevant_explain,
+      </if>
+      <if test="salesFee != null" >
+        sales_fee,
+      </if>
+      <if test="salesFeeExplain != null" >
+        sales_fee_explain,
+      </if>
+      <if test="interestInvestmentTax != null" >
+        interest_investment_tax,
+      </if>
+      <if test="interestInvestmentTaxExplain != null" >
+        interest_investment_tax_explain,
+      </if>
+      <if test="investmentProfitTax != null" >
+        investment_profit_tax,
+      </if>
+      <if test="investmentProfitTaxExplain != null" >
+        investment_profit_tax_explain,
+      </if>
+      <if test="salesTaxAndAdditional != null" >
+        sales_tax_and_additional,
+      </if>
+      <if test="salesTaxAndAdditionalExplain != null" >
+        sales_tax_and_additional_explain,
+      </if>
+      <if test="landValueAddedTax != null" >
+        land_value_added_tax,
+      </if>
+      <if test="landValueAddedTaxExplain != null" >
+        land_value_added_tax_explain,
+      </if>
+      <if test="projectDevelopmentIncomeTax != null" >
+        project_development_income_tax,
+      </if>
+      <if test="projectDevelopmentIncomeTaxExplain != null" >
+        project_development_income_tax_explain,
+      </if>
+      <if test="remunerationRate != null" >
+        remuneration_rate,
+      </if>
+      <if test="statutoryLife != null" >
+        statutory_life,
+      </if>
+      <if test="remainingYears != null" >
+        remaining_years,
+      </if>
+      <if test="amendmentStatusRights != null" >
+        amendment_status_rights,
+      </if>
+      <if test="amendmentStatusRightsExplain != null" >
+        amendment_status_rights_explain,
+      </if>
+      <if test="otherAmendments != null" >
+        other_amendments,
+      </if>
+      <if test="otherAmendmentsExplain != null" >
+        other_amendments_explain,
+      </if>
+      <if test="developmentDegreeRevision != null" >
+        development_degree_revision,
+      </if>
+      <if test="developmentDegreeRevisionExplain != null" >
+        development_degree_revision_explain,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
@@ -250,6 +488,144 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalSaleableAreaPrice != null" >
+        #{totalSaleableAreaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleableArea != null" >
+        #{saleableArea,jdbcType=DECIMAL},
+      </if>
+      <if test="plannedBuildingArea != null" >
+        #{plannedBuildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="unsaleableBuildingArea != null" >
+        #{unsaleableBuildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="reconnaissanceDesign != null" >
+        #{reconnaissanceDesign,jdbcType=DECIMAL},
+      </if>
+      <if test="constructionInstallationEngineeringFee != null" >
+        #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      </if>
+      <if test="infrastructureCost != null" >
+        #{infrastructureCost,jdbcType=DECIMAL},
+      </if>
+      <if test="infrastructureMatchingCost != null" >
+        #{infrastructureMatchingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="devDuring != null" >
+        #{devDuring,jdbcType=DECIMAL},
+      </if>
+      <if test="otherEngineeringCost != null" >
+        #{otherEngineeringCost,jdbcType=DECIMAL},
+      </if>
+      <if test="unforeseenExpenses != null" >
+        #{unforeseenExpenses,jdbcType=DECIMAL},
+      </if>
+      <if test="reconnaissanceDesignExplain != null" >
+        #{reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="infrastructureCostExplain != null" >
+        #{infrastructureCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="infrastructureMatchingCostExplain != null" >
+        #{infrastructureMatchingCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="devDuringExplain != null" >
+        #{devDuringExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="otherEngineeringCostExplain != null" >
+        #{otherEngineeringCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="unforeseenExpensesExplain != null" >
+        #{unforeseenExpensesExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="deedTaxRate != null" >
+        #{deedTaxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="deedTaxRateExplain != null" >
+        #{deedTaxRateExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionTaxRate != null" >
+        #{transactionTaxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionTaxRateExplain != null" >
+        #{transactionTaxRateExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="managementExpense != null" >
+        #{managementExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="managementExpenseExplain != null" >
+        #{managementExpenseExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="landGetRelevant != null" >
+        #{landGetRelevant,jdbcType=DECIMAL},
+      </if>
+      <if test="landGetRelevantExplain != null" >
+        #{landGetRelevantExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="salesFee != null" >
+        #{salesFee,jdbcType=DECIMAL},
+      </if>
+      <if test="salesFeeExplain != null" >
+        #{salesFeeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="interestInvestmentTax != null" >
+        #{interestInvestmentTax,jdbcType=DECIMAL},
+      </if>
+      <if test="interestInvestmentTaxExplain != null" >
+        #{interestInvestmentTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentProfitTax != null" >
+        #{investmentProfitTax,jdbcType=DECIMAL},
+      </if>
+      <if test="investmentProfitTaxExplain != null" >
+        #{investmentProfitTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="salesTaxAndAdditional != null" >
+        #{salesTaxAndAdditional,jdbcType=DECIMAL},
+      </if>
+      <if test="salesTaxAndAdditionalExplain != null" >
+        #{salesTaxAndAdditionalExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="landValueAddedTax != null" >
+        #{landValueAddedTax,jdbcType=DECIMAL},
+      </if>
+      <if test="landValueAddedTaxExplain != null" >
+        #{landValueAddedTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDevelopmentIncomeTax != null" >
+        #{projectDevelopmentIncomeTax,jdbcType=DECIMAL},
+      </if>
+      <if test="projectDevelopmentIncomeTaxExplain != null" >
+        #{projectDevelopmentIncomeTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="remunerationRate != null" >
+        #{remunerationRate,jdbcType=DECIMAL},
+      </if>
+      <if test="statutoryLife != null" >
+        #{statutoryLife,jdbcType=DECIMAL},
+      </if>
+      <if test="remainingYears != null" >
+        #{remainingYears,jdbcType=DECIMAL},
+      </if>
+      <if test="amendmentStatusRights != null" >
+        #{amendmentStatusRights,jdbcType=DECIMAL},
+      </if>
+      <if test="amendmentStatusRightsExplain != null" >
+        #{amendmentStatusRightsExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="otherAmendments != null" >
+        #{otherAmendments,jdbcType=DECIMAL},
+      </if>
+      <if test="otherAmendmentsExplain != null" >
+        #{otherAmendmentsExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="developmentDegreeRevision != null" >
+        #{developmentDegreeRevision,jdbcType=DECIMAL},
+      </if>
+      <if test="developmentDegreeRevisionExplain != null" >
+        #{developmentDegreeRevisionExplain,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -319,6 +695,144 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.totalSaleableAreaPrice != null" >
+        total_saleable_area_price = #{record.totalSaleableAreaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.saleableArea != null" >
+        saleable_area = #{record.saleableArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.plannedBuildingArea != null" >
+        planned_building_area = #{record.plannedBuildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.unsaleableBuildingArea != null" >
+        unsaleable_building_area = #{record.unsaleableBuildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.reconnaissanceDesign != null" >
+        reconnaissance_design = #{record.reconnaissanceDesign,jdbcType=DECIMAL},
+      </if>
+      <if test="record.constructionInstallationEngineeringFee != null" >
+        construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.infrastructureCost != null" >
+        infrastructure_cost = #{record.infrastructureCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.infrastructureMatchingCost != null" >
+        infrastructure_matching_cost = #{record.infrastructureMatchingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.devDuring != null" >
+        dev_during = #{record.devDuring,jdbcType=DECIMAL},
+      </if>
+      <if test="record.otherEngineeringCost != null" >
+        other_engineering_cost = #{record.otherEngineeringCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.unforeseenExpenses != null" >
+        unforeseen_expenses = #{record.unforeseenExpenses,jdbcType=DECIMAL},
+      </if>
+      <if test="record.reconnaissanceDesignExplain != null" >
+        reconnaissance_design_explain = #{record.reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infrastructureCostExplain != null" >
+        infrastructure_cost_explain = #{record.infrastructureCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infrastructureMatchingCostExplain != null" >
+        infrastructure_matching_cost_explain = #{record.infrastructureMatchingCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.devDuringExplain != null" >
+        dev_during_explain = #{record.devDuringExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.otherEngineeringCostExplain != null" >
+        other_engineering_cost_explain = #{record.otherEngineeringCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unforeseenExpensesExplain != null" >
+        unforeseen_expenses_explain = #{record.unforeseenExpensesExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deedTaxRate != null" >
+        deed_tax_rate = #{record.deedTaxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deedTaxRateExplain != null" >
+        deed_tax_rate_explain = #{record.deedTaxRateExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transactionTaxRate != null" >
+        transaction_tax_rate = #{record.transactionTaxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactionTaxRateExplain != null" >
+        transaction_tax_rate_explain = #{record.transactionTaxRateExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managementExpense != null" >
+        management_expense = #{record.managementExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="record.managementExpenseExplain != null" >
+        management_expense_explain = #{record.managementExpenseExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landGetRelevant != null" >
+        land_get_relevant = #{record.landGetRelevant,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landGetRelevantExplain != null" >
+        land_get_relevant_explain = #{record.landGetRelevantExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesFee != null" >
+        sales_fee = #{record.salesFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salesFeeExplain != null" >
+        sales_fee_explain = #{record.salesFeeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interestInvestmentTax != null" >
+        interest_investment_tax = #{record.interestInvestmentTax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.interestInvestmentTaxExplain != null" >
+        interest_investment_tax_explain = #{record.interestInvestmentTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.investmentProfitTax != null" >
+        investment_profit_tax = #{record.investmentProfitTax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.investmentProfitTaxExplain != null" >
+        investment_profit_tax_explain = #{record.investmentProfitTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesTaxAndAdditional != null" >
+        sales_tax_and_additional = #{record.salesTaxAndAdditional,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salesTaxAndAdditionalExplain != null" >
+        sales_tax_and_additional_explain = #{record.salesTaxAndAdditionalExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landValueAddedTax != null" >
+        land_value_added_tax = #{record.landValueAddedTax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landValueAddedTaxExplain != null" >
+        land_value_added_tax_explain = #{record.landValueAddedTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectDevelopmentIncomeTax != null" >
+        project_development_income_tax = #{record.projectDevelopmentIncomeTax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.projectDevelopmentIncomeTaxExplain != null" >
+        project_development_income_tax_explain = #{record.projectDevelopmentIncomeTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remunerationRate != null" >
+        remuneration_rate = #{record.remunerationRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.statutoryLife != null" >
+        statutory_life = #{record.statutoryLife,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remainingYears != null" >
+        remaining_years = #{record.remainingYears,jdbcType=DECIMAL},
+      </if>
+      <if test="record.amendmentStatusRights != null" >
+        amendment_status_rights = #{record.amendmentStatusRights,jdbcType=DECIMAL},
+      </if>
+      <if test="record.amendmentStatusRightsExplain != null" >
+        amendment_status_rights_explain = #{record.amendmentStatusRightsExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.otherAmendments != null" >
+        other_amendments = #{record.otherAmendments,jdbcType=DECIMAL},
+      </if>
+      <if test="record.otherAmendmentsExplain != null" >
+        other_amendments_explain = #{record.otherAmendmentsExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.developmentDegreeRevision != null" >
+        development_degree_revision = #{record.developmentDegreeRevision,jdbcType=DECIMAL},
+      </if>
+      <if test="record.developmentDegreeRevisionExplain != null" >
+        development_degree_revision_explain = #{record.developmentDegreeRevisionExplain,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -344,7 +858,53 @@
       reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      total_saleable_area_price = #{record.totalSaleableAreaPrice,jdbcType=DECIMAL},
+      saleable_area = #{record.saleableArea,jdbcType=DECIMAL},
+      planned_building_area = #{record.plannedBuildingArea,jdbcType=DECIMAL},
+      unsaleable_building_area = #{record.unsaleableBuildingArea,jdbcType=DECIMAL},
+      reconnaissance_design = #{record.reconnaissanceDesign,jdbcType=DECIMAL},
+      construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      infrastructure_cost = #{record.infrastructureCost,jdbcType=DECIMAL},
+      infrastructure_matching_cost = #{record.infrastructureMatchingCost,jdbcType=DECIMAL},
+      dev_during = #{record.devDuring,jdbcType=DECIMAL},
+      other_engineering_cost = #{record.otherEngineeringCost,jdbcType=DECIMAL},
+      unforeseen_expenses = #{record.unforeseenExpenses,jdbcType=DECIMAL},
+      reconnaissance_design_explain = #{record.reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      infrastructure_cost_explain = #{record.infrastructureCostExplain,jdbcType=VARCHAR},
+      infrastructure_matching_cost_explain = #{record.infrastructureMatchingCostExplain,jdbcType=VARCHAR},
+      dev_during_explain = #{record.devDuringExplain,jdbcType=VARCHAR},
+      other_engineering_cost_explain = #{record.otherEngineeringCostExplain,jdbcType=VARCHAR},
+      unforeseen_expenses_explain = #{record.unforeseenExpensesExplain,jdbcType=VARCHAR},
+      deed_tax_rate = #{record.deedTaxRate,jdbcType=DECIMAL},
+      deed_tax_rate_explain = #{record.deedTaxRateExplain,jdbcType=VARCHAR},
+      transaction_tax_rate = #{record.transactionTaxRate,jdbcType=DECIMAL},
+      transaction_tax_rate_explain = #{record.transactionTaxRateExplain,jdbcType=VARCHAR},
+      management_expense = #{record.managementExpense,jdbcType=DECIMAL},
+      management_expense_explain = #{record.managementExpenseExplain,jdbcType=VARCHAR},
+      land_get_relevant = #{record.landGetRelevant,jdbcType=DECIMAL},
+      land_get_relevant_explain = #{record.landGetRelevantExplain,jdbcType=VARCHAR},
+      sales_fee = #{record.salesFee,jdbcType=DECIMAL},
+      sales_fee_explain = #{record.salesFeeExplain,jdbcType=VARCHAR},
+      interest_investment_tax = #{record.interestInvestmentTax,jdbcType=DECIMAL},
+      interest_investment_tax_explain = #{record.interestInvestmentTaxExplain,jdbcType=VARCHAR},
+      investment_profit_tax = #{record.investmentProfitTax,jdbcType=DECIMAL},
+      investment_profit_tax_explain = #{record.investmentProfitTaxExplain,jdbcType=VARCHAR},
+      sales_tax_and_additional = #{record.salesTaxAndAdditional,jdbcType=DECIMAL},
+      sales_tax_and_additional_explain = #{record.salesTaxAndAdditionalExplain,jdbcType=VARCHAR},
+      land_value_added_tax = #{record.landValueAddedTax,jdbcType=DECIMAL},
+      land_value_added_tax_explain = #{record.landValueAddedTaxExplain,jdbcType=VARCHAR},
+      project_development_income_tax = #{record.projectDevelopmentIncomeTax,jdbcType=DECIMAL},
+      project_development_income_tax_explain = #{record.projectDevelopmentIncomeTaxExplain,jdbcType=VARCHAR},
+      remuneration_rate = #{record.remunerationRate,jdbcType=DECIMAL},
+      statutory_life = #{record.statutoryLife,jdbcType=DECIMAL},
+      remaining_years = #{record.remainingYears,jdbcType=DECIMAL},
+      amendment_status_rights = #{record.amendmentStatusRights,jdbcType=DECIMAL},
+      amendment_status_rights_explain = #{record.amendmentStatusRightsExplain,jdbcType=VARCHAR},
+      other_amendments = #{record.otherAmendments,jdbcType=DECIMAL},
+      other_amendments_explain = #{record.otherAmendmentsExplain,jdbcType=VARCHAR},
+      development_degree_revision = #{record.developmentDegreeRevision,jdbcType=DECIMAL},
+      development_degree_revision_explain = #{record.developmentDegreeRevisionExplain,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -406,6 +966,144 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="totalSaleableAreaPrice != null" >
+        total_saleable_area_price = #{totalSaleableAreaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleableArea != null" >
+        saleable_area = #{saleableArea,jdbcType=DECIMAL},
+      </if>
+      <if test="plannedBuildingArea != null" >
+        planned_building_area = #{plannedBuildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="unsaleableBuildingArea != null" >
+        unsaleable_building_area = #{unsaleableBuildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="reconnaissanceDesign != null" >
+        reconnaissance_design = #{reconnaissanceDesign,jdbcType=DECIMAL},
+      </if>
+      <if test="constructionInstallationEngineeringFee != null" >
+        construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      </if>
+      <if test="infrastructureCost != null" >
+        infrastructure_cost = #{infrastructureCost,jdbcType=DECIMAL},
+      </if>
+      <if test="infrastructureMatchingCost != null" >
+        infrastructure_matching_cost = #{infrastructureMatchingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="devDuring != null" >
+        dev_during = #{devDuring,jdbcType=DECIMAL},
+      </if>
+      <if test="otherEngineeringCost != null" >
+        other_engineering_cost = #{otherEngineeringCost,jdbcType=DECIMAL},
+      </if>
+      <if test="unforeseenExpenses != null" >
+        unforeseen_expenses = #{unforeseenExpenses,jdbcType=DECIMAL},
+      </if>
+      <if test="reconnaissanceDesignExplain != null" >
+        reconnaissance_design_explain = #{reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="infrastructureCostExplain != null" >
+        infrastructure_cost_explain = #{infrastructureCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="infrastructureMatchingCostExplain != null" >
+        infrastructure_matching_cost_explain = #{infrastructureMatchingCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="devDuringExplain != null" >
+        dev_during_explain = #{devDuringExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="otherEngineeringCostExplain != null" >
+        other_engineering_cost_explain = #{otherEngineeringCostExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="unforeseenExpensesExplain != null" >
+        unforeseen_expenses_explain = #{unforeseenExpensesExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="deedTaxRate != null" >
+        deed_tax_rate = #{deedTaxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="deedTaxRateExplain != null" >
+        deed_tax_rate_explain = #{deedTaxRateExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionTaxRate != null" >
+        transaction_tax_rate = #{transactionTaxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionTaxRateExplain != null" >
+        transaction_tax_rate_explain = #{transactionTaxRateExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="managementExpense != null" >
+        management_expense = #{managementExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="managementExpenseExplain != null" >
+        management_expense_explain = #{managementExpenseExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="landGetRelevant != null" >
+        land_get_relevant = #{landGetRelevant,jdbcType=DECIMAL},
+      </if>
+      <if test="landGetRelevantExplain != null" >
+        land_get_relevant_explain = #{landGetRelevantExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="salesFee != null" >
+        sales_fee = #{salesFee,jdbcType=DECIMAL},
+      </if>
+      <if test="salesFeeExplain != null" >
+        sales_fee_explain = #{salesFeeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="interestInvestmentTax != null" >
+        interest_investment_tax = #{interestInvestmentTax,jdbcType=DECIMAL},
+      </if>
+      <if test="interestInvestmentTaxExplain != null" >
+        interest_investment_tax_explain = #{interestInvestmentTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentProfitTax != null" >
+        investment_profit_tax = #{investmentProfitTax,jdbcType=DECIMAL},
+      </if>
+      <if test="investmentProfitTaxExplain != null" >
+        investment_profit_tax_explain = #{investmentProfitTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="salesTaxAndAdditional != null" >
+        sales_tax_and_additional = #{salesTaxAndAdditional,jdbcType=DECIMAL},
+      </if>
+      <if test="salesTaxAndAdditionalExplain != null" >
+        sales_tax_and_additional_explain = #{salesTaxAndAdditionalExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="landValueAddedTax != null" >
+        land_value_added_tax = #{landValueAddedTax,jdbcType=DECIMAL},
+      </if>
+      <if test="landValueAddedTaxExplain != null" >
+        land_value_added_tax_explain = #{landValueAddedTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDevelopmentIncomeTax != null" >
+        project_development_income_tax = #{projectDevelopmentIncomeTax,jdbcType=DECIMAL},
+      </if>
+      <if test="projectDevelopmentIncomeTaxExplain != null" >
+        project_development_income_tax_explain = #{projectDevelopmentIncomeTaxExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="remunerationRate != null" >
+        remuneration_rate = #{remunerationRate,jdbcType=DECIMAL},
+      </if>
+      <if test="statutoryLife != null" >
+        statutory_life = #{statutoryLife,jdbcType=DECIMAL},
+      </if>
+      <if test="remainingYears != null" >
+        remaining_years = #{remainingYears,jdbcType=DECIMAL},
+      </if>
+      <if test="amendmentStatusRights != null" >
+        amendment_status_rights = #{amendmentStatusRights,jdbcType=DECIMAL},
+      </if>
+      <if test="amendmentStatusRightsExplain != null" >
+        amendment_status_rights_explain = #{amendmentStatusRightsExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="otherAmendments != null" >
+        other_amendments = #{otherAmendments,jdbcType=DECIMAL},
+      </if>
+      <if test="otherAmendmentsExplain != null" >
+        other_amendments_explain = #{otherAmendmentsExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="developmentDegreeRevision != null" >
+        development_degree_revision = #{developmentDegreeRevision,jdbcType=DECIMAL},
+      </if>
+      <if test="developmentDegreeRevisionExplain != null" >
+        development_degree_revision_explain = #{developmentDegreeRevisionExplain,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -428,7 +1126,53 @@
       reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      total_saleable_area_price = #{totalSaleableAreaPrice,jdbcType=DECIMAL},
+      saleable_area = #{saleableArea,jdbcType=DECIMAL},
+      planned_building_area = #{plannedBuildingArea,jdbcType=DECIMAL},
+      unsaleable_building_area = #{unsaleableBuildingArea,jdbcType=DECIMAL},
+      reconnaissance_design = #{reconnaissanceDesign,jdbcType=DECIMAL},
+      construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      infrastructure_cost = #{infrastructureCost,jdbcType=DECIMAL},
+      infrastructure_matching_cost = #{infrastructureMatchingCost,jdbcType=DECIMAL},
+      dev_during = #{devDuring,jdbcType=DECIMAL},
+      other_engineering_cost = #{otherEngineeringCost,jdbcType=DECIMAL},
+      unforeseen_expenses = #{unforeseenExpenses,jdbcType=DECIMAL},
+      reconnaissance_design_explain = #{reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      infrastructure_cost_explain = #{infrastructureCostExplain,jdbcType=VARCHAR},
+      infrastructure_matching_cost_explain = #{infrastructureMatchingCostExplain,jdbcType=VARCHAR},
+      dev_during_explain = #{devDuringExplain,jdbcType=VARCHAR},
+      other_engineering_cost_explain = #{otherEngineeringCostExplain,jdbcType=VARCHAR},
+      unforeseen_expenses_explain = #{unforeseenExpensesExplain,jdbcType=VARCHAR},
+      deed_tax_rate = #{deedTaxRate,jdbcType=DECIMAL},
+      deed_tax_rate_explain = #{deedTaxRateExplain,jdbcType=VARCHAR},
+      transaction_tax_rate = #{transactionTaxRate,jdbcType=DECIMAL},
+      transaction_tax_rate_explain = #{transactionTaxRateExplain,jdbcType=VARCHAR},
+      management_expense = #{managementExpense,jdbcType=DECIMAL},
+      management_expense_explain = #{managementExpenseExplain,jdbcType=VARCHAR},
+      land_get_relevant = #{landGetRelevant,jdbcType=DECIMAL},
+      land_get_relevant_explain = #{landGetRelevantExplain,jdbcType=VARCHAR},
+      sales_fee = #{salesFee,jdbcType=DECIMAL},
+      sales_fee_explain = #{salesFeeExplain,jdbcType=VARCHAR},
+      interest_investment_tax = #{interestInvestmentTax,jdbcType=DECIMAL},
+      interest_investment_tax_explain = #{interestInvestmentTaxExplain,jdbcType=VARCHAR},
+      investment_profit_tax = #{investmentProfitTax,jdbcType=DECIMAL},
+      investment_profit_tax_explain = #{investmentProfitTaxExplain,jdbcType=VARCHAR},
+      sales_tax_and_additional = #{salesTaxAndAdditional,jdbcType=DECIMAL},
+      sales_tax_and_additional_explain = #{salesTaxAndAdditionalExplain,jdbcType=VARCHAR},
+      land_value_added_tax = #{landValueAddedTax,jdbcType=DECIMAL},
+      land_value_added_tax_explain = #{landValueAddedTaxExplain,jdbcType=VARCHAR},
+      project_development_income_tax = #{projectDevelopmentIncomeTax,jdbcType=DECIMAL},
+      project_development_income_tax_explain = #{projectDevelopmentIncomeTaxExplain,jdbcType=VARCHAR},
+      remuneration_rate = #{remunerationRate,jdbcType=DECIMAL},
+      statutory_life = #{statutoryLife,jdbcType=DECIMAL},
+      remaining_years = #{remainingYears,jdbcType=DECIMAL},
+      amendment_status_rights = #{amendmentStatusRights,jdbcType=DECIMAL},
+      amendment_status_rights_explain = #{amendmentStatusRightsExplain,jdbcType=VARCHAR},
+      other_amendments = #{otherAmendments,jdbcType=DECIMAL},
+      other_amendments_explain = #{otherAmendmentsExplain,jdbcType=VARCHAR},
+      development_degree_revision = #{developmentDegreeRevision,jdbcType=DECIMAL},
+      development_degree_revision_explain = #{developmentDegreeRevisionExplain,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -52,5 +52,12 @@ public class DeclareEconomicIndicatorsContentDao {
         List<DeclareEconomicIndicatorsContent> declareEconomicIndicatorsHeads = mapper.selectByExample(example);
         return declareEconomicIndicatorsHeads;
     }
+
+    public List<DeclareEconomicIndicatorsContent> getDeclareEconomicIndicatorsContentListByHeadId(Integer headId){
+        DeclareEconomicIndicatorsContentExample example = new DeclareEconomicIndicatorsContentExample();
+        example.createCriteria().andIdIsNotNull().andIndicatorsHeadIdEqualTo(headId);
+        List<DeclareEconomicIndicatorsContent> declareEconomicIndicatorsHeads = mapper.selectByExample(example);
+        return declareEconomicIndicatorsHeads;
+    }
     
 }

@@ -34,6 +34,8 @@ public class MdDevelopmentService {
     private MdArchitecturalObjService mdArchitecturalObjService;
     @Autowired
     private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
+    @Autowired
+    private MdDevelopmentIncomeCategoryService mdDevelopmentIncomeCategoryService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public MdDevelopment initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -75,6 +77,16 @@ public class MdDevelopmentService {
             for (MdDevelopmentInfrastructureChildren po:childrenList){
                 po.setPid(oo.getId());
                 mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(po) ;
+            }
+        }
+        MdDevelopmentIncomeCategory mdDevelopmentIncomeCategory = new MdDevelopmentIncomeCategory();
+        mdDevelopmentIncomeCategory.setPlanDetailsId(oo.getPlanDetailsId());
+        mdDevelopmentIncomeCategory.setPid(0);
+        List<MdDevelopmentIncomeCategory> categoryList =  mdDevelopmentIncomeCategoryService.getMdDevelopmentIncomeCategoryListByExample(mdDevelopmentIncomeCategory) ;
+        if (CollectionUtils.isNotEmpty(categoryList)){
+            for (MdDevelopmentIncomeCategory obj:categoryList){
+                obj.setPid(oo.getId());
+                mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(obj) ;
             }
         }
     }
@@ -212,9 +224,9 @@ public class MdDevelopmentService {
                 if (jsonObject.get("d46Explain") != null) {
                     vo.setD46Explain(changeHundred((String) jsonObject.get("d46Explain"), format));
                 }
-                if (jsonObject.get("unsaleableBuildingArea") != null) {
-                    vo.setUnsaleableBuildingArea((String) jsonObject.get("unsaleableBuildingArea"));
-                }
+//                if (jsonObject.get("unsaleableBuildingArea") != null) {
+//                    vo.setUnsaleableBuildingArea((String) jsonObject.get("unsaleableBuildingArea"));
+//                }
             }
         }
         return vo;
