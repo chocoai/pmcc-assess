@@ -128,17 +128,19 @@ public class SchemeSurePriceService {
      * @return
      */
     @Transactional
-    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) throws BusinessException {
+    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId, Boolean isUpdatePrice) throws BusinessException {
         SchemeSurePriceItem where = new SchemeSurePriceItem();
         where.setJudgeObjectId(judgeObjectId);
         List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
         SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(judgeObjectId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
         if (CollectionUtils.isNotEmpty(surePriceItemList)) {//更新试算价格
-            if (isUpdatePrice) {
-                for (SchemeSurePriceItem schemeSurePriceItem : surePriceItemList) {
-                    schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, schemeSurePriceItem.getMethodType()));
-                    schemeSurePriceItemDao.updateSurePriceItem(schemeSurePriceItem);
+            if (isUpdatePrice != null) {
+                if (isUpdatePrice){
+                    for (SchemeSurePriceItem schemeSurePriceItem : surePriceItemList) {
+                        schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, schemeSurePriceItem.getMethodType()));
+                        schemeSurePriceItemDao.updateSurePriceItem(schemeSurePriceItem);
+                    }
                 }
             } else {
                 return surePriceItemList;

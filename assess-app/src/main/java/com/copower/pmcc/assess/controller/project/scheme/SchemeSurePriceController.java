@@ -37,9 +37,9 @@ public class SchemeSurePriceController {
 
     @GetMapping(value = "/getSchemeSurePriceItemList", name = "获取确定单价明细数据信息")
     @ResponseBody
-    public HttpResult getSchemeSurePriceItemList(Integer judgeObjectId) {
+    public HttpResult getSchemeSurePriceItemList(Integer judgeObjectId,Boolean isUpdatePrice) {
         try {
-            List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceItemList(judgeObjectId, true);
+            List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceItemList(judgeObjectId, isUpdatePrice);
             return HttpResult.newCorrectResult(schemeSurePriceList);
         } catch (BusinessException ex) {
             return HttpResult.newErrorResult(ex.getMessage());
