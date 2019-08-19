@@ -33,7 +33,7 @@ public class ProjectTaskCIPController {
 
     @ResponseBody
     @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult save(String formData, Integer masterId) {
+    public HttpResult save(String formData, Integer masterId,Integer planDetailsId) {
         try {
             Map<String, Object> objectMap = Maps.newHashMap();
             SurveySceneExplore sceneExploreById = surveySceneExploreDao.getSurveySceneExploreById(masterId);
@@ -45,6 +45,7 @@ public class ProjectTaskCIPController {
                 basicApplyBatchService.saveApplyInfo(applyBatch);
                 SurveySceneExplore surveySceneExplore = new SurveySceneExplore();
                 surveySceneExplore.setBatchApplyId(applyBatch.getId());
+                surveySceneExplore.setPlanDetailsId(planDetailsId);
                 surveySceneExplore.setCreator(commonService.thisUserAccount());
                 surveySceneExploreDao.addSurveySceneExplore(surveySceneExplore);
                 objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), applyBatch);

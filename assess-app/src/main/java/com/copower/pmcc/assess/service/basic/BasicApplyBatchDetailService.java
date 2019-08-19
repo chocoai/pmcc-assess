@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
@@ -38,6 +39,8 @@ public class BasicApplyBatchDetailService {
     private BasicApplyDao basicApplyDao;
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     /**
      * 通过applyBatchId获取
@@ -155,7 +158,8 @@ public class BasicApplyBatchDetailService {
         if(sceneExplore==null){
             return;
         }
-        basicApply.setPlanDetailsId(sceneExplore.getPlanDetailsId());
+        Integer pid = projectPlanDetailsService.getProjectPlanDetailsById(sceneExplore.getPlanDetailsId()).getPid();
+        basicApply.setPlanDetailsId(pid);
         BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
         if(basicApplyOnly!=null){
             if(basicApplyBatchDetail.getBisStandard()==true){
