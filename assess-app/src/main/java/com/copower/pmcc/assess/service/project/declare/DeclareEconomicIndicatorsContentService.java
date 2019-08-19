@@ -62,4 +62,8 @@ public class DeclareEconomicIndicatorsContentService {
     public List<DeclareEconomicIndicatorsContent> getDeclareEconomicIndicatorsContentList(DeclareEconomicIndicatorsContent oo) {
         return dao.getDeclareEconomicIndicatorsContentList(oo);
     }
+
+    public List<DeclareEconomicIndicatorsContent> getDeclareEconomicIndicatorsContentListByHeadId(Integer headId){
+        return dao.getDeclareEconomicIndicatorsContentListByHeadId(headId);
+    }
 }

@@ -1,6 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-
 <script type="text/javascript">
 
     var developmentCommon = {};
@@ -299,286 +297,175 @@
         }
     };
 
-    //收入类(参数)
-    developmentCommon.parameter = {
-        getDeclareEconomicIndicatorsContentList: function (callback) {
-            $.ajax({
-                url: getContextPath() + "/declareEconomicIndicatorsContent/getEntityListByPid",
-                type: "post",
-                dataType: "json",
-                data: {indicatorsHeadId: '${declareBuildEngineeringAndEquipmentCenter.indicatorId}'},
-                success: function (result) {
-                    if (result.ret) {
+    //假设开发法 收入类保存
+    developmentCommon.loadIncomeCategorySave = function (data,callback,errorCallback) {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/mdDevelopmentIncomeCategory/saveMdDevelopmentIncomeCategory",
+            data: {fomData:JSON.stringify(data)},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
                         callback(result.data);
-                    } else {
-                        callback([]);
                     }
-                },
-                error: function (result) {
-                    callback([]);
+                }else {
+                    if (errorCallback) {
+                        errorCallback(result.errmsg);
+                    }
                 }
-            });
-        },
-        initData: function (table, data, equals) {
-            if (table.size() == 0) {
-                return false;
+            },
+            error: function (e) {
+                if (errorCallback) {
+                    errorCallback(e);
+                }
             }
-            var buildArea = 0;
-            var maySaleArea = 0;
-            var maySaleAreaNext = 0;
-            table.find("tbody").find("tr").each(function (i, tr) {
-                var dataKey = $(tr).attr('data-key');
-                var name = $(tr).find("td").first().text();
-                $.each(data, function (j, item) {
-                    if (item.name == name) {
-                        if (equals) {
-                        } else {
-                            equals = item.dataKey == dataKey;
-                        }
-                        if (equals) {
-                            if (AssessCommon.isNumber(item.buildArea)) {
-                                buildArea += Number(item.buildArea);
-                            }
-                            if (AssessCommon.isNumber(item.maySaleAreaNext)) {
-                                maySaleAreaNext += Number(item.maySaleAreaNext);
-                            }
-                            if (AssessCommon.isNumber(item.unitPrice)) {
-                                var multiply = math.bignumber(0);
-                                if (AssessCommon.isNumber(item.number)) {
-                                    multiply = math.add(multiply, math.bignumber(item.number));
-                                }
-                                if (AssessCommon.isNumber(item.maySaleAreaNext)) {
-                                    multiply = math.add(multiply, math.bignumber(item.maySaleAreaNext));
-                                }
-                                if (!AssessCommon.isNumber(item.maySaleArea)) {
+        });
+    };
 
-                                }
-                                var c = math.chain(math.bignumber(item.unitPrice)).multiply(multiply).done();
-                                item.maySaleArea = c.toString() ;
-                            }
-                            if (AssessCommon.isNumber(item.maySaleArea)) {
-                                maySaleArea += Number(item.maySaleArea);
-                            }
-                            $(tr).find("td").eq(1).find("a").text(item.buildArea);
-                            $(tr).find("td").eq(2).find("a").text(item.maySaleArea);
-                            $(tr).find("td").eq(3).find("a").text(item.maySaleAreaNext);
-                            $(tr).find("td").eq(4).find("a").text(item.number);
-                            $(tr).find("td").eq(5).find("a").text(item.unitPrice);
-                            $(tr).find("td").eq(6).find("a").text(item.assessArea);
-                            $(tr).find("td").eq(7).find("a").text(item.remark);
-                        }
+    //假设开发法 收入类删除
+    developmentCommon.deleteIncomeCategory = function (data,callback,errorCallback) {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/mdDevelopmentIncomeCategory/deleteMdDevelopmentIncomeCategory",
+            data: {ids:data.join(",")},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
                     }
+                }else {
+                    if (errorCallback) {
+                        errorCallback(result.errmsg);
+                    }
+                }
+            },
+            error: function (e) {
+                if (errorCallback) {
+                    errorCallback(e);
+                }
+            }
+        });
+    };
+
+    //假设开发法 收入类计算
+    developmentCommon.calculationIncomeCategory = function (field,data) {
+        var multiply = null;
+        var arr = ['saleableArea','number' ,'unitPrice'] ;
+        if (jQuery.inArray(field,arr) != -1){
+            if (AssessCommon.isNumber(data.saleableArea)) {
+                multiply = math.add(math.bignumber(0), math.bignumber(data.saleableArea));
+            }
+            if (AssessCommon.isNumber(data.number)) {
+                multiply = math.add(multiply, math.bignumber(data.number));
+            }
+            if (AssessCommon.isNumber(data.unitPrice)) {
+                if (multiply != null){
+                    var c = math.chain(math.bignumber(data.unitPrice)).multiply(multiply).divide(10000).done();
+                    data.totalSaleableAreaPrice = c.toString();
+                }
+            }
+        }
+        return data ;
+    };
+
+    //假设开发法 收入类table
+    developmentCommon.loadIncomeCategoryTable = function (table,quarm,toolbar,callback) {
+        var cols = [];
+        cols.push({checkbox: true,width:"5%"});
+        cols.push({field: 'name', title: '名称',width:"10%"});
+        cols.push({field: 'plannedBuildingArea', title: '规划建筑面积',width:"10%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if (!$.isNumeric(value)){
+                    return '必须是数字!';
+                }
+            }
+        }});
+        cols.push({field: 'totalSaleableAreaPrice', title: '总可售面积售价',width:"10%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if (!$.isNumeric(value)){
+                    return '必须是数字!';
+                }
+            }
+        }});
+        cols.push({field: 'saleableArea', title: '可售面积',width:"10%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if (!$.isNumeric(value)){
+                    return '必须是数字!';
+                }
+            }
+        }});
+        cols.push({field: 'number', title: '个数',width:"10%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if (!$.isNumeric(value)){
+                    return '必须是数字!';
+                }
+            }
+        }});
+        cols.push({field: 'unitPrice', title: '单位售价',width:"10%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if (!$.isNumeric(value)){
+                    return '必须是数字!';
+                }
+            }
+        }});
+        cols.push({field: 'assessArea', title: '评估面积',width:"15%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if (!$.isNumeric(value)){
+                    return '必须是数字!';
+                }
+            }
+        }});
+        cols.push({field: 'remark', title: '说明',width:"20%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if ($.trim(value) == '') {
+                    return '说明不能为空!';
+                }
+            }
+        }});
+        var method = {
+            onEditableSave:function (field, row, oldValue, $el) {
+                row = developmentCommon.calculationIncomeCategory(field,row) ;
+                table.bootstrapTable('updateByUniqueId', {id: row.id, row: row});
+                developmentCommon.loadIncomeCategorySave(row,function () {
+                    toastr.success('编辑成功!');
+                    if (callback){
+                        callback() ;
+                    }
+                },function () {
+                    toastr.success('编辑失败!');
                 });
-            });
-            table.find("tfoot").find("input[name='buildArea']").val(buildArea);
-            table.find("tfoot").find("input[name='maySaleArea']").val(maySaleArea);
-            table.find("tfoot").find("input[name='maySaleAreaNext']").val(maySaleAreaNext);
-        },
-        getFomData: function (table) {
-            var data = [];
-            table.find("tbody").find("tr").each(function (i, tr) {
-                var item = {};
-                var dataKey = $(tr).attr('data-key');
-                item.name = $(tr).find("td").first().text();
-                item.buildArea = $(tr).find("td").eq(1).find("a").text();
-                item.maySaleArea = $(tr).find("td").eq(2).find("a").text();
-                item.maySaleAreaNext = $(tr).find("td").eq(3).find("a").text();
-                item.number = $(tr).find("td").eq(4).find("a").text();
-                item.unitPrice = $(tr).find("td").eq(5).find("a").text();
-                item.assessArea = $(tr).find("td").eq(6).find("a").text();
-                item.remark = $(tr).find("td").eq(7).find("a").text();
-                item.dataKey = dataKey;
-                data.push(item);
-            });
-            console.log(data) ;
-            return data;
-        },
-        editableInit: function (callback) {
-            var handle = $("." + developmentCommon.config.commonParameter.handle);
-            developmentCommon.parameter.getDeclareEconomicIndicatorsContentList(function (data) {
-                handle.find("table").each(function () {
-                    var table = $(this);
-                    table.find("tbody").find("tr").each(function () {
-                        var tr = $(this);
-                        tr.find("a").each(function (i, item) {
-                            var target = $(item);
-                            var fun = target.attr("onclick");
-                            var dataKey = target.attr("data-key");
-                            target.editable({
-                                type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
-                                disabled: false,             //是否禁用编辑 ,默认 false
-                                emptytext: "数值说明",          //空值的默认文本
-                                mode: "inline",              //编辑框的模式：支持popup和inline两种模式，默认是popup
-                                validate: function (value) { //字段验证
-                                    if (AssessCommon.isNumber(value)) {
-                                        if (developmentCommon.isNotBlank(fun)) {
-                                            if (fun.indexOf('handleCalculationA') != -1) {
-                                                developmentCommon.parameter.handleCalculationA(value);
-                                            }
-                                            if (fun.indexOf('handleCalculationB') != -1) {
-                                                developmentCommon.parameter.handleCalculationB(tr, value);
-                                            }
-                                            if (fun.indexOf('handleCalculationC') != -1) {
-                                                developmentCommon.parameter.handleCalculationC(value, target);
-                                            }
-                                            if (fun.indexOf('handleCalculationD') != -1) {
-                                                developmentCommon.parameter.handleCalculationD(value, target);
-                                            }
-                                            if (fun.indexOf('handleCalculationE') != -1) {
-                                                developmentCommon.parameter.handleCalculationE(value, target);
-                                            }
-                                        }
-                                    } else {
-                                        if (dataKey != 'remark') {
-                                            return '必须是数字';
-                                        }
-                                    }
-                                },
-                                display: function (value) {
-                                    $(this).text(value);
-                                }
-                            });
-                        });
-                    });
-                    var item = [];
-                    var dataA = [];
-                    if (data.length >= 1) {
-                        dataA = data.concat([]);
-                    }
-                    if (dataA.length >= 1) {
-                        $.each(dataA, function (i, obj) {
-                            var vo = {};
-                            if (obj.childData) {
-                                var childData = JSON.parse(obj.childData);
-                                dataA = dataA.concat(childData);
-                            }
-                        });
-                    }
-                    if (dataA.length >= 1) {
-                        $.each(dataA, function (i, obj) {
-                            var vo = {};
-                            if (obj.planIndex) {
-                                vo.buildArea = obj.planIndex;
-                            }
-                            if (obj.salabilityNumber) {
-                                vo.maySaleAreaNext = obj.salabilityNumber;
-                            }
-                            if (obj.assessSalabilityNumber) {
-                                vo.number = obj.assessSalabilityNumber;
-                            }
-                            if (obj.remark) {
-                                vo.remark = obj.remark;
-                            }
-                            if (obj.name) {
-                                vo.name = obj.name;
-                            }
-                            item.push(vo);
-                        });
-                    }
-                    developmentCommon.parameter.initData(table, item, true);
-                });
-                if (callback) {
-                    callback();
+            },
+            showColumns: true,
+            showRefresh: true,
+            search: false,
+            onLoadSuccess:function () {//加载成功时执行
+                if (callback){
+                    callback() ;
                 }
-            });
-        },
-        handleCalculationA: function (value) {
-            var that = this;
-            $("." + developmentCommon.config.commonParameter.handle).each(function () {
-                that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='buildArea']"), value, that.handleCalculationA.name);
-            });
-        },
-        handleCalculationB: function (tr, data) {
-            var that = this;
-            if (tr.size() == 0) {
-                return false;
+            },
+            onLoadError:function () {
+
             }
-            var unitPrice = tr.find("a[data-key='unitPrice']").text();
-            var maySaleAreaNext = tr.find("a[data-key='maySaleAreaNext']").text();
-            var number = tr.find("a[data-key='number']").text();
-            var multiply = null;
-            if (data.unitPrice) {
-                unitPrice = data.unitPrice;
-                multiply = math.bignumber(0);
-                if (AssessCommon.isNumber(number)) {
-                    multiply = math.add(multiply, math.bignumber(number));
-                }
-                if (AssessCommon.isNumber(maySaleAreaNext)) {
-                    multiply = math.add(multiply, math.bignumber(maySaleAreaNext));
-                }
-            }
-            if (data.maySaleAreaNext) {
-                multiply = math.bignumber(data.maySaleAreaNext);
-                if (AssessCommon.isNumber(number)) {
-                    multiply = math.add(multiply, math.bignumber(number));
-                }
-            }
-            if (data.number) {
-                multiply = math.bignumber(data.number);
-                if (AssessCommon.isNumber(maySaleAreaNext)) {
-                    multiply = math.add(multiply, math.bignumber(maySaleAreaNext));
-                }
-            }
-            if (multiply != null) {
-                if (AssessCommon.isNumber(unitPrice)) {
-                    var c = math.chain(math.bignumber(unitPrice)).multiply(multiply).done();
-                    data.maySaleArea = c.toString();
-                }
-            }
-            if (data.maySaleArea) {
-                tr.find("a[data-key='maySaleArea']").text(data.maySaleArea);
-            }
-            $("." + developmentCommon.config.commonParameter.handle).each(function () {
-                that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='maySaleArea']"), data.maySaleArea, that.handleCalculationB.name);
-            });
-        },
-        handleCalculationC: function (value, target) {
-            var that = this;
-            this.handleCalculationB(target.closest("tr"), {maySaleAreaNext: value});
-            $("." + developmentCommon.config.commonParameter.handle).each(function () {
-                that.handleCalculationWrite($(this).find("table").find("tfoot").find("input[name='maySaleAreaNext']"), value, that.handleCalculationC.name);
-            });
-        },
-        handleCalculationD: function (value, target) {
-            var that = this;
-            this.handleCalculationB(target.closest("tr"), {unitPrice: value});
-        },
-        handleCalculationE: function (value, target) {
-            this.handleCalculationB(target.closest("tr"), {number: value});
-        },
-        handleCalculationWrite: function (input, value, fun) {
-            var table = input.closest('table');
-            var result = 0;
-            table.find("tbody").find("a").each(function (i, item) {
-                var target = $(item);
-                var funName = target.attr("onclick");
-                if (developmentCommon.isNotBlank(funName)) {
-                    if (funName.indexOf(fun) != -1) {
-                        var className = target.attr("class");
-                        if (className.indexOf("open") != -1) {
-                            if (developmentCommon.isNotBlank(value)) {
-                                result += Number(value);
-                            }
-                        } else {
-                            result += Number(target.html());
-                        }
+        } ;
+        table.bootstrapTable('destroy');
+        TableInit(table.attr("id"), "${pageContext.request.contextPath}/mdDevelopmentIncomeCategory/getBootstrapTableVo",cols,quarm, method);
+        if (toolbar){
+            if (toolbar.size() != 0) {
+                var bootstrapTable = table.closest(".bootstrap-table");
+                if (bootstrapTable.size() != 0) {
+                    var fixedTableToolbar = bootstrapTable.find(".fixed-table-toolbar");
+                    if (fixedTableToolbar.size() != 0) {
+                        fixedTableToolbar.append(toolbar.html());
                     }
                 }
-            });
-            //触发事件
-            input.val(result).trigger('onblur');
-        },
-        handleCalculation: function (value) {
-            if (developmentCommon.isNotBlank(value)) {
-                try {
-                    eval(value);
-                } catch (e) {
-                    console.log("没有相关定义的函数或者是属于子表单");
-                }
             }
-        },
-        getHtml: function () {
-            return $("#" + developmentCommon.config.commonParameter.id).html();
         }
     };
 
@@ -669,215 +556,6 @@
         }
     };
 
-</script>
-
-
-<script type="text/html" id="commonDevelopmentParameterBase" data-title="收入类(参数)">
-    <div class="commonDevelopmentParameterHandle">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>收入类(参数)</h3>
-            <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-            <div class="col-md-12 col-sm-12 form-group">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <td>项目名称</td>
-                        <td>规划建筑面积（㎡）</td>
-                        <td>总可售面积售价(万元)</td>
-                        <td>可售面积</td>
-                        <td>个数</td>
-                        <td>单位售价（元/㎡）</td>
-                        <td>评估面积</td>
-                        <td>说明</td>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr data-key="villaResidence">
-                        <td>住宅</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    <tr data-key="strategyBusiness">
-                        <td>商业</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    <tr data-key="word">
-                        <td>办公</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    <tr data-key="hotel">
-                        <td>宾馆</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    <tr data-key="fitnessActivities">
-                        <td>健身活动用房</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    <tr data-key="estateManagement">
-                        <td>物管用房</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    <tr data-key="ownerActivity">
-                        <td>业主活动用房</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    <tr data-key="undergroundBusinessShop">
-                        <td>地下商业建筑</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    <tr data-key="motorVehicleParking">
-                        <td>机动车停车位</td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationA" data-key="buildArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationB" data-key="maySaleArea">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationC"
-                               data-key="maySaleAreaNext">0.00</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationE" data-key="number">0</a>
-                        </td>
-                        <td><a onclick="developmentCommon.parameter.handleCalculationD" data-key="unitPrice">0.00</a>
-                        </td>
-                        <td><a data-key="assessArea">0.00</a></td>
-                        <td><a data-key="remark"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-
-                    <tfoot>
-                    <tr data-key="estimateSaleTotal">
-                        <td>预期销售合计</td>
-
-                        <td><input type="text" class="form-control" name="buildArea"
-                                   readonly="readonly" value="0.00"
-                                   onblur="developmentCommon.parameter.handleCalculation('{funA1}')"></td>
-
-                        <td><input type="text" class="form-control" name="maySaleArea"
-                                   readonly="readonly" value="0.00"
-                                   onblur="developmentCommon.parameter.handleCalculation('{funA2}')"></td>
-
-                        <td colspan="2"><input type="text" class="form-control" name="maySaleAreaNext"
-                                               readonly="readonly" value="0.00"
-                                               onblur="developmentCommon.parameter.handleCalculation('{funA3}')"></td>
-                        <td colspan="3"><input type="text" name="unsaleableBuildingArea"
-                                               onblur="developmentCommon.parameter.handleCalculation('{funA5}')"
-                                               placeholder="不可售建筑面积" class="form-control"
-                                               value="${mdDevelopment.unsaleableBuildingArea}"></td>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
 </script>
 
 <script type="text/html" id="architecturalB" data-title="复杂树">
@@ -1833,17 +1511,17 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                税费
-                            </label>
-                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                <input type="text" name="tax" data-rule-number='true' class="form-control"
-                                       placeholder="(数字)">
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<div class="x-valid">--%>
+                            <%--<label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">--%>
+                                <%--税费--%>
+                            <%--</label>--%>
+                            <%--<div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">--%>
+                                <%--<input type="text" name="tax" data-rule-number='true' class="form-control"--%>
+                                       <%--placeholder="(数字)">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </form>
             </div>
 
@@ -1864,7 +1542,6 @@
     </button>
 </script>
 
-
 <script type="text/html" id="underConstructionMdDevelopmentInfrastructureFooter">
     <button type="button" data-dismiss="modal" class="btn btn-default">
         取消
@@ -1875,13 +1552,156 @@
     </button>
 </script>
 
-
 <script type="text/html" id="underConstructionMdDevelopmentInfrastructureFooterX">
     <button type="button" data-dismiss="modal" class="btn btn-default">
         取消
     </button>
     <button type="button" class="btn btn-primary"
             onclick="construction.saveMdDevelopmentInfrastructureChildrenTable(this)">
+        保存
+    </button>
+</script>
+
+<div id="basicMdDevelopmentIncomeCategoryModalTool" class="modal fade bs-example-modal-lg"
+     data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">收入类</h3>
+            </div>
+            <div class="panel-body">
+                <form id="basicMdDevelopmentIncomeCategoryModalFrm" class="form-horizontal">
+                    <input type="hidden" name="pid">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="planDetailsId">
+                    <input type="hidden" name="type">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                名称<span class="symbol required"></span>
+                            </label>
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                <input type="text" name="name" class="form-control" required="required"
+                                       placeholder="名称">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                规划建筑面积
+                            </label>
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                <input type="text" name="plannedBuildingArea" placeholder="规划建筑面积" class="form-control"
+                                       data-rule-number='true'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                总可售面积售价<span class="symbol required"></span>
+                            </label>
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                <input type="text" name="totalSaleableAreaPrice" placeholder="总可售面积售价" class="form-control"
+                                       data-rule-number='true'
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                可售面积<span class="symbol required"></span>
+                            </label>
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                <input type="text" name="saleableArea" placeholder="可售面积" class="form-control"
+                                       data-rule-number='true'
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                个数
+                            </label>
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                <input type="text" name="number" placeholder="个数" class="form-control"
+                                       data-rule-number='true'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                单位售价<span class="symbol required"></span>
+                            </label>
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                <input type="text" name="unitPrice" placeholder="单位售价" class="form-control"
+                                       data-rule-number='true'
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                评估面积
+                            </label>
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                <input type="text" name="assessArea" placeholder="评估面积" class="form-control"
+                                       data-rule-number='true'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                说明
+                            </label>
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                <textarea name="remark" placeholder="说明" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="landMdDevelopmentIncomeCategoryFooter">
+    <button type="button" data-dismiss="modal" class="btn btn-default">
+        取消
+    </button>
+    <button type="button" class="btn btn-primary"
+            onclick="landEngineering.saveMdDevelopmentIncomeCategoryTable(this)">
+        保存
+    </button>
+</script>
+
+<script type="text/html" id="engineeringMdDevelopmentIncomeCategoryFooter">
+    <button type="button" data-dismiss="modal" class="btn btn-default">
+        取消
+    </button>
+    <button type="button" class="btn btn-primary"
+            onclick="underConstruction.saveMdDevelopmentIncomeCategoryTable(this)">
         保存
     </button>
 </script>

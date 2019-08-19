@@ -1,5 +1,95 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>基本参数</h3>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="x_content">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    项目建设期(年)<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.projectConstructionPeriod}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    已开发时间(年)
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.developedYear}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    剩余开发时间(年)
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.remainingDevelopmentYear}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="x_panel">
+
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>收入类(参数)</h3>
+        <div class="clearfix"></div>
+    </div>
+
+
+    <div class="x_content">
+        <div class="form-group">
+            <div class="x-valid">
+                <div class="col-sm-12">
+                    <table class="table table-striped" id="engineeringIncomeCategoryTableId" >
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <div class="col-sm-12">
+                    <table class="table table-condensed">
+                        <tfoot>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <td>收入类预期销售合计:</td>
+                            <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default">${mdDevelopment.plannedBuildingArea}</label></td>
+                            <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default">${mdDevelopment.totalSaleableAreaPrice}</label></td>
+                            <td class="info">可售面积<label name="saleableArea" class="label label-default">${mdDevelopment.saleableArea}</label></td>
+                            <td class="active">
+                                ${mdCostConstruction.unsaleableBuildingArea}
+                                <!-- 不可售建筑面积 -->
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
@@ -10,12 +100,21 @@
     </div>
     <div class="x_content">
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                勘察设计和前期工程费率<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    勘察设计和前期工程费率<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f20}</label>
+                    <label class="form-control">${mdDevelopment.reconnaissanceDesign}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.reconnaissanceDesignExplain}</label>
                 </div>
             </div>
         </div>
@@ -27,7 +126,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <label class="form-control">${mdDevelopment.f21}</label>
+                        <label class="form-control">${mdDevelopment.constructionInstallationEngineeringFee}</label>
                         <span class="input-group-btn">
                               <input type="button" class="btn btn-primary" value="建筑安装工程费"
                                      onclick="constructionInstallationEngineeringFeeEvent();"/>
@@ -38,12 +137,21 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                基础设施配套费<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    基础设施配套费<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f22}</label>
+                    <label class="form-control">${mdDevelopment.infrastructureCost}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.infrastructureCostExplain}</label>
                 </div>
             </div>
         </div>
@@ -55,48 +163,76 @@
                     公共配套设施建设费<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f23}</label>
+                    <label class="form-control">${mdDevelopment.infrastructureMatchingCost}</label>
                 </div>
             </div>
+
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f23Explain}</label>
+                    <label class="form-control">${mdDevelopment.infrastructureMatchingCostExplain}</label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                开发期间税费<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    开发期间税费<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f24}</label>
+                    <label class="form-control">${mdDevelopment.devDuring}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.devDuringExplain}</label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                其它工程费率<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    其它工程费率<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f25}</label>
+                    <label class="form-control">${mdDevelopment.otherEngineeringCost}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.otherEngineeringCostExplain}</label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                不可预见费率<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    不可预见费率<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f27}</label>
+                    <label class="form-control">${mdDevelopment.unforeseenExpenses}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    说明
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control">${mdDevelopment.unforeseenExpensesExplain}</label>
                 </div>
             </div>
         </div>
@@ -128,7 +264,7 @@
                     契税率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f29}</label>
+                    <label class="form-control">${mdDevelopment.deedTaxRate}</label>
                 </div>
             </div>
 
@@ -137,7 +273,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f29Explain}</label>
+                    <label class="form-control">${mdDevelopment.deedTaxRateExplain}</label>
                 </div>
             </div>
         </div>
@@ -148,7 +284,7 @@
                     交易费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f30}</label>
+                    <label class="form-control">${mdDevelopment.transactionTaxRate}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -156,7 +292,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f30Explain}</label>
+                    <label class="form-control">${mdDevelopment.transactionTaxRateExplain}</label>
                 </div>
             </div>
         </div>
@@ -167,7 +303,7 @@
                     续建管理费率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g32}</label>
+                    <label class="form-control">${mdDevelopment.managementExpense}</label>
                 </div>
             </div>
 
@@ -176,7 +312,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g32Explain}</label>
+                    <label class="form-control">${mdDevelopment.managementExpenseExplain}</label>
                 </div>
             </div>
         </div>
@@ -187,7 +323,7 @@
                     在建工程修复费用<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f31}</label>
+                    <label class="form-control">${mdDevelopment.landGetRelevant}</label>
                 </div>
             </div>
 
@@ -196,7 +332,7 @@
                     在建工程修复费用说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f31Explain}</label>
+                    <label class="form-control">${mdDevelopment.landGetRelevantExplain}</label>
                 </div>
             </div>
         </div>
@@ -207,7 +343,7 @@
                     销售费用率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g33}</label>
+                    <label class="form-control">${mdDevelopment.salesFee}</label>
                 </div>
             </div>
 
@@ -216,7 +352,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g33Explain}</label>
+                    <label class="form-control">${mdDevelopment.salesFeeExplain}</label>
                 </div>
             </div>
         </div>
@@ -227,7 +363,7 @@
                     续建投资利息率<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g34}</label>
+                    <label class="form-control">${mdDevelopment.interestInvestmentTax}</label>
                 </div>
             </div>
 
@@ -236,7 +372,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g34Explain}</label>
+                    <label class="form-control">${mdDevelopment.interestInvestmentTaxExplain}</label>
                 </div>
             </div>
         </div>
@@ -247,7 +383,7 @@
                     续建投资利润（万元）<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g35}</label>
+                    <label class="form-control">${mdDevelopment.investmentProfitTax}</label>
                 </div>
             </div>
 
@@ -256,7 +392,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g35Explain}</label>
+                    <label class="form-control">${mdDevelopment.investmentProfitTaxExplain}</label>
                 </div>
             </div>
         </div>
@@ -267,7 +403,7 @@
                     销售环节增值税及附加<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f37}</label>
+                    <label class="form-control">${mdDevelopment.salesTaxAndAdditional}</label>
 
                 </div>
             </div>
@@ -277,7 +413,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f37Explain}</label>
+                    <label class="form-control">${mdDevelopment.salesTaxAndAdditionalExplain}</label>
                 </div>
             </div>
         </div>
@@ -288,7 +424,7 @@
                     土地增值税<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f38}</label>
+                    <label class="form-control">${mdDevelopment.landValueAddedTax}</label>
 
                 </div>
             </div>
@@ -298,7 +434,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f38Explain}</label>
+                    <label class="form-control">${mdDevelopment.landValueAddedTaxExplain}</label>
                 </div>
             </div>
         </div>
@@ -309,7 +445,7 @@
                     项目开发所得税<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f39}</label>
+                    <label class="form-control">${mdDevelopment.projectDevelopmentIncomeTax}</label>
                 </div>
             </div>
 
@@ -318,7 +454,7 @@
                     费率说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f39Explain}</label>
+                    <label class="form-control">${mdDevelopment.projectDevelopmentIncomeTaxExplain}</label>
                 </div>
             </div>
         </div>
@@ -346,7 +482,7 @@
                 </label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <label class="form-control">${mdDevelopment.e43}</label>
+                        <label class="form-control">${mdDevelopment.remunerationRate}</label>
                         <span class="input-group-btn">
                                     <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
                               <input type="button" class="btn btn-primary" value="报酬率测算"
@@ -365,7 +501,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.f43}</label>
+                    <label class="form-control">${mdDevelopment.statutoryLife}</label>
                 </div>
             </div>
 
@@ -374,7 +510,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.g43}</label>
+                    <label class="form-control">${mdDevelopment.remainingYears}</label>
                 </div>
             </div>
         </div>
@@ -387,7 +523,7 @@
                     权利状况修正<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.d44}</label>
+                    <label class="form-control">${mdDevelopment.amendmentStatusRights}</label>
                 </div>
             </div>
 
@@ -396,7 +532,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.d44Explain}</label>
+                    <label class="form-control">${mdDevelopment.amendmentStatusRightsExplain}</label>
                 </div>
             </div>
         </div>
@@ -407,7 +543,7 @@
                     其他修正<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.d45}</label>
+                    <label class="form-control">${mdDevelopment.otherAmendments}</label>
                 </div>
             </div>
 
@@ -416,7 +552,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.d45Explain}</label>
+                    <label class="form-control">${mdDevelopment.otherAmendmentsExplain}</label>
                 </div>
             </div>
         </div>
@@ -427,7 +563,7 @@
                     开发程度修正<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.d46}</label>
+                    <label class="form-control">${mdDevelopment.developmentDegreeRevision}</label>
                 </div>
             </div>
 
@@ -436,7 +572,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.d46Explain}</label>
+                    <label class="form-control">${mdDevelopment.developmentDegreeRevisionExplain}</label>
                 </div>
             </div>
         </div>
@@ -463,23 +599,23 @@
                     <tbody>
                     <tr>
                         <td> 续建建设成本小计</td>
-                        <td class="d26">${mdDevelopment.constructionCostSubtotal}</td>
+                        <td class="constructionCostSubtotal">${mdDevelopment.constructionCostSubtotal}</td>
                     </tr>
                     <tr>
                         <td> 续建投资利息</td>
-                        <td class="f34">${mdDevelopment.interestInvestment}</td>
+                        <td class="interestInvestment">${mdDevelopment.interestInvestment}</td>
                     </tr>
                     <tr>
                         <td> 续建投资利润</td>
-                        <td class="f35">${mdDevelopment.investmentProfit}</td>
+                        <td class="investmentProfit">${mdDevelopment.investmentProfit}</td>
                     </tr>
                     <tr>
                         <td> 在建工程单价（元/㎡）</td>
-                        <td class="d41">${mdDevelopment.assessPrice}</td>
+                        <td class="assessPrice">${mdDevelopment.assessPrice}</td>
                     </tr>
                     <tr>
                         <td> 测算单价</td>
-                        <td class="d47">${mdDevelopment.price}</td>
+                        <td >${mdDevelopment.price}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -562,9 +698,17 @@
         });
     }
 
+    function loadIncomeCategoryTable() {
+        var obj = {type:'engineering',planDetailsId:'${projectPlanDetails.id}'} ;
+        developmentCommon.loadIncomeCategoryTable($("#engineeringIncomeCategoryTableId"),obj,null,function () {
+
+        }) ;
+    }
+
 
     $(function () {
         loadMdDevelopmentInfrastructureChildrenTable() ;
+        loadIncomeCategoryTable() ;
     });
 </script>
 

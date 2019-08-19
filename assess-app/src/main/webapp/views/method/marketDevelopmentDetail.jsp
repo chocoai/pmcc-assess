@@ -30,45 +30,12 @@
                     </span>
                 </c:if>
             </div>
-
-            <div class="form-group">
-                <!-- append html -->
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        项目建设期(年)
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${mdDevelopment.projectConstructionPeriod}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        已开发时间(年)
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${mdDevelopment.developedYear}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        剩余开发时间(年)
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${mdDevelopment.remainingDevelopmentYear}</label>
-                    </div>
-                </div>
-            </div>
         </form>
     </div>
 
     <div class="x_content">
         <c:if test="${mdDevelopment.type == 1}">
             <form class="form-horizontal" id="mdDevelopmentLandFrm">
-                <div id="landParameter" class="x_panel">
-                    <!-- append html -->
-                </div>
                 <jsp:include page="/views/method/module/developmentModule/landEngineeringDetail.jsp"></jsp:include>
             </form>
         </c:if>
@@ -77,9 +44,6 @@
     <div class="x_content">
         <c:if test="${mdDevelopment.type == 2}">
             <form class="form-horizontal" id="mdDevelopmentEngineeringFrm">
-                <div id="engineeringParameter" class="x_panel">
-                    <!-- append html -->
-                </div>
                 <jsp:include page="/views/method/module/developmentModule/underConstructionDetail.jsp"></jsp:include>
             </form>
         </c:if>
@@ -97,11 +61,9 @@
     development.config = {
         frm: "#developmentFrm",
         land: {
-            parameter: "#landParameter",
             frm: "#mdDevelopmentLandFrm"
         },
         engineering: {
-            parameter: "#engineeringParameter",
             frm: "#mdDevelopmentEngineeringFrm"
         }
     };
@@ -125,49 +87,7 @@
     };
 
 
-    development.initData = function () {
-        var landFrm = $("#mdDevelopmentLandFrm");
-        var engineeringFrm = $("#mdDevelopmentEngineeringFrm");
-        var head = undefined ;
-        var data = undefined ;
-        try {
-            var mdDevelopmentJson = $("#mdDevelopmentJson").val() ;
-            if (development.isNotBlank(mdDevelopmentJson)){
-                data = JSON.parse(mdDevelopmentJson) ;
-                if (data.headContent){
-                    try {
-                        head = JSON.parse(data.headContent) ;
-                    } catch (e) {
-                        console.log("解析错误!") ;
-                    }
-                }
-            }
-        } catch (e) {
-            console.log("解析错误!") ;
-        }
-        //土地
-        if (landFrm.find(development.config.land.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
-            var html = developmentCommon.parameter.getHtml();
-            landFrm.find(development.config.land.parameter).empty().append(html);
-            landFrm.find("input[name='unsaleableBuildingArea']").attr('readonly', 'readonly');
-            if (development.isNotBlankObject(head)){
-                developmentCommon.parameter.initData(landFrm.find("table").first(),head,false) ;
-            }
-        }
 
-
-        //在建工程
-        if (engineeringFrm.find(development.config.engineering.parameter).find("." + developmentCommon.config.commonParameter.handle).size() == 0) {
-            var html = developmentCommon.parameter.getHtml();
-            engineeringFrm.find(development.config.engineering.parameter).empty().append(html);
-            engineeringFrm.find("input[name='unsaleableBuildingArea']").attr('readonly', 'readonly');
-            if (development.isNotBlankObject(head)){
-                developmentCommon.parameter.initData(engineeringFrm.find("table").first(),head,false) ;
-            }
-        }
-    };
-
-    development.initData();
 
 
 </script>

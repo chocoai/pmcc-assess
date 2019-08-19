@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.method;
 
 import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
 import com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
@@ -21,10 +22,10 @@ import java.util.List;
 @RequestMapping(value = "/mdArchitecturalObj")
 @RestController
 public class MdArchitecturalObjController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private MdArchitecturalObjService mdArchitecturalObjService;
-
+    @Autowired
+    private BaseService baseService;
     @Autowired
     private MdMarketCostService mdMarketCostService;
 
@@ -38,7 +39,7 @@ public class MdArchitecturalObjController {
             saveMdArchitecturalObj2(forData, type, databaseName, pid, planDetailsId, mdArchitecturalObj);
             return HttpResult.newCorrectResult(200, mdArchitecturalObj);
         } catch (Exception e) {
-            logger.error("建筑安装工程费异常", e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
         }
     }
@@ -49,7 +50,7 @@ public class MdArchitecturalObjController {
             mdArchitecturalObjService.removeMdArchitecturalObj(type, pid, databaseName, planDetailsId);
             return HttpResult.newCorrectResult(200, "success");
         } catch (Exception e) {
-            logger.error("建筑安装工程费异常", e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
         }
     }
@@ -60,7 +61,7 @@ public class MdArchitecturalObjController {
             List<MdArchitecturalObj> objs = mdArchitecturalObjService.getMdArchitecturalObjListByExample(mdArchitecturalObj);
             return HttpResult.newCorrectResult(200, objs);
         } catch (Exception e) {
-            logger.error("建筑安装工程费异常", e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
         }
     }
