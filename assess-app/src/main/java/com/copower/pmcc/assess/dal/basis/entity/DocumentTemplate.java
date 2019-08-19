@@ -13,6 +13,8 @@ public class DocumentTemplate {
 
     private String prefix;
 
+    private Integer templateType;
+
     public Integer getId() {
         return id;
     }
@@ -51,5 +53,13 @@ public class DocumentTemplate {
 
     public void setPrefix(String prefix) {
         this.prefix = prefix == null ? null : prefix.trim();
+    }
+
+    public Integer getTemplateType() {
+        return templateType;
+    }
+
+    public void setTemplateType(Integer templateType) {
+        this.templateType = templateType;
     }
 }

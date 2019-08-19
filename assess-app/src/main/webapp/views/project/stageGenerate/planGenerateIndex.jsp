@@ -37,7 +37,8 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}" enctype="multipart/form-data">
+                        <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}"
+                              enctype="multipart/form-data">
                             <input type="hidden" id="areaGroupId" name="areaGroupId"
                                    value="${generationVo.areaGroupId}">
                             <input type="hidden" name="id" value="${generationVo.id}">
@@ -133,7 +134,7 @@
                                         备案日期
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text"  name="recordDate" placeholder="备案日期"
+                                        <input type="text" name="recordDate" placeholder="备案日期"
                                                class="form-control date-picker dbdate"
                                                data-date-format="yyyy-mm-dd"
                                                pattern='yyyy-MM-dd'
@@ -161,7 +162,8 @@
                                     <div class="col-sm-3">
                                         <select name="assessCategory" class="form-control search-select select2">
                                             <option>请选择</option>
-                                            <c:forEach items="${projectCategoryKeyValueDtoList}" var="projectCategoryKey">
+                                            <c:forEach items="${projectCategoryKeyValueDtoList}"
+                                                       var="projectCategoryKey">
                                                 <option value="${projectCategoryKey.key}">${projectCategoryKey.value}</option>
                                             </c:forEach>
                                         </select>
@@ -173,7 +175,8 @@
                                     <div class="x-valid">
                                         <div class="col-sm-1">
                                             <a class="btn-primary btn "
-                                               onclick="reGetDocumentNumber('${projectPlan.projectId}','${generationVo.areaGroupId}','${reportType.id}')">重新拿号<i class="fa fa-undo"></i></a>
+                                               onclick="reGetDocumentNumber('${projectPlan.projectId}','${generationVo.areaGroupId}','${reportType.id}')">重新拿号<i
+                                                    class="fa fa-undo"></i></a>
                                         </div>
                                         <label class="col-sm-1">
                                             <a class="btn-dark btn "
@@ -184,13 +187,36 @@
                                             <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
                                         </div>
 
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-1">
                                             <c:if test="${generationVo != null}">
                                                 <c:if test="${generationVo.id != null}">
-                                                    <input  id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}" name="file" type="file" style="display: none"  onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
-                                                    <div class="btn btn-primary" onclick="$(this).prev().trigger('click')">上传报告</div>
+                                                    <input id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}"
+                                                           name="file" type="file" style="display: none"
+                                                           onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
+                                                    <div class="btn btn-primary"
+                                                         onclick="$(this).prev().trigger('click')">上传报告
+                                                    </div>
                                                 </c:if>
                                             </c:if>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary">
+                                                    意见稿
+                                                </button>
+                                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                                        data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <c:forEach var="item" items="${documentTemplateList}">
+                                                        <li>
+                                                            <a href="${pageContext.request.contextPath}/documentOpinion/applyIndex/${item.id}&${projectInfo.id}&${reportType.fieldName}&${generationVo.areaGroupId}&${reportType.id}&${generationVo.id}"
+                                                               target="_blank">${item.templateName}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -239,8 +265,8 @@
 <script type="text/javascript">
 
     //上传报告 临时添加zch
-    function upFileLoadReport(that,fileId,id , areaGroupId) {
-        var fileElementId = $(that).attr("id") ;
+    function upFileLoadReport(that, fileId, id, areaGroupId) {
+        var fileElementId = $(that).attr("id");
         $.ajaxFileUpload({
             type: "POST",
             url: "${pageContext.request.contextPath}/public/importAjaxFile",
@@ -255,7 +281,7 @@
             async: false,
             success: function (result) {
                 if (result.ret) {
-                    initFormSchemeReportGeneration({id:id} ,$(that).closest('form') ,areaGroupId) ;
+                    initFormSchemeReportGeneration({id: id}, $(that).closest('form'), areaGroupId);
                 }
             },
             error: function (result, status, e) {
@@ -398,7 +424,7 @@
             success: function (result) {
                 if (result.ret) {
                     Alert("重新拿号成功");
-                }else{
+                } else {
                     Alert(result.errmsg);
                 }
             },
@@ -424,7 +450,7 @@
         data.areaGroupId = areaId;
         data.projectPlanId = '${projectPlan.id}';
         data.projectId = '${projectPlan.projectId}';
-        if (!AssessCommon.isNumber(data.assessCategory)){
+        if (!AssessCommon.isNumber(data.assessCategory)) {
             data.assessCategory = null;
         }
         Loading.progressShow();

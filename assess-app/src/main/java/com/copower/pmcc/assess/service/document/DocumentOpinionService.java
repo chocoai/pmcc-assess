@@ -5,14 +5,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.DocumentWordUtils;
 import com.copower.pmcc.assess.common.enums.document.DocumentBaseEnum;
 import com.copower.pmcc.assess.dal.basis.dao.document.DocumentDao;
-import com.copower.pmcc.assess.dal.basis.entity.DocumentSend;
+import com.copower.pmcc.assess.dal.basis.entity.DocumentOpinion;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateBookmark;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateField;
 import com.copower.pmcc.assess.dto.output.DocumentTemplateFieldVo;
-import com.copower.pmcc.assess.dto.output.document.DocumentSendVo;
+import com.copower.pmcc.assess.dto.output.document.DocumentOpinionVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -60,8 +61,8 @@ import java.util.*;
  * @time: 14:50
  */
 @Service
-public class DocumentSendService {
-    private static final Logger logger = LoggerFactory.getLogger(DocumentSendService.class);
+public class DocumentOpinionService {
+    private static final Logger logger = LoggerFactory.getLogger(DocumentOpinionService.class);
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -84,52 +85,54 @@ public class DocumentSendService {
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
-    public List<DocumentSend> getDocumentSend(DocumentSend documentSend) {
-        return documentDao.getDocumentSendList(documentSend);
+    public List<DocumentOpinion> getDocumentOpinion(DocumentOpinion documentOpinion) {
+        return documentDao.getDocumentOpinionList(documentOpinion);
     }
 
-    public DocumentSend getDocumentSendByProcessInsId(String processInsId) {
-        DocumentSend documentSend = new DocumentSend();
-        documentSend.setProcessInsId(processInsId);
-        List<DocumentSend> documentSendList = documentDao.getDocumentSendList(documentSend);
-        if (CollectionUtils.isNotEmpty(documentSendList)) {
-            return documentSendList.get(0);
+    public DocumentOpinion getDocumentOpinionByProcessInsId(String processInsId) {
+        DocumentOpinion documentOpinion = new DocumentOpinion();
+        documentOpinion.setProcessInsId(processInsId);
+        List<DocumentOpinion> documentOpinionList = documentDao.getDocumentOpinionList(documentOpinion);
+        if (CollectionUtils.isNotEmpty(documentOpinionList)) {
+            return documentOpinionList.get(0);
         }
-        return documentSend;
+        return documentOpinion;
     }
 
-    public DocumentSend saveDocumentSend(DocumentSend documentSend) {
-        if (documentSend.getId() != null && documentSend.getId() > 0) {
-            documentDao.updateDocumentSend(documentSend);
+    public DocumentOpinion saveDocumentOpinion(DocumentOpinion documentOpinion) {
+        if (documentOpinion.getId() != null && documentOpinion.getId() > 0) {
+            documentDao.updateDocumentOpinion(documentOpinion);
         } else {
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-            documentSend.setCreator(processControllerComponent.getThisUser());
-            documentSend.setCreated(DateUtils.now());
-            documentSend.setUuid(uuid);
-            documentDao.addDocumentSend(documentSend);
+            documentOpinion.setCreator(processControllerComponent.getThisUser());
+            documentOpinion.setCreated(DateUtils.now());
+            documentOpinion.setUuid(uuid);
+            documentDao.addDocumentOpinion(documentOpinion);
         }
-        return documentSend;
+        return documentOpinion;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void applySubmit(String appointUserAccount, Integer boxId, DocumentSend documentSend) throws BusinessException {
-        documentSend = saveDocumentSend(documentSend);//保存数据
+    public void applySubmit(String appointUserAccount, Integer boxId, DocumentOpinion documentOpinion) throws BusinessException {
+        documentOpinion = saveDocumentOpinion(documentOpinion);//保存数据
         //发起流程
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         String porcessNumber = MessageFormat.format("{0}({1}){2}", boxReDto.getId(), processControllerComponent.getThisUserInfo().getId(), DateUtils.formatDateToYMDHMS(new Date()));
-        DocumentTemplate documentTemplate = documentDao.getDocumentTemplate(documentSend.getContractType());
-        String folio = String.format("[%s]%s", documentTemplate.getTemplateName(), documentSend.getTitle());
+        DocumentTemplate documentTemplate = documentDao.getDocumentTemplate(documentOpinion.getContractType());
+        String folio = String.format("[%s]%s", documentTemplate.getTemplateName(), documentOpinion.getTitle());
         ProcessInfo processInfo = new ProcessInfo();
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setFolio(folio);//流程描述
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setProcessEventExecutor(BaseProcessEvent.class);
-        processInfo.setWorkPhaseId(documentSend.getContractType());
-        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(DocumentSend.class));
-        processInfo.setTableId(documentSend.getId());
-        processInfo.setProjectId(documentSend.getProjectId());
+        processInfo.setWorkPhaseId(documentOpinion.getContractType());
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(DocumentOpinion.class));
+        processInfo.setTableId(documentOpinion.getId());
+        processInfo.setProjectId(documentOpinion.getProjectId());
         String processInsId = "";
         try {
             if (StringUtils.isBlank(appointUserAccount)) {
@@ -137,19 +140,22 @@ public class DocumentSendService {
             }
             ProcessUserDto processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
             processInsId = processUserDto.getProcessInsId();
-            documentSend.setProcessInsId(processInsId);
-            documentSend.setStatus(ProcessStatusEnum.RUN.getValue());
-            documentSend.setNumber(porcessNumber);
-            saveDocumentSend(documentSend);
+            documentOpinion.setProcessInsId(processInsId);
+            documentOpinion.setStatus(ProcessStatusEnum.RUN.getValue());
+            documentOpinion.setNumber(porcessNumber);
+            saveDocumentOpinion(documentOpinion);
+            documentOpinion = getDocumentOpinionByProcessInsId(processInsId);
             //更新附件
             SysAttachmentDto sysAttachment = new SysAttachmentDto();
             sysAttachment.setProcessInsId("0");
+            sysAttachment.setTableId(processInfo.getTableId());
             sysAttachment.setCreater(processControllerComponent.getThisUser());
+            String fieldName = baseDataDicService.getDataDicById(documentOpinion.getReportTypeId()).getFieldName();
+            String reportFieldName = fieldName.toUpperCase().replace(".", "_");
+            sysAttachment.setFieldsName(String.format("%s%s", reportFieldName, documentOpinion.getAreaGroupId()));
             sysAttachment.setTableName(processInfo.getTableName());
             SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
             sysAttachmentNew.setProcessInsId(processInsId);
-            sysAttachmentNew.setTableId(processInfo.getTableId());
-            sysAttachmentNew.setProjectId(documentSend.getProjectId());
             erpRpcAttachmentService.updateAttachmentByParam(sysAttachment, sysAttachmentNew);
         } catch (BpmException e) {
             bpmRpcActivitiProcessManageService.closeProcess(processInsId);
@@ -168,9 +174,9 @@ public class DocumentSendService {
 
     }
 
-    public void editSubmit(ApprovalModelDto approvalModelDto, DocumentSend documentSend) throws BusinessException {
+    public void editSubmit(ApprovalModelDto approvalModelDto, DocumentOpinion documentOpinion) throws BusinessException {
 
-        saveDocumentSend(documentSend);
+        saveDocumentOpinion(documentOpinion);
         approvalModelDto.setOpinions("返回修改");
         approvalModelDto.setActivityKey(ProcessActivityEnum.EDIT.getValue());
         approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
@@ -226,14 +232,14 @@ public class DocumentSendService {
 
     }
 
-    public Integer buildDoc(DocumentSend documentSend) throws BusinessException {
-        if (documentSend.getId() == null || documentSend.getId() == 0) {
-            documentSend.setProcessInsId("0");
+    public Integer buildDoc(DocumentOpinion documentOpinion) throws BusinessException {
+        if (documentOpinion.getId() == null || documentOpinion.getId() == 0) {
+            documentOpinion.setProcessInsId("0");
         }
-        documentSend = saveDocumentSend(documentSend);
+        documentOpinion = saveDocumentOpinion(documentOpinion);
         Map<String, String> textValues = new HashMap<String, String>();
-        List<DocumentTemplateField> getFieldList = documentTemplateService.getFieldList(documentSend.getContractType());
-        JSONObject jsonObject = JSON.parseObject(documentSend.getExtendConten());
+        List<DocumentTemplateField> getFieldList = documentTemplateService.getFieldList(documentOpinion.getContractType());
+        JSONObject jsonObject = JSON.parseObject(documentOpinion.getExtendConten());
         for (DocumentTemplateField item : getFieldList) {
             CustomTableTypeEnum customTableTypeEnum = CustomTableTypeEnum.getCustomTypeByColumnsPrefix(Integer.valueOf(item.getFieldType()));
             switch (customTableTypeEnum) {
@@ -254,12 +260,12 @@ public class DocumentSendService {
             }
 
         }
-        Map<String, String> textMap = getBaseEnumValue(documentSend.getProjectId());
+        Map<String, String> textMap = getBaseEnumValue(documentOpinion.getProjectId());
         textValues.putAll(textMap);
 
         //取得数据替换成模板书签数据
 
-        List<DocumentTemplateBookmark> listObject = documentTemplateService.getCmsTemplateBookmark(documentSend.getContractType());
+        List<DocumentTemplateBookmark> listObject = documentTemplateService.getCmsTemplateBookmark(documentOpinion.getContractType());
 
         Map<String, String> wordValues = new HashMap<String, String>();
         for (DocumentTemplateBookmark item : listObject) {
@@ -273,17 +279,20 @@ public class DocumentSendService {
 
         //生成文件
         ///region 设置文件附件表中相关信息
-        String tableName = FormatUtils.entityNameConvertToTableName(DocumentSend.class);
+        String tableName = FormatUtils.entityNameConvertToTableName(DocumentOpinion.class);
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(documentSend.getId());
+        sysAttachmentDto.setTableId(documentOpinion.getId());
         sysAttachmentDto.setTableName(tableName);
+        String fieldName = baseDataDicService.getDataDicById(documentOpinion.getReportTypeId()).getFieldName();
+        String reportFieldName = fieldName.toUpperCase().replace(".", "_");
+        sysAttachmentDto.setFieldsName(String.format("%s%s", reportFieldName, documentOpinion.getAreaGroupId()));
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        sysAttachmentDto.setProjectId(documentSend.getProjectId());
+        sysAttachmentDto.setProjectId(documentOpinion.getProjectId());
         erpRpcAttachmentService.deleteAttachmentByDto(sysAttachmentDto);//先删除老数据
         String ftpFilePath = applicationConstant.getAppKey() + "/" + FormatUtils.underlineToCamel(tableName, false) + "/" + DateUtils.format(new Date(), DateUtils.MONTH_PATTERN);
         sysAttachmentDto.setFilePath(ftpFilePath);
-        sysAttachmentDto.setProcessInsId(documentSend.getProcessInsId());
-        String filesName = documentSend.getTitle();
+        sysAttachmentDto.setProcessInsId(documentOpinion.getProcessInsId());
+        String filesName = documentOpinion.getTitle();
         if (StringUtils.isBlank(filesName)) {
             filesName = "新建文件";
         }
@@ -292,14 +301,14 @@ public class DocumentSendService {
 
         //再将附件上传到相同位置
         try {
-            DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(documentSend.getContractType());
+            DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(documentOpinion.getContractType());
             Map<String, String> document = documentWordUtils.createDocument(documentTemplate, wordValues, sysAttachmentDto);//将文本字段进行替换，并返回相应本地文件路径
             //对Word文件进行格式化操作
             ftpUtilsExtense.uploadFilesToFTP(document.get("ftpPath"), new FileInputStream(document.get("localFullPath")), document.get("ftpFileName"));
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
-        return documentSend.getId();
+        return documentOpinion.getId();
     }
 
     //取相应的项目相关固定值
@@ -315,24 +324,24 @@ public class DocumentSendService {
      * @param projectId
      * @return
      */
-    public BootstrapTableVo getDocumentSendVoList(Integer projectId) {
+    public BootstrapTableVo getDocumentOpinionVoList(Integer projectId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        DocumentSend documentSend = new DocumentSend();
-        documentSend.setProjectId(projectId);
-        List<DocumentSend> list = documentDao.getDocumentSendList(documentSend);
-        List<DocumentSendVo> vos = LangUtils.transform(list, p -> getDocumentSendVo(p));
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DocumentSendVo>() : vos);
+        DocumentOpinion documentOpinion = new DocumentOpinion();
+        documentOpinion.setProjectId(projectId);
+        List<DocumentOpinion> list = documentDao.getDocumentOpinionList(documentOpinion);
+        List<DocumentOpinionVo> vos = LangUtils.transform(list, p -> getDocumentOpinionVo(p));
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DocumentOpinionVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    public DocumentSendVo getDocumentSendVo(DocumentSend documentSend) {
-        if (documentSend == null) return null;
-        DocumentSendVo vo = new DocumentSendVo();
-        BeanUtils.copyProperties(documentSend, vo);
-        vo.setUserName(publicService.getUserNameByAccount(documentSend.getCreator()));
+    public DocumentOpinionVo getDocumentOpinionVo(DocumentOpinion documentOpinion) {
+        if (documentOpinion == null) return null;
+        DocumentOpinionVo vo = new DocumentOpinionVo();
+        BeanUtils.copyProperties(documentOpinion, vo);
+        vo.setUserName(publicService.getUserNameByAccount(documentOpinion.getCreator()));
         return vo;
     }
 }

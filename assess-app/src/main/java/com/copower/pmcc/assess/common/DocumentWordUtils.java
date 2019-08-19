@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018-11-13
  * @time: 17:28
  */
@@ -51,6 +51,7 @@ public class DocumentWordUtils {
         try {
             SysAttachmentDto sysAttachmentDto = erpRpcAttachmentService.copyFtpAttachment(attachmentList.get(0).getId(), ftpAttachmentDto);
             sysAttachmentDto.setFilePath(ftpAttachmentDto.getFilePath());
+            sysAttachmentDto.setProcessInsId(ftpAttachmentDto.getProcessInsId());
             erpRpcAttachmentService.updateAttachment(sysAttachmentDto);
             map.put("ftpPath", sysAttachmentDto.getFilePath());
             map.put("ftpFileName", sysAttachmentDto.getFtpFileName());

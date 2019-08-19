@@ -73,6 +73,23 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                资质类型
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" required name="templateType">
+                                    <option value="">--请选择--</option>
+                                    <c:if test="${not empty templateTypes}">
+                                        <c:forEach items="${templateTypes}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </c:if>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class='x-valid'>
                             <label class='col-sm-2 control-label'>模板</label>
                             <div class='col-sm-10'>
@@ -134,6 +151,7 @@
     function loadTemplateList() {
         var cols = [];
         cols.push({field: 'templateName', title: '模板名称'});
+        cols.push({field: 'templateTypeName', title: '类型'});
         cols.push({field: 'prefix', title: '文号规则'});
         cols.push({
             field: 'opation', title: '操作', formatter: function (value, row, index) {

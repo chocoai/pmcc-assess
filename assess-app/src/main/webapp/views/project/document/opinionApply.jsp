@@ -24,27 +24,38 @@
             <div class="row">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>发文信息</h2>
+                        <h2>意见稿信息</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <input type="hidden" id="id" name="id" value="${documentSend.id}">
-                        <input type="hidden" id="contractType" name="contractType" value="${documentSend.contractType}">
-                        <input type="hidden" id="projectId" name="projectId" value="${documentSend.projectId}">
+                        <input type="hidden" id="id" name="id" value="${documentOpinion.id}">
+                        <input type="hidden" id="contractType" name="contractType" value="${documentOpinion.contractType}">
+                        <input type="hidden" id="projectId" name="projectId" value="${documentOpinion.projectId}">
 
                         <form id="cmsContractInfo" class="form-horizontal">
                             <div class="form-group">
                                 <div class='x-valid'>
                                     <label class='col-sm-1 control-label'>
-                                        发文标题<span class="symbol required"></span>
+                                        意见稿标题<span class="symbol required"></span>
                                     </label>
                                     <div class='col-sm-11'>
-                                        <input type="text" id="title" name="title" value="${documentSend.title}"
+                                        <input type="text" id="title" name="title" value="${documentOpinion.title}"
                                                required class='form-control'>
                                     </div>
                                 </div>
                             </div>
                             ${fieldsHtml}
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        报告文件
+                                    </label>
+                                    <div class="col-sm-11">
+                                        <div id="_file_report">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
@@ -88,6 +99,17 @@
     $(function () {
         loadContractAttachment();
         $("#cmsContractInfo").validate();
+        //显示报告附件
+        FileUtils.getFileShows({
+            target: "file_report",
+            formData: {
+                fieldsName: '${fieldsName}',
+                tableName: AssessDBKey.GenerateReportInfo,
+                tableId: '${tableId}'
+            },
+            deleteFlag: false
+        })
+
     })
 
     function previewContract() {
@@ -98,12 +120,15 @@
         var extendConten = JSON.stringify(customCmsContractInfo);
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/documentSend/buildDoc",
+            url: "${pageContext.request.contextPath}/documentOpinion/buildDoc",
             data: {
                 extendConten: extendConten,
-                contractType:${documentSend.contractType},
-                projectId:${documentSend.projectId},
-                processInsId:${empty documentSend.processInsId?0:documentOpinion.processInsId},
+                contractType:${documentOpinion.contractType},
+                projectId:${documentOpinion.projectId},
+                areaGroupId:${documentOpinion.areaGroupId},
+                reportTypeId:${documentOpinion.reportTypeId},
+                generationId:${tableId},
+                processInsId:${empty documentOpinion.processInsId?0:documentOpinion.processInsId},
                 id: $("#id").val(),
                 title: $("#title").val()
             },
@@ -130,9 +155,9 @@
         FileUtils.getFileShows({
             target: "file_upload",
             formData: {
-                tableName: "tb_document_send",
+                tableName: "tb_document_opinion",
                 tableId: $("#id").val(),
-                proectId:${documentSend.projectId}
+                proectId:${documentOpinion.projectId}
             },
             editFlag: true,
             deleteFlag: true
@@ -158,7 +183,7 @@
     function saveEditformToServer(extendConten) {
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/documentSend/editSubmit",
+            url: "${pageContext.request.contextPath}/documentOpinion/editSubmit",
             data: {
                 appointUserAccount: "",
                 boxId: "${boxId}",
@@ -173,10 +198,10 @@
                 workPhaseId: "${phaseId}",
                 activityId: "${activityId}",
                 extendConten: extendConten,
-                contractType:${documentSend.contractType},
-                projectId:${documentSend.projectId},
-                id: $("#id").val()
-
+                contractType:${documentOpinion.contractType},
+                projectId:${documentOpinion.projectId},
+                id: $("#id").val(),
+                title: $("#title").val()
             },
             type: "post",
             dataType: "json",
@@ -201,13 +226,13 @@
     function saveformToServer(extendConten) {
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/documentSend/applySubmit",
+            url: "${pageContext.request.contextPath}/documentOpinion/applySubmit",
             data: {
                 appointUserAccount: "",//指定审批人
                 boxId: "${boxId}",
                 extendConten: extendConten,
-                contractType:${documentSend.contractType},
-                projectId:${documentSend.projectId},
+                contractType:${documentOpinion.contractType},
+                projectId:${documentOpinion.projectId},
                 id: $("#id").val(),
                 title: $("#title").val()
             },
