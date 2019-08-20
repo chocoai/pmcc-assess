@@ -110,6 +110,10 @@ public class DocumentOpinionService {
         return documentOpinion;
     }
 
+    public DocumentOpinion getDocumentOpinionById(Integer id) {
+        return documentDao.getDocumentOpinion(id);
+    }
+
     public DocumentOpinion saveDocumentOpinion(DocumentOpinion documentOpinion) {
         if (documentOpinion.getId() != null && documentOpinion.getId() > 0) {
             documentDao.updateDocumentOpinion(documentOpinion);
