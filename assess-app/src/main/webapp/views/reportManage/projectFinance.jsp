@@ -140,6 +140,15 @@
                                 </div>
                             </div>
                             <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    业务来源说明
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input id="queryServiceExplain" name="queryServiceExplain" class="form-control"
+                                           placeholder="业务来源说明"/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                     <button type="button" class="btn btn-success" onclick="statisticsByCondition()">
                                         查询
@@ -172,7 +181,7 @@
         var data = formParams("query_form");
         document.getElementById('report_iframe').src = "${pageContext.request.contextPath}/ureport/preview?_u=erp:projectFinance.ureport.xml&_i=1&_r=1&queryProjectName=" + data.queryProjectName + "&queryConsignorName=" + data.queryConsignorName +
             "&queryReportUseUnitName=" + data.queryReportUseUnitName + "&queryReportNumber=" + data.queryReportNumber + "&queryStartTime=" + data.queryStartTime + "&queryEndTime=" + data.queryEndTime + "&queryUserAccount=" + data.queryUserAccount+
-            "&queryEntrustment=" + data.queryEntrustment+"&queryLoanType=" + data.queryLoanType+"&queryDepartmentId=" + data.queryDepartmentId;
+            "&queryEntrustment=" + data.queryEntrustment+"&queryLoanType=" + data.queryLoanType+"&queryDepartmentId=" + data.queryDepartmentId+"&queryServiceExplain=" + data.queryServiceExplain;
     }
 
 

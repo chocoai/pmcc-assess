@@ -67,6 +67,7 @@ public class UReportService {
         String queryStartTime = "";
         String queryEndTime = "";
         String queryUserAccount = "";
+        String queryServiceExplain = "";
         Integer queryEntrustment = null;
         Integer queryLoanType = null;
         Integer queryDepartmentId = null;
@@ -93,6 +94,9 @@ public class UReportService {
         if (maps.get("queryUserAccount") != null) {
             queryUserAccount = (String) maps.get("queryUserAccount");
         }
+        if (maps.get("queryServiceExplain") != null) {
+            queryServiceExplain = (String) maps.get("queryServiceExplain");
+        }
         if (maps.get("queryEntrustment") != null) {
             queryEntrustment = objectToInteger(maps.get("queryEntrustment"));
         }
@@ -113,7 +117,8 @@ public class UReportService {
         Integer resultId = resultReport.getId();
 
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,A.entrust_purpose,A.loan_type,A.department_id,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
+        sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,A.entrust_purpose,A.loan_type,A.department_id,A.service_come_from_explain," +
+                "B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
                 " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,A.gmt_created" +
                 " FROM tb_project_info A " +
                 " LEFT JOIN tb_project_member B ON A.id=B.project_id" +
@@ -157,6 +162,9 @@ public class UReportService {
         if (StringUtil.isNotEmpty(queryUserAccount)) {
             sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
         }
+        if (StringUtil.isNotEmpty(queryServiceExplain)) {
+            sql.append(String.format(" AND A.service_come_from_explain LIKE '%s%s%s'", "%", queryServiceExplain, "%"));
+        }
 
         List<UProjectFinanceVo> list = Lists.newArrayList();
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
@@ -181,6 +189,7 @@ public class UReportService {
                 UProjectFinanceVo vo = new UProjectFinanceVo();
                 vo.setId(objectToInteger(map.get("id")));
                 vo.setProjectName(objectToString(map.get("project_name")));
+                vo.setServiceComeFromExplain(objectToString(map.get("service_come_from_explain")));
                 //委托目的
                 vo.setEntrustPurposeName(baseDataDicService.getNameById(objectToString(map.get("entrust_purpose"))));
                 //贷款类型

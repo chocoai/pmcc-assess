@@ -8,13 +8,16 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.csr.CsrProjectInfoService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -58,6 +61,8 @@ public class ProjectCenterService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private InitiateUnitInformationService initiateUnitInformationService;
 
     /**
      * 获取项目列表
@@ -79,13 +84,12 @@ public class ProjectCenterService {
         }
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date startTimeParse = null;
         Date endTimeParse = null;
         if (StringUtil.isNotEmpty(queryTimeStart))
-            startTimeParse = sdf.parse(queryTimeStart);
+            startTimeParse = DateUtils.convertDate(queryTimeStart);
         if (StringUtil.isNotEmpty(queryTimeEnd)) {
-            Date temp = sdf.parse(queryTimeEnd);
+            Date temp = DateUtils.convertDate(queryTimeEnd);
             Calendar c = Calendar.getInstance();
             c.setTime(temp);
             c.add(Calendar.DATE, 1); // 日期加1天
@@ -116,6 +120,10 @@ public class ProjectCenterService {
                     if (projectMember != null) {
                         projectInfoVo.setUserAccountManagerName(projectMember.getUserAccountManagerName());
                         projectInfoVo.setUserAccountMemberName(projectMember.getUserAccountMemberName());
+                    }
+                    InitiateUnitInformationVo initiateUnitInformation = initiateUnitInformationService.getDataByProjectId(item.getId());
+                    if(initiateUnitInformation != null) {
+                        projectInfoVo.setUseUnitName(initiateUnitInformation.getuUseUnitName());
                     }
                     projectInfoVo.setProjectClassName(baseProjectClassifyService.getNameById(item.getProjectClassId()));
                     projectInfoVo.setProjectTypeName(baseProjectClassifyService.getNameById(item.getProjectTypeId()));
