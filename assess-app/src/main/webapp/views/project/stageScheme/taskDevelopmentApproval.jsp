@@ -14,11 +14,10 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <jsp:include page="/views/method/marketDevelopmentDetail.jsp"></jsp:include>
+            <%@include file="/views/method/marketDevelopmentDetail.jsp" %>
             <div class="x_panel">
                 <div class="x_content">
-                    <form class="form-horizontal" id="md_development_form">
-                        <input type="hidden" name="id" value="${mdDevelopment.id}">
+                    <form class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">

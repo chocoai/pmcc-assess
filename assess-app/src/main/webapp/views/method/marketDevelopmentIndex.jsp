@@ -31,22 +31,22 @@
 
     <div class="x_content">
         <form class="form-horizontal" id="mdDevelopmentLandFrm">
-            <jsp:include page="/views/method/module/developmentModule/landEngineering.jsp"></jsp:include>
-            <jsp:include page="/views/method/module/developmentModule/landEngineeringJs.jsp"></jsp:include>
+            <%@include file="/views/method/module/developmentModule/landEngineering.jsp" %>
+            <%@include file="/views/method/module/developmentModule/landEngineeringJs.jsp" %>
         </form>
     </div>
 
     <div class="x_content">
         <form class="form-horizontal" id="mdDevelopmentEngineeringFrm" style="display: none">
-            <jsp:include page="/views/method/module/developmentModule/underConstruction.jsp"></jsp:include>
-            <jsp:include page="/views/method/module/developmentModule/underConstructionJs.jsp"></jsp:include>
+            <%@include file="/views/method/module/developmentModule/underConstruction.jsp" %>
+            <%@include file="/views/method/module/developmentModule/underConstructionJs.jsp" %>
         </form>
     </div>
 
 </div>
 
-<jsp:include page="/views/method/module/developmentCommon.jsp"></jsp:include>
-<jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
+<%@include file="/views/method/module/developmentCommon.jsp" %>
+<%@include file="/views/project/tool/rewardRate.jsp" %>
 
 <script>
 
@@ -59,7 +59,7 @@
         if (!development.isNotBlank(value)) {
             return false;
         }
-        if (AssessCommon.isNumber(value)) {
+        if ($.isNumeric(value)) {
             i++;
         }
         var reg = new RegExp(/^[0-9]+\.?[0-9]*%$/);
@@ -137,11 +137,11 @@
         if (!development.isNotBlank(value)) {
             return false;
         }
-        if (AssessCommon.isNumber(value)) {
-            i++;
-        }
         var reg = new RegExp(/^[0-9]+\.?[0-9]*%$/);
         if (reg.test(value)) {
+            i++;
+        }
+        if ($.isNumeric(value)) {
             i++;
         }
         if (i == 0) {
@@ -176,7 +176,6 @@
     };
 
     development.getFomData = function () {
-        var fixedMax = 2;
         var head = formSerializeArray($(development.config.frm)) ;
         var frm = undefined;
         if (head.development == '1') {
@@ -187,8 +186,8 @@
         }
         var data = formSerializeArray(frm) ;
         data.id = development.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
-        data.price = frm.find("[name='price']").val() ;
-        data.type = data.development ;
+        data.type = head.development ;
+        data.price = frm.find("input[name='price']").val() ;
         data.planDetailsId = '${projectPlanDetails.id}' ;
         return data ;
     };

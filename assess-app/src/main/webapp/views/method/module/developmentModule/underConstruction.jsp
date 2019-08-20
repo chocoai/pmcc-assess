@@ -91,7 +91,7 @@
                             <td class="info">可售面积<label name="saleableArea" class="label label-default">${mdDevelopment.saleableArea}</label><input type="hidden"  value="${mdDevelopment.saleableArea}" name="saleableArea" onblur="underConstruction.calculationF18();"></td>
                             <td class="active">
                                 <!-- 不可售建筑面积 -->
-                                <a data-key="unsaleableBuildingArea"></a>
+                                <a data-key="unsaleableBuildingArea">${mdDevelopment.unsaleableBuildingArea}</a>
                                 <input type="hidden" value="${mdDevelopment.unsaleableBuildingArea}" name="unsaleableBuildingArea" class="form-control" onblur="underConstruction.calculationF18();">
                             </td>
                         </tr>
@@ -146,6 +146,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <div class="input-group">
+                        <input type="hidden" name="constructionInstallationEngineeringFeeIds" value="${mdDevelopment.constructionInstallationEngineeringFeeIds}">
                         <input type="text" readonly="readonly" required="required"
                                placeholder="建筑安装工程费"  class="form-control"
                                name="constructionInstallationEngineeringFee" onblur="underConstruction.calculationD21()" value="${mdDevelopment.constructionInstallationEngineeringFee}">
@@ -823,7 +824,7 @@
                     </tr>
                     <tr>
                         <td> 测算单价</td>
-                        <td class="price">
+                        <td name="price">
                             <c:if test="${!empty mdDevelopment}">
                                 <c:if test="${mdDevelopment.type == 2}">
                                     ${mdDevelopment.price}

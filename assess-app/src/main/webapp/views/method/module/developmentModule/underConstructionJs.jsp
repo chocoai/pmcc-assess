@@ -58,6 +58,7 @@
         var f21 = underConstruction.target.find("input[name='constructionInstallationEngineeringFee']").val();
         var c = Number(f21) * Number(f18) / 10000;
         underConstruction.target.find("input[name='d21']").val(c.toFixed(underConstruction.fixed));
+        this.target.find("input[name='reconnaissanceDesign']").trigger('blur');
         this.target.find("input[name='constructionCostSubtotal']").trigger('blur');
     };
 
@@ -209,7 +210,7 @@
         this.target.find("input[name='constructionCostSubtotal']").val(c);
         this.target.find(".constructionCostSubtotal").html(c);
         this.target.find("input[name='unforeseenExpenses']").trigger('blur');
-        this.target.find("input[name='f40']").trigger('blur');
+        underConstruction.calculationF40() ;
 
     };
 
@@ -227,7 +228,7 @@
         this.target.find("input[name='d27']").val(c.toFixed(underConstruction.fixed));
         this.target.find("input[name='interestInvestmentTax']").trigger('blur');
         this.target.find("input[name='investmentProfitTax']").trigger('blur');
-        this.target.find("input[name='f40']").trigger('blur');
+        underConstruction.calculationF40() ;
     };
 
     //单元格D28
@@ -260,7 +261,7 @@
         this.target.find("input[name='d32']").val(c.toFixed(underConstruction.fixedMax));
         this.target.find("input[name='d34']").trigger('blur');
         this.target.find("input[name='d35']").trigger('blur');
-        this.target.find("input[name='h40']").trigger('blur');
+        underConstruction.calculationH40() ;
     };
 
     //单元格F32
@@ -287,7 +288,7 @@
         this.target.find("input[name='f32']").val(c.toFixed(underConstruction.fixed));
         this.target.find("input[name='interestInvestment']").trigger('blur');//f34
         this.target.find("input[name='investmentProfit']").trigger('blur');//f35
-        this.target.find("input[name='f40']").trigger('blur');
+        underConstruction.calculationF40() ;
     };
 
     //单元格F33
@@ -307,7 +308,7 @@
             this.target.find("input[name='f33']").val(c.toFixed(underConstruction.fixed));
             this.target.find("input[name='interestInvestment']").trigger('blur');//f34
             this.target.find("input[name='investmentProfit']").trigger('blur');//f35
-            this.target.find("input[name='f40']").trigger('blur');
+            underConstruction.calculationF40() ;
         }
     };
 
@@ -342,7 +343,7 @@
             c = c.toFixed(underConstruction.fixed) ;
             this.target.find(".interestInvestment").html(c);
             this.target.find("input[name='interestInvestment']").val(c);
-            this.target.find("input[name='f40']").trigger('blur');
+            underConstruction.calculationF40() ;
         }
     };
 
@@ -364,7 +365,7 @@
         var c = c1 + c2;
         if (AssessCommon.isNumber(c)) {
             this.target.find("input[name='d34']").val(c.toFixed(underConstruction.fixedMax));
-            this.target.find("input[name='h40']").trigger('blur');
+            underConstruction.calculationH40() ;
         }
     };
 
@@ -385,7 +386,7 @@
         }
         var c  = (Number(d28) + Number(d32)) * Number(g35) ;
         this.target.find("input[name='d35']").val(c.toFixed(underConstruction.fixedMax));
-        this.target.find("input[name='h40']").trigger('blur');
+        underConstruction.calculationH40() ;
     } ;
 
     //单元格F35
@@ -422,7 +423,7 @@
         c = c.toFixed(underConstruction.fixed) ;
         this.target.find(".investmentProfit").html(c);
         this.target.find("input[name='investmentProfit']").val(c);
-        this.target.find("input[name='f40']").trigger('blur');
+        underConstruction.calculationF40() ;
     } ;
 
     //单元格D36
@@ -466,7 +467,7 @@
         }
         var c = Number(d36) * Number(e16) ;
         this.target.find("input[name='f36']").val(c.toFixed(underConstruction.fixed));
-        this.target.find("input[name='f40']").trigger('blur');
+        underConstruction.calculationF40() ;
     };
 
     //单元格H40
@@ -484,7 +485,7 @@
         }
         if (AssessCommon.isNumber(c)) {
             this.target.find("input[name='h40']").val(c.toFixed(underConstruction.fixedMax));
-            this.target.find("input[name='e40']").trigger('blur');
+            underConstruction.calculationE40() ;
         }
     };
 
@@ -505,7 +506,7 @@
             var a = math.add(  math.bignumber(d26) , math.bignumber(d27)  , math.bignumber(f31) , math.bignumber(f32), math.bignumber(f33), math.bignumber(f34) ,math.bignumber(f35) ,math.bignumber(f36)) ;
             var c = math.number(math.subtract(math.bignumber(e16) , a).toString()) ;
             this.target.find("input[name='f40']").val(c.toFixed(underConstruction.fixedMax));
-            this.target.find("input[name='e40']").trigger('blur');
+            underConstruction.calculationE40() ;
         } catch (e) {
         }
     } ;
@@ -523,7 +524,7 @@
         }
         var c = Number(f40) / (1 + Number(h40)) ;
         this.target.find("input[name='e40']").val(c.toFixed(underConstruction.fixed));
-        this.target.find("input[name='assessPrice']").trigger('blur');
+        underConstruction.calculationD41() ;
     } ;
 
     //单元格D41 =E40/F18*10000
@@ -541,7 +542,7 @@
         c = c.toFixed(underConstruction.fixedMin) ;
         this.target.find("input[name='assessPrice']").val(c);
         this.target.find(".assessPrice").html(c);
-        this.target.find("input[name='price']").trigger('blur');
+        underConstruction.calculationD47() ;
     } ;
 
     //单元格D43
@@ -567,7 +568,7 @@
         var b = 1 - 1 / Math.pow(1+e43,f43) ;
         var c = a/ b;
         this.target.find("input[name='d43']").val(c.toFixed(underConstruction.fixedMax));
-        this.target.find("input[name='price']").trigger('blur');
+        underConstruction.calculationD47() ;
     };
 
     //单元格D47 =D41*D43*D44*D45+D46
@@ -582,7 +583,7 @@
             var c = Number(d41) * Number(d43)* Number(d44)* Number(d45) + Number(d46) ;
             c = c.toFixed(underConstruction.fixedMin) ;
             this.target.find("input[name='price']").val(c);
-            this.target.find(".price").html(c);
+            this.target.find("td[name='price']").html(c);
         } catch (e) {
         }
     } ;

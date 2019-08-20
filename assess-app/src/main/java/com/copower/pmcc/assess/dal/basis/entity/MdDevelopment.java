@@ -36,12 +36,6 @@ public class MdDevelopment {
 
     private Integer rewardRateId;
 
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private BigDecimal totalSaleableAreaPrice;
 
     private BigDecimal saleableArea;
@@ -51,6 +45,8 @@ public class MdDevelopment {
     private BigDecimal unsaleableBuildingArea;
 
     private BigDecimal reconnaissanceDesign;
+
+    private String constructionInstallationEngineeringFeeIds;
 
     private BigDecimal constructionInstallationEngineeringFee;
 
@@ -133,6 +129,12 @@ public class MdDevelopment {
     private BigDecimal developmentDegreeRevision;
 
     private String developmentDegreeRevisionExplain;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -262,30 +264,6 @@ public class MdDevelopment {
         this.rewardRateId = rewardRateId;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public BigDecimal getTotalSaleableAreaPrice() {
         return totalSaleableAreaPrice;
     }
@@ -324,6 +302,14 @@ public class MdDevelopment {
 
     public void setReconnaissanceDesign(BigDecimal reconnaissanceDesign) {
         this.reconnaissanceDesign = reconnaissanceDesign;
+    }
+
+    public String getConstructionInstallationEngineeringFeeIds() {
+        return constructionInstallationEngineeringFeeIds;
+    }
+
+    public void setConstructionInstallationEngineeringFeeIds(String constructionInstallationEngineeringFeeIds) {
+        this.constructionInstallationEngineeringFeeIds = constructionInstallationEngineeringFeeIds == null ? null : constructionInstallationEngineeringFeeIds.trim();
     }
 
     public BigDecimal getConstructionInstallationEngineeringFee() {
@@ -652,5 +638,29 @@ public class MdDevelopment {
 
     public void setDevelopmentDegreeRevisionExplain(String developmentDegreeRevisionExplain) {
         this.developmentDegreeRevisionExplain = developmentDegreeRevisionExplain == null ? null : developmentDegreeRevisionExplain.trim();
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

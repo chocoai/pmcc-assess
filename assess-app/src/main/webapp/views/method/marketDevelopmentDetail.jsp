@@ -12,7 +12,6 @@
     <div class="x_content">
         <form class="form-horizontal" id="developmentFrm">
             <input type="hidden" name="id" value="${mdDevelopment.id}">
-            <input type="hidden" value='${mdDevelopmentJson}' id="mdDevelopmentJson">
             <div class="col-sm-12 form-group">
                 <span class="col-sm-1">
                     <label>经营方式</label><span class="symbol required"></span>
@@ -36,7 +35,7 @@
     <div class="x_content">
         <c:if test="${mdDevelopment.type == 1}">
             <form class="form-horizontal" id="mdDevelopmentLandFrm">
-                <jsp:include page="/views/method/module/developmentModule/landEngineeringDetail.jsp"></jsp:include>
+                <%@include file="/views/method/module/developmentModule/landEngineeringDetail.jsp" %>
             </form>
         </c:if>
     </div>
@@ -44,16 +43,15 @@
     <div class="x_content">
         <c:if test="${mdDevelopment.type == 2}">
             <form class="form-horizontal" id="mdDevelopmentEngineeringFrm">
-                <jsp:include page="/views/method/module/developmentModule/underConstructionDetail.jsp"></jsp:include>
+                <%@include file="/views/method/module/developmentModule/underConstructionDetail.jsp" %>
             </form>
         </c:if>
     </div>
 
 </div>
 
-<jsp:include page="/views/method/module/developmentCommon.jsp"></jsp:include>
-
-<jsp:include page="/views/project/tool/rewardRateDetail.jsp"></jsp:include>
+<%@include file="/views/method/module/developmentCommon.jsp" %>
+<%@include file="/views/project/tool/rewardRateDetail.jsp" %>
 
 <script>
     var development = {};
