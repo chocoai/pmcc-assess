@@ -31,7 +31,8 @@
                         <div class="form-group">
 
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估人员<span class="symbol required"></span></label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估人员<span
+                                        class="symbol required"></span></label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <div class="input-group">
                                         <input type="hidden" id="evaluatorID">
@@ -55,7 +56,8 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">核对日期<span class="symbol required"></span></label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">核对日期<span
+                                        class="symbol required"></span></label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input type="text" required placeholder="核对日期" id="checkDate" name="checkDate"
                                            data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
@@ -84,7 +86,8 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分割限制<span class="symbol required"></span></label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分割限制<span
+                                        class="symbol required"></span></label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <select class="form-control" id="segmentationLimit" name="segmentationLimit"
                                             required onchange="showOther()">
@@ -257,7 +260,8 @@
                                     <td>
                                         <div class="x-valid show-hide"
                                              style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <select class="form-control" id="sureConsistent${item.id}" name="sureConsistent${item.id}" required>
+                                            <select class="form-control" id="sureConsistent${item.id}"
+                                                    name="sureConsistent${item.id}" required>
                                                 <option value=""></option>
                                                 <option value="一致">一致</option>
                                                 <option value="不一致">不一致</option>
@@ -542,8 +546,8 @@
         })
 
 
-        if ("${surveyAssetInventory}") {
-            if ("${surveyAssetInventory.segmentationLimit}") {
+        if ("${surveyAssetInventory}".length > 0) {
+            if ("${surveyAssetInventory.segmentationLimit}".length > 0) {
                 $("#segmentationLimit").val("${surveyAssetInventory.segmentationLimit}");
             }
             $("#canUse").val("${surveyAssetInventory.canUse}");
@@ -553,12 +557,12 @@
             if ("${surveyAssetInventory.entityIsDamage}") {
                 $("#entityIsDamage").val("${surveyAssetInventory.entityIsDamage}");
             }
-            if ("${surveyAssetInventory.rimIsNormal}") {
+            if ("${surveyAssetInventory.rimIsNormal}".length > 0) {
                 $("#rimIsNormal").val("${surveyAssetInventory.rimIsNormal}");
             }
-            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
-            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
-            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', ${surveyAssetInventory.otherProject});
+            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', '${surveyAssetInventory.zoneDamage}');
+            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', '${surveyAssetInventory.entityDamage}');
+            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', '${surveyAssetInventory.otherProject}');
             if ("${surveyAssetInventory.paymentStatus}") {
                 $("#paymentStatus").val("${surveyAssetInventory.paymentStatus}");
             }
@@ -586,7 +590,6 @@
             tr.find('.show-hide').show();
         }
     }
-
 
 
     //上传附件通用
@@ -990,8 +993,8 @@
         }
     }
 
-    function getConsistentVal(id,value){
-        $("#"+id).val(value);
+    function getConsistentVal(id, value) {
+        $("#" + id).val(value);
     }
 </script>
 

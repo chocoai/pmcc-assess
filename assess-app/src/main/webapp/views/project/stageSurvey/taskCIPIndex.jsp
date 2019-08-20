@@ -100,10 +100,6 @@
 
     //任务提交
     function submit(mustUseBox) {
-        if(!$("#masterId").val()){
-            alert("请添加楼盘");
-            return false;
-        }
         var formData = {};
         formData.id = $("#masterId").val();
         formData.declareId = "${declareRecord.id}";
@@ -119,10 +115,6 @@
 
     //保存
     function saveData() {
-        if(!$("#masterId").val()){
-            alert("请添加楼盘");
-            return false;
-        }
         var formData = {};
         formData.id = $("#masterId").val();
         formData.planDetailsId = "${projectPlanDetails.id}";
@@ -174,8 +166,6 @@
                 if (result.ret) {
                     $(_this).hide();
                     var data = result.data;
-                    //主表id
-                    $("#masterId").val(data.surveySceneExplore.id);
                     // 批量表单赋值
                     $("#basicBatchApplyFrm").find("input[name='id']").val(data.basicApplyBatch.id);
                     $("#estateId").val(data.basicApplyBatch.estateId);
