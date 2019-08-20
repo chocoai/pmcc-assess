@@ -751,15 +751,10 @@ public class ProjectPlanDetailsService {
         ProjectPlanDetails copyPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(copyPlanDetailsId);
         ProjectPlanDetails pastePlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pastePlanDetailsId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(copyPlanDetails.getProjectId());
-        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPhase sceneExploreChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
         List<Integer> commonPhaseIds = Lists.newArrayList(sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());
-        //資產清查
-        if (copyPlanDetails.getProjectPhaseId().equals(inventoryPhase.getId()) && pastePlanDetails.getProjectPhaseId().equals(inventoryPhase.getId())) {
-            surveyAssetInventoryService.copyAssetInventory(copyPlanDetailsId, pastePlanDetailsId);
-        }
         //現場查勘案例調查
         if (commonPhaseIds.contains(copyPlanDetails.getProjectPhaseId())) {
             if (commonPhaseIds.contains(pastePlanDetails.getProjectPhaseId())) {

@@ -199,10 +199,10 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘区位描述<span class="symbol required"></span></label>
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘区位分析<span class="symbol required"></span></label>
         <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <textarea class="form-control" name="locationDescribe" required
-                                  placeholder="楼盘区位描述">${basicEstate.locationDescribe}</textarea>
+                                  placeholder="楼盘区位分析">${basicEstate.locationDescribe}</textarea>
         </div>
     </div>
 </div>

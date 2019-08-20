@@ -235,6 +235,66 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
         public Criteria andProvinceIsNull() {
             addCriterion("province is null");
             return (Criteria) this;
@@ -635,6 +695,66 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
+        public Criteria andDraftFlagIsNull() {
+            addCriterion("draft_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagIsNotNull() {
+            addCriterion("draft_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagEqualTo(Boolean value) {
+            addCriterion("draft_flag =", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagNotEqualTo(Boolean value) {
+            addCriterion("draft_flag <>", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagGreaterThan(Boolean value) {
+            addCriterion("draft_flag >", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("draft_flag >=", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagLessThan(Boolean value) {
+            addCriterion("draft_flag <", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("draft_flag <=", value, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagIn(List<Boolean> values) {
+            addCriterion("draft_flag in", values, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagNotIn(List<Boolean> values) {
+            addCriterion("draft_flag not in", values, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("draft_flag between", value1, value2, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDraftFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("draft_flag not between", value1, value2, "draftFlag");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -822,66 +942,6 @@ public class BasicApplyBatchExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagIsNull() {
-            addCriterion("draft_flag is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagIsNotNull() {
-            addCriterion("draft_flag is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagEqualTo(Boolean value) {
-            addCriterion("draft_flag =", value, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagNotEqualTo(Boolean value) {
-            addCriterion("draft_flag <>", value, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagGreaterThan(Boolean value) {
-            addCriterion("draft_flag >", value, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("draft_flag >=", value, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagLessThan(Boolean value) {
-            addCriterion("draft_flag <", value, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagLessThanOrEqualTo(Boolean value) {
-            addCriterion("draft_flag <=", value, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagIn(List<Boolean> values) {
-            addCriterion("draft_flag in", values, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagNotIn(List<Boolean> values) {
-            addCriterion("draft_flag not in", values, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagBetween(Boolean value1, Boolean value2) {
-            addCriterion("draft_flag between", value1, value2, "draftFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andDraftFlagNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("draft_flag not between", value1, value2, "draftFlag");
             return (Criteria) this;
         }
     }

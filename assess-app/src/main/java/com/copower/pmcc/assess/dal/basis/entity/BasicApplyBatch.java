@@ -7,6 +7,8 @@ public class BasicApplyBatch {
 
     private String processInsId;
 
+    private Integer planDetailsId;
+
     private String province;
 
     private String city;
@@ -19,13 +21,13 @@ public class BasicApplyBatch {
 
     private String status;
 
+    private Boolean draftFlag;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Boolean draftFlag;
 
     public Integer getId() {
         return id;
@@ -41,6 +43,14 @@ public class BasicApplyBatch {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public String getProvince() {
@@ -91,6 +101,14 @@ public class BasicApplyBatch {
         this.status = status == null ? null : status.trim();
     }
 
+    public Boolean getDraftFlag() {
+        return draftFlag;
+    }
+
+    public void setDraftFlag(Boolean draftFlag) {
+        this.draftFlag = draftFlag;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -113,13 +131,5 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Boolean getDraftFlag() {
-        return draftFlag;
-    }
-
-    public void setDraftFlag(Boolean draftFlag) {
-        this.draftFlag = draftFlag;
     }
 }

@@ -78,6 +78,10 @@ public class BasicApplyTransferService {
     private PublicService publicService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -595,6 +599,7 @@ public class BasicApplyTransferService {
         BasicApply targetBasicApply = basicApplyService.getBasicApplyByPlanDetailsId(targetPlanDetailsId);
         if (targetBasicApply != null) {
             basicApplyService.deleteBasicApply(targetBasicApply.getId());  //先清除數據
+            basicApplyBatchService.deleteBatchByPlanDetailsId(targetPlanDetailsId);
         }
         targetBasicApply = new BasicApply();
         BeanUtils.copyProperties(sourceBasicApply, targetBasicApply);
@@ -617,7 +622,49 @@ public class BasicApplyTransferService {
         BasicEstate basicEstateNew = this.copyBasicEstate(targetBasicApply.getId(), basicEstateSource, basicEstateLandStateSource);//处理楼盘
         BasicBuilding basicBuilding = this.copyBasicBuilding(targetBasicApply.getId(), basicBuildingSource, basicEstateNew.getId());//处理楼栋
         BasicUnit basicUnit = this.copyBasicUnit(targetBasicApply.getId(), basicUnitSource, basicBuilding.getId());//处理单元
-        this.copyBasicHouse(targetBasicApply.getId(), basicHouseSource, basicTradingSource, basicUnit.getId());//处理房屋
+        BasicHouse basicHouse = this.copyBasicHouse(targetBasicApply.getId(), basicHouseSource, basicTradingSource, basicUnit.getId());//处理房屋
+        targetBasicApply.setBasicEstateId(basicEstateNew.getId());
+        targetBasicApply.setBasicBuildingId(basicBuilding.getId());
+        targetBasicApply.setBasicUnitId(basicUnit.getId());
+        targetBasicApply.setBasicHouseId(basicHouse.getId());
+        basicApplyService.updateBasicApply(targetBasicApply);
+
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(sourcePlanDetailsId);
+        basicApplyBatch.setId(null);
+        basicApplyBatch.setPlanDetailsId(targetPlanDetailsId);
+        basicApplyBatch.setEstateId(basicEstateNew.getId());
+        basicApplyBatch.setCreator(commonService.thisUserAccount());
+        basicApplyBatchService.addBasicApplyBatch(basicApplyBatch);
+
+        BasicApplyBatchDetail buildingBatchDetail = new BasicApplyBatchDetail();
+        buildingBatchDetail.setPid(0);
+        buildingBatchDetail.setApplyBatchId(basicApplyBatch.getId());
+        buildingBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        buildingBatchDetail.setTableId(basicBuilding.getId());
+        buildingBatchDetail.setName(basicBuilding.getBuildingNumber());
+        buildingBatchDetail.setDisplayName(basicBuilding.getBuildingName());
+        buildingBatchDetail.setBisStandard(false);
+        basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingBatchDetail);
+
+        BasicApplyBatchDetail unitBatchDetail = new BasicApplyBatchDetail();
+        unitBatchDetail.setPid(buildingBatchDetail.getId());
+        unitBatchDetail.setApplyBatchId(basicApplyBatch.getId());
+        unitBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        unitBatchDetail.setTableId(basicUnit.getId());
+        unitBatchDetail.setName(basicUnit.getUnitNumber());
+        unitBatchDetail.setDisplayName(String.format("%s单元",basicUnit.getUnitNumber()));
+        unitBatchDetail.setBisStandard(false);
+        basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitBatchDetail);
+
+        BasicApplyBatchDetail houseBatchDetail = new BasicApplyBatchDetail();
+        houseBatchDetail.setPid(unitBatchDetail.getId());
+        houseBatchDetail.setApplyBatchId(basicApplyBatch.getId());
+        houseBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        houseBatchDetail.setTableId(basicHouse.getId());
+        houseBatchDetail.setName(basicHouse.getHouseNumber());
+        houseBatchDetail.setDisplayName(basicHouse.getHouseNumber());
+        houseBatchDetail.setBisStandard(true);
+        basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseBatchDetail);
         return targetBasicApply;
     }
 
