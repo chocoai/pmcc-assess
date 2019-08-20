@@ -308,6 +308,11 @@
                     </select>
                 </div>
             </div>
+
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元说明</label>
+            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <input type="text" name="remark" class="form-control" value="${basicBuilding.remark}">
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -395,6 +400,7 @@
                 </div>
             </div>
         </div>
+
         <div class="form-group" id="navButtonBuildGroupFileId">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">平面图</label>
