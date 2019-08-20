@@ -1,10 +1,14 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveySceneExploreDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -30,6 +34,10 @@ public class ProjectTaskCIPController {
     private SurveySceneExploreDao surveySceneExploreDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BasicApplyBatchDao basicApplyBatchDao;
+    @Autowired
+    private BasicEstateService basicEstateService;
 
     @ResponseBody
     @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
@@ -38,7 +46,16 @@ public class ProjectTaskCIPController {
             Map<String, Object> objectMap = Maps.newHashMap();
             SurveySceneExplore sceneExploreById = surveySceneExploreDao.getSurveySceneExploreById(masterId);
             if (sceneExploreById != null) {
-                objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), basicApplyBatchService.getInfoById(sceneExploreById.getBatchApplyId()));
+                JSONObject jsonObject = JSON.parseObject(formData);
+                BasicApplyBatch applyBatch = basicApplyBatchService.getInfoById(sceneExploreById.getBatchApplyId());
+                applyBatch.setEstateName(jsonObject.getString("estateName"));
+                basicApplyBatchDao.updateInfo(applyBatch);
+                String estateId = jsonObject.getString("estateId");
+                BasicEstate estate = basicEstateService.getBasicEstateById(Integer.valueOf(estateId));
+                estate.setName(jsonObject.getString("estateName"));
+                basicEstateService.saveAndUpdateBasicEstate(estate);
+
+                objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), applyBatch);
                 objectMap.put(FormatUtils.toLowerCaseFirstChar(SurveySceneExplore.class.getSimpleName()), sceneExploreById);
             } else {
                 BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
