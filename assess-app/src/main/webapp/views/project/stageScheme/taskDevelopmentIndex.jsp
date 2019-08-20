@@ -16,7 +16,7 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!-- 引入假设开发法模块 -->
-            <jsp:include page="/views/method/marketDevelopmentIndex.jsp"></jsp:include>
+            <%@include file="/views/method/marketDevelopmentIndex.jsp" %>
             <div class="x_panel">
                 <div class="x_content">
                     <form class="form-horizontal" id="md_development_form">
@@ -97,7 +97,7 @@
         development.valid(function () {
             var data = development.getFomData();
             if (item){
-                if (item.price){
+                if ($.isNumeric(item.price)){
                     data.price =  item.price;
                 }
             }

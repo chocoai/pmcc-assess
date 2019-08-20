@@ -469,6 +469,22 @@
         }
     };
 
+    //假设开发法收入类模型添加的简单计算
+    developmentCommon.handleIncomeCategory = function (_this) {
+        if (!$(_this).val()){
+            return false;
+        }
+        if (!$.isNumeric($(_this).val())){
+            $(_this).val('');
+            alert("请输入数字");
+            return false;
+        }
+        var form = $(_this).closest("form") ;
+        var data = formSerializeArray($(form)) ;
+        data = developmentCommon.calculationIncomeCategory($(_this).attr("name"),data) ;
+        $(form).initForm(data);
+    };
+
     developmentCommon.infrastructureChildren = {
         getDataList: function (data, callback) {
             $.ajax({
@@ -1510,18 +1526,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%--<div class="form-group">--%>
-                        <%--<div class="x-valid">--%>
-                            <%--<label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">--%>
-                                <%--税费--%>
-                            <%--</label>--%>
-                            <%--<div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">--%>
-                                <%--<input type="text" name="tax" data-rule-number='true' class="form-control"--%>
-                                       <%--placeholder="(数字)">--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
                 </form>
             </div>
 
@@ -1606,12 +1610,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                总可售面积售价<span class="symbol required"></span>
+                                总可售面积售价(自动计算)
                             </label>
                             <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                <input type="text" name="totalSaleableAreaPrice" placeholder="总可售面积售价" class="form-control"
-                                       data-rule-number='true'
-                                       required="required">
+                                <input type="text" readonly="readonly" name="totalSaleableAreaPrice" placeholder="总可售面积售价(可售面积*单位售价/10000)" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -1623,8 +1625,7 @@
                             </label>
                             <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                                 <input type="text" name="saleableArea" placeholder="可售面积" class="form-control"
-                                       data-rule-number='true'
-                                       required="required">
+                                       required="required" onblur="developmentCommon.handleIncomeCategory(this)">
                             </div>
                         </div>
                     </div>
@@ -1648,8 +1649,7 @@
                             </label>
                             <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                                 <input type="text" name="unitPrice" placeholder="单位售价" class="form-control"
-                                       data-rule-number='true'
-                                       required="required">
+                                       required="required" onblur="developmentCommon.handleIncomeCategory(this)">
                             </div>
                         </div>
                     </div>
