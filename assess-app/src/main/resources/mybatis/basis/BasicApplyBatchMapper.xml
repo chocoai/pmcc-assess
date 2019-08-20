@@ -4,16 +4,17 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="draft_flag" property="draftFlag" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="draft_flag" property="draftFlag" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_ins_id, province, city, type, estate_id, estate_name, status, creator, 
-    gmt_created, gmt_modified, draft_flag
+    id, process_ins_id, plan_details_id, province, city, type, estate_id, estate_name, 
+    status, draft_flag, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchExample" >
     select
@@ -111,14 +112,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply_batch (process_ins_id, province, city, 
-      type, estate_id, estate_name, 
-      status, creator, gmt_created, 
-      gmt_modified, draft_flag)
-    values (#{processInsId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{draftFlag,jdbcType=BIT})
+    insert into tb_basic_apply_batch (process_ins_id, plan_details_id, province, 
+      city, type, estate_id, 
+      estate_name, status, draft_flag, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{processInsId,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
+      #{estateName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -128,6 +131,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
         process_ins_id,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
       </if>
       <if test="province != null" >
         province,
@@ -147,6 +153,9 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="draftFlag != null" >
+        draft_flag,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -156,13 +165,13 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="draftFlag != null" >
-        draft_flag,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
         #{province,jdbcType=VARCHAR},
@@ -182,6 +191,9 @@
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
+      <if test="draftFlag != null" >
+        #{draftFlag,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -190,9 +202,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="draftFlag != null" >
-        #{draftFlag,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -210,6 +219,9 @@
       </if>
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="record.province != null" >
         province = #{record.province,jdbcType=VARCHAR},
@@ -229,6 +241,9 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
+      <if test="record.draftFlag != null" >
+        draft_flag = #{record.draftFlag,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -237,9 +252,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.draftFlag != null" >
-        draft_flag = #{record.draftFlag,jdbcType=BIT},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -250,16 +262,17 @@
     update tb_basic_apply_batch
     set id = #{record.id,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
+      draft_flag = #{record.draftFlag,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      draft_flag = #{record.draftFlag,jdbcType=BIT}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -269,6 +282,9 @@
     <set >
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
         province = #{province,jdbcType=VARCHAR},
@@ -288,6 +304,9 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="draftFlag != null" >
+        draft_flag = #{draftFlag,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -297,25 +316,23 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="draftFlag != null" >
-        draft_flag = #{draftFlag,jdbcType=BIT},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch" >
     update tb_basic_apply_batch
     set process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
       estate_name = #{estateName,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
+      draft_flag = #{draftFlag,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      draft_flag = #{draftFlag,jdbcType=BIT}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

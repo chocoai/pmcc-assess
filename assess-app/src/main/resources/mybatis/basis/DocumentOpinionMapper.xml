@@ -15,6 +15,7 @@
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="report_type_id" property="reportTypeId" jdbcType="INTEGER" />
     <result column="generation_id" property="generationId" jdbcType="INTEGER" />
+    <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.DocumentOpinion" extends="BaseResultMap" >
     <result column="extend_conten" property="extendConten" jdbcType="LONGVARCHAR" />
@@ -79,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, number, title, contract_type, process_ins_id, status, uuid, project_id, creator, 
-    created, area_group_id, report_type_id, generation_id
+    created, area_group_id, report_type_id, generation_id, suggestion
   </sql>
   <sql id="Blob_Column_List" >
     extend_conten
@@ -140,12 +141,12 @@
       process_ins_id, status, uuid, 
       project_id, creator, created, 
       area_group_id, report_type_id, generation_id, 
-      extend_conten)
+      suggestion, extend_conten)
     values (#{number,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{contractType,jdbcType=INTEGER}, 
       #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR}, 
       #{projectId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
       #{areaGroupId,jdbcType=INTEGER}, #{reportTypeId,jdbcType=INTEGER}, #{generationId,jdbcType=INTEGER}, 
-      #{extendConten,jdbcType=LONGVARCHAR})
+      #{suggestion,jdbcType=VARCHAR}, #{extendConten,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DocumentOpinion" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -189,6 +190,9 @@
       <if test="generationId != null" >
         generation_id,
       </if>
+      <if test="suggestion != null" >
+        suggestion,
+      </if>
       <if test="extendConten != null" >
         extend_conten,
       </if>
@@ -229,6 +233,9 @@
       </if>
       <if test="generationId != null" >
         #{generationId,jdbcType=INTEGER},
+      </if>
+      <if test="suggestion != null" >
+        #{suggestion,jdbcType=VARCHAR},
       </if>
       <if test="extendConten != null" >
         #{extendConten,jdbcType=LONGVARCHAR},
@@ -283,6 +290,9 @@
       <if test="record.generationId != null" >
         generation_id = #{record.generationId,jdbcType=INTEGER},
       </if>
+      <if test="record.suggestion != null" >
+        suggestion = #{record.suggestion,jdbcType=VARCHAR},
+      </if>
       <if test="record.extendConten != null" >
         extend_conten = #{record.extendConten,jdbcType=LONGVARCHAR},
       </if>
@@ -306,6 +316,7 @@
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
       generation_id = #{record.generationId,jdbcType=INTEGER},
+      suggestion = #{record.suggestion,jdbcType=VARCHAR},
       extend_conten = #{record.extendConten,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -325,7 +336,8 @@
       created = #{record.created,jdbcType=TIMESTAMP},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
-      generation_id = #{record.generationId,jdbcType=INTEGER}
+      generation_id = #{record.generationId,jdbcType=INTEGER},
+      suggestion = #{record.suggestion,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -369,6 +381,9 @@
       <if test="generationId != null" >
         generation_id = #{generationId,jdbcType=INTEGER},
       </if>
+      <if test="suggestion != null" >
+        suggestion = #{suggestion,jdbcType=VARCHAR},
+      </if>
       <if test="extendConten != null" >
         extend_conten = #{extendConten,jdbcType=LONGVARCHAR},
       </if>
@@ -389,6 +404,7 @@
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       report_type_id = #{reportTypeId,jdbcType=INTEGER},
       generation_id = #{generationId,jdbcType=INTEGER},
+      suggestion = #{suggestion,jdbcType=VARCHAR},
       extend_conten = #{extendConten,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -405,7 +421,8 @@
       created = #{created,jdbcType=TIMESTAMP},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       report_type_id = #{reportTypeId,jdbcType=INTEGER},
-      generation_id = #{generationId,jdbcType=INTEGER}
+      generation_id = #{generationId,jdbcType=INTEGER},
+      suggestion = #{suggestion,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

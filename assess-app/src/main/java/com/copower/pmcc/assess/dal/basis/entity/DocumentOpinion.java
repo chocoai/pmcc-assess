@@ -29,6 +29,8 @@ public class DocumentOpinion {
 
     private Integer generationId;
 
+    private String suggestion;
+
     private String extendConten;
 
     public Integer getId() {
@@ -133,6 +135,14 @@ public class DocumentOpinion {
 
     public void setGenerationId(Integer generationId) {
         this.generationId = generationId;
+    }
+
+    public String getSuggestion() {
+        return suggestion;
+    }
+
+    public void setSuggestion(String suggestion) {
+        this.suggestion = suggestion == null ? null : suggestion.trim();
     }
 
     public String getExtendConten() {

@@ -32,7 +32,7 @@
                         <input type="hidden" id="contractType" name="contractType" value="${documentOpinion.contractType}">
                         <input type="hidden" id="projectId" name="projectId" value="${documentOpinion.projectId}">
 
-                        <form id="cmsContractInfo" class="form-horizontal">
+                        <form id="opinionInfoFrm" class="form-horizontal">
                             <div class="form-group">
                                 <div class='x-valid'>
                                     <label class='col-sm-1 control-label'>
@@ -98,7 +98,7 @@
 <script type="text/javascript">
     $(function () {
         loadContractAttachment();
-        $("#cmsContractInfo").validate();
+        $("#opinionInfoFrm").validate();
         //显示报告附件
         FileUtils.getFileShows({
             target: "file_report",
@@ -113,10 +113,10 @@
     })
 
     function previewContract() {
-        if (!$("#cmsContractInfo").valid()) {
+        if (!$("#opinionInfoFrm").valid()) {
             return false;
         }
-        var customCmsContractInfo = formSerializeArray($("#cmsContractInfo"));
+        var customCmsContractInfo = formSerializeArray($("#opinionInfoFrm"));
         var extendConten = JSON.stringify(customCmsContractInfo);
         Loading.progressShow();
         $.ajax({
@@ -165,7 +165,7 @@
     }
 
     function submit() {
-        var customCmsContractInfo = formSerializeArray($("#cmsContractInfo"));
+        var customCmsContractInfo = formSerializeArray($("#opinionInfoFrm"));
         var extendConten = JSON.stringify(customCmsContractInfo);
         var id = parseInt($("#id").val());
         if (id == 0) {

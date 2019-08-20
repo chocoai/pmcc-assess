@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.document;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentOpinion;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
@@ -164,8 +165,14 @@ public class DocumentOpinionController {
     @RequestMapping(value = "/approvalSubmit", name = "审批流程", method = RequestMethod.POST)
     public HttpResult approvalSubmit(ApprovalModelDto approvalModelDto, String formData) {
         try {
+            DocumentOpinion documentOpinion = JSONObject.parseObject(formData, DocumentOpinion.class);
+            if (documentOpinion.getId() != null) {
+                DocumentOpinion data = documentOpinionService.getDocumentOpinionById(documentOpinion.getId());
+                data.setSuggestion(documentOpinion.getSuggestion());
+                documentOpinionService.saveDocumentOpinion(data);
+            }
+            //发起流程
             documentOpinionService.approvalSubmit(approvalModelDto);
-
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

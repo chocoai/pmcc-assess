@@ -45,10 +45,9 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
         if (surveySceneExplore != null) {
             modelAndView.addObject("surveySceneExplore", surveySceneExplore);
-            modelAndView.addObject("applyBatch", basicApplyBatchService.getInfoById(surveySceneExplore.getBatchApplyId()));
         }
-        //删除未完成数据
-        surveySceneExploreService.deleteUnfinishedData();
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
+        surveySceneExploreService.deleteUnfinishedData();//删除未完成数据
         return modelAndView;
     }
 

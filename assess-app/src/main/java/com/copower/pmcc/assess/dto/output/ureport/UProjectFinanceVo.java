@@ -20,6 +20,10 @@ public class UProjectFinanceVo {
     private String amount;//开票金额
     private String actualAmount;//实际金额
     private String payAmount;//支付金额
+    private String entrustPurposeName;//委托目的
+    private String departmentName;//评估部门
+    private String loanTypeName;//贷款类型
+    private String serviceComeFromExplain;//业务来源说明
     private Date projectCreated;//立项时间 -查询
 
 
@@ -141,5 +145,37 @@ public class UProjectFinanceVo {
 
     public void setProjectCreated(Date projectCreated) {
         this.projectCreated = projectCreated;
+    }
+
+    public String getEntrustPurposeName() {
+        return entrustPurposeName;
+    }
+
+    public void setEntrustPurposeName(String entrustPurposeName) {
+        this.entrustPurposeName = entrustPurposeName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getLoanTypeName() {
+        return loanTypeName;
+    }
+
+    public void setLoanTypeName(String loanTypeName) {
+        this.loanTypeName = loanTypeName;
+    }
+
+    public String getServiceComeFromExplain() {
+        return serviceComeFromExplain;
+    }
+
+    public void setServiceComeFromExplain(String serviceComeFromExplain) {
+        this.serviceComeFromExplain = serviceComeFromExplain;
     }
 }

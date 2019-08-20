@@ -170,16 +170,16 @@ public class MdMarketCompareService {
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
         if (CollectionUtils.isNotEmpty(basicApplyList) && basicApplyList.size() == 1) {//检查估价对象是否有多个标准 如果有多个标准则不处理 由前端选择后初始化
-            setJudgeCompareItem(areaGroup,schemeJudgeObject,basicApplyList.get(0),mdMarketCompare.getId(),setUseFieldList,isLand);
+            setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyList.get(0), mdMarketCompare.getId(), setUseFieldList, isLand);
         }
         return mdMarketCompare;
     }
 
-    private void setJudgeCompareItem(SchemeAreaGroup areaGroup,SchemeJudgeObject schemeJudgeObject,BasicApply basicApply,Integer mcId,List<DataSetUseField> setUseFieldList,Boolean isLand){
+    private void setJudgeCompareItem(SchemeAreaGroup areaGroup, SchemeJudgeObject schemeJudgeObject, BasicApply basicApply, Integer mcId, List<DataSetUseField> setUseFieldList, Boolean isLand) {
         if (CollectionUtils.isEmpty(setUseFieldList)) return;
         //清除原估价对象信息
         MdMarketCompareItem compareItem = getEvaluationByMcId(mcId);
-        if (compareItem!=null) {
+        if (compareItem != null) {
             mdMarketCompareItemDao.deleteMarketCompareItem(compareItem.getId());
         }
         MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
@@ -243,7 +243,8 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setAnnualCoefficient(periodAmend);
         }
         //容积率修正系数
-        mdMarketCompareItem.setVolumeRatioCoefficient(volumetricRate);
+        if (volumetricRate != null)
+            mdMarketCompareItem.setVolumeRatioCoefficient(volumetricRate);
     }
 
     /**
@@ -299,16 +300,15 @@ public class MdMarketCompareService {
 
     /**
      * 选择估价对象
-     *
      */
     public MdCompareInitParamVo selectJudge(Integer judgeObjectId, Integer applyId, Integer mcId, boolean isLand) throws Exception {
-        MdCompareInitParamVo  mdCompareInitParamVo =new MdCompareInitParamVo();
+        MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
-        setJudgeCompareItem(areaGroup,schemeJudgeObject,basicApply,mcId,setUseFieldList,isLand);
+        setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApply, mcId, setUseFieldList, isLand);
         mdCompareInitParamVo.setMcId(mcId);
         mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);
         mdCompareInitParamVo.setMarketCompare(getMdMarketCompare(mcId));

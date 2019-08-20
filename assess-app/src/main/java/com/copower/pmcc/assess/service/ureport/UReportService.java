@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -47,6 +48,8 @@ public class UReportService {
     private CrmRpcCustomerService crmRpcCustomerService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ErpRpcDepartmentService erpRpcDepartmentService;
 
     /**
      * 项目开票收款报表
@@ -64,6 +67,10 @@ public class UReportService {
         String queryStartTime = "";
         String queryEndTime = "";
         String queryUserAccount = "";
+        String queryServiceExplain = "";
+        Integer queryEntrustment = null;
+        Integer queryLoanType = null;
+        Integer queryDepartmentId = null;
         Integer pageIndex = objectToInteger(maps.get("_pageIndex"));
         Integer fixRows = objectToInteger(maps.get("_fixRows"));
         if (maps.get("queryProjectName") != null) {
@@ -87,6 +94,18 @@ public class UReportService {
         if (maps.get("queryUserAccount") != null) {
             queryUserAccount = (String) maps.get("queryUserAccount");
         }
+        if (maps.get("queryServiceExplain") != null) {
+            queryServiceExplain = (String) maps.get("queryServiceExplain");
+        }
+        if (maps.get("queryEntrustment") != null) {
+            queryEntrustment = objectToInteger(maps.get("queryEntrustment"));
+        }
+        if (maps.get("queryLoanType") != null) {
+            queryLoanType = objectToInteger(maps.get("queryLoanType"));
+        }
+        if (maps.get("queryDepartmentId") != null) {
+            queryDepartmentId = objectToInteger(maps.get("queryDepartmentId"));
+        }
         //咨评报告
         BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT_CONSULTATION);
         Integer preauditId = preauditReport.getId();
@@ -98,7 +117,8 @@ public class UReportService {
         Integer resultId = resultReport.getId();
 
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
+        sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,A.entrust_purpose,A.loan_type,A.department_id,A.service_come_from_explain," +
+                "B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
                 " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,A.gmt_created" +
                 " FROM tb_project_info A " +
                 " LEFT JOIN tb_project_member B ON A.id=B.project_id" +
@@ -112,6 +132,16 @@ public class UReportService {
         if (StringUtil.isNotEmpty(queryProjectName)) {
             sql.append(String.format(" AND A.project_name LIKE '%s%s%s'", "%", queryProjectName, "%"));
         }
+        if (queryEntrustment != null && !queryEntrustment.equals(0)) {
+            sql.append(String.format(" AND A.entrust_purpose = '%s'", queryEntrustment));
+        }
+         if (queryLoanType != null && !queryLoanType.equals(0)) {
+            sql.append(String.format(" AND A.loan_type = '%s'", queryLoanType));
+        }
+         if (queryDepartmentId != null&& !queryDepartmentId.equals(0)) {
+            sql.append(String.format(" AND A.department_id = '%s'", queryDepartmentId));
+        }
+
         if (StringUtil.isNotEmpty(queryConsignorName)) {
             sql.append(String.format(" AND (C.cs_entrustment_unit LIKE '%s%s%s' OR C.cs_name LIKE '%s%s%s')", "%", queryConsignorName, "%", "%", queryConsignorName, "%"));
         }
@@ -131,6 +161,9 @@ public class UReportService {
         }
         if (StringUtil.isNotEmpty(queryUserAccount)) {
             sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
+        }
+        if (StringUtil.isNotEmpty(queryServiceExplain)) {
+            sql.append(String.format(" AND A.service_come_from_explain LIKE '%s%s%s'", "%", queryServiceExplain, "%"));
         }
 
         List<UProjectFinanceVo> list = Lists.newArrayList();
@@ -155,6 +188,18 @@ public class UReportService {
             for (Map map : mapList) {
                 UProjectFinanceVo vo = new UProjectFinanceVo();
                 vo.setId(objectToInteger(map.get("id")));
+                vo.setProjectName(objectToString(map.get("project_name")));
+                vo.setServiceComeFromExplain(objectToString(map.get("service_come_from_explain")));
+                //委托目的
+                vo.setEntrustPurposeName(baseDataDicService.getNameById(objectToString(map.get("entrust_purpose"))));
+                //贷款类型
+                vo.setLoanTypeName(baseDataDicService.getNameById(objectToString(map.get("loan_type"))));
+                //评估部门
+                String departmentId = objectToString(map.get("department_id"));
+                if(StringUtils.isNotEmpty(departmentId))
+                vo.setDepartmentName(erpRpcDepartmentService.getDepartmentById(Integer.valueOf(departmentId)).getName());
+
+                vo.setProjectName(objectToString(map.get("project_name")));
                 vo.setProjectName(objectToString(map.get("project_name")));
                 String userAccountManager = objectToString(map.get("user_account_manager"));
                 if (StringUtil.isNotEmpty(userAccountManager)) {

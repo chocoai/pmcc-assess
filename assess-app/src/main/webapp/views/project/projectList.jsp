@@ -168,6 +168,7 @@
     function loadProjectList() {
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称'});
+        cols.push({field: 'useUnitName', title: '使用报告单位'});
         cols.push({
             field: 'serviceEnd', width: '20%', title: '项目成员', formatter: function (value, row, index) {
                 var s = "";

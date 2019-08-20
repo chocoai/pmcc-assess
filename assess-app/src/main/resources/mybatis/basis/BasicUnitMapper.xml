@@ -10,6 +10,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="huxing_explain" property="huxingExplain" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,7 +72,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, apply_id, building_id, unit_number, elevator_household_ratio, creator, gmt_created, 
-    gmt_modified
+    gmt_modified, huxing_explain
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitExample" >
     select
@@ -109,10 +110,10 @@
     </selectKey>
     insert into tb_basic_unit (apply_id, building_id, unit_number, 
       elevator_household_ratio, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, huxing_explain)
     values (#{applyId,jdbcType=INTEGER}, #{buildingId,jdbcType=INTEGER}, #{unitNumber,jdbcType=VARCHAR}, 
       #{elevatorHouseholdRatio,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{huxingExplain,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnit" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,6 +142,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="huxingExplain != null" >
+        huxing_explain,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
@@ -163,6 +167,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="huxingExplain != null" >
+        #{huxingExplain,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -199,6 +206,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.huxingExplain != null" >
+        huxing_explain = #{record.huxingExplain,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -213,7 +223,8 @@
       elevator_household_ratio = #{record.elevatorHouseholdRatio,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      huxing_explain = #{record.huxingExplain,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -242,6 +253,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="huxingExplain != null" >
+        huxing_explain = #{huxingExplain,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -253,7 +267,8 @@
       elevator_household_ratio = #{elevatorHouseholdRatio,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      huxing_explain = #{huxingExplain,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

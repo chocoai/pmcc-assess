@@ -64,13 +64,22 @@ public class BasicApplyBatchDetailService {
         return null;
     }
 
+    public void saveBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail){
+        if(basicApplyBatchDetail.getId()!=null&&basicApplyBatchDetail.getId()>0){
+            basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
+        }else{
+            basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
+            basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
+        }
+    }
+
     /**
      * 新增
      *
      * @param basicApplyBatchDetail
      * @return
      */
-    public BasicApplyBatchDetail addBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail, Integer type) throws Exception {
+    public BasicApplyBatchDetail addBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
         basicApplyBatchDetail.setDisplayName(basicApplyBatchDetail.getName());
         if (basicApplyBatchDetail.getId() != null && basicApplyBatchDetail.getId() > 0) {
             switch (basicApplyBatchDetail.getTableName()) {

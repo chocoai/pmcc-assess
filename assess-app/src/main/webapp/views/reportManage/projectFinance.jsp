@@ -55,7 +55,46 @@
                                            placeholder="委托人"/>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    委托目的
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <select name='queryEntrustment' class='form-control  search-select select2'>
+                                        <option value="0">-请选择-</option>
+                                        <c:forEach var="item" items="${entrustmentList}">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    贷款类型
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <select name='queryLoanType' class='form-control  search-select select2'>
+                                        <option value="0">-请选择-</option>
+                                        <c:forEach var="item" items="${loanTypeList}">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    评估部门
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input id="queryDepartmentId" name="queryDepartmentId"
+                                           class="form-control" type="hidden"/>
+                                    <input id="queryDepartmentName" name="queryDepartmentName" class="form-control"
+                                           placeholder="评估部门"
+                                           onclick="selectDepartment(this)" readonly="readonly"/>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
@@ -101,6 +140,15 @@
                                 </div>
                             </div>
                             <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    业务来源说明
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input id="queryServiceExplain" name="queryServiceExplain" class="form-control"
+                                           placeholder="业务来源说明"/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                     <button type="button" class="btn btn-success" onclick="statisticsByCondition()">
                                         查询
@@ -132,7 +180,8 @@
     function statisticsByCondition() {
         var data = formParams("query_form");
         document.getElementById('report_iframe').src = "${pageContext.request.contextPath}/ureport/preview?_u=erp:projectFinance.ureport.xml&_i=1&_r=1&queryProjectName=" + data.queryProjectName + "&queryConsignorName=" + data.queryConsignorName +
-            "&queryReportUseUnitName=" + data.queryReportUseUnitName + "&queryReportNumber=" + data.queryReportNumber + "&queryStartTime=" + data.queryStartTime + "&queryEndTime=" + data.queryEndTime + "&queryUserAccount=" + data.queryUserAccount;
+            "&queryReportUseUnitName=" + data.queryReportUseUnitName + "&queryReportNumber=" + data.queryReportNumber + "&queryStartTime=" + data.queryStartTime + "&queryEndTime=" + data.queryEndTime + "&queryUserAccount=" + data.queryUserAccount+
+            "&queryEntrustment=" + data.queryEntrustment+"&queryLoanType=" + data.queryLoanType+"&queryDepartmentId=" + data.queryDepartmentId+"&queryServiceExplain=" + data.queryServiceExplain;
     }
 
 
@@ -181,5 +230,16 @@
             }
         });
     }
+
+    //部门
+    function selectDepartment(this_) {
+        var options = {
+            onSelected: function (nodes) {
+                $("#queryDepartmentId").val(nodes[0].id);
+                $("#queryDepartmentName").val(nodes[0].text);
+            }
+        };
+        erpDepartment.select(options);
+    };
 </script>
 </html>

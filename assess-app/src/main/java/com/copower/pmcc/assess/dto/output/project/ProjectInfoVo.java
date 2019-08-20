@@ -44,6 +44,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
     private List<ProjectResponsibilityDto> taskAllWorkStages;
+    private String useUnitName;
 
     /**
      * 合同
@@ -256,5 +257,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setServiceComeFromName(String serviceComeFromName) {
         this.serviceComeFromName = serviceComeFromName;
+    }
+
+    public String getUseUnitName() {
+        return useUnitName;
+    }
+
+    public void setUseUnitName(String useUnitName) {
+        this.useUnitName = useUnitName;
     }
 }
