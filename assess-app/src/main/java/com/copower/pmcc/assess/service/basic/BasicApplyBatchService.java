@@ -215,6 +215,26 @@ public class BasicApplyBatchService {
         return null;
     }
 
+    public BasicApplyBatch getBasicApplyBatchByPlanDetailsId(Integer planDetailsId) {
+        BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
+        basicApplyBatch.setPlanDetailsId(planDetailsId);
+        List<BasicApplyBatch> basicApplyBatches = basicApplyBatchDao.getInfoList(basicApplyBatch);
+        if (CollectionUtils.isNotEmpty(basicApplyBatches)) {
+            return basicApplyBatches.get(0);
+        }
+        return null;
+    }
+
+    public void deleteBatchByPlanDetailsId(Integer planDetailsId) {
+        BasicApplyBatch applyBatch = getBasicApplyBatchByPlanDetailsId(planDetailsId);
+        if(applyBatch!=null){
+            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
+            if(CollectionUtils.isNotEmpty(batchDetailList))
+                batchDetailList.forEach(o->basicApplyBatchDetailDao.deleteInfo(o.getId()));
+            basicApplyBatchDao.deleteInfo(applyBatch.getId());
+        }
+    }
+
     /**
      * 是否子节点
      *
@@ -227,6 +247,10 @@ public class BasicApplyBatchService {
             return true;
         }
         return false;
+    }
+
+    public void addBasicApplyBatch(BasicApplyBatch applyBatch){
+        basicApplyBatchDao.addInfo(applyBatch);
     }
 
     //保存

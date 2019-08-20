@@ -18,7 +18,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>在建工程</h3>
+                    <h3> ${projectPlanDetails.projectPhaseName}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -100,10 +100,6 @@
 
     //任务提交
     function submit(mustUseBox) {
-        if(!$("#masterId").val()){
-            alert("请添加楼盘");
-            return false;
-        }
         var formData = {};
         formData.id = $("#masterId").val();
         formData.declareId = "${declareRecord.id}";
@@ -119,10 +115,6 @@
 
     //保存
     function saveData() {
-        if(!$("#masterId").val()){
-            alert("请添加楼盘");
-            return false;
-        }
         var formData = {};
         formData.id = $("#masterId").val();
         formData.planDetailsId = "${projectPlanDetails.id}";
@@ -174,8 +166,6 @@
                 if (result.ret) {
                     $(_this).hide();
                     var data = result.data;
-                    //主表id
-                    $("#masterId").val(data.surveySceneExplore.id);
                     // 批量表单赋值
                     $("#basicBatchApplyFrm").find("input[name='id']").val(data.basicApplyBatch.id);
                     $("#estateId").val(data.basicApplyBatch.estateId);

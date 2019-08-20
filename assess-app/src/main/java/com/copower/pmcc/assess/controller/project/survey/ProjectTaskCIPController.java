@@ -1,14 +1,12 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveySceneExploreDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -31,43 +29,22 @@ public class ProjectTaskCIPController {
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
-    private SurveySceneExploreDao surveySceneExploreDao;
+    private SurveySceneExploreService surveySceneExploreService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private BasicApplyBatchDao basicApplyBatchDao;
-    @Autowired
-    private BasicEstateService basicEstateService;
 
     @ResponseBody
     @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult save(String formData, Integer masterId,Integer planDetailsId) {
+    public HttpResult save(String formData,Integer planDetailsId) {
         try {
+            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             Map<String, Object> objectMap = Maps.newHashMap();
-            SurveySceneExplore sceneExploreById = surveySceneExploreDao.getSurveySceneExploreById(masterId);
-            if (sceneExploreById != null) {
-                JSONObject jsonObject = JSON.parseObject(formData);
-                BasicApplyBatch applyBatch = basicApplyBatchService.getInfoById(sceneExploreById.getBatchApplyId());
-                applyBatch.setEstateName(jsonObject.getString("estateName"));
-                basicApplyBatchDao.updateInfo(applyBatch);
-                String estateId = jsonObject.getString("estateId");
-                BasicEstate estate = basicEstateService.getBasicEstateById(Integer.valueOf(estateId));
-                estate.setName(jsonObject.getString("estateName"));
-                basicEstateService.saveAndUpdateBasicEstate(estate);
-
-                objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), applyBatch);
-                objectMap.put(FormatUtils.toLowerCaseFirstChar(SurveySceneExplore.class.getSimpleName()), sceneExploreById);
-            } else {
-                BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
-                basicApplyBatchService.saveApplyInfo(applyBatch);
-                SurveySceneExplore surveySceneExplore = new SurveySceneExplore();
-                surveySceneExplore.setBatchApplyId(applyBatch.getId());
-                surveySceneExplore.setPlanDetailsId(planDetailsId);
-                surveySceneExplore.setCreator(commonService.thisUserAccount());
-                surveySceneExploreDao.addSurveySceneExplore(surveySceneExplore);
-                objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), applyBatch);
-                objectMap.put(FormatUtils.toLowerCaseFirstChar(SurveySceneExplore.class.getSimpleName()), surveySceneExplore);
-            }
+            BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
+            applyBatch.setPlanDetailsId(projectPlanDetails.getPid());
+            basicApplyBatchService.saveApplyInfo(applyBatch);
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), applyBatch);
             return HttpResult.newCorrectResult(objectMap);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
@@ -80,7 +57,7 @@ public class ProjectTaskCIPController {
     public HttpResult submitTask(String formData) {
         try {
             SurveySceneExplore surveySceneExplore = JSON.parseObject(formData, SurveySceneExplore.class);
-            surveySceneExploreDao.updateSurveySceneExplore(surveySceneExplore);
+            surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("保存数据异常");

@@ -88,7 +88,7 @@ public class BasicApplyBatchController extends BaseController {
             if (basicApplyBatchDetail.getBisStandard() == null) {
                 basicApplyBatchDetail.setBisStandard(false);
             }
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail, type));
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail));
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");

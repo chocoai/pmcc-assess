@@ -5848,7 +5848,7 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    //楼盘区位描述
+    //楼盘区位分析
     public String getLocationDescriptionBuilding() throws Exception {
         String value = "/";
         Map<Integer, String> map = Maps.newHashMap();
