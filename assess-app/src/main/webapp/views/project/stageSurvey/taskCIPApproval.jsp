@@ -109,7 +109,7 @@
         var node = zTreeObj.getSelectedNodes()[0];
         var estateId = 0;
         if (node.id == 0) {
-            estateId = ${applyBatch.estateId};
+            estateId = '${applyBatch.estateId}';
         }
         var type = 3;
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId);

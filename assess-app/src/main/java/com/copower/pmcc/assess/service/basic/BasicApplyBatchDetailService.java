@@ -64,10 +64,10 @@ public class BasicApplyBatchDetailService {
         return null;
     }
 
-    public void saveBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail){
-        if(basicApplyBatchDetail.getId()!=null&&basicApplyBatchDetail.getId()>0){
+    public void saveBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) {
+        if (basicApplyBatchDetail.getId() != null && basicApplyBatchDetail.getId() > 0) {
             basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
-        }else{
+        } else {
             basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
@@ -79,7 +79,7 @@ public class BasicApplyBatchDetailService {
      * @param basicApplyBatchDetail
      * @return
      */
-    public BasicApplyBatchDetail addBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
+    public BasicApplyBatchDetail addBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail, Integer planDetailsId) throws Exception {
         basicApplyBatchDetail.setDisplayName(basicApplyBatchDetail.getName());
         if (basicApplyBatchDetail.getId() != null && basicApplyBatchDetail.getId() > 0) {
             switch (basicApplyBatchDetail.getTableName()) {
@@ -139,13 +139,13 @@ public class BasicApplyBatchDetailService {
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
         //若房屋设置为标准，则存入basicApply
-        this.standardIntoBasicApply(basicApplyBatchDetail);
+        this.standardIntoBasicApply(basicApplyBatchDetail,planDetailsId);
         return basicApplyBatchDetail;
     }
 
     //存入basicApply表单
-    public void standardIntoBasicApply(BasicApplyBatchDetail basicApplyBatchDetail)throws Exception{
-        if(!basicApplyBatchDetail.getTableName().equals("tb_basic_house"))
+    public void standardIntoBasicApply(BasicApplyBatchDetail basicApplyBatchDetail, Integer planDetailsId) throws Exception {
+        if (!basicApplyBatchDetail.getTableName().equals("tb_basic_house"))
             return;
         BasicApply basicApply = new BasicApply();
         basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
@@ -163,24 +163,18 @@ public class BasicApplyBatchDetailService {
         basicApply.setBasicEstateId(applyBatch.getEstateId());
         basicApply.setType(applyBatch.getType());
         basicApply.setEstateName(basicEstateService.getBasicEstateById(applyBatch.getEstateId()).getName());
-        SurveySceneExplore sceneExplore = surveySceneExploreService.getSurveySceneExploreByBatchApplyId(applyBatch.getId());
-        if(sceneExplore==null){
-            return;
-        }
-        Integer pid = projectPlanDetailsService.getProjectPlanDetailsById(sceneExplore.getPlanDetailsId()).getPid();
-        basicApply.setPlanDetailsId(pid);
+        basicApply.setPlanDetailsId(planDetailsId);
         BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
-        if(basicApplyOnly!=null){
-            if(basicApplyBatchDetail.getBisStandard()==true){
+        if (basicApplyOnly != null) {
+            if (basicApplyBatchDetail.getBisStandard() == true) {
                 return;
-            }else {
-                //取消标准时，删除原来的数据
-                basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
+            } else {
+                basicApplyDao.deleteBasicApply(basicApplyOnly.getId());//取消标准时，删除原来的数据
                 return;
             }
         }
-        if (basicApplyBatchDetail.getBisStandard()==true)
-        basicApplyService.saveBasicApply(basicApply);
+        if (basicApplyBatchDetail.getBisStandard() == true)
+            basicApplyService.saveBasicApply(basicApply);
     }
 
     /**
@@ -217,7 +211,7 @@ public class BasicApplyBatchDetailService {
                 basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
                 BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
                 //删除标准时，删除原来的数据
-                if(basicApplyOnly!=null) {
+                if (basicApplyOnly != null) {
                     basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
                 }
                 break;

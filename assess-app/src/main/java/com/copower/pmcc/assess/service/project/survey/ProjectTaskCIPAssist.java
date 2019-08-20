@@ -42,10 +42,6 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
-        if (surveySceneExplore != null) {
-            modelAndView.addObject("surveySceneExplore", surveySceneExplore);
-        }
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
         surveySceneExploreService.deleteUnfinishedData();//删除未完成数据
         return modelAndView;
@@ -56,9 +52,7 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
-        modelAndView.addObject("surveySceneExplore", surveySceneExplore);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getInfoById(surveySceneExplore.getBatchApplyId()));
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
         BasicApply basicApply = new BasicApply();
         basicApply.setType(3);
         modelAndView.addObject("basicApply", basicApply);
@@ -70,9 +64,7 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
-        modelAndView.addObject("surveySceneExplore", surveySceneExplore);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getInfoById(surveySceneExplore.getBatchApplyId()));
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
         return modelAndView;
     }
 
@@ -86,9 +78,7 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
-        modelAndView.addObject("surveySceneExplore", surveySceneExplore);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getInfoById(surveySceneExplore.getBatchApplyId()));
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
         return modelAndView;
     }
 
