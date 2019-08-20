@@ -15,17 +15,25 @@ public class CaseBuildingVo extends CaseBuilding {
     private String beCompletedTimeName;
     private String buildingStructureTypeName;
     private String buildingStructureCategoryName;
-    private String propertyTypeName;
     private String propertyCategoryName;
+    private String propertyTypeName;
+    private String completedTimeTypeName;
+    private String betweenDistanceName;
 
     private String residenceUseYearName;
+
     private String industryUseYearName;
-    private String completedTimeTypeName;
-    private String propertyName;
     private DataBuilderVo dataBuilder;
     private DataPropertyVo dataProperty;
+
+    private String constructionQualityName;
+
+    private String appearanceStyleName;
+
+    private String appearanceNewAndOldName;
     private String propertySocialPrestigeName;
     private String propertyCompanyNatureName;
+
     public String getOpenTimeName() {
         return openTimeName;
     }
@@ -66,14 +74,6 @@ public class CaseBuildingVo extends CaseBuilding {
         this.buildingStructureCategoryName = buildingStructureCategoryName;
     }
 
-    public String getPropertyTypeName() {
-        return propertyTypeName;
-    }
-
-    public void setPropertyTypeName(String propertyTypeName) {
-        this.propertyTypeName = propertyTypeName;
-    }
-
     public String getPropertyCategoryName() {
         return propertyCategoryName;
     }
@@ -82,12 +82,12 @@ public class CaseBuildingVo extends CaseBuilding {
         this.propertyCategoryName = propertyCategoryName;
     }
 
-    public String getResidenceUseYearName() {
-        return residenceUseYearName;
+    public String getPropertyTypeName() {
+        return propertyTypeName;
     }
 
-    public void setResidenceUseYearName(String residenceUseYearName) {
-        this.residenceUseYearName = residenceUseYearName;
+    public void setPropertyTypeName(String propertyTypeName) {
+        this.propertyTypeName = propertyTypeName;
     }
 
     public String getCompletedTimeTypeName() {
@@ -98,18 +98,28 @@ public class CaseBuildingVo extends CaseBuilding {
         this.completedTimeTypeName = completedTimeTypeName;
     }
 
-    @Override
-    public String getPropertyName() {
-        return propertyName;
+    public String getBetweenDistanceName() {
+        return betweenDistanceName;
     }
 
-    @Override
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
+    public void setBetweenDistanceName(String betweenDistanceName) {
+        this.betweenDistanceName = betweenDistanceName;
+    }
+
+    public String getResidenceUseYearName() {
+        return residenceUseYearName;
+    }
+
+    public void setResidenceUseYearName(String residenceUseYearName) {
+        this.residenceUseYearName = residenceUseYearName;
     }
 
     public String getIndustryUseYearName() {
         return industryUseYearName;
+    }
+
+    public void setIndustryUseYearName(String industryUseYearName) {
+        this.industryUseYearName = industryUseYearName;
     }
 
     public DataBuilderVo getDataBuilder() {
@@ -128,8 +138,28 @@ public class CaseBuildingVo extends CaseBuilding {
         this.dataProperty = dataProperty;
     }
 
-    public void setIndustryUseYearName(String industryUseYearName) {
-        this.industryUseYearName = industryUseYearName;
+    public String getConstructionQualityName() {
+        return constructionQualityName;
+    }
+
+    public void setConstructionQualityName(String constructionQualityName) {
+        this.constructionQualityName = constructionQualityName;
+    }
+
+    public String getAppearanceStyleName() {
+        return appearanceStyleName;
+    }
+
+    public void setAppearanceStyleName(String appearanceStyleName) {
+        this.appearanceStyleName = appearanceStyleName;
+    }
+
+    public String getAppearanceNewAndOldName() {
+        return appearanceNewAndOldName;
+    }
+
+    public void setAppearanceNewAndOldName(String appearanceNewAndOldName) {
+        this.appearanceNewAndOldName = appearanceNewAndOldName;
     }
 
     public String getPropertySocialPrestigeName() {

@@ -42,6 +42,58 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业类型
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="propertyTypeName">${caseBuilding.propertyTypeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业类别
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="propertyCategoryName">${caseBuilding.propertyCategoryName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        首层位置
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="firstFloor">${caseBuilding.firstFloor}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        最高层
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="maxFloor">${caseBuilding.maxFloor}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        套内面积
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="inJacketArea">${caseBuilding.inJacketArea}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        使用面积
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="useArea">${caseBuilding.useArea}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         所在位置
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -125,14 +177,6 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        进深
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="diameterDepth">${caseBuilding.diameterDepth}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         土地使用年限
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -150,8 +194,6 @@
                         </label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         交房时间
@@ -161,72 +203,6 @@
                             <fmt:formatDate
                                     value='${caseBuilding.roomTime}' pattern='yyyy-MM-dd'/>
                         </label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        竣工时间获取方式
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="completedTimeTypeName">${caseBuilding.completedTimeTypeName}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        竣工时间
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-
-                        <label class="form-control dbdate" name="beCompletedTime"><fmt:formatDate
-                                value='${caseBuilding.beCompletedTime}' pattern='yyyy-MM-dd'/></label>
-
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        物业类型
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="propertyTypeName">${caseBuilding.propertyTypeName}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        物业类别
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="propertyCategoryName">${caseBuilding.propertyCategoryName}</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        物业公司
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="propertyName">${caseBuilding.propertyName}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        物业公司公司性质
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="propertyName">${caseBuilding.propertyCompanyNatureName}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        物业公司社会信誉
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="propertyName">${caseBuilding.propertySocialPrestigeName}</label>
                     </div>
                 </div>
             </div>
@@ -253,7 +229,116 @@
                         建筑公司
                     </label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <label class="form-control" name="builder">${caseBuilding.builderName}</label>
+                        <label class="form-control">${caseBuilding.builderName}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        工程质量
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" >${caseBuilding.constructionQualityName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        外观风格
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" >${caseBuilding.appearanceStyleName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        外观新旧
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" >${caseBuilding.appearanceNewAndOldName}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼间距描述</label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${caseBuilding.betweenDistanceDescription}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        楼间距
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${caseBuilding.betweenDistanceName}</label>
+                    </div>
+                </div>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元说明</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control">${caseBuilding.remark}</label>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        竣工时间获取方式
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" name="completedTimeTypeName">${caseBuilding.completedTimeTypeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        竣工时间
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control dbdate" name="beCompletedTime"><fmt:formatDate
+                                value='${caseBuilding.beCompletedTime}' pattern='yyyy-MM-dd'/></label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业公司
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control" >${caseBuilding.property}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业公司公司性质
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${caseBuilding.propertyCompanyNatureName}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业公司社会信誉
+                    </label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <label class="form-control">${caseBuilding.propertySocialPrestigeName}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                        物业服务
+                    </label>
+                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <table class="table table-bordered" id="caseBuildingPropertyServiceItemTable" >
+
+                        </table>
                     </div>
                 </div>
             </div>
