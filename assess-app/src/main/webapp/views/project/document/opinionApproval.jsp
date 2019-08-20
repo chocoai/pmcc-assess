@@ -28,7 +28,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <div class="form-horizontal">
+                        <form id="opinionApprovalFrm" class="form-horizontal">
                             <div class="form-group">
                                 <div class='x-valid'>
                                     <label class='col-sm-1 control-label'>
@@ -64,7 +64,54 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <c:choose>
+                                <c:when test="${CurrentStep eq '0' && StepCount eq '2'}">
+                                    <input type="hidden" id="id" name="id" value="${documentOpinion.id}">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                                处理意见<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-md-11 col-sm-11 col-xs-12">
+                                <textarea class="form-control" id="suggestion" name="suggestion" rows="4" required
+                                          data-rule-maxlength="255" placeholder="">${documentOpinion.suggestion}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">回函附件</label>
+                                            <div class="col-sm-11">
+                                                <input id="reply_letter" type="file" multiple="false">
+                                                <div id="_reply_letter"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                                处理意见<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-md-11 col-sm-11 col-xs-12">
+                                                <label class="form-control">${documentOpinion.suggestion}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">回函附件</label>
+                                            <div class="col-sm-11">
+                                                <div id="_reply_letter_d"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+
+
+                        </form>
                     </div>
                 </div>
                 <%@include file="/views/share/form_approval.jsp" %>
@@ -77,32 +124,69 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        FileUtils.getFileShows({
-            target: "file_report",
-            formData: {
-                fieldsName: '${fieldsName}',
-                tableName: AssessDBKey.GenerateReportInfo,
-                tableId: '${documentOpinion.generationId}'
-            },
-            deleteFlag: false
-        })
+        console.log("CurrentStep${CurrentStep}===StepCount${StepCount}")
+        //显示报告
+        loadUploadFiles("file_report", AssessDBKey.GenerateReportInfo, '${documentOpinion.generationId}', '${fieldsName}', false);
+        //合同
         FileUtils.getFileShows({
             target: "file_upload",
             formData: {
                 tableName: "tb_document_opinion",
                 tableId: ${documentOpinion.id},
+                fieldsName: '${fieldsName}',
                 proectId:${documentOpinion.projectId}
             },
             editFlag: true,
             signatureFlag: '${activityCnName}'.indexOf("盖章") > -1,
             deleteFlag: false
         });
+        //回函附件
+        if('${CurrentStep}'=='0'&&'${StepCount}'==2){
+            loadUploadFiles("reply_letter", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", true);
+            FileUtils.uploadFiles({
+                target: "reply_letter",
+                disabledTarget: "btn_submit",
+                formData: {
+                    tableName: "tb_document_opinion",
+                    tableId: ${documentOpinion.id},
+                    fieldsName: "reply_letter",
+                    projectId: "${projectPlanDetails.projectId}"
+                },
+                deleteFlag: true
+            }, {
+                onUploadComplete: function () {
+                    loadUploadFiles("reply_letter", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", true);
+                }
+            });
+        }else{
+            loadUploadFiles("reply_letter_d", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", false);
+        }
     })
+
+    //显示附件
+    function loadUploadFiles(target, tableName, tableId, fieldsName, deleteFlag) {
+        FileUtils.getFileShows({
+            target: target,
+            formData: {
+                tableName: tableName,
+                tableId: tableId,
+                fieldsName: fieldsName,
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: deleteFlag
+        })
+    }
+
     function saveform() {
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formApproval.getFormData();
+
+        var data = {};
+        data.formData = JSON.stringify(formParams("opinionApprovalFrm"));
+        var approvalData = formApproval.getFormData();
+        data = $.extend({}, approvalData, data);
+        console.log(data)
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/documentOpinion/approvalSubmit",
