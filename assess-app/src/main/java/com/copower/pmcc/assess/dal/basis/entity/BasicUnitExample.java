@@ -614,6 +614,76 @@ public class BasicUnitExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andHuxingExplainIsNull() {
+            addCriterion("huxing_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainIsNotNull() {
+            addCriterion("huxing_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainEqualTo(String value) {
+            addCriterion("huxing_explain =", value, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainNotEqualTo(String value) {
+            addCriterion("huxing_explain <>", value, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainGreaterThan(String value) {
+            addCriterion("huxing_explain >", value, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("huxing_explain >=", value, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainLessThan(String value) {
+            addCriterion("huxing_explain <", value, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainLessThanOrEqualTo(String value) {
+            addCriterion("huxing_explain <=", value, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainLike(String value) {
+            addCriterion("huxing_explain like", value, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainNotLike(String value) {
+            addCriterion("huxing_explain not like", value, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainIn(List<String> values) {
+            addCriterion("huxing_explain in", values, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainNotIn(List<String> values) {
+            addCriterion("huxing_explain not in", values, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainBetween(String value1, String value2) {
+            addCriterion("huxing_explain between", value1, value2, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingExplainNotBetween(String value1, String value2) {
+            addCriterion("huxing_explain not between", value1, value2, "huxingExplain");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

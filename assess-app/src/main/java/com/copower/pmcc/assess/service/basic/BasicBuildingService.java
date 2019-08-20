@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
+import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -74,6 +75,8 @@ public class BasicBuildingService {
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private BasicApplyService basicApplyService;
+    @Autowired
+    private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -228,7 +231,9 @@ public class BasicBuildingService {
         vo.setConstructionQualityName(baseDataDicService.getNameById(basicBuilding.getConstructionQuality()));
         vo.setAppearanceStyleName(baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()));
         vo.setAppearanceNewAndOldName(baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()));
-        vo.setPropertyCompanyNatureName(baseDataDicService.getNameById(basicBuilding.getPropertyCompanyNature()));
+        if(basicBuilding.getPropertyCompanyNature()!=null){
+            vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
+        }
         vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(basicBuilding.getPropertySocialPrestige()));
         return vo;
     }
