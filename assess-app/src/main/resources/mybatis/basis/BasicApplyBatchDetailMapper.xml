@@ -13,6 +13,8 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="bis_standard" property="bisStandard" jdbcType="BIT" />
+    <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
+    <result column="base_type" property="baseType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, pid, apply_batch_id, table_name, table_id, name, display_name, creator, gmt_created, 
-    gmt_modified, bis_standard
+    gmt_modified, bis_standard, quote_id, base_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample" >
     select
@@ -113,11 +115,13 @@
     insert into tb_basic_apply_batch_detail (pid, apply_batch_id, table_name, 
       table_id, name, display_name, 
       creator, gmt_created, gmt_modified, 
-      bis_standard)
+      bis_standard, quote_id, base_type
+      )
     values (#{pid,jdbcType=INTEGER}, #{applyBatchId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, 
       #{tableId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{bisStandard,jdbcType=BIT})
+      #{bisStandard,jdbcType=BIT}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -155,6 +159,12 @@
       <if test="bisStandard != null" >
         bis_standard,
       </if>
+      <if test="quoteId != null" >
+        quote_id,
+      </if>
+      <if test="baseType != null" >
+        base_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -186,6 +196,12 @@
       </if>
       <if test="bisStandard != null" >
         #{bisStandard,jdbcType=BIT},
+      </if>
+      <if test="quoteId != null" >
+        #{quoteId,jdbcType=INTEGER},
+      </if>
+      <if test="baseType != null" >
+        #{baseType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -231,6 +247,12 @@
       <if test="record.bisStandard != null" >
         bis_standard = #{record.bisStandard,jdbcType=BIT},
       </if>
+      <if test="record.quoteId != null" >
+        quote_id = #{record.quoteId,jdbcType=INTEGER},
+      </if>
+      <if test="record.baseType != null" >
+        base_type = #{record.baseType,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -248,7 +270,9 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      bis_standard = #{record.bisStandard,jdbcType=BIT}
+      bis_standard = #{record.bisStandard,jdbcType=BIT},
+      quote_id = #{record.quoteId,jdbcType=INTEGER},
+      base_type = #{record.baseType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -286,6 +310,12 @@
       <if test="bisStandard != null" >
         bis_standard = #{bisStandard,jdbcType=BIT},
       </if>
+      <if test="quoteId != null" >
+        quote_id = #{quoteId,jdbcType=INTEGER},
+      </if>
+      <if test="baseType != null" >
+        base_type = #{baseType,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -300,7 +330,9 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      bis_standard = #{bisStandard,jdbcType=BIT}
+      bis_standard = #{bisStandard,jdbcType=BIT},
+      quote_id = #{quoteId,jdbcType=INTEGER},
+      base_type = #{baseType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -256,5 +256,16 @@ public class CaseEstateController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/quoteCaseEstateToBasic", name = "引用案列数据", method = {RequestMethod.GET})
+    public HttpResult quoteCaseEstateToBasic(Integer id,Integer tableId) {
+        try {
+            return HttpResult.newCorrectResult(caseEstateService.quoteCaseEstateToBasic(id,tableId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
 
 }

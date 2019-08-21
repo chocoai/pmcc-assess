@@ -139,7 +139,7 @@ public class BasicApplyBatchDetailService {
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
         //若房屋设置为标准，则存入basicApply
-        this.standardIntoBasicApply(basicApplyBatchDetail,planDetailsId);
+        this.standardIntoBasicApply(basicApplyBatchDetail, planDetailsId);
         return basicApplyBatchDetail;
     }
 
@@ -235,6 +235,14 @@ public class BasicApplyBatchDetailService {
             return this.getDataById(basicApplyBatchDetail.getPid()).getTableId();
         return basicApplyBatchDao.getInfoById(basicApplyBatchDetail.getApplyBatchId()).getEstateId();
     }
+
+    //获取上一级引用数据id
+    public Integer getParentQuoteId(BasicApplyBatchDetail basicApplyBatchDetail) {
+        if (basicApplyBatchDetail.getPid() != 0)
+            return this.getDataById(basicApplyBatchDetail.getPid()).getQuoteId();
+        return basicApplyBatchDao.getInfoById(basicApplyBatchDetail.getApplyBatchId()).getQuoteId();
+    }
+
 
     //获取楼栋
     public List<BasicBuilding> getBuildingListByBatchId(Integer id) throws Exception {

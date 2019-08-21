@@ -65,4 +65,15 @@ public class CaseBuildingController {
             return HttpResult.newErrorResult("异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteCaseBuildToBasic", name = "引用案列数据", method = {RequestMethod.GET})
+    public HttpResult quoteCaseBuildToBasic(Integer id,Integer tableId) {
+        try {
+            return HttpResult.newCorrectResult(caseBuildingService.quoteCaseBuildToBasic(id,tableId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }

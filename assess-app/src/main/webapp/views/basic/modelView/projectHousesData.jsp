@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
+<%--引用项目中的楼盘--%>
 <div id="divBoxProjectData" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
      role="dialog"
@@ -24,16 +24,6 @@
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                         <input type="text" data-rule-maxlength="50"
                                                placeholder="项目名称" id="queryName" name="queryName"
-                                               class="form-control">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        楼盘名称
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" data-rule-maxlength="50"
-                                               placeholder="楼盘名称" id="queryEstateName" name="queryEstateName"
                                                class="form-control">
                                     </div>
                                 </div>
@@ -61,7 +51,6 @@
         </div>
     </div>
 </div>
-
 <div id="divBoxProjectItemData" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
      role="dialog"
@@ -134,7 +123,6 @@
             $("#" + projectData.prototype.config().table).bootstrapTable('destroy');
             TableInit(projectData.prototype.config().table, "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {
                 queryName: $("#queryName").val(),
-                queryEstateName: $("#queryEstateName").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -160,8 +148,8 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?planDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' >查看详情</a>";
-                    str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="引用" onclick="projectData.prototype.autocompleteData(' + index + ');" >引用</a>';
+                    str = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?planDetailsId=" + row.id + "' data-placement='top' data-original-title='查看信息' class='btn btn-xs btn-info tooltips' >查看详情</a>";
+                   /* str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="引用" onclick="projectData.prototype.autocompleteData(' + index + ');" >引用</a>';*/
                     str += '</div>';
                     return str;
                 }
@@ -189,4 +177,492 @@
             }
         }
     }
+</script>
+
+<%--引用案例库信息--%>
+<div id="caseEstateModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">楼盘</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <form class="form-horizontal" id="frmCaseEstate">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        省
+                                    </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <select name="province" class="form-control search-select select2">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        市
+                                    </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <select name="city" class="form-control search-select select2">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘名称</label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="text" class="form-control" name="search"/>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <label class="btn btn-primary" onclick="caseFun.caseEstate.find();">
+                                            查询
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-bordered" id="caseEstateTable">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="caseBuildModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">楼栋</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <table class="table table-bordered" id="caseBuildTable">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="caseUnitModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">单元</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <table class="table table-bordered" id="caseUnitTable">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="caseHouseModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">房屋</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <table class="table table-bordered" id="caseHouseTable">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var CaseFunFun = function () {
+
+    };
+    CaseFunFun.prototype.config = {
+        father: {
+            caseEstate: {
+                frm: function () {
+                    return "frmCaseEstate";//楼盘 frm
+                },
+                table: function () {
+                    return "caseEstateTable";//楼盘 table
+                },
+                box: function () {
+                    return "caseEstateModal";//楼盘 modal
+                }
+            },
+            caseBuild: {
+                table: function () {
+                    return "caseBuildTable";
+                },
+                box: function () {
+                    return "caseBuildModal";
+                }
+            },
+            caseUnit: {
+                table: function () {
+                    return "caseUnitTable";
+                },
+                box: function () {
+                    return "caseUnitModal";
+                }
+            },
+            caseHouse: {
+                table: function () {
+                    return "caseHouseTable";
+                },
+                box: function () {
+                    return "caseHouseModal";
+                }
+            }
+        }
+    };
+
+    CaseFunFun.prototype.isEmpty = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    }
+
+    CaseFunFun.prototype.event = {
+    };
+    var caseFun = new CaseFunFun();
+
+    caseFun.caseEstate = {
+        /**
+         * @author:  zch
+         * 描述:加载数据列表
+         * @date:2018-09-13
+         **/
+        loadDataList: function (flag) {
+            var estate = formParams(caseFun.config.father.caseEstate.frm());
+            if (!flag) {
+                estate = {search: null, city: null, district: null, province: null};
+            }
+            var cols = [];
+            cols.push({field: 'name', title: '名称'});
+            cols.push({
+                field: 'area', title: '区域', formatter: function (value, row, index) {
+                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+                }
+            });
+            cols.push({field: 'blockName', title: '版块'});
+            cols.push({field: 'averagePrice', title: '均价'});
+            cols.push({field: 'coverAnArea', title: '占地面积'});
+            cols.push({field: 'version', title: '版本'});
+            cols.push({
+                field: 'id', title: '查询', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="caseFun.caseEstate.findData(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseEstate.quote(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + caseFun.config.father.caseEstate.table()).bootstrapTable('destroy');
+            TableInit(caseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/caseEstate/getCaseEstateVos", cols, {
+                name: estate.search,
+                city: estate.city,
+                province: estate.province
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+
+        },
+        find: function () {
+            var itemVal = $("#" + caseFun.config.father.caseEstate.frm()).find("[name='search']").val();
+            caseFun.caseEstate.loadDataList(true);
+        },
+        /**
+         * @author:  zch
+         * 描述:详情数据
+         * @date:2018-09-13
+         **/
+        findData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseEstate/detailView";
+            href += "?id=" + id;
+            window.open(href, "");
+        },
+        showModel: function () {
+            AssessCommon.initAreaInfo({
+                provinceTarget: $("#" + caseFun.config.father.caseEstate.frm()).find('[name=province]'),
+                cityTarget: $("#" + caseFun.config.father.caseEstate.frm()).find('[name=city]')
+            });
+            $("#" + caseFun.config.father.caseEstate.frm()).clearAll();
+            caseFun.caseEstate.loadDataList(true);
+            $('#' + caseFun.config.father.caseEstate.box()).modal("show");
+        },
+        quote: function (id) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/caseEstate/quoteCaseEstateToBasic',
+                data: {
+                    id: id,
+                    tableId:${tableId}
+                },
+                type: "get",
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data != null) {
+                            fillInformation.autocompleteCaseData(result.data);
+                            $('#' + caseFun.config.father.caseEstate.box()).modal('hide');
+                        }
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        }
+    };
+
+
+    caseFun.caseBuild = {
+        findData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseBuilding/detailView";
+            href += "?id=" + id;
+            window.open(href, "");
+        },
+        loadDataList: function (estateId) {
+            var cols = [];
+            cols.push({field: 'buildingNumber', title: '楼栋编号'});
+            cols.push({field: 'buildingName', title: '楼栋名称'});
+            cols.push({field: 'version', title: '版本'});
+            cols.push({
+                field: 'id', title: '查询', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseBuild.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseBuild.quote(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + caseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
+            TableInit(caseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getBuildingList", cols, {
+                estateId: estateId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        showModel: function (estateId) {
+            caseFun.caseBuild.loadDataList(estateId);
+            $('#' + caseFun.config.father.caseBuild.box()).modal("show");
+        },
+        quote: function (id) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/caseBuilding/quoteCaseBuildToBasic',
+                data: {
+                    id: id,
+                    tableId:${tableId}
+                },
+                type: "get",
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data != null) {
+                            fillInformation.autocompleteCaseData(result.data);
+                            $('#' + caseFun.config.father.caseBuild.box()).modal('hide');
+                        }
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        }
+    };
+
+
+    caseFun.caseUnit = {
+        findData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseUnit/detailView";
+            href += "?id=" + id;
+            window.open(href, "");
+        },
+        loadDataList: function (buildingId) {
+            var cols = [];
+            cols.push({field: 'unitNumber', title: '单元编号'});
+            cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
+            cols.push({field: 'version', title: '版本'});
+            cols.push({
+                field: 'id', title: '查询', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseUnit.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseUnit.quote(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + caseFun.config.father.caseUnit.table()).bootstrapTable('destroy');
+            TableInit(caseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/caseUnit/getCaseUnitList", cols, {
+                caseBuildingId: buildingId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        showModel: function (buildingId) {
+            caseFun.caseUnit.loadDataList(buildingId);
+            $('#' + caseFun.config.father.caseUnit.box()).modal("show");
+        },
+        quote: function (id) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/caseUnit/quoteCaseUnitToBasic',
+                data: {
+                    id: id,
+                    tableId:${tableId}
+                },
+                type: "get",
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data != null) {
+                            fillInformation.autocompleteCaseData(result.data);
+                            $('#' + caseFun.config.father.caseUnit.box()).modal('hide');
+                        }
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        }
+    };
+
+    caseFun.caseHouse = {
+        findData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseHouse/detailView";
+            href += "?id=" + id;
+            window.open(href, "");
+        },
+        loadDataList: function (unitId) {
+            var cols = [];
+            cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'floor', title: '所在楼层'});
+            cols.push({field: 'version', title: '版本'});
+            cols.push({
+                field: 'id', title: '查询', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseHouse.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseHouse.quote(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + caseFun.config.father.caseHouse.table()).bootstrapTable('destroy');
+            TableInit(caseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/caseHouse/getCaseHouseList", cols, {
+                unitId: unitId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        showModel: function (unitId) {
+            caseFun.caseHouse.loadDataList(unitId);
+            $('#' + caseFun.config.father.caseHouse.box()).modal("show");
+        },
+        quote: function (id) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/caseHouse/quoteCaseHouseToBasic',
+                data: {
+                    id: id,
+                    tableId:${tableId}
+                },
+                type: "get",
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data != null) {
+                            fillInformation.autocompleteCaseData(result.data);
+                            $('#' + caseFun.config.father.caseHouse.box()).modal('hide');
+                        }
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        }
+    };
+
+
+
 </script>

@@ -325,6 +325,8 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchDetail.setId(id);
             BasicApplyBatchDetail detailData = basicApplyBatchDetailService.getSingleData(basicApplyBatchDetail);
             modelAndView.addObject("tableId", detailData.getTableId());
+            //上级引用数据Id
+            modelAndView.addObject("parentQuoteId", basicApplyBatchDetailService.getParentQuoteId(detailData));
         }
         BasicApply basicApply = new BasicApply();
         basicApply.setType(type);

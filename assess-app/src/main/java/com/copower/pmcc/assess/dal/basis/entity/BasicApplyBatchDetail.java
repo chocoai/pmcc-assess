@@ -25,6 +25,10 @@ public class BasicApplyBatchDetail {
 
     private Boolean bisStandard;
 
+    private Integer quoteId;
+
+    private String baseType;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +115,21 @@ public class BasicApplyBatchDetail {
 
     public void setBisStandard(Boolean bisStandard) {
         this.bisStandard = bisStandard;
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
+    }
+
+    public String getBaseType() {
+        return baseType;
+    }
+
+    public void setBaseType(String baseType) {
+        this.baseType = baseType == null ? null : baseType.trim();
     }
 }

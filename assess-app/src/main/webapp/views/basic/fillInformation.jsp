@@ -18,6 +18,11 @@
                                        onclick="projectData.prototype.showModel();"
                                        value="引用项目中的楼盘">
                             </div>
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input type="button" class="btn btn-success" data-mode="reference"
+                                       onclick="fillInformation.showCaseModal();"
+                                       value="引用案例数据">
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -65,7 +70,6 @@
                         basicCommon.hideAllTab();
                         //初始楼盘信息
                         if("estate"=="${buildingType}"){
-
                             estateCommon.loadMarkerList(result.data.id);
                             estateCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showEstateTab("add"));
                         }
@@ -95,6 +99,51 @@
             }
         })
     };
+
+    //引用案例时打开对应的modal
+    fillInformation.showCaseModal = function () {
+        //打开楼盘modal
+        if("estate"=="${buildingType}"){
+            caseFun.caseEstate.showModel();
+        }
+
+        //打开楼栋modal
+        if("building"=="${buildingType}") {
+            caseFun.caseBuild.showModel(${parentQuoteId});
+        }
+        //打开单元modal
+        if("unit"=="${buildingType}") {
+            caseFun.caseUnit.showModel(${parentQuoteId});
+        }
+        //打开房屋modal
+        if("house"=="${buildingType}") {
+            caseFun.caseHouse.showModel(${parentQuoteId});
+        }
+
+    };
+
+
+    //填充对应的案列数据
+    fillInformation.autocompleteCaseData = function (data) {
+        if("estate"=="${buildingType}"){
+            var basicEstate = data.basicEstate;
+            var basicEstateLandState = data.basicEstateLandState;
+            estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+        }
+
+        if("building"=="${buildingType}") {
+            buildingCommon.showBuildingView(data);
+        }
+
+        if("unit"=="${buildingType}") {
+            unitCommon.showUnitView(data);
+        }
+
+        if("house"=="${buildingType}") {
+            houseCommon.showHouseView(data);
+        }
+    };
+
 
     $(function(){
         industry.keyApp("${type}");
