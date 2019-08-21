@@ -140,30 +140,33 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                建筑安装工程费<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    建筑安装工程费<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="hidden" name="constructionInstallationEngineeringFeeIds" value="${mdDevelopment.constructionInstallationEngineeringFeeIds}">
-                        <input type="text" readonly="readonly" required="required"
-                               placeholder="建筑安装工程费"  class="form-control"
-                               name="constructionInstallationEngineeringFee" onblur="underConstruction.calculationD21()" value="${mdDevelopment.constructionInstallationEngineeringFee}">
+                        <input type="text" readonly="readonly" class="form-control" name="constructionInstallationEngineeringFee" onblur="underConstruction.calculationD21()" value="${mdDevelopment.constructionInstallationEngineeringFee}">
                         <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="underConstruction.constructionInstallationEngineeringFeeEvent.show()">
-                                            <i class="fa fa-search"></i>
-                                            </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                                            <i class="fa fa-trash-o"></i>
-                                            </button>
-                    </span>
+                              <button type="button" class="btn  btn-success" onclick="underConstruction.constructionInstallationEngineeringFeeEvent.appendHTML(this)"><i class="fa fa-plus"></i></button>
+                        </span>
                     </div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                    <div class="input-group">
+                        <button type="button" class="btn btn-default"
+                                onclick="underConstruction.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                            工程费列表
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 " id="engineeringConstructionInstallationEngineeringFeeInfoTarget">
+
                 </div>
             </div>
         </div>
@@ -851,25 +854,20 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建筑安装工程费</h3>
             </div>
-            <form id="boxMdDevelopmentEngineeringFrm" class="form-horizontal">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
+            <input type="hidden" name="id">
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <div class="panel-body">
 
-                            </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
             <form>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            onclick="underConstruction.constructionInstallationEngineeringFeeEvent.select()">
-                        选择
                     </button>
                     <button type="button" class="btn btn-primary"
                             onclick="underConstruction.constructionInstallationEngineeringFeeEvent.save()">

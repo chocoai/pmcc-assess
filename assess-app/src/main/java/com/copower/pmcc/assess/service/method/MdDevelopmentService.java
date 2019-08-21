@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -62,16 +63,31 @@ public class MdDevelopmentService {
         mdArchitecturalObj.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopment.class));
         mdArchitecturalObj.setPid(0);
         mdArchitecturalObj.setPlanDetailsId(oo.getPlanDetailsId());
+        mdArchitecturalObj.setCreator(commonService.thisUserAccount());
         List<MdArchitecturalObj> mdArchitecturalObjList = mdArchitecturalObjService.getMdArchitecturalObjListByExample(mdArchitecturalObj) ;
         if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)){
             for (MdArchitecturalObj po:mdArchitecturalObjList){
-                po.setPid(oo.getId());
-                mdArchitecturalObjService.saveMdArchitecturalObj(po) ;
+                mdArchitecturalObjService.deleteMdArchitecturalObjById(po.getId()) ;
+            }
+            mdArchitecturalObjList.clear();
+        }
+        if (StringUtils.isNotEmpty(oo.getConstructionInstallationEngineeringFeeIds())){
+            List<Integer> integerList = FormatUtils.transformString2Integer(oo.getConstructionInstallationEngineeringFeeIds()) ;
+            if (CollectionUtils.isNotEmpty(integerList)){
+                for (Integer integer:integerList){
+                    MdArchitecturalObj architecturalObj = mdArchitecturalObjService.getMdArchitecturalObjById(integer) ;
+                    if (architecturalObj == null){
+                        continue;
+                    }
+                    architecturalObj.setPid(oo.getId());
+                    mdArchitecturalObjService.saveMdArchitecturalObj(architecturalObj) ;
+                }
             }
         }
         MdDevelopmentInfrastructureChildren infrastructureChildren = new MdDevelopmentInfrastructureChildren();
         infrastructureChildren.setPlanDetailsId(oo.getPlanDetailsId());
         infrastructureChildren.setPid(0);
+        infrastructureChildren.setCreator(commonService.thisUserAccount());
         List<MdDevelopmentInfrastructureChildren> childrenList = mdDevelopmentInfrastructureChildrenService.getMdDevelopmentInfrastructureChildrenListByExample(infrastructureChildren) ;
         if (CollectionUtils.isNotEmpty(childrenList)){
             for (MdDevelopmentInfrastructureChildren po:childrenList){
@@ -82,6 +98,7 @@ public class MdDevelopmentService {
         MdDevelopmentIncomeCategory mdDevelopmentIncomeCategory = new MdDevelopmentIncomeCategory();
         mdDevelopmentIncomeCategory.setPlanDetailsId(oo.getPlanDetailsId());
         mdDevelopmentIncomeCategory.setPid(0);
+        mdDevelopmentIncomeCategory.setCreator(commonService.thisUserAccount());
         List<MdDevelopmentIncomeCategory> categoryList =  mdDevelopmentIncomeCategoryService.getMdDevelopmentIncomeCategoryListByExample(mdDevelopmentIncomeCategory) ;
         if (CollectionUtils.isNotEmpty(categoryList)){
             for (MdDevelopmentIncomeCategory obj:categoryList){
@@ -229,6 +246,20 @@ public class MdDevelopmentService {
 //                }
             }
         }
+
+        if (StringUtils.isNotEmpty(mdDevelopment.getConstructionInstallationEngineeringFeeIds())){
+            List<Integer> integerList = FormatUtils.transformString2Integer(mdDevelopment.getConstructionInstallationEngineeringFeeIds()) ;
+            if (CollectionUtils.isNotEmpty(integerList)){
+                for (Integer integer:integerList){
+                    MdArchitecturalObj architecturalObj = mdArchitecturalObjService.getMdArchitecturalObjById(integer) ;
+                    if (architecturalObj == null){
+                        continue;
+                    }
+                    vo.getConstructionInstallationEngineeringFeeDtos().add(new KeyValueDto(architecturalObj.getId().toString(),architecturalObj.getPrice()==null?"0":architecturalObj.getPrice().setScale(2,BigDecimal.ROUND_UP).toString()));
+                }
+            }
+        }
+
         return vo;
     }
 

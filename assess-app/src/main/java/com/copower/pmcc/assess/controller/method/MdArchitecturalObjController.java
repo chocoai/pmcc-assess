@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.method;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
 import com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj;
 import com.copower.pmcc.assess.service.BaseService;
@@ -33,16 +34,39 @@ public class MdArchitecturalObjController {
     private BaseDataDicService baseDataDicService;
 
     @PostMapping(value = "/saveMdArchitecturalObj")
-    public HttpResult saveMdArchitecturalObj(String forData, String type, String databaseName, Integer pid, Integer planDetailsId) {
+    public HttpResult saveMdArchitecturalObj(String forData,String jsonString) {
         try {
-            MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
-            saveMdArchitecturalObj2(forData, type, databaseName, pid, planDetailsId, mdArchitecturalObj);
+            MdArchitecturalObj mdArchitecturalObj = JSONObject.parseObject(forData,MdArchitecturalObj.class) ;
+            mdArchitecturalObj.setJsonContent(jsonString);
+            mdArchitecturalObjService.saveMdArchitecturalObj(mdArchitecturalObj);
             return HttpResult.newCorrectResult(200, mdArchitecturalObj);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
         }
     }
+
+
+    @GetMapping(value = "/getMdArchitecturalObjById")
+    public HttpResult getMdArchitecturalObj(Integer id){
+        try {
+            return HttpResult.newCorrectResult(200, mdArchitecturalObjService.getMdArchitecturalObjById(id));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+    @PostMapping(value = "/deleteMdArchitecturalObjById")
+    public HttpResult deleteMdArchitecturalObjById(Integer id){
+        try {
+            return HttpResult.newCorrectResult(200, mdArchitecturalObjService.deleteMdArchitecturalObjById(id));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
 
     @PostMapping(value = "/removeMdArchitecturalObj")
     public HttpResult removeMdArchitecturalObj(String type, String databaseName, Integer pid, Integer planDetailsId) {

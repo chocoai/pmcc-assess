@@ -252,6 +252,8 @@
         underConstruction.unsaleableBuildingAreaFunHandle() ;
         landEngineering.inputBlurEvent() ;
         underConstruction.inputBlurEvent() ;
+        landEngineering.constructionInstallationEngineeringFeeEvent.loadHtml();
+        underConstruction.constructionInstallationEngineeringFeeEvent.loadHtml();
     };
 
     $(document).ready(function () {

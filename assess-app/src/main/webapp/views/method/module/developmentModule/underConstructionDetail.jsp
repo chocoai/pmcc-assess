@@ -123,13 +123,24 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <div class="input-group">
-                        <label class="form-control">${mdDevelopment.constructionInstallationEngineeringFee}</label>
-                        <span class="input-group-btn">
-                              <input type="button" class="btn btn-primary" value="建筑安装工程费"
-                                     onclick="constructionInstallationEngineeringFeeEvent();"/>
-                            </span>
-                    </div>
+                    <label class="form-control">${mdDevelopment.constructionInstallationEngineeringFee}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    工程费列表
+                </label>
+                <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
+                    <c:forEach items="${mdDevelopment.constructionInstallationEngineeringFeeDtos}" var="item">
+                        <div class="panel panel-info">
+                            <i class="fa fa-search" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')" title="查看"
+                               style="margin-right: 10px;font-size: 15px;cursor: pointer;"></i>
+                            <a  style="cursor: pointer;" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')">${item.value}</a>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
         </div>
@@ -661,28 +672,21 @@
 </div>
 
 <script>
-    function constructionInstallationEngineeringFeeEvent() {
+    function constructionInstallationEngineeringFeeEvent(id) {
         var target = $("#boxMdDevelopmentEngineering");
         if (target.find(".panel-body").find("table").size() == 0) {
             target.find(".panel-body").append(developmentCommon.architecturalB.getHtmlDetail());
             developmentCommon.architecturalB.treeGirdParse(target);
         }
-        developmentCommon.architecturalB.getData("engineering",AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}',function (data) {
-            var item = undefined ;
-            if (data.length >= 1){
-                var n = data[0] ;
-                if (n.jsonContent){
-                    try {
-                        item = JSON.parse(n.jsonContent) ;
-                    } catch (e) {
-                        console.log("解析异常!") ;
-                    }
-                }
+        developmentCommon.getMdArchitecturalObjById(id,function (item) {
+            var data = {} ;
+            try {
+                data = JSON.parse(item.jsonContent) ;
+            } catch (e) {
+                console.log("解析异常!");
             }
-            if (item){
-                developmentCommon.architecturalB.initData(target.find("table"),item) ;
-            }
-        }) ;
+            developmentCommon.architecturalB.initData(target.find("table"),data) ;
+        });
         target.modal("show");
     }
 

@@ -3,14 +3,17 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdArchitecturalObjMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="json_content" property="jsonContent" jdbcType="VARCHAR" />
     <result column="database_name" property="databaseName" jdbcType="VARCHAR" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj" extends="BaseResultMap" >
+    <result column="json_content" property="jsonContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,9 +74,27 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, creator, gmt_created, gmt_modified, json_content, database_name, plan_details_id, 
-    type, pid
+    id, database_name, plan_details_id, type, pid, price, creator, gmt_created, gmt_modified
   </sql>
+  <sql id="Blob_Column_List" >
+    json_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObjExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_md_architectural_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObjExample" >
     select
     <if test="distinct" >
@@ -88,9 +109,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_md_architectural_obj
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -108,12 +131,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_architectural_obj (creator, gmt_created, gmt_modified, 
-      json_content, database_name, plan_details_id, 
-      type, pid)
-    values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{jsonContent,jdbcType=VARCHAR}, #{databaseName,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, 
-      #{type,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER})
+    insert into tb_md_architectural_obj (database_name, plan_details_id, type, 
+      pid, price, creator, 
+      gmt_created, gmt_modified, json_content
+      )
+    values (#{databaseName,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{pid,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{jsonContent,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -121,18 +146,6 @@
     </selectKey>
     insert into tb_md_architectural_obj
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-      <if test="jsonContent != null" >
-        json_content,
-      </if>
       <if test="databaseName != null" >
         database_name,
       </if>
@@ -145,20 +158,23 @@
       <if test="pid != null" >
         pid,
       </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="price != null" >
+        price,
+      </if>
       <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
+        creator,
       </if>
       <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
+        gmt_created,
       </if>
       <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
+        gmt_modified,
       </if>
       <if test="jsonContent != null" >
-        #{jsonContent,jdbcType=VARCHAR},
+        json_content,
       </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="databaseName != null" >
         #{databaseName,jdbcType=VARCHAR},
       </if>
@@ -170,6 +186,21 @@
       </if>
       <if test="pid != null" >
         #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jsonContent != null" >
+        #{jsonContent,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -185,18 +216,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.jsonContent != null" >
-        json_content = #{record.jsonContent,jdbcType=VARCHAR},
-      </if>
       <if test="record.databaseName != null" >
         database_name = #{record.databaseName,jdbcType=VARCHAR},
       </if>
@@ -209,7 +228,38 @@
       <if test="record.pid != null" >
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.jsonContent != null" >
+        json_content = #{record.jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tb_md_architectural_obj
+    set id = #{record.id,jdbcType=INTEGER},
+      database_name = #{record.databaseName,jdbcType=VARCHAR},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DECIMAL},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      json_content = #{record.jsonContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -217,14 +267,14 @@
   <update id="updateByExample" parameterType="map" >
     update tb_md_architectural_obj
     set id = #{record.id,jdbcType=INTEGER},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      json_content = #{record.jsonContent,jdbcType=VARCHAR},
       database_name = #{record.databaseName,jdbcType=VARCHAR},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
-      pid = #{record.pid,jdbcType=INTEGER}
+      pid = #{record.pid,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DECIMAL},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -232,18 +282,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj" >
     update tb_md_architectural_obj
     <set >
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="jsonContent != null" >
-        json_content = #{jsonContent,jdbcType=VARCHAR},
-      </if>
       <if test="databaseName != null" >
         database_name = #{databaseName,jdbcType=VARCHAR},
       </if>
@@ -256,19 +294,47 @@
       <if test="pid != null" >
         pid = #{pid,jdbcType=INTEGER},
       </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jsonContent != null" >
+        json_content = #{jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj" >
+    update tb_md_architectural_obj
+    set database_name = #{databaseName,jdbcType=VARCHAR},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      json_content = #{jsonContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj" >
     update tb_md_architectural_obj
-    set creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      json_content = #{jsonContent,jdbcType=VARCHAR},
-      database_name = #{databaseName,jdbcType=VARCHAR},
+    set database_name = #{databaseName,jdbcType=VARCHAR},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=INTEGER}
+      pid = #{pid,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -16,15 +16,21 @@ public interface MdArchitecturalObjMapper {
 
     int insertSelective(MdArchitecturalObj record);
 
+    List<MdArchitecturalObj> selectByExampleWithBLOBs(MdArchitecturalObjExample example);
+
     List<MdArchitecturalObj> selectByExample(MdArchitecturalObjExample example);
 
     MdArchitecturalObj selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") MdArchitecturalObj record, @Param("example") MdArchitecturalObjExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") MdArchitecturalObj record, @Param("example") MdArchitecturalObjExample example);
+
     int updateByExample(@Param("record") MdArchitecturalObj record, @Param("example") MdArchitecturalObjExample example);
 
     int updateByPrimaryKeySelective(MdArchitecturalObj record);
+
+    int updateByPrimaryKeyWithBLOBs(MdArchitecturalObj record);
 
     int updateByPrimaryKey(MdArchitecturalObj record);
 }

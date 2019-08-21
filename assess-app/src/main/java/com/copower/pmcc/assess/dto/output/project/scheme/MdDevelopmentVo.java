@@ -1,6 +1,10 @@
 package com.copower.pmcc.assess.dto.output.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.entity.MdDevelopment;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zch on 2019/7/8.
@@ -49,7 +53,7 @@ public class MdDevelopmentVo extends MdDevelopment {
 
     private String f24Value;
 
-
+    private List<KeyValueDto> constructionInstallationEngineeringFeeDtos = new ArrayList<KeyValueDto>(0) ;
 
     public String getF20() {
         return f20;
@@ -363,5 +367,13 @@ public class MdDevelopmentVo extends MdDevelopment {
 
     public void setF24Value(String f24Value) {
         this.f24Value = f24Value;
+    }
+
+    public List<KeyValueDto> getConstructionInstallationEngineeringFeeDtos() {
+        return constructionInstallationEngineeringFeeDtos;
+    }
+
+    public void setConstructionInstallationEngineeringFeeDtos(List<KeyValueDto> constructionInstallationEngineeringFeeDtos) {
+        this.constructionInstallationEngineeringFeeDtos = constructionInstallationEngineeringFeeDtos;
     }
 }

@@ -174,9 +174,9 @@
 
 
 
-        <!--<table tableName="tb_md_development_income_category" domainObjectName="MdDevelopmentIncomeCategory">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_md_architectural_obj" domainObjectName="MdArchitecturalObj">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
 
 

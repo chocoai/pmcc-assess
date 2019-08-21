@@ -154,30 +154,73 @@
 
     developmentCommon.saveMdArchitecturalObj = function (data, type, databaseName, pid, planDetailsId, callback) {
         var item = {
-            forData: JSON.stringify(data),
             type: type,
             planDetailsId: planDetailsId,
             pid: pid,
             databaseName: databaseName
         };
         developmentCommon.removeMdArchitecturalObj(item.type, item.databaseName, item.pid, item.planDetailsId, function () {
-            $.ajax({
-                type: "post",
-                url: "${pageContext.request.contextPath}/mdArchitecturalObj/saveMdArchitecturalObj",
-                data: item,
-                success: function (result) {
-                    if (result.ret) {
-                        if (callback) {
-                            callback(result.data);
-                        }
-                    } else {
-                        Alert("保存失败:" + result.errmsg);
+            developmentCommon.saveMdArchitecturalObj2(data,item,callback) ;
+        });
+    };
+
+    developmentCommon.saveMdArchitecturalObj2 = function (data,obj,callback) {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/mdArchitecturalObj/saveMdArchitecturalObj",
+            data: {jsonString:JSON.stringify(data),forData:JSON.stringify(obj)},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
                     }
-                },
-                error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    } ;
+
+    developmentCommon.getMdArchitecturalObjById = function (id , callback) {
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/mdArchitecturalObj/getMdArchitecturalObjById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
+    developmentCommon.deleteMdArchitecturalObjById = function (id , callback) {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/mdArchitecturalObj/deleteMdArchitecturalObjById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
         });
     };
 
@@ -222,15 +265,6 @@
     };
 
     developmentCommon.architecturalA = {
-        get: function (type, callback) {
-            var pid = 0;
-            if (developmentCommon.isNotBlank('${mdDevelopment}')) {
-                if (developmentCommon.isNotBlank('${mdDevelopment.id}')) {
-                    pid = '${mdDevelopment.id}';
-                }
-            }
-            developmentCommon.getMdArchitecturalObjList(type, AssessDBKey.MdDevelopment, pid, '${projectPlanDetails.id}', callback);
-        },
         totalResult: function (that) {
             var value = $(that).val();
             if (developmentCommon.isNotBlank(value)) {
@@ -1706,5 +1740,14 @@
     </button>
 </script>
 
+<script type="text/html" id="constructionInstallationEngineeringFeeInfoModelHtml">
+    <div class="panel panel-info">
+        <i class="fa fa-close close" title="删除" onclick="{method}.deleteConstructionInstallation('{uuid}')"
+           style="margin-right: 10px;font-size: 15px;cursor: pointer;"></i>
+        <i class="fa fa-search" onclick="{method}.detailsConstructionInstallation('{uuid}')" title="查看"
+           style="margin-right: 10px;font-size: 15px;cursor: pointer;"></i>
+        <a  style="cursor: pointer;" onclick="{method}.detailsConstructionInstallation('{uuid}')">{price}</a>
+    </div>
+</script>
 
 

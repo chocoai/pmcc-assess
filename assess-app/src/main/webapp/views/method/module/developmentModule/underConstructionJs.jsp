@@ -6,6 +6,7 @@
     underConstruction.infrastructureFooterHtml = "#underConstructionMdDevelopmentInfrastructureFooter";
     underConstruction.incomeCategoryTable = $("#engineeringIncomeCategoryTableId");
     underConstruction.incomeCategoryFooterHtml = "#engineeringMdDevelopmentIncomeCategoryFooter";
+    underConstruction.engineeringFeeInfoTarget = $("#engineeringConstructionInstallationEngineeringFeeInfoTarget");
     underConstruction.fixed = 2; //小数点保留2位
     underConstruction.fixedMax = 4; //小数点保留4位
     underConstruction.fixedMin = 0; //小数点保留0位
@@ -590,55 +591,83 @@
 
     //单元格f21
     underConstruction.constructionInstallationEngineeringFeeEvent = {
-        show: function () {
-            var target = $("#boxMdDevelopmentEngineering");
-            if (target.find(".panel-body").find("table").size() == 0) {
-                target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
-                developmentCommon.architecturalB.treeGirdParse(target);
-            }
-            developmentCommon.architecturalB.getData(underConstruction.type,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}',function (data) {
-                var item = undefined ;
-                if (data.length >= 1){
-                    var n = data[0] ;
-                    if (n.jsonContent){
-                        try {
-                            item = JSON.parse(n.jsonContent) ;
-                        } catch (e) {
-                            console.log("解析异常!") ;
-                        }
-                    }
+        detailsConstructionInstallation:function (id) {
+            underConstruction.constructionInstallationEngineeringFeeEvent.appendHTML() ;
+            developmentCommon.getMdArchitecturalObjById(id,function (item) {
+                var target = $("#boxMdDevelopmentEngineering");
+                target.find("input[name='id']").val(item.id) ;
+                var data = {} ;
+                try {
+                    data = JSON.parse(item.jsonContent) ;
+                } catch (e) {
+                    console.log("解析异常!");
                 }
-                if (item){
-                    developmentCommon.architecturalB.initData(target.find("table"),item) ;
-                }
-            }) ;
-            target.modal("show");
+                developmentCommon.architecturalB.initData(target.find("table"),data) ;
+            });
         },
-        select:function () {
-            underConstruction.constructionInstallationEngineeringFeeEvent.event() ;
+        deleteConstructionInstallation:function (id) {
+            developmentCommon.deleteMdArchitecturalObjById(id,function () {
+                underConstruction.constructionInstallationEngineeringFeeEvent.loadHtml();
+            }) ;
         },
         save: function () {
-            underConstruction.constructionInstallationEngineeringFeeEvent.event(function (data) {
-                developmentCommon.saveMdArchitecturalObj(data , underConstruction.type ,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}' , function () {
-                    toastr.success('保存成功!');
-                }) ;
-            }) ;
-        },
-        event:function (callback) {
             var target = $("#boxMdDevelopmentEngineering");
             var table = target.find("table");
             var value = table.find("tfoot").find("input[name='totalPrice']").first().val();
-            if (!AssessCommon.isNumber(value)) {
+            if (!$.isNumeric(value)) {
                 toastr.success('请重新填写!');
                 return false;
             }
-            value = Number(value);
-            underConstruction.target.find("input[name='constructionInstallationEngineeringFee']").val(value.toFixed(underConstruction.fixed)).trigger('blur');
-            underConstruction.target.find("input[name='reconnaissanceDesign']").trigger('blur');
-            if (callback){
-                callback(developmentCommon.architecturalB.getFomData(table)) ;
-            }
+            var obj = {} ;
+            obj.databaseName = AssessDBKey.ProjectPlanDetails ;
+            obj.pid = '${projectPlanDetails.pid}';
+            obj.type = underConstruction.type ;
+            obj.price = Number(value) ;
+            obj.planDetailsId = '${projectPlanDetails.pid}' ;
+            obj.id = target.find("input[name='id']").val();
+            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table),obj,function (item) {
+                toastr.success('保存成功!');
+                underConstruction.constructionInstallationEngineeringFeeEvent.loadHtml();
+            }) ;
             target.modal("hide");
+        },
+        loadHtml:function () {
+            var obj = { } ;
+            obj.databaseName = AssessDBKey.ProjectPlanDetails ;
+            obj.pid = '${projectPlanDetails.pid}';
+            obj.type = underConstruction.type ;
+            obj.planDetailsId = '${projectPlanDetails.pid}' ;
+            developmentCommon.getMdArchitecturalObjList(obj.type,obj.databaseName,obj.pid,obj.planDetailsId,function (data) {
+                underConstruction.engineeringFeeInfoTarget.empty();
+                var html = "";
+                var multiply = math.bignumber(0);
+                var arr = [] ;
+                if (data.length >= 1) {
+                    $.each(data, function (i, item) {
+                        var resetHtml = $("#constructionInstallationEngineeringFeeInfoModelHtml").html();
+                        resetHtml = resetHtml.replace(/{uuid}/g, item.id);
+                        resetHtml = resetHtml.replace(/{price}/g, item.price);
+                        resetHtml = resetHtml.replace(/{method}/g, "underConstruction.constructionInstallationEngineeringFeeEvent");
+                        html += resetHtml;
+                        if ($.isNumeric(item.price)){
+                            multiply = math.add(multiply, math.bignumber(item.price));
+                        }
+                        arr.push(item.id) ;
+                    });
+                }
+                multiply = Number(multiply.toString()) ;
+                underConstruction.target.find("input[name='constructionInstallationEngineeringFee']").val(multiply.toFixed(underConstruction.fixed)).trigger('blur');
+                underConstruction.target.find("input[name='reconnaissanceDesign']").trigger('blur');
+                underConstruction.target.find("input[name='constructionInstallationEngineeringFeeIds']").val(arr.join(","));
+                underConstruction.engineeringFeeInfoTarget.append(html);
+            }) ;
+        },
+        appendHTML:function () {
+            var target = $("#boxMdDevelopmentEngineering");
+            target.find(".panel-body").empty() ;
+            target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
+            developmentCommon.architecturalB.treeGirdParse(target);
+            target.modal("show");
         }
     };
 
