@@ -82,13 +82,13 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveItemData", name = "保存一条明细", method = {RequestMethod.POST})
-    public HttpResult saveItemData(String formData, Integer type) {
+    public HttpResult saveItemData(String formData, Integer planDetailsId) {
         try {
             BasicApplyBatchDetail basicApplyBatchDetail = JSON.parseObject(formData, BasicApplyBatchDetail.class);
             if (basicApplyBatchDetail.getBisStandard() == null) {
                 basicApplyBatchDetail.setBisStandard(false);
             }
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail));
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail,planDetailsId));
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");

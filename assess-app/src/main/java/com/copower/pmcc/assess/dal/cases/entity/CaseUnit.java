@@ -21,6 +21,8 @@ public class CaseUnit {
 
     private Date gmtModified;
 
+    private String huxingExplain;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class CaseUnit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getHuxingExplain() {
+        return huxingExplain;
+    }
+
+    public void setHuxingExplain(String huxingExplain) {
+        this.huxingExplain = huxingExplain == null ? null : huxingExplain.trim();
     }
 }

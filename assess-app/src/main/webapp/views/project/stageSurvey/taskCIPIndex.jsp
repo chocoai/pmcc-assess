@@ -22,7 +22,6 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <input type="hidden" id="masterId" value="${surveySceneExplore.id}">
                     <form id="basicBatchApplyFrm" class="form-horizontal">
                         <input type="hidden" name="id" value="${applyBatch.id}">
                         <input type="hidden" id="type" name="type" value="3">
@@ -60,9 +59,6 @@
                         </button>
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-warning" onclick="saveData();">
-                                    保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                                </button>
                                 <button id="btn_submit" class="btn btn-success"
                                         onclick="submit(false);">
                                     直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
@@ -99,50 +95,44 @@
     });
 
     //任务提交
-    function submit(mustUseBox) {
-        var formData = {};
-        formData.id = $("#masterId").val();
-        formData.declareId = "${declareRecord.id}";
-        formData.projectId = "${projectInfo.id}";
-        formData.planDetailsId = "${projectPlanDetails.id}";
-        if ("${processInsId}" != "0") {
-            submitEditToServer(JSON.stringify(formData));
-        }
-        else {
-            submitToServer(JSON.stringify(formData), mustUseBox);
+    function submit(useBox) {
+        var count = getStandardCount();
+        if (count && count > 0) {
+            var formData = {};
+            formData.declareId = "${declareRecord.id}";
+            formData.projectId = "${projectInfo.id}";
+            formData.planDetailsId = "${projectPlanDetails.id}";
+            if ("${processInsId}" != "0") {
+                submitEditToServer(JSON.stringify(formData));
+            }
+            else {
+                submitToServer(JSON.stringify(formData), useBox);
+            }
+        } else {
+            Alert("申请中至少包含一个标准对象");
         }
     }
 
-    //保存
-    function saveData() {
-        var formData = {};
-        formData.id = $("#masterId").val();
-        formData.planDetailsId = "${projectPlanDetails.id}";
-        formData.projectId = "${projectPlanDetails.projectId}";
-        Loading.progressShow();
+    //获取标准对象数量
+    function getStandardCount() {
+        var count = 0;
         $.ajax({
-            url: "${pageContext.request.contextPath}/projectTaskCIP/saveData",
+            url: "${pageContext.request.contextPath}/projectTaskCIP/getStandardCount",
             data: {
-                formData: JSON.stringify(formData)
+                planDetailsId: '${projectPlanDetails.pid}'
             },
             type: "post",
+            async: false,
             dataType: "json",
             success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("保存数据成功!", 1, null, function () {
-
-                    });
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
-                }
+                count = result.data;
             },
             error: function (result) {
                 Loading.progressHide();
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
+        return count;
     }
 </script>
 <script type="text/javascript">
@@ -152,14 +142,12 @@
             return false;
         }
         var formData = formParams("basicBatchApplyFrm");
-        var masterId = $("#masterId").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/projectTaskCIP/saveApplyInfo",
             type: "post",
             dataType: "json",
             data: {
                 formData: JSON.stringify(formData),
-                masterId: masterId,
                 planDetailsId: '${projectPlanDetails.id}'
             },
             success: function (result) {

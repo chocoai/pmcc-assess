@@ -239,11 +239,11 @@
             type: "post",
             data: {
                 formData: JSON.stringify(formData),
+                planDetailsId: '${projectPlanDetails.pid}'
             },
             success: function (result) {
                 if (result.ret) {
                     toastr.success('保存成功');
-                    //ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
                     var node = zTreeObj.getSelectedNodes()[0];
                     zTreeObj.addNodes(node, {
                         id: result.data.id,
@@ -270,6 +270,7 @@
             dataType: "json",
             data: {
                 formData: JSON.stringify(formData),
+                planDetailsId: '${projectPlanDetails.pid}'
             },
             success: function (result) {
                 if (result.ret) {
@@ -370,7 +371,7 @@
         $("#frm_detail_b").clearAll();
         $("#frm_detail_b").find("#detailContent_b").empty().append(html);
         $("#frm_detail_b").initForm(data);
-        $("#bisStandard_b").val(''+data.bisStandard);
+        $("#bisStandard_b").val('' + data.bisStandard);
         $("#detail_modal_b").modal();
     }
 

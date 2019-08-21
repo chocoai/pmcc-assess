@@ -186,63 +186,67 @@ public class UReportService {
                 mapFinance = FormatUtils.mappingSingleEntity(makeOutList, o -> o.getProjectId());
             }
             for (Map map : mapList) {
-                UProjectFinanceVo vo = new UProjectFinanceVo();
-                vo.setId(objectToInteger(map.get("id")));
-                vo.setProjectName(objectToString(map.get("project_name")));
-                vo.setServiceComeFromExplain(objectToString(map.get("service_come_from_explain")));
-                //委托目的
-                vo.setEntrustPurposeName(baseDataDicService.getNameById(objectToString(map.get("entrust_purpose"))));
-                //贷款类型
-                vo.setLoanTypeName(baseDataDicService.getNameById(objectToString(map.get("loan_type"))));
-                //评估部门
-                String departmentId = objectToString(map.get("department_id"));
-                if(StringUtils.isNotEmpty(departmentId))
-                vo.setDepartmentName(erpRpcDepartmentService.getDepartmentById(Integer.valueOf(departmentId)).getName());
+                try{
+                    UProjectFinanceVo vo = new UProjectFinanceVo();
+                    vo.setId(objectToInteger(map.get("id")));
+                    vo.setProjectName(objectToString(map.get("project_name")));
+                    vo.setServiceComeFromExplain(objectToString(map.get("service_come_from_explain")));
+                    //委托目的
+                    vo.setEntrustPurposeName(baseDataDicService.getNameById(objectToString(map.get("entrust_purpose"))));
+                    //贷款类型
+                    vo.setLoanTypeName(baseDataDicService.getNameById(objectToString(map.get("loan_type"))));
+                    //评估部门
+                    String departmentId = objectToString(map.get("department_id"));
+                    if(StringUtils.isNotEmpty(departmentId))
+                        vo.setDepartmentName(erpRpcDepartmentService.getDepartmentById(Integer.valueOf(departmentId)).getName());
 
-                vo.setProjectName(objectToString(map.get("project_name")));
-                vo.setProjectName(objectToString(map.get("project_name")));
-                String userAccountManager = objectToString(map.get("user_account_manager"));
-                if (StringUtil.isNotEmpty(userAccountManager)) {
-                    SysUserDto sysUser = erpRpcUserService.getSysUser(userAccountManager);
-                    userAccountManager = sysUser.getUserName();
-                }
-                vo.setProjectManagerName(userAccountManager);
-                String consignorName = objectToString(map.get("cs_entrustment_unit"));
-                if (StringUtil.isEmpty(consignorName)) {
-                    consignorName = objectToString(map.get("cs_name"));
-                }
-                vo.setConsignorName(consignorName);
-                String useUnit = objectToString(map.get("u_use_unit"));
-                if (StringUtil.isNotEmpty(useUnit)) {
-                    CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(useUnit));
-                    if (customer != null) {
-                        useUnit = customer.getName();
+                    vo.setProjectName(objectToString(map.get("project_name")));
+                    vo.setProjectName(objectToString(map.get("project_name")));
+                    String userAccountManager = objectToString(map.get("user_account_manager"));
+                    if (StringUtil.isNotEmpty(userAccountManager)) {
+                        SysUserDto sysUser = erpRpcUserService.getSysUser(userAccountManager);
+                        userAccountManager = sysUser.getUserName();
                     }
-                }
-                vo.setReportUseUnitName(useUnit);
-                vo.setPreauditNumber(objectToString(map.get("preaudit_number")));
-                vo.setTechnologyNumber(objectToString(map.get("technology_number")));
-                vo.setResultNumber(objectToString(map.get("result_number")));
-                Object gmt_created = map.get("gmt_created");
-                if (gmt_created != null) {
-                    vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
-                }
-                vo.setContractName(objectToString(map.get("contract_name")));
-                vo.setContractPrice(objectToString(map.get("contract_price")));
-                Integer publicProjectId = objectToInteger(map.get("id"));
-                if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
-                    FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
-                    if (makeOutProjectDto.getAmount() != null) {
-                        vo.setAmount(objectToString(makeOutProjectDto.getAmount() / 100L));
+                    vo.setProjectManagerName(userAccountManager);
+                    String consignorName = objectToString(map.get("cs_entrustment_unit"));
+                    if (StringUtil.isEmpty(consignorName)) {
+                        consignorName = objectToString(map.get("cs_name"));
                     }
-                    if (makeOutProjectDto.getActualAmount() != null) {
-                        vo.setActualAmount(objectToString(makeOutProjectDto.getActualAmount() / 100L));
+                    vo.setConsignorName(consignorName);
+                    String useUnit = objectToString(map.get("u_use_unit"));
+                    if (StringUtil.isNotEmpty(useUnit)) {
+                        CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(useUnit));
+                        if (customer != null) {
+                            useUnit = customer.getName();
+                        }
                     }
-                    if (makeOutProjectDto.getPayAmount() != null) {
-                        vo.setPayAmount(objectToString(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                    vo.setReportUseUnitName(useUnit);
+                    vo.setPreauditNumber(objectToString(map.get("preaudit_number")));
+                    vo.setTechnologyNumber(objectToString(map.get("technology_number")));
+                    vo.setResultNumber(objectToString(map.get("result_number")));
+                    Object gmt_created = map.get("gmt_created");
+                    if (gmt_created != null) {
+                        vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
                     }
+                    vo.setContractName(objectToString(map.get("contract_name")));
+                    vo.setContractPrice(objectToString(map.get("contract_price")));
+                    Integer publicProjectId = objectToInteger(map.get("id"));
+                    if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
+                        FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
+                        if (makeOutProjectDto.getAmount() != null) {
+                            vo.setAmount(objectToString(makeOutProjectDto.getAmount() / 100L));
+                        }
+                        if (makeOutProjectDto.getActualAmount() != null) {
+                            vo.setActualAmount(objectToString(makeOutProjectDto.getActualAmount() / 100L));
+                        }
+                        if (makeOutProjectDto.getPayAmount() != null) {
+                            vo.setPayAmount(objectToString(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                        }
+                    }
+                    list.add(vo);
+                }catch (Exception ex){
+                    logger.error(ex.getMessage(),ex);
                 }
-                list.add(vo);
             }
         }
         return new BeanPageDataSet(list, page.getPages());

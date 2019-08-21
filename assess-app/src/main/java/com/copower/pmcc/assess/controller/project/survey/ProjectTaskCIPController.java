@@ -1,16 +1,16 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -29,15 +30,13 @@ public class ProjectTaskCIPController {
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
-    private SurveySceneExploreService surveySceneExploreService;
-    @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private CommonService commonService;
+    private BasicApplyService basicApplyService;
 
     @ResponseBody
     @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult save(String formData,Integer planDetailsId) {
+    public HttpResult save(String formData, Integer planDetailsId) {
         try {
             ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             Map<String, Object> objectMap = Maps.newHashMap();
@@ -53,16 +52,15 @@ public class ProjectTaskCIPController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveData", name = "保存数据", method = RequestMethod.POST)
-    public HttpResult submitTask(String formData) {
+    @RequestMapping(value = "/getStandardCount", name = "获取标准对象数量", method = RequestMethod.POST)
+    public HttpResult getStandardCount(Integer planDetailsId) {
         try {
-            SurveySceneExplore surveySceneExplore = JSON.parseObject(formData, SurveySceneExplore.class);
-            surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
+            List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(planDetailsId);
+            return HttpResult.newCorrectResult(CollectionUtils.isEmpty(basicApplyList) ? 0 : basicApplyList.size());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult("保存数据异常");
+            return HttpResult.newErrorResult("获取标准对象数量");
         }
-        return HttpResult.newCorrectResult();
     }
 
 }

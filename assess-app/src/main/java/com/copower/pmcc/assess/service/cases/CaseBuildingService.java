@@ -12,10 +12,12 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
+import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -59,6 +61,8 @@ public class CaseBuildingService {
     private DataBuilderService dataBuilderService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
+    @Autowired
+    private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding) {
@@ -181,31 +185,34 @@ public class CaseBuildingService {
         CaseBuildingVo vo = new CaseBuildingVo();
         BeanUtils.copyProperties(caseBuilding, vo);
         vo.setPropertyTypeName(baseDataDicService.getNameById(caseBuilding.getPropertyType()));
-        vo.setCompletedTimeTypeName(baseDataDicService.getNameById(caseBuilding.getCompletedTimeType()));
         vo.setPropertyCategoryName(baseDataDicService.getNameById(caseBuilding.getPropertyCategory()));
         vo.setBuildingStructureTypeName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureType()));
         vo.setBuildingStructureCategoryName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureCategory()));
         vo.setResidenceUseYearName(baseDataDicService.getNameById(caseBuilding.getResidenceUseYear()));
-        if (caseBuilding.getIndustryUseYear() != null){
-            if (dataBuildingNewRateService.getByiDdataBuildingNewRate(caseBuilding.getIndustryUseYear()) != null){
+        vo.setBetweenDistanceName(baseDataDicService.getNameById(caseBuilding.getBetweenDistance()));
+        if (caseBuilding.getCompletedTimeType() != null) {
+            vo.setCompletedTimeTypeName(baseDataDicService.getDataDicById(caseBuilding.getCompletedTimeType()).getName());
+        }
+        if (caseBuilding.getIndustryUseYear() != null) {
+            if (dataBuildingNewRateService.getByiDdataBuildingNewRate(caseBuilding.getIndustryUseYear()) != null) {
                 vo.setIndustryUseYearName(dataBuildingNewRateService.getByiDdataBuildingNewRate(caseBuilding.getIndustryUseYear()).getBuildingStructure());
             }
         }
-        if (NumberUtils.isNumber(caseBuilding.getProperty())){
-            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(Integer.parseInt(caseBuilding.getProperty()));
-            if (dataProperty != null){
-                vo.setPropertyName(dataProperty.getName());
-                vo.setDataProperty(dataPropertyService.getDataPropertyVo(dataProperty));
-            }
+        if (caseBuilding.getOpenTime() != null) {
+            vo.setOpenTimeName(DateUtils.format(caseBuilding.getOpenTime()));
         }
-        if (NumberUtils.isNumber(caseBuilding.getBuilder())){
-            DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(Integer.parseInt(caseBuilding.getBuilder()));
-            if (dataBuilder != null){
-                vo.setBuildingName(dataBuilder.getName());
-                vo.setDataBuilder(dataBuilderService.getDataBuilderVo(dataBuilder));
-            }
+        if (caseBuilding.getRoomTime() != null) {
+            vo.setRoomTimeName(DateUtils.format(caseBuilding.getRoomTime()));
         }
-        vo.setPropertyCompanyNatureName(baseDataDicService.getNameById(caseBuilding.getPropertyCompanyNature()));
+        if (caseBuilding.getBeCompletedTime() != null) {
+            vo.setBeCompletedTimeName(DateUtils.format(caseBuilding.getBeCompletedTime()));
+        }
+        vo.setConstructionQualityName(baseDataDicService.getNameById(caseBuilding.getConstructionQuality()));
+        vo.setAppearanceStyleName(baseDataDicService.getNameById(caseBuilding.getAppearanceStyle()));
+        vo.setAppearanceNewAndOldName(baseDataDicService.getNameById(caseBuilding.getAppearanceNewAndOld()));
+        if(caseBuilding.getPropertyCompanyNature()!=null){
+            vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(caseBuilding.getPropertyCompanyNature()).getName());
+        }
         vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(caseBuilding.getPropertySocialPrestige()));
         return vo;
     }
