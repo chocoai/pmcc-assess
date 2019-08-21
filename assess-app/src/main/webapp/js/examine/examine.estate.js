@@ -843,6 +843,72 @@
             });
         }
     };
+    
+    estateCommon.constructionInstallationEngineeringFeeEvent = {
+        loadHtml:function () {
+            architecturalA.getMdArchitecturalObjList(AssessDBKey.BasicEstate,estateCommon.getEstateId(),function (data) {
+                var target = $("#estateConstructionInstallationEngineeringFeeInfoTarget") ;
+                var html = "";
+                if (data.length >= 1) {
+                    $.each(data, function (i, item) {
+                        var resetHtml = $("#constructionInstallationEngineeringFeeInfoModelHtml").html();
+                        resetHtml = resetHtml.replace(/{uuid}/g, item.id);
+                        resetHtml = resetHtml.replace(/{index}/g, ++i);
+                        resetHtml = resetHtml.replace(/{method}/g, "estateCommon.constructionInstallationEngineeringFeeEvent");
+                        html += resetHtml;
+                    });
+                }
+                target.empty() ;
+                target.append(html);
+            });
+        },
+        detailsConstructionInstallation:function (id) {
+            architecturalA.getMdArchitecturalObjById(id,function (item) {
+                estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML();
+                var target = $("#boxLandEngineering");
+                var table = target.find("table");
+                var data = {} ;
+                try {
+                    data = JSON.parse(item.jsonContent) ;
+                } catch (e) {
+                    console.log("解析异常!");
+                }
+                architecturalA.initData(target.find("table"),data) ;
+                target.find("input[name='id']").val(item.id) ;
+            });
+        },
+        deleteConstructionInstallation:function (id) {
+            architecturalA.deleteMdArchitecturalObjById(id,function () {
+                toastr.success('删除成功!');
+                estateCommon.constructionInstallationEngineeringFeeEvent.loadHtml() ;
+            });
+        },
+        appendHTML:function () {
+            var target = $("#boxLandEngineering");
+            var html = target.html() ;
+            html = html.replace(/'{method}'/g, 'estateCommon.constructionInstallationEngineeringFeeEvent.save()');
+            target.empty().append(html);
+            target.find(".panel-body").empty() ;
+            target.find(".panel-body").append(architecturalA.getHtml());
+            architecturalA.treeGirdParse(target);
+            target.find("input[name='id']").val('');
+            target.modal("show");
+        },
+        save:function () {
+            var pid = estateCommon.getEstateId() ;
+            var target = $("#boxLandEngineering");
+            var table = target.find("table");
+            var obj = {} ;
+            obj.databaseName = AssessDBKey.BasicEstate ;
+            obj.pid = pid;
+            obj.id = target.find("input[name='id']").val();
+            architecturalA.saveMdArchitecturalObj(architecturalA.getFomData(table),obj,function (item) {
+                toastr.success('保存成功!');
+                estateCommon.constructionInstallationEngineeringFeeEvent.loadHtml() ;
+            }) ;
+            target.modal("hide");
+        }
+    } ;
 
     window.estateCommon = estateCommon;
 })(jQuery);

@@ -201,10 +201,11 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         if (schemeJudgeObject.getDeclareRecordId() == null) {
             return;
         }
-        setIndicatorsContentParam(declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId()), projectPlanDetails, init);
+        setIndicatorsContentParam(schemeJudgeObject, projectPlanDetails, init);
     }
 
-    private void setIndicatorsContentParam(DeclareRecord declareRecord, ProjectPlanDetails projectPlanDetails, boolean init) {
+    private void setIndicatorsContentParam(SchemeJudgeObject schemeJudgeObject, ProjectPlanDetails projectPlanDetails, boolean init) {
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         List<DeclareEconomicIndicatorsContent> indicatorsContentList = Lists.newArrayList();
         List<Integer> integerList = Lists.newArrayList();
         DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();

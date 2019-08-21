@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
 <script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/developer.js"></script>
