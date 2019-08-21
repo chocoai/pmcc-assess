@@ -621,7 +621,7 @@ public class BasicEstateService {
 
                     example = new SysAttachmentDto();
                     example.setTableId(oldBasicEstateParking.getId());
-                    example.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstateParking.class));
+                    example.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));
                     attachmentDto = new SysAttachmentDto();
                     attachmentDto.setTableId(id);
                     attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));

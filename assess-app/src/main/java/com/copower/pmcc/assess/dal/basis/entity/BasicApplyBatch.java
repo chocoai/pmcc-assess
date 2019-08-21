@@ -29,6 +29,10 @@ public class BasicApplyBatch {
 
     private Date gmtModified;
 
+    private Integer quoteId;
+
+    private String baseType;
+
     public Integer getId() {
         return id;
     }
@@ -131,5 +135,21 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
+    }
+
+    public String getBaseType() {
+        return baseType;
+    }
+
+    public void setBaseType(String baseType) {
+        this.baseType = baseType == null ? null : baseType.trim();
     }
 }

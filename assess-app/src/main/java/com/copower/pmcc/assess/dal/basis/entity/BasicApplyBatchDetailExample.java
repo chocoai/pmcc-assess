@@ -804,6 +804,136 @@ public class BasicApplyBatchDetailExample {
             addCriterion("bis_standard not between", value1, value2, "bisStandard");
             return (Criteria) this;
         }
+
+        public Criteria andQuoteIdIsNull() {
+            addCriterion("quote_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdIsNotNull() {
+            addCriterion("quote_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdEqualTo(Integer value) {
+            addCriterion("quote_id =", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotEqualTo(Integer value) {
+            addCriterion("quote_id <>", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdGreaterThan(Integer value) {
+            addCriterion("quote_id >", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("quote_id >=", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdLessThan(Integer value) {
+            addCriterion("quote_id <", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdLessThanOrEqualTo(Integer value) {
+            addCriterion("quote_id <=", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdIn(List<Integer> values) {
+            addCriterion("quote_id in", values, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotIn(List<Integer> values) {
+            addCriterion("quote_id not in", values, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdBetween(Integer value1, Integer value2) {
+            addCriterion("quote_id between", value1, value2, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("quote_id not between", value1, value2, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeIsNull() {
+            addCriterion("base_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeIsNotNull() {
+            addCriterion("base_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeEqualTo(String value) {
+            addCriterion("base_type =", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeNotEqualTo(String value) {
+            addCriterion("base_type <>", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeGreaterThan(String value) {
+            addCriterion("base_type >", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("base_type >=", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeLessThan(String value) {
+            addCriterion("base_type <", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeLessThanOrEqualTo(String value) {
+            addCriterion("base_type <=", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeLike(String value) {
+            addCriterion("base_type like", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeNotLike(String value) {
+            addCriterion("base_type not like", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeIn(List<String> values) {
+            addCriterion("base_type in", values, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeNotIn(List<String> values) {
+            addCriterion("base_type not in", values, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeBetween(String value1, String value2) {
+            addCriterion("base_type between", value1, value2, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeNotBetween(String value1, String value2) {
+            addCriterion("base_type not between", value1, value2, "baseType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

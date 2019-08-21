@@ -400,10 +400,8 @@
         var node = zTreeObj.getSelectedNodes()[0];
         var estateId = 0;
         if (node.id == 0) {
-            //estateId = $("#basicBatchApplyFrm").find("input[name='estateId']").val();
             estateId = batchApply.estateId;
         }
-        //var type = $("#basicBatchApplyFrm").find("input[type='radio'][name='type']:checked").val();
         var type = batchApply.type;
         openWin('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId, function () {
             batchTreeTool.ztreeInit(batchApply);

@@ -153,4 +153,15 @@ public class CaseUnitController {
             return HttpResult.newErrorResult("异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteCaseUnitToBasic", name = "引用案列数据", method = {RequestMethod.GET})
+    public HttpResult quoteCaseUnitToBasic(Integer id,Integer tableId) {
+        try {
+            return HttpResult.newCorrectResult(caseUnitService.quoteCaseUnitToBasic(id,tableId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }
