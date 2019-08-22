@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -77,6 +78,10 @@ public class BasicBuildingService {
     private BasicApplyService basicApplyService;
     @Autowired
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -231,7 +236,7 @@ public class BasicBuildingService {
         vo.setConstructionQualityName(baseDataDicService.getNameById(basicBuilding.getConstructionQuality()));
         vo.setAppearanceStyleName(baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()));
         vo.setAppearanceNewAndOldName(baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()));
-        if(basicBuilding.getPropertyCompanyNature()!=null){
+        if (basicBuilding.getPropertyCompanyNature() != null) {
             vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
         }
         vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(basicBuilding.getPropertySocialPrestige()));
@@ -384,7 +389,7 @@ public class BasicBuildingService {
 
     //引用项目中的数据
     @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding getBasicBuildingFromProject(Integer applyId, Integer tableId) throws Exception {
+    public BasicBuilding getBasicBuildingFromProject(Integer applyId) throws Exception {
         if (applyId == null) {
             throw new Exception("null point");
         }
@@ -395,34 +400,14 @@ public class BasicBuildingService {
             return null;
         }
         BasicBuilding basicBuilding = new BasicBuilding();
-        if (tableId != null) {
-            this.clearInvalidData2(tableId);
-        }
+
         BeanUtils.copyProperties(oldbasicBuilding, basicBuilding);
         basicBuilding.setApplyId(0);
         basicBuilding.setCreator(commonService.thisUserAccount());
         basicBuilding.setGmtCreated(null);
         basicBuilding.setGmtModified(null);
-        if (tableId != null) {
-            basicBuilding.setId(tableId);
-            basicBuilding.setApplyId(null);
-        } else {
-            basicBuilding.setId(null);
-        }
+        basicBuilding.setId(null);
         this.saveAndUpdateBasicBuilding(basicBuilding);
-
-        //删除原有的附件
-        if (tableId != null) {
-            SysAttachmentDto deleteExample = new SysAttachmentDto();
-            deleteExample.setTableId(tableId);
-            deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
-            if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
-                for (SysAttachmentDto item : attachmentList) {
-                    baseAttachmentService.deleteAttachment(item.getId());
-                }
-            }
-        }
 
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
@@ -442,10 +427,6 @@ public class BasicBuildingService {
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
-            if (tableId != null) {
-                basicEstateTagging.setApplyId(null);
-                basicEstateTagging.setTableId(tableId);
-            }
             basicEstateTagging.setName(null);
             basicEstateTagging.setGmtCreated(null);
             basicEstateTagging.setGmtModified(null);
@@ -459,6 +440,109 @@ public class BasicBuildingService {
         map.put("creator", commonService.thisUserAccount());
         synchronousDataDto.setFieldDefaultValue(map);
         synchronousDataDto.setWhereSql("building_id=" + oldbasicBuilding.getId());
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋外装sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//维护结构sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//层面结构sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
+
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+        return basicBuilding;
+    }
+
+
+    /**
+     * 引用项目中的数据
+     *
+     * @param id      老数据对应id
+     * @param tableId basicBuilding对应id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public BasicBuilding quoteBuildingData(Integer id, Integer tableId) throws Exception {
+        if (id == null || tableId == null) {
+            throw new Exception("null point");
+        }
+        //清理数据
+        this.clearInvalidData2(tableId);
+
+        //更新批量申请表信息
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_building", tableId);
+        batchDetail.setQuoteId(id);
+        batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
+        basicApplyBatchDetailDao.updateInfo(batchDetail);
+        Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
+
+        BasicBuildingVo oldBasicBuilding = this.getBasicBuildingById(id);
+        if (oldBasicBuilding == null) {
+            return null;
+        }
+        BasicBuilding basicBuilding = new BasicBuilding();
+        BeanUtils.copyProperties(oldBasicBuilding, basicBuilding);
+        basicBuilding.setCreator(commonService.thisUserAccount());
+        basicBuilding.setGmtCreated(null);
+        basicBuilding.setGmtModified(null);
+        basicBuilding.setId(tableId);
+        basicBuilding.setApplyId(null);
+        basicBuilding.setEstateId(parentTableId);
+        this.saveAndUpdateBasicBuilding(basicBuilding);
+
+        //删除原有的附件
+        SysAttachmentDto deleteExample = new SysAttachmentDto();
+        deleteExample.setTableId(tableId);
+        deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
+        if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
+            for (SysAttachmentDto item : attachmentList) {
+                baseAttachmentService.deleteAttachment(item.getId());
+            }
+        }
+
+
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(id);
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(tableId);
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+
+        BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
+        oldBasicEstateTagging.setTableId(id);
+        oldBasicEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+        List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
+        if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setApplyId(null);
+            basicEstateTagging.setTableId(tableId);
+
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+        }
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("building_id", String.valueOf(tableId));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setWhereSql("building_id=" + id);
         synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
         synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));

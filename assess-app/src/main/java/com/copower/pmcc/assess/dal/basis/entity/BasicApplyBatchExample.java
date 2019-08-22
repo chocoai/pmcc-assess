@@ -1074,6 +1074,66 @@ public class BasicApplyBatchExample {
             addCriterion("base_type not between", value1, value2, "baseType");
             return (Criteria) this;
         }
+
+        public Criteria andShowTabIsNull() {
+            addCriterion("show_tab is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabIsNotNull() {
+            addCriterion("show_tab is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabEqualTo(Boolean value) {
+            addCriterion("show_tab =", value, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabNotEqualTo(Boolean value) {
+            addCriterion("show_tab <>", value, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabGreaterThan(Boolean value) {
+            addCriterion("show_tab >", value, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("show_tab >=", value, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabLessThan(Boolean value) {
+            addCriterion("show_tab <", value, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabLessThanOrEqualTo(Boolean value) {
+            addCriterion("show_tab <=", value, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabIn(List<Boolean> values) {
+            addCriterion("show_tab in", values, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabNotIn(List<Boolean> values) {
+            addCriterion("show_tab not in", values, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabBetween(Boolean value1, Boolean value2) {
+            addCriterion("show_tab between", value1, value2, "showTab");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTabNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("show_tab not between", value1, value2, "showTab");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

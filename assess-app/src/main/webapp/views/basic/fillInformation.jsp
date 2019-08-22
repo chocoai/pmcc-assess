@@ -13,16 +13,20 @@
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="x-valid">
-                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="button" class="btn btn-success" data-mode="reference"
-                                       onclick="projectData.prototype.showModel();"
-                                       value="引用项目中的楼盘">
-                            </div>
-                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="button" class="btn btn-success" data-mode="reference"
-                                       onclick="fillInformation.showCaseModal();"
-                                       value="引用案例数据">
-                            </div>
+                            <c:if test="${showTab eq false}">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input type="button" class="btn btn-success" data-mode="reference"
+                                           onclick="fillInformation.showProjectQuoteModal();"
+                                           value="引用项目中的楼盘">
+                                </div>
+                            </c:if>
+                            <c:if test="${showTab eq true}">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input type="button" class="btn btn-success" data-mode="reference"
+                                           onclick="fillInformation.showCaseQuoteModal();"
+                                           value="引用案例数据">
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                 </form>
@@ -53,7 +57,7 @@
 <script type="text/javascript">
     var fillInformation = new Object();
 
-    fillInformation.autocompleteData = function (index) {
+    fillInformation.autocompleteData2 = function (index) {
         var row = $("#projectCaseItemList").bootstrapTable('getData')[index];
         Loading.progressShow();
         $.ajax({
@@ -69,25 +73,25 @@
                     if (result.data != null) {
                         basicCommon.hideAllTab();
                         //初始楼盘信息
-                        if("estate"=="${buildingType}"){
+                        if ("estate" == "${buildingType}") {
                             estateCommon.loadMarkerList(result.data.id);
-                            estateCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showEstateTab("add"));
+                            estateCommon.batchGetDataFromProject(result.data.id, '${tableId}', basicCommon.showEstateTab("add"));
                         }
 
                         //初始楼栋信息
-                        if("building"=="${buildingType}") {
+                        if ("building" == "${buildingType}") {
                             buildingCommon.loadMarkerList(result.data.id);
-                            buildingCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showBuildingTab("add"));
+                            buildingCommon.batchGetDataFromProject(result.data.id, '${tableId}', basicCommon.showBuildingTab("add"));
 
                         }
                         //初始单元信息
-                        if("unit"=="${buildingType}") {
+                        if ("unit" == "${buildingType}") {
                             unitCommon.loadMarkerList(result.data.id);
-                            unitCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showUnitTab("add"));
+                            unitCommon.batchGetDataFromProject(result.data.id, '${tableId}', basicCommon.showUnitTab("add"));
                         }
                         //初始房屋信息
-                        if("house"=="${buildingType}") {
-                            houseCommon.batchGetDataFromProject(result.data.id,'${tableId}',basicCommon.showHouseTab("add"));
+                        if ("house" == "${buildingType}") {
+                            houseCommon.batchGetDataFromProject(result.data.id, '${tableId}', basicCommon.showHouseTab("add"));
                         }
                         $('#divBoxProjectItemData').modal('hide');
                         $('#divBoxProjectData').modal('hide');
@@ -101,66 +105,89 @@
     };
 
     //引用案例时打开对应的modal
-    fillInformation.showCaseModal = function () {
+    fillInformation.showCaseQuoteModal = function () {
         //打开楼盘modal
-        if("estate"=="${buildingType}"){
+        if ("estate" == "${buildingType}") {
             caseFun.caseEstate.showModel();
         }
 
         //打开楼栋modal
-        if("building"=="${buildingType}") {
+        if ("building" == "${buildingType}") {
             caseFun.caseBuild.showModel(${parentQuoteId});
         }
         //打开单元modal
-        if("unit"=="${buildingType}") {
+        if ("unit" == "${buildingType}") {
             caseFun.caseUnit.showModel(${parentQuoteId});
         }
         //打开房屋modal
-        if("house"=="${buildingType}") {
+        if ("house" == "${buildingType}") {
             caseFun.caseHouse.showModel(${parentQuoteId});
         }
 
     };
 
 
-    //填充对应的案列数据
-    fillInformation.autocompleteCaseData = function (data) {
-        if("estate"=="${buildingType}"){
+    //引用项目时打开对应的modal
+    fillInformation.showProjectQuoteModal = function () {
+        //打开楼盘modal
+        if ("estate" == "${buildingType}") {
+            projectData.prototype.showProjectDataModel();
+        }
+
+        //打开楼栋modal
+        if ("building" == "${buildingType}") {
+            projectBuild.prototype.showModel(${parentQuoteId});
+        }
+        //打开单元modal
+        if ("unit" == "${buildingType}") {
+            projectUnit.prototype.showModel(${parentQuoteId});
+        }
+        //打开房屋modal
+        if ("house" == "${buildingType}") {
+            projectHouse.prototype.showModel(${parentQuoteId});
+        }
+
+    };
+
+    //填充对应的数据
+    fillInformation.autocompleteData = function (data) {
+        if ("estate" == "${buildingType}") {
             var basicEstate = data.basicEstate;
             var basicEstateLandState = data.basicEstateLandState;
             estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
         }
 
-        if("building"=="${buildingType}") {
+        if ("building" == "${buildingType}") {
             buildingCommon.showBuildingView(data);
         }
 
-        if("unit"=="${buildingType}") {
+        if ("unit" == "${buildingType}") {
             unitCommon.showUnitView(data);
         }
 
-        if("house"=="${buildingType}") {
+        if ("house" == "${buildingType}") {
             houseCommon.showHouseView(data);
         }
     };
 
 
-    $(function(){
+    $(function () {
+        console.log(${showTab}+"====1")
         industry.keyApp("${type}");
-        if("estate"=="${buildingType}"){
+        if ("estate" == "${buildingType}") {
             estateCommon.initById("${tableId}", basicCommon.showEstateTab("add"));
         }
 
         //初始楼栋信息
-        if("building"=="${buildingType}") {
+        if ("building" == "${buildingType}") {
             buildingCommon.initById("${tableId}", basicCommon.showBuildingTab("add"));
         }
         //初始单元信息
-        if("unit"=="${buildingType}") {
+        if ("unit" == "${buildingType}") {
             unitCommon.initById("${tableId}", basicCommon.showUnitTab("add"));
         }
         //初始房屋信息
-        if("house"=="${buildingType}") {
+        if ("house" == "${buildingType}") {
             houseCommon.initById("${tableId}", basicCommon.showHouseTab("add"));
         }
     })
@@ -195,8 +222,9 @@
     //获取表单数据
     function getFormData() {
         var item = {};
-        if ("estate"=="${buildingType}") {
+        if ("estate" == "${buildingType}") {
             item.basicEstate = formSerializeArray(estateCommon.estateForm);
+            console.log(item.basicEstate.id + "===")
             if (estateCommon.estateLandStateForm.size() >= 1) {
                 var data = formSerializeArray(estateCommon.estateLandStateForm);
                 var landLevelContent = [];
@@ -226,7 +254,7 @@
                 item.basicEstateLandState = data;
             }
         }
-        if ("building"=="${buildingType}") {
+        if ("building" == "${buildingType}") {
             item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
             item.basicBuilding.vSpecifications = [];
             buildingCommon.buildingForm.find('.form-group').each(function () {
@@ -240,10 +268,10 @@
                 }
             });
         }
-        if ("unit"=="${buildingType}") {
+        if ("unit" == "${buildingType}") {
             item.basicUnit = formSerializeArray(unitCommon.unitForm);
         }
-        if ("house"=="${buildingType}") {
+        if ("house" == "${buildingType}") {
             item.basicHouse = formSerializeArray(houseCommon.houseForm);
             item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
             item.basicDamagedDegree = damagedDegree.getFormData();
