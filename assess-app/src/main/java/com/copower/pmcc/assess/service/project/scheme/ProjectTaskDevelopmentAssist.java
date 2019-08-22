@@ -10,11 +10,13 @@ import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
+import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentIncomeCategoryService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsContentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -28,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -66,6 +69,12 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     private DeclareRecordService declareRecordService;
     @Autowired
     private MdDevelopmentIncomeCategoryService mdDevelopmentIncomeCategoryService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
+    @Autowired
+    private MdArchitecturalObjService mdArchitecturalObjService;
+    @Autowired
+    private TaskExecutor executor;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -241,28 +250,74 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
         if (init) {
-            if (CollectionUtils.isNotEmpty(indicatorsContentList)) {
-                mdDevelopmentIncomeCategoryService.clear();
-                for (DeclareEconomicIndicatorsContent obj : indicatorsContentList) {
-                    MdDevelopmentIncomeCategory engineering = new MdDevelopmentIncomeCategory();
-                    engineering.setPid(0);
-                    if (NumberUtils.isNumber(obj.getPlanIndex())) {
-                        engineering.setPlannedBuildingArea(new BigDecimal(obj.getPlanIndex()));
+            initPortOtherInfo(indicatorsContentList,projectPlanDetails,surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()));
+        }
+    }
+
+    private void initPortOtherInfo(List<DeclareEconomicIndicatorsContent> indicatorsContentList,ProjectPlanDetails projectPlanDetails,BasicApply basicApply){
+        if (CollectionUtils.isNotEmpty(indicatorsContentList)) {
+            mdDevelopmentIncomeCategoryService.clear();
+            for (DeclareEconomicIndicatorsContent obj : indicatorsContentList) {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        MdDevelopmentIncomeCategory engineering = new MdDevelopmentIncomeCategory();
+                        engineering.setPid(0);
+                        if (NumberUtils.isNumber(obj.getPlanIndex())) {
+                            engineering.setPlannedBuildingArea(new BigDecimal(obj.getPlanIndex()));
+                        }
+                        if (NumberUtils.isNumber(obj.getSalabilityNumber())) {
+                            engineering.setSaleableArea(new BigDecimal(obj.getSalabilityNumber()));
+                        }
+                        if (NumberUtils.isNumber(obj.getAssessSalabilityNumber())) {
+                            engineering.setAssessArea(new BigDecimal(obj.getAssessSalabilityNumber()));
+                        }
+                        engineering.setCreator(processControllerComponent.getThisUser());
+                        engineering.setName(obj.getName());
+                        engineering.setPlanDetailsId(projectPlanDetails.getId());
+                        MdDevelopmentIncomeCategory land = new MdDevelopmentIncomeCategory();
+                        BeanUtils.copyProperties(engineering,land);
+                        land.setType("land");
+                        engineering.setType("engineering");
+                        mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(engineering);
+                        mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(land);
                     }
-                    if (NumberUtils.isNumber(obj.getSalabilityNumber())) {
-                        engineering.setSaleableArea(new BigDecimal(obj.getSalabilityNumber()));
-                    }
-                    if (NumberUtils.isNumber(obj.getAssessSalabilityNumber())) {
-                        engineering.setAssessArea(new BigDecimal(obj.getAssessSalabilityNumber()));
-                    }
-                    engineering.setName(obj.getName());
-                    engineering.setPlanDetailsId(projectPlanDetails.getId());
-                    MdDevelopmentIncomeCategory land = new MdDevelopmentIncomeCategory();
-                    BeanUtils.copyProperties(engineering,land);
-                    land.setType("land");
-                    engineering.setType("engineering");
-                    mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(engineering);
-                    mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(land);
+                });
+            }
+        }
+        if (basicApply != null){
+            mdArchitecturalObjService.clear();
+            List<MdArchitecturalObj> mdArchitecturalObjList = Lists.newArrayList();
+            MdArchitecturalObj select = new MdArchitecturalObj();
+            select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+            select.setPid(basicApply.getBasicEstateId());
+            List<MdArchitecturalObj> mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select) ;
+            if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)){
+                mdArchitecturalObjList.addAll(mdArchitecturalObjList2) ;
+            }
+            select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+            select.setPid(basicApply.getBasicBuildingId());
+            mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select) ;
+            if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)){
+                mdArchitecturalObjList.addAll(mdArchitecturalObjList2) ;
+            }
+            if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)){
+                for (MdArchitecturalObj oo:mdArchitecturalObjList){
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            MdArchitecturalObj obj = mdArchitecturalObjService.getMdArchitecturalObjById(oo.getId()) ;
+                            oo.setId(null);
+                            oo.setPlanDetailsId(projectPlanDetails.getPid());
+                            oo.setPid(0);
+                            oo.setJsonContent(obj.getJsonContent());
+                            oo.setPrice(new BigDecimal(0));
+                            oo.setCreator(processControllerComponent.getThisUser());
+                            oo.setType("engineering");
+                            oo.setDatabaseName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
+                            mdArchitecturalObjService.saveMdArchitecturalObj(oo);
+                        }
+                    });
                 }
             }
         }

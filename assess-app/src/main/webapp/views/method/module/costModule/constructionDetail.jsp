@@ -2,8 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="x_panel">
-    <input type="hidden" name="id" value="${mdCostConstruction.id}">
-    <input type="hidden" name="pid" value="${mdCost.id}">
+    <input type="hidden" name="id" value="${mdCostVo.mdCostConstruction.id}">
+    <input type="hidden" name="pid" value="${mdCostVo.id}">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -19,7 +19,7 @@
                     开发土地面积(㎡)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.developLandAreaTax} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.developLandAreaTax} </label>
                 </div>
             </div>
 
@@ -29,7 +29,7 @@
                 </label>
                 <div class="col-sm-3">
 
-                    <label  class="form-control"> ${mdCostConstruction.developBuildAreaTax} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.developBuildAreaTax} </label>
 
                 </div>
             </div>
@@ -40,7 +40,7 @@
                 </label>
                 <div class="col-sm-3">
 
-                    <label  class="form-control"> ${mdCostConstruction.developYearNumberTax} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.developYearNumberTax} </label>
 
                 </div>
             </div>
@@ -68,10 +68,10 @@
                 </label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <label  class="form-control"> ${mdCostConstruction.landPurchasePrice} </label>
+                        <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePrice} </label>
                         <span class="input-group-btn">
                                         <input type="button" class="btn btn-primary" value="市场比较法"
-                                               onclick="callCompareMethod('${mdCostConstruction.mcId}');">
+                                               onclick="callCompareMethod('${mdCostVo.mdCostConstruction.mcId}');">
                                     </span>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                 </label>
                 <div class="col-sm-3">
 
-                    <label  class="form-control"> ${mdCostConstruction.landPurchasePriceExplain} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePriceExplain} </label>
 
                 </div>
             </div>
@@ -96,7 +96,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostConstruction.landGetRelevant}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.landGetRelevant}" type="percent"/>
                     </label>
 
                 </div>
@@ -108,7 +108,7 @@
                 </label>
                 <div class="col-sm-3">
 
-                    <label  class="form-control"> ${mdCostConstruction.landGetRelevantExplain} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.landGetRelevantExplain} </label>
 
                 </div>
             </div>
@@ -121,7 +121,7 @@
                 </label>
                 <div class="col-sm-3">
 
-                    <label  class="form-control"> ${mdCostConstruction.additionalCostLandAcquisition} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.additionalCostLandAcquisition} </label>
 
                 </div>
             </div>
@@ -131,7 +131,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label   class="form-control">${mdCostConstruction.additionalCostLandAcquisitionExplain}</label>
+                    <label   class="form-control">${mdCostVo.mdCostConstruction.additionalCostLandAcquisitionExplain}</label>
                 </div>
             </div>
 
@@ -162,7 +162,7 @@
                 <div class="col-sm-3">
 
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostConstruction.reconnaissanceDesign}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.reconnaissanceDesign}" type="percent"/>
                         </label>
 
                 </div>
@@ -173,7 +173,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label   class="form-control">${mdCostConstruction.reconnaissanceDesignExplain}</label>
+                    <label   class="form-control">${mdCostVo.mdCostConstruction.reconnaissanceDesignExplain}</label>
                 </div>
             </div>
 
@@ -187,18 +187,25 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <div class="input-group">
-
-                        <label  class="form-control"> ${mdCostConstruction.constructionInstallationEngineeringFee} </label>
-
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="constructionInstallationEngineeringFeeEvent();">
-                                            <i class="fa fa-search"></i>
-                                            </button>
-                        </span>
+                        <label  class="form-control"> ${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFee} </label>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    工程费列表
+                </label>
+                <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
+                    <c:forEach items="${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFeeDtos}" var="item">
+                        <div class="panel panel-info">
+                            <i class="fa fa-search" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')" title="查看"
+                               style="margin-right: 10px;font-size: 15px;cursor: pointer;"></i>
+                            <a  style="cursor: pointer;" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')">${item.value}</a>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
         </div>
@@ -209,7 +216,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.infrastructureCost} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.infrastructureCost} </label>
                 </div>
             </div>
 
@@ -218,7 +225,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label   class="form-control">${mdCostConstruction.infrastructureCostExplain}</label>
+                    <label   class="form-control">${mdCostVo.mdCostConstruction.infrastructureCostExplain}</label>
                 </div>
             </div>
         </div>
@@ -239,7 +246,7 @@
                     公共配套设施建设费<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.infrastructureMatchingCost} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.infrastructureMatchingCost} </label>
 
                 </div>
             </div>
@@ -249,7 +256,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label   class="form-control">${mdCostConstruction.infrastructureMatchingCostExplain}</label>
+                    <label   class="form-control">${mdCostVo.mdCostConstruction.infrastructureMatchingCostExplain}</label>
                 </div>
             </div>
         </div>
@@ -260,7 +267,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.devDuring} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.devDuring} </label>
 
                 </div>
             </div>
@@ -270,7 +277,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label   class="form-control">${mdCostConstruction.devDuringExplain}</label>
+                    <label   class="form-control">${mdCostVo.mdCostConstruction.devDuringExplain}</label>
                 </div>
             </div>
         </div>
@@ -281,7 +288,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.otherEngineeringCost} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.otherEngineeringCost} </label>
                 </div>
             </div>
 
@@ -290,7 +297,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label   class="form-control">${mdCostConstruction.otherEngineeringCostExplain}</label>
+                    <label   class="form-control">${mdCostVo.mdCostConstruction.otherEngineeringCostExplain}</label>
                 </div>
             </div>
         </div>
@@ -317,7 +324,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostConstruction.unforeseenExpenses}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.unforeseenExpenses}" type="percent"/>
                     </label>
                 </div>
             </div>
@@ -326,7 +333,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.unforeseenExpensesExplain} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.unforeseenExpensesExplain} </label>
                 </div>
             </div>
         </div>
@@ -338,7 +345,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostConstruction.managementExpense}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.managementExpense}" type="percent"/>
                          </label>
                 </div>
             </div>
@@ -347,7 +354,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.managementExpenseExplain} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.managementExpenseExplain} </label>
                 </div>
             </div>
         </div>
@@ -359,7 +366,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostConstruction.salesFee}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesFee}" type="percent"/>
                          </label>
                 </div>
             </div>
@@ -368,7 +375,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.salesFeeExplain} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.salesFeeExplain} </label>
                 </div>
             </div>
         </div>
@@ -380,7 +387,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostConstruction.interestInvestmentTax}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.interestInvestmentTax}" type="percent"/>
                          </label>
                 </div>
             </div>
@@ -389,7 +396,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.interestInvestmentTaxExplain} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.interestInvestmentTaxExplain} </label>
                 </div>
             </div>
         </div>
@@ -401,7 +408,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostConstruction.salesTaxAndAdditional}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesTaxAndAdditional}" type="percent"/>
                          </label>
                 </div>
             </div>
@@ -410,7 +417,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.salesTaxAndAdditionalExplain} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.salesTaxAndAdditionalExplain} </label>
                 </div>
             </div>
         </div>
@@ -422,7 +429,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostConstruction.investmentProfitTax}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.investmentProfitTax}" type="percent"/>
                          </label>
                 </div>
             </div>
@@ -431,7 +438,7 @@
                     说明
                 </label>
                 <div class="col-sm-3">
-                    <label  class="form-control"> ${mdCostConstruction.investmentProfitTaxExplain} </label>
+                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.investmentProfitTaxExplain} </label>
                 </div>
             </div>
         </div>
@@ -447,7 +454,7 @@
         <h3>测算结果</h3>
         <div class="clearfix"></div>
     </div>
-    <input type="hidden" readonly="readonly" name="constructionAssessmentValue2" onblur="construction.constructionAssessmentValueCalculationE25();" value="${mdCostConstruction.constructionAssessmentValue2}" class="form-control" placeholder="在建工程评估价值2">
+    <input type="hidden" readonly="readonly" name="constructionAssessmentValue2" onblur="construction.constructionAssessmentValueCalculationE25();" value="${mdCostVo.mdCostConstruction.constructionAssessmentValue2}" class="form-control" placeholder="在建工程评估价值2">
     <div class="x_content">
         <div class="form-group">
             <div class="col-md-12 col-sm-12">
@@ -455,27 +462,27 @@
                     <tfoot>
                     <tr>
                         <td> 土地取得成本小计</td>
-                        <td><label class="landGetCostTotal">${mdCostConstruction.landGetCostTotal}</label> <input type="hidden"  value="${mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
+                        <td><label class="landGetCostTotal">${mdCostVo.mdCostConstruction.landGetCostTotal}</label> <input type="hidden"  value="${mdCostVo.mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
                     </tr>
                     <tr>
                         <td> 建设成本小计</td>
-                        <td><label class="constructionSubtotal">${mdCostConstruction.constructionSubtotal}</label></td>
+                        <td><label class="constructionSubtotal">${mdCostVo.mdCostConstruction.constructionSubtotal}</label></td>
                     </tr>
                     <tr>
                         <td> 投资利息</td>
-                        <td><label class="interestInvestment">${mdCostConstruction.interestInvestment}</label><input  type="hidden" value="${mdCostConstruction.interestInvestment}" name="interestInvestment" placeholder="投资利息"> </td>
+                        <td><label class="interestInvestment">${mdCostVo.mdCostConstruction.interestInvestment}</label><input  type="hidden" value="${mdCostVo.mdCostConstruction.interestInvestment}" name="interestInvestment" placeholder="投资利息"> </td>
                     </tr>
                     <tr>
                         <td> 开发利润</td>
-                        <td><label class="investmentProfit">${mdCostConstruction.investmentProfit}</label><input type="hidden"  value="${mdCostConstruction.investmentProfit}" name="investmentProfit" placeholder="开发利润"> </td>
+                        <td><label class="investmentProfit">${mdCostVo.mdCostConstruction.investmentProfit}</label><input type="hidden"  value="${mdCostVo.mdCostConstruction.investmentProfit}" name="investmentProfit" placeholder="开发利润"> </td>
                     </tr>
                     <tr>
                         <td> 在建工程评估价值</td>
-                        <td><label class="constructionAssessmentValue">${mdCostConstruction.constructionAssessmentValue}</label><input type="hidden"  value="${mdCostConstruction.constructionAssessmentValue}" name="constructionAssessmentValue" placeholder="在建工程评估价值"> </td>
+                        <td><label class="constructionAssessmentValue">${mdCostVo.mdCostConstruction.constructionAssessmentValue}</label><input type="hidden"  value="${mdCostVo.mdCostConstruction.constructionAssessmentValue}" name="constructionAssessmentValue" placeholder="在建工程评估价值"> </td>
                     </tr>
                     <tr>
                         <td> 在建工程单位价</td>
-                        <td><label class="constructionAssessmentPriceCorrecting">${mdCostConstruction.constructionAssessmentPriceCorrecting}</label><input type="hidden" value="${mdCostConstruction.constructionAssessmentPriceCorrecting}" name="constructionAssessmentPriceCorrecting" placeholder="在建工程单位价"> </td>
+                        <td><label class="constructionAssessmentPriceCorrecting">${mdCostVo.mdCostConstruction.constructionAssessmentPriceCorrecting}</label><input type="hidden" value="${mdCostVo.mdCostConstruction.constructionAssessmentPriceCorrecting}" name="constructionAssessmentPriceCorrecting" placeholder="在建工程单位价"> </td>
                     </tr>
                     </tfoot>
                 </table>
@@ -518,28 +525,21 @@
 
 
 <script>
-    function constructionInstallationEngineeringFeeEvent() {
+    function constructionInstallationEngineeringFeeEvent(id) {
         var target = $("#boxMdCostConstruction");
         if (target.find(".panel-body").find("table").size() == 0) {
             target.find(".panel-body").append(developmentCommon.architecturalB.getHtmlDetail());
             developmentCommon.architecturalB.treeGirdParse(target);
         }
-        developmentCommon.architecturalB.getData("engineering",AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.pid}','${projectPlanDetails.pid}',function (data) {
-            var item = undefined ;
-            if (data.length >= 1){
-                var n = data[0] ;
-                if (n.jsonContent){
-                    try {
-                        item = JSON.parse(n.jsonContent) ;
-                    } catch (e) {
-                        console.log("解析异常!") ;
-                    }
-                }
+        developmentCommon.getMdArchitecturalObjById(id,function (item) {
+            var data = {} ;
+            try {
+                data = JSON.parse(item.jsonContent) ;
+            } catch (e) {
+                console.log("解析异常!");
             }
-            if (item){
-                developmentCommon.architecturalB.initData(target.find("table"),item) ;
-            }
-        }) ;
+            developmentCommon.architecturalB.initData(target.find("table"),data) ;
+        });
         target.modal("show");
     }
 
@@ -549,7 +549,7 @@
         cols.push({field: 'number', title: '金额'});
         cols.push({field: 'tax', title: '税费'});
         $("#landMdCostConstructionChildrenTable").bootstrapTable('destroy');
-        TableInit('landMdCostConstructionChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdCostConstruction.id}&planDetailsId=${projectPlanDetails.id}&type=engineering", cols, {}, {
+        TableInit('landMdCostConstructionChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdCostVo.mdCostConstruction.id}&planDetailsId=${projectPlanDetails.id}&type=engineering", cols, {}, {
             showColumns: true,
             showRefresh: true,
             search: false
@@ -557,7 +557,7 @@
     }
 
     function callCompareMethod(mcId) {
-        if (mcId){
+        if ($.isNumeric(mcId)){
             var frame = layer.open({
                 type: 2,
                 title: '市场比较法',

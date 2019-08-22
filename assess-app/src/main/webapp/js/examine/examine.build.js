@@ -635,5 +635,53 @@
     };
 
 
+    buildingCommon.constructionInstallationEngineeringFeeEvent = {
+        loadHtml:function () {
+            buildingCommon.constructionInstallationEngineeringFeeEvent.appendHTML();
+            architecturalA.getMdArchitecturalObjList(AssessDBKey.BasicBuilding,buildingCommon.getBuildingId(),function (objArray) {
+                if (objArray.length >= 1) {
+                    architecturalA.getMdArchitecturalObjById(objArray[0].id,function (item) {
+                        estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML();
+                        var target = $("#boxLandEngineering");
+                        var table = target.find("table");
+                        var data = {} ;
+                        try {
+                            data = JSON.parse(item.jsonContent) ;
+                        } catch (e) {
+                            console.log("解析异常!");
+                        }
+                        architecturalA.initData(target.find("table"),data) ;
+                        target.find("input[name='constructionInstallationEngineeringFeeId']").val(item.id) ;
+                    });
+                }
+            });
+        },
+        appendHTML:function () {
+            var target = $("#boxLandEngineering");
+            var html = target.html() ;
+            html = html.replace(/'{method}'/g, 'buildingCommon.constructionInstallationEngineeringFeeEvent.save()');
+            target.empty().append(html);
+            target.find(".panel-body").empty() ;
+            target.find(".panel-body").append(architecturalA.getHtml());
+            architecturalA.treeGirdParse(target);
+            target.find("input[name='id']").val('');
+            target.modal("show");
+        },
+        save:function () {
+            var pid = buildingCommon.getBuildingId() ;
+            var target = $("#boxLandEngineering");
+            var table = target.find("table");
+            var obj = {} ;
+            obj.databaseName = AssessDBKey.BasicBuilding ;
+            obj.pid = pid;
+            obj.id = target.find("input[name='constructionInstallationEngineeringFeeId']").val();
+            architecturalA.saveMdArchitecturalObj(architecturalA.getFomData(table),obj,function (item) {
+                toastr.success('保存成功!');
+            }) ;
+            target.modal("hide");
+        }
+    } ;
+
+
     window.buildingCommon = buildingCommon;
 })(jQuery);

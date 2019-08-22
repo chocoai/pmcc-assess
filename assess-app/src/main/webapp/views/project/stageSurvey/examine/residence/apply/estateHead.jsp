@@ -209,39 +209,22 @@
 
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-1 control-label">
-            测算方法建筑安装工程费添加
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
         </label>
-        <div class="col-sm-3">
-            <button type="button" class="btn  btn-success" onclick="estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML(this)"><i class="fa fa-plus"></i></button>
-        </div>
-    </div>
-
-    <div class="x-valid">
-        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
-            <div class="input-group">
-                <button type="button" class="btn btn-default"
-                        onclick="estateCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                    工程费列表
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 " id="estateConstructionInstallationEngineeringFeeInfoTarget">
-
+        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+            <label class=" control-label">
+                建筑安装工程费
+            </label>
+            <button type="button" class="btn btn-default"
+                    onclick="estateCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                <i class="fa fa-object-group" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
 </div>
 
 <%@include file="./constructionInstallationEngineeringFeeInfoModelHtml.jsp" %>
 
-<script>
-    $(document).ready(function () {
-        setTimeout(function () {
-            estateCommon.constructionInstallationEngineeringFeeEvent.loadHtml()
-        },700);
-    })
-</script>
 
 
 

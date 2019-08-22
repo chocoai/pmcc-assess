@@ -2,31 +2,34 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.*;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
-import com.copower.pmcc.assess.service.basic.BasicHouseService;
-import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +53,10 @@ public class BasicApplyBatchController extends BaseController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private BasicEstateService basicEstateService;
 
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -88,7 +95,7 @@ public class BasicApplyBatchController extends BaseController {
             if (basicApplyBatchDetail.getBisStandard() == null) {
                 basicApplyBatchDetail.setBisStandard(false);
             }
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail,planDetailsId));
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail, planDetailsId));
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
@@ -320,11 +327,15 @@ public class BasicApplyBatchController extends BaseController {
             applyBatch.setEstateId(estateId);
             BasicApplyBatch singleData = basicApplyBatchService.getSingleData(applyBatch);
             modelAndView.addObject("tableId", singleData.getEstateId());
+            //显示引用项目还是案列按钮
+            modelAndView.addObject("showTab", singleData.getShowTab());
         } else {
             BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
             basicApplyBatchDetail.setId(id);
             BasicApplyBatchDetail detailData = basicApplyBatchDetailService.getSingleData(basicApplyBatchDetail);
             modelAndView.addObject("tableId", detailData.getTableId());
+            BasicApplyBatch applyBatch = basicApplyBatchService.getInfoById(basicApplyBatchDetail.getApplyBatchId());
+            modelAndView.addObject("showTab", applyBatch.getShowTab());
             //上级引用数据Id
             modelAndView.addObject("parentQuoteId", basicApplyBatchDetailService.getParentQuoteId(detailData));
         }
@@ -337,4 +348,22 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("unitPropertiesList", unitPropertiesList);
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/getEstateDataByPlanDetailsId", method = {RequestMethod.GET}, name = "获取查勘下楼盘列表")
+    public BootstrapTableVo getEstateDataByPlanDetailsId(Integer planDetailsId) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicEstateVo> vos = Lists.newArrayList();
+        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetails.getPid());
+        if (applyBatch != null) {
+            BasicEstate estate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
+            vos.add(basicEstateService.getBasicEstateVo(estate));
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicEstateVo>(10) : vos);
+        return vo;
+    }
 }

@@ -45,35 +45,34 @@
             developmentCommon.getMdArchitecturalObjList(type, databaseName, pid, planDetailsId, callback);
         },
         initData: function (table, data) {
+            console.log(data);
             var tbody = table.find('tbody');
             var result = 0;
             tbody.find("tr").each(function (i, tr) {
                 var dataKey = $(tr).attr('data-key');
                 var role = $(tr).attr('data-role');
                 var name = $(tr).find("td").first().text();
-                var value = $(tr).find("input[name='price']").first().val();
                 $.each(data, function (i, item) {
                     if (item.role == role) {
                         if (dataKey == item.dataKey) {
                             if (name == item.name) {
                                 var a = undefined;
                                 var b = undefined;
-                                if ($(tr).find("input[name='price']").first().size() != 0) {
-                                    if (item.value) {
-                                        $(tr).find("input[name='price']").first().val(item.value);
-                                        a = item.value;
-                                    }
+                                if (item.remark) {
+                                    $(tr).find("input[name='remark']").first().val(item.remark);
                                 }
-                                if ($(tr).find("input[name='valuationDateDegreeCompletion']").first().size() != 0) {
-                                    if (item.valuationDateDegreeCompletion) {
-                                        var valuationDateDegreeCompletion = parseFloat(item.valuationDateDegreeCompletion);
-                                        valuationDateDegreeCompletion /= 100;
-                                        $(tr).find("input[name='valuationDateDegreeCompletion']").first().val(item.valuationDateDegreeCompletion);
-                                        $(tr).find("input[name='valuationDateDegreeCompletion']").first().attr('data-value', valuationDateDegreeCompletion);
-                                        b = valuationDateDegreeCompletion;
-                                    }
+                                if (item.price) {
+                                    $(tr).find("input[name='price']").first().val(item.price);
+                                    a = item.price;
                                 }
-                                if (developmentCommon.isNotBlank(a) && developmentCommon.isNotBlank(b)) {
+                                if (item.valuationDateDegreeCompletion) {
+                                    var valuationDateDegreeCompletion = parseFloat(item.valuationDateDegreeCompletion);
+                                    valuationDateDegreeCompletion /= 100;
+                                    $(tr).find("input[name='valuationDateDegreeCompletion']").first().val(item.valuationDateDegreeCompletion);
+                                    $(tr).find("input[name='valuationDateDegreeCompletion']").first().attr('data-value', valuationDateDegreeCompletion);
+                                    b = valuationDateDegreeCompletion;
+                                }
+                                if ($.isNumeric(a) && $.isNumeric(b)) {
                                     var c = Number(a) * Number(b);
                                     $(tr).find("td").last().text(c.toFixed(2));
                                     result += c;
@@ -138,13 +137,15 @@
                 var dataKey = $(tr).attr('data-key');
                 var role = $(tr).attr('data-role');
                 var name = $(tr).find("td").first().text();
-                var value = $(tr).find("input[name='price']").first().val();
+                var price = $(tr).find("input[name='price']").first().val();
+                var remark = $(tr).find("input[name='remark']").first().val();
                 var valuationDateDegreeCompletion = $(tr).find("input[name='valuationDateDegreeCompletion']").first().val();
                 data.push({
                     dataKey: dataKey,
                     role: role,
                     name: name,
-                    value: value,
+                    price: price,
+                    remark: remark,
                     valuationDateDegreeCompletion: valuationDateDegreeCompletion
                 });
             });
@@ -615,6 +616,7 @@
             <th>工程名称</th>
             <th>单方造价(元/㎡)</th>
             <th>估价时点完工程度</th>
+            <td>描述</td>
             <th>估价时点单价(元/㎡)</th>
         </tr>
         </thead>
@@ -626,6 +628,7 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
         </tr>
         <tr class="treegrid-1-1 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
             <td> 地下基础</td>
@@ -634,6 +637,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-1-2 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
@@ -643,6 +647,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-1-3 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
@@ -652,11 +657,13 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
 
         <tr class="treegrid-2" data-key="installationWorks" data-role="parent">
             <td>安装工程</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -668,6 +675,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-2 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -677,6 +685,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-3 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -686,6 +695,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-4 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -695,6 +705,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-5 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -704,6 +715,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-6 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -713,6 +725,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-7 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -722,6 +735,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-8 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -731,11 +745,13 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
 
         <tr class="treegrid-3" data-key="decorationEngineering" data-role="parent">
             <td>装饰工程</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -747,6 +763,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-2 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -756,6 +773,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-3 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -765,6 +783,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-4 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -774,6 +793,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-5 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -783,6 +803,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-6 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -792,6 +813,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-7 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -801,6 +823,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-8 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -810,11 +833,13 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
 
         <tr class="treegrid-4" data-key="ancillaryWorks" data-role="parent">
             <td>附属工程</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -826,6 +851,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-2 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -835,6 +861,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-3 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -844,6 +871,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-4 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -853,6 +881,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-5 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -862,6 +891,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-6 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -871,11 +901,13 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
 
         <tr class="treegrid-5" data-key="secondInstallationProject" data-role="parent">
             <td>二装工程</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -887,6 +919,7 @@
             <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
                        placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
                        style="width: 100px;"></td>
+            <td><input type="text" name="remark" ></td>
             <td></td>
         </tr>
         </tbody>
@@ -908,6 +941,7 @@
             <th>单方造价(元/㎡)</th>
             <th>估价时点完工程度</th>
             <th>估价时点单价(元/㎡)</th>
+            <th>描述</th>
         </tr>
         </thead>
 
@@ -918,6 +952,7 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
         </tr>
         <tr class="treegrid-1-1 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
             <td> 地下基础</td>
@@ -925,6 +960,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-1-2 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
@@ -933,6 +969,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-1-3 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
@@ -941,11 +978,13 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
 
         <tr class="treegrid-2" data-key="installationWorks" data-role="parent">
             <td>安装工程</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -956,6 +995,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-2 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -964,6 +1004,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-3 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -972,6 +1013,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-4 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -980,6 +1022,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-5 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -988,6 +1031,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-6 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -996,6 +1040,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-7 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -1004,6 +1049,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-8 treegrid-parent-2" data-key="installationWorks" data-role="child">
@@ -1012,11 +1058,13 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
 
         <tr class="treegrid-3" data-key="decorationEngineering" data-role="parent">
             <td>装饰工程</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -1027,6 +1075,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-2 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -1035,6 +1084,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-3 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -1043,6 +1093,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-4 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -1051,6 +1102,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-5 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -1059,6 +1111,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-6 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -1067,6 +1120,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-7 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -1075,6 +1129,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-8 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
@@ -1083,11 +1138,13 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
 
         <tr class="treegrid-4" data-key="ancillaryWorks" data-role="parent">
             <td>附属工程</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -1098,6 +1155,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-2 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -1106,6 +1164,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-3 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -1114,6 +1173,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-4 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -1122,6 +1182,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-5 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -1130,6 +1191,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-6 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
@@ -1138,11 +1200,13 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
 
         <tr class="treegrid-5" data-key="secondInstallationProject" data-role="parent">
             <td>二装工程</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -1153,6 +1217,7 @@
                        data-rule-number="true" style="width: 100px;"></td>
             <td><input type="text" class="form-control" readonly="readonly" placeholder="(数字)"
                        name="valuationDateDegreeCompletion" data-rule-number="true" style="width: 100px;"></td>
+            <td><input  class="form-control" type="text" readonly="readonly" name="remark" ></td>
             <td></td>
         </tr>
 

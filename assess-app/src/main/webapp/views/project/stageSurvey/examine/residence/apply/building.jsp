@@ -334,6 +334,19 @@
                            class="form-control date-picker dbdate beCompletedTime">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class=" control-label">
+                        建筑安装工程费
+                    </label>
+                    <button type="button" class="btn btn-default"
+                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                        <i class="fa fa-object-group" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -401,6 +414,8 @@
             </div>
         </div>
 
+
+
         <div class="form-group" id="navButtonBuildGroupFileId">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">平面图</label>
@@ -429,6 +444,7 @@
 
 <%@include file="./buildingOutfit.jsp" %>
 <%@include file="./buildingFunction.jsp" %>
+
 
 <div id="basicBuildingPropertyServiceItemModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"

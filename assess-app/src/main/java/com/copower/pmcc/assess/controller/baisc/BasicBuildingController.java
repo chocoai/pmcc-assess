@@ -55,7 +55,7 @@ public class BasicBuildingController {
     @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
     public HttpResult getDataFromProject(Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingFromProject(applyId,null));
+            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingFromProject(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -63,10 +63,10 @@ public class BasicBuildingController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/batchGetDataFromProject", name = "项目中引用数据批量", method = {RequestMethod.GET})
-    public HttpResult batchGetDataFromProject(Integer applyId,Integer tableId) {
+    @RequestMapping(value = "/quoteBuildingData", name = "项目中引用数据批量", method = {RequestMethod.GET})
+    public HttpResult quoteBuildingData(Integer id, Integer tableId) {
         try {
-            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingFromProject(applyId,tableId));
+            return HttpResult.newCorrectResult(basicBuildingService.quoteBuildingData(id, tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -131,12 +131,22 @@ public class BasicBuildingController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteBuilding", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteBuilding(Integer caseBuildingId, String buildingPartInMode,Integer applyId) {
+    public HttpResult appWriteBuilding(Integer caseBuildingId, String buildingPartInMode, Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicBuildingService.appWriteBuilding(caseBuildingId, buildingPartInMode,applyId));
+            return HttpResult.newCorrectResult(basicBuildingService.appWriteBuilding(caseBuildingId, buildingPartInMode, applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("过程数据转移异常");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBuildingList", method = {RequestMethod.GET}, name = "楼栋--列表")
+    public BootstrapTableVo getBootstrapTableVo(Integer estateId) throws Exception {
+        if (estateId == null) return null;
+        BasicBuilding basicBuilding = new BasicBuilding();
+        basicBuilding.setEstateId(estateId);
+        BootstrapTableVo vo = basicBuildingService.getBootstrapTableVo(basicBuilding);
+        return vo;
     }
 }

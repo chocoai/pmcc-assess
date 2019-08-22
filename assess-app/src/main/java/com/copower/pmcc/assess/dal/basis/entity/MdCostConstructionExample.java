@@ -166,6 +166,76 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
+        public Criteria andConstructionInstallationEngineeringFeeIdsIsNull() {
+            addCriterion("construction_installation_engineering_fee_ids is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsIsNotNull() {
+            addCriterion("construction_installation_engineering_fee_ids is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsEqualTo(String value) {
+            addCriterion("construction_installation_engineering_fee_ids =", value, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsNotEqualTo(String value) {
+            addCriterion("construction_installation_engineering_fee_ids <>", value, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsGreaterThan(String value) {
+            addCriterion("construction_installation_engineering_fee_ids >", value, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsGreaterThanOrEqualTo(String value) {
+            addCriterion("construction_installation_engineering_fee_ids >=", value, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsLessThan(String value) {
+            addCriterion("construction_installation_engineering_fee_ids <", value, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsLessThanOrEqualTo(String value) {
+            addCriterion("construction_installation_engineering_fee_ids <=", value, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsLike(String value) {
+            addCriterion("construction_installation_engineering_fee_ids like", value, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsNotLike(String value) {
+            addCriterion("construction_installation_engineering_fee_ids not like", value, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsIn(List<String> values) {
+            addCriterion("construction_installation_engineering_fee_ids in", values, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsNotIn(List<String> values) {
+            addCriterion("construction_installation_engineering_fee_ids not in", values, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsBetween(String value1, String value2) {
+            addCriterion("construction_installation_engineering_fee_ids between", value1, value2, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionInstallationEngineeringFeeIdsNotBetween(String value1, String value2) {
+            addCriterion("construction_installation_engineering_fee_ids not between", value1, value2, "constructionInstallationEngineeringFeeIds");
+            return (Criteria) this;
+        }
+
         public Criteria andConstructionAssessmentPriceCorrectingIsNull() {
             addCriterion("construction_assessment_price_correcting is null");
             return (Criteria) this;

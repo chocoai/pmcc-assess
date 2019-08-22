@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdCostConstructionMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="construction_installation_engineering_fee_ids" property="constructionInstallationEngineeringFeeIds" jdbcType="VARCHAR" />
     <result column="construction_assessment_price_correcting" property="constructionAssessmentPriceCorrecting" jdbcType="DECIMAL" />
     <result column="construction_assessment_value" property="constructionAssessmentValue" jdbcType="VARCHAR" />
     <result column="investment_profit" property="investmentProfit" jdbcType="VARCHAR" />
@@ -108,9 +109,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, construction_assessment_price_correcting, construction_assessment_value, investment_profit, 
-    interest_investment, construction_subtotal, land_get_cost_total, json_content, develop_land_area_tax, 
-    develop_build_area_tax, develop_year_number_tax, mc_id, land_purchase_price, land_purchase_price_explain, 
+    id, construction_installation_engineering_fee_ids, construction_assessment_price_correcting, 
+    construction_assessment_value, investment_profit, interest_investment, construction_subtotal, 
+    land_get_cost_total, json_content, develop_land_area_tax, develop_build_area_tax, 
+    develop_year_number_tax, mc_id, land_purchase_price, land_purchase_price_explain, 
     land_get_relevant, land_get_relevant_explain, reconnaissance_design, construction_installation_engineering_fee, 
     infrastructure_cost, infrastructure_matching_cost, infrastructure_matching_cost_explain, 
     dev_during, other_engineering_cost, unforeseen_expenses, unforeseen_expenses_explain, 
@@ -155,8 +157,9 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_cost_construction (construction_assessment_price_correcting, construction_assessment_value, 
-      investment_profit, interest_investment, construction_subtotal, 
+    insert into tb_md_cost_construction (construction_installation_engineering_fee_ids, construction_assessment_price_correcting, 
+      construction_assessment_value, investment_profit, 
+      interest_investment, construction_subtotal, 
       land_get_cost_total, json_content, develop_land_area_tax, 
       develop_build_area_tax, develop_year_number_tax, 
       mc_id, land_purchase_price, land_purchase_price_explain, 
@@ -176,8 +179,9 @@
       dev_during_explain, other_engineering_cost_explain, 
       additional_cost_land_acquisition_explain, reconnaissance_design_explain
       )
-    values (#{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, #{constructionAssessmentValue,jdbcType=VARCHAR}, 
-      #{investmentProfit,jdbcType=VARCHAR}, #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
+    values (#{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR}, #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, 
+      #{constructionAssessmentValue,jdbcType=VARCHAR}, #{investmentProfit,jdbcType=VARCHAR}, 
+      #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
       #{landGetCostTotal,jdbcType=VARCHAR}, #{jsonContent,jdbcType=VARCHAR}, #{developLandAreaTax,jdbcType=DECIMAL}, 
       #{developBuildAreaTax,jdbcType=DECIMAL}, #{developYearNumberTax,jdbcType=DECIMAL}, 
       #{mcId,jdbcType=INTEGER}, #{landPurchasePrice,jdbcType=DECIMAL}, #{landPurchasePriceExplain,jdbcType=VARCHAR}, 
@@ -204,6 +208,9 @@
     </selectKey>
     insert into tb_md_cost_construction
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="constructionInstallationEngineeringFeeIds != null" >
+        construction_installation_engineering_fee_ids,
+      </if>
       <if test="constructionAssessmentPriceCorrecting != null" >
         construction_assessment_price_correcting,
       </if>
@@ -341,6 +348,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="constructionInstallationEngineeringFeeIds != null" >
+        #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
+      </if>
       <if test="constructionAssessmentPriceCorrecting != null" >
         #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       </if>
@@ -490,6 +500,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.constructionInstallationEngineeringFeeIds != null" >
+        construction_installation_engineering_fee_ids = #{record.constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
+      </if>
       <if test="record.constructionAssessmentPriceCorrecting != null" >
         construction_assessment_price_correcting = #{record.constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       </if>
@@ -633,6 +646,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_md_cost_construction
     set id = #{record.id,jdbcType=INTEGER},
+      construction_installation_engineering_fee_ids = #{record.constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
       construction_assessment_price_correcting = #{record.constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       construction_assessment_value = #{record.constructionAssessmentValue,jdbcType=VARCHAR},
       investment_profit = #{record.investmentProfit,jdbcType=VARCHAR},
@@ -685,6 +699,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
     <set >
+      <if test="constructionInstallationEngineeringFeeIds != null" >
+        construction_installation_engineering_fee_ids = #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
+      </if>
       <if test="constructionAssessmentPriceCorrecting != null" >
         construction_assessment_price_correcting = #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       </if>
@@ -825,7 +842,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
-    set construction_assessment_price_correcting = #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
+    set construction_installation_engineering_fee_ids = #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
+      construction_assessment_price_correcting = #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       construction_assessment_value = #{constructionAssessmentValue,jdbcType=VARCHAR},
       investment_profit = #{investmentProfit,jdbcType=VARCHAR},
       interest_investment = #{interestInvestment,jdbcType=VARCHAR},

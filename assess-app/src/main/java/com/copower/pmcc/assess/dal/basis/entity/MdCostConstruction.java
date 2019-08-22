@@ -6,6 +6,8 @@ import java.util.Date;
 public class MdCostConstruction {
     private Integer id;
 
+    private String constructionInstallationEngineeringFeeIds;
+
     private BigDecimal constructionAssessmentPriceCorrecting;
 
     private String constructionAssessmentValue;
@@ -102,6 +104,14 @@ public class MdCostConstruction {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getConstructionInstallationEngineeringFeeIds() {
+        return constructionInstallationEngineeringFeeIds;
+    }
+
+    public void setConstructionInstallationEngineeringFeeIds(String constructionInstallationEngineeringFeeIds) {
+        this.constructionInstallationEngineeringFeeIds = constructionInstallationEngineeringFeeIds == null ? null : constructionInstallationEngineeringFeeIds.trim();
     }
 
     public BigDecimal getConstructionAssessmentPriceCorrecting() {

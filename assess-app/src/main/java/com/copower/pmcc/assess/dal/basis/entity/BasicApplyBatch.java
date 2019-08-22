@@ -33,6 +33,8 @@ public class BasicApplyBatch {
 
     private String baseType;
 
+    private Boolean showTab;
+
     public Integer getId() {
         return id;
     }
@@ -151,5 +153,13 @@ public class BasicApplyBatch {
 
     public void setBaseType(String baseType) {
         this.baseType = baseType == null ? null : baseType.trim();
+    }
+
+    public Boolean getShowTab() {
+        return showTab;
+    }
+
+    public void setShowTab(Boolean showTab) {
+        this.showTab = showTab;
     }
 }
