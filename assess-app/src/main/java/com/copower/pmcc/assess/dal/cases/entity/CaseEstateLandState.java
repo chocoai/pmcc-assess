@@ -58,12 +58,6 @@ public class CaseEstateLandState {
 
     private String fertility;
 
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private String conclusion;
 
     private String developmentDegreeRemark;
@@ -82,7 +76,15 @@ public class CaseEstateLandState {
 
     private String dataLandLevelAchievement;
 
+    private String presentSituationLandUse;
+
     private BigDecimal investmentIntensity;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -300,30 +302,6 @@ public class CaseEstateLandState {
         this.fertility = fertility == null ? null : fertility.trim();
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public String getConclusion() {
         return conclusion;
     }
@@ -396,11 +374,43 @@ public class CaseEstateLandState {
         this.dataLandLevelAchievement = dataLandLevelAchievement == null ? null : dataLandLevelAchievement.trim();
     }
 
+    public String getPresentSituationLandUse() {
+        return presentSituationLandUse;
+    }
+
+    public void setPresentSituationLandUse(String presentSituationLandUse) {
+        this.presentSituationLandUse = presentSituationLandUse == null ? null : presentSituationLandUse.trim();
+    }
+
     public BigDecimal getInvestmentIntensity() {
         return investmentIntensity;
     }
 
     public void setInvestmentIntensity(BigDecimal investmentIntensity) {
         this.investmentIntensity = investmentIntensity;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

@@ -21,13 +21,15 @@ public class DataInfrastructure {
 
     private Date endDate;
 
-    private String type;
+    private String fileName;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String type;
 
     public Integer getId() {
         return id;
@@ -101,12 +103,12 @@ public class DataInfrastructure {
         this.endDate = endDate;
     }
 
-    public String getType() {
-        return type;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setFileName(String fileName) {
+        this.fileName = fileName == null ? null : fileName.trim();
     }
 
     public String getCreator() {
@@ -131,5 +133,13 @@ public class DataInfrastructure {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 }

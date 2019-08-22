@@ -52,13 +52,13 @@
         <!--</table>-->
 
 
-        <table tableName="tb_case_building" domainObjectName="CaseBuilding">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_case_building" domainObjectName="CaseBuilding">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_case_building_property_service_item" domainObjectName="CaseBuildingPropertyServiceItem">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_case_building_property_service_item" domainObjectName="CaseBuildingPropertyServiceItem">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_case_building_outfit" domainObjectName="CaseBuildingOutfit">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -144,10 +144,10 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_estate_land_state" domainObjectName="CaseEstateLandState">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
+        <table tableName="tb_case_estate_land_state" domainObjectName="CaseEstateLandState">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>
+        </table>
 
         <!--<table tableName="tb_case_estate_network" domainObjectName="CaseEstateNetwork">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

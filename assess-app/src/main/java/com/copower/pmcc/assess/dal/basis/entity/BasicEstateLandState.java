@@ -72,6 +72,8 @@ public class BasicEstateLandState {
 
     private String specialRestrictions;
 
+    private String presentSituationLandUse;
+
     private Integer infrastructureCompleteness;
 
     private String creator;
@@ -350,6 +352,14 @@ public class BasicEstateLandState {
 
     public void setSpecialRestrictions(String specialRestrictions) {
         this.specialRestrictions = specialRestrictions == null ? null : specialRestrictions.trim();
+    }
+
+    public String getPresentSituationLandUse() {
+        return presentSituationLandUse;
+    }
+
+    public void setPresentSituationLandUse(String presentSituationLandUse) {
+        this.presentSituationLandUse = presentSituationLandUse == null ? null : presentSituationLandUse.trim();
     }
 
     public Integer getInfrastructureCompleteness() {

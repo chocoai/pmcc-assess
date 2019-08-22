@@ -36,6 +36,7 @@
     <result column="building_height_limit" property="buildingHeightLimit" jdbcType="DECIMAL" />
     <result column="investment_intensity" property="investmentIntensity" jdbcType="DECIMAL" />
     <result column="special_restrictions" property="specialRestrictions" jdbcType="VARCHAR" />
+    <result column="present_situation_land_use" property="presentSituationLandUse" jdbcType="VARCHAR" />
     <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -106,7 +107,7 @@
     development_degree_remark, development_degree_content, plot_ratio, building_density, 
     green_space_rate, compatible_ratio, bearing_capacity, contaminated, ph, fertility, 
     conclusion, hold_on, building_height_limit, investment_intensity, special_restrictions, 
-    infrastructure_completeness, creator, gmt_created, gmt_modified
+    present_situation_land_use, infrastructure_completeness, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" >
     select
@@ -153,9 +154,9 @@
       compatible_ratio, bearing_capacity, contaminated, 
       ph, fertility, conclusion, 
       hold_on, building_height_limit, investment_intensity, 
-      special_restrictions, infrastructure_completeness, 
-      creator, gmt_created, gmt_modified
-      )
+      special_restrictions, present_situation_land_use, 
+      infrastructure_completeness, creator, gmt_created, 
+      gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{landUseType,jdbcType=INTEGER}, #{landUseCategory,jdbcType=INTEGER}, #{landFactorTotalScore,jdbcType=DECIMAL}, 
       #{landLevelContent,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
@@ -167,9 +168,9 @@
       #{compatibleRatio,jdbcType=VARCHAR}, #{bearingCapacity,jdbcType=VARCHAR}, #{contaminated,jdbcType=VARCHAR}, 
       #{ph,jdbcType=VARCHAR}, #{fertility,jdbcType=VARCHAR}, #{conclusion,jdbcType=VARCHAR}, 
       #{holdOn,jdbcType=VARCHAR}, #{buildingHeightLimit,jdbcType=DECIMAL}, #{investmentIntensity,jdbcType=DECIMAL}, 
-      #{specialRestrictions,jdbcType=VARCHAR}, #{infrastructureCompleteness,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{specialRestrictions,jdbcType=VARCHAR}, #{presentSituationLandUse,jdbcType=VARCHAR}, 
+      #{infrastructureCompleteness,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -275,6 +276,9 @@
       </if>
       <if test="specialRestrictions != null" >
         special_restrictions,
+      </if>
+      <if test="presentSituationLandUse != null" >
+        present_situation_land_use,
       </if>
       <if test="infrastructureCompleteness != null" >
         infrastructure_completeness,
@@ -388,6 +392,9 @@
       </if>
       <if test="specialRestrictions != null" >
         #{specialRestrictions,jdbcType=VARCHAR},
+      </if>
+      <if test="presentSituationLandUse != null" >
+        #{presentSituationLandUse,jdbcType=VARCHAR},
       </if>
       <if test="infrastructureCompleteness != null" >
         #{infrastructureCompleteness,jdbcType=INTEGER},
@@ -514,6 +521,9 @@
       <if test="record.specialRestrictions != null" >
         special_restrictions = #{record.specialRestrictions,jdbcType=VARCHAR},
       </if>
+      <if test="record.presentSituationLandUse != null" >
+        present_situation_land_use = #{record.presentSituationLandUse,jdbcType=VARCHAR},
+      </if>
       <if test="record.infrastructureCompleteness != null" >
         infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       </if>
@@ -567,6 +577,7 @@
       building_height_limit = #{record.buildingHeightLimit,jdbcType=DECIMAL},
       investment_intensity = #{record.investmentIntensity,jdbcType=DECIMAL},
       special_restrictions = #{record.specialRestrictions,jdbcType=VARCHAR},
+      present_situation_land_use = #{record.presentSituationLandUse,jdbcType=VARCHAR},
       infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -677,6 +688,9 @@
       <if test="specialRestrictions != null" >
         special_restrictions = #{specialRestrictions,jdbcType=VARCHAR},
       </if>
+      <if test="presentSituationLandUse != null" >
+        present_situation_land_use = #{presentSituationLandUse,jdbcType=VARCHAR},
+      </if>
       <if test="infrastructureCompleteness != null" >
         infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       </if>
@@ -727,6 +741,7 @@
       building_height_limit = #{buildingHeightLimit,jdbcType=DECIMAL},
       investment_intensity = #{investmentIntensity,jdbcType=DECIMAL},
       special_restrictions = #{specialRestrictions,jdbcType=VARCHAR},
+      present_situation_land_use = #{presentSituationLandUse,jdbcType=VARCHAR},
       infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

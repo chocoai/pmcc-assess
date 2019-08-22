@@ -2356,6 +2356,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andPresentSituationLandUseIsNull() {
+            addCriterion("present_situation_land_use is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseIsNotNull() {
+            addCriterion("present_situation_land_use is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseEqualTo(String value) {
+            addCriterion("present_situation_land_use =", value, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseNotEqualTo(String value) {
+            addCriterion("present_situation_land_use <>", value, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseGreaterThan(String value) {
+            addCriterion("present_situation_land_use >", value, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseGreaterThanOrEqualTo(String value) {
+            addCriterion("present_situation_land_use >=", value, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseLessThan(String value) {
+            addCriterion("present_situation_land_use <", value, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseLessThanOrEqualTo(String value) {
+            addCriterion("present_situation_land_use <=", value, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseLike(String value) {
+            addCriterion("present_situation_land_use like", value, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseNotLike(String value) {
+            addCriterion("present_situation_land_use not like", value, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseIn(List<String> values) {
+            addCriterion("present_situation_land_use in", values, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseNotIn(List<String> values) {
+            addCriterion("present_situation_land_use not in", values, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseBetween(String value1, String value2) {
+            addCriterion("present_situation_land_use between", value1, value2, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPresentSituationLandUseNotBetween(String value1, String value2) {
+            addCriterion("present_situation_land_use not between", value1, value2, "presentSituationLandUse");
+            return (Criteria) this;
+        }
+
         public Criteria andInfrastructureCompletenessIsNull() {
             addCriterion("infrastructure_completeness is null");
             return (Criteria) this;

@@ -29,9 +29,6 @@
     <result column="contaminated" property="contaminated" jdbcType="VARCHAR" />
     <result column="ph" property="ph" jdbcType="VARCHAR" />
     <result column="fertility" property="fertility" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="conclusion" property="conclusion" jdbcType="VARCHAR" />
     <result column="development_degree_remark" property="developmentDegreeRemark" jdbcType="VARCHAR" />
     <result column="hold_on" property="holdOn" jdbcType="VARCHAR" />
@@ -41,7 +38,11 @@
     <result column="land_factor_total_score" property="landFactorTotalScore" jdbcType="DECIMAL" />
     <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
     <result column="data_land_level_achievement" property="dataLandLevelAchievement" jdbcType="VARCHAR" />
+    <result column="present_situation_land_use" property="presentSituationLandUse" jdbcType="VARCHAR" />
     <result column="investment_intensity" property="investmentIntensity" jdbcType="DECIMAL" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -106,9 +107,10 @@
     south_to, west_to, north_to, shape_state, shape_state_remark, planeness, development_degree, 
     development_degree_content, restrictive_condition, soil, topographic_terrain, plot_ratio, 
     building_density, green_space_rate, compatible_ratio, bearing_capacity, contaminated, 
-    ph, fertility, creator, gmt_created, gmt_modified, conclusion, development_degree_remark, 
-    hold_on, infrastructure_completeness, building_height_limit, special_restrictions, 
-    land_factor_total_score, land_level_content, data_land_level_achievement, investment_intensity
+    ph, fertility, conclusion, development_degree_remark, hold_on, infrastructure_completeness, 
+    building_height_limit, special_restrictions, land_factor_total_score, land_level_content, 
+    data_land_level_achievement, present_situation_land_use, investment_intensity, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandStateExample" >
     select
@@ -152,13 +154,13 @@
       restrictive_condition, soil, topographic_terrain, 
       plot_ratio, building_density, green_space_rate, 
       compatible_ratio, bearing_capacity, contaminated, 
-      ph, fertility, creator, 
-      gmt_created, gmt_modified, conclusion, 
+      ph, fertility, conclusion, 
       development_degree_remark, hold_on, infrastructure_completeness, 
       building_height_limit, special_restrictions, 
       land_factor_total_score, land_level_content, 
-      data_land_level_achievement, investment_intensity
-      )
+      data_land_level_achievement, present_situation_land_use, 
+      investment_intensity, creator, gmt_created, 
+      gmt_modified)
     values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, 
       #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
       #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
@@ -167,13 +169,13 @@
       #{restrictiveCondition,jdbcType=VARCHAR}, #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=INTEGER}, 
       #{plotRatio,jdbcType=VARCHAR}, #{buildingDensity,jdbcType=VARCHAR}, #{greenSpaceRate,jdbcType=VARCHAR}, 
       #{compatibleRatio,jdbcType=VARCHAR}, #{bearingCapacity,jdbcType=VARCHAR}, #{contaminated,jdbcType=VARCHAR}, 
-      #{ph,jdbcType=VARCHAR}, #{fertility,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{conclusion,jdbcType=VARCHAR}, 
+      #{ph,jdbcType=VARCHAR}, #{fertility,jdbcType=VARCHAR}, #{conclusion,jdbcType=VARCHAR}, 
       #{developmentDegreeRemark,jdbcType=VARCHAR}, #{holdOn,jdbcType=VARCHAR}, #{infrastructureCompleteness,jdbcType=INTEGER}, 
       #{buildingHeightLimit,jdbcType=DECIMAL}, #{specialRestrictions,jdbcType=VARCHAR}, 
       #{landFactorTotalScore,jdbcType=DECIMAL}, #{landLevelContent,jdbcType=VARCHAR}, 
-      #{dataLandLevelAchievement,jdbcType=VARCHAR}, #{investmentIntensity,jdbcType=DECIMAL}
-      )
+      #{dataLandLevelAchievement,jdbcType=VARCHAR}, #{presentSituationLandUse,jdbcType=VARCHAR}, 
+      #{investmentIntensity,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -259,15 +261,6 @@
       <if test="fertility != null" >
         fertility,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
       <if test="conclusion != null" >
         conclusion,
       </if>
@@ -295,8 +288,20 @@
       <if test="dataLandLevelAchievement != null" >
         data_land_level_achievement,
       </if>
+      <if test="presentSituationLandUse != null" >
+        present_situation_land_use,
+      </if>
       <if test="investmentIntensity != null" >
         investment_intensity,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -378,15 +383,6 @@
       <if test="fertility != null" >
         #{fertility,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="conclusion != null" >
         #{conclusion,jdbcType=VARCHAR},
       </if>
@@ -414,8 +410,20 @@
       <if test="dataLandLevelAchievement != null" >
         #{dataLandLevelAchievement,jdbcType=VARCHAR},
       </if>
+      <if test="presentSituationLandUse != null" >
+        #{presentSituationLandUse,jdbcType=VARCHAR},
+      </if>
       <if test="investmentIntensity != null" >
         #{investmentIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -509,15 +517,6 @@
       <if test="record.fertility != null" >
         fertility = #{record.fertility,jdbcType=VARCHAR},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.conclusion != null" >
         conclusion = #{record.conclusion,jdbcType=VARCHAR},
       </if>
@@ -545,8 +544,20 @@
       <if test="record.dataLandLevelAchievement != null" >
         data_land_level_achievement = #{record.dataLandLevelAchievement,jdbcType=VARCHAR},
       </if>
+      <if test="record.presentSituationLandUse != null" >
+        present_situation_land_use = #{record.presentSituationLandUse,jdbcType=VARCHAR},
+      </if>
       <if test="record.investmentIntensity != null" >
         investment_intensity = #{record.investmentIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -582,9 +593,6 @@
       contaminated = #{record.contaminated,jdbcType=VARCHAR},
       ph = #{record.ph,jdbcType=VARCHAR},
       fertility = #{record.fertility,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       conclusion = #{record.conclusion,jdbcType=VARCHAR},
       development_degree_remark = #{record.developmentDegreeRemark,jdbcType=VARCHAR},
       hold_on = #{record.holdOn,jdbcType=VARCHAR},
@@ -594,7 +602,11 @@
       land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
       land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
       data_land_level_achievement = #{record.dataLandLevelAchievement,jdbcType=VARCHAR},
-      investment_intensity = #{record.investmentIntensity,jdbcType=DECIMAL}
+      present_situation_land_use = #{record.presentSituationLandUse,jdbcType=VARCHAR},
+      investment_intensity = #{record.investmentIntensity,jdbcType=DECIMAL},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -680,15 +692,6 @@
       <if test="fertility != null" >
         fertility = #{fertility,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="conclusion != null" >
         conclusion = #{conclusion,jdbcType=VARCHAR},
       </if>
@@ -716,8 +719,20 @@
       <if test="dataLandLevelAchievement != null" >
         data_land_level_achievement = #{dataLandLevelAchievement,jdbcType=VARCHAR},
       </if>
+      <if test="presentSituationLandUse != null" >
+        present_situation_land_use = #{presentSituationLandUse,jdbcType=VARCHAR},
+      </if>
       <if test="investmentIntensity != null" >
         investment_intensity = #{investmentIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -750,9 +765,6 @@
       contaminated = #{contaminated,jdbcType=VARCHAR},
       ph = #{ph,jdbcType=VARCHAR},
       fertility = #{fertility,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       conclusion = #{conclusion,jdbcType=VARCHAR},
       development_degree_remark = #{developmentDegreeRemark,jdbcType=VARCHAR},
       hold_on = #{holdOn,jdbcType=VARCHAR},
@@ -762,7 +774,11 @@
       land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
       land_level_content = #{landLevelContent,jdbcType=VARCHAR},
       data_land_level_achievement = #{dataLandLevelAchievement,jdbcType=VARCHAR},
-      investment_intensity = #{investmentIntensity,jdbcType=DECIMAL}
+      present_situation_land_use = #{presentSituationLandUse,jdbcType=VARCHAR},
+      investment_intensity = #{investmentIntensity,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
