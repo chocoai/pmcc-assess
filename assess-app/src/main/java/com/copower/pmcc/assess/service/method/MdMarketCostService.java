@@ -212,27 +212,4 @@ public class MdMarketCostService {
     }
 
 
-    private void changeConstructionInstallationEngineeringDto(List<BaseDataDic> baseDataDics, List<ConstructionInstallationEngineeringDto> ztreeDtos, String key, int i) {
-        int v = 1;
-        if (!ObjectUtils.isEmpty(baseDataDics)) {
-            for (BaseDataDic baseDataDic : baseDataDics) {
-                ConstructionInstallationEngineeringDto engineeringDto = new ConstructionInstallationEngineeringDto();
-                BeanUtils.copyProperties(baseDataDic, engineeringDto);
-                if (!StringUtils.isEmpty(key)) {
-                    BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(key);
-                    engineeringDto.set_parentId(dic.getId());
-                } else {
-                    //未传入key  说明是父节点
-                    engineeringDto.setParent(true);
-                }
-                if (i != 0) {
-                    engineeringDto.setNumber(String.format("%d-%d", i, v++));
-                } else {
-                    engineeringDto.setNumber(String.valueOf(v++));
-                }
-                ztreeDtos.add(engineeringDto);
-            }
-        }
-    }
-
 }
