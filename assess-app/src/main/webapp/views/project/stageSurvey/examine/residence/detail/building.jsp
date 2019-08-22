@@ -390,7 +390,7 @@
 
 <%@include file="./buildingOutfit.jsp" %>
 <%@include file="./buildingFunction.jsp" %>
-
+<%@include file="../../residence/apply/constructionInstallationEngineeringFeeInfoModelHtml.jsp" %>
 
 </html>
 
