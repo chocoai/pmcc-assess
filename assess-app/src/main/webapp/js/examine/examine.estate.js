@@ -846,41 +846,22 @@
     
     estateCommon.constructionInstallationEngineeringFeeEvent = {
         loadHtml:function () {
-            architecturalA.getMdArchitecturalObjList(AssessDBKey.BasicEstate,estateCommon.getEstateId(),function (data) {
-                var target = $("#estateConstructionInstallationEngineeringFeeInfoTarget") ;
-                var html = "";
-                if (data.length >= 1) {
-                    $.each(data, function (i, item) {
-                        var resetHtml = $("#constructionInstallationEngineeringFeeInfoModelHtml").html();
-                        resetHtml = resetHtml.replace(/{uuid}/g, item.id);
-                        resetHtml = resetHtml.replace(/{index}/g, ++i);
-                        resetHtml = resetHtml.replace(/{method}/g, "estateCommon.constructionInstallationEngineeringFeeEvent");
-                        html += resetHtml;
+            estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML();
+            architecturalA.getMdArchitecturalObjList(AssessDBKey.BasicEstate,estateCommon.getEstateId(),function (objArray) {
+                if (objArray.length >= 1){
+                    architecturalA.getMdArchitecturalObjById(objArray[0].id,function (item) {
+                        var target = $("#boxLandEngineering");
+                        var table = target.find("table");
+                        var data = {} ;
+                        try {
+                            data = JSON.parse(item.jsonContent) ;
+                        } catch (e) {
+                            console.log("解析异常!");
+                        }
+                        architecturalA.initData(target.find("table"),data) ;
+                        target.find("input[name='constructionInstallationEngineeringFeeId']").val(item.id) ;
                     });
                 }
-                target.empty() ;
-                target.append(html);
-            });
-        },
-        detailsConstructionInstallation:function (id) {
-            architecturalA.getMdArchitecturalObjById(id,function (item) {
-                estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML();
-                var target = $("#boxLandEngineering");
-                var table = target.find("table");
-                var data = {} ;
-                try {
-                    data = JSON.parse(item.jsonContent) ;
-                } catch (e) {
-                    console.log("解析异常!");
-                }
-                architecturalA.initData(target.find("table"),data) ;
-                target.find("input[name='id']").val(item.id) ;
-            });
-        },
-        deleteConstructionInstallation:function (id) {
-            architecturalA.deleteMdArchitecturalObjById(id,function () {
-                toastr.success('删除成功!');
-                estateCommon.constructionInstallationEngineeringFeeEvent.loadHtml() ;
             });
         },
         appendHTML:function () {
@@ -901,10 +882,9 @@
             var obj = {} ;
             obj.databaseName = AssessDBKey.BasicEstate ;
             obj.pid = pid;
-            obj.id = target.find("input[name='id']").val();
+            obj.id = target.find("input[name='constructionInstallationEngineeringFeeId']").val();
             architecturalA.saveMdArchitecturalObj(architecturalA.getFomData(table),obj,function (item) {
                 toastr.success('保存成功!');
-                estateCommon.constructionInstallationEngineeringFeeEvent.loadHtml() ;
             }) ;
             target.modal("hide");
         }

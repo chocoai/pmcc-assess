@@ -49,10 +49,10 @@
             <columnOverride column="head_content" jdbcType="VARCHAR"></columnOverride>
         </table>
 
-        <!--<table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
+        <table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>
+        </table>
 
         <!--<table tableName="tb_md_cost" domainObjectName="MdCost">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

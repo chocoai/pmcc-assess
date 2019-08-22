@@ -63,7 +63,7 @@
             <div class="x_panel">
                 <div class="x_content">
                     <form class="form-horizontal" id="md_cost_form">
-                        <input type="hidden" name="id" value="${mdDevelopment.id}">
+                        <input type="hidden" name="id" value="${mdCostVo.id}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -71,7 +71,7 @@
                                 </label>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" data-rule-number="true" required
-                                           name="price" value="${mdCost.price}">
+                                           name="price" value="${mdCostVo.price}">
                                 </div>
                             </div>
                         </div>
@@ -141,16 +141,6 @@
             }
         }
         if (head.type == '2') {
-            var data = formSerializeArray(cost.constructionFrm);
-            if (!AssessCommon.isNumber(data.infrastructureCost)){
-                cost.constructionFrm.find("select[name='infrastructureCost']").parent().after(html.replace(/for/g, "infrastructureCost_"));
-            }
-            if (!AssessCommon.isNumber(data.infrastructureMatchingCost)){
-                cost.constructionFrm.find("select[name='infrastructureMatchingCost']").parent().after(html.replace(/for/g, "infrastructureMatchingCost_"));
-            }
-            if (!AssessCommon.isNumber(data.devDuring)){
-                cost.constructionFrm.find("select[name='devDuring']").parent().after(html.replace(/for/g, "devDuring_"));
-            }
             if (!cost.constructionFrm.valid()) {
                 return false;
             }
@@ -203,7 +193,7 @@
 
     $(document).ready(function () {
 
-        var type = '${mdCost.type}';
+        var type = '${mdCostVo.type}';
 
         cost.frm.find("input[type='radio'][name='type']").change(function () {
             var data = formSerializeArray(cost.frm);
@@ -227,7 +217,7 @@
             }
         }
 
-        if (!cost.isNotBlank('${mdCostConstruction.id}')){
+        if (!cost.isNotBlank('${mdCostVo.mdCostConstruction.id}')){
             var query = {province:'${schemeAreaGroup.province}',city:'${schemeAreaGroup.city}',district:'${schemeAreaGroup.district}',bisNationalUnity:true} ;
             $.ajax({
                 type: "get",
@@ -236,7 +226,6 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data){
-                            console.log(result.data) ;
                             $.each(result.data,function (i,item) {
                                 var taxRate = item.taxRate ;
                                 if (item.taxRate){
@@ -270,6 +259,8 @@
         construction.loadMdDevelopmentInfrastructureChildrenTable() ;
 
         construction.inputBlurEvent() ;
+
+        construction.constructionInstallationEngineeringFeeEvent.loadHtml();
     });
 
 </script>
@@ -280,7 +271,7 @@
             disabledTarget: "btn_submit",
             formData: {
                 tableName: AssessDBKey.MdCost,
-                tableId: '${mdCost.id}',
+                tableId: '${mdCostVo.id}',
                 projectId: "${projectInfo.id}"
             },
             editFlag: true,
@@ -290,7 +281,7 @@
             target: "report_file",
             formData: {
                 tableName: AssessDBKey.MdCost,
-                tableId: '${mdCost.id}'
+                tableId: '${mdCostVo.id}'
             },
             editFlag: true,
             deleteFlag: true

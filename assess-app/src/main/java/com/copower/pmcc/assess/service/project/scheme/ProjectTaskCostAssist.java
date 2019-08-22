@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
+import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
@@ -26,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -197,8 +198,6 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         MdCost mdCost = new MdCost();
-        MdCostConstruction mdCostConstruction = new MdCostConstruction();
-        MdCostBuilding mdCostBuilding = new MdCostBuilding();
         DeclareEconomicIndicatorsHead declareEconomicIndicatorsHead = new DeclareEconomicIndicatorsHead();
         List<DeclareBuildEngineeringAndEquipmentCenter> centerList = Lists.newArrayList();
         setViewBaseParam(projectPlanDetails, modelAndView, centerList);
@@ -212,36 +211,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 mdCost = mdMarketCostService.getByMdCostId(schemeInfo.getMethodDataId());
             }
         }
-        if (mdCost != null) {
-            if (Objects.equal("2", mdCost.getType())) {
-                MdCostConstruction query = new MdCostConstruction();
-                query.setPid(mdCost.getId());
-                List<MdCostConstruction> list = mdMarketCostService.getMdCostConstructionList(query);
-                if (CollectionUtils.isNotEmpty(list)) {
-                    mdCostConstruction = list.stream().findFirst().get();
-                }
-            }
-            if (Objects.equal("1", mdCost.getType())) {
-                MdCostBuilding query = new MdCostBuilding();
-                query.setPid(mdCost.getId());
-                List<MdCostBuilding> list = mdMarketCostService.getMdCostBuildingList(query);
-                if (CollectionUtils.isNotEmpty(list)) {
-                    mdCostBuilding = list.stream().findFirst().get();
-                }
-            }
-        }
-        if (mdCostConstruction != null) {
-            if (mdCostConstruction.getInfrastructureCost() != null){
-                mdCostConstruction.setInfrastructureCost(new BigDecimal(mdCostConstruction.getInfrastructureCost().toPlainString()));
-            }
-            modelAndView.addObject(StringUtils.uncapitalize(MdCostConstruction.class.getSimpleName()), mdCostConstruction);
-        }
-        if (mdCostBuilding != null) {
-            modelAndView.addObject(StringUtils.uncapitalize(MdCostBuilding.class.getSimpleName()), mdCostBuilding);
-        }
-        if (mdCost != null) {
-            modelAndView.addObject(StringUtils.uncapitalize(MdCost.class.getSimpleName()), mdCost);
-        }
+        MdCostVo mdCostVo = mdMarketCostService.getMdCostVo(mdCost) ;
+        modelAndView.addObject(StringUtils.uncapitalize(MdCostVo.class.getSimpleName()),mdCostVo );
         if (CollectionUtils.isNotEmpty(centerList)) {
             modelAndView.addObject(StringUtils.uncapitalize(DeclareBuildEngineeringAndEquipmentCenter.class.getSimpleName()), centerList.get(0));
             if (centerList.stream().anyMatch(oo -> oo.getIndicatorId() != null)) {
@@ -290,7 +261,6 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 }
             }
         }
-
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
     }

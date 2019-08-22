@@ -8,6 +8,8 @@
     construction.fixedMin = 0; //小数点保留0位
     construction.infrastructureChildrenTable = "#landMdCostConstructionChildrenTable";
     construction.infrastructureFooterHtml = "#underConstructionMdDevelopmentInfrastructureFooterX";
+    construction.engineeringFeeInfoTarget = "#engineeringConstructionInstallationEngineeringFeeInfoTarget";
+    construction.type = 'engineering' ;
 
     construction.callCompareMethod = function (this_) {
         var mcId = construction.target.find('[name=mcId]').val();
@@ -169,7 +171,7 @@
                         $.each(data, function (i, n) {
                             var obj = {name: n.name, number: n.number, tax: n.tax};
                             obj.planDetailsId = '${projectPlanDetails.id}';
-                            obj.type = 'engineering';
+                            obj.type = construction.type;
                             obj.pid = developmentCommon.isNotBlank('${mdCostConstruction.id}') ? '${mdCostConstruction.id}' : '0';
                             arr.push(obj);
                         });
@@ -465,53 +467,89 @@
     };
 
     construction.constructionInstallationEngineeringFeeEvent = {
-        show: function () {
-            var target = $("#boxMdCostConstruction");
-            if (target.find(".panel-body").find("table").size() == 0) {
-                target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
-                developmentCommon.architecturalB.treeGirdParse(target);
-            }
-            developmentCommon.architecturalB.getData("engineering", AssessDBKey.ProjectPlanDetails, '${projectPlanDetails.pid}', '${projectPlanDetails.pid}', function (data) {
-                var item = undefined;
-                if (data.length >= 1) {
-                    var n = data[0];
-                    if (n.jsonContent) {
-                        try {
-                            item = JSON.parse(n.jsonContent);
-                        } catch (e) {
-                            console.log("解析异常!");
-                        }
-                    }
+        detailsConstructionInstallation:function (id) {
+            construction.constructionInstallationEngineeringFeeEvent.appendHTML() ;
+            developmentCommon.getMdArchitecturalObjById(id,function (item) {
+                var target = $("#boxMdCostConstruction");
+                target.find("input[name='id']").val(item.id) ;
+                var data = {} ;
+                try {
+                    data = JSON.parse(item.jsonContent) ;
+                } catch (e) {
+                    console.log("解析异常!");
                 }
-                if (item) {
-                    developmentCommon.architecturalB.initData(target.find("table"), item);
-                }
+                developmentCommon.architecturalB.initData(target.find("table"),data) ;
             });
-            target.modal("show");
+        },
+        deleteConstructionInstallation:function (id) {
+            developmentCommon.deleteMdArchitecturalObjById(id,function () {
+                construction.constructionInstallationEngineeringFeeEvent.loadHtml();
+            }) ;
         },
         save: function () {
             var target = $("#boxMdCostConstruction");
             var table = target.find("table");
             var value = table.find("tfoot").find("input[name='totalPrice']").first().val();
-            if (!AssessCommon.isNumber(value)) {
+            if (!$.isNumeric(value)) {
                 toastr.success('请重新填写!');
                 return false;
             }
-            value = Number(value);
-            construction.target.find("input[name='constructionInstallationEngineeringFee']").val(value.toFixed(construction.fixed)).trigger('blur');
-            var data = developmentCommon.architecturalB.getFomData(table);
-            developmentCommon.saveMdArchitecturalObj(data, "engineering", AssessDBKey.ProjectPlanDetails, '${projectPlanDetails.pid}', '${projectPlanDetails.pid}', function () {
+            var obj = {} ;
+            obj.databaseName = AssessDBKey.ProjectPlanDetails ;
+            obj.pid = '${projectPlanDetails.pid}';
+            obj.type = construction.type ;
+            obj.price = Number(value) ;
+            obj.planDetailsId = '${projectPlanDetails.pid}' ;
+            obj.id = target.find("input[name='id']").val();
+            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table),obj,function (item) {
                 toastr.success('保存成功!');
-            });
+                construction.constructionInstallationEngineeringFeeEvent.loadHtml();
+            }) ;
             target.modal("hide");
+        },
+        loadHtml:function () {
+            var obj = { } ;
+            obj.databaseName = AssessDBKey.ProjectPlanDetails ;
+            obj.type = construction.type ;
+            obj.planDetailsId = '${projectPlanDetails.pid}' ;
+            developmentCommon.getMdArchitecturalObjList(obj.type,obj.databaseName,obj.pid,obj.planDetailsId,function (data) {
+                $(construction.engineeringFeeInfoTarget).empty();
+                var html = "";
+                var multiply = math.bignumber(0);
+                var arr = [] ;
+                if (data.length >= 1) {
+                    $.each(data, function (i, item) {
+                        var resetHtml = $("#constructionInstallationEngineeringFeeInfoModelHtml").html();
+                        resetHtml = resetHtml.replace(/{uuid}/g, item.id);
+                        resetHtml = resetHtml.replace(/{price}/g, item.price);
+                        resetHtml = resetHtml.replace(/{method}/g, "construction.constructionInstallationEngineeringFeeEvent");
+                        html += resetHtml;
+                        if ($.isNumeric(item.price)){
+                            multiply = math.add(multiply, math.bignumber(item.price));
+                        }
+                        arr.push(item.id) ;
+                    });
+                }
+                multiply = Number(multiply.toString()) ;
+                construction.target.find("input[name='constructionInstallationEngineeringFee']").val(multiply.toFixed(construction.fixed)).trigger('blur');
+                construction.target.find("input[name='reconnaissanceDesign']").trigger('blur');
+                construction.target.find("input[name='constructionInstallationEngineeringFeeIds']").val(arr.join(","));
+                $(construction.engineeringFeeInfoTarget).append(html);
+            }) ;
+        },
+        appendHTML:function () {
+            var target = $("#boxMdCostConstruction");
+            target.find(".panel-body").empty() ;
+            target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
+            developmentCommon.architecturalB.treeGirdParse(target);
+            target.modal("show");
         }
     };
 
     construction.loadMdDevelopmentInfrastructureChildrenTable = function () {
         var pid = developmentCommon.isNotBlank('${mdCostConstruction.id}') ? '${mdCostConstruction.id}' : '0';
-        developmentCommon.infrastructureChildren.loadTable(pid, '${projectPlanDetails.id}', 'engineering', $(construction.infrastructureChildrenTable), $("#toolbarMdCostConstructionChildrenTable"));
+        developmentCommon.infrastructureChildren.loadTable(pid, '${projectPlanDetails.id}', construction.type, $(construction.infrastructureChildrenTable), $("#toolbarMdCostConstructionChildrenTable"));
         construction.writeMdDevelopmentInfrastructureChildrenTable();
-        console.log("test");
     };
 
     construction.deleteMdDevelopmentInfrastructureChildrenTable = function (table) {
@@ -560,7 +598,7 @@
         }
         var data = formSerializeArray(frm);
         data.planDetailsId = '${projectPlanDetails.id}';
-        data.type = 'engineering';
+        data.type = construction.type;
         data.pid = developmentCommon.isNotBlank('${mdCostConstruction.id}') ? '${mdCostConstruction.id}' : '0';
         developmentCommon.infrastructureChildren.save(data, function () {
             toastr.success('添加成功!');
@@ -575,7 +613,7 @@
         developmentCommon.infrastructureChildren.getDataList({
             planDetailsId: '${projectPlanDetails.id}',
             pid: pid,
-            type: 'engineering'
+            type: construction.type
         }, function (item) {
             var result = 0;
             if (item.length >= 1) {

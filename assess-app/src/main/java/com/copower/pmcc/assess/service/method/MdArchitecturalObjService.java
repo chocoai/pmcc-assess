@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.method;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdArchitecturalObjDao;
 import com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj;
 import com.copower.pmcc.erp.common.CommonService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,18 @@ public class MdArchitecturalObjService {
         }else {
             mdArchitecturalObj.setCreator(commonService.thisUserAccount());
             return mdArchitecturalObjDao.addMdArchitecturalObj(mdArchitecturalObj) ;
+        }
+    }
+
+    public void clear(){
+        MdArchitecturalObj oo = new MdArchitecturalObj();
+        oo.setCreator(commonService.thisUserAccount());
+        oo.setPid(0);
+        List<MdArchitecturalObj> list = getMdArchitecturalObjListByExample(oo);
+        if (CollectionUtils.isNotEmpty(list)){
+            for (MdArchitecturalObj architecturalObj:list){
+                deleteMdArchitecturalObjById(architecturalObj.getId()) ;
+            }
         }
     }
 

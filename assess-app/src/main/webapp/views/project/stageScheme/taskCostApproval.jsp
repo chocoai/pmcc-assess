@@ -33,13 +33,13 @@
                             <span class="col-sm-1">
                                 <label>建筑形态</label>
                             </span>
-                            <c:if test="${mdCost.type == '1'}">
+                            <c:if test="${mdCostVo.type == '1'}">
                                 <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
                                     <input type="radio" id="building" name="type" value="1" checked="checked">
                                     <label for="building">建筑物</label>
                                 </span>
                             </c:if>
-                            <c:if test="${mdCost.type == '2'}">
+                            <c:if test="${mdCostVo.type == '2'}">
                                 <span class="col-sm-2  checkbox-inline">
                                     <input type="radio" id="construction" name="type" value="2" checked="checked">
                                     <label for="construction">在建工程</label>
@@ -51,7 +51,7 @@
 
                 <div class="x_content">
                     <form class="form-horizontal" id="buildingFrm">
-                        <c:if test="${mdCost.type == '1'}">
+                        <c:if test="${mdCostVo.type == '1'}">
                             <%@include file="/views/method/module/costModule/buildingDetail.jsp" %>
                         </c:if>
                     </form>
@@ -62,7 +62,7 @@
 
                 <div class="x_content">
                     <form class="form-horizontal" id="constructionFrm">
-                        <c:if test="${mdCost.type == '2'}">
+                        <c:if test="${mdCostVo.type == '2'}">
                             <%@include file="/views/method/module/costModule/constructionDetail.jsp" %>
                         </c:if>
                     </form>
@@ -72,14 +72,14 @@
             <div class="x_panel">
                 <div class="x_content">
                     <form class="form-horizontal" id="md_cost_form">
-                        <input type="hidden" name="id" value="${mdCost.id}">
+                        <input type="hidden" name="id" value="${mdCostVo.id}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     单价
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${mdCost.price}</label>
+                                    <label class="form-control">${mdCostVo.price}</label>
                                 </div>
                             </div>
                         </div>

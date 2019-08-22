@@ -17,6 +17,7 @@
         <tr>
             <th>工程名称</th>
             <th>估价时点完工程度(元/㎡)</th>
+            <th>描述</th>
         </tr>
         </thead>
 
@@ -25,156 +26,187 @@
         <tr class="treegrid-1" data-key="architecturalEngineering" data-role="parent">
             <td>建筑工程</td>
             <td></td>
+            <td></td>
         </tr>
         <tr class="treegrid-1-1 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
             <td> 地下基础</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-1-2 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
             <td> 地下室</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-1-3 treegrid-parent-1" data-key="architecturalEngineering" data-role="child">
             <td> 地上主体</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
 
         <tr class="treegrid-2" data-key="installationWorks" data-role="parent">
             <td>安装工程</td>
+            <td></td>
             <td></td>
         </tr>
         <tr class="treegrid-2-1 treegrid-parent-2" data-key="installationWorks" data-role="child">
             <td> 电气工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-2-2 treegrid-parent-2" data-key="installationWorks" data-role="child">
             <td> 给排水工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-2-3 treegrid-parent-2" data-key="installationWorks" data-role="child">
             <td> 燃气工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-2-4 treegrid-parent-2" data-key="installationWorks" data-role="child">
             <td> 消防工程含消防报警</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-2-5 treegrid-parent-2" data-key="installationWorks" data-role="child">
             <td> 通风空调工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-2-6 treegrid-parent-2" data-key="installationWorks" data-role="child">
             <td> 智能化系统工程</td>
             <td><input type="text" placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-2-7 treegrid-parent-2" data-key="installationWorks" data-role="child">
             <td> 电梯工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-2-8 treegrid-parent-2" data-key="installationWorks" data-role="child">
             <td> 其它工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
 
         <tr class="treegrid-3" data-key="decorationEngineering" data-role="parent">
             <td>装饰工程</td>
+            <td></td>
             <td></td>
         </tr>
         <tr class="treegrid-3-1 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
             <td> 楼地面工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-3-2 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
             <td> 外墙墙柱面工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-3-3 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
             <td> 内墙墙柱面工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-3-4 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
             <td> 天棚工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-3-5 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
             <td> 门窗工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-3-6 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
             <td> 外墙（油漆、涂料、裱糊）工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-3-7 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
             <td> 内墙（油漆、涂料、裱糊）工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-3-8 treegrid-parent-3" data-key="decorationEngineering" data-role="child">
             <td> 其它工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
 
         <tr class="treegrid-4" data-key="ancillaryWorks" data-role="parent">
             <td>附属工程</td>
+            <td></td>
             <td></td>
         </tr>
         <tr class="treegrid-4-1 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
             <td> 道路</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-4-2 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
             <td> 围墙</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-4-3 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
             <td> 大门</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-4-4 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
             <td> 绿化</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-4-5 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
             <td> 园林</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         <tr class="treegrid-4-6 treegrid-parent-4" data-key="ancillaryWorks" data-role="child">
             <td> 景观</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
 
         <tr class="treegrid-5" data-key="secondInstallationProject" data-role="parent">
             <td>二装工程</td>
+            <td></td>
             <td></td>
         </tr>
         <tr class="treegrid-5-1 treegrid-parent-5" data-key="secondInstallationProject" data-role="child">
             <td> 二装工程</td>
             <td><input type="text"  placeholder="请输入(数字)"
                        name="valuationDateDegreeCompletion" class="x-percent" data-rule-number="true" style="width: 100px;"></td>
+            <td><input type="text" name="remark"  style="width: 100px;"></td>
         </tr>
         </tbody>
     </table>
@@ -200,18 +232,16 @@
                     </div>
                 </div>
             </div>
-            <form>
-                <input type="hidden" name="id">
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            onclick="architecturalA.save('{method}')">
-                        保存
-                    </button>
-                </div>
-            </form>
+            <input type="hidden" name="constructionInstallationEngineeringFeeId">
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary"
+                        onclick="architecturalA.save('{method}')">
+                    保存
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -237,8 +267,9 @@
             var dataKey = $(tr).attr('data-key');
             var role = $(tr).attr('data-role');
             var name = $(tr).find("td").first().text();
+            var remark = $(tr).find("td").last().find("input").val();
             var valuationDateDegreeCompletion = $(tr).find("input[name='valuationDateDegreeCompletion']").first().val();
-            data.push({dataKey: dataKey, role: role, name: name, value: '',valuationDateDegreeCompletion:valuationDateDegreeCompletion});
+            data.push({dataKey: dataKey, role: role, name: name, value: '',valuationDateDegreeCompletion:valuationDateDegreeCompletion,remark:remark});
         });
         return data;
     };
@@ -335,6 +366,9 @@
                         if (name == item.name) {
                             if ($(tr).find("input[name='valuationDateDegreeCompletion']").first().size() != 0) {
                                 $(tr).find("input[name='valuationDateDegreeCompletion']").first().val(item.valuationDateDegreeCompletion);
+                            }
+                            if ($(tr).find("input[name='remark']").first().size() != 0) {
+                                $(tr).find("input[name='remark']").first().val(item.remark);
                             }
                         }
                     }

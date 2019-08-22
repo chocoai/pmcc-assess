@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.method;
 
-import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostBuildingDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
@@ -8,15 +7,16 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.ConstructionInstallationEngineeringDto;
 import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
+import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
+import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -165,30 +164,53 @@ public class MdMarketCostService {
     }
 
 
-    public List<BaseDataDic> getAddedValueAdditionalTaxRate() {
-        return baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_ADDEDVALUEADDITIONALTAXRATE);
+    public MdCostVo getMdCostVo(MdCost mdCost){
+        MdCostVo mdCostVo = new MdCostVo();
+        if (mdCost == null){
+            return mdCostVo;
+        }
+        BeanUtils.copyProperties(mdCost,mdCostVo);
+        if (Objects.equal("2", mdCost.getType())) {
+            MdCostConstruction query = new MdCostConstruction();
+            query.setPid(mdCost.getId());
+            List<MdCostConstruction> list = this.getMdCostConstructionList(query);
+            if (CollectionUtils.isNotEmpty(list)) {
+                mdCostVo.setMdCostConstruction(getMdCostConstructionVo(list.stream().findFirst().get()));
+            }
+        }
+        if (Objects.equal("1", mdCost.getType())) {
+            MdCostBuilding query = new MdCostBuilding();
+            query.setPid(mdCost.getId());
+            List<MdCostBuilding> list = this.getMdCostBuildingList(query);
+            if (CollectionUtils.isNotEmpty(list)) {
+                mdCostVo.setMdCostBuilding(list.stream().findFirst().get());
+            }
+        }
+        return mdCostVo;
     }
 
-    public BootstrapTableVo getBaseDicTree() {
-        List<ConstructionInstallationEngineeringDto> installationEngineeringDtos = Lists.newArrayList();
-//        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT);
-//        ConstructionInstallationEngineeringDto installationEngineeringDto = new ConstructionInstallationEngineeringDto();
-//        BeanUtils.copyProperties(baseDataDic,installationEngineeringDto);
-//        installationEngineeringDto.setNumber("0");
-//        installationEngineeringDtos.add(installationEngineeringDto);
-        int i = 0;
-        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT), installationEngineeringDtos, null, i);
 
-        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT, ++i);
-        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT, ++i);
-        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT, ++i);
-        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT, ++i);
-        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT, ++i);
-        BootstrapTableVo vo = new BootstrapTableVo();
-        vo.setTotal(Integer.toUnsignedLong(installationEngineeringDtos.size()));
-        vo.setRows(installationEngineeringDtos);
+    public MdCostConstructionVo getMdCostConstructionVo(MdCostConstruction mdCostConstruction){
+        MdCostConstructionVo vo = new MdCostConstructionVo();
+        if (mdCostConstruction == null){
+            return vo;
+        }
+        BeanUtils.copyProperties(mdCostConstruction,vo);
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(mdCostConstruction.getConstructionInstallationEngineeringFeeIds())){
+            List<Integer> integerList = FormatUtils.transformString2Integer(mdCostConstruction.getConstructionInstallationEngineeringFeeIds()) ;
+            if (CollectionUtils.isNotEmpty(integerList)){
+                for (Integer integer:integerList){
+                    MdArchitecturalObj architecturalObj = mdArchitecturalObjService.getMdArchitecturalObjById(integer) ;
+                    if (architecturalObj == null){
+                        continue;
+                    }
+                    vo.getConstructionInstallationEngineeringFeeDtos().add(new KeyValueDto(architecturalObj.getId().toString(),architecturalObj.getPrice()==null?"0":architecturalObj.getPrice().setScale(2, BigDecimal.ROUND_UP).toString()));
+                }
+            }
+        }
         return vo;
     }
+
 
     private void changeConstructionInstallationEngineeringDto(List<BaseDataDic> baseDataDics, List<ConstructionInstallationEngineeringDto> ztreeDtos, String key, int i) {
         int v = 1;

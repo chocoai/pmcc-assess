@@ -634,7 +634,6 @@
         loadHtml:function () {
             var obj = { } ;
             obj.databaseName = AssessDBKey.ProjectPlanDetails ;
-            obj.pid = '${projectPlanDetails.pid}';
             obj.type = underConstruction.type ;
             obj.planDetailsId = '${projectPlanDetails.pid}' ;
             developmentCommon.getMdArchitecturalObjList(obj.type,obj.databaseName,obj.pid,obj.planDetailsId,function (data) {
