@@ -241,7 +241,7 @@
         },
         findData: function (id, buildType, estateId) {
             var href = "${pageContext.request.contextPath}/projectTaskCIP/informationDetail";
-            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId + "&type=" + '${type}';
+            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
             window.open(href, "");
         },
         quote: function (id) {
@@ -318,7 +318,7 @@
         },
         findData: function (id, buildType, estateId) {
             var href = "${pageContext.request.contextPath}/projectTaskCIP/informationDetail";
-            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId + "&type=" + '${type}';
+            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
             window.open(href, "");
         },
         quote: function (id) {
@@ -385,7 +385,7 @@
         },
         findData: function (id, buildType, estateId) {
             var href = "${pageContext.request.contextPath}/projectTaskCIP/informationDetail";
-            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId + "&type=" + '${type}';
+            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
             window.open(href, "");
         },
         quote: function (id) {
@@ -452,7 +452,7 @@
         },
         findData: function (id, buildType, estateId) {
             var href = "${pageContext.request.contextPath}/projectTaskCIP/informationDetail";
-            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId + "&type=" + '${type}';
+            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
             window.open(href, "");
         },
         quote: function (id) {

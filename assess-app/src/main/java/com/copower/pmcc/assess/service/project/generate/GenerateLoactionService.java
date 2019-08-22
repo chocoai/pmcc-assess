@@ -156,6 +156,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getExternalInfrastructure(BasicApply basicApply) throws Exception {
+        if(basicApply==null) return null;
         StringBuilder stringBuilder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
@@ -326,6 +327,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getAccessAvailableMeansTransport(BasicApply basicApply) throws Exception {
+        if(basicApply==null) return null;
         StringBuilder contentBuilder = new StringBuilder();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
@@ -383,6 +385,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getParkingConvenience(BasicApply basicApply) throws Exception {
+        if(basicApply==null) return null;
         StringBuilder builder = new StringBuilder(8);
         Set<String> stringSet = Sets.newHashSet();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
@@ -438,6 +441,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getTrafficCharges(BasicApply basicApply) throws Exception {
+        if(basicApply==null) return null;
         StringBuilder builder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList().stream().filter(basicMatchingTrafficVo -> {
@@ -462,6 +466,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getTrafficControl(BasicApply basicApply) throws Exception {
+        if(basicApply==null) return null;
         StringBuilder builder = new StringBuilder();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList().stream().filter(basicMatchingTrafficVo -> {
@@ -493,6 +498,7 @@ public class GenerateLoactionService {
      * @return
      */
     public String getWithImportantLocationDistance(BasicApply basicApply) throws Exception {
+        if(basicApply==null) return null;
         StringBuilder stringBuilder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
@@ -528,6 +534,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public List<String> getExternalPublicServiceFacilities(BasicApply basicApply, Boolean isShowName) throws Exception {
+        if(basicApply==null) return null;
         List<String> stringArrayList = Lists.newArrayList();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
