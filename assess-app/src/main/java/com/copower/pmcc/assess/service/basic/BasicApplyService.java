@@ -340,10 +340,7 @@ public class BasicApplyService {
                 List<ProjectPlanDetails> projectPlanDetailsByPid = projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId());
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsByPid)) {
                     for (ProjectPlanDetails data : projectPlanDetailsByPid) {
-                        BasicApply basicApply = this.getBasicApplyByPlanDetailsId(data.getId());
-                        if (basicApply != null && basicApply.getType().equals(basicApplyTypeId)) {
-                            caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId()));
-                        }
+                        caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId()));
                     }
                 }
             }
@@ -356,11 +353,7 @@ public class BasicApplyService {
         List<ProjectPlanDetails> projectDetailLists = projectPlanDetailsService.getProjectDetails(projectPlanDetails);
         if (CollectionUtils.isNotEmpty(projectDetailLists)) {
             for (ProjectPlanDetails item : projectDetailLists) {
-                BasicApply basicApply = this.getBasicApplyByPlanDetailsId(item.getId());
-                if (basicApply == null) continue;
-                if (basicApply.getType().equals(basicApplyTypeId)) {
-                    caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId()));
-                }
+                caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId()));
             }
         }
 

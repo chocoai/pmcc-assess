@@ -1,11 +1,9 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
@@ -42,6 +40,8 @@ public class ProjectTaskCIPController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     @ResponseBody
     @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
@@ -75,38 +75,47 @@ public class ProjectTaskCIPController {
     }
 
     @RequestMapping(value = "/informationDetail", name = "信息详情页面", method = RequestMethod.GET)
-    public ModelAndView informationDetail(Integer id, String buildingType, Integer estateId, Integer type) throws Exception {
+    public ModelAndView informationDetail(Integer id, String buildingType, Integer estateId) throws Exception {
         String view = "/basic/informationDetail";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        Integer type = 0;
         if (id == 0) {
             modelAndView.addObject("tableId", estateId);
             BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateById(estateId);
             BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getEstateLandStateByEstateId(estateId);
             modelAndView.addObject("basicEstate", basicEstateVo);
             modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
+            type = basicApplyBatchService.getBasicApplyBatchByEstateId(estateId).getType();
         } else {
+            BasicApplyBatchDetail batchDetail = null;
             switch (buildingType) {
                 case "building":
                     BasicBuildingVo basicBuilding = publicBasicService.getBasicBuildingById(id);
                     modelAndView.addObject("basicBuilding", basicBuilding);
+                    batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_building", id);
+                    type = basicApplyBatchService.getInfoById(batchDetail.getApplyBatchId()).getType();
                     break;
                 case "unit":
                     BasicUnit basicUnit = publicBasicService.getBasicUnitById(id);
                     modelAndView.addObject("basicUnit", basicUnit);
+                    batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", id);
+                    type = basicApplyBatchService.getInfoById(batchDetail.getApplyBatchId()).getType();
                     break;
                 case "house":
                     BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(id);
                     modelAndView.addObject("basicHouse", basicHouseVo);
                     BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByHouseId(id);
                     modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
+                    batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", id);
+                    type = basicApplyBatchService.getInfoById(batchDetail.getApplyBatchId()).getType();
                     break;
             }
             modelAndView.addObject("tableId", id);
         }
         modelAndView.addObject("buildingType", buildingType);
+        modelAndView.addObject("type", type);
         BasicApply basicApply = new BasicApply();
         basicApply.setType(type);
-        modelAndView.addObject("type", type);
         modelAndView.addObject("basicApply", basicApply);
         return modelAndView;
 
