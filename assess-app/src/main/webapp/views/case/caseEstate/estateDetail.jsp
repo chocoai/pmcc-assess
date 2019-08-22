@@ -216,7 +216,7 @@
         <c:if test="${caseEstate.type eq 0}">
             <div class="x_content">
                 <div class="x_title">
-                    楼盘供应信息
+                    基础设施情况
                 </div>
                 <div class="form-horizontal">
                     <div class="form-group">

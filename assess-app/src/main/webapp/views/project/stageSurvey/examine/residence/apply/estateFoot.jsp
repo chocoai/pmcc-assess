@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_content" id="industrySupplyInfo">
-    <div class="x_title">楼盘供应信息</div>
+    <div class="x_title">基础设施情况</div>
     <div class="form-horizontal">
         <div class="form-group">
             <div class="x-valid supplyGas">

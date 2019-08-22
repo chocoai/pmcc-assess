@@ -19,7 +19,7 @@
     </div>
 
     <div class="x_content">
-        <div class="x_title">楼盘供应信息</div>
+        <div class="x_title">基础设施情况</div>
         <div class="form-horizontal">
             <div class="x_content">
                 <div class="form-horizontal">

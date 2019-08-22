@@ -1,16 +1,14 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyTransferService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
@@ -37,7 +35,6 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +86,7 @@ public class ProjectPlanDetailsService {
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
-    private SurveyAssetInventoryService surveyAssetInventoryService;
+    private PublicService publicService;
     @Autowired
     private BasicApplyTransferService basicApplyTransferService;
     @Autowired
@@ -763,8 +760,20 @@ public class ProjectPlanDetailsService {
                 //查看有无子项，无子项先生成子项，有子项则跳过
                 List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
                 if (CollectionUtils.isNotEmpty(detailsList)) return;
-                SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(copyPlanDetails.getPid());
-                surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE, null);
+                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
+                ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
+                BeanUtils.copyProperties(pastePlanDetails, taskPlanDetails);
+                taskPlanDetails.setId(null);
+                taskPlanDetails.setPid(pastePlanDetails.getId());
+                SysUserDto sysUser = erpRpcUserService.getSysUser(commonService.thisUserAccount());
+                taskPlanDetails.setProjectPhaseId(projectPhase.getId());
+                taskPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
+                taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+                taskPlanDetails.setBisLastLayer(true);
+                taskPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+                taskPlanDetails.setCreator(commonService.thisUserAccount());
+                taskPlanDetails.setProjectPhaseName(String.format("%s-%s", pastePlanDetails.getProjectPhaseName(), publicService.getUserNameByAccount(commonService.thisUserAccount())));
+                saveProjectPlanDetails(taskPlanDetails);
                 basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
             }
         }
