@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class BasicEstateController {
     private BasicEstateService basicEstateService;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -98,7 +101,7 @@ public class BasicEstateController {
     @RequestMapping(value = "/getDataFromProject", name = "引用项目中的数据", method = {RequestMethod.GET})
     public HttpResult getDataFromProject(Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapFromProject(applyId,null));
+            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapFromProject(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -106,10 +109,10 @@ public class BasicEstateController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/batchGetDataFromProject", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult batchGetDataFromProject(Integer applyId,Integer tableId) {
+    @RequestMapping(value = "/quoteEstateData", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
+    public HttpResult quoteEstateData(Integer id, Integer tableId) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapFromProject(applyId,tableId));
+            return HttpResult.newCorrectResult(basicEstateService.quoteEstateData(id, tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -148,4 +151,6 @@ public class BasicEstateController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
+
 }

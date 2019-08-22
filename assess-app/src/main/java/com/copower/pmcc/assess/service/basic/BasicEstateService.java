@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -128,6 +129,10 @@ public class BasicEstateService {
     private DataDeveloperService dataDeveloperService;
     @Autowired
     private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BasicApplyBatchDao basicApplyBatchDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -510,7 +515,7 @@ public class BasicEstateService {
 
     //引用项目中的数据
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> getBasicEstateMapFromProject(Integer applyId,Integer tableId) throws Exception {
+    public Map<String, Object> getBasicEstateMapFromProject(Integer applyId) throws Exception {
         BasicApply referenceBasicApply = basicApplyService.getByBasicApplyId(applyId);
         if (referenceBasicApply == null) {
             throw new BusinessException("null point");
@@ -524,36 +529,16 @@ public class BasicEstateService {
         }
 
         BasicEstate basicEstate = new BasicEstate();
-        if(tableId!=null){
-            this.clearInvalidData2(tableId);
-        }
         BeanUtils.copyProperties(oldEstateByApplyId, basicEstate);
         basicEstate.setApplyId(0);
         basicEstate.setCreator(commonService.thisUserAccount());
         basicEstate.setGmtCreated(null);
         basicEstate.setGmtModified(null);
-        if(tableId!=null){
-            basicEstate.setId(tableId);
-            basicEstate.setApplyId(null);
-        }else {
-            basicEstate.setId(null);
-        }
+        basicEstate.setId(null);
 
         this.saveAndUpdateBasicEstate(basicEstate);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
-        //删除原有的附件
-        if(tableId!=null) {
-            SysAttachmentDto deleteExample = new SysAttachmentDto();
-            deleteExample.setTableId(tableId);
-            deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
-            if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
-                for (SysAttachmentDto item : attachmentList) {
-                    baseAttachmentService.deleteAttachment(item.getId());
-                }
-            }
-        }
 
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
@@ -573,9 +558,6 @@ public class BasicEstateService {
             basicEstateLandState.setEstateId(basicEstate.getId());
             basicEstateLandState.setCreator(commonService.thisUserAccount());
             basicEstateLandState.setApplyId(0);
-            if(tableId!=null){
-                basicEstateLandState.setApplyId(null);
-            }
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
@@ -593,10 +575,6 @@ public class BasicEstateService {
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
-            if(tableId!=null){
-                basicEstateTagging.setApplyId(null);
-                basicEstateTagging.setTableId(tableId);
-            }
             basicEstateTagging.setName(null);
             basicEstateTagging.setGmtCreated(null);
             basicEstateTagging.setGmtModified(null);
@@ -679,6 +657,175 @@ public class BasicEstateService {
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         return objectMap;
     }
+
+
+    /**
+     * 引用项目中的数据批量时
+     *
+     * @param id      老数据对应id
+     * @param tableId basicEstate对应id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> quoteEstateData(Integer id,Integer tableId) throws Exception {
+        if (id == null || tableId==null) {
+            throw new BusinessException("null point");
+        }
+        this.clearInvalidData2(tableId);
+        //更新批量申请表信息
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(tableId);
+        applyBatch.setQuoteId(id);
+        applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
+        basicApplyBatchDao.updateInfo(applyBatch);
+
+        Map<String, Object> objectMap = new HashMap<String, Object>(2);
+        BasicEstate oldEstateByApplyId = this.getBasicEstateById(id);
+        if (oldEstateByApplyId == null) {
+            return objectMap;
+        }
+        BasicEstate basicEstate = new BasicEstate();
+        BeanUtils.copyProperties(oldEstateByApplyId, basicEstate);
+        basicEstate.setCreator(commonService.thisUserAccount());
+        basicEstate.setGmtCreated(null);
+        basicEstate.setGmtModified(null);
+        basicEstate.setId(tableId);
+        basicEstate.setApplyId(null);
+
+        this.saveAndUpdateBasicEstate(basicEstate);
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
+
+        //删除原有的附件
+        SysAttachmentDto deleteExample = new SysAttachmentDto();
+        deleteExample.setTableId(tableId);
+        deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
+        if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
+            for (SysAttachmentDto item : attachmentList) {
+                baseAttachmentService.deleteAttachment(item.getId());
+            }
+        }
+
+
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(id);
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(tableId);
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+
+        BasicEstateLandState queryLandState = new BasicEstateLandState();
+        queryLandState.setEstateId(id);
+        List<BasicEstateLandState> oldBasicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(queryLandState);
+        if (!ObjectUtils.isEmpty(oldBasicEstateLandStateList)) {
+            BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
+            BeanUtils.copyProperties(oldBasicEstateLandStateList.get(0), basicEstateLandState);
+            basicEstateLandState.setEstateId(tableId);
+            basicEstateLandState.setCreator(commonService.thisUserAccount());
+            basicEstateLandState.setApplyId(null);
+            basicEstateLandState.setGmtCreated(null);
+            basicEstateLandState.setGmtModified(null);
+            basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
+        }else{
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
+        }
+
+        BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
+        oldBasicEstateTagging.setTableId(id);
+        oldBasicEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
+        List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
+        if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setApplyId(null);
+            basicEstateTagging.setTableId(tableId);
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateTagging.class.getSimpleName()), basicEstateTaggingService.getBasicEstateTaggingVo(basicEstateTagging));
+        }
+
+        try {
+            BasicEstateParking estateParking = new BasicEstateParking();
+            estateParking.setEstateId(id);
+            List<BasicEstateParking> oldBasicEstateParkings = basicEstateParkingService.basicEstateParkingList(estateParking);
+            if (!ObjectUtils.isEmpty(oldBasicEstateParkings)) {
+                for (BasicEstateParking oldBasicEstateParking : oldBasicEstateParkings) {
+                    BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
+                    BeanCopyHelp.copyPropertiesIgnoreNull(oldBasicEstateParking, queryBasicEstateParking);
+                    queryBasicEstateParking.setEstateId(tableId);
+                    queryBasicEstateParking.setId(null);
+                    queryBasicEstateParking.setGmtCreated(null);
+                    queryBasicEstateParking.setGmtModified(null);
+                    queryBasicEstateParking.setCreator(commonService.thisUserAccount());
+                    Integer parkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
+
+                    example = new SysAttachmentDto();
+                    example.setTableId(oldBasicEstateParking.getId());
+                    example.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));
+                    attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(parkingId);
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));
+                    baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("estate_id", String.valueOf(tableId));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setWhereSql("estate_id=" + id);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//通信网络sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供应信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//交通信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//医养信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//原材料信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//休闲场所信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//金融服务信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//环境因素信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//教育信息sql
+
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+        return objectMap;
+    }
+
+
 
     /**
      * 拷贝tagging数据

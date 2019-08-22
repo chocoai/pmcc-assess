@@ -97,7 +97,7 @@ public class BasicUnitController {
     @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
     public HttpResult getDataFromProject(Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByFromProject(applyId,null));
+            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByFromProject(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -105,10 +105,10 @@ public class BasicUnitController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/batchGetDataFromProject", name = "项目中引用数据批量", method = {RequestMethod.GET})
-    public HttpResult batchGetDataFromProject(Integer applyId,Integer tableId) {
+    @RequestMapping(value = "/quoteUnitData", name = "项目中引用数据批量", method = {RequestMethod.GET})
+    public HttpResult quoteUnitData(Integer id, Integer tableId) {
         try {
-            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByFromProject(applyId,tableId));
+            return HttpResult.newCorrectResult(basicUnitService.quoteUnitData(id, tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -129,12 +129,29 @@ public class BasicUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteUnit", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteUnit(Integer caseUnitId, String unitPartInMode,Integer applyId) {
+    public HttpResult appWriteUnit(Integer caseUnitId, String unitPartInMode, Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(200, basicUnitService.appWriteUnit(caseUnitId, unitPartInMode,applyId));
+            return HttpResult.newCorrectResult(200, basicUnitService.appWriteUnit(caseUnitId, unitPartInMode, applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicUnitList", method = {RequestMethod.GET}, name = "获取案例 单元列表")
+    public BootstrapTableVo getBasicUnitList(Integer buildingId) {
+        BasicUnit basicUnit = new BasicUnit();
+        BootstrapTableVo vo = new BootstrapTableVo();
+        try {
+            if (buildingId != null) {
+                basicUnit.setBuildingId(buildingId);
+                vo = basicUnitService.getBootstrapTableVo(basicUnit);
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
+            return null;
+        }
+        return vo;
     }
 }

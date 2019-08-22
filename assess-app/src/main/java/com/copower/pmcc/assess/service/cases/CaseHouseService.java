@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDao;
@@ -95,6 +96,10 @@ public class CaseHouseService {
     private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
     @Autowired
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseHouseListVos(CaseHouse caseHouse) {
@@ -333,6 +338,11 @@ public class CaseHouseService {
             throw new Exception("null point");
         }
         basicHouseService.clearInvalidData2(tableId);
+        //更新批量申请表信息
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", tableId);
+        batchDetail.setQuoteId(id);
+        batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+        basicApplyBatchDetailDao.updateInfo(batchDetail);
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
         BasicHouse oldBasicHouse = basicHouseService.getBasicHouseById(tableId);
         CaseHouse oldCaseHouse = this.getCaseHouseById(id);

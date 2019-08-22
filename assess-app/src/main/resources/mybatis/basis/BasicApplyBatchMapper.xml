@@ -17,6 +17,7 @@
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
     <result column="base_type" property="baseType" jdbcType="VARCHAR" />
+    <result column="show_tab" property="showTab" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, process_ins_id, plan_details_id, province, city, type, estate_id, estate_name, 
-    status, draft_flag, creator, gmt_created, gmt_modified, quote_id, base_type
+    status, draft_flag, creator, gmt_created, gmt_modified, quote_id, base_type, show_tab
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchExample" >
     select
@@ -118,12 +119,14 @@
       city, type, estate_id, 
       estate_name, status, draft_flag, 
       creator, gmt_created, gmt_modified, 
-      quote_id, base_type)
+      quote_id, base_type, show_tab
+      )
     values (#{processInsId,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
       #{estateName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR})
+      #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, #{showTab,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -173,6 +176,9 @@
       <if test="baseType != null" >
         base_type,
       </if>
+      <if test="showTab != null" >
+        show_tab,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
@@ -216,6 +222,9 @@
       </if>
       <if test="baseType != null" >
         #{baseType,jdbcType=VARCHAR},
+      </if>
+      <if test="showTab != null" >
+        #{showTab,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -273,6 +282,9 @@
       <if test="record.baseType != null" >
         base_type = #{record.baseType,jdbcType=VARCHAR},
       </if>
+      <if test="record.showTab != null" >
+        show_tab = #{record.showTab,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -294,7 +306,8 @@
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       quote_id = #{record.quoteId,jdbcType=INTEGER},
-      base_type = #{record.baseType,jdbcType=VARCHAR}
+      base_type = #{record.baseType,jdbcType=VARCHAR},
+      show_tab = #{record.showTab,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -344,6 +357,9 @@
       <if test="baseType != null" >
         base_type = #{baseType,jdbcType=VARCHAR},
       </if>
+      <if test="showTab != null" >
+        show_tab = #{showTab,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -362,7 +378,8 @@
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       quote_id = #{quoteId,jdbcType=INTEGER},
-      base_type = #{baseType,jdbcType=VARCHAR}
+      base_type = #{baseType,jdbcType=VARCHAR},
+      show_tab = #{showTab,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

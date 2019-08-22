@@ -97,7 +97,7 @@ public class BasicHouseController {
     @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
     public HttpResult getDataFromProject(Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicHouseService.getBasicHouseFromProject(applyId,null));
+            return HttpResult.newCorrectResult(basicHouseService.getBasicHouseFromProject(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -105,10 +105,10 @@ public class BasicHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/batchGetDataFromProject", name = "项目中引用数据批量", method = {RequestMethod.GET})
-    public HttpResult batchGetDataFromProject(Integer applyId,Integer tableId) {
+    @RequestMapping(value = "/quoteHouseData", name = "项目中引用数据批量", method = {RequestMethod.GET})
+    public HttpResult quoteHouseData(Integer id, Integer tableId) {
         try {
-            return HttpResult.newCorrectResult(basicHouseService.getBasicHouseFromProject(applyId,tableId));
+            return HttpResult.newCorrectResult(basicHouseService.quoteHouseData(id, tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -117,9 +117,9 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/addHouseAndTrading", name = "添加房屋及交易信息", method = {RequestMethod.POST})
-    public HttpResult addHouseAndTrading(String houseNumber,Integer applyId) {
+    public HttpResult addHouseAndTrading(String houseNumber, Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicHouseService.addHouseAndTrading(houseNumber,applyId));
+            return HttpResult.newCorrectResult(basicHouseService.addHouseAndTrading(houseNumber, applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("添加房屋及交易信息异常");
@@ -128,9 +128,9 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteHouse", name = "过程数据", method = {RequestMethod.POST})
-    public HttpResult appWriteHouse(Integer caseHouseId, String housePartInMode,Integer applyId) {
+    public HttpResult appWriteHouse(Integer caseHouseId, String housePartInMode, Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(200, basicHouseService.appWriteHouse(caseHouseId, housePartInMode,applyId));
+            return HttpResult.newCorrectResult(200, basicHouseService.appWriteHouse(caseHouseId, housePartInMode, applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -158,5 +158,22 @@ public class BasicHouseController {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicHouseList", method = {RequestMethod.GET}, name = "获取案例 房屋列表")
+    public BootstrapTableVo getBasicHouseList(Integer unitId) {
+        BasicHouse basicHouse = new BasicHouse();
+        BootstrapTableVo vo = new BootstrapTableVo();
+        try {
+            if (unitId != null) {
+                basicHouse.setUnitId(unitId);
+                vo = basicHouseService.getBootstrapTableVo(basicHouse);
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
+            return null;
+        }
+        return vo;
     }
 }

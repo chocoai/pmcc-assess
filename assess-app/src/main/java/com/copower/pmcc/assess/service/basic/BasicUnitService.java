@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
@@ -70,6 +71,10 @@ public class BasicUnitService {
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -299,7 +304,7 @@ public class BasicUnitService {
 
     //引用项目中数据
     @Transactional(rollbackFor = Exception.class)
-    public BasicUnit getBasicUnitByFromProject(Integer applyId, Integer tableId) throws Exception {
+    public BasicUnit getBasicUnitByFromProject(Integer applyId) throws Exception {
         if (applyId == null) {
             throw new BusinessException("null point");
         }
@@ -310,35 +315,15 @@ public class BasicUnitService {
 
         this.clearInvalidData(0);
         BasicUnit basicUnit = new BasicUnit();
-        if (tableId != null) {
-            clearInvalidData2(tableId);
-        }
         BeanUtils.copyProperties(oldBasicUnit, basicUnit);
         basicUnit.setApplyId(0);
         basicUnit.setCreator(commonService.thisUserAccount());
         basicUnit.setGmtCreated(null);
         basicUnit.setGmtModified(null);
-        if (tableId != null) {
-            basicUnit.setId(tableId);
-            basicUnit.setApplyId(null);
-        } else {
-            basicUnit.setId(null);
-        }
+        basicUnit.setId(null);
+
         this.saveAndUpdateBasicUnit(basicUnit);
 
-
-        //删除原有的附件
-        if (tableId != null) {
-            SysAttachmentDto deleteExample = new SysAttachmentDto();
-            deleteExample.setTableId(tableId);
-            deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
-            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
-            if (!CollectionUtils.isEmpty(attachmentList)) {
-                for (SysAttachmentDto item : attachmentList) {
-                    baseAttachmentService.deleteAttachment(item.getId());
-                }
-            }
-        }
 
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
@@ -358,10 +343,6 @@ public class BasicUnitService {
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
-            if (tableId != null) {
-                basicEstateTagging.setApplyId(null);
-                basicEstateTagging.setTableId(tableId);
-            }
             basicEstateTagging.setName(null);
             basicEstateTagging.setGmtCreated(null);
             basicEstateTagging.setGmtModified(null);
@@ -416,6 +397,124 @@ public class BasicUnitService {
         return basicUnit;
     }
 
+
+    /**
+     * 引用项目中的数据批量时
+     *
+     * @param id      老数据对应id
+     * @param tableId basicUnit对应id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public BasicUnit quoteUnitData(Integer id, Integer tableId) throws Exception {
+        if (id == null || tableId==null) {
+            throw new BusinessException("null point");
+        }
+        clearInvalidData2(tableId);
+        //更新批量申请表信息
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", tableId);
+        batchDetail.setQuoteId(id);
+        batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
+        basicApplyBatchDetailDao.updateInfo(batchDetail);
+        Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
+
+        BasicUnit oldBasicUnit = this.getBasicUnitById(id);
+        BasicUnit basicUnit = new BasicUnit();
+        BeanUtils.copyProperties(oldBasicUnit, basicUnit);
+        basicUnit.setCreator(commonService.thisUserAccount());
+        basicUnit.setGmtCreated(null);
+        basicUnit.setGmtModified(null);
+        basicUnit.setId(tableId);
+        basicUnit.setApplyId(null);
+        basicUnit.setBuildingId(parentTableId);
+
+        this.saveAndUpdateBasicUnit(basicUnit);
+
+
+        //删除原有的附件
+        SysAttachmentDto deleteExample = new SysAttachmentDto();
+        deleteExample.setTableId(tableId);
+        deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
+        if (!CollectionUtils.isEmpty(attachmentList)) {
+            for (SysAttachmentDto item : attachmentList) {
+                baseAttachmentService.deleteAttachment(item.getId());
+            }
+        }
+
+
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(id);
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(tableId);
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+
+        BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
+        oldBasicEstateTagging.setTableId(id);
+        oldBasicEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
+        if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setApplyId(null);
+            basicEstateTagging.setTableId(tableId);
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+        }
+        try {
+            List<BasicUnitHuxing> oldBasicUnitHuxingList = null;
+            BasicUnitHuxing query = new BasicUnitHuxing();
+            query.setUnitId(id);
+            oldBasicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);
+            if (!ObjectUtils.isEmpty(oldBasicUnitHuxingList)) {
+                for (BasicUnitHuxing oldBasicUnitHuxing : oldBasicUnitHuxingList) {
+                    BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+                    BeanUtils.copyProperties(oldBasicUnitHuxing, basicUnitHuxing);
+                    basicUnitHuxing.setUnitId(tableId);
+                    basicUnitHuxing.setId(null);
+                    basicUnitHuxing.setGmtCreated(null);
+                    basicUnitHuxing.setGmtModified(null);
+                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+
+                    //附件拷贝
+                    example = new SysAttachmentDto();
+                    example.setTableId(oldBasicUnitHuxing.getId());
+                    example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                    attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(huxingId);
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                    baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+                }
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage(), e);
+        }
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("unit_id", String.valueOf(tableId));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setWhereSql("unit_id=" + id);
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋内装sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
+
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+        return basicUnit;
+    }
 
     /**
      * 清理无效数据
