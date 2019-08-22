@@ -96,6 +96,14 @@ public class BasicApplyService {
         return basicApplyDao.getBasicApplyById(id);
     }
 
+    public BasicApply getByBasicApplyByEstateId(Integer estateId) {
+        BasicApply where = new BasicApply();
+        where.setBasicEstateId(estateId);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
+        if (CollectionUtils.isEmpty(basicApplyList)) return null;
+        return basicApplyList.get(0);
+    }
+
     public BasicApply getBasicApplyByProcessInsId(String processInsId) {
         BasicApply basicApply = new BasicApply();
         basicApply.setProcessInsId(processInsId);
@@ -170,7 +178,7 @@ public class BasicApplyService {
         processInfo.setProcessEventExecutorName(BasicApplyEvent.class.getSimpleName());
         processInfo.setTableId(basicApply.getId());
         try {
-            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, processControllerComponent.getThisUser(), false);
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
             basicApply.setProcessInsId(processUserDto.getProcessInsId());
             basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
             this.updateBasicApply(basicApply);
@@ -316,7 +324,7 @@ public class BasicApplyService {
     }
 
     //获取项目查勘案例数据
-    public BootstrapTableVo getProjectCaseItemList(Integer projectId, Integer projectCategoryId,Integer basicApplyTypeId) {
+    public BootstrapTableVo getProjectCaseItemList(Integer projectId, Integer projectCategoryId, Integer basicApplyTypeId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -333,7 +341,7 @@ public class BasicApplyService {
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsByPid)) {
                     for (ProjectPlanDetails data : projectPlanDetailsByPid) {
                         BasicApply basicApply = this.getBasicApplyByPlanDetailsId(data.getId());
-                        if(basicApply != null && basicApply.getType().equals(basicApplyTypeId)) {
+                        if (basicApply != null && basicApply.getType().equals(basicApplyTypeId)) {
                             caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId()));
                         }
                     }
@@ -349,8 +357,8 @@ public class BasicApplyService {
         if (CollectionUtils.isNotEmpty(projectDetailLists)) {
             for (ProjectPlanDetails item : projectDetailLists) {
                 BasicApply basicApply = this.getBasicApplyByPlanDetailsId(item.getId());
-                if(basicApply==null) continue;
-                if(basicApply.getType().equals(basicApplyTypeId)) {
+                if (basicApply == null) continue;
+                if (basicApply.getType().equals(basicApplyTypeId)) {
                     caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId()));
                 }
             }

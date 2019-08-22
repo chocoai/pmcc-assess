@@ -231,11 +231,12 @@ public class GenerateBaseDataService {
             projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
             erpRpcToolsService.saveProjectDocument(projectDocumentDto);
         }
-        return toolBaseOrCode(qrCode,100L,100L);
+        return toolBaseOrCode(qrCode, 100L, 100L);
     }
 
     /**
      * 评估类型(添加一个封面)
+     *
      * @param generateReportInfo
      * @param localPath
      * @param baseAttachmentService
@@ -268,7 +269,7 @@ public class GenerateBaseDataService {
         }
         String replacePath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
         //处理封面的内容
-        replaceCover(replacePath,generateReportInfo);
+        replaceCover(replacePath, generateReportInfo);
         String value = RandomStringUtils.randomNumeric(15);
         documentBuilder.write(value);
         documentBuilder.insertBreak(BreakType.PAGE_BREAK);
@@ -291,7 +292,7 @@ public class GenerateBaseDataService {
         }
     }
 
-    private void replaceCover(String path,GenerateReportInfo generateReportInfo)throws Exception{
+    private void replaceCover(String path, GenerateReportInfo generateReportInfo) throws Exception {
         Document document = new Document(path);
         List<String> stringList = Lists.newArrayList();
         String text = null;
@@ -334,52 +335,52 @@ public class GenerateBaseDataService {
         BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
         if (bookmarkCollection.getCount() >= 1) {
             for (int i = 0; i < bookmarkCollection.getCount(); i++) {
-                regexS.add(bookmarkCollection.get(i).getName()) ;
+                regexS.add(bookmarkCollection.get(i).getName());
             }
         }
-        if (CollectionUtils.isEmpty(regexS)){
+        if (CollectionUtils.isEmpty(regexS)) {
             return;
         }
-        Map<String,String> fileMap = Maps.newHashMap();
-        for (String s:regexS){
+        Map<String, String> fileMap = Maps.newHashMap();
+        for (String s : regexS) {
             if (Objects.equal(BaseReportFieldEnum.ReportHouseQrCode.getName(), s)) {
-                fileMap.put(String.format("${%s}",s),toolOrCode(String.format("http://gjszcxt.cirea.org.cn/?number=%s",generateReportInfo.getQueryCode()),60d,60d)) ;
+                fileMap.put(String.format("${%s}", s), toolOrCode(String.format("http://gjszcxt.cirea.org.cn/?number=%s", generateReportInfo.getQueryCode()), 60d, 60d));
             }
             if (Objects.equal(BaseReportFieldEnum.ReportASSETSQrCode.getName(), s)) {
-                fileMap.put(String.format("${%s}",s),toolOrCode(String.format("http://47.94.11.33:8035/TongYiBianMa/Index?_TYBM_H_=%s",generateReportInfo.getRecordNo()),80d,80d)) ;
+                fileMap.put(String.format("${%s}", s), toolOrCode(String.format("http://47.94.11.33:8035/TongYiBianMa/Index?_TYBM_H_=%s", generateReportInfo.getRecordNo()), 80d, 80d));
             }
             if (Objects.equal(BaseReportFieldEnum.ReportLandQrCode.getName(), s)) {
-                StringBuilder stringBuilder = new StringBuilder(8) ;
-                stringBuilder.append("http://rd.wechat.com/qrcode/confirm?block_type=101&content=") ;
-                stringBuilder.append("").append("备案号:").append(generateReportInfo.getRecordNo()).append(";").append(StringUtils.repeat("\n\r\t",1)) ;
-                stringBuilder.append("").append("报告名称:").append(getValuationProjectName()).append(";").append(StringUtils.repeat("\n\r\t",1));
-                stringBuilder.append("").append("估价单位:").append(getEntrustmentUnit()).append(";").append(StringUtils.repeat("\n\r\t",1)) ;
+                StringBuilder stringBuilder = new StringBuilder(8);
+                stringBuilder.append("http://rd.wechat.com/qrcode/confirm?block_type=101&content=");
+                stringBuilder.append("").append("备案号:").append(generateReportInfo.getRecordNo()).append(";").append(StringUtils.repeat("\n\r\t", 1));
+                stringBuilder.append("").append("报告名称:").append(getValuationProjectName()).append(";").append(StringUtils.repeat("\n\r\t", 1));
+                stringBuilder.append("").append("估价单位:").append(getEntrustmentUnit()).append(";").append(StringUtils.repeat("\n\r\t", 1));
                 String reportIssuanceStr = null;
                 if (generateReportInfo.getReportIssuanceDate() != null) {
                     reportIssuanceStr = DateUtils.format(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
                 } else {
                     reportIssuanceStr = DateUtils.format(getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
                 }
-                stringBuilder.append("").append("报告日期:").append(reportIssuanceStr).append(";").append(StringUtils.repeat("\n\r\t",1)) ;
-                stringBuilder.append("&lang=zh_CN&scene=4") ;
-                fileMap.put(String.format("${%s}",s),toolOrCode(String.format("%s",stringBuilder.toString()),80d,80d)) ;
+                stringBuilder.append("").append("报告日期:").append(reportIssuanceStr).append(";").append(StringUtils.repeat("\n\r\t", 1));
+                stringBuilder.append("&lang=zh_CN&scene=4");
+                fileMap.put(String.format("${%s}", s), toolOrCode(String.format("%s", stringBuilder.toString()), 80d, 80d));
             }
         }
-        if (!fileMap.isEmpty()){
+        if (!fileMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(path, fileMap);
         }
     }
 
-    private String toolOrCode(String url,double width, double height)throws Exception{
-        String qrCode = erpRpcToolsService.generateQRCode(url) ;
-        return toolBaseOrCode(qrCode,width,height);
+    private String toolOrCode(String url, double width, double height) throws Exception {
+        String qrCode = erpRpcToolsService.generateQRCode(url);
+        return toolBaseOrCode(qrCode, width, height);
     }
 
-    private String toolBaseOrCode(String qrCode,double width, double height)throws Exception{
+    private String toolBaseOrCode(String qrCode, double width, double height) throws Exception {
         String localPath = generateCommonMethod.getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        String imageFullPath = generateCommonMethod.getLocalPath("","jpg") ;
+        String imageFullPath = generateCommonMethod.getLocalPath("", "jpg");
         FileUtils.base64ToImage(qrCode, imageFullPath);
         builder.insertImage(imageFullPath, width, height);
         document.save(localPath);
@@ -771,7 +772,7 @@ public class GenerateBaseDataService {
         return value;
     }
 
-    public String getPROPERTY_TYPE(){
+    public String getPROPERTY_TYPE() {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
             BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
@@ -780,7 +781,7 @@ public class GenerateBaseDataService {
                 BasicBuildingVo basicBuildingVo = generateBaseExamineService.getBasicBuilding();
                 if (basicBuildingVo != null) {
                     if (StringUtils.isNotEmpty(basicBuildingVo.getPropertyTypeName())) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()),basicBuildingVo.getPropertyTypeName()) ;
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicBuildingVo.getPropertyTypeName());
                     }
                 }
             }
@@ -2077,19 +2078,19 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    public String getEquityStatusObjectNumber(){
+    public String getEquityStatusObjectNumber() {
         LinkedList<String> linkedLists = new LinkedList<String>();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList){
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             if (declareRecord == null) {
                 continue;
             }
-            if (StringUtils.isNotBlank(declareRecord.getName())){
+            if (StringUtils.isNotBlank(declareRecord.getName())) {
                 linkedLists.add(declareRecord.getName());
             }
         }
-        return StringUtils.join(linkedLists,"") ;
+        return StringUtils.join(linkedLists, "");
     }
 
     /**
@@ -2451,14 +2452,14 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    public String getRegisteredRealEstateValuer(GenerateReportInfo generateReportInfo)  {
-        StringBuilder stringBuilder = new StringBuilder(8) ;
+    public String getRegisteredRealEstateValuer(GenerateReportInfo generateReportInfo) {
+        StringBuilder stringBuilder = new StringBuilder(8);
         List<Integer> integerList = FormatUtils.transformString2Integer(generateReportInfo.getRealEstateAppraiser());
         if (CollectionUtils.isNotEmpty(integerList)) {
             for (Integer id : integerList) {
                 DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
                 if (dataQualificationVo != null) {
-                    stringBuilder.append(dataQualificationVo.getUserAccountName()) ;
+                    stringBuilder.append(dataQualificationVo.getUserAccountName());
                 }
 
             }
@@ -4376,7 +4377,7 @@ public class GenerateBaseDataService {
                     continue;
                 }
                 BasicEstate basicEstate = entry.getKey();
-                BasicApply basicApply = basicApplyService.getByBasicApplyId(basicEstate.getApplyId());
+                BasicApply basicApply = basicApplyService.getByBasicApplyByEstateId(basicEstate.getId());
                 List<SchemeJudgeObject> judgeObjects = entry.getValue();
                 if (linkedHashMap.size() > 1)
                     documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
@@ -4445,7 +4446,7 @@ public class GenerateBaseDataService {
         Map<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaId);
         for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> schemeJudgeObjectEntry : map.entrySet()) {
             BasicEstate basicEstate = schemeJudgeObjectEntry.getKey();
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(basicEstate.getApplyId());
+            BasicApply basicApply = basicApplyService.getByBasicApplyByEstateId(basicEstate.getId());
             StringBuilder stringBuilder = new StringBuilder();
             if (map.size() > 1)
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);

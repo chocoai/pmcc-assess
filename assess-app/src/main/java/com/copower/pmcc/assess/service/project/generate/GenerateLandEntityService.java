@@ -38,6 +38,7 @@ public class GenerateLandEntityService {
      * @throws Exception
      */
     public String getContent(BasicApply basicApply) throws Exception {
+        if (basicApply == null) return null;
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
