@@ -446,10 +446,10 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地取得附加成本<span class="symbol required"></span>
+                    土地取得附加成本
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="土地取得附加成本" class="form-control" required="required" data-rule-number='true'
+                    <input type="text" placeholder="土地取得附加成本" class="form-control" data-rule-number='true'
                            name="landGetRelevant" onblur="checkParams(this);landEngineering.calculationF32();landEngineering.calculationF35();landEngineering.calculationF40()" value="${mdDevelopment.landGetRelevant}" >
                 </div>
             </div>
