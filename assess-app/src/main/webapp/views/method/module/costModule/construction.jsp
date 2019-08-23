@@ -117,12 +117,12 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地取得附加成本(万元)<span class="symbol required"></span>
+                    土地取得附加成本(万元)
                 </label>
                 <div class="col-sm-3">
                     <input type="text" name="additionalCostLandAcquisition"
                            placeholder="土地取得附加成本" class="form-control" data-rule-number='true' onblur="cost.checkParams(this);construction.calculationD8();"
-                           required="required" value="${mdCostVo.mdCostConstruction.additionalCostLandAcquisition}">
+                           value="${mdCostVo.mdCostConstruction.additionalCostLandAcquisition}">
                 </div>
             </div>
 
