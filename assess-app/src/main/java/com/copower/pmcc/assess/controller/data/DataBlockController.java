@@ -2,23 +2,24 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
-import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
-import com.copower.pmcc.assess.service.project.generate.GenerateMdBaseLandPriceService;
-import com.copower.pmcc.assess.service.project.generate.GenerateMdCompareService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -31,17 +32,15 @@ public class DataBlockController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseDataDicService baseDataDicService;
+    private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private DataBlockService dataBlockService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
-    @Autowired
-    private DataDamagedDegreeService dataDamagedDegreeService;
-    @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -49,16 +48,6 @@ public class DataBlockController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         //所有省份
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
-        try {
-//            GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(488,360,262);
-//            String s = generateMdCompareService.generateCompareFile();
-
-            GenerateMdBaseLandPriceService generateMdBaseLandPriceService = new GenerateMdBaseLandPriceService(2,543,323,542);
-            String s = generateMdBaseLandPriceService.generateBaseLandPriceFile();
-            System.out.print(s);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return modelAndView;
     }
 
@@ -168,6 +157,33 @@ public class DataBlockController extends BaseController {
     public HttpResult flowWrite(String processInsId) {
         try {
             publicBasicService.flowWrite(processInsId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            log.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("写入案例异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "更新老数据")
+    public HttpResult updateOldData(Integer projectId, Integer maxProjectId) {
+        try {
+            if (maxProjectId != null) {
+                List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(new ProjectInfo());
+                if (CollectionUtils.isNotEmpty(projectInfoList)) {
+                    for (ProjectInfo projectInfo : projectInfoList) {
+                        if (projectInfo.getId().intValue() <= maxProjectId.intValue()) {
+                            try{
+                                basicApplyBatchService.updateOldData(projectInfo.getId());
+                            }catch (Exception ex){
+
+                            }
+                        }
+                    }
+                }
+            } else {
+                basicApplyBatchService.updateOldData(projectId);
+            }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);

@@ -66,7 +66,11 @@ public class BasicEstate {
 
     private Integer drainWater;
 
+    private String infrastructure;
+
     private Integer supplyGas;
+
+    private Integer infrastructureCompleteness;
 
     private String locationDescribe;
 
@@ -326,12 +330,28 @@ public class BasicEstate {
         this.drainWater = drainWater;
     }
 
+    public String getInfrastructure() {
+        return infrastructure;
+    }
+
+    public void setInfrastructure(String infrastructure) {
+        this.infrastructure = infrastructure == null ? null : infrastructure.trim();
+    }
+
     public Integer getSupplyGas() {
         return supplyGas;
     }
 
     public void setSupplyGas(Integer supplyGas) {
         this.supplyGas = supplyGas;
+    }
+
+    public Integer getInfrastructureCompleteness() {
+        return infrastructureCompleteness;
+    }
+
+    public void setInfrastructureCompleteness(Integer infrastructureCompleteness) {
+        this.infrastructureCompleteness = infrastructureCompleteness;
     }
 
     public String getLocationDescribe() {

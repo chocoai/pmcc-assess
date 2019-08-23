@@ -127,19 +127,17 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度<span
-                class="symbol required"></span></label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <select class="form-control search-select select2 infrastructureCompleteness"
-                    name="infrastructureCompleteness" required>
-            </select>
-        </div>
-    </div>
-    <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地开发程度</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <select class="form-control developmentDegree" name="developmentDegree">
             </select>
+        </div>
+    </div>
+    <div class="x-valid" style="display: none">
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地开发程度备注</label>
+        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+            <input type="text" class="form-control" placeholder="土地开发程度备注"
+                   name="developmentDegreeRemark" value="${basicEstateLandState.developmentDegreeRemark}">
         </div>
     </div>
     <div class="x-valid">
@@ -151,14 +149,8 @@
     </div>
 </div>
 <div class="form-group">
-    <div class="x-valid" style="display: none">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地开发程度备注</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <input type="text" class="form-control" placeholder="土地开发程度备注"
-                   name="developmentDegreeRemark" value="${basicEstateLandState.developmentDegreeRemark}">
-        </div>
-    </div>
-    <div class=" col-xs-61  col-sm-61  col-md-61  col-lg-61  col-sm-offset-1" id="developmentDegreeContentContainer">
+
+    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1" id="developmentDegreeContentContainer">
     </div>
 </div>
 <div class="form-group">

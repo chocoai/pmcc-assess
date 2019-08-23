@@ -1726,10 +1726,10 @@ public class GenerateBaseDataService {
                         degreeList.forEach(oo -> {
                             if (filterList.stream().anyMatch(s -> StringUtils.contains(oo.getCategoryName(), s))) {
                                 if (StringUtils.isNotEmpty(oo.getEntityConditionContent())) {
-                                    stringSet.add(oo.getEntityConditionContent());
+                                    stringSet.add(String.join("", oo.getCategoryName(), oo.getEntityConditionName(), ",", oo.getEntityConditionContent()));
                                 }
                                 if (StringUtils.isNotEmpty(oo.getBasicallyIntact()) && StringUtils.isEmpty(oo.getEntityConditionContent())) {
-                                    stringSet.add(oo.getBasicallyIntact());
+                                    stringSet.add(String.join("", oo.getCategoryName(), oo.getEntityConditionName(), ",", oo.getBasicallyIntact()));
                                 }
                             }
                         });
@@ -1737,12 +1737,12 @@ public class GenerateBaseDataService {
                 });
             }
             if (CollectionUtils.isNotEmpty(stringSet)) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "；"));
             }
         }
         String value = "/";
         if (!map.isEmpty()) {
-            value = generateCommonMethod.judgeEachDesc2(map, "", "", true);
+            value = generateCommonMethod.judgeEachDesc2(map, "", "。", true);
         }
         return value;
     }
@@ -4306,6 +4306,11 @@ public class GenerateBaseDataService {
 //                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
+                }
+                break;
+                case JudgeObjectLoactionField6B: {
+                    String value = String.join("",basicEstateVo.getInfrastructureName(),basicEstateVo.getInfrastructureCompletenessName()) ;
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                 }
                 break;
                 case JudgeObjectLoactionField7: {

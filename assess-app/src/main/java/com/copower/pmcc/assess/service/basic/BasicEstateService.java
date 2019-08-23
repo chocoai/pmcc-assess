@@ -30,6 +30,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -37,7 +38,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -72,57 +72,17 @@ public class BasicEstateService {
     @Autowired
     private BasicEstateLandStateDao basicEstateLandStateDao;
     @Autowired
-    private BasicEstateNetworkService basicEstateNetworkService;
-    @Autowired
     private BasicEstateParkingService basicEstateParkingService;
-    @Autowired
-    private BasicEstateSupplyService basicEstateSupplyService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
-    private BasicMatchingEducationService basicMatchingEducationService;
-    @Autowired
-    private BasicMatchingEnvironmentService basicMatchingEnvironmentService;
-    @Autowired
-    private BasicMatchingFinanceService basicMatchingFinanceService;
-    @Autowired
-    private BasicMatchingLeisurePlaceService basicMatchingLeisurePlaceService;
-    @Autowired
-    private BasicMatchingMaterialService basicMatchingMaterialService;
-    @Autowired
-    private BasicMatchingMedicalService basicMatchingMedicalService;
-    @Autowired
-    private BasicMatchingTrafficService basicMatchingTrafficService;
-    @Autowired
-    private ThreadPoolTaskExecutor taskExecutor;
-    @Autowired
-    private CaseMatchingTrafficService caseMatchingTrafficService;
-    @Autowired
-    private CaseMatchingMedicalService caseMatchingMedicalService;
-    @Autowired
-    private CaseMatchingMaterialService caseMatchingMaterialService;
-    @Autowired
-    private CaseMatchingLeisurePlaceService caseMatchingLeisurePlaceService;
-    @Autowired
-    private CaseMatchingFinanceService caseMatchingFinanceService;
-    @Autowired
-    private CaseMatchingEnvironmentService caseMatchingEnvironmentService;
-    @Autowired
-    private CaseMatchingEducationService caseMatchingEducationService;
-    @Autowired
     private CaseEstateParkingService caseEstateParkingService;
-    @Autowired
-    private CaseEstateNetworkService caseEstateNetworkService;
-    @Autowired
-    private CaseEstateSupplyService caseEstateSupplyService;
     @Autowired
     private CaseEstateService caseEstateService;
     @Autowired
     private CaseEstateLandStateService caseEstateLandStateService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
-    @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
     @Autowired
@@ -240,6 +200,17 @@ public class BasicEstateService {
                 vo.setDataDeveloper(dataDeveloperService.getDataDeveloperVo(dataDeveloper));
             }
         }
+        if (StringUtils.isNotBlank(basicEstate.getInfrastructure())){
+            List<Integer> ids = FormatUtils.transformString2Integer(basicEstate.getInfrastructure());
+            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)){
+                List<String> stringList = Lists.newArrayList();
+                for (Integer integer:ids){
+                    stringList.add(baseDataDicService.getNameById(integer)) ;
+                }
+                vo.setInfrastructureName(StringUtils.join(stringList,"，"));
+            }
+        }
+        vo.setInfrastructureCompletenessName(baseDataDicService.getNameById(basicEstate.getInfrastructureCompleteness()));
         return vo;
     }
 

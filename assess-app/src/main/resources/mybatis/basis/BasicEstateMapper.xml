@@ -33,7 +33,9 @@
     <result column="supply_road" property="supplyRoad" jdbcType="INTEGER" />
     <result column="supply_water" property="supplyWater" jdbcType="INTEGER" />
     <result column="drain_water" property="drainWater" jdbcType="INTEGER" />
+    <result column="infrastructure" property="infrastructure" jdbcType="VARCHAR" />
     <result column="supply_gas" property="supplyGas" jdbcType="INTEGER" />
+    <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
     <result column="location_describe" property="locationDescribe" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -103,7 +105,8 @@
     name, street_number, street, number, land_level, attach_number, floor_area, cover_an_area, 
     volumetric_rate, greening_rate, building_number, position, description, average_price, 
     price_range, supply_heating, supply_power, supply_communication, supply_road, supply_water, 
-    drain_water, supply_gas, location_describe, creator, gmt_created, gmt_modified, open_time
+    drain_water, infrastructure, supply_gas, infrastructure_completeness, location_describe, 
+    creator, gmt_created, gmt_modified, open_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample" >
     select
@@ -149,9 +152,9 @@
       description, average_price, price_range, 
       supply_heating, supply_power, supply_communication, 
       supply_road, supply_water, drain_water, 
-      supply_gas, location_describe, creator, 
-      gmt_created, gmt_modified, open_time
-      )
+      infrastructure, supply_gas, infrastructure_completeness, 
+      location_describe, creator, gmt_created, 
+      gmt_modified, open_time)
     values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
       #{blockName,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, #{developerName,jdbcType=VARCHAR}, 
@@ -162,9 +165,9 @@
       #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, 
       #{supplyHeating,jdbcType=INTEGER}, #{supplyPower,jdbcType=INTEGER}, #{supplyCommunication,jdbcType=INTEGER}, 
       #{supplyRoad,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, 
-      #{supplyGas,jdbcType=INTEGER}, #{locationDescribe,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{openTime,jdbcType=TIMESTAMP}
-      )
+      #{infrastructure,jdbcType=VARCHAR}, #{supplyGas,jdbcType=INTEGER}, #{infrastructureCompleteness,jdbcType=INTEGER}, 
+      #{locationDescribe,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{openTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -262,8 +265,14 @@
       <if test="drainWater != null" >
         drain_water,
       </if>
+      <if test="infrastructure != null" >
+        infrastructure,
+      </if>
       <if test="supplyGas != null" >
         supply_gas,
+      </if>
+      <if test="infrastructureCompleteness != null" >
+        infrastructure_completeness,
       </if>
       <if test="locationDescribe != null" >
         location_describe,
@@ -372,8 +381,14 @@
       <if test="drainWater != null" >
         #{drainWater,jdbcType=INTEGER},
       </if>
+      <if test="infrastructure != null" >
+        #{infrastructure,jdbcType=VARCHAR},
+      </if>
       <if test="supplyGas != null" >
         #{supplyGas,jdbcType=INTEGER},
+      </if>
+      <if test="infrastructureCompleteness != null" >
+        #{infrastructureCompleteness,jdbcType=INTEGER},
       </if>
       <if test="locationDescribe != null" >
         #{locationDescribe,jdbcType=VARCHAR},
@@ -494,8 +509,14 @@
       <if test="record.drainWater != null" >
         drain_water = #{record.drainWater,jdbcType=INTEGER},
       </if>
+      <if test="record.infrastructure != null" >
+        infrastructure = #{record.infrastructure,jdbcType=VARCHAR},
+      </if>
       <if test="record.supplyGas != null" >
         supply_gas = #{record.supplyGas,jdbcType=INTEGER},
+      </if>
+      <if test="record.infrastructureCompleteness != null" >
+        infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       </if>
       <if test="record.locationDescribe != null" >
         location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
@@ -550,7 +571,9 @@
       supply_road = #{record.supplyRoad,jdbcType=INTEGER},
       supply_water = #{record.supplyWater,jdbcType=INTEGER},
       drain_water = #{record.drainWater,jdbcType=INTEGER},
+      infrastructure = #{record.infrastructure,jdbcType=VARCHAR},
       supply_gas = #{record.supplyGas,jdbcType=INTEGER},
+      infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -653,8 +676,14 @@
       <if test="drainWater != null" >
         drain_water = #{drainWater,jdbcType=INTEGER},
       </if>
+      <if test="infrastructure != null" >
+        infrastructure = #{infrastructure,jdbcType=VARCHAR},
+      </if>
       <if test="supplyGas != null" >
         supply_gas = #{supplyGas,jdbcType=INTEGER},
+      </if>
+      <if test="infrastructureCompleteness != null" >
+        infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       </if>
       <if test="locationDescribe != null" >
         location_describe = #{locationDescribe,jdbcType=VARCHAR},
@@ -706,7 +735,9 @@
       supply_road = #{supplyRoad,jdbcType=INTEGER},
       supply_water = #{supplyWater,jdbcType=INTEGER},
       drain_water = #{drainWater,jdbcType=INTEGER},
+      infrastructure = #{infrastructure,jdbcType=VARCHAR},
       supply_gas = #{supplyGas,jdbcType=INTEGER},
+      infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{locationDescribe,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

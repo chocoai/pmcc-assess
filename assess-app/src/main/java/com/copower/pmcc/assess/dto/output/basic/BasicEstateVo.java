@@ -26,6 +26,9 @@ public class BasicEstateVo extends BasicEstate {
     private String developerName;
     private DataDeveloperVo dataDeveloper;
 
+    private String infrastructureName;
+    private String infrastructureCompletenessName;
+
     public String getProvinceName() {
         return provinceName;
     }
@@ -136,5 +139,21 @@ public class BasicEstateVo extends BasicEstate {
 
     public void setSupplyRoadName(String supplyRoadName) {
         this.supplyRoadName = supplyRoadName;
+    }
+
+    public String getInfrastructureName() {
+        return infrastructureName;
+    }
+
+    public void setInfrastructureName(String infrastructureName) {
+        this.infrastructureName = infrastructureName;
+    }
+
+    public String getInfrastructureCompletenessName() {
+        return infrastructureCompletenessName;
+    }
+
+    public void setInfrastructureCompletenessName(String infrastructureCompletenessName) {
+        this.infrastructureCompletenessName = infrastructureCompletenessName;
     }
 }

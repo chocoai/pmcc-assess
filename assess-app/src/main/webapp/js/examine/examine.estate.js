@@ -264,7 +264,6 @@
         estateCommon.estateForm.clearAll();
         estateCommon.estateLandStateForm.clearAll();
         estateCommon.estateForm.initForm(data.estate);
-        // estateCommon.getLocationDescribe(data.estate.blockId);
         estateCommon.estateLandStateForm.initForm(data.land);
         AssessCommon.initAreaInfo({
             provinceTarget: estateCommon.estateForm.find("select[name='province']"),
@@ -274,6 +273,28 @@
             cityValue: data.estate.city,
             districtValue: data.estate.district
         });
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
+            var target = $("#industrySupplyInfoContainer") ;
+            target.empty() ;
+            var resultHtml = '';
+            var array = [];
+            if (data.estate.infrastructure) {
+                array = data.estate.infrastructure.split(',');
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="infrastructure' + item.id + '" name="infrastructure" value="' + item.id + '">';
+                resultHtml += '<label for="infrastructure' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml +=    "<input type=\"radio\" name=\"infrastructure\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml +=    "<input type=\"radio\" name=\"infrastructure\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',false)\">";
+            target.append(resultHtml);
+        }, true);
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, data.estate.position, function (html, data) {
             estateCommon.estateForm.find('select.position').empty().html(html).trigger('change');
         }, true);
@@ -298,6 +319,9 @@
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.supplyRoad, function (html, data) {
             estateCommon.estateForm.find('select.supplyRoad').empty().html(html).trigger('change');
         }, true);
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_infrastructureCompleteness, data.estate.infrastructureCompleteness, function (html, data) {
+            estateCommon.estateForm.find("select[name='infrastructureCompleteness']").empty().html(html).trigger('change');
+        });
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
             estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
@@ -318,9 +342,6 @@
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estateTopographic_terrain, data.land.topographicTerrain, function (html, data) {
             estateCommon.estateLandStateForm.find('select.topographicTerrain').empty().html(html).trigger('change');
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_infrastructureCompleteness, data.land.infrastructureCompleteness, function (html, data) {
-            estateCommon.estateLandStateForm.find('select.infrastructureCompleteness').empty().html(html).trigger('change');
         });
 
         AssessCommon.loadDataDicByKey(AssessDicKey.estateLandContaminated, data.land.contaminated, function (html, data) {
@@ -395,48 +416,52 @@
                             }
                             resultHtml += ' id="developmentDegreeContent' + item.id + '" name="developmentDegreeContent" value="' + item.id + '">';
                             resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
-                        })
+                        });
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                        resultHtml += "<input type='radio' onclick='estateCommon.checkedFun(this,true)'>";
+                        resultHtml +=    "<input type=\"radio\" name=\"developmentDegreeContent\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',true)\">";
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                        resultHtml += "<input type='radio' onclick='estateCommon.checkedFun(this,false)'>";
+                        resultHtml +=    "<input type=\"radio\" name=\"developmentDegreeContent\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',false)\">";
                         $("#developmentDegreeContentContainer").html(resultHtml);
                     }
                 });
                 estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().hide();
             }
         });
+
+
     };
 
-    estateCommon.checkedFun = function (that, flag) {
-        var form = estateCommon.estateLandStateForm;
+    //2019-08-23对这个方法进行重构
+    estateCommon.checkedFun = function (that, name,flag) {
+        var form = $(that).closest("form");
+        var target = form.find("[name='"+name+"']:checkbox") ;
         if (flag) {//全选或者全不选
             var number = 1;
-            form.find(":checkbox").each(function (i, n) {
+            target.each(function (i, n) {
                 if ($(this).prop("checked")) {
                     number++;
                 }
             });
             if (number == 1) {
-                form.find(":checkbox").prop("checked", true);
+                target.prop("checked", true);
             } else {
-                form.find(":checkbox").prop("checked", false);
+                target.prop("checked", false);
             }
         } else {
             //首先让选中的失效
-            form.find(":checkbox").each(function (i, n) {
+            target.each(function (i, n) {
                 if ($(this).prop("checked")) {
                     $(this).prop("disabled", true);
                 }
             });
             //然后让没有选中的元素设置为选中
-            form.find(":checkbox").each(function (i, n) {
+            target.each(function (i, n) {
                 if (!$(this).prop("checked")) {
                     $(this).prop("checked", true);
                 }
             });
             //最后是让失效的元素恢复,并且使其不选中
-            form.find(":checkbox").each(function (i, n) {
+            target.each(function (i, n) {
                 if ($(this).prop("disabled")) {
                     $(this).prop("disabled", false);
                     $(this).prop("checked", false);
